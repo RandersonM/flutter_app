@@ -16,13 +16,13 @@ class SearchProvider extends ChangeNotifier {
   @visibleForTesting
   late CharactersBackendService backend;
 
-  List<Character> queryResults = [];
+  List<Character> _queryResults = [];
   late String _query;
   final List<String> _statusFilters = <String>[];
 
   List<String> get statusFilters => _statusFilters;
 
-  List<Character> get characterResult => queryResults;
+  List<Character> get queryResults => _queryResults;
 
   String get query => _query;
 
@@ -33,14 +33,13 @@ class SearchProvider extends ChangeNotifier {
   }
 
   Future<void> filter() async {
-    List<Character> partialResults =
-        List<Character>.from(await backend.fetchAll());
+    List<Character> partialResults = await backend.fetchAll();
 
     if (query.isNotEmpty) partialResults = _applySearch(partialResults);
 
     partialResults = _applyFilters(partialResults);
 
-    queryResults = partialResults;
+    _queryResults = partialResults;
   }
 
   List<Character> _applyFilters(List<Character> characters) {
