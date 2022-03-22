@@ -1,0 +1,104 @@
+{
+  "affiliation": "Afiliação",
+  "@affiliation": {
+    "description": "Text show at bounty section on character detail screen",
+    "type": "text",
+    "placeholders": {}
+  }, 
+  "bounty": "Recompensa",
+  "@bounty": {
+    "description": "Text show at bounty section on character detail screen",
+    "type": "text",
+    "placeholders": {}
+  },
+  "calculatorTitle": "Calculadora",
+  "@calculatorTitle": {
+    "description": "Shows title for Calculator screen",
+    "type": "text",
+    "placeholders": {}
+  },
+  "counterTitle": "Contador",
+  "@counterTitle": {
+    "description": "Shows title for Counter screen",
+    "type": "text",
+    "placeholders": {}
+  },
+  "devilFruitUserPrefix": "Usuário da",
+  "@devilFruitUserPrefix": {
+    "description": "Text shown at character detail screen",
+    "type": "text",
+    "placeholders": {}
+  },
+  "emperors": "Four Emperors",
+  "@emperors": {
+    "description": "Filter label on search section one piece",
+    "type": "text",
+    "placeholders": {}
+  },
+  "haki": "Haki",
+  "@haki": {
+    "description": "Text show at haki section on character details",
+    "type": "text",
+    "placeholders": {}
+  },
+  "home": "Início",
+  "@home": {
+    "description": "Home text",
+    "type": "text",
+    "placeholders": {}
+  },
+  "howManyPushPhrase": "Você apertou o botão esse numero de vezes",
+  "@howManyPushPhrase": {
+    "description": "Text shown at counter screen.",
+    "type": "text",
+    "placeholders": {}
+  },
+  "noResearchYet": "Nenhuma pesquisa feita ainda.",
+  "@noResearchYet": {
+    "description": "Text shown at search screen when there were no research done yet at search bar after one or filters have been applied",
+    "type": "text",
+    "placeholders": {}
+  }, 
+  "noResultsFound": "Nenhum resultado encontrado para",
+  "@noResultsFound": {
+    "description": "Text shown at search screen when there were no results found at search bar after one or more filters have been applied",
+    "type": "text",
+    "placeholders": {}
+  },  
+  "occupation": "Ocupação",
+  "@occupation": {
+    "description": "Text show at occupation section on character detail screen",
+    "type": "text",
+    "placeholders": {}
+  },
+  "onePiece": "One Piece",
+  "@onePiece": {
+    "description": "Subtitle for bottom menu one piece option",
+    "type": "text",
+    "placeholders": {}
+  },
+  "result": "Resultado",
+  "@result": {
+    "description": "Text shown on the result section on calculator screen",
+    "type": "text",
+    "placeholders": {}
+  },
+  "search": "Procurar",
+  "@search": {
+    "description": "Text shown at search section",
+    "type": "text",
+    "placeholders": {}
+  },
+  "superRookie": "Super Rookie",
+  "@superRookie": {
+    "description": "Filter label on search section one piece",
+    "type": "text",
+    "placeholders": {}
+  },
+  "strawHat": "Straw Hat Pirates",
+  "@strawHat": {
+    "description": "Filter label on search section one piece",
+    "type": "text",
+    "placeholders": {}
+  }
+}
