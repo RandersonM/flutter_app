@@ -22,8 +22,8 @@ class Search extends StatelessWidget {
               SearchHeader(
                 searchProvider: searchProvider,
               ),
-              if (searchProvider.characterResult.isNotEmpty)
-                ...searchProvider.characterResult
+              if (searchProvider.queryResults.isNotEmpty)
+                ...searchProvider.queryResults
                     .map((Character character) => Padding(
                           padding: const EdgeInsets.all(Constants.margin),
                           child: ResultCard(

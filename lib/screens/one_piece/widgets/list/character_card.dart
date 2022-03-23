@@ -35,45 +35,39 @@ class _CharacterCardState extends State<CharacterCard> {
   }
 
   @override
-  Widget build(BuildContext context) => Hero(
-        tag: widget.character.image,
-        child: InkWell(
-          onTap: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute<dynamic>(
-                  builder: (BuildContext context) =>
-                      CharacterDetailsScreen(character: widget.character)),
-            );
-          },
-          child: Card(
-            shape: RoundedRectangleBorder(
-                side: const BorderSide(color: Colors.white),
-                borderRadius: BorderRadius.circular(Constants.margin * 2)),
-            child: Column(
-              mainAxisSize: MainAxisSize.max,
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: <Widget>[
-                Container(
-                  height: MediaQuery.of(context).size.height * 0.2,
-                  width: MediaQuery.of(context).size.width * 0.4,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(Constants.margin * 2),
-                    image: DecorationImage(
-                      fit: BoxFit.fill,
-                      image: image,
-                    ),
+  Widget build(BuildContext context) => InkWell(
+        onTap: () => Navigator.push(
+          context,
+          MaterialPageRoute<dynamic>(
+              builder: (BuildContext context) =>
+                  CharacterDetailsScreen(character: widget.character)),
+        ),
+        child: Card(
+          shape: RoundedRectangleBorder(
+              side: const BorderSide(color: Colors.white),
+              borderRadius: BorderRadius.circular(Constants.margin * 2)),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: <Widget>[
+              Container(
+                height: MediaQuery.of(context).size.height * 0.2,
+                width: MediaQuery.of(context).size.width * 0.4,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(Constants.margin * 2),
+                  image: DecorationImage(
+                    fit: BoxFit.fill,
+                    image: image,
                   ),
                 ),
-                Text(widget.character.name,
-                    style: Theme.of(context).textTheme.caption!.merge(TextStyle(
-                        fontWeight: FontWeight.bold,
-                        color: Theme.of(context)
-                            .appBarTheme
-                            .titleTextStyle!
-                            .color))),
-              ],
-            ),
+              ),
+              Text(widget.character.name,
+                  style: Theme.of(context).textTheme.caption!.merge(TextStyle(
+                      fontWeight: FontWeight.bold,
+                      color: Theme.of(context)
+                          .appBarTheme
+                          .titleTextStyle!
+                          .color))),
+            ],
           ),
         ),
       );
