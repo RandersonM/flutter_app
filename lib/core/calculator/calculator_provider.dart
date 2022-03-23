@@ -42,7 +42,6 @@ class CalculatorProvider extends ChangeNotifier {
     return false;
   }
 
-// function to calculate the input operation
   void equalPressed() {
     String finaluserinput = input;
     finaluserinput = input.replaceAll('x', '*');
