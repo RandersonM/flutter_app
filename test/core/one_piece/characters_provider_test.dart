@@ -1,13 +1,12 @@
 // Developed by Randerson Mayllon
 // Copyright © 2022.
 
-import 'package:mockito/annotations.dart';
 import 'package:flutter_test/flutter_test.dart';
+
 import 'package:simple_app/core/one_piece/characters_provider.dart';
 import 'package:simple_app/core/one_piece/models/character.dart';
 import 'package:simple_app/core/one_piece/services/characters_backend_service.dart';
 
-@GenerateMocks(<Type>[CharactersBackendService])
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
   group('One piece characters', () {
