@@ -14,43 +14,40 @@ class CalculatorHeader extends StatelessWidget {
   final String input;
 
   @override
-  Widget build(BuildContext context) => Container(
-        color: Theme.of(context).colorScheme.onSecondary,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: <Widget>[
-            Container(
-              alignment: Alignment.centerRight,
-              padding: const EdgeInsets.all(Constants.margin),
-              child: Text(
-                input,
-                style: Theme.of(context).textTheme.subtitle1!,
-              ),
+  Widget build(BuildContext context) => Column(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        children: <Widget>[
+          Container(
+            alignment: Alignment.centerRight,
+            padding: const EdgeInsets.all(Constants.margin),
+            child: Text(
+              input,
+              style: Theme.of(context).textTheme.subtitle1!,
             ),
-            Padding(
-              padding: const EdgeInsets.only(
-                  left: Constants.margin,
-                  right: Constants.margin,
-                  bottom: Constants.margin),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: <Widget>[
-                  Text(AppLocalizations.of(context)!.result,
-                      style: Theme.of(context)
-                          .textTheme
-                          .headline6!
-                          .merge(const TextStyle(fontWeight: FontWeight.bold))),
-                  Text(
-                    result,
+          ),
+          Padding(
+            padding: const EdgeInsets.only(
+                left: Constants.margin,
+                right: Constants.margin,
+                bottom: Constants.margin),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: <Widget>[
+                Text(AppLocalizations.of(context)!.result,
                     style: Theme.of(context)
                         .textTheme
                         .headline6!
-                        .merge(const TextStyle(fontWeight: FontWeight.bold)),
-                  ),
-                ],
-              ),
-            )
-          ],
-        ),
+                        .merge(const TextStyle(fontWeight: FontWeight.bold))),
+                Text(
+                  result,
+                  style: Theme.of(context)
+                      .textTheme
+                      .headline6!
+                      .merge(const TextStyle(fontWeight: FontWeight.bold)),
+                ),
+              ],
+            ),
+          )
+        ],
       );
 }
