@@ -12,14 +12,14 @@ import 'package:simple_app/screens/one_piece/widgets/search/search.dart';
 import 'package:simple_app/shared/app_bar/default_app_bar.dart';
 import 'package:simple_app/shared/bottom_navigation/bottom_navigation.dart';
 
-class CharacterScreen extends StatefulWidget {
-  const CharacterScreen({Key? key}) : super(key: key);
+class CharactersListScreen extends StatefulWidget {
+  const CharactersListScreen({Key? key}) : super(key: key);
 
   @override
-  State<CharacterScreen> createState() => _CharacterScreenState();
+  State<CharactersListScreen> createState() => _CharactersListScreenState();
 }
 
-class _CharacterScreenState extends State<CharacterScreen> {
+class _CharactersListScreenState extends State<CharactersListScreen> {
   @override
   Widget build(BuildContext context) => Consumer<CharactersProvider>(
         builder: (BuildContext context, CharactersProvider provider, _) =>
