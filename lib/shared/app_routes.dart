@@ -23,7 +23,7 @@ class AppRoutes {
             builder: (_) => const CalculatorScreen(), settings: settings);
       case onePiece:
         return MaterialPageRouteWithoutTransition<dynamic>(
-            builder: (_) => const CharacterScreen(), settings: settings);
+            builder: (_) => const CharactersListScreen(), settings: settings);
     }
 
     return null;
