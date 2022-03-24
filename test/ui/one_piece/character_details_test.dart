@@ -23,13 +23,13 @@ void main() {
             .map((e) => Character.fromJson(e))
             .toList();
 
-    Widget charactersDetails = CharacterDetailsScreen(
+    Widget characterList = CharacterDetailsScreen(
       key: charactersKey,
       character: characters.first,
     );
 
     testWidgets('Assert fields are displayed', (WidgetTester tester) async {
-      await tester.pumpWidget(getTestableWidget(charactersDetails));
+      await tester.pumpWidget(getTestableWidget(characterList));
       await tester.pump();
       expect(find.byType(Card), findsNWidgets(3));
       expect(find.byType(SliverAppBar), findsOneWidget);
@@ -37,7 +37,7 @@ void main() {
     });
 
     testWidgets('Assert fields are filled', (WidgetTester tester) async {
-      await tester.pumpWidget(getTestableWidget(charactersDetails));
+      await tester.pumpWidget(getTestableWidget(characterList));
       await tester.pump();
       expect(find.text('Bounty'), findsOneWidget);
       expect(find.text('Affiliation'), findsOneWidget);
