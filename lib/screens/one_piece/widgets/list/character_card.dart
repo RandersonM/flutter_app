@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:simple_app/core/one_piece/models/character.dart';
 import 'package:simple_app/screens/one_piece/widgets/details/character_details_screen.dart';
 import 'package:simple_app/shared/constants.dart';
+import 'package:simple_app/shared/transitions/material_page_route_with_slide_right_transition.dart';
 
 class CharacterCard extends StatefulWidget {
   final Character character;
@@ -38,8 +39,8 @@ class _CharacterCardState extends State<CharacterCard> {
   Widget build(BuildContext context) => InkWell(
         onTap: () => Navigator.push(
           context,
-          MaterialPageRoute<dynamic>(
-              builder: (BuildContext context) =>
+          MaterialPageRouteWithSlideRightTransition(
+              builder: (_) =>
                   CharacterDetailsScreen(character: widget.character)),
         ),
         child: Card(
