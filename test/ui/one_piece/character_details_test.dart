@@ -6,9 +6,9 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:simple_app/core/models/one_piece/character.dart';
 
-import 'package:simple_app/core/one_piece/models/character.dart';
-import 'package:simple_app/screens/one_piece/widgets/details/character_details_screen.dart';
+import 'package:simple_app/ui/screens/one_piece/widgets/details/character_details_screen.dart';
 
 import '../../testable_widget.dart';
 

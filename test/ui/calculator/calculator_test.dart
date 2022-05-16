@@ -4,10 +4,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
-import 'package:simple_app/screens/calculator/calculator_screen.dart';
-import 'package:simple_app/screens/calculator/widgets/calculator_button.dart';
-import 'package:simple_app/screens/calculator/widgets/calculator_header.dart.dart';
 import 'package:simple_app/shared/app_bar/default_app_bar.dart';
+import 'package:simple_app/ui/screens/calculator/calculator_screen.dart';
+import 'package:simple_app/ui/screens/calculator/widgets/calculator_button.dart';
+import 'package:simple_app/ui/screens/calculator/widgets/calculator_header.dart.dart';
 
 import '../../testable_widget.dart';
 

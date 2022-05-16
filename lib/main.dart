@@ -4,19 +4,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:provider/provider.dart';
 
-import 'package:simple_app/core/one_piece/characters_provider.dart';
-import 'package:simple_app/screens/splash/splash_screen.dart';
+import 'package:simple_app/service_locator.dart';
 import 'package:simple_app/shared/app_routes.dart';
-
 import 'package:simple_app/shared/theme.dart';
+import 'package:simple_app/ui/screens/splash/splash_screen.dart';
 
 void main() {
   SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
     statusBarColor: Colors.white24,
   ));
-
+  setUpLocators();
   runApp(const MyApp());
 }
 
@@ -26,24 +24,16 @@ class MyApp extends StatelessWidget {
   final Locale? locale;
 
   @override
-  Widget build(BuildContext context) => MultiProvider(
-        providers: <ChangeNotifierProvider<dynamic>>[
-          ChangeNotifierProvider<CharactersProvider>(
-            create: (_) => CharactersProvider(),
-            lazy: false,
-          ),
+  Widget build(BuildContext context) => MaterialApp(
+        title: 'Simple App',
+        locale: locale,
+        localizationsDelegates: AppLocalizations.localizationsDelegates,
+        supportedLocales: const <Locale>[
+          Locale('en', ''),
+          Locale('pt', ''),
         ],
-        child: MaterialApp(
-          title: 'Simple App',
-          locale: locale,
-          localizationsDelegates: AppLocalizations.localizationsDelegates,
-          supportedLocales: const <Locale>[
-            Locale('en', ''),
-            Locale('pt', ''),
-          ],
-          theme: appTheme,
-          home: const SplashScreen(),
-          onGenerateRoute: AppRoutes.getRoute,
-        ),
+        theme: appTheme,
+        home: const SplashScreen(),
+        onGenerateRoute: AppRoutes.getRoute,
       );
 }

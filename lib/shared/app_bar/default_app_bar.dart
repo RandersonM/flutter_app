@@ -4,10 +4,11 @@
 import 'package:flutter/material.dart';
 
 class DefaultAppBar extends StatelessWidget implements PreferredSizeWidget {
-  const DefaultAppBar({Key? key, this.title, this.leading}) : super(key: key);
+  const DefaultAppBar({Key? key, this.title, this.leading, this.height})
+      : super(key: key);
 
   final Widget? leading;
-
+  final double? height;
   final Widget? title;
 
   @override

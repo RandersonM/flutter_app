@@ -2,11 +2,11 @@
 // Copyright © 2022.
 
 import 'package:flutter/material.dart';
-import 'package:simple_app/screens/calculator/calculator_screen.dart';
-import 'package:simple_app/screens/counter/counter_screen.dart';
-import 'package:simple_app/screens/one_piece/characters_list_screen.dart';
 
 import 'package:simple_app/shared/transitions/material_page_route_without_tansition.dart';
+import 'package:simple_app/ui/screens/calculator/calculator_screen.dart';
+import 'package:simple_app/ui/screens/counter/counter_screen.dart';
+import 'package:simple_app/ui/screens/one_piece/characters_list_screen.dart';
 
 class AppRoutes {
   static const String counter = '/counter';
