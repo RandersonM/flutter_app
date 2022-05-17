@@ -47,6 +47,12 @@
     "type": "text",
     "placeholders": {}
   },
+  "errorUnknown": "Something went wrong, please try again after a few minutes",
+  "@errorUnknown": {
+    "description": "error text show when something fails",
+    "type": "text",
+    "placeholders": {}
+  },
   "haki": "Haki",
   "@haki": {
     "description": "Text show at haki section on character details",
@@ -64,7 +70,25 @@
     "description": "Text shown at counter screen.",
     "type": "text",
     "placeholders": {}
+  },   
+  "movieSearchHintText": "Enter a Movie Title",
+  "@movieSearchHintText": {
+    "description": "Hint text shown at search bar on movie screen ",
+    "type": "text",
+    "placeholders": {}
   },
+  "movieSearchTitle": "Movie Search",
+  "@movieSearchTitle": {
+    "description": "Title text shown at app bar on movie screen ",
+    "type": "text",
+    "placeholders": {}
+  }, 
+  "noMoviesFound": "No movies yet",
+  "@noMoviesFound": {
+    "description": "Text shown at search movie screen when there were no results found",
+    "type": "text",
+    "placeholders": {}
+  },  
   "noResearchYet": "No research done yet.",
   "@noResearchYet": {
     "description": "Text shown at search screen when there were no research done yet at search bar after one or filters have been applied",

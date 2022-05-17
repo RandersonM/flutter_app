@@ -6,7 +6,7 @@ import 'dart:convert';
 import 'package:flutter/services.dart';
 import 'package:simple_app/core/models/one_piece/character.dart';
 
-class CharactersBackendService {
+class CharactersRepoImpl {
   int _totalCount = 0;
 
   Future<List<Character>> fetchAll() async => fetch(totalCount);

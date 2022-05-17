@@ -3,6 +3,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import 'package:simple_app/service_locator.dart';
@@ -10,11 +11,12 @@ import 'package:simple_app/shared/app_routes.dart';
 import 'package:simple_app/shared/theme.dart';
 import 'package:simple_app/ui/screens/splash/splash_screen.dart';
 
-void main() {
+void main() async {
   SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
     statusBarColor: Colors.white24,
   ));
   setUpLocators();
+  await dotenv.load();
   runApp(const MyApp());
 }
 

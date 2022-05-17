@@ -19,22 +19,29 @@ class CharacterCard extends StatefulWidget {
 }
 
 class _CharacterCardState extends State<CharacterCard> {
-  late NetworkImage image;
+  late Image image;
 
   @override
   void didChangeDependencies() {
-    precacheImage(
-        NetworkImage(
-          widget.character.image,
-        ),
-        context);
+    precacheImage(image.image, context);
     super.didChangeDependencies();
   }
 
   @override
   void initState() {
     super.initState();
-    image = NetworkImage(widget.character.image);
+    image = Image.network(widget.character.image, loadingBuilder:
+        (BuildContext context, Widget child, ImageChunkEvent? loadingProgress) {
+      if (loadingProgress == null) return child;
+      return Center(
+        child: CircularProgressIndicator(
+          value: loadingProgress.expectedTotalBytes != null
+              ? loadingProgress.cumulativeBytesLoaded /
+                  loadingProgress.expectedTotalBytes!
+              : null,
+        ),
+      );
+    });
   }
 
   @override
@@ -59,7 +66,7 @@ class _CharacterCardState extends State<CharacterCard> {
                   borderRadius: BorderRadius.circular(Constants.margin * 2),
                   image: DecorationImage(
                     fit: BoxFit.fill,
-                    image: image,
+                    image: image.image,
                   ),
                 ),
               ),

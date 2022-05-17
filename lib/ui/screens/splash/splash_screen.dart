@@ -4,8 +4,8 @@
 import 'package:flutter/material.dart';
 import 'package:simple_app/shared/decorations/gradient.dart';
 import 'package:simple_app/shared/transitions/material_page_route_with_slide_right_transition.dart';
+import 'package:simple_app/ui/screens/movies/movie_search_screen.dart';
 
-import '../counter/counter_screen.dart';
 import 'widgets/logo.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -25,7 +25,7 @@ class _SplashScreenState extends State<SplashScreen> {
         () => Navigator.pushAndRemoveUntil(
             context,
             MaterialPageRouteWithSlideRightTransition(
-                builder: (_) => const CounterScreen()),
+                builder: (_) => const MovieSearchSreen()),
             (_) => false));
   }
 

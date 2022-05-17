@@ -9,6 +9,7 @@ class IconSize {
   static const double small = 24.0;
   static const double medium = 32.0;
   static const double medium2 = 40.0;
+  static const double big = 64.0;
 }
 
 class AppColors {

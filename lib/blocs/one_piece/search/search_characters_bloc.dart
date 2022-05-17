@@ -3,7 +3,7 @@
 
 import 'package:bloc/bloc.dart';
 import 'package:simple_app/core/models/one_piece/character.dart';
-import 'package:simple_app/core/repositories/one_piece/characters_backend_service.dart';
+import 'package:simple_app/core/repositories/one_piece/characters_repo.dart';
 
 part 'search_characters_event.dart';
 part 'search_characters_state.dart';
@@ -11,7 +11,7 @@ part 'search_characters_state.dart';
 class SearchCharactersBloc
     extends Bloc<SearchCharactersEvent, SearchCharactersState> {
   SearchCharactersBloc() : super(SearchCharactersState.initial()) {
-    final CharactersBackendService _apiRepository = CharactersBackendService();
+    final CharactersRepo _apiRepository = CharactersRepo();
     late List<String> _statusFilters = [];
     bool _matches(String subject, String _query) {
       return subject
@@ -19,7 +19,7 @@ class SearchCharactersBloc
     }
 
     Future<List<Character>> _applySearch(String query) async {
-      List<Character> logs = await _apiRepository.fetchAll();
+      List<Character> logs = await _apiRepository.getAllCharacters();
       return logs.where((Character character) {
         String characterName = character.name;
         String? characterNickname = character.nickname;
@@ -42,7 +42,7 @@ class SearchCharactersBloc
 
     Future<List<Character>> _applyFilters() async {
       List<Character> result = [];
-      List<Character> characters = await _apiRepository.fetchAll();
+      List<Character> characters = await _apiRepository.getAllCharacters();
 
       if (_statusFilters.isNotEmpty) {
         for (Character character in characters) {

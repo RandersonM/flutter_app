@@ -11,8 +11,9 @@ class MovieDetail extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Stack(fit: StackFit.expand, children: [
+    return SizedBox(
+      height: MediaQuery.of(context).size.height,
+      child: Stack(fit: StackFit.expand, children: [
         Image.network(
           movie.poster,
           fit: BoxFit.cover,

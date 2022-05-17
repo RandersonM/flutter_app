@@ -21,7 +21,7 @@ class UnknownException with Exception {}
 
 String? getErrorMessage(Exception? exception, BuildContext context) {
   if (exception is UnauthorizedException) {
-    return exception.message ?? AppLocalizations.of(context)?.affiliation;
+    return exception.message ?? AppLocalizations.of(context)?.errorUnknown;
   }
 
   if (exception is NoInternetConnectionException) {
@@ -36,5 +36,5 @@ String? getErrorMessage(Exception? exception, BuildContext context) {
     return exception.message;
   }
 
-  return AppLocalizations.of(context)?.occupation;
+  return AppLocalizations.of(context)?.errorUnknown;
 }

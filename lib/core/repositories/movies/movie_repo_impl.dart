@@ -1,17 +1,20 @@
+// Developed by Randerson Mayllon
+// Copyright © 2022.
+
 import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:dio/dio.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:simple_app/core/models/movies/search_movie.dart';
 import '../../../shared/errors.dart';
 
-class Http {
-  final String _baseUrl = 'http://www.omdbapi.com';
-  final String url = '/';
+class MovieRepoImpl {
   late final BaseOptions? _options;
   late final Dio _dio;
-  Http({BaseOptions? options}) {
+
+  MovieRepoImpl({BaseOptions? options}) {
     _buildBaseOptions(options);
     _buildHttpClient();
   }
@@ -19,7 +22,6 @@ class Http {
   void _buildBaseOptions(BaseOptions? options) {
     _options = options ??
         BaseOptions(
-          baseUrl: _baseUrl,
           receiveDataWhenStatusError: true,
           responseType: ResponseType.json,
         );
@@ -29,7 +31,7 @@ class Http {
     _dio = Dio(_options);
   }
 
-  Http addInterceptor(Interceptor interceptor) {
+  MovieRepoImpl addInterceptor(Interceptor interceptor) {
     _dio.interceptors.add(interceptor);
 
     return this;
@@ -38,16 +40,35 @@ class Http {
   Future<SearchMovie> findMovie(String name) async {
     try {
       final response = await get(
-          url: url, queryParameters: {'s': name, 'apiKey': 'af90794a'});
-      if (response.statusCode == 200) {
-        print(response.data['Search'][0]);
-        return SearchMovie.fromJson(response.data['Search'][0]);
-      } else {
-        throw Exception('Error occured while fetching movie');
+          url: dotenv.env['BASE_URL']!,
+          queryParameters: {'s': name, 'apiKey': dotenv.env['API_KEY']!});
+
+      return SearchMovie.fromJson(response.data['Search'][0]);
+    } on DioError catch (error) {
+      if (error.error is SocketException) {
+        throw NoInternetConnectionException();
       }
-    } catch (e) {
-      print('Error occured during connection: $e');
-      throw Exception('Error occured while fetching movie');
+      if (error.response?.statusCode != null) {
+        switch (error.response?.statusCode) {
+          case 400:
+            throw BadRequestException(
+              jsonDecode(error.response?.data),
+            );
+          case 401:
+            throw UnauthorizedException(
+              message: jsonDecode(error.response?.data),
+            );
+          case 403:
+            throw UnauthorizedException(
+              message: jsonDecode(error.response?.data),
+            );
+          case 500:
+            throw ServerException();
+        }
+      }
+      throw UnknownException();
+    } catch (_) {
+      throw UnknownException();
     }
   }
 
