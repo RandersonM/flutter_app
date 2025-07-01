@@ -1,583 +1,522 @@
 {
-    "total_count": 57,
-    "characters": [{
-            "id": 0,
-            "name": "Gol D. Roger",
-            "nickname": "Pirate King",
-            "occupation": ["Pirate", "Captain"],
-            "affiliations": ["Roger Pirates"],
-            "haki": ["Kenbunshoku Haki", "Busoshoku Haki", "Haoshoku Haki"],
-            "image": "https://i.pinimg.com/originals/b6/c4/bb/b6c4bb59c6601353f69b31cd63395654.jpg",
-            "bounty": "฿5,564,800,000"
-        },
-        {
-            "id": 1,
-            "name": "Edward Newgate",
-            "nickname": "Whitebeard",
-            "occupation": ["Pirate", "Captain"],
-            "devil_fruit": "Gura Gura no Mi",
-            "affiliations": ["Whitebeard Pirates", "Four Emperors"],
-            "haki": ["Kenbunshoku Haki", "Busoshoku Haki", "Haoshoku Haki"],
-            "image": "https://i.pinimg.com/originals/c0/ee/8f/c0ee8fa916dcb33b707c4e8ca1aa0d96.png",
-            "bounty": "฿5,046,000,000"
-        },
-        {
-            "id": 2,
-            "name": "Kaido",
-            "nickname": "Kaido of the Beasts",
-            "occupation": ["Pirate", "Captain"],
-            "devil_fruit": "Uo Uo no Mi, Model: Seiryu",
-            "affiliations": ["Beasts Pirates", "Four Emperors"],
-            "haki": ["Kenbunshoku Haki", "Busoshoku Haki", "Haoshoku Haki"],
-            "image": "https://images3.alphacoders.com/643/thumb-1920-643521.jpg",
-            "bounty": "฿4,611,100,000"
-        },
-        {
-            "id": 3,
-            "name": "Charlotte Linlin",
-            "nickname": "Big Mom",
-            "occupation": ["Pirate", "Captain", "Queen of Totoland"],
-            "devil_fruit": "Soru Soru no Mi",
-            "affiliations": ["Big Mom Pirates", "Four Emperors", " Charlotte Family"],
-            "haki": ["Kenbunshoku Haki", "Busoshoku Haki", "Haoshoku Haki"],
-            "image": "https://comicvine.gamespot.com/a/uploads/scale_small/11117/111178336/7078991-3720139327-unkno.png",
-            "bounty": "฿4,388,000,000"
-        },
-        {
-            "id": 4,
-            "name": "Shanks",
-            "nickname": "Red Hair",
-            "occupation": ["Pirate", "Captain"],
-            "affiliations": ["Red Hair Pirates", "Four Emperors"],
-            "haki": ["Kenbunshoku Haki", "Busoshoku Haki", "Haoshoku Haki"],
-            "image": "https://comicvine.gamespot.com/a/uploads/scale_small/11117/111178336/7080205-0870339526-unkno.png",
-            "bounty": "฿4,048,900,000"
-        },
-        {
-            "id": 5,
-            "name": "Marshall D. Teach",
-            "nickname": "Blackbeard",
-            "occupation": ["Pirate", "Captain"],
-            "devil_fruit": "Yami Yami no Mi",
-            "affiliations": ["Blackbeard Pirates", "Four Emperors"],
-            "haki": ["Kenbunshoku Haki", "Busoshoku Haki"],
-            "image": "https://comicvine.gamespot.com/a/uploads/scale_small/4/46706/1152176-current_blackbeard.png",
-            "bounty": "฿2,247,600,000"
-        },
-        {
-            "id": 6,
-            "name": "Monkey D. Luffy",
-            "nickname": "Straw Hat",
-            "occupation": ["Pirate", "Captain"],
-            "devil_fruit": "Gomu Gomu no Mi",
-            "affiliations": ["Straw Hat Pirates", "Straw Hat Grand Fleet", "Ninja-Pirate-Mink-Samurai Aliance", "Super Rookie"],
-            "haki": ["Kenbunshoku Haki", "Busoshoku Haki", "Haoshoku Haki"],
-            "image": "https://s.aficionados.com.br/imagens/monkey-d-luffy-2-years-later-pictures-4851_cke.jpg",
-            "bounty": "฿1.500,000,000"
-        },
-        {
-            "id": 7,
-            "name": "King",
-            "nickname": "The Conflagration",
-            "occupation": ["Pirate", "All-Star"],
-            "devil_fruit": "Ryu Ryu no Mi, Model: Pteranodon",
-            "affiliations": ["Beasts Pirates"],
-            "haki": ["Kenbunshoku Haki", "Busoshoku Haki"],
-            "image": "https://images5.alphacoders.com/119/thumbbig-1199417.webp",
-            "bounty": "฿1,390,000,000"
-        },
-        {
-            "id": 8,
-            "name": "Marco",
-            "nickname": "The Phoenix",
-            "occupation": ["Pirate", "1st Divison Commander", "Doctor"],
-            "devil_fruit": "Tori Tori no Mi, Model: Phoenix",
-            "affiliations": ["Whitebeard Pirates", "Ninja-Pirate-Mink-Samurai Aliance"],
-            "haki": ["Kenbunshoku Haki", "Busoshoku Haki"],
-            "image": "https://criticalhits.com.br/wp-content/uploads/2021/07/Marco-One-Piece-910x512-1.jpg",
-            "bounty": "฿1,374,000,000"
-        },
-        {
-            "id": 9,
-            "name": "Queen",
-            "nickname": "The Plague",
-            "occupation": ["Pirate", "All-Star"],
-            "devil_fruit": "Ryu Ryu no Mi, Model: Brachiosaurus",
-            "affiliations": ["Beasts Pirates", "MADS"],
-            "haki": ["Kenbunshoku Haki", "Busoshoku Haki"],
-            "image": "https://i.pinimg.com/originals/91/6d/59/916d595d00feb13fc02138b38db5f443.jpg",
-            "bounty": "฿1,320,000,000"
-        },
-        {
-            "id": 10,
-            "name": "Charlotte Katakuri",
-            "occupation": ["Pirate", "Sweet Commander", "Minister of Flour"],
-            "devil_fruit": "Mochi Mochi no Mi",
-            "affiliations": ["Big Mom Pirates", " Charlotte Family"],
-            "haki": ["Kenbunshoku Haki", "Busoshoku Haki", "Haoshoku Haki"],
-            "image": "https://i.pinimg.com/originals/40/10/f7/4010f77fc43fa928f82e27361ef21fe4.jpg",
-            "bounty": "฿1,057,000,000"
-        },
-        {
-            "id": 11,
-            "name": "Jack",
-            "nickname": "The Drought",
-            "occupation": ["Pirate", "All-Star"],
-            "devil_fruit": "Zou Zou no Mi, Model: Mammoth",
-            "affiliations": ["Beasts Pirates"],
-            "haki": ["Kenbunshoku Haki", "Busoshoku Haki"],
-            "image": "https://i.pinimg.com/originals/ab/cc/db/abccdba7df9c5356ce48ca7994e9cdc7.jpg",
-            "bounty": "฿1,000,000,000"
-        },
-        {
-            "id": 12,
-            "name": "Charlotte Smoothie",
-            "occupation": ["Pirate", "Sweet Commander", "Minister of Juice"],
-            "devil_fruit": "Shibo Shibo no Mi",
-            "affiliations": ["Big Mom Pirates", " Charlotte Family"],
-            "haki": ["Kenbunshoku Haki", "Busoshoku Haki"],
-            "image": "https://comicvine.gamespot.com/a/uploads/scale_small/11117/111178336/7079414-8803789431-unkno.png",
-            "bounty": "฿932,000,000"
-        },
-        {
-            "id": 13,
-            "name": "Charlotte Cracker",
-            "nickname": "Thousand Arms",
-            "occupation": ["Pirate", "Sweet Commander", "Minister of Biscuit"],
-            "devil_fruit": "Bisu Bisu no Mi",
-            "affiliations": ["Big Mom Pirates", " Charlotte Family"],
-            "haki": ["Kenbunshoku Haki", "Busoshoku Haki"],
-            "image": "https://www.otakupt.com/wp-content/uploads/2020/05/charlote.jpg",
-            "bounty": "฿860,000,000"
-        },
-        {
-            "id": 14,
-            "name": "Charlotte Perospero",
-            "occupation": ["Pirate", "Minister of Candy"],
-            "devil_fruit": "Pero Pero no Mi",
-            "affiliations": ["Big Mom Pirates", " Charlotte Family"],
-            "haki": ["Kenbunshoku Haki", "Busoshoku Haki"],
-            "image": "https://comicvine.gamespot.com/a/uploads/scale_small/11117/111178336/7079979-6343637487-unkno.png",
-            "bounty": "฿700,000,000"
-        },
-        {
-            "id": 15,
-            "name": "Sabo",
-            "occupation": ["Chief of Staff"],
-            "devil_fruit": "Mera Mera no Mi",
-            "affiliations": ["Revolutionary Army"],
-            "haki": ["Kenbunshoku Haki", "Busoshoku Haki"],
-            "image": "https://comicvine.gamespot.com/a/uploads/scale_small/11117/111173561/5307627-2542054701-latest",
-            "bounty": "฿602,000,000"
-        },
-        {
-            "id": 16,
-            "name": "Charlotte Snack",
-            "occupation": ["Pirate", "Minister of Fries"],
-            "affiliations": ["Big Mom Pirates", " Charlotte Family"],
-            "image": "https://pbs.twimg.com/media/EQX8bjiXYAAxrmU.jpg",
-            "bounty": "฿600,000,000"
-        },
-        {
-            "id": 17,
-            "name": "Portgas D. Ace",
-            "nickname": "Fire Fist",
-            "occupation": ["Pirate", "2nd Division Commander"],
-            "devil_fruit": "Mera Mera no Mi",
-            "affiliations": ["Whitebeard Pirates"],
-            "haki": ["Kenbunshoku Haki", "Busoshoku Haki", "Haoshoku Haki"],
-            "image": "https://comicvine.gamespot.com/a/uploads/scale_small/11117/111178336/7078671-9363995852-39fc3.jpg",
-            "bounty": "฿550,000,000"
-        },
-        {
-            "id": 18,
-            "name": "Little Oars Jr",
-            "occupation": ["Pirate", "Captain"],
-            "affiliations": ["Whitebeard Pirates"],
-            "image": "https://i.pinimg.com/originals/c9/7a/70/c97a70f0b62a98ca5843ee3fee0b9a5a.jpg",
-            "bounty": "฿550,000,000"
-        },
-        {
-            "id": 19,
-            "name": "Who's Who",
-            "nickname": "Who of the Droplets",
-            "occupation": ["Pirate", "Headliners"],
-            "devil_fruit": "Neko Neko no Mi, Model: Saber Tiger",
-            "affiliations": ["Beasts Pirates", "Tobiroppo"],
-            "haki": ["Kenbunshoku Haki", "Busoshoku Haki"],
-            "image": "https://pm1.narvii.com/7965/9ae7052ec6e39813130aeaa8955557138fc3e381r1-948-1144v2_hq.jpg",
-            "bounty": "฿546,000,000"
-        },
-        {
-            "id": 20,
-            "name": "Chinjao",
-            "nickname": "The Drill",
-            "occupation": ["Pirate", "12th Leader of the Happo Navy"],
-            "affiliations": ["Chinjao Family", "Happo Navy", "Straw Hat Grand Fleet"],
-            "haki": ["Kenbunshoku Haki", "Busoshoku Haki", "Haoshoku Haki"],
-            "image": "https://comicvine.gamespot.com/a/uploads/scale_small/11117/111178336/7079410-0932589975-Scree.jpg",
-            "bounty": "฿542,000,000"
-        },
-        {
-            "id": 21,
-            "name": "Izou",
-            "occupation": ["Pirate", "16th Division Commmander"],
-            "affiliations": ["Whitebeard Pirates", "Kouzuki Family"],
-            "haki": ["Kenbunshoku Haki", "Busoshoku Haki"],
-            "image": "https://comicvine.gamespot.com/a/uploads/scale_small/11117/111178336/7080091-0025228125-unkno.png",
-            "bounty": "฿510,000,000"
-        },
-        {
-            "id": 22,
-            "name": "Trafalgar D. Water Law",
-            "nickname": "Surgeon of Death",
-            "occupation": ["Pirate", "Captain", "Doctor"],
-            "devil_fruit": "Ope Ope no Mi",
-            "affiliations": ["Heart Pirates", "Ninja-Pirate-Mink-Samurai Aliance", "Super Rookie"],
-            "haki": ["Kenbunshoku Haki", "Busoshoku Haki"],
-            "image": "https://ovicio.com.br/wp-content/uploads/2020/05/20200513-trafalgar-law_-full_-2675514.jpg",
-            "bounty": "฿500,000,000"
-        },
-        {
-            "id": 23,
-            "name": "Edward Weevil",
-            "nickname": "Whitebeard Jr",
-            "occupation": ["Pirate"],
-            "affiliations": ["Seven Warlords of the Sea"],
-            "haki": ["Kenbunshoku Haki", "Busoshoku Haki"],
-            "image": "http://pm1.narvii.com/6810/afdcf421def982615722924cd5ee9ab85416d519v2_00.jpg",
-            "bounty": "฿480,000,000"
-        },
-        {
-            "id": 24,
-            "name": "Black Maria",
-            "occupation": ["Pirate", "Headliners"],
-            "devil_fruit": "Kumo Kumo no Mi, Model: Rosamygale Grauvogeli",
-            "affiliations": ["Beasts Pirates", "Tobiroppo"],
-            "haki": ["Kenbunshoku Haki", "Busoshoku Haki"],
-            "image": "https://hqbr.com.br/wp-content/uploads/2021/08/one-piece-black-maria-header-1.png",
-            "bounty": "฿480,000,000"
-        },
-        {
-            "id": 25,
-            "name": "Sasaki",
-            "occupation": ["Pirate", "Headliners"],
-            "devil_fruit": "Ryu Ryu no Mi, Model: Triceratops",
-            "affiliations": ["Beasts Pirates", "Tobiroppo"],
-            "haki": ["Kenbunshoku Haki", "Busoshoku Haki"],
-            "image": "https://i.pinimg.com/736x/c2/91/99/c29199b78159cb6ac3d7ce83b0dbe603.jpg",
-            "bounty": "฿472,000,000"
-        },
-        {
-            "id": 26,
-            "name": "Eustass Kid",
-            "nickname": "Captain",
-            "occupation": ["Pirate", "Captain"],
-            "devil_fruit": "Jiki Jiki no Mi",
-            "affiliations": ["Kid Pirates", "Super Rookie"],
-            "haki": ["Kenbunshoku Haki", "Busoshoku Haki", "Haoshoku Haki"],
-            "image": "https://animesouls.com/wp-content/uploads/2021/11/Eustass-Kid-12.jpg",
-            "bounty": "฿470,000,000"
-        },
-        {
-            "id": 27,
-            "name": "Belo Betty",
-            "occupation": ["East Army Commander of the Revolutionary Army"],
-            "devil_fruit": "Kobu Kobu no Mi",
-            "affiliations": ["Revolutionary Army"],
-            "haki": ["Kenbunshoku Haki", "Busoshoku Haki"],
-            "image": "https://i.pinimg.com/originals/5a/6c/c1/5a6cc16e929872622c4477aeadcb80f2.jpg",
-            "bounty": "฿457,000,000"
-        },
-        {
-            "id": 28,
-            "name": "Jinbe",
-            "nickname": "Knight of the Sea",
-            "occupation": ["Pirate", "Helmsman"],
-            "affiliations": ["Straw Hat Pirates", "Ninja-Pirate-Mink-Samurai Aliance"],
-            "haki": ["Kenbunshoku Haki", "Busoshoku Haki"],
-            "image": "https://i.pinimg.com/originals/f3/c8/bf/f3c8bfdac9a29c2afd002ab5bd30161f.jpg",
-            "bounty": "฿438,000,000"
-        },
-        {
-            "id": 29,
-            "name": "Tamago",
-            "nickname": "Baron",
-            "occupation": ["Pirate", "Combatant"],
-            "devil_fruit": "Tama Tama no Mi",
-            "affiliations": ["Big Mom Pirates"],
-            "haki": ["Kenbunshoku Haki", "Busoshoku Haki"],
-            "image": "https://comicvine.gamespot.com/a/uploads/scale_small/11117/111178336/7079149-8610699048-x8.pn.jpg",
-            "bounty": "฿429,000,000"
-        },
-        {
-            "id": 30,
-            "name": "Ulti",
-            "occupation": ["Pirate", "Headliners"],
-            "devil_fruit": "Ryu Ryu no Mi, Model: Pachycephalosaurus",
-            "affiliations": ["Beasts Pirates", "Tobiroppo"],
-            "haki": ["Kenbunshoku Haki", "Busoshoku Haki"],
-            "image": "https://criticalhits.com.br/wp-content/uploads/2021/10/ulti.jpg",
-            "bounty": "฿400,000,000"
-        },
-        {
-            "id": 31,
-            "name": "Karasu",
-            "occupation": ["North Army Commander of the Revolutionary Army"],
-            "affiliations": ["Revolutionary Army"],
-            "haki": ["Kenbunshoku Haki", "Busoshoku Haki"],
-            "image": "https://artfiles.alphacoders.com/125/125413.jpg",
-            "bounty": "฿400,000,000"
-        },
-        {
-            "id": 32,
-            "name": "Pedro",
-            "nickname": "Pedro of the Treetops",
-            "occupation": ["Pirate"],
-            "affiliations": ["Nox Pirates", "Mokomo Dukedom", "Guardians", "Ninja-Pirate-Mink-Samurai Aliance"],
-            "haki": ["Kenbunshoku Haki", "Busoshoku Haki"],
-            "image": "https://comicvine.gamespot.com/a/uploads/scale_small/11117/111178336/7111956-8910410819-unkno.png",
-            "bounty": "฿382,000,000"
-        },
-        {
-            "id": 33,
-            "name": "Capone Bege",
-            "nickname": "Gang",
-            "occupation": ["Pirate", "Captain"],
-            "devil_fruit": "Shiro Shiro no Mi",
-            "affiliations": ["Fire Tank Pirates", "Super Rookie"],
-            "image": "https://comicvine.gamespot.com/a/uploads/scale_small/11117/111178336/7080570-9922457536-Scree.jpg",
-            "bounty": "฿350,000,000"
-        },
-        {
-            "id": 34,
-            "name": "Scratchmen Apoo",
-            "nickname": "Roar of the Sea",
-            "occupation": ["Pirate", "Captain", "Musician"],
-            "devil_fruit": "Oto Oto no Mi",
-            "affiliations": ["On Air Pirates", "Beasts Pirates", "Super Rookie"],
-            "haki": ["Kenbunshoku Haki", "Busoshoku Haki"],
-            "image": "https://comicvine.gamespot.com/a/uploads/scale_small/11117/111178336/7079988-1235599403-Scree.jpg",
-            "bounty": "฿350,000,000"
-        },
-        {
-            "id": 35,
-            "name": "Donquixote Doflamingo",
-            "nickname": "Heavenly Yaksha",
-            "occupation": ["Pirate", "Captain", "Prisioner of Impel Down"],
-            "devil_fruit": "Ito Ito no Mi",
-            "affiliations": ["Seven Warlords of the Sea", "Underworld", "World Government"],
-            "haki": ["Kenbunshoku Haki", "Busoshoku Haki", "Haoshoku Haki"],
-            "image": "https://comicvine.gamespot.com/a/uploads/scale_small/11117/111178336/7080204-8435747647-unkno.png",
-            "bounty": "฿340,000,000"
-        },
-        {
-            "id": 36,
-            "name": "Cavendish",
-            "nickname": "White Horse",
-            "occupation": ["Pirate", "Captain", "1st Captain of Straw Hat Grand Fleet"],
-            "affiliations": ["Beautiful Pirates", "Straw Hat Grand Fleet", "Burgeois Kingdom"],
-            "haki": ["Kenbunshoku Haki", "Busoshoku Haki"],
-            "image": "https://comicvine.gamespot.com/a/uploads/scale_small/11117/111178336/7078690-6843654058-unkno.png",
-            "bounty": "฿330,000,000"
-        },
-        {
-            "id": 37,
-            "name": "Pekoms",
-            "occupation": ["Pirate", "Combatant"],
-            "devil_fruit": "Kame Kame no Mi",
-            "affiliations": ["Big Mom Pirates"],
-            "haki": ["Kenbunshoku Haki", "Busoshoku Haki"],
-            "image": "https://comicvine.gamespot.com/a/uploads/scale_small/11117/111178336/7079150-3893386989-x5.pn.jpg",
-            "bounty": "฿330,000,000"
-        },
-        {
-            "id": 38,
-            "name": "Vinsmoke Sanji",
-            "nickname": "Black leg",
-            "occupation": ["Pirate", "Cook"],
-            "affiliations": ["Straw Hat Pirates", "Straw Hat Grand Fleet", "Ninja-Pirate-Mink-Samurai Aliance", "Vinsmoke Family"],
-            "haki": ["Kenbunshoku Haki", "Busoshoku Haki"],
-            "image": "https://cdn.bhdw.net/im/one-piece-sanji-diable-jambe-papel-de-parede-8419_w635.jpg",
-            "bounty": "฿330,000,000"
-        },
-        {
-            "id": 39,
-            "name": "Roronoa Zoro",
-            "nickname": "Pirate Hunter",
-            "occupation": ["Pirate", "Swordsman", "Combatant"],
-            "affiliations": ["Straw Hat Pirates", "Straw Hat Grand Fleet", "Ninja-Pirate-Mink-Samurai Aliance", "Super Rookie"],
-            "haki": ["Kenbunshoku Haki", "Busoshoku Haki", "Haoshoku Haki"],
-            "image": "https://comicvine.gamespot.com/a/uploads/original/11117/111178336/7079106-2959453555-latest",
-            "bounty": "฿320,000,000"
-        },
-        {
-            "id": 40,
-            "name": "Basil Hawkins",
-            "nickname": "The Magician",
-            "occupation": ["Pirate", "Headliners"],
-            "devil_fruit": "Wara Wara no Mi",
-            "affiliations": ["Beasts Pirates", "Hawkins Pirates", "Super Rookie"],
-            "haki": ["Kenbunshoku Haki", "Busoshoku Haki"],
-            "image": "https://comicvine.gamespot.com/a/uploads/scale_small/4/47703/2962263-594534-hawkin.png",
-            "bounty": "฿320,000,000"
-        },
-        {
-            "id": 41,
-            "name": "Gecko Moria",
-            "occupation": ["Pirate", "Captain"],
-            "devil_fruit": "Kage Kage no Mi",
-            "affiliations": ["Thriller Bark Pirates"],
-            "image": "https://comicvine.gamespot.com/a/uploads/scale_small/11117/111178336/7079931-4441927916-latest",
-            "bounty": "฿320,000,000"
-        },
-        {
-            "id": 42,
-            "name": "Lindbergh",
-            "occupation": ["South Army Commander of the Revolutionary Army"],
-            "affiliations": ["Revolutionary Army"],
-            "haki": ["Kenbunshoku Haki", "Busoshoku Haki"],
-            "image": "https://i.pinimg.com/originals/82/57/cd/8257cd10be44ccccd6dc733880319320.png",
-            "bounty": "฿316,000,000"
-        },
-        {
-            "id": 43,
-            "name": "Caesar Clown",
-            "nickname": "Master",
-            "occupation": ["Scientist", "Pirate"],
-            "devil_fruit": "Gasu Gasu no Mi",
-            "affiliations": ["Fire Tank Pirates", "MADS"],
-            "image": "https://comicvine.gamespot.com/a/uploads/scale_small/11117/111178336/7079129-9360398512-unkno.jpg",
-            "bounty": "฿300,000,000"
-        },
-        {
-            "id": 44,
-            "name": "Charlotte Daifuku",
-            "occupation": ["Pirate", "Minister of Beans"],
-            "devil_fruit": "Hoya Hoya no Mi",
-            "affiliations": ["Big Mom Pirates", " Charlotte Family"],
-            "haki": ["Kenbunshoku Haki", "Busoshoku Haki"],
-            "image": "https://comicvine.gamespot.com/a/uploads/scale_small/11117/111178336/7080246-6393177305-latest",
-            "bounty": "฿300,000,000"
-        },
-        {
-            "id": 45,
-            "name": "Charlotte Oven",
-            "occupation": ["Pirate", "Minister of Browned Food"],
-            "devil_fruit": "Netsu Netsu no Mi",
-            "affiliations": ["Big Mom Pirates", " Charlotte Family"],
-            "haki": ["Kenbunshoku Haki", "Busoshoku Haki"],
-            "image": "https://comicvine.gamespot.com/a/uploads/scale_small/11117/111178336/6172828-8544349337-34298.jpg",
-            "bounty": "฿300,000,000"
-        },
-        {
-            "id": 46,
-            "name": "Bartholomew Kuma",
-            "nickname": "The Tyrant",
-            "occupation": ["Pirate", "Slave"],
-            "devil_fruit": "Nikyu Nikyu no Mi",
-            "affiliations": ["Slavery", "Revolutionary Army", "Seven Warlord of the Sea"],
-            "image": "https://comicvine.gamespot.com/a/uploads/scale_small/11117/111178336/7080039-1214617347-Scree.jpg",
-            "bounty": "฿296,000,000"
-        },
-        {
-            "id": 47,
-            "name": "Morley",
-            "occupation": ["West Army Commander of the Revolutionary Army"],
-            "devil_fruit": "Oshi Oshi no Mi",
-            "affiliations": ["Revolutionary Army"],
-            "haki": ["Kenbunshoku Haki", "Busoshoku Haki"],
-            "image": "https://i.pinimg.com/originals/d8/75/95/d87595d9373ee2cb7b021647cd434b8f.png",
-            "bounty": "฿293,000,000"
-        },
-        {
-            "id": 48,
-            "name": "Page One",
-            "occupation": ["Pirate", "Headliners"],
-            "devil_fruit": "Ryu Ryu no Mi, Model: Spinosaurus",
-            "affiliations": ["Beasts Pirates", "Tobiroppo"],
-            "haki": ["Kenbunshoku Haki", "Busoshoku Haki"],
-            "image": "https://i.pinimg.com/736x/8a/15/7f/8a157f7c7e56839f2c15f14d15d44550.jpg",
-            "bounty": "฿290,000,000"
-        },
-        {
-            "id": 49,
-            "name": "Fisher Tiger",
-            "nickname": "Adventurer",
-            "occupation": ["Pirate", "Captain", "Adventurer"],
-            "affiliations": ["Sun Pirates"],
-            "image": "https://comicvine.gamespot.com/a/uploads/scale_small/11117/111178336/7080582-1068742397-unkno.png",
-            "bounty": "฿230,000,000"
-        },
-        {
-            "id": 50,
-            "name": "X Drake",
-            "nickname": "Red Flag",
-            "occupation": ["Pirate", "Captain", "Captain of SWORD"],
-            "devil_fruit": "Ryu Ryu no Mi, Model: Allosaurus",
-            "haki": ["Kenbunshoku Haki", "Busoshoku Haki"],
-            "affiliations": ["Drake Pirates", "Ninja-Pirate-Mink-Samurai Aliance", "Super Rookie"],
-            "image": "https://i.pinimg.com/originals/23/dc/db/23dcdb93cce71f447bf700fa4e2bbf9c.jpg",
-            "bounty": "฿222,000,000"
-        },
-        {
-            "id": 51,
-            "name": "Caribou",
-            "nickname": "Wet-Haired Caribou",
-            "occupation": ["Pirate", "Captain", "Kidnapper"],
-            "devil_fruit": "Numa Numa no Mi",
-            "affiliations": ["Caribou Pirates"],
-            "image": "https://www.einerd.com.br/wp-content/uploads/2020/02/One-Piece-Caribou.jpg",
-            "bounty": "฿220,000,000"
-        },
-        {
-            "id": 52,
-            "name": "Sai",
-            "nickname": "Don Sai",
-            "occupation": ["Pirate", "3rd Captain of Straw Hat Grand Fleet", "Leader of the Happo Navy"],
-            "haki": ["Kenbunshoku Haki", "Busoshoku Haki"],
-            "affiliations": ["Happo Navy", "Chinjao Family", "Straw Hat Grand Fleet"],
-            "image": "http://img1.wikia.nocookie.net/__cb20130809130417/onepiece/fr/images/7/71/Sai_Portrait-2-.png",
-            "bounty": "฿210,000,000"
-        },
-        {
-            "id": 53,
-            "name": "Squard",
-            "nickname": "Maelstrom Spider",
-            "occupation": ["Pirate", "Captain"],
-            "affiliations": ["Whitebeard Pirates", "Maelstrom Spider Pirates"],
-            "image": "https://cdn.myanimelist.net/images/characters/6/100658.jpg",
-            "bounty": "฿210,000,000"
-        },
-        {
-            "id": 54,
-            "name": "Bartolomeo",
-            "nickname": "Bartolomeo the Cannibal",
-            "occupation": ["Pirate", "Captain", "2nd Captain of Straw Hat Grand Fleet"],
-            "devil_fruit": "Bari Bari no Mi",
-            "affiliations": ["Barto Club", "Straw Hat Grand Fleet"],
-            "image": "https://i.pinimg.com/originals/61/ea/50/61ea50f43e0ce79362f000150957fd66.jpg",
-            "bounty": "฿200,000,000"
-        },
-        {
-            "id": 55,
-            "name": "Killer",
-            "nickname": "Massacre Soldier",
-            "occupation": ["Pirate", "Combatant"],
-            "affiliations": ["Kid Pirates", "Super Rookie"],
-            "haki": ["Busoshoku Haki", "Kenbunshoku Haki"],
-            "image": "https://criticalhits.com.br/wp-content/uploads/2021/10/one-piece-killer-vs-hawkins.png",
-            "bounty": "฿200,000,000"
-        },
-        {
-            "id": 56,
-            "name": "Ussop",
-            "nickname": "God Ussop",
-            "occupation": ["Pirate", "Sniper"],
-            "affiliations": ["Straw Hat Pirates", "Straw Hat Grand Fleet", "Ninja-Pirate-Mink-Samurai Aliance"],
-            "haki": ["Kenbunshoku Haki"],
-            "image": "https://i.pinimg.com/736x/96/38/74/963874ce28922914295119fcd044dba0.jpg",
-            "bounty": "฿200,000,000"
-        }
-    ]
+  "total_count": 51,
+  "characters": [
+    {
+      "id": 0,
+      "name": "Gol D. Roger",
+      "nickname": "Pirate King",
+      "occupation": ["Pirate", "Captain"],
+      "affiliations": ["Roger Pirates"],
+      "haki": ["Kenbunshoku Haki", "Busoshoku Haki", "Haoshoku Haki"],
+      "image": "https://i.pinimg.com/originals/b6/c4/bb/b6c4bb59c6601353f69b31cd63395654.jpg",
+      "bounty": "฿5,564,800,000"
+    },
+    {
+      "id": 1,
+      "name": "Edward Newgate",
+      "nickname": "Whitebeard",
+      "occupation": ["Pirate", "Captain"],
+      "devil_fruit": "Gura Gura no Mi",
+      "affiliations": ["Whitebeard Pirates", "Four Emperors"],
+      "haki": ["Kenbunshoku Haki", "Busoshoku Haki", "Haoshoku Haki"],
+      "image": "https://i.pinimg.com/originals/c0/ee/8f/c0ee8fa916dcb33b707c4e8ca1aa0d96.png",
+      "bounty": "฿5,046,000,000"
+    },
+    {
+      "id": 2,
+      "name": "Kaido",
+      "nickname": "Kaido of the Beasts",
+      "occupation": ["Pirate", "Captain"],
+      "devil_fruit": "Uo Uo no Mi, Model: Seiryu",
+      "affiliations": ["Beasts Pirates", "Four Emperors"],
+      "haki": ["Kenbunshoku Haki", "Busoshoku Haki", "Haoshoku Haki"],
+      "image": "https://images3.alphacoders.com/643/thumb-1920-643521.jpg",
+      "bounty": "฿4,611,100,000"
+    },
+    {
+      "id": 3,
+      "name": "Charlotte Linlin",
+      "nickname": "Big Mom",
+      "occupation": ["Pirate", "Captain", "Queen of Totoland"],
+      "devil_fruit": "Soru Soru no Mi",
+      "affiliations": ["Big Mom Pirates", "Four Emperors", "Charlotte Family"],
+      "haki": ["Kenbunshoku Haki", "Busoshoku Haki", "Haoshoku Haki"],
+      "image": "https://comicvine.gamespot.com/a/uploads/scale_small/11117/111178336/7078991-3720139327-unkno.png",
+      "bounty": "฿4,388,000,000"
+    },
+    {
+      "id": 4,
+      "name": "Shanks",
+      "nickname": "Red Hair",
+      "occupation": ["Pirate", "Captain"],
+      "affiliations": ["Red Hair Pirates", "Four Emperors"],
+      "haki": ["Kenbunshoku Haki", "Busoshoku Haki", "Haoshoku Haki"],
+      "image": "https://comicvine.gamespot.com/a/uploads/scale_small/11117/111178336/7080205-0870339526-unkno.png",
+      "bounty": "฿4,048,900,000"
+    },
+    {
+      "id": 5,
+      "name": "Marshall D. Teach",
+      "nickname": "Blackbeard",
+      "occupation": ["Pirate", "Captain"],
+      "devil_fruit": "Yami Yami no Mi",
+      "affiliations": ["Blackbeard Pirates", "Four Emperors"],
+      "haki": ["Kenbunshoku Haki", "Busoshoku Haki"],
+      "image": "https://comicvine.gamespot.com/a/uploads/scale_small/4/46706/1152176-current_blackbeard.png",
+      "bounty": "฿3,996,000,000"
+    },
+    {
+      "id": 6,
+      "name": "Dracule Mihawk",
+      "nickname": "Hawk Eyes",
+      "occupation": ["Pirate", "Swordsman"],
+      "affiliations": ["Cross Guild"],
+      "haki": ["Kenbunshoku Haki", "Busoshoku Haki"],
+      "image": "https://i.pinimg.com/736x/cb/a3/3b/cba33b8d2fdb4b9efa2d9d3600f7a0d4.jpg",
+      "bounty": "฿3,590,000,000"
+    },
+    {
+      "id": 7,
+      "name": "Buggy",
+      "nickname": "The Clown",
+      "occupation": ["Pirate", "Captain"],
+      "affiliations": ["Cross Guild"],
+      "haki": ["Kenbunshoku Haki", "Busoshoku Haki"],
+      "image": "https://i.pinimg.com/736x/84/4b/a8/844ba882f3f0817aa652d708eeb8002f.jpg",
+      "bounty": "฿3,189,000,000"
+    },
+    {
+      "id": 8,
+      "name": "Monkey D. Luffy",
+      "nickname": "Straw Hat",
+      "occupation": ["Pirate", "Captain"],
+      "devil_fruit": "Hito Hito no Mi, Model: Nika (Gear 5)",
+      "affiliations": ["Straw Hat Pirates", "Super Rookie", "Ninja-Pirate-Mink-Samurai Alliance"],
+      "haki": ["Kenbunshoku Haki", "Busoshoku Haki", "Haoshoku Haki"],
+      "image": "https://s.aficionados.com.br/imagens/monkey-d-luffy-2-years-later-pictures-4851_cke.jpg",
+      "bounty": "฿3,000,000,000"
+    },
+    {
+      "id": 9,
+      "name": "Trafalgar D. Water Law",
+      "nickname": "Surgeon of Death",
+      "occupation": ["Pirate", "Captain", "Doctor"],
+      "devil_fruit": "Ope Ope no Mi",
+      "affiliations": ["Heart Pirates", "Super Rookie", "Ninja-Pirate-Mink-Samurai Alliance"],
+      "haki": ["Kenbunshoku Haki", "Busoshoku Haki"],
+      "image": "https://ovicio.com.br/wp-content/uploads/2020/05/20200513-trafalgar-law_-full_-2675514.jpg",
+      "bounty": "฿3,000,000,000"
+    },
+    {
+      "id": 10,
+      "name": "Eustass Kid",
+      "nickname": "Captain",
+      "occupation": ["Pirate", "Captain"],
+      "devil_fruit": "Jiki Jiki no Mi",
+      "affiliations": ["Kid Pirates", "Super Rookie"],
+      "haki": ["Kenbunshoku Haki", "Busoshoku Haki", "Haoshoku Haki"],
+      "image": "https://i.pinimg.com/736x/12/3b/37/123b378e116680cefd2d2837a708a675.jpg",
+      "bounty": "฿3,000,000,000"
+    }, 
+    {
+      "id": 11,
+      "name": "Loki",
+      "occupation": ["Unknown"],
+      "affiliations": ["Elbaf"],
+      "image": "https://i.pinimg.com/736x/9f/a7/80/9fa7806f1e9f666ddd1b93294d18f3aa.jpg",
+      "bounty": "฿2,600,000,000"
+    },
+    {
+      "id": 12,
+      "name": "Crocodile",
+      "nickname": "Desert King",
+      "occupation": ["Pirate", "Former Warlord"],
+      "devil_fruit": "Suna Suna no Mi",
+      "affiliations": ["Baroque Works", "Cross Guild"],
+      "haki": [],
+      "image": "https://i.pinimg.com/736x/9e/94/68/9e946869450b94f70b7af238b92d54a8.jpg",
+      "bounty": "฿1,965,000,000"
+    },
+    {
+      "id": 13,
+      "name": "Boa Hancock",
+      "nickname": "Pirate Empress",
+      "occupation": ["Pirate", "Empress"],
+      "devil_fruit": "Mero Mero no Mi",
+      "affiliations": ["Kuja Pirates", "Seven Warlords"],
+      "haki": ["Busoshoku Haki", "Kenbunshoku Haki"],
+      "image": "https://i.pinimg.com/736x/3c/d7/cf/3cd7cf80bf69fbbeaea4a21f9026fa2d.jpg",
+      "bounty": "฿1,659,000,000"
+    },
+    {
+      "id": 14,
+      "name": "King",
+      "nickname": "The Conflagration",
+      "occupation": ["Pirate", "All-Star"],
+      "devil_fruit": "Ryu Ryu no Mi, Model: Pteranodon",
+      "affiliations": ["Beasts Pirates"],
+      "haki": ["Kenbunshoku Haki", "Busoshoku Haki"],
+      "image": "https://images5.alphacoders.com/119/thumbbig-1199417.webp",
+      "bounty": "฿1,390,000,000"
+    },
+    {
+      "id": 15,
+      "name": "Marco",
+      "nickname": "The Phoenix",
+      "occupation": ["Pirate", "1st Division Commander", "Doctor"],
+      "devil_fruit": "Tori Tori no Mi, Model: Phoenix",
+      "affiliations": ["Whitebeard Pirates"],
+      "haki": ["Kenbunshoku Haki", "Busoshoku Haki"],
+      "image": "https://criticalhits.com.br/wp-content/uploads/2021/07/Marco-One-Piece-910x512-1.jpg",
+      "bounty": "฿1,374,000,000"
+    },
+    {
+      "id": 16,
+      "name": "Queen",
+      "nickname": "The Plague",
+      "occupation": ["Pirate", "All-Star"],
+      "devil_fruit": "Ryu Ryu no Mi, Model: Brachiosaurus",
+      "affiliations": ["Beasts Pirates"],
+      "haki": ["Kenbunshoku Haki", "Busoshoku Haki"],
+      "image": "https://i.pinimg.com/originals/91/6d/59/916d595d00feb13fc02138b38db5f443.jpg",
+      "bounty": "฿1,320,000,000"
+    },
+    {
+      "id": 17,
+      "name": "Roronoa Zoro",
+      "nickname": "Pirate Hunter",
+      "occupation": ["Pirate", "Swordsman"],
+      "haki": ["Kenbunshoku Haki", "Busoshoku Haki", "Haoshoku Haki"],
+      "affiliations": ["Straw Hat Pirates"],
+      "image": "https://comicvine.gamespot.com/a/uploads/original/11117/111178336/7079106-2959453555-latest",
+      "bounty": "฿1,111,000,000"
+    },
+    {
+      "id": 18,
+      "name": "Jinbe",
+      "nickname": "Knight of the Sea",
+      "occupation": ["Pirate", "Helmsman"],
+      "haki": ["Kenbunshoku Haki", "Busoshoku Haki"],
+      "affiliations": ["Straw Hat Pirates"],
+      "image": "https://i.pinimg.com/736x/08/1b/da/081bda63cee7ded38bfdcc96fcdab45b.jpg",
+      "bounty": "฿1,100,000,000"
+    },
+    {
+      "id": 19,
+      "name": "Charlotte Katakuri",
+      "occupation": ["Pirate", "Sweet Commander"],
+      "devil_fruit": "Mochi Mochi no Mi",
+      "affiliations": ["Big Mom Pirates"],
+      "haki": ["Kenbunshoku Haki", "Busoshoku Haki", "Haoshoku Haki"],
+      "image": "https://i.pinimg.com/originals/40/10/f7/4010f77fc43fa928f82e27361ef21fe4.jpg",
+      "bounty": "฿1,057,000,000"
+    },
+    {
+      "id": 20,
+      "name": "Vinsmoke Sanji",
+      "nickname": "Black Leg",
+      "occupation": ["Pirate", "Cook"],
+      "haki": ["Kenbunshoku Haki", "Busoshoku Haki"],
+      "affiliations": ["Straw Hat Pirates"],
+      "image": "https://i.pinimg.com/736x/f3/b8/eb/f3b8eb57a1afac92a26119e4ac595606.jpg",
+      "bounty": "฿1,032,000,000"
+    },
+    {
+      "id": 21,
+      "name": "Jack",
+      "nickname": "The Drought",
+      "occupation": ["Pirate", "All-Star"],
+      "devil_fruit": "Zou Zou no Mi, Model: Mammoth",
+      "affiliations": ["Beasts Pirates"],
+      "haki": ["Kenbunshoku Haki", "Busoshoku Haki"],
+      "image": "https://i.pinimg.com/originals/ab/cc/db/abccdba7df9c5356ce48ca7994e9cdc7.jpg",
+      "bounty": "฿1,000,000,000"
+    },
+    {
+      "id": 22,
+      "name": "Charlotte Smoothie",
+      "occupation": ["Pirate", "Sweet Commander"],
+      "devil_fruit": "Shibo Shibo no Mi",
+      "affiliations": ["Big Mom Pirates"],
+      "haki": ["Kenbunshoku Haki", "Busoshoku Haki"],
+      "image": "https://comicvine.gamespot.com/a/uploads/scale_small/11117/111178336/7079414-8803789431-unkno.png",
+      "bounty": "฿932,000,000"
+    },
+    {
+      "id": 23,
+      "name": "Nico Robin",
+      "nickname": "Devil Child",
+      "occupation": ["Pirate", "Archaeologist"],
+      "devil_fruit": "Hana Hana no Mi",
+      "affiliations": ["Straw Hat Pirates"],
+      "image": "https://i.pinimg.com/originals/1f/8e/4c/1f8e4c7b9a2d6f3e5c8b1a4f7d0c3e6b.jpg",
+      "bounty": "฿930,000,000"
+    },
+    {
+      "id": 24,
+      "name": "Charlotte Cracker",
+      "nickname": "Thousand Arms",
+      "occupation": ["Pirate", "Sweet Commander"],
+      "devil_fruit": "Bisu Bisu no Mi",
+      "affiliations": ["Big Mom Pirates"],
+      "haki": ["Kenbunshoku Haki", "Busoshoku Haki"],
+      "image": "https://www.otakupt.com/wp-content/uploads/2020/05/charlote.jpg",
+      "bounty": "฿860,000,000"
+    },
+    {
+      "id": 25,
+      "name": "Charlotte Perospero",
+      "occupation": ["Pirate", "Sweet Commander"],
+      "devil_fruit": "Pero Pero no Mi",
+      "affiliations": ["Big Mom Pirates"],
+      "haki": ["Kenbunshoku Haki", "Busoshoku Haki"],
+      "image": "https://comicvine.gamespot.com/a/uploads/scale_small/11117/111178336/7079979-6343637487-unkno.png",
+      "bounty": "฿700,000,000"
+    },
+    {
+      "id": 26,
+      "name": "Sabo",
+      "occupation": ["Revolutionary", "Chief of Staff"],
+      "devil_fruit": "Mera Mera no Mi",
+      "affiliations": ["Revolutionary Army"],
+      "haki": ["Kenbunshoku Haki", "Busoshoku Haki"],
+      "image": "https://comicvine.gamespot.com/a/uploads/scale_small/11117/111173561/5307627-2542054701-latest",
+      "bounty": "฿602,000,000"
+    },
+    {
+      "id": 27,
+      "name": "Charlotte Snack",
+      "occupation": ["Pirate", "Sweet Commander"],
+      "affiliations": ["Big Mom Pirates"],
+      "image": "https://pbs.twimg.com/media/EQX8bjiXYAAxrmU.jpg",
+      "bounty": "฿600,000,000"
+    },
+    {
+      "id": 28,
+      "name": "Portgas D. Ace",
+      "nickname": "Fire Fist",
+      "occupation": ["Pirate", "2nd Division Commander"],
+      "devil_fruit": "Mera Mera no Mi",
+      "affiliations": ["Whitebeard Pirates"],
+      "haki": ["Kenbunshoku Haki", "Busoshoku Haki", "Haoshoku Haki"],
+      "image": "https://comicvine.gamespot.com/a/uploads/scale_small/11117/111178336/7078671-9363995852-39fc3.jpg",
+      "bounty": "฿550,000,000"
+    },
+    {
+      "id": 29,
+      "name": "Little Oars Jr.",
+      "occupation": ["Pirate", "Captain"],
+      "affiliations": ["Whitebeard Pirates"],
+      "image": "https://i.pinimg.com/originals/c9/7a/70/c97a70f0b62a98ca5843ee3fee0b9a5a.jpg",
+      "bounty": "฿550,000,000"
+    },
+    {
+      "id": 30,
+      "name": "Who's-Who",
+      "nickname": "Who of the Droplets",
+      "occupation": ["Pirate", "Headliner"],
+      "devil_fruit": "Neko Neko no Mi, Model: Saber Tiger",
+      "affiliations": ["Beasts Pirates"],
+      "haki": ["Kenbunshoku Haki", "Busoshoku Haki"],
+      "image": "https://pm1.narvii.com/7965/9ae7052ec6e39813130aeaa8955557138fc3e381r1-948-1144v2_hq.jpg",
+      "bounty": "฿546,000,000"
+    },
+    {
+      "id": 31,
+      "name": "Chinjao",
+      "nickname": "The Drill",
+      "occupation": ["Pirate", "12th Leader of the Happo Navy"],
+      "affiliations": ["Chinjao Family", "Happo Navy", "Straw Hat Grand Fleet"],
+      "haki": ["Kenbunshoku Haki", "Busoshoku Haki", "Haoshoku Haki"],
+      "bounty": "฿542,000,000",
+      "image": "https://comicvine.gamespot.com/a/uploads/scale_small/11117/111178336/7079410-0932589975-Scree.jpg"
+    },
+    {
+      "id": 32,
+      "name": "Izou",
+      "occupation": ["Pirate", "16th Division Commander"],
+      "affiliations": ["Whitebeard Pirates", "Kouzuki Family"],
+      "haki": ["Kenbunshoku Haki", "Busoshoku Haki"],
+      "bounty": "฿510,000,000",
+      "image": "https://comicvine.gamespot.com/a/uploads/scale_small/11117/111178336/7080091-0025228125-unkno.png"
+    },
+    {
+      "id": 33,
+      "name": "Franky",
+      "nickname": "Cyborg",
+      "occupation": ["Pirate", "Shipwright"],
+      "affiliations": ["Straw Hat Pirates"],
+      "haki": ["Busoshoku Haki"],
+      "bounty": "฿394,000,000",
+      "image": "https://i.pinimg.com/originals/fe/4e/93/fe4e936216f3a54c69615e57c8c0f56f.jpg"
+    },
+    {
+      "id": 34,
+      "name": "Brook",
+      "nickname": "Soul King",
+      "occupation": ["Pirate", "Musician", "Swordsman"],
+      "affiliations": ["Straw Hat Pirates"],
+      "haki": ["Busoshoku Haki"],
+      "bounty": "฿383,000,000",
+      "image": "https://i.pinimg.com/originals/2d/ab/13/2dab1398a0d243020d44702de1dabd72.png"
+    },
+    {
+      "id": 35,
+      "name": "Pedro",
+      "nickname": "Pedro of the Treetops",
+      "occupation": ["Pirate", "Scout"],
+      "affiliations": ["Nox Pirates", "Minks", "Straw Hat Grand Fleet"],
+      "haki": ["Kenbunshoku Haki", "Busoshoku Haki"],
+      "bounty": "฿382,000,000",
+      "image": "https://comicvine.gamespot.com/a/uploads/scale_small/11117/111178336/7111956-8910410819-unkno.png"
+    },
+    {
+      "id": 36,
+      "name": "Nami",
+      "nickname": "Cat Burglar",
+      "occupation": ["Pirate", "Navigator"],
+      "affiliations": ["Straw Hat Pirates"],
+      "bounty": "฿366,000,000",
+      "image": "https://i.pinimg.com/originals/6d/09/19/6d0919c98dc28c299f27098c937976d8.png"
+    },
+    {
+      "id": 37,
+      "name": "Scratchmen Apoo",
+      "nickname": "Roar of the Sea",
+      "occupation": ["Pirate", "Musician"],
+      "devil_fruit": "Oto Oto no Mi",
+      "affiliations": ["On Air Pirates", "Beasts Pirates", "Super Rookie"],
+      "haki": ["Kenbunshoku Haki", "Busoshoku Haki"],
+      "bounty": "฿350,000,000",
+      "image": "https://comicvine.gamespot.com/a/uploads/scale_small/11117/111178336/7079988-1235599403-Scree.jpg"
+    },
+    {
+      "id": 38,
+      "name": "Capone Bege",
+      "nickname": "Gang",
+      "occupation": ["Pirate", "Captain"],
+      "devil_fruit": "Shiro Shiro no Mi",
+      "affiliations": ["Fire Tank Pirates", "Super Rookie"],
+      "haki": ["Kenbunshoku Haki", "Busoshoku Haki"],
+      "bounty": "฿350,000,000",
+      "image": "https://comicvine.gamespot.com/a/uploads/scale_small/11117/111178336/7080570-9922457536-Scree.jpg"
+    },
+    {
+      "id": 39,
+      "name": "Donquixote Doflamingo",
+      "nickname": "Heavenly Yaksha",
+      "occupation": ["Pirate", "Captain", "Prisoner of Impel Down"],
+      "devil_fruit": "Ito Ito no Mi",
+      "affiliations": ["Seven Warlords of the Sea", "Underworld", "World Government"],
+      "haki": ["Kenbunshoku Haki", "Busoshoku Haki", "Haoshoku Haki"],
+      "image": "https://comicvine.gamespot.com/a/uploads/scale_small/11117/111178336/7080204-8435747647-unkno.png",
+      "bounty": "฿340,000,000"
+    },
+    {
+      "id": 40,
+      "name": "Basil Hawkins",
+      "occupation": ["Pirate", "Captain"],
+      "devil_fruit": "Wara Wara no Mi",
+      "affiliations": ["Super Rookie"],
+      "haki": ["Kenbunshoku Haki"],
+      "bounty": "฿320,000,000",
+      "image": "https://i.pinimg.com/originals/ea/12/8d/ea128d947de61b7bc8e348322d8f2f3a.jpg"
+    },
+    {
+      "id": 41,
+      "name": "Jewelry Bonney",
+      "occupation": ["Pirate", "Captain"],
+      "affiliations": ["Super Rookie"],
+      "bounty": "฿320,000,000",
+      "image": "https://i.pinimg.com/originals/87/3a/aa/873aaa5c6aa15754935b1552d8426dba.jpg"
+    },
+    {
+      "id": 42,
+      "name": "Gecko Moria",
+      "nickname": "Shadow King",
+      "occupation": ["Pirate", "Former Warlord"],
+      "devil_fruit": "Kage Kage no Mi",
+      "affiliations": ["Thriller Bark Pirates", "Cross Guild"],
+      "bounty": "฿320,000,000",
+      "image": "https://i.pinimg.com/originals/aa/46/e7/aa46e7a6547c11e249f0bcc9bccfbbc8.jpg"
+    },
+    {
+      "id": 43,
+      "name": "Lindbergh",
+      "occupation": ["Pirate", "Shipwright"],
+      "affiliations": ["Super Rookie"],
+      "bounty": "฿316,000,000",
+      "image": "https://i.pinimg.com/originals/22/19/a2/2219a2a6e8fcd41b046f83ce1ae0bfa2.jpg"
+    },
+    {
+      "id": 44,
+      "name": "Charlotte Oven",
+      "occupation": ["Pirate", "Sweet Commander"],
+      "devil_fruit": "Netsu Netsu no Mi",
+      "affiliations": ["Big Mom Pirates"],
+      "bounty": "฿300,000,000",
+      "image": "https://i.pinimg.com/originals/ff/6f/3e/ff6f3e4e7bdb4c8fb5e9d71ff71c8a74.jpg"
+    },
+    {
+      "id": 45,
+      "name": "Charlotte Daifuku",
+      "occupation": ["Pirate", "Sweet Commander"],
+      "devil_fruit": "Hoya Hoya no Mi",
+      "affiliations": ["Big Mom Pirates"],
+      "bounty": "฿300,000,000",
+      "image": "https://i.pinimg.com/originals/64/a8/87/64a8879f3f7b9c5289e9f8b3a7c575e7.jpg"
+    },
+    {
+      "id": 46,
+      "name": "Caesar Clown",
+      "occupation": ["Scientist", "Pirate"],
+      "devil_fruit": "Gasu Gasu no Mi",
+      "affiliations": ["Caesar Pirates"],
+      "bounty": "฿300,000,000",
+      "image": "https://i.pinimg.com/originals/5c/2d/77/5c2d776d5b1e8c978f6a4eb388466c64.jpg"
+    },
+    {
+      "id": 47,
+      "name": "Bartholomew Kuma",
+      "occupation": ["Former Warlord", "Pacifista"],
+      "devil_fruit": "Nikyu Nikyu no Mi",
+      "affiliations": ["Revolutionary Army", "World Government"],
+      "bounty": "฿296,000,000",
+      "image": "https://i.pinimg.com/originals/9f/52/fd/9f52fd7f232c4d76ae1479f60f5fbdec.jpg"
+    },
+    {
+      "id": 48,
+      "name": "Morley",
+      "occupation": ["Revolutionary", "Giant Warrior"],
+      "affiliations": ["Revolutionary Army"],
+      "bounty": "฿293,000,000",
+      "image": "https://i.pinimg.com/originals/1a/e4/2c/1ae42cb6a1ea4385b0ad5a2e6031e2dc.jpg"
+    },
+    {
+      "id": 49,
+      "name": "Page One",
+      "occupation": ["Pirate", "Headliner"],
+      "devil_fruit": "Ryu Ryu no Mi, Model: Spinosaurus",
+      "affiliations": ["Beasts Pirates"],
+      "bounty": "฿290,000,000",
+      "image": "https://i.pinimg.com/originals/3e/5d/4f/3e5d4f419b9ced098b3c1f15f8fb12b2.jpg"
+    },
+    {
+      "id": 50,
+      "name": "X Drake",
+      "occupation": ["Pirate", "Captain", "Revolutionary Agent"],
+      "devil_fruit": "Ryu Ryu no Mi, Model: Allosaurus",
+      "affiliations": ["Beasts Pirates", "Revolutionary Army"],
+      "bounty": "฿222,000,000",
+      "image": "https://i.pinimg.com/originals/7a/ce/b7/7aceb7b12334544108bcda314a7e9aaa.jpg"
+    },
+    {
+      "id": 51,
+      "name": "Sai",
+      "occupation": ["Revolutionary", "Chief Army Officer"],
+      "affiliations": ["Revolutionary Army"],
+      "bounty": "฿210,000,000",
+      "image": "https://i.pinimg.com/originals/2b/2f/b6/2b2fb6a7de9c8929b3df1c90c5db0f4e.jpg"
+    }
+  ]
 }
