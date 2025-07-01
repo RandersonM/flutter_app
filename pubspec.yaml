@@ -23,9 +23,11 @@ dependencies:
   intl: ^0.20.2
   json_serializable: ^6.7.1
   path_provider: ^2.1.1
-  pagination_view: ^2.0.0  
   provider: ^6.1.1
   math_expressions: ^2.4.0
+  flutter_bloc: ^9.1.1
+  bloc: ^9.0.0
+  equatable: ^2.0.7
 
 dev_dependencies:
   test: ^1.24.6
