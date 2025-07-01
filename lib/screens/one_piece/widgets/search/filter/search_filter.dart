@@ -28,7 +28,7 @@ class SearchFilter extends StatelessWidget {
         visualDensity: const VisualDensity(vertical: -4.0),
         label: Text(
           label,
-          style: Theme.of(context).textTheme.bodyText2!.merge(TextStyle(
+          style: Theme.of(context).textTheme.bodyMedium!.merge(TextStyle(
               color: searchProvider.statusFilters.contains(label)
                   ? Colors.white
                   : Theme.of(context).colorScheme.onPrimary)),

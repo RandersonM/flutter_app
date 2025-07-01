@@ -2,7 +2,7 @@
 // Copyright © 2022.
 
 import 'package:flutter/material.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:simple_app/l10n/app_localizations.dart';
 
 import 'package:simple_app/shared/constants.dart';
 
@@ -22,7 +22,7 @@ class DetailsName extends StatelessWidget {
                 top: Constants.margin * 2, bottom: Constants.margin),
             child: Text(
               name,
-              style: Theme.of(context).textTheme.headline6,
+              style: Theme.of(context).textTheme.headlineSmall,
             ),
           ),
           if (nickname != null)
@@ -30,14 +30,14 @@ class DetailsName extends StatelessWidget {
               padding: const EdgeInsets.only(bottom: Constants.margin / 2),
               child: Text(
                 nickname!,
-                style: Theme.of(context).textTheme.subtitle1,
+                style: Theme.of(context).textTheme.titleMedium,
               ),
             ),
           if (devilFruit != null)
             Text(
               "${AppLocalizations.of(context)!.devilFruitUserPrefix} ${devilFruit!}",
               textAlign: TextAlign.center,
-              style: Theme.of(context).textTheme.caption,
+              style: Theme.of(context).textTheme.bodySmall,
             ),
         ],
       );

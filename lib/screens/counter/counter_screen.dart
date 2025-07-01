@@ -6,7 +6,7 @@ import 'package:provider/provider.dart';
 
 import 'package:simple_app/core/counter/counter_provider.dart';
 
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:simple_app/l10n/app_localizations.dart';
 import 'package:simple_app/shared/app_bar/default_app_bar.dart';
 
 import '../../shared/bottom_navigation/bottom_navigation.dart';
@@ -38,7 +38,7 @@ class _CounterScreenState extends State<CounterScreen> {
                 ),
                 Text(
                   '${provider.counter}',
-                  style: Theme.of(context).textTheme.headline4,
+                  style: Theme.of(context).textTheme.headlineLarge,
                 ),
               ],
             ),

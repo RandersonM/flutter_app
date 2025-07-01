@@ -21,7 +21,7 @@ class ExpansionTileTitle extends StatelessWidget {
             padding: const EdgeInsets.symmetric(horizontal: Constants.margin),
             child: Text(
               leading,
-              style: Theme.of(context).textTheme.headline6,
+              style: Theme.of(context).textTheme.headlineSmall,
             ),
           ),
           Flexible(
@@ -29,7 +29,7 @@ class ExpansionTileTitle extends StatelessWidget {
               title,
               overflow: TextOverflow.ellipsis,
               maxLines: 1,
-              style: Theme.of(context).textTheme.headline6,
+              style: Theme.of(context).textTheme.headlineSmall,
             ),
           )
         ],
