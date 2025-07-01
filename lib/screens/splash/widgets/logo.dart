@@ -10,10 +10,10 @@ class SplashLogo extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    const String _logoPath = 'assets/logo/splash_logo.png';
+    const String logoPath = 'assets/logo/splash_logo.png';
 
     return const Image(
-      image: AssetImage(_logoPath),
+      image: AssetImage(logoPath),
     );
   }
 }

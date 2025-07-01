@@ -2,7 +2,7 @@
 // Copyright © 2022.
 
 import 'package:flutter/material.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:simple_app/l10n/app_localizations.dart';
 
 import 'package:simple_app/shared/constants.dart';
 
@@ -22,7 +22,7 @@ class CalculatorHeader extends StatelessWidget {
             padding: const EdgeInsets.all(Constants.margin),
             child: Text(
               input,
-              style: Theme.of(context).textTheme.subtitle1!,
+              style: Theme.of(context).textTheme.titleMedium!,
             ),
           ),
           Padding(
@@ -36,13 +36,13 @@ class CalculatorHeader extends StatelessWidget {
                 Text(AppLocalizations.of(context)!.result,
                     style: Theme.of(context)
                         .textTheme
-                        .headline6!
+                        .headlineSmall!
                         .merge(const TextStyle(fontWeight: FontWeight.bold))),
                 Text(
                   result,
                   style: Theme.of(context)
                       .textTheme
-                      .headline6!
+                      .headlineSmall!
                       .merge(const TextStyle(fontWeight: FontWeight.bold)),
                 ),
               ],
