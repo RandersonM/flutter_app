@@ -6,7 +6,7 @@ import 'package:simple_app/screens/calculator/calculator_screen.dart';
 import 'package:simple_app/screens/counter/counter_screen.dart';
 import 'package:simple_app/screens/one_piece/characters_list_screen.dart';
 
-import 'package:simple_app/shared/transitions/material_page_route_without_tansition.dart';
+import 'package:simple_app/utils/transitions/material_page_route_without_tansition.dart';
 
 class AppRoutes {
   static const String counter = '/counter';

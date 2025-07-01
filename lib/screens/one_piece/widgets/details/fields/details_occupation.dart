@@ -6,8 +6,8 @@ import 'package:simple_app/l10n/app_localizations.dart';
 import 'package:simple_app/screens/one_piece/widgets/details/commons/details_list_tile.dart';
 import 'package:simple_app/screens/one_piece/widgets/details/commons/expansion_tile_title.dart';
 
-import 'package:simple_app/shared/constants.dart';
-import 'package:simple_app/shared/scroll/dynamic_scroll.dart';
+import 'package:simple_app/utils/constants.dart';
+import 'package:simple_app/widgets/atoms/dynamic_scroll.dart';
 
 class DetailsOccupation extends StatelessWidget {
   DetailsOccupation({Key? key, required this.occupations}) : super(key: key);
@@ -23,13 +23,13 @@ class DetailsOccupation extends StatelessWidget {
           data: Theme.of(context).copyWith(dividerColor: Colors.transparent),
           child: ExpansionTile(
             key: expansionTileKey,
-            onExpansionChanged: (value) {
-              if (value) {
-                DynamicScroll().scrollToSelectedContent(
-                    expansionTileKey: expansionTileKey);
-              }
+            onExpansionChanged: (isExpanded) {
+              DynamicScroll().handleExpansionScroll(
+                expansionTileKey: expansionTileKey,
+                isExpanded: isExpanded,
+              );
             },
-            tilePadding: EdgeInsets.zero,
+            tilePadding: const EdgeInsets.only(right: Constants.margin),
             title: ExpansionTileTitle(
               title: occupations.first,
               leading: AppLocalizations.of(context)!.occupation,

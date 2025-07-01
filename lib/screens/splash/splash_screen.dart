@@ -4,8 +4,8 @@
 import 'package:flutter/material.dart';
 import 'package:simple_app/screens/counter/counter_screen.dart';
 import 'package:simple_app/screens/splash/widgets/logo.dart';
-import 'package:simple_app/shared/decorations/gradient.dart';
-import 'package:simple_app/shared/transitions/material_page_route_with_slide_right_transition.dart';
+import 'package:simple_app/utils/decorations/gradient.dart';
+import 'package:simple_app/utils/transitions/material_page_route_with_slide_right_transition.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({Key? key}) : super(key: key);

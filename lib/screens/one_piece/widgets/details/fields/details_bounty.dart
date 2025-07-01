@@ -2,9 +2,9 @@
 // Copyright © 2022.
 
 import 'package:flutter/material.dart';
-import 'package:simple_app/l10n/app_localizations.dart';
+import '../../../../../l10n/app_localizations.dart';
 
-import 'package:simple_app/shared/constants.dart';
+import 'package:simple_app/utils/constants.dart';
 
 class DetailsBounty extends StatelessWidget {
   const DetailsBounty({Key? key, required this.bounty}) : super(key: key);
