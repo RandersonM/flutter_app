@@ -11,7 +11,7 @@ class SplashScreen extends StatefulWidget {
   const SplashScreen({Key? key}) : super(key: key);
 
   @override
-  _SplashScreenState createState() => _SplashScreenState();
+  State<SplashScreen> createState() => _SplashScreenState();
 }
 
 class _SplashScreenState extends State<SplashScreen> {
@@ -19,13 +19,15 @@ class _SplashScreenState extends State<SplashScreen> {
   void initState() {
     super.initState();
 
-    Future<void>.delayed(
-        const Duration(seconds: 3),
-        () => Navigator.pushAndRemoveUntil(
+    Future<void>.delayed(const Duration(seconds: 3), () {
+      if (mounted) {
+        Navigator.pushAndRemoveUntil(
             context,
             MaterialPageRouteWithSlideRightTransition(
                 builder: (_) => const CounterScreen()),
-            (_) => false));
+            (_) => false);
+      }
+    });
   }
 
   @override

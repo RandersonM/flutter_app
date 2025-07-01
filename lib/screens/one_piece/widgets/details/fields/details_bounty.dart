@@ -2,7 +2,7 @@
 // Copyright © 2022.
 
 import 'package:flutter/material.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:simple_app/l10n/app_localizations.dart';
 
 import 'package:simple_app/shared/constants.dart';
 
@@ -25,14 +25,14 @@ class DetailsBounty extends StatelessWidget {
                   horizontal: Constants.margin, vertical: Constants.margin * 2),
               child: Text(
                 AppLocalizations.of(context)!.bounty,
-                style: Theme.of(context).textTheme.headline6,
+                style: Theme.of(context).textTheme.headlineSmall,
               ),
             ),
             Padding(
               padding: const EdgeInsets.all(Constants.margin),
               child: Text(
                 bounty,
-                style: Theme.of(context).textTheme.headline6,
+                style: Theme.of(context).textTheme.headlineSmall,
               ),
             )
           ],

@@ -30,7 +30,7 @@ class CalculatorButton extends StatelessWidget {
             child: Center(
               child: Text(
                 buttonText,
-                style: Theme.of(context).textTheme.headline6!.merge(
+                style: Theme.of(context).textTheme.headlineSmall!.merge(
                     TextStyle(fontWeight: FontWeight.bold, color: textColor)),
               ),
             ),

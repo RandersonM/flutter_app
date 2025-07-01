@@ -17,23 +17,7 @@ class CharacterCard extends StatefulWidget {
 }
 
 class _CharacterCardState extends State<CharacterCard> {
-  late NetworkImage image;
-
-  @override
-  void didChangeDependencies() {
-    precacheImage(
-        NetworkImage(
-          widget.character.image,
-        ),
-        context);
-    super.didChangeDependencies();
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    image = NetworkImage(widget.character.image);
-  }
+  bool _imageLoadError = false;
 
   @override
   Widget build(BuildContext context) => InkWell(
@@ -47,29 +31,107 @@ class _CharacterCardState extends State<CharacterCard> {
           shape: RoundedRectangleBorder(
               side: const BorderSide(color: Colors.white),
               borderRadius: BorderRadius.circular(Constants.margin * 2)),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: <Widget>[
-              Container(
-                height: MediaQuery.of(context).size.height * 0.2,
-                width: MediaQuery.of(context).size.width * 0.4,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(Constants.margin * 2),
-                  image: DecorationImage(
-                    fit: BoxFit.fill,
-                    image: image,
+          child: Padding(
+            padding: const EdgeInsets.all(Constants.margin),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: <Widget>[
+                Expanded(
+                  flex: 3,
+                  child: Container(
+                    width: double.infinity,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(Constants.margin * 2),
+                      color: Colors.grey[200],
+                    ),
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(Constants.margin * 2),
+                      child: _imageLoadError
+                          ? _buildPlaceholder()
+                          : Image.network(
+                              widget.character.image,
+                              fit: BoxFit.cover,
+                              loadingBuilder:
+                                  (context, child, loadingProgress) {
+                                if (loadingProgress == null) return child;
+                                return Center(
+                                  child: CircularProgressIndicator(
+                                    value: loadingProgress.expectedTotalBytes !=
+                                            null
+                                        ? loadingProgress
+                                                .cumulativeBytesLoaded /
+                                            loadingProgress.expectedTotalBytes!
+                                        : null,
+                                  ),
+                                );
+                              },
+                              errorBuilder: (context, error, stackTrace) {
+                                WidgetsBinding.instance
+                                    .addPostFrameCallback((_) {
+                                  if (mounted) {
+                                    setState(() {
+                                      _imageLoadError = true;
+                                    });
+                                  }
+                                });
+                                return _buildPlaceholder();
+                              },
+                            ),
+                    ),
                   ),
                 ),
-              ),
-              Text(widget.character.name,
-                  style: Theme.of(context).textTheme.caption!.merge(TextStyle(
-                      fontWeight: FontWeight.bold,
-                      color: Theme.of(context)
-                          .appBarTheme
-                          .titleTextStyle!
-                          .color))),
-            ],
+                const SizedBox(height: Constants.margin),
+                Expanded(
+                  flex: 1,
+                  child: FittedBox(
+                    fit: BoxFit.scaleDown,
+                    child: Text(
+                      widget.character.name,
+                      textAlign: TextAlign.center,
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                      style: Theme.of(context).textTheme.bodySmall!.merge(
+                          TextStyle(
+                              fontWeight: FontWeight.bold,
+                              color: Theme.of(context)
+                                  .appBarTheme
+                                  .titleTextStyle!
+                                  .color)),
+                    ),
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       );
+
+  Widget _buildPlaceholder() {
+    return Container(
+      width: double.infinity,
+      height: double.infinity,
+      color: Colors.grey[300],
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Icon(
+            Icons.person,
+            size: 48,
+            color: Colors.grey[600],
+          ),
+          const SizedBox(height: 8),
+          Text(
+            'Image\nUnavailable',
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              color: Colors.grey[600],
+              fontSize: 12,
+              fontWeight: FontWeight.w500,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
 }

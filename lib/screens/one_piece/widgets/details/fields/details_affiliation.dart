@@ -2,7 +2,7 @@
 // Copyright © 2022.
 
 import 'package:flutter/material.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:simple_app/l10n/app_localizations.dart';
 
 import 'package:simple_app/screens/one_piece/widgets/details/commons/details_list_tile.dart';
 import 'package:simple_app/screens/one_piece/widgets/details/commons/expansion_tile_title.dart';

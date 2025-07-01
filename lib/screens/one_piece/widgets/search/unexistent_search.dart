@@ -2,7 +2,7 @@
 // Copyright © 2022.
 
 import 'package:flutter/material.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:simple_app/l10n/app_localizations.dart';
 
 class UnexistentSearch extends StatelessWidget {
   const UnexistentSearch({Key? key, required this.query}) : super(key: key);
@@ -18,7 +18,7 @@ class UnexistentSearch extends StatelessWidget {
                   ? AppLocalizations.of(context)!.noResearchYet
                   : '${AppLocalizations.of(context)!.noResultsFound} "$query".',
               textAlign: TextAlign.center,
-              style: Theme.of(context).textTheme.bodyText2!),
+              style: Theme.of(context).textTheme.bodyMedium!),
         ),
       );
 }

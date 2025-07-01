@@ -75,6 +75,7 @@ class AppColors {
 }
 
 class _Typography {
+  // Legacy names for compatibility
   static const TextStyle headline1 = TextStyle(
     fontFamily: 'Lato',
     fontWeight: FontWeight.w400,
@@ -152,6 +153,14 @@ class _Typography {
     fontWeight: FontWeight.w400,
     fontSize: 10.0,
   );
+
+  // New Flutter 3 text style names
+  static const TextStyle headlineLarge = headline4;
+  static const TextStyle headlineSmall = headline6;
+  static const TextStyle titleMedium = subtitle1;
+  static const TextStyle bodyMedium = bodyText2;
+  static const TextStyle labelLarge = button;
+  static const TextStyle bodySmall = caption;
 }
 
 ThemeData appTheme = ThemeData(
@@ -159,10 +168,10 @@ ThemeData appTheme = ThemeData(
     color: Colors.white,
     centerTitle: true,
     titleTextStyle:
-        _Typography.headline6.merge(TextStyle(color: AppColors.grey[900])),
+        _Typography.headlineSmall.merge(TextStyle(color: AppColors.grey[900])),
     iconTheme: IconThemeData(color: AppColors.grey[700]),
     actionsIconTheme: IconThemeData(color: AppColors.grey[700]),
-    toolbarTextStyle: _Typography.headline6.merge(
+    toolbarTextStyle: _Typography.headlineSmall.merge(
       TextStyle(color: AppColors.grey[900]),
     ),
     elevation: 0,
@@ -178,21 +187,21 @@ ThemeData appTheme = ThemeData(
   ),
   dividerColor: AppColors.grey[300],
   textTheme: const TextTheme(
-      headline1: _Typography.headline1,
-      headline2: _Typography.headline2,
-      headline3: _Typography.headline3,
-      headline4: _Typography.headline4,
-      headline5: _Typography.headline5,
-      headline6: _Typography.headline6,
-      subtitle1: _Typography.subtitle1,
-      subtitle2: _Typography.subtitle2,
-      bodyText1: _Typography.bodyText1,
-      bodyText2: _Typography.bodyText2,
-      button: _Typography.button,
-      caption: _Typography.caption,
-      overline: _Typography.overline),
+      displayLarge: _Typography.headline1,
+      displayMedium: _Typography.headline2,
+      displaySmall: _Typography.headline3,
+      headlineLarge: _Typography.headlineLarge,
+      headlineMedium: _Typography.headline5,
+      headlineSmall: _Typography.headlineSmall,
+      titleMedium: _Typography.titleMedium,
+      titleSmall: _Typography.subtitle2,
+      bodyLarge: _Typography.bodyText1,
+      bodyMedium: _Typography.bodyMedium,
+      labelLarge: _Typography.labelLarge,
+      bodySmall: _Typography.bodySmall,
+      labelSmall: _Typography.overline),
   fontFamily: 'Lato',
-  cardTheme: CardTheme(
+  cardTheme: CardThemeData(
     shape: RoundedRectangleBorder(
         side: const BorderSide(color: AppColors.purple),
         borderRadius: BorderRadius.circular(Constants.margin * 2)),
