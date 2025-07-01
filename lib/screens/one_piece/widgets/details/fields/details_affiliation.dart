@@ -2,12 +2,12 @@
 // Copyright © 2022.
 
 import 'package:flutter/material.dart';
-import 'package:simple_app/l10n/app_localizations.dart';
+import '../../../../../l10n/app_localizations.dart';
 
 import 'package:simple_app/screens/one_piece/widgets/details/commons/details_list_tile.dart';
 import 'package:simple_app/screens/one_piece/widgets/details/commons/expansion_tile_title.dart';
-import 'package:simple_app/shared/constants.dart';
-import 'package:simple_app/shared/scroll/dynamic_scroll.dart';
+import 'package:simple_app/utils/constants.dart';
+import 'package:simple_app/widgets/atoms/dynamic_scroll.dart';
 
 class DetailsAffiliation extends StatelessWidget {
   DetailsAffiliation({Key? key, required this.affiliations}) : super(key: key);
@@ -17,18 +17,19 @@ class DetailsAffiliation extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Card(
-      margin: const EdgeInsets.symmetric(horizontal: Constants.margin * 2),
+      margin: const EdgeInsets.symmetric(
+          vertical: Constants.margin, horizontal: Constants.margin * 2),
       child: Theme(
         data: Theme.of(context).copyWith(dividerColor: Colors.transparent),
         child: ExpansionTile(
           key: expansionTileKey,
-          onExpansionChanged: (value) {
-            if (value) {
-              DynamicScroll()
-                  .scrollToSelectedContent(expansionTileKey: expansionTileKey);
-            }
+          onExpansionChanged: (isExpanded) {
+            DynamicScroll().handleExpansionScroll(
+              expansionTileKey: expansionTileKey,
+              isExpanded: isExpanded,
+            );
           },
-          tilePadding: EdgeInsets.zero,
+          tilePadding: const EdgeInsets.only(right: Constants.margin),
           title: ExpansionTileTitle(
             title: affiliations.first,
             leading: AppLocalizations.of(context)!.affiliation,

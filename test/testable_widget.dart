@@ -2,9 +2,10 @@
 // Copyright © 2022.
 
 import 'package:flutter/material.dart';
-
 import 'package:simple_app/l10n/app_localizations.dart';
-import 'package:simple_app/shared/theme.dart';
+import 'package:simple_app/utils/theme.dart';
+
+
 
 Widget getTestableWidget(Widget child) => MediaQuery(
       data: const MediaQueryData(),

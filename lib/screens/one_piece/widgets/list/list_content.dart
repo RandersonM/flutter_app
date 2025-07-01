@@ -2,14 +2,14 @@
 // Copyright © 2022.
 
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
-import 'package:simple_app/core/one_piece/characters_provider.dart';
+import 'package:simple_app/core/one_piece/characters_cubit.dart';
+import 'package:simple_app/core/one_piece/models/character.dart';
 import 'package:simple_app/screens/one_piece/widgets/list/character_grid_list.dart';
 
 class ListContent extends StatefulWidget {
-  const ListContent({Key? key, required this.provider}) : super(key: key);
-
-  final CharactersProvider provider;
+  const ListContent({Key? key}) : super(key: key);
 
   @override
   State<ListContent> createState() => _ListContentState();
@@ -20,8 +20,10 @@ class _ListContentState extends State<ListContent> {
 
   void _scrollListener() {
     if (controller.position.pixels == controller.position.maxScrollExtent) {
-      if (!widget.provider.isLoading() && widget.provider.hasMoreData) {
-        widget.provider.fetchData();
+      final cubit = context.read<CharactersCubit>();
+      if (!cubit.isLoading() && cubit.hasMoreData) {
+        debugPrint('ListContent: Calling fetchData from scroll');
+        cubit.fetchData();
       }
     }
   }
@@ -29,42 +31,69 @@ class _ListContentState extends State<ListContent> {
   @override
   void initState() {
     super.initState();
+    debugPrint('ListContent: initState called');
     controller = ScrollController()..addListener(_scrollListener);
+    
+    // Carrega os dados iniciais apenas uma vez
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      final cubit = context.read<CharactersCubit>();
+      if (cubit.state is CharactersInitial) {
+        debugPrint('ListContent: Calling initial fetchData');
+        cubit.fetchData();
+      }
+    });
   }
 
   @override
   void dispose() {
-    super.dispose();
+    controller.removeListener(_scrollListener);
     controller.dispose();
+    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    if (widget.provider.loadState == LoadState.unitialized) {
-      widget.provider.fetchData();
-    }
-    return Column(
-      children: <Widget>[
-        Expanded(
-          child: NotificationListener<ScrollNotification>(
-            onNotification: (ScrollNotification scrollInfo) {
-              if (!widget.provider.isLoading() &&
-                  scrollInfo.metrics.pixels ==
-                      scrollInfo.metrics.maxScrollExtent) {
-                widget.provider.fetchData();
-              }
-              return true;
-            },
-            child: widget.provider.loadState == LoadState.unitialized
-                ? const Center(
-                    child: CircularProgressIndicator(),
-                  )
-                : CharacterGridList(characters: widget.provider.characters),
-          ),
-        ),
-        if (widget.provider.isLoading())
-          const Center(child: CircularProgressIndicator()),
-      ],
+    return BlocBuilder<CharactersCubit, CharactersState>(
+      builder: (context, state) {
+        if (state is CharactersInitial) {
+          return const Center(child: CircularProgressIndicator());
+        }
+
+        List<Character> characters = [];
+        bool isLoadingMore = false;
+
+        if (state is CharactersLoading) {
+          characters = state.characters;
+          isLoadingMore = state.isLoadingMore;
+        } else if (state is CharactersLoaded) {
+          characters = state.characters;
+          debugPrint('ListContent: Loaded ${characters.length} characters');
+        } else if (state is CharactersError) {
+          characters = state.characters;
+          debugPrint('ListContent: Error - ${state.message}');
+        }
+
+        if (characters.isEmpty && state is CharactersLoading) {
+          return const Center(child: CircularProgressIndicator());
+        }
+
+        return Column(
+          children: <Widget>[
+            Expanded(
+              child: CharacterGridList(
+                characters: characters,
+                controller: controller,
+              ),
+            ),
+            if (isLoadingMore)
+              const Padding(
+                padding: EdgeInsets.all(16.0),
+                child: CircularProgressIndicator(),
+              ),
+          ],
+        );
+      },
     );
   }
 }
+

@@ -7,8 +7,8 @@ import 'package:provider/provider.dart';
 
 import 'package:simple_app/core/calculator/calculator_provider.dart';
 import 'package:simple_app/screens/calculator/widgets/calculator_content.dart';
-import 'package:simple_app/shared/app_bar/default_app_bar.dart';
-import 'package:simple_app/shared/bottom_navigation/bottom_navigation.dart';
+import 'package:simple_app/widgets/molecules/default_app_bar.dart';
+import 'package:simple_app/widgets/organisms/bottom_navigation.dart';
 
 class CalculatorScreen extends StatefulWidget {
   const CalculatorScreen({Key? key}) : super(key: key);

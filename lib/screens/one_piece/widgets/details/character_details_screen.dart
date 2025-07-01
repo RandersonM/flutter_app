@@ -10,52 +10,73 @@ import 'package:simple_app/screens/one_piece/widgets/details/fields/details_haki
 import 'package:simple_app/screens/one_piece/widgets/details/fields/details_image.dart';
 import 'package:simple_app/screens/one_piece/widgets/details/fields/details_name.dart';
 import 'package:simple_app/screens/one_piece/widgets/details/fields/details_occupation.dart';
-import 'package:simple_app/shared/app_bar/default_app_bar.dart';
-import 'package:simple_app/shared/bottom_navigation/bottom_navigation.dart';
-import 'package:simple_app/shared/constants.dart';
+import 'package:simple_app/widgets/molecules/default_app_bar.dart';
+import 'package:simple_app/widgets/organisms/bottom_navigation.dart';
+import 'package:simple_app/utils/constants.dart';
 
-class CharacterDetailsScreen extends StatelessWidget {
+class CharacterDetailsScreen extends StatefulWidget {
   const CharacterDetailsScreen({Key? key, required this.character})
       : super(key: key);
 
   final Character character;
 
   @override
+  State<CharacterDetailsScreen> createState() => _CharacterDetailsScreenState();
+}
+
+class _CharacterDetailsScreenState extends State<CharacterDetailsScreen> {
+  late final ScrollController _scrollController;
+
+  @override
+  void initState() {
+    super.initState();
+    _scrollController = ScrollController();
+  }
+
+  @override
+  void dispose() {
+    _scrollController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) => Scaffold(
         backgroundColor: Colors.white,
         appBar: DefaultAppBar(
-          title: Text(character.nickname ?? character.name),
+          title: Text(widget.character.nickname ?? widget.character.name),
         ),
-        body: CustomScrollView(slivers: <Widget>[
-          DetailsImage(image: character.image),
+        body: CustomScrollView(controller: _scrollController, slivers: <Widget>[
+          DetailsImage(image: widget.character.image),
           SliverToBoxAdapter(
               child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: Constants.margin),
             child: DetailsName(
-              name: character.name,
-              nickname: character.nickname,
-              devilFruit: character.devilFruit,
+              name: widget.character.name,
+              nickname: widget.character.nickname,
+              devilFruit: widget.character.devilFruit,
             ),
           )),
           SliverToBoxAdapter(
               child: Padding(
             padding: const EdgeInsets.only(
                 top: Constants.margin * 2, bottom: Constants.margin),
-            child: DetailsBounty(bounty: character.bounty),
+            child: DetailsBounty(bounty: widget.character.bounty),
           )),
           SliverToBoxAdapter(
-            child: DetailsAffiliation(affiliations: character.affiliations),
+            child:
+                DetailsAffiliation(affiliations: widget.character.affiliations),
           ),
           SliverToBoxAdapter(
               child: Padding(
             padding: const EdgeInsets.symmetric(vertical: Constants.margin * 2),
-            child: DetailsOccupation(occupations: character.occupation),
+            child: DetailsOccupation(occupations: widget.character.occupation),
           )),
           SliverToBoxAdapter(
               child: Padding(
             padding: const EdgeInsets.only(bottom: Constants.margin * 2),
-            child: DetailsHaki(haki: character.haki),
-          ))
+            child: DetailsHaki(haki: widget.character.haki),
+          )),
+          const SliverToBoxAdapter(child: SizedBox(height: 100)),
         ]),
         bottomNavigationBar:
             const BottomNavigation(BottomNavigationPages.onePiece),

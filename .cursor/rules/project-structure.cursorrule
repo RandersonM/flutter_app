@@ -1,0 +1,42 @@
+description: Flutter project structure and organization standards
+patterns: ["**/*.dart", "**/pubspec.yaml", "**/pubspec.lock", "**/analysis_options.yaml"]
+---
+# Flutter Project Structure
+
+Follow these guidelines for organizing Flutter projects:
+
+## Project Organization
+- Use web-assembly first
+- Use a clean, modular architecture (MVVM, Clean Architecture, BLoC pattern, etc.)
+- Organize code by feature rather than by type
+- Keep UI separate from business logic
+- Use proper dependency injection
+- Follow the appropriate directory structure
+
+## Package Organization
+- Keep a clean dependency graph
+- Use packages for reusable components
+- Follow semantic versioning for packages
+- Group related functionality in the same package
+- Use package visibility modifiers appropriately
+
+## Module Organization
+- Split large modules into submodules
+- Use barrel files (index.dart) for cleaner imports
+- Keep modules focused on specific functionality
+- Use interfaces to define module boundaries
+- Document module responsibilities
+
+## Naming Conventions
+- Use lowercase_with_underscores for file names
+- Use camelCase for variable and method names
+- Use PascalCase for class names
+- Use lowercase_with_underscores for package names
+- Keep names descriptive and concise
+
+## Asset Organization
+- Organize assets by type and purpose
+- Use proper naming for asset files
+- Add appropriate resolution variants for images
+- Document asset usage
+- Optimize assets for production 
