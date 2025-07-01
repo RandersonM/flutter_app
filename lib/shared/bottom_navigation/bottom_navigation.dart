@@ -3,7 +3,7 @@
 
 import 'package:flutter/material.dart';
 
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:simple_app/l10n/app_localizations.dart';
 import 'package:simple_app/shared/app_routes.dart';
 import 'package:simple_app/shared/icons/one_piece_icons.dart';
 import 'package:simple_app/shared/theme.dart';
@@ -24,10 +24,10 @@ class BottomNavigation extends StatefulWidget {
   const BottomNavigation(this.currentPage, {Key? key}) : super(key: key);
 
   @override
-  _BottomNavigationState createState() => _BottomNavigationState();
+  BottomNavigationState createState() => BottomNavigationState();
 }
 
-class _BottomNavigationState extends State<BottomNavigation> {
+class BottomNavigationState extends State<BottomNavigation> {
   List<BottomNavigationPages> pages = <BottomNavigationPages>[
     BottomNavigationPages.counter,
     BottomNavigationPages.calculator,

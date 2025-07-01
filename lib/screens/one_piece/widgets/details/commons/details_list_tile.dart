@@ -16,7 +16,7 @@ class DetailsListTile extends StatelessWidget {
           tileText,
           textAlign: TextAlign.right,
           softWrap: true,
-          style: Theme.of(context).textTheme.button,
+          style: Theme.of(context).textTheme.labelLarge,
         ),
       );
 }

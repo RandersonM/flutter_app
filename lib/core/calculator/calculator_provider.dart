@@ -46,7 +46,7 @@ class CalculatorProvider extends ChangeNotifier {
     String finaluserinput = input;
     finaluserinput = input.replaceAll('x', '*');
 
-    Parser p = Parser();
+    GrammarParser p = GrammarParser();
     Expression exp = p.parse(finaluserinput);
     ContextModel cm = ContextModel();
     double eval = exp.evaluate(EvaluationType.REAL, cm);
