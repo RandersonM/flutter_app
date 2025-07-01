@@ -2,15 +2,12 @@
 // Copyright © 2022.
 
 import 'package:flutter/material.dart';
-import 'package:simple_app/l10n/app_localizations.dart';
-import 'package:provider/provider.dart';
+import '../../l10n/app_localizations.dart';
 
-import 'package:simple_app/core/one_piece/characters_provider.dart';
-import 'package:simple_app/core/one_piece/search_provider.dart';
 import 'package:simple_app/screens/one_piece/widgets/list/list_content.dart';
 import 'package:simple_app/screens/one_piece/widgets/search/search.dart';
-import 'package:simple_app/shared/app_bar/default_app_bar.dart';
-import 'package:simple_app/shared/bottom_navigation/bottom_navigation.dart';
+import 'package:simple_app/widgets/molecules/default_app_bar.dart';
+import 'package:simple_app/widgets/organisms/bottom_navigation.dart';
 
 class CharactersListScreen extends StatefulWidget {
   const CharactersListScreen({Key? key}) : super(key: key);
@@ -21,31 +18,23 @@ class CharactersListScreen extends StatefulWidget {
 
 class _CharactersListScreenState extends State<CharactersListScreen> {
   @override
-  Widget build(BuildContext context) => Consumer<CharactersProvider>(
-        builder: (BuildContext context, CharactersProvider provider, _) =>
-            Scaffold(
-          appBar: DefaultAppBar(
-            title: Text(AppLocalizations.of(context)!.onePiece),
-            leading: Builder(
-              builder: (context) => IconButton(
-                icon: const Icon(Icons.search_rounded),
-                onPressed: () => Scaffold.of(context).openDrawer(),
-              ),
+  Widget build(BuildContext context) => Scaffold(
+        appBar: DefaultAppBar(
+          title: Text(AppLocalizations.of(context)!.onePiece),
+          leading: Builder(
+            builder: (context) => IconButton(
+              icon: const Icon(Icons.search_rounded),
+              onPressed: () => Scaffold.of(context).openDrawer(),
             ),
           ),
-          body: ListContent(
-            provider: provider,
-          ),
-          bottomNavigationBar:
-              const BottomNavigation(BottomNavigationPages.onePiece),
-          drawer: Drawer(
-            backgroundColor: Theme.of(context).colorScheme.onSecondary,
-            elevation: 0.0,
-            child: ChangeNotifierProvider<SearchProvider>(
-              create: (BuildContext context) => SearchProvider(),
-              child: const Search(),
-            ),
-          ),
+        ),
+        body: const ListContent(),
+        bottomNavigationBar:
+            const BottomNavigation(BottomNavigationPages.onePiece),
+        drawer: Drawer(
+          backgroundColor: Theme.of(context).colorScheme.onSecondary,
+          elevation: 0.0,
+          child: const Search(),
         ),
       );
 }
