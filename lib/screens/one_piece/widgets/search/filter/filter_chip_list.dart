@@ -3,16 +3,12 @@
 
 import 'package:flutter/material.dart';
 import 'package:simple_app/l10n/app_localizations.dart';
-import 'package:simple_app/core/one_piece/search_provider.dart';
 
 import 'package:simple_app/screens/one_piece/widgets/search/filter/search_filter.dart';
-import 'package:simple_app/shared/constants.dart';
+import 'package:simple_app/utils/constants.dart';
 
 class FilterChipList extends StatelessWidget {
-  const FilterChipList({Key? key, required this.searchProvider})
-      : super(key: key);
-
-  final SearchProvider searchProvider;
+  const FilterChipList({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) => SingleChildScrollView(
         physics: const ClampingScrollPhysics(),
@@ -21,23 +17,18 @@ class FilterChipList extends StatelessWidget {
         child: Row(
           children: <Widget>[
             SearchFilter(
-                label: AppLocalizations.of(context)!.superRookie,
-                searchProvider: searchProvider),
+                label: AppLocalizations.of(context)!.superRookie),
             SearchFilter(
               label: AppLocalizations.of(context)!.emperors,
-              searchProvider: searchProvider,
             ),
             SearchFilter(
               label: AppLocalizations.of(context)!.strawHat,
-              searchProvider: searchProvider,
             ),
             SearchFilter(
               label: AppLocalizations.of(context)!.beastsPirates,
-              searchProvider: searchProvider,
             ),
             SearchFilter(
               label: AppLocalizations.of(context)!.bigMomPirates,
-              searchProvider: searchProvider,
             ),
           ]
               .map((Widget widget) => Padding(
