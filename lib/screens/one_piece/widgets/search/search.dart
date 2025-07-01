@@ -2,37 +2,50 @@
 // Copyright © 2022.
 
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:simple_app/core/one_piece/models/character.dart';
-import 'package:simple_app/core/one_piece/search_provider.dart';
+import 'package:simple_app/core/one_piece/search_cubit.dart';
 import 'package:simple_app/screens/one_piece/widgets/search/unexistent_search.dart';
 import 'package:simple_app/screens/one_piece/widgets/search/result_card.dart';
 import 'package:simple_app/screens/one_piece/widgets/search/search_header.dart';
 
-import 'package:simple_app/shared/constants.dart';
+import 'package:simple_app/utils/constants.dart';
 
 class Search extends StatelessWidget {
   const Search({Key? key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context) => Consumer<SearchProvider>(
-      builder: (BuildContext context, SearchProvider searchProvider, _) =>
-          ListView(
-            children: <Widget>[
-              SearchHeader(
-                searchProvider: searchProvider,
-              ),
-              if (searchProvider.queryResults.isNotEmpty)
-                ...searchProvider.queryResults
-                    .map((Character character) => Padding(
-                          padding: const EdgeInsets.all(Constants.margin),
-                          child: ResultCard(
-                            character: character,
-                          ),
-                        ))
-                    .toList()
-              else
-                UnexistentSearch(query: searchProvider.query),
-            ],
-          ));
+  Widget build(BuildContext context) => BlocBuilder<SearchCubit, SearchState>(
+          builder: (BuildContext context, SearchState state) {
+        String query = '';
+        List<Character> queryResults = [];
+
+        if (state is SearchLoaded) {
+          query = state.query;
+          queryResults = state.queryResults;
+        } else if (state is SearchLoading) {
+          query = state.query;
+        } else if (state is SearchInitial) {
+          query = state.query;
+        } else if (state is SearchError) {
+          query = state.query;
+        }
+
+        return ListView(
+          children: <Widget>[
+            const SearchHeader(),
+            if (queryResults.isNotEmpty)
+              ...queryResults
+                  .map((Character character) => Padding(
+                        padding: const EdgeInsets.all(Constants.margin),
+                        child: ResultCard(
+                          character: character,
+                        ),
+                      ))
+                  .toList()
+            else
+              UnexistentSearch(query: query),
+          ],
+        );
+      });
 }

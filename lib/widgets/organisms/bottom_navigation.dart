@@ -4,11 +4,10 @@
 import 'package:flutter/material.dart';
 
 import 'package:simple_app/l10n/app_localizations.dart';
-import 'package:simple_app/shared/app_routes.dart';
-import 'package:simple_app/shared/icons/one_piece_icons.dart';
-import 'package:simple_app/shared/theme.dart';
-
-import '../constants.dart';
+import 'package:simple_app/utils/app_routes.dart';
+import 'package:simple_app/utils/constants.dart' show Constants;
+import 'package:simple_app/utils/icons/one_piece_icons.dart';
+import 'package:simple_app/utils/theme.dart';
 
 enum BottomNavigationPages {
   counter,

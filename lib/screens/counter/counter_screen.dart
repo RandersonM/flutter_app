@@ -7,9 +7,9 @@ import 'package:provider/provider.dart';
 import 'package:simple_app/core/counter/counter_provider.dart';
 
 import 'package:simple_app/l10n/app_localizations.dart';
-import 'package:simple_app/shared/app_bar/default_app_bar.dart';
+import 'package:simple_app/widgets/molecules/default_app_bar.dart';
 
-import '../../shared/bottom_navigation/bottom_navigation.dart';
+import '../../widgets/organisms/bottom_navigation.dart';
 
 class CounterScreen extends StatefulWidget {
   const CounterScreen({Key? key}) : super(key: key);

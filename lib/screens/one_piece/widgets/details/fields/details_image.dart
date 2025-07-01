@@ -2,7 +2,7 @@
 // Copyright © 2022.
 
 import 'package:flutter/material.dart';
-import 'package:simple_app/shared/constants.dart';
+import 'package:simple_app/utils/constants.dart';
 
 class DetailsImage extends StatefulWidget {
   const DetailsImage({Key? key, required this.image}) : super(key: key);

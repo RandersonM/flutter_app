@@ -3,14 +3,15 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:simple_app/l10n/app_localizations.dart';
-import 'package:provider/provider.dart';
+import 'l10n/app_localizations.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
-import 'package:simple_app/core/one_piece/characters_provider.dart';
+import 'package:simple_app/core/one_piece/characters_cubit.dart';
+import 'package:simple_app/core/one_piece/search_cubit.dart';
 import 'package:simple_app/screens/splash/splash_screen.dart';
-import 'package:simple_app/shared/app_routes.dart';
+import 'package:simple_app/utils/app_routes.dart';
 
-import 'package:simple_app/shared/theme.dart';
+import 'package:simple_app/utils/theme.dart';
 
 void main() {
   SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
@@ -26,11 +27,15 @@ class MyApp extends StatelessWidget {
   final Locale? locale;
 
   @override
-  Widget build(BuildContext context) => MultiProvider(
-        providers: <ChangeNotifierProvider<dynamic>>[
-          ChangeNotifierProvider<CharactersProvider>(
-            create: (_) => CharactersProvider(),
+  Widget build(BuildContext context) => MultiBlocProvider(
+        providers: [
+          BlocProvider<CharactersCubit>(
+            create: (_) => CharactersCubit(),
             lazy: false,
+          ),
+          BlocProvider<SearchCubit>(
+            create: (_) => SearchCubit(),
+            lazy: true,
           ),
         ],
         child: MaterialApp(

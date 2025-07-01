@@ -4,7 +4,7 @@
 import 'package:flutter/material.dart';
 import 'package:simple_app/l10n/app_localizations.dart';
 
-import 'package:simple_app/shared/constants.dart';
+import 'package:simple_app/utils/constants.dart';
 
 class DetailsName extends StatelessWidget {
   const DetailsName(
