@@ -3,6 +3,7 @@
 
 import 'package:equatable/equatable.dart';
 import 'package:simple_app/core/one_piece/models/character.dart';
+import 'package:simple_app/core/home/models/youtube_video_model.dart';
 
 abstract class HomeState extends Equatable {
   const HomeState();
@@ -22,22 +23,37 @@ class HomeLoading extends HomeState {
 class HomeLoaded extends HomeState {
   final Character featuredCharacter;
   final bool isRandomCharacter;
+  final YouTubeVideo? currentVideo;
+  final bool isLoadingVideo;
 
   const HomeLoaded({
     required this.featuredCharacter,
     this.isRandomCharacter = false,
+    this.currentVideo,
+    this.isLoadingVideo = false,
   });
 
   @override
-  List<Object?> get props => [featuredCharacter, isRandomCharacter];
+  List<Object?> get props => [
+        featuredCharacter,
+        isRandomCharacter,
+        currentVideo,
+        isLoadingVideo,
+      ];
 
   HomeLoaded copyWith({
     Character? featuredCharacter,
     bool? isRandomCharacter,
+    YouTubeVideo? currentVideo,
+    bool? clearVideo,
+    bool? isLoadingVideo,
   }) {
     return HomeLoaded(
       featuredCharacter: featuredCharacter ?? this.featuredCharacter,
       isRandomCharacter: isRandomCharacter ?? this.isRandomCharacter,
+      currentVideo:
+          clearVideo == true ? null : (currentVideo ?? this.currentVideo),
+      isLoadingVideo: isLoadingVideo ?? this.isLoadingVideo,
     );
   }
 }

@@ -2,6 +2,7 @@
 // Copyright © 2022.
 
 import 'package:equatable/equatable.dart';
+import 'package:simple_app/core/one_piece/models/character.dart';
 
 abstract class HomeEvent extends Equatable {
   const HomeEvent();
@@ -20,4 +21,22 @@ class LoadRandomCharacter extends HomeEvent {
 
 class RefreshHome extends HomeEvent {
   const RefreshHome();
+}
+
+class LoadCharacterVideo extends HomeEvent {
+  final String characterName;
+
+  const LoadCharacterVideo(this.characterName);
+
+  @override
+  List<Object> get props => [characterName];
+}
+
+class SelectCharacter extends HomeEvent {
+  final Character character;
+
+  const SelectCharacter(this.character);
+
+  @override
+  List<Object> get props => [character];
 }

@@ -1,0 +1,19 @@
+// Arquivo de exemplo para configuração da API do YouTube
+// Copie este arquivo para youtube_config.dart e configure sua API key
+
+class YouTubeConfig {
+  // Substitua pela sua API key do YouTube Data API v3
+  static const String apiKey = 'YOUR_YOUTUBE_API_KEY_HERE';
+  
+  // URLs da API
+  static const String baseUrl = 'https://www.googleapis.com/youtube/v3';
+  
+  // Parâmetros padrão de busca
+  static const int defaultMaxResults = 1;
+  static const String defaultOrder = 'relevance';
+  static const String defaultSafeSearch = 'none';
+  static const String defaultVideoEmbeddable = 'true';
+  
+  // Verificar se a API key está configurada
+  static bool get isConfigured => apiKey != 'YOUR_YOUTUBE_API_KEY_HERE' && apiKey.isNotEmpty;
+} 
