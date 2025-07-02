@@ -100,5 +100,83 @@
     "description": "Filter label on search section one piece",
     "type": "text",
     "placeholders": {}
+  },
+  "featuredCharacter": "Personagem em Destaque",
+  "@featuredCharacter": {
+    "description": "Title for featured character section on home screen",
+    "type": "text",
+    "placeholders": {}
+  },
+  "randomCharacter": "Personagem Aleatório",
+  "@randomCharacter": {
+    "description": "Button text to load a random character",
+    "type": "text",
+    "placeholders": {}
+  },
+  "refresh": "Atualizar",
+  "@refresh": {
+    "description": "Button text to refresh content",
+    "type": "text",
+    "placeholders": {}
+  },
+  "statistics": "Estatísticas",
+  "@statistics": {
+    "description": "Title for statistics section",
+    "type": "text",
+    "placeholders": {}
+  },
+  "totalCharacters": "Total de Personagens",
+  "@totalCharacters": {
+    "description": "Label for total characters statistic",
+    "type": "text",
+    "placeholders": {}
+  },
+  "highestBounty": "Bounty Mais Alta",
+  "@highestBounty": {
+    "description": "Label for highest bounty statistic",
+    "type": "text",
+    "placeholders": {}
+  },
+  "crews": "Tripulações",
+  "@crews": {
+    "description": "Label for crews statistic",
+    "type": "text",
+    "placeholders": {}
+  },
+  "searchingVideo": "Buscando vídeo AMV...",
+  "@searchingVideo": {
+    "description": "Loading message when searching for YouTube video",
+    "type": "text",
+    "placeholders": {}
+  },
+  "loadingError": "Erro ao carregar personagem",
+  "@loadingError": {
+    "description": "Error message when character fails to load",
+    "type": "text",
+    "placeholders": {}
+  },
+  "tryAgain": "Tentar Novamente",
+  "@tryAgain": {
+    "description": "Button text to retry an action",
+    "type": "text",
+    "placeholders": {}
+  },
+  "loading": "Carregando...",
+  "@loading": {
+    "description": "General loading message",
+    "type": "text",
+    "placeholders": {}
+  },
+  "imageUnavailable": "Imagem\nIndisponível",
+  "@imageUnavailable": {
+    "description": "Text shown when character image cannot be loaded",
+    "type": "text",
+    "placeholders": {}
+  },
+  "selectCharacter": "Selecionar Personagem",
+  "@selectCharacter": {
+    "description": "Button text to open character selection screen",
+    "type": "text",
+    "placeholders": {}
   }
 }

@@ -249,7 +249,7 @@
       "occupation": ["Pirate", "Archaeologist"],
       "devil_fruit": "Hana Hana no Mi",
       "affiliations": ["Straw Hat Pirates"],
-      "image": "https://i.pinimg.com/originals/1f/8e/4c/1f8e4c7b9a2d6f3e5c8b1a4f7d0c3e6b.jpg",
+      "image": "https://i.pinimg.com/736x/06/51/ef/0651eff44b528cfb24e831682526c03c.jpg",
       "bounty": "฿930,000,000"
     },
     {
@@ -348,7 +348,7 @@
       "affiliations": ["Straw Hat Pirates"],
       "haki": ["Busoshoku Haki"],
       "bounty": "฿394,000,000",
-      "image": "https://i.pinimg.com/originals/fe/4e/93/fe4e936216f3a54c69615e57c8c0f56f.jpg"
+      "image": "https://i.pinimg.com/736x/1a/9f/fd/1a9ffd3046ed4cb8a7e8bf30ee19caa7.jpg"
     },
     {
       "id": 34,
@@ -358,7 +358,7 @@
       "affiliations": ["Straw Hat Pirates"],
       "haki": ["Busoshoku Haki"],
       "bounty": "฿383,000,000",
-      "image": "https://i.pinimg.com/originals/2d/ab/13/2dab1398a0d243020d44702de1dabd72.png"
+      "image": "https://i.pinimg.com/736x/28/fe/5c/28fe5c5966a696717b8570736e742fef.jpg"
     },
     {
       "id": 35,
@@ -377,7 +377,7 @@
       "occupation": ["Pirate", "Navigator"],
       "affiliations": ["Straw Hat Pirates"],
       "bounty": "฿366,000,000",
-      "image": "https://i.pinimg.com/originals/6d/09/19/6d0919c98dc28c299f27098c937976d8.png"
+      "image": "https://i.pinimg.com/736x/ea/42/75/ea4275e16210a6f86ecdc940de678b5c.jpg"
     },
     {
       "id": 37,
@@ -420,7 +420,7 @@
       "affiliations": ["Super Rookie"],
       "haki": ["Kenbunshoku Haki"],
       "bounty": "฿320,000,000",
-      "image": "https://i.pinimg.com/originals/ea/12/8d/ea128d947de61b7bc8e348322d8f2f3a.jpg"
+      "image": "https://i.pinimg.com/736x/b5/b8/df/b5b8df97087c4bda776890b939a03cf8.jpg"
     },
     {
       "id": 41,
@@ -428,7 +428,7 @@
       "occupation": ["Pirate", "Captain"],
       "affiliations": ["Super Rookie"],
       "bounty": "฿320,000,000",
-      "image": "https://i.pinimg.com/originals/87/3a/aa/873aaa5c6aa15754935b1552d8426dba.jpg"
+      "image": "https://i.pinimg.com/736x/8d/ca/52/8dca5228a7bcee84ff062c6d90d8f3bb.jpg"
     },
     {
       "id": 42,
@@ -438,15 +438,15 @@
       "devil_fruit": "Kage Kage no Mi",
       "affiliations": ["Thriller Bark Pirates", "Cross Guild"],
       "bounty": "฿320,000,000",
-      "image": "https://i.pinimg.com/originals/aa/46/e7/aa46e7a6547c11e249f0bcc9bccfbbc8.jpg"
+      "image": "https://i.pinimg.com/736x/52/52/73/52527327cbb0900c2374e1e1f378e77a.jpg"
     },
     {
       "id": 43,
       "name": "Lindbergh",
-      "occupation": ["Pirate", "Shipwright"],
+      "occupation": ["Revolutionary Army", "Shipwright"],
       "affiliations": ["Super Rookie"],
       "bounty": "฿316,000,000",
-      "image": "https://i.pinimg.com/originals/22/19/a2/2219a2a6e8fcd41b046f83ce1ae0bfa2.jpg"
+      "image": "https://i.pinimg.com/736x/f8/d8/c3/f8d8c3a1b83d101666ad5f94311bace1.jpg"
     },
     {
       "id": 44,
@@ -455,7 +455,7 @@
       "devil_fruit": "Netsu Netsu no Mi",
       "affiliations": ["Big Mom Pirates"],
       "bounty": "฿300,000,000",
-      "image": "https://i.pinimg.com/originals/ff/6f/3e/ff6f3e4e7bdb4c8fb5e9d71ff71c8a74.jpg"
+      "image": "https://i.pinimg.com/736x/98/80/84/98808475abbadb78d74296ee653cb7fe.jpg"
     },
     {
       "id": 45,
@@ -464,7 +464,7 @@
       "devil_fruit": "Hoya Hoya no Mi",
       "affiliations": ["Big Mom Pirates"],
       "bounty": "฿300,000,000",
-      "image": "https://i.pinimg.com/originals/64/a8/87/64a8879f3f7b9c5289e9f8b3a7c575e7.jpg"
+      "image": "https://i.pinimg.com/736x/0b/a2/f7/0ba2f74e4cf08b9845aaa8c40a885b6a.jpg"
     },
     {
       "id": 46,
@@ -473,7 +473,7 @@
       "devil_fruit": "Gasu Gasu no Mi",
       "affiliations": ["Caesar Pirates"],
       "bounty": "฿300,000,000",
-      "image": "https://i.pinimg.com/originals/5c/2d/77/5c2d776d5b1e8c978f6a4eb388466c64.jpg"
+      "image": "https://i.pinimg.com/736x/8e/dc/c1/8edcc1306607b260d3075fa3cf455d90.jpg"
     },
     {
       "id": 47,
@@ -482,7 +482,7 @@
       "devil_fruit": "Nikyu Nikyu no Mi",
       "affiliations": ["Revolutionary Army", "World Government"],
       "bounty": "฿296,000,000",
-      "image": "https://i.pinimg.com/originals/9f/52/fd/9f52fd7f232c4d76ae1479f60f5fbdec.jpg"
+      "image": "https://i.pinimg.com/736x/0b/e5/41/0be541a5ba8af72f09a4020f35e5a1ca.jpg"
     },
     {
       "id": 48,
@@ -490,7 +490,7 @@
       "occupation": ["Revolutionary", "Giant Warrior"],
       "affiliations": ["Revolutionary Army"],
       "bounty": "฿293,000,000",
-      "image": "https://i.pinimg.com/originals/1a/e4/2c/1ae42cb6a1ea4385b0ad5a2e6031e2dc.jpg"
+      "image": "https://i.pinimg.com/736x/1e/d8/69/1ed8691c073c2927737c4563ca3e9a2a.jpg"
     },
     {
       "id": 49,
@@ -499,7 +499,7 @@
       "devil_fruit": "Ryu Ryu no Mi, Model: Spinosaurus",
       "affiliations": ["Beasts Pirates"],
       "bounty": "฿290,000,000",
-      "image": "https://i.pinimg.com/originals/3e/5d/4f/3e5d4f419b9ced098b3c1f15f8fb12b2.jpg"
+      "image": "https://i.pinimg.com/736x/68/cf/fb/68cffbf08a454c66a815162e0d1f0e84.jpg"
     },
     {
       "id": 50,
@@ -508,7 +508,7 @@
       "devil_fruit": "Ryu Ryu no Mi, Model: Allosaurus",
       "affiliations": ["Beasts Pirates", "Revolutionary Army"],
       "bounty": "฿222,000,000",
-      "image": "https://i.pinimg.com/originals/7a/ce/b7/7aceb7b12334544108bcda314a7e9aaa.jpg"
+      "image": "https://i.pinimg.com/736x/76/82/eb/7682ebc2220b63f778b9a899a21efafc.jpg"
     },
     {
       "id": 51,
@@ -516,7 +516,7 @@
       "occupation": ["Revolutionary", "Chief Army Officer"],
       "affiliations": ["Revolutionary Army"],
       "bounty": "฿210,000,000",
-      "image": "https://i.pinimg.com/originals/2b/2f/b6/2b2fb6a7de9c8929b3df1c90c5db0f4e.jpg"
+      "image": "https://i.pinimg.com/736x/a8/ad/ba/a8adba6d68dee1144f1046059a193849.jpg"
     }
   ]
 }

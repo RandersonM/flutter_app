@@ -211,6 +211,84 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Straw Hat Pirates'**
   String get strawHat;
+
+  /// Title for featured character section on home screen
+  ///
+  /// In en, this message translates to:
+  /// **'Featured Character'**
+  String get featuredCharacter;
+
+  /// Button text to load a random character
+  ///
+  /// In en, this message translates to:
+  /// **'Random Character'**
+  String get randomCharacter;
+
+  /// Button text to refresh content
+  ///
+  /// In en, this message translates to:
+  /// **'Refresh'**
+  String get refresh;
+
+  /// Title for statistics section
+  ///
+  /// In en, this message translates to:
+  /// **'Statistics'**
+  String get statistics;
+
+  /// Label for total characters statistic
+  ///
+  /// In en, this message translates to:
+  /// **'Total Characters'**
+  String get totalCharacters;
+
+  /// Label for highest bounty statistic
+  ///
+  /// In en, this message translates to:
+  /// **'Highest Bounty'**
+  String get highestBounty;
+
+  /// Label for crews statistic
+  ///
+  /// In en, this message translates to:
+  /// **'Crews'**
+  String get crews;
+
+  /// Loading message when searching for YouTube video
+  ///
+  /// In en, this message translates to:
+  /// **'Searching AMV video...'**
+  String get searchingVideo;
+
+  /// Error message when character fails to load
+  ///
+  /// In en, this message translates to:
+  /// **'Error loading character'**
+  String get loadingError;
+
+  /// Button text to retry an action
+  ///
+  /// In en, this message translates to:
+  /// **'Try Again'**
+  String get tryAgain;
+
+  /// General loading message
+  ///
+  /// In en, this message translates to:
+  /// **'Loading...'**
+  String get loading;
+
+  /// Text shown when character image cannot be loaded
+  ///
+  /// In en, this message translates to:
+  /// **'Image\nUnavailable'**
+  String get imageUnavailable;
+
+  /// Button text to open character selection screen
+  ///
+  /// In en, this message translates to:
+  /// **'Select Character'**
+  String get selectCharacter;
 }
 
 class _AppLocalizationsDelegate

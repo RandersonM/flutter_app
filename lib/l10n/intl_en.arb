@@ -112,5 +112,83 @@
     "description": "Filter label on search section one piece",
     "type": "text",
     "placeholders": {}
+  },
+  "featuredCharacter": "Featured Character",
+  "@featuredCharacter": {
+    "description": "Title for featured character section on home screen",
+    "type": "text",
+    "placeholders": {}
+  },
+  "randomCharacter": "Random Character",
+  "@randomCharacter": {
+    "description": "Button text to load a random character",
+    "type": "text",
+    "placeholders": {}
+  },
+  "refresh": "Refresh",
+  "@refresh": {
+    "description": "Button text to refresh content",
+    "type": "text",
+    "placeholders": {}
+  },
+  "statistics": "Statistics",
+  "@statistics": {
+    "description": "Title for statistics section",
+    "type": "text",
+    "placeholders": {}
+  },
+  "totalCharacters": "Total Characters",
+  "@totalCharacters": {
+    "description": "Label for total characters statistic",
+    "type": "text",
+    "placeholders": {}
+  },
+  "highestBounty": "Highest Bounty",
+  "@highestBounty": {
+    "description": "Label for highest bounty statistic",
+    "type": "text",
+    "placeholders": {}
+  },
+  "crews": "Crews",
+  "@crews": {
+    "description": "Label for crews statistic",
+    "type": "text",
+    "placeholders": {}
+  },
+  "searchingVideo": "Searching AMV video...",
+  "@searchingVideo": {
+    "description": "Loading message when searching for YouTube video",
+    "type": "text",
+    "placeholders": {}
+  },
+  "loadingError": "Error loading character",
+  "@loadingError": {
+    "description": "Error message when character fails to load",
+    "type": "text",
+    "placeholders": {}
+  },
+  "tryAgain": "Try Again",
+  "@tryAgain": {
+    "description": "Button text to retry an action",
+    "type": "text",
+    "placeholders": {}
+  },
+  "loading": "Loading...",
+  "@loading": {
+    "description": "General loading message",
+    "type": "text",
+    "placeholders": {}
+  },
+  "imageUnavailable": "Image\nUnavailable",
+  "@imageUnavailable": {
+    "description": "Text shown when character image cannot be loaded",
+    "type": "text",
+    "placeholders": {}
+  },
+  "selectCharacter": "Select Character",
+  "@selectCharacter": {
+    "description": "Button text to open character selection screen",
+    "type": "text",
+    "placeholders": {}
   }
 }
