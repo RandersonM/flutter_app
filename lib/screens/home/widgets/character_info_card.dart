@@ -2,6 +2,7 @@
 // Copyright © 2022.
 
 import 'package:flutter/material.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:simple_app/utils/constants.dart';
 
 class CharacterInfoCard extends StatelessWidget {
@@ -10,7 +11,7 @@ class CharacterInfoCard extends StatelessWidget {
     this.characterName = "Monkey D. Luffy",
     this.characterBounty = "฿3,000,000,000",
     this.characterImage =
-        "https://via.placeholder.com/100x100.png?text=Character",
+        "https://static.wikia.nocookie.net/onepiece/images/6/6d/Monkey_D._Luffy_Anime_Post_Timeskip_Infobox.png",
     this.onTap,
   }) : super(key: key);
 
@@ -46,10 +47,18 @@ class CharacterInfoCard extends StatelessWidget {
                   ),
                 ),
                 child: ClipOval(
-                  child: Image.network(
-                    characterImage,
+                  child: CachedNetworkImage(
+                    imageUrl: characterImage,
                     fit: BoxFit.cover,
-                    errorBuilder: (context, error, stackTrace) => Container(
+                    placeholder: (context, url) => Container(
+                      color: Colors.grey[300],
+                      child: const Center(
+                        child: CircularProgressIndicator(
+                          strokeWidth: 2,
+                        ),
+                      ),
+                    ),
+                    errorWidget: (context, url, error) => Container(
                       color: Colors.grey[300],
                       child: const Icon(
                         Icons.person,
