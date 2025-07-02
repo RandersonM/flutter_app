@@ -2,10 +2,9 @@
 // Copyright © 2022.
 
 import 'package:flutter/material.dart';
-import 'package:simple_app/screens/home/home_screen.dart';
 import 'package:simple_app/screens/splash/widgets/logo.dart';
+import 'package:simple_app/utils/app_routes.dart';
 import 'package:simple_app/utils/decorations/gradient.dart';
-import 'package:simple_app/utils/transitions/material_page_route_with_slide_right_transition.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({Key? key}) : super(key: key);
@@ -21,11 +20,11 @@ class _SplashScreenState extends State<SplashScreen> {
 
     Future<void>.delayed(const Duration(seconds: 3), () {
       if (mounted) {
-        Navigator.pushAndRemoveUntil(
-            context,
-            MaterialPageRouteWithSlideRightTransition(
-                builder: (_) => const HomeScreen()),
-            (_) => false);
+        Navigator.pushNamedAndRemoveUntil(
+          context,
+          AppRoutes.home,
+          (_) => false,
+        );
       }
     });
   }
