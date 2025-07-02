@@ -64,4 +64,43 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get strawHat => 'Straw Hat Pirates';
+
+  @override
+  String get featuredCharacter => 'Featured Character';
+
+  @override
+  String get randomCharacter => 'Random Character';
+
+  @override
+  String get refresh => 'Refresh';
+
+  @override
+  String get statistics => 'Statistics';
+
+  @override
+  String get totalCharacters => 'Total Characters';
+
+  @override
+  String get highestBounty => 'Highest Bounty';
+
+  @override
+  String get crews => 'Crews';
+
+  @override
+  String get searchingVideo => 'Searching AMV video...';
+
+  @override
+  String get loadingError => 'Error loading character';
+
+  @override
+  String get tryAgain => 'Try Again';
+
+  @override
+  String get loading => 'Loading...';
+
+  @override
+  String get imageUnavailable => 'Image\nUnavailable';
+
+  @override
+  String get selectCharacter => 'Select Character';
 }

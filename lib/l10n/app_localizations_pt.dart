@@ -64,4 +64,43 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get strawHat => 'Straw Hat Pirates';
+
+  @override
+  String get featuredCharacter => 'Personagem em Destaque';
+
+  @override
+  String get randomCharacter => 'Personagem Aleatório';
+
+  @override
+  String get refresh => 'Atualizar';
+
+  @override
+  String get statistics => 'Estatísticas';
+
+  @override
+  String get totalCharacters => 'Total de Personagens';
+
+  @override
+  String get highestBounty => 'Bounty Mais Alta';
+
+  @override
+  String get crews => 'Tripulações';
+
+  @override
+  String get searchingVideo => 'Buscando vídeo AMV...';
+
+  @override
+  String get loadingError => 'Erro ao carregar personagem';
+
+  @override
+  String get tryAgain => 'Tentar Novamente';
+
+  @override
+  String get loading => 'Carregando...';
+
+  @override
+  String get imageUnavailable => 'Imagem\nIndisponível';
+
+  @override
+  String get selectCharacter => 'Selecionar Personagem';
 }
