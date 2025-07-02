@@ -3,11 +3,12 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:simple_app/core/one_piece/blocs/search_cubit.dart';
 import 'l10n/app_localizations.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import 'package:simple_app/core/one_piece/characters_cubit.dart';
-import 'package:simple_app/core/one_piece/search_cubit.dart';
+import 'package:simple_app/core/one_piece/blocs/characters_cubit.dart';
+
 import 'package:simple_app/screens/splash/splash_screen.dart';
 import 'package:simple_app/utils/app_routes.dart';
 

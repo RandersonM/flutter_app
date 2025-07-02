@@ -4,14 +4,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
-import 'package:simple_app/screens/counter/counter_screen.dart';
+import 'package:simple_app/screens/home/home_screen.dart';
 
 import '../../testable_widget.dart';
 
 void main() {
   testWidgets('Counter increments and Bottom Navigation',
       (WidgetTester tester) async {
-    Widget counterScreen = const CounterScreen();
+    Widget counterScreen = const HomeScreen();
 
     await tester.pumpWidget(getTestableWidget(counterScreen));
 

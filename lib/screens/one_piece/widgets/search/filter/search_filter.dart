@@ -3,7 +3,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:simple_app/core/one_piece/search_cubit.dart';
+import 'package:simple_app/core/one_piece/blocs/search_cubit.dart';
 
 import 'package:simple_app/utils/constants.dart';
 
