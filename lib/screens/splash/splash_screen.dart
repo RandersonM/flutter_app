@@ -2,7 +2,7 @@
 // Copyright © 2022.
 
 import 'package:flutter/material.dart';
-import 'package:simple_app/screens/counter/counter_screen.dart';
+import 'package:simple_app/screens/home/home_screen.dart';
 import 'package:simple_app/screens/splash/widgets/logo.dart';
 import 'package:simple_app/utils/decorations/gradient.dart';
 import 'package:simple_app/utils/transitions/material_page_route_with_slide_right_transition.dart';
@@ -24,7 +24,7 @@ class _SplashScreenState extends State<SplashScreen> {
         Navigator.pushAndRemoveUntil(
             context,
             MaterialPageRouteWithSlideRightTransition(
-                builder: (_) => const CounterScreen()),
+                builder: (_) => const HomeScreen()),
             (_) => false);
       }
     });

@@ -5,7 +5,7 @@ import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 
 import 'package:simple_app/core/one_piece/models/character.dart';
-import 'package:simple_app/core/one_piece/services/characters_backend_service.dart';
+import 'package:simple_app/core/services/characters_backend_service.dart';
 
 // States
 abstract class SearchState extends Equatable {
