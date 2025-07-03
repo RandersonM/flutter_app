@@ -22,8 +22,11 @@ class EnvironmentService {
   String get youtubeBaseUrl =>
       _getString('YOUTUBE_BASE_URL', 'https://www.googleapis.com/youtube/v3');
 
-  String get charactersApiUrl => _getString(
-      'CHARACTERS_API_URL', 'https://api.api-onepiece.com/v2/characters/en');
+  String get onepieceApiUrl =>
+      _getString('ONEPIECE_API_URL', 'https://api.api-onepiece.com/v2/');
+
+  String get devilFruitApiUrl => _getString(
+      'DEVIL_FRUIT_API_URL', 'https://api.api-onepiece.com/v2/fruits/en');
 
   String get appName => _getString('APP_NAME', 'One Piece Simple App');
 
@@ -81,7 +84,7 @@ class EnvironmentService {
   bool validateRequiredVariables() {
     final requiredKeys = [
       'YOUTUBE_API_KEY',
-      'CHARACTERS_API_URL',
+      'ONEPIECE_API_URL',
     ];
 
     for (final key in requiredKeys) {
@@ -98,7 +101,7 @@ class EnvironmentService {
       'app_version': appVersion,
       'debug_mode': debugMode,
       'youtube_api_configured': youtubeApiKey.isNotEmpty,
-      'characters_api_url': charactersApiUrl,
+      'onepiece_api_url': onepieceApiUrl,
       'network_timeout': networkTimeout,
       'retry_count': retryCount,
       'cache_expiry_time': cacheExpiryTime,
