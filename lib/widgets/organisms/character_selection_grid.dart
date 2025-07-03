@@ -3,8 +3,9 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:simple_app/core/one_piece/blocs/search_cubit.dart';
+import 'package:simple_app/screens/one_piece/blocs/search_cubit.dart';
 import 'package:simple_app/core/one_piece/models/character.dart';
+import 'package:simple_app/core/services/service_locator.dart';
 import 'package:simple_app/l10n/app_localizations.dart';
 import 'package:simple_app/utils/constants.dart';
 
@@ -26,7 +27,7 @@ class _CharacterSelectionGridState extends State<CharacterSelectionGrid> {
   @override
   void initState() {
     super.initState();
-    _searchCubit = SearchCubit();
+    _searchCubit = getIt<SearchCubit>();
     _searchCubit.filter();
   }
 

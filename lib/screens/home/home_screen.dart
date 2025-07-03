@@ -4,8 +4,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:simple_app/core/one_piece/models/character.dart';
-import 'package:simple_app/core/services/characters_backend_service.dart';
-import 'package:simple_app/core/services/youtube_service.dart';
+import 'package:simple_app/core/services/service_locator.dart';
 import 'package:simple_app/l10n/app_localizations.dart';
 import 'package:simple_app/widgets/molecules/default_app_bar.dart';
 import 'package:simple_app/widgets/molecules/statistics_grid.dart';
@@ -29,10 +28,8 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => HomeBloc(
-        charactersService: CharactersBackendService(),
-        youTubeService: YouTubeService(),
-      )..add(const LoadFeaturedCharacter()),
+      create: (context) =>
+          getIt<HomeBloc>()..add(const LoadFeaturedCharacter()),
       child: Scaffold(
         appBar: DefaultAppBar(
           title: Text(AppLocalizations.of(context)!.home),

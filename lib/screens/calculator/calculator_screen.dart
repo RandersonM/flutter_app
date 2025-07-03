@@ -6,6 +6,7 @@ import 'package:simple_app/l10n/app_localizations.dart';
 import 'package:provider/provider.dart';
 
 import 'package:simple_app/core/calculator/calculator_provider.dart';
+import 'package:simple_app/core/services/service_locator.dart';
 import 'package:simple_app/screens/calculator/widgets/calculator_content.dart';
 import 'package:simple_app/widgets/molecules/default_app_bar.dart';
 import 'package:simple_app/widgets/organisms/bottom_navigation.dart';
@@ -21,7 +22,7 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
   @override
   Widget build(BuildContext context) =>
       ChangeNotifierProvider<CalculatorProvider>(
-        create: (context) => CalculatorProvider(),
+        create: (context) => getIt<CalculatorProvider>(),
         child: Scaffold(
           appBar: DefaultAppBar(
             title: Text(AppLocalizations.of(context)!.calculatorTitle),
