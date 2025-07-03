@@ -9,7 +9,6 @@ import 'package:simple_app/core/calculator/calculator_provider.dart';
 import 'package:simple_app/core/services/service_locator.dart';
 import 'package:simple_app/screens/calculator/widgets/calculator_content.dart';
 import 'package:simple_app/widgets/molecules/default_app_bar.dart';
-import 'package:simple_app/widgets/organisms/bottom_navigation.dart';
 
 class CalculatorScreen extends StatefulWidget {
   const CalculatorScreen({Key? key}) : super(key: key);
@@ -28,8 +27,7 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
             title: Text(AppLocalizations.of(context)!.calculatorTitle),
           ),
           body: const CalculatorContent(),
-          bottomNavigationBar:
-              const BottomNavigation(BottomNavigationPages.calculator),
+          
         ),
       );
 }
