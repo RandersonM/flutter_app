@@ -9,7 +9,7 @@ part 'featured_character.g.dart';
 @HiveType(typeId: 0)
 class FeaturedCharacter extends HiveObject {
   @HiveField(0)
-  late String date; // Data no formato YYYY-MM-DD
+  late String date;
 
   @HiveField(1)
   late int characterId;
@@ -39,7 +39,7 @@ class FeaturedCharacter extends HiveObject {
   late List<String> characterOccupation;
 
   @HiveField(10)
-  late bool isManuallySelected; // Se foi selecionado manualmente pelo usuário
+  late bool isManuallySelected;
 
   FeaturedCharacter();
 

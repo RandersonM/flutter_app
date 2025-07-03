@@ -7,7 +7,7 @@ import 'package:hive_flutter/hive_flutter.dart';
 import 'package:simple_app/screens/one_piece/blocs/search_cubit.dart';
 import 'package:simple_app/core/services/environment_service.dart';
 import 'package:simple_app/core/services/service_locator.dart';
-import 'package:simple_app/core/home/models/featured_character.dart';
+import 'package:simple_app/core/one_piece/models/featured_character.dart';
 import 'l10n/app_localizations.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -21,13 +21,10 @@ import 'package:simple_app/utils/theme.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   
-  // Inicializar Hive primeiro
   await Hive.initFlutter();
 
-  // Registrar adapters do Hive
   Hive.registerAdapter(FeaturedCharacterAdapter());
 
-  // Inicializar outros serviços
   await Future.wait([
     EnvironmentService.initialize(),
     configureDependencies(),

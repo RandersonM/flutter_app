@@ -36,7 +36,6 @@ class _DevilFruitSearchHeaderState extends State<DevilFruitSearchHeader> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // Título da seção
           Text(
             'Explore as Akuma no Mi',
             style: Theme.of(context).textTheme.headlineSmall?.copyWith(
@@ -52,7 +51,6 @@ class _DevilFruitSearchHeaderState extends State<DevilFruitSearchHeader> {
           ),
           const SizedBox(height: Constants.margin * 2),
 
-          // Campo de pesquisa
           Container(
             decoration: BoxDecoration(
               color: Colors.grey[100],
@@ -100,7 +98,6 @@ class _DevilFruitSearchHeaderState extends State<DevilFruitSearchHeader> {
             ),
           ),
 
-          // Indicador de pesquisa
           if (_isSearching)
             const Padding(
               padding: EdgeInsets.only(top: Constants.margin),

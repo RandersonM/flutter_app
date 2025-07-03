@@ -35,7 +35,6 @@ class CharacterInfoCard extends StatelessWidget {
           padding: const EdgeInsets.all(Constants.margin),
           child: Row(
             children: [
-              // Avatar do personagem
               Container(
                 width: 60,
                 height: 60,
@@ -72,7 +71,6 @@ class CharacterInfoCard extends StatelessWidget {
 
               const SizedBox(width: Constants.margin),
 
-              // Informações do personagem
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -108,7 +106,6 @@ class CharacterInfoCard extends StatelessWidget {
                 ),
               ),
 
-              // Seta indicando que é clicável
               Icon(
                 Icons.arrow_forward_ios,
                 size: 16,

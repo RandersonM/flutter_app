@@ -21,7 +21,6 @@ class EmptyDevilFruitList extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          // Ícone
           Container(
             padding: const EdgeInsets.all(Constants.margin * 2),
             decoration: BoxDecoration(
@@ -37,7 +36,6 @@ class EmptyDevilFruitList extends StatelessWidget {
 
           const SizedBox(height: Constants.margin * 2),
 
-          // Título
           Text(
             hasFilters
                 ? 'Nenhuma fruta encontrada'
@@ -51,7 +49,6 @@ class EmptyDevilFruitList extends StatelessWidget {
 
           const SizedBox(height: Constants.margin),
 
-          // Descrição
           Text(
             hasFilters
                 ? 'Tente ajustar os filtros ou buscar por outros termos'
@@ -64,7 +61,6 @@ class EmptyDevilFruitList extends StatelessWidget {
 
           const SizedBox(height: Constants.margin * 2),
 
-          // Botão de ação
           if (hasFilters && onClearFilters != null)
             ElevatedButton.icon(
               onPressed: onClearFilters,

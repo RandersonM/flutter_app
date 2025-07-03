@@ -135,7 +135,6 @@ class _DevilFruitListScreenState extends State<DevilFruitListScreen> {
       },
       child: CustomScrollView(
         slivers: [
-          // Header com pesquisa
           const SliverToBoxAdapter(
             child: Padding(
               padding: EdgeInsets.all(Constants.margin),
@@ -143,12 +142,10 @@ class _DevilFruitListScreenState extends State<DevilFruitListScreen> {
             ),
           ),
 
-          // Filtros
           SliverToBoxAdapter(
             child: _buildFiltersSection(state),
           ),
 
-          // Loading indicator para busca
           if (state.isSearching)
             const SliverToBoxAdapter(
               child: Padding(
@@ -159,7 +156,6 @@ class _DevilFruitListScreenState extends State<DevilFruitListScreen> {
               ),
             ),
 
-          // Lista de frutas
           if (state.filteredFruits.isEmpty && !state.isSearching)
             SliverToBoxAdapter(
               child: EmptyDevilFruitList(
@@ -193,7 +189,6 @@ class _DevilFruitListScreenState extends State<DevilFruitListScreen> {
               ),
             ),
 
-          // Espaçamento inferior
           const SliverToBoxAdapter(
             child: SizedBox(height: Constants.margin * 2),
           ),
