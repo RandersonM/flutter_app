@@ -3,20 +3,20 @@
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:simple_app/core/services/characters_backend_service.dart';
 import 'package:simple_app/core/services/youtube_service.dart';
+import 'package:simple_app/core/services/featured_character_service.dart';
 import 'home_event.dart';
 import 'home_state.dart';
 
 class HomeBloc extends Bloc<HomeEvent, HomeState> {
-  final CharactersBackendService _charactersService;
   final YouTubeService _youTubeService;
+  final FeaturedCharacterService _featuredCharacterService;
 
   HomeBloc({
-    required CharactersBackendService charactersService,
     required YouTubeService youTubeService,
-  })  : _charactersService = charactersService,
-        _youTubeService = youTubeService,
+    required FeaturedCharacterService featuredCharacterService,
+  })  : _youTubeService = youTubeService,
+        _featuredCharacterService = featuredCharacterService,
         super(const HomeInitial()) {
     on<LoadFeaturedCharacter>(_onLoadFeaturedCharacter);
     on<LoadRandomCharacter>(_onLoadRandomCharacter);
@@ -32,7 +32,12 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     try {
       emit(const HomeLoading());
 
-      final character = await _charactersService.fetchRandomCharacter();
+      // Inicializar o serviço se necessário
+      await _featuredCharacterService.init();
+
+      // Buscar o personagem em destaque do dia (cache ou novo)
+      final character =
+          await _featuredCharacterService.getTodaysFeaturedCharacter();
 
       emit(HomeLoaded(
         featuredCharacter: character,
@@ -56,7 +61,8 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
         emit(const HomeLoading());
       }
 
-      final character = await _charactersService.fetchRandomCharacter();
+      // Buscar personagem aleatório e salvar como seleção manual
+      final character = await _featuredCharacterService.getRandomCharacter();
 
       emit(HomeLoaded(
         featuredCharacter: character,
@@ -77,7 +83,9 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     try {
       emit(const HomeLoading());
 
-      final character = await _charactersService.fetchRandomCharacter();
+      // Buscar novo personagem do dia
+      final character =
+          await _featuredCharacterService.getTodaysFeaturedCharacter();
 
       emit(HomeLoaded(
         featuredCharacter: character,
@@ -130,6 +138,9 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
   ) async {
     final currentState = state;
     if (currentState is! HomeLoaded) return;
+
+    // Salvar o personagem selecionado
+    await _featuredCharacterService.saveSelectedCharacter(event.character);
 
     emit(currentState.copyWith(
       featuredCharacter: event.character,
