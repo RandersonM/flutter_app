@@ -4,6 +4,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:simple_app/core/one_piece/blocs/search_cubit.dart';
+import 'package:simple_app/core/services/environment_service.dart';
 import 'l10n/app_localizations.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -14,7 +15,11 @@ import 'package:simple_app/utils/app_routes.dart';
 
 import 'package:simple_app/utils/theme.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  await EnvironmentService.initialize();
+  
   SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
     statusBarColor: Colors.white24,
   ));
@@ -40,7 +45,7 @@ class MyApp extends StatelessWidget {
           ),
         ],
         child: MaterialApp(
-          title: 'Simple App',
+          title: EnvironmentService.instance.appName,
           locale: locale,
           localizationsDelegates: AppLocalizations.localizationsDelegates,
           supportedLocales: const <Locale>[

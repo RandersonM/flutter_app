@@ -6,18 +6,17 @@ import 'dart:math';
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import '../home/models/youtube_video_model.dart';
+import 'environment_service.dart';
 
 class YouTubeService {
-  static const String _baseUrl = 'https://www.googleapis.com/youtube/v3';
-  static const String _apiKey = 'xxx';
-
   late final Dio _dio;
+  final EnvironmentService _env = EnvironmentService.instance;
 
   YouTubeService() {
     _dio = Dio(BaseOptions(
-      baseUrl: _baseUrl,
-      connectTimeout: const Duration(seconds: 10),
-      receiveTimeout: const Duration(seconds: 10),
+      baseUrl: _env.youtubeBaseUrl,
+      connectTimeout: Duration(milliseconds: _env.networkTimeout),
+      receiveTimeout: Duration(milliseconds: _env.networkTimeout),
     ));
 
     if (kDebugMode) {
@@ -29,7 +28,6 @@ class YouTubeService {
     }
   }
 
-  /// Busca vídeos AMV do personagem especificado
   Future<YouTubeVideo?> searchCharacterAMV(String characterName) async {
     try {
       final query = '$characterName AMV One Piece';
@@ -41,7 +39,7 @@ class YouTubeService {
         'type': 'video',
         'maxResults': 5,
         'order': 'relevance',
-        'key': _apiKey,
+        'key': _env.youtubeApiKey,
         'safeSearch': 'none',
         'videoEmbeddable': 'true',
       });
@@ -83,7 +81,7 @@ class YouTubeService {
         'type': 'video',
         'maxResults': maxResults,
         'order': 'relevance',
-        'key': _apiKey,
+        'key': _env.youtubeApiKey,
         'safeSearch': 'none',
         'videoEmbeddable': 'true',
       });
@@ -120,7 +118,9 @@ class YouTubeService {
     );
   }
 
-  bool get hasApiKey => _apiKey != 'YOUR_YOUTUBE_API_KEY' && _apiKey.isNotEmpty;
+  bool get hasApiKey =>
+      _env.youtubeApiKey != 'your_youtube_api_key_here' &&
+      _env.youtubeApiKey.isNotEmpty;
 
   Future<YouTubeVideo?> searchCharacterAMVWithFallback(
       String characterName) async {
