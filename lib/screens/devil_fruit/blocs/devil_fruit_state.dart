@@ -2,7 +2,7 @@
 // Copyright © 2022.
 
 import 'package:equatable/equatable.dart';
-import 'package:simple_app/core/one_piece/models/devil_fruit.dart';
+import 'package:opfan/core/one_piece/models/devil_fruit.dart';
 
 abstract class DevilFruitState extends Equatable {
   const DevilFruitState();

@@ -3,17 +3,17 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:simple_app/core/one_piece/models/character.dart';
-import 'package:simple_app/core/services/service_locator.dart';
-import 'package:simple_app/l10n/app_localizations.dart';
-import 'package:simple_app/widgets/molecules/default_app_bar.dart';
-import 'package:simple_app/widgets/molecules/statistics_grid.dart';
-import 'package:simple_app/widgets/organisms/bottom_navigation.dart';
-import 'package:simple_app/screens/home/widgets/simple_video_banner.dart';
-import 'package:simple_app/screens/home/widgets/character_info_card.dart';
-import 'package:simple_app/screens/home/blocs/index.dart';
-import 'package:simple_app/utils/app_routes.dart';
-import 'package:simple_app/utils/constants.dart';
+import 'package:opfan/core/one_piece/models/character.dart';
+import 'package:opfan/core/services/service_locator.dart';
+import 'package:opfan/l10n/app_localizations.dart';
+import 'package:opfan/widgets/molecules/default_app_bar.dart';
+import 'package:opfan/widgets/molecules/statistics_grid.dart';
+import 'package:opfan/widgets/organisms/bottom_navigation.dart';
+import 'package:opfan/screens/home/widgets/simple_video_banner.dart';
+import 'package:opfan/screens/home/widgets/character_info_card.dart';
+import 'package:opfan/screens/home/blocs/index.dart';
+import 'package:opfan/utils/app_routes.dart';
+import 'package:opfan/utils/constants.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});

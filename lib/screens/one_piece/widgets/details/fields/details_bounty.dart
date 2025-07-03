@@ -4,7 +4,7 @@
 import 'package:flutter/material.dart';
 import '../../../../../l10n/app_localizations.dart';
 
-import 'package:simple_app/utils/constants.dart';
+import 'package:opfan/utils/constants.dart';
 
 class DetailsBounty extends StatelessWidget {
   const DetailsBounty({Key? key, required this.bounty}) : super(key: key);

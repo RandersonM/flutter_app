@@ -3,11 +3,11 @@
 
 import 'package:flutter/material.dart';
 
-import 'package:simple_app/l10n/app_localizations.dart';
-import 'package:simple_app/utils/app_routes.dart';
-import 'package:simple_app/utils/constants.dart' show Constants;
-import 'package:simple_app/utils/icons/one_piece_icons.dart';
-import 'package:simple_app/utils/theme.dart';
+import 'package:opfan/l10n/app_localizations.dart';
+import 'package:opfan/utils/app_routes.dart';
+import 'package:opfan/utils/constants.dart' show Constants;
+import 'package:opfan/utils/icons/one_piece_icons.dart';
+import 'package:opfan/utils/theme.dart';
 
 enum BottomNavigationPages {
   home,
@@ -83,7 +83,7 @@ class BottomNavigationState extends State<BottomNavigation> {
         ),
       BottomNavigationPages.devilFruit => (
           'Akuma no Mi',
-          Icons.apple // Ícone de maçã para representar frutas
+          Icons.apple 
         ),
     };
 
@@ -93,7 +93,10 @@ class BottomNavigationState extends State<BottomNavigation> {
           top: Constants.margin,
           bottom: Constants.margin * 0.75,
         ),
-        child: Icon(
+        child: icon == Icons.apple
+            ? Image.asset('assets/logo/gomu_gomu.png',
+                width: IconSize.medium, height: IconSize.medium)
+            : Icon(
           icon,
           size: IconSize.medium,
         ),
@@ -103,7 +106,10 @@ class BottomNavigationState extends State<BottomNavigation> {
           top: Constants.margin,
           bottom: Constants.margin * 0.75,
         ),
-        child: Icon(
+        child: icon == Icons.apple
+            ? Image.asset('assets/logo/gomu_gomu.png',
+                width: IconSize.medium, height: IconSize.medium)
+            : Icon(
           icon,
           size: IconSize.medium,
         ),

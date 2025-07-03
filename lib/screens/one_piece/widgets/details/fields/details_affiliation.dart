@@ -4,10 +4,10 @@
 import 'package:flutter/material.dart';
 import '../../../../../l10n/app_localizations.dart';
 
-import 'package:simple_app/screens/one_piece/widgets/details/commons/details_list_tile.dart';
-import 'package:simple_app/screens/one_piece/widgets/details/commons/expansion_tile_title.dart';
-import 'package:simple_app/utils/constants.dart';
-import 'package:simple_app/widgets/atoms/dynamic_scroll.dart';
+import 'package:opfan/screens/one_piece/widgets/details/commons/details_list_tile.dart';
+import 'package:opfan/screens/one_piece/widgets/details/commons/expansion_tile_title.dart';
+import 'package:opfan/utils/constants.dart';
+import 'package:opfan/widgets/atoms/dynamic_scroll.dart';
 
 class DetailsAffiliation extends StatelessWidget {
   DetailsAffiliation({Key? key, required this.affiliations}) : super(key: key);

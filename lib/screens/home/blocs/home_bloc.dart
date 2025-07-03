@@ -3,8 +3,8 @@
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:simple_app/core/services/youtube_service.dart';
-import 'package:simple_app/core/services/featured_character_service.dart';
+import 'package:opfan/core/services/youtube_service.dart';
+import 'package:opfan/core/services/featured_character_service.dart';
 import 'home_event.dart';
 import 'home_state.dart';
 

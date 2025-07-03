@@ -4,10 +4,10 @@
 import 'package:flutter/material.dart';
 import '../../l10n/app_localizations.dart';
 
-import 'package:simple_app/screens/one_piece/widgets/list/list_content.dart';
-import 'package:simple_app/screens/one_piece/widgets/search/search.dart';
-import 'package:simple_app/widgets/molecules/default_app_bar.dart';
-import 'package:simple_app/widgets/organisms/bottom_navigation.dart';
+import 'package:opfan/screens/one_piece/widgets/list/list_content.dart';
+import 'package:opfan/screens/one_piece/widgets/search/search.dart';
+import 'package:opfan/widgets/molecules/default_app_bar.dart';
+import 'package:opfan/widgets/organisms/bottom_navigation.dart';
 
 class CharactersListScreen extends StatefulWidget {
   const CharactersListScreen({Key? key}) : super(key: key);

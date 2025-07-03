@@ -3,9 +3,9 @@
 
 import 'package:flutter/material.dart';
 
-import 'package:simple_app/core/one_piece/models/character.dart';
-import 'package:simple_app/screens/one_piece/widgets/list/character_card.dart';
-import 'package:simple_app/utils/constants.dart';
+import 'package:opfan/core/one_piece/models/character.dart';
+import 'package:opfan/screens/one_piece/widgets/list/character_card.dart';
+import 'package:opfan/utils/constants.dart';
 
 class CharacterGridList extends StatelessWidget {
   const CharacterGridList({

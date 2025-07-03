@@ -2,16 +2,16 @@
 // Copyright © 2022.
 
 import 'package:get_it/get_it.dart';
-import 'package:simple_app/core/calculator/calculator_provider.dart';
-import 'package:simple_app/screens/one_piece/blocs/characters_cubit.dart';
-import 'package:simple_app/screens/one_piece/blocs/search_cubit.dart';
-import 'package:simple_app/core/services/characters_backend_service.dart';
-import 'package:simple_app/core/services/devil_fruit_service.dart';
-import 'package:simple_app/core/services/environment_service.dart';
-import 'package:simple_app/core/services/youtube_service.dart';
-import 'package:simple_app/core/services/featured_character_service.dart';
-import 'package:simple_app/screens/home/blocs/home_bloc.dart';
-import 'package:simple_app/screens/devil_fruit/blocs/devil_fruit_bloc.dart';
+import 'package:opfan/core/calculator/calculator_provider.dart';
+import 'package:opfan/screens/one_piece/blocs/characters_cubit.dart';
+import 'package:opfan/screens/one_piece/blocs/search_cubit.dart';
+import 'package:opfan/core/services/characters_backend_service.dart';
+import 'package:opfan/core/services/devil_fruit_service.dart';
+import 'package:opfan/core/services/environment_service.dart';
+import 'package:opfan/core/services/youtube_service.dart';
+import 'package:opfan/core/services/featured_character_service.dart';
+import 'package:opfan/screens/home/blocs/home_bloc.dart';
+import 'package:opfan/screens/devil_fruit/blocs/devil_fruit_bloc.dart';
 
 final GetIt getIt = GetIt.instance;
 

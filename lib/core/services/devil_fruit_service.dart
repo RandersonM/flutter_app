@@ -3,8 +3,8 @@
 
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
-import 'package:simple_app/core/one_piece/models/devil_fruit.dart';
-import 'package:simple_app/core/services/environment_service.dart';
+import 'package:opfan/core/one_piece/models/devil_fruit.dart';
+import 'package:opfan/core/services/environment_service.dart';
 
 class DevilFruitService {
   late final Dio _dio;

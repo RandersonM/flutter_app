@@ -2,9 +2,9 @@
 // Copyright © 2022.
 
 import 'package:flutter/material.dart';
-import 'package:simple_app/screens/splash/widgets/logo.dart';
-import 'package:simple_app/utils/app_routes.dart';
-import 'package:simple_app/utils/decorations/gradient.dart';
+import 'package:opfan/screens/splash/widgets/logo.dart';
+import 'package:opfan/utils/app_routes.dart';
+import 'package:opfan/utils/decorations/gradient.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({Key? key}) : super(key: key);
