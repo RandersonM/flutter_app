@@ -3,8 +3,8 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:simple_app/screens/devil_fruit/blocs/index.dart';
-import 'package:simple_app/utils/constants.dart';
+import 'package:opfan/screens/devil_fruit/blocs/index.dart';
+import 'package:opfan/utils/constants.dart';
 
 class DevilFruitSearchHeader extends StatefulWidget {
   const DevilFruitSearchHeader({Key? key}) : super(key: key);

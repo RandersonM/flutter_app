@@ -6,7 +6,7 @@ import 'dart:math';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
-import 'package:simple_app/core/one_piece/models/character.dart';
+import 'package:opfan/core/one_piece/models/character.dart';
 
 class CharactersBackendService {
   int _totalCount = 0;

@@ -4,10 +4,10 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import 'package:simple_app/core/calculator/calculator_provider.dart';
-import 'package:simple_app/screens/calculator/widgets/calculator_button.dart';
-import 'package:simple_app/screens/calculator/widgets/calculator_header.dart.dart';
-import 'package:simple_app/utils/constants.dart';
+import 'package:opfan/core/calculator/calculator_provider.dart';
+import 'package:opfan/screens/calculator/widgets/calculator_button.dart';
+import 'package:opfan/screens/calculator/widgets/calculator_header.dart.dart';
+import 'package:opfan/utils/constants.dart';
 
 class CalculatorContent extends StatelessWidget {
   const CalculatorContent({Key? key}) : super(key: key);

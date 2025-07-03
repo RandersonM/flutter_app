@@ -2,17 +2,17 @@
 // Copyright © 2022.
 
 import 'package:flutter/material.dart';
-import 'package:simple_app/core/home/models/youtube_video_model.dart';
-import 'package:simple_app/core/one_piece/models/character.dart';
-import 'package:simple_app/screens/calculator/calculator_screen.dart';
-import 'package:simple_app/screens/fav_character_selection_screen/character_selection_screen.dart';
-import 'package:simple_app/screens/home/home_screen.dart';
-import 'package:simple_app/screens/one_piece/characters_list_screen.dart';
-import 'package:simple_app/screens/one_piece/widgets/details/character_details_screen.dart';
-import 'package:simple_app/screens/youtube/youtube_player_screen.dart';
-import 'package:simple_app/screens/devil_fruit/devil_fruit_list.dart';
+import 'package:opfan/core/home/models/youtube_video_model.dart';
+import 'package:opfan/core/one_piece/models/character.dart';
+import 'package:opfan/screens/calculator/calculator_screen.dart';
+import 'package:opfan/screens/fav_character_selection_screen/character_selection_screen.dart';
+import 'package:opfan/screens/home/home_screen.dart';
+import 'package:opfan/screens/one_piece/characters_list_screen.dart';
+import 'package:opfan/screens/one_piece/widgets/details/character_details_screen.dart';
+import 'package:opfan/screens/youtube/youtube_player_screen.dart';
+import 'package:opfan/screens/devil_fruit/devil_fruit_list.dart';
 
-import 'package:simple_app/utils/transitions/material_page_route_without_tansition.dart';
+import 'package:opfan/utils/transitions/material_page_route_without_tansition.dart';
 
 class AppRoutes {
   // Main navigation routes

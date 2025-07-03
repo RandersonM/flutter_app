@@ -4,7 +4,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
-import 'package:simple_app/screens/home/home_screen.dart';
+import 'package:opfan/screens/home/home_screen.dart';
 
 import '../../testable_widget.dart';
 

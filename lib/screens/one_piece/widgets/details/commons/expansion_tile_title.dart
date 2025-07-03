@@ -3,7 +3,7 @@
 
 import 'package:flutter/material.dart';
 
-import 'package:simple_app/utils/constants.dart';
+import 'package:opfan/utils/constants.dart';
 
 class ExpansionTileTitle extends StatelessWidget {
   const ExpansionTileTitle(

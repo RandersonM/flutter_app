@@ -2,8 +2,8 @@
 // Copyright © 2022.
 
 import 'package:flutter/material.dart';
-import 'package:simple_app/core/one_piece/models/devil_fruit.dart';
-import 'package:simple_app/utils/constants.dart';
+import 'package:opfan/core/one_piece/models/devil_fruit.dart';
+import 'package:opfan/utils/constants.dart';
 
 class DevilFruitCard extends StatelessWidget {
   final DevilFruit devilFruit;

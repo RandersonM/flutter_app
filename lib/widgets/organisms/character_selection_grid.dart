@@ -3,11 +3,11 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:simple_app/screens/one_piece/blocs/search_cubit.dart';
-import 'package:simple_app/core/one_piece/models/character.dart';
-import 'package:simple_app/core/services/service_locator.dart';
-import 'package:simple_app/l10n/app_localizations.dart';
-import 'package:simple_app/utils/constants.dart';
+import 'package:opfan/screens/one_piece/blocs/search_cubit.dart';
+import 'package:opfan/core/one_piece/models/character.dart';
+import 'package:opfan/core/services/service_locator.dart';
+import 'package:opfan/l10n/app_localizations.dart';
+import 'package:opfan/utils/constants.dart';
 
 class CharacterSelectionGrid extends StatefulWidget {
   const CharacterSelectionGrid({

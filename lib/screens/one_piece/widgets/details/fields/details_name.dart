@@ -2,9 +2,9 @@
 // Copyright © 2022.
 
 import 'package:flutter/material.dart';
-import 'package:simple_app/l10n/app_localizations.dart';
+import 'package:opfan/l10n/app_localizations.dart';
 
-import 'package:simple_app/utils/constants.dart';
+import 'package:opfan/utils/constants.dart';
 
 class DetailsName extends StatelessWidget {
   const DetailsName(

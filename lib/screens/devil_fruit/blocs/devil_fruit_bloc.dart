@@ -3,8 +3,8 @@
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:simple_app/core/one_piece/models/devil_fruit.dart';
-import 'package:simple_app/core/services/devil_fruit_service.dart';
+import 'package:opfan/core/one_piece/models/devil_fruit.dart';
+import 'package:opfan/core/services/devil_fruit_service.dart';
 import 'devil_fruit_event.dart';
 import 'devil_fruit_state.dart';
 

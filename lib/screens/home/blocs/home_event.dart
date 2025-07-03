@@ -2,7 +2,7 @@
 // Copyright © 2022.
 
 import 'package:equatable/equatable.dart';
-import 'package:simple_app/core/one_piece/models/character.dart';
+import 'package:opfan/core/one_piece/models/character.dart';
 
 abstract class HomeEvent extends Equatable {
   const HomeEvent();

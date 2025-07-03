@@ -3,16 +3,16 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:simple_app/core/services/service_locator.dart';
+import 'package:opfan/core/services/service_locator.dart';
 
-import 'package:simple_app/screens/devil_fruit/blocs/index.dart';
-import 'package:simple_app/screens/devil_fruit/widgets/devil_fruit_card.dart';
-import 'package:simple_app/screens/devil_fruit/widgets/devil_fruit_search_header.dart';
+import 'package:opfan/screens/devil_fruit/blocs/index.dart';
+import 'package:opfan/screens/devil_fruit/widgets/devil_fruit_card.dart';
+import 'package:opfan/screens/devil_fruit/widgets/devil_fruit_search_header.dart';
 
-import 'package:simple_app/screens/devil_fruit/widgets/empty_devil_fruit_list.dart';
-import 'package:simple_app/utils/constants.dart';
-import 'package:simple_app/widgets/molecules/default_app_bar.dart';
-import 'package:simple_app/widgets/organisms/bottom_navigation.dart';
+import 'package:opfan/screens/devil_fruit/widgets/empty_devil_fruit_list.dart';
+import 'package:opfan/utils/constants.dart';
+import 'package:opfan/widgets/molecules/default_app_bar.dart';
+import 'package:opfan/widgets/organisms/bottom_navigation.dart';
 
 class DevilFruitListScreen extends StatefulWidget {
   const DevilFruitListScreen({super.key});

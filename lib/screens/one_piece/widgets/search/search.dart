@@ -3,13 +3,13 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:simple_app/core/one_piece/models/character.dart';
-import 'package:simple_app/screens/one_piece/blocs/search_cubit.dart';
-import 'package:simple_app/screens/one_piece/widgets/search/unexistent_search.dart';
-import 'package:simple_app/screens/one_piece/widgets/search/result_card.dart';
-import 'package:simple_app/screens/one_piece/widgets/search/search_header.dart';
+import 'package:opfan/core/one_piece/models/character.dart';
+import 'package:opfan/screens/one_piece/blocs/search_cubit.dart';
+import 'package:opfan/screens/one_piece/widgets/search/unexistent_search.dart';
+import 'package:opfan/screens/one_piece/widgets/search/result_card.dart';
+import 'package:opfan/screens/one_piece/widgets/search/search_header.dart';
 
-import 'package:simple_app/utils/constants.dart';
+import 'package:opfan/utils/constants.dart';
 
 class Search extends StatelessWidget {
   const Search({Key? key}) : super(key: key);

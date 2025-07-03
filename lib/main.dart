@@ -4,19 +4,19 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-import 'package:simple_app/screens/one_piece/blocs/search_cubit.dart';
-import 'package:simple_app/core/services/environment_service.dart';
-import 'package:simple_app/core/services/service_locator.dart';
-import 'package:simple_app/core/one_piece/models/featured_character.dart';
+import 'package:opfan/screens/one_piece/blocs/search_cubit.dart';
+import 'package:opfan/core/services/environment_service.dart';
+import 'package:opfan/core/services/service_locator.dart';
+import 'package:opfan/core/one_piece/models/featured_character.dart';
 import 'l10n/app_localizations.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import 'package:simple_app/screens/one_piece/blocs/characters_cubit.dart';
+import 'package:opfan/screens/one_piece/blocs/characters_cubit.dart';
 
-import 'package:simple_app/screens/splash/splash_screen.dart';
-import 'package:simple_app/utils/app_routes.dart';
+import 'package:opfan/screens/splash/splash_screen.dart';
+import 'package:opfan/utils/app_routes.dart';
 
-import 'package:simple_app/utils/theme.dart';
+import 'package:opfan/utils/theme.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();

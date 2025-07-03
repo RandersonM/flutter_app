@@ -3,9 +3,9 @@
 
 import 'package:flutter/foundation.dart';
 import 'package:hive/hive.dart';
-import 'package:simple_app/core/home/models/featured_character.dart';
-import 'package:simple_app/core/one_piece/models/character.dart';
-import 'package:simple_app/core/services/characters_backend_service.dart';
+import 'package:opfan/core/one_piece/models/featured_character.dart';
+import 'package:opfan/core/one_piece/models/character.dart';
+import 'package:opfan/core/services/characters_backend_service.dart';
 
 class FeaturedCharacterService {
   static const String _boxName = 'featured_characters';

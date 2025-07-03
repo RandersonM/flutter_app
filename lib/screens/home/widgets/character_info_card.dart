@@ -3,7 +3,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:simple_app/utils/constants.dart';
+import 'package:opfan/utils/constants.dart';
 
 class CharacterInfoCard extends StatelessWidget {
   const CharacterInfoCard({

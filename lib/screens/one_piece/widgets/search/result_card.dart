@@ -2,9 +2,9 @@
 // Copyright © 2022.
 
 import 'package:flutter/material.dart';
-import 'package:simple_app/core/one_piece/models/character.dart';
+import 'package:opfan/core/one_piece/models/character.dart';
 
-import 'package:simple_app/utils/app_routes.dart';
+import 'package:opfan/utils/app_routes.dart';
 
 class ResultCard extends StatefulWidget {
   const ResultCard({Key? key, required this.character}) : super(key: key);
