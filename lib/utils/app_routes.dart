@@ -10,6 +10,7 @@ import 'package:simple_app/screens/home/home_screen.dart';
 import 'package:simple_app/screens/one_piece/characters_list_screen.dart';
 import 'package:simple_app/screens/one_piece/widgets/details/character_details_screen.dart';
 import 'package:simple_app/screens/youtube/youtube_player_screen.dart';
+import 'package:simple_app/screens/devil_fruit/devil_fruit_list.dart';
 
 import 'package:simple_app/utils/transitions/material_page_route_without_tansition.dart';
 
@@ -18,6 +19,7 @@ class AppRoutes {
   static const String home = '/home';
   static const String calculator = '/calculator';
   static const String onePiece = '/onePiece';
+  static const String devilFruit = '/devilFruit';
   
   // Additional screen routes
   static const String youtubePlayer = '/youtubePlayer';
@@ -35,6 +37,9 @@ class AppRoutes {
       case onePiece:
         return MaterialPageRouteWithoutTransition<dynamic>(
             builder: (_) => const CharactersListScreen(), settings: settings);
+      case devilFruit:
+        return MaterialPageRouteWithoutTransition<dynamic>(
+            builder: (_) => const DevilFruitListScreen(), settings: settings);
       case youtubePlayer:
         final video = settings.arguments as YouTubeVideo;
         return MaterialPageRoute<dynamic>(

@@ -11,8 +11,8 @@ import 'package:simple_app/utils/theme.dart';
 
 enum BottomNavigationPages {
   home,
-  calculator,
   onePiece,
+  devilFruit,
 }
 
 class BottomNavigation extends StatefulWidget {
@@ -30,8 +30,8 @@ class BottomNavigation extends StatefulWidget {
 class BottomNavigationState extends State<BottomNavigation> {
   static const List<BottomNavigationPages> _pages = <BottomNavigationPages>[
     BottomNavigationPages.home,
-    BottomNavigationPages.calculator,
     BottomNavigationPages.onePiece,
+    BottomNavigationPages.devilFruit,
   ];
 
   Future<void> _navigateToPage(BottomNavigationPages page) async {
@@ -46,19 +46,19 @@ class BottomNavigationState extends State<BottomNavigation> {
         );
         break;
 
-      case BottomNavigationPages.calculator:
-        await Navigator.pushNamedAndRemoveUntil(
-          context,
-          AppRoutes.calculator,
-          ModalRoute.withName(AppRoutes.calculator),
-        );
-        break;
-
       case BottomNavigationPages.onePiece:
         await Navigator.pushNamedAndRemoveUntil(
           context,
           AppRoutes.onePiece,
           ModalRoute.withName(AppRoutes.onePiece),
+        );
+        break;
+
+      case BottomNavigationPages.devilFruit:
+        await Navigator.pushNamedAndRemoveUntil(
+          context,
+          AppRoutes.devilFruit,
+          ModalRoute.withName(AppRoutes.devilFruit),
         );
         break;
     }
@@ -77,13 +77,13 @@ class BottomNavigationState extends State<BottomNavigation> {
     
     final (String label, IconData icon) = switch (page) {
       BottomNavigationPages.home => (localizations.home, Icons.home_rounded),
-      BottomNavigationPages.calculator => (
-          localizations.calculatorTitle,
-          Icons.calculate
-        ),
       BottomNavigationPages.onePiece => (
           localizations.onePiece,
           OnePieceIcons.jollyRoger
+        ),
+      BottomNavigationPages.devilFruit => (
+          'Akuma no Mi',
+          Icons.apple // Ícone de maçã para representar frutas
         ),
     };
 
