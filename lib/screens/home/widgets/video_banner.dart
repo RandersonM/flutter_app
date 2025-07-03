@@ -76,7 +76,7 @@ class _VideoBannerState extends State<VideoBanner> {
           _videoController!.setLooping(true);
           break;
         case BannerType.gif:
-          // GIFs são tratados como imagens animadas
+          //TODO: GIFs são tratados como imagens animadas
           break;
       }
 

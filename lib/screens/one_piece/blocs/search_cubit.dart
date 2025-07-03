@@ -7,7 +7,6 @@ import 'package:equatable/equatable.dart';
 import 'package:simple_app/core/one_piece/models/character.dart';
 import 'package:simple_app/core/services/characters_backend_service.dart';
 
-// States
 abstract class SearchState extends Equatable {
   const SearchState();
 
@@ -71,7 +70,6 @@ class SearchError extends SearchState {
   List<Object?> get props => [message, query, statusFilters];
 }
 
-// Cubit
 class SearchCubit extends Cubit<SearchState> {
   SearchCubit(this.backend, [String initialQuery = ''])
       : super(SearchInitial(query: initialQuery)) {

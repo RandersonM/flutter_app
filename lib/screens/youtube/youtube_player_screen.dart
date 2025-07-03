@@ -82,10 +82,7 @@ class _YouTubePlayerScreenState extends State<YouTubePlayerScreen> {
         ],
       ),
       body: YoutubePlayerBuilder(
-        onExitFullScreen: () {
-          // Força orientação retrato ao sair do fullscreen
-          // SystemChrome.setPreferredOrientations(DeviceOrientation.values);
-        },
+        onExitFullScreen: () => {},
         player: YoutubePlayer(
           controller: _controller,
           showVideoProgressIndicator: true,
@@ -108,23 +105,18 @@ class _YouTubePlayerScreenState extends State<YouTubePlayerScreen> {
             _isPlayerReady = true;
           },
           onEnded: (data) {
-            // Volta para a tela anterior quando o vídeo termina
             Navigator.of(context).pop();
           },
         ),
         builder: (context, player) => Column(
           children: [
-            // Player
             player,
-
-            // Informações do vídeo
             Expanded(
               child: SingleChildScrollView(
                 padding: const EdgeInsets.all(16),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    // Título
                     Text(
                       widget.video.title,
                       style: const TextStyle(
@@ -136,7 +128,6 @@ class _YouTubePlayerScreenState extends State<YouTubePlayerScreen> {
 
                     const SizedBox(height: 8),
 
-                    // Canal
                     Text(
                       'Por: ${widget.video.channelTitle}',
                       style: const TextStyle(
@@ -147,7 +138,6 @@ class _YouTubePlayerScreenState extends State<YouTubePlayerScreen> {
 
                     const SizedBox(height: 16),
 
-                    // Descrição
                     if (widget.video.description.isNotEmpty) ...[
                       const Text(
                         'Descrição:',
@@ -170,7 +160,6 @@ class _YouTubePlayerScreenState extends State<YouTubePlayerScreen> {
 
                     const SizedBox(height: 24),
 
-                    // Botões de ação
                     Row(
                       children: [
                         Expanded(

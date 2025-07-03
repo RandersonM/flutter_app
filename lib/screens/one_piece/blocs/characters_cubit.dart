@@ -8,7 +8,6 @@ import 'package:flutter/foundation.dart';
 import 'package:simple_app/core/one_piece/models/character.dart';
 import 'package:simple_app/core/services/characters_backend_service.dart';
 
-// States
 abstract class CharactersState extends Equatable {
   const CharactersState();
 
@@ -96,7 +95,6 @@ class CharactersCubit extends Cubit<CharactersState> {
       _characters = await backend.fetch(_pages);
       debugPrint('CharactersCubit: Fetched ${_characters.length} characters');
 
-      // Simulated delay as in original provider
       await Future.delayed(const Duration(seconds: 1));
 
       final newHasMoreData = hasMoreData;
