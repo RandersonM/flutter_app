@@ -9,6 +9,7 @@ import 'package:simple_app/core/services/characters_backend_service.dart';
 import 'package:simple_app/core/services/devil_fruit_service.dart';
 import 'package:simple_app/core/services/environment_service.dart';
 import 'package:simple_app/core/services/youtube_service.dart';
+import 'package:simple_app/core/services/featured_character_service.dart';
 import 'package:simple_app/screens/home/blocs/home_bloc.dart';
 import 'package:simple_app/screens/devil_fruit/blocs/devil_fruit_bloc.dart';
 
@@ -29,6 +30,11 @@ Future<void> configureDependencies() async {
     () => YouTubeService(),
   );
 
+  getIt.registerLazySingleton<FeaturedCharacterService>(
+    () => FeaturedCharacterService(
+        charactersService: getIt<CharactersBackendService>()),
+  );
+
   getIt.registerFactory<CalculatorProvider>(
     () => CalculatorProvider(),
   );
@@ -43,8 +49,8 @@ Future<void> configureDependencies() async {
 
   getIt.registerFactory<HomeBloc>(
     () => HomeBloc(
-      charactersService: getIt<CharactersBackendService>(),
       youTubeService: getIt<YouTubeService>(),
+      featuredCharacterService: getIt<FeaturedCharacterService>(),
     ),
   );
 
@@ -72,6 +78,8 @@ extension ServiceLocatorExtensions on GetIt {
       get<CharactersBackendService>();
   DevilFruitService get devilFruitService => get<DevilFruitService>();
   YouTubeService get youTubeService => get<YouTubeService>();
+  FeaturedCharacterService get featuredCharacterService =>
+      get<FeaturedCharacterService>();
 
   CalculatorProvider get calculatorProvider => get<CalculatorProvider>();
 

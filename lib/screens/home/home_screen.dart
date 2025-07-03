@@ -56,7 +56,6 @@ class _HomeScreenState extends State<HomeScreen> {
                     children: [
                       Expanded(
                         child: OutlinedButton.icon(
-                          // child: ElevatedButton.icon(
                           onPressed: state is HomeLoading
                               ? null
                               : () async {
@@ -78,7 +77,6 @@ class _HomeScreenState extends State<HomeScreen> {
                         ),
                       ),
                       Expanded(
-                        // child: OutlinedButton.icon(
                         child: ElevatedButton.icon(
                           onPressed: state is HomeLoading
                               ? null
