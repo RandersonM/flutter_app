@@ -493,6 +493,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Skip for now'**
   String get skipForNow;
+
+  /// Subtitle shown on the login screen to invite users to explore One Piece characters.
+  ///
+  /// In en, this message translates to:
+  /// **'Explore the world of One Piece and discover your favorite characters'**
+  String get loginWelcomeSubtitle;
+
+  /// version word.
+  ///
+  /// In en, this message translates to:
+  /// **'version'**
+  String get version;
 }
 
 class _AppLocalizationsDelegate
