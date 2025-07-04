@@ -154,4 +154,56 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get unknown => 'Desconhecido';
+
+  @override
+  String get welcome => 'Bem-vindo,';
+
+  @override
+  String get welcomeToOpfan => 'Bem-vindo ao OpFan';
+
+  @override
+  String get signInWithGoogle => 'Entrar com Google';
+
+  @override
+  String get signingIn => 'Entrando...';
+
+  @override
+  String get authenticationError => 'Erro na Autenticação';
+
+  @override
+  String get tryAgainButton => 'Tentar Novamente';
+
+  @override
+  String get clearDataAndContinue => 'Limpar dados e continuar';
+
+  @override
+  String get searchPlaceholder => 'Pesquisar por nome romano ou japonês...';
+
+  @override
+  String get filterByType => 'Filtrar por tipo';
+
+  @override
+  String get clear => 'Limpar';
+
+  @override
+  String get clearFilters => 'Limpar Filtros';
+
+  @override
+  String get noFruitFound => 'Nenhuma fruta encontrada';
+
+  @override
+  String get noDevilFruitAvailable => 'Nenhuma Akuma no Mi disponível';
+
+  @override
+  String get adjustFiltersOrSearch =>
+      'Tente ajustar os filtros ou buscar por outros termos';
+
+  @override
+  String get errorLoadingContent => 'Erro ao carregar conteúdo';
+
+  @override
+  String get searching => 'Pesquisando...';
+
+  @override
+  String get skipForNow => 'Pular por agora';
 }

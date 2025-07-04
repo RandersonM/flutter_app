@@ -154,4 +154,56 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get unknown => 'Unknown';
+
+  @override
+  String get welcome => 'Welcome,';
+
+  @override
+  String get welcomeToOpfan => 'Welcome to OpFan';
+
+  @override
+  String get signInWithGoogle => 'Sign in with Google';
+
+  @override
+  String get signingIn => 'Signing in...';
+
+  @override
+  String get authenticationError => 'Authentication Error';
+
+  @override
+  String get tryAgainButton => 'Try Again';
+
+  @override
+  String get clearDataAndContinue => 'Clear data and continue';
+
+  @override
+  String get searchPlaceholder => 'Search by roman or japanese name...';
+
+  @override
+  String get filterByType => 'Filter by type';
+
+  @override
+  String get clear => 'Clear';
+
+  @override
+  String get clearFilters => 'Clear Filters';
+
+  @override
+  String get noFruitFound => 'No fruit found';
+
+  @override
+  String get noDevilFruitAvailable => 'No Devil Fruit available';
+
+  @override
+  String get adjustFiltersOrSearch =>
+      'Try adjusting the filters or search for other terms';
+
+  @override
+  String get errorLoadingContent => 'Error loading content';
+
+  @override
+  String get searching => 'Searching...';
+
+  @override
+  String get skipForNow => 'Skip for now';
 }

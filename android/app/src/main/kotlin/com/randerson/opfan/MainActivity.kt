@@ -1,6 +1,6 @@
-package com.example.opfan
+package com.randerson.opfan
 
 import io.flutter.embedding.android.FlutterActivity
 
 class MainActivity: FlutterActivity() {
-}
+} 

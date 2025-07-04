@@ -11,10 +11,14 @@ import 'package:opfan/screens/one_piece/characters_list_screen.dart';
 import 'package:opfan/screens/one_piece/widgets/details/character_details_screen.dart';
 import 'package:opfan/screens/youtube/youtube_player_screen.dart';
 import 'package:opfan/screens/devil_fruit/devil_fruit_list.dart';
+import 'package:opfan/screens/auth/login_screen.dart';
 
 import 'package:opfan/utils/transitions/material_page_route_without_tansition.dart';
 
 class AppRoutes {
+  // Auth routes
+  static const String login = '/login';
+  
   // Main navigation routes
   static const String home = '/home';
   static const String calculator = '/calculator';
@@ -28,6 +32,9 @@ class AppRoutes {
 
   static MaterialPageRoute<dynamic>? getRoute(RouteSettings settings) {
     switch (settings.name) {
+      case login:
+        return MaterialPageRoute<dynamic>(
+            builder: (_) => const LoginScreen(), settings: settings);
       case home:
         return MaterialPageRouteWithoutTransition<dynamic>(
             builder: (_) => const HomeScreen(), settings: settings);

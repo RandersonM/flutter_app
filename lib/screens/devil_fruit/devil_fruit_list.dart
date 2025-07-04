@@ -4,6 +4,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:opfan/core/services/service_locator.dart';
+import 'package:opfan/l10n/app_localizations.dart';
 
 import 'package:opfan/screens/devil_fruit/blocs/index.dart';
 import 'package:opfan/screens/devil_fruit/widgets/devil_fruit_card.dart';
@@ -104,7 +105,7 @@ class _DevilFruitListScreenState extends State<DevilFruitListScreen> {
             ),
             const SizedBox(height: Constants.margin * 2),
             Text(
-              'Erro ao carregar Akuma no Mi',
+              'Error loading Devil Fruits',
               style: Theme.of(context).textTheme.headlineSmall?.copyWith(
                     fontWeight: FontWeight.bold,
                   ),
@@ -120,7 +121,7 @@ class _DevilFruitListScreenState extends State<DevilFruitListScreen> {
             ElevatedButton.icon(
               onPressed: () => _devilFruitBloc.add(const LoadDevilFruits()),
               icon: const Icon(Icons.refresh),
-              label: const Text('Tentar Novamente'),
+              label: Text(AppLocalizations.of(context)!.tryAgain),
             ),
           ],
         ),
@@ -253,7 +254,7 @@ class _DevilFruitListScreenState extends State<DevilFruitListScreen> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                'Filtrar por tipo',
+                AppLocalizations.of(context)!.filterByType,
                 style: Theme.of(context).textTheme.titleMedium?.copyWith(
                       fontWeight: FontWeight.bold,
                     ),
@@ -263,7 +264,7 @@ class _DevilFruitListScreenState extends State<DevilFruitListScreen> {
                   onPressed: () {
                     _devilFruitBloc.add(const ClearDevilFruitFilters());
                   },
-                  child: const Text('Limpar'),
+                  child: Text(AppLocalizations.of(context)!.clear),
                 ),
             ],
           ),

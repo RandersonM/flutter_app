@@ -1,0 +1,227 @@
+// Developed by Randerson Mayllon
+// Copyright © 2025.
+
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:opfan/core/auth/blocs/index.dart';
+import 'package:opfan/core/services/service_locator.dart';
+import 'package:opfan/l10n/app_localizations.dart';
+import 'package:opfan/utils/app_routes.dart';
+import 'package:opfan/utils/constants.dart';
+import 'package:opfan/utils/theme.dart';
+import 'package:opfan/widgets/atoms/circle_indicator.dart';
+
+class LoginScreen extends StatefulWidget {
+  const LoginScreen({super.key});
+
+  @override
+  State<LoginScreen> createState() => _LoginScreenState();
+}
+
+class _LoginScreenState extends State<LoginScreen> {
+  @override
+  Widget build(BuildContext context) {
+    return BlocProvider.value(
+      value: getIt<AuthBloc>(),
+      child: BlocListener<AuthBloc, AuthState>(
+        listener: (context, state) {
+          if (state is AuthAuthenticated) {
+            Navigator.of(context).pushReplacementNamed(AppRoutes.home);
+          } else if (state is AuthError) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text(state.message),
+                backgroundColor: Colors.red,
+              ),
+            );
+          }
+        },
+        child: Scaffold(
+          body: Container(
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                begin: const Alignment(-0.2, 1),
+                end: Alignment.topRight,
+                colors: <Color>[
+                  AppColors.gradientPurple[200]!,
+                  AppColors.gradientPurple[500]!,
+                  AppColors.gradientPurple[800]!,
+                ],
+              ),
+            ),
+            child: SafeArea(
+              child: Padding(
+                padding: const EdgeInsets.all(Constants.margin),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const Spacer(),
+                    _buildLogo(),
+                    const SizedBox(height: Constants.margin * 2),
+                    _buildWelcomeText(),
+                    const SizedBox(height: Constants.margin),
+                    _buildSubtitleText(),
+                    const SizedBox(height: Constants.margin * 3),
+                    _buildLoginButton(),
+                    const SizedBox(height: Constants.margin * 2),
+                    _buildSkipButton(),
+                    const Spacer(),
+                    _buildFooter(),
+                  ],
+                ),
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildLogo() {
+    return Container(
+      padding: const EdgeInsets.all(Constants.margin),
+      decoration: BoxDecoration(
+        color: Colors.white.withValues(alpha: 0.1),
+        borderRadius: BorderRadius.circular(20),
+      ),
+      child: Image.asset(
+        'assets/logo/gomu_gomu.png',
+        height: 120,
+        width: 120,
+      ),
+    );
+  }
+
+  Widget _buildWelcomeText() {
+    return Text(
+      AppLocalizations.of(context)!.welcomeToOpfan,
+      style: Theme.of(context).textTheme.headlineMedium?.copyWith(
+            color: Colors.white,
+            fontWeight: FontWeight.bold,
+          ),
+      textAlign: TextAlign.center,
+    );
+  }
+
+  Widget _buildSubtitleText() {
+    return Text(
+      'Explore o mundo de One Piece e descubra seus personagens favoritos',
+      style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+            color: Colors.white.withValues(alpha: 0.8),
+          ),
+      textAlign: TextAlign.center,
+    );
+  }
+
+  Widget _buildLoginButton() {
+    return BlocBuilder<AuthBloc, AuthState>(
+      builder: (context, state) {
+        final isLoading = state is AuthLoading;
+
+        return SizedBox(
+          width: double.infinity,
+          height: 56,
+          child: ElevatedButton.icon(
+            onPressed: isLoading
+                ? null
+                : () {
+                    context.read<AuthBloc>().add(const AuthSignInRequested());
+                  },
+            style: ElevatedButton.styleFrom(
+              backgroundColor: Colors.white,
+              foregroundColor: AppColors.purple[600],
+              elevation: 8,
+              shadowColor: Colors.black.withValues(alpha: 0.3),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(28),
+              ),
+            ),
+            icon: isLoading
+                ? SizedBox(
+                    width: 20,
+                    height: 20,
+                    child: CircularProgressIndicator(
+                      strokeWidth: 2,
+                      valueColor:
+                          AlwaysStoppedAnimation<Color>(AppColors.purple[600]!),
+                    ),
+                  )
+                : Image.asset(
+                    'assets/icons/google_icon.png',
+                    height: 24,
+                    width: 24,
+                    errorBuilder: (context, error, stackTrace) {
+                      return const Icon(
+                        Icons.login,
+                        size: 24,
+                      );
+                    },
+                  ),
+            label: Text(
+              isLoading ? AppLocalizations.of(context)!.signingIn : AppLocalizations.of(context)!.signInWithGoogle,
+              style: const TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  Widget _buildSkipButton() {
+    return TextButton(
+      onPressed: () {
+        Navigator.of(context).pushReplacementNamed(AppRoutes.home);
+      },
+      child: Text(
+        AppLocalizations.of(context)!.skipForNow,
+        style: TextStyle(
+          color: Colors.white.withValues(alpha: 0.8),
+          fontSize: 16,
+          fontWeight: FontWeight.w500,
+        ),
+      ),
+    );
+  }
+
+  Widget _buildFooter() {
+    return Column(
+      children: [
+        const Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            CircleIndicator(
+              isActive: true,
+              activeColor: Colors.white,
+            ),
+            SizedBox(width: 8),
+            CircleIndicator(
+              isActive: false,
+              inactiveColor: Colors.white,
+            ),
+            SizedBox(width: 8),
+            CircleIndicator(
+              isActive: false,
+              inactiveColor: Colors.white,
+            ),
+          ],
+        ),
+        const SizedBox(height: Constants.margin),
+        Text(
+          'Versão 1.0.1',
+          style: TextStyle(
+            color: Colors.white.withValues(alpha: 0.6),
+            fontSize: 12,
+          ),
+        ),
+      ],
+    );
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+  }
+}
