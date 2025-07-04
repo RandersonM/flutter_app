@@ -14,6 +14,7 @@ import 'package:opfan/screens/home/widgets/character_info_card.dart';
 import 'package:opfan/screens/home/blocs/index.dart';
 import 'package:opfan/utils/app_routes.dart';
 import 'package:opfan/utils/constants.dart';
+import 'package:opfan/utils/zodiac_icons.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -100,26 +101,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     ],
                   ),
                   const SizedBox.shrink(),
-                  StatisticsGrid(
-                    title: AppLocalizations.of(context)!.statistics,
-                    statistics: [
-                      StatisticData(
-                        label: AppLocalizations.of(context)!.totalCharacters,
-                        value: '51',
-                        icon: Icons.people,
-                      ),
-                      StatisticData(
-                        label: AppLocalizations.of(context)!.highestBounty,
-                        value: '฿5.5B',
-                        icon: Icons.monetization_on,
-                      ),
-                      StatisticData(
-                        label: AppLocalizations.of(context)!.crews,
-                        value: '15+',
-                        icon: Icons.sailing,
-                      ),
-                    ],
-                  ),
+                  _buildCharacterStatistics(context, state),
                 ],
               ),
             );
@@ -197,6 +179,39 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
+  String _getLocalizedZodiacSign(BuildContext context, String zodiacSign) {
+    final translationKey = ZodiacIcons.getZodiacTranslationKey(zodiacSign);
+
+    switch (translationKey) {
+      case 'ariesSign':
+        return AppLocalizations.of(context)!.ariesSign;
+      case 'taurusSign':
+        return AppLocalizations.of(context)!.taurusSign;
+      case 'geminiSign':
+        return AppLocalizations.of(context)!.geminiSign;
+      case 'cancerSign':
+        return AppLocalizations.of(context)!.cancerSign;
+      case 'leoSign':
+        return AppLocalizations.of(context)!.leoSign;
+      case 'virgoSign':
+        return AppLocalizations.of(context)!.virgoSign;
+      case 'libraSign':
+        return AppLocalizations.of(context)!.libraSign;
+      case 'scorpioSign':
+        return AppLocalizations.of(context)!.scorpioSign;
+      case 'sagittariusSign':
+        return AppLocalizations.of(context)!.sagittariusSign;
+      case 'capricornSign':
+        return AppLocalizations.of(context)!.capricornSign;
+      case 'aquariusSign':
+        return AppLocalizations.of(context)!.aquariusSign;
+      case 'piscesSign':
+        return AppLocalizations.of(context)!.piscesSign;
+      default:
+        return AppLocalizations.of(context)!.unknown;
+    }
+  }
+
   Widget _buildCharacterCard(BuildContext context, HomeState state) {
     if (state is HomeLoading) {
       return const Card(
@@ -264,6 +279,68 @@ class _HomeScreenState extends State<HomeScreen> {
       characterBounty: "...",
       characterImage: 'assets/logo/splash_logo.png',
       onTap: () {},
+    );
+  }
+
+  Widget _buildCharacterStatistics(BuildContext context, HomeState state) {
+    if (state is HomeLoaded) {
+      final character = state.featuredCharacter;
+
+      final zodiacIconPath = ZodiacIcons.getZodiacIconPath(character.signo);
+
+      return StatisticsGrid(
+        title: AppLocalizations.of(context)!.statistics,
+        statistics: [
+          StatisticData(
+            label: AppLocalizations.of(context)!.crew,
+            value: character.crew ?? 'N/A',
+            svgPath: 'assets/logo/ship-crew.svg',
+          ),
+          StatisticData(
+            label:
+                character.devilFruit != null && character.devilFruit!.isNotEmpty
+                    ? AppLocalizations.of(context)!.devilFruit
+                    : AppLocalizations.of(context)!.status,
+            value:
+                character.devilFruit != null && character.devilFruit!.isNotEmpty
+                    ? character.devilFruit!
+                    : character.status ?? 'Unknown',
+            icon:
+                character.devilFruit != null && character.devilFruit!.isNotEmpty
+                    ? Icons.apple_outlined
+                    : Icons.flag,
+          ),
+          StatisticData(
+            label: AppLocalizations.of(context)!.signo,
+            value: character.signo != null
+                ? _getLocalizedZodiacSign(context, character.signo!)
+                : 'N/A',
+            svgPath: zodiacIconPath,
+            icon: zodiacIconPath == null ? Icons.star : null,
+          ),
+        ],
+      );
+    }
+
+    return StatisticsGrid(
+      title: AppLocalizations.of(context)!.statistics,
+      statistics: [
+        StatisticData(
+          label: AppLocalizations.of(context)!.status,
+          value: '...',
+          icon: Icons.flag,
+        ),
+        StatisticData(
+          label: AppLocalizations.of(context)!.crew,
+          value: '...',
+          svgPath: 'assets/logo/ship-crew.svg',
+        ),
+        StatisticData(
+          label: AppLocalizations.of(context)!.signo,
+          value: '...',
+          icon: Icons.star,
+        ),
+      ],
     );
   }
 }

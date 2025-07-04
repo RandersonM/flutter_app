@@ -230,10 +230,10 @@ abstract class AppLocalizations {
   /// **'Refresh'**
   String get refresh;
 
-  /// Title for statistics section
+  /// Title for details section
   ///
   /// In en, this message translates to:
-  /// **'Statistics'**
+  /// **'Details'**
   String get statistics;
 
   /// Label for total characters statistic
@@ -289,6 +289,108 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Select Character'**
   String get selectCharacter;
+
+  /// Label for zodiac sign
+  ///
+  /// In en, this message translates to:
+  /// **'Zodiac Sign'**
+  String get signo;
+
+  /// Label for status when devil fruit is not available
+  ///
+  /// In en, this message translates to:
+  /// **'Status'**
+  String get status;
+
+  /// Label for devil fruit
+  ///
+  /// In en, this message translates to:
+  /// **'Devil Fruit'**
+  String get devilFruit;
+
+  /// Label for crew
+  ///
+  /// In en, this message translates to:
+  /// **'Crew'**
+  String get crew;
+
+  /// Aries zodiac sign
+  ///
+  /// In en, this message translates to:
+  /// **'Aries'**
+  String get ariesSign;
+
+  /// Taurus zodiac sign
+  ///
+  /// In en, this message translates to:
+  /// **'Taurus'**
+  String get taurusSign;
+
+  /// Gemini zodiac sign
+  ///
+  /// In en, this message translates to:
+  /// **'Gemini'**
+  String get geminiSign;
+
+  /// Cancer zodiac sign
+  ///
+  /// In en, this message translates to:
+  /// **'Cancer'**
+  String get cancerSign;
+
+  /// Leo zodiac sign
+  ///
+  /// In en, this message translates to:
+  /// **'Leo'**
+  String get leoSign;
+
+  /// Virgo zodiac sign
+  ///
+  /// In en, this message translates to:
+  /// **'Virgo'**
+  String get virgoSign;
+
+  /// Libra zodiac sign
+  ///
+  /// In en, this message translates to:
+  /// **'Libra'**
+  String get libraSign;
+
+  /// Scorpio zodiac sign
+  ///
+  /// In en, this message translates to:
+  /// **'Scorpio'**
+  String get scorpioSign;
+
+  /// Sagittarius zodiac sign
+  ///
+  /// In en, this message translates to:
+  /// **'Sagittarius'**
+  String get sagittariusSign;
+
+  /// Capricorn zodiac sign
+  ///
+  /// In en, this message translates to:
+  /// **'Capricorn'**
+  String get capricornSign;
+
+  /// Aquarius zodiac sign
+  ///
+  /// In en, this message translates to:
+  /// **'Aquarius'**
+  String get aquariusSign;
+
+  /// Pisces zodiac sign
+  ///
+  /// In en, this message translates to:
+  /// **'Pisces'**
+  String get piscesSign;
+
+  /// Unknown value
+  ///
+  /// In en, this message translates to:
+  /// **'Unknown'**
+  String get unknown;
 }
 
 class _AppLocalizationsDelegate

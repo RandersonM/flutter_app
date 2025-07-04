@@ -9,13 +9,15 @@ class StatisticData {
   const StatisticData({
     required this.label,
     required this.value,
-    required this.icon,
+    this.icon,
+    this.svgPath,
     this.onTap,
   });
 
   final String label;
   final String value;
-  final IconData icon;
+  final IconData? icon;
+  final String? svgPath;
   final VoidCallback? onTap;
 }
 
@@ -26,7 +28,7 @@ class StatisticsGrid extends StatelessWidget {
     required this.statistics,
     this.title,
     this.titleStyle,
-    this.mainAxisAlignment = MainAxisAlignment.spaceEvenly,
+    this.mainAxisAlignment = MainAxisAlignment.spaceBetween,
     this.crossAxisAlignment = CrossAxisAlignment.center,
     this.spacing = 16.0,
     this.padding = const EdgeInsets.all(16.0),
@@ -77,6 +79,7 @@ class StatisticsGrid extends StatelessWidget {
                       label: stat.label,
                       value: stat.value,
                       icon: stat.icon,
+                      svgPath: stat.svgPath,
                       onTap: stat.onTap,
                     ),
                   ),
@@ -95,7 +98,7 @@ class StatisticsGrid extends StatelessWidget {
           borderRadius: BorderRadius.circular(borderRadius),
         ),
         child: Padding(
-          padding: padding,
+          padding: const EdgeInsets.all(0),
           child: content,
         ),
       );

@@ -16,7 +16,11 @@ class Character {
       required this.affiliations,
       required this.image,
       required this.occupation,
-      required this.bounty});
+      required this.bounty,
+      this.signo,
+      this.crew,
+      this.status,
+      this.age});
 
   @JsonKey(name: 'bounty')
   String bounty;
@@ -44,6 +48,18 @@ class Character {
 
   @JsonKey(name: 'image')
   String image;
+
+  @JsonKey(name: 'signo')
+  String? signo;
+
+  @JsonKey(name: 'crew')
+  String? crew;
+
+  @JsonKey(name: 'status')
+  String? status;
+
+  @JsonKey(name: 'age')
+  int? age;
 
   factory Character.fromJson(Map<String, dynamic> json) =>
       _$CharacterFromJson(json);

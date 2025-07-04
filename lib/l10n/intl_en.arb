@@ -131,9 +131,9 @@
     "type": "text",
     "placeholders": {}
   },
-  "statistics": "Statistics",
+  "statistics": "Details",
   "@statistics": {
-    "description": "Title for statistics section",
+    "description": "Title for details section",
     "type": "text",
     "placeholders": {}
   },
@@ -188,6 +188,108 @@
   "selectCharacter": "Select Character",
   "@selectCharacter": {
     "description": "Button text to open character selection screen",
+    "type": "text",
+    "placeholders": {}
+  },
+  "signo": "Zodiac Sign",
+  "@signo": {
+    "description": "Label for zodiac sign",
+    "type": "text",
+    "placeholders": {}
+  },
+  "status": "Status",
+  "@status": {
+    "description": "Label for status when devil fruit is not available",
+    "type": "text",
+    "placeholders": {}
+  },
+  "devilFruit": "Devil Fruit",
+  "@devilFruit": {
+    "description": "Label for devil fruit",
+    "type": "text",
+    "placeholders": {}
+  },
+  "crew": "Crew",
+  "@crew": {
+    "description": "Label for crew",
+    "type": "text",
+    "placeholders": {}
+  },
+  "ariesSign": "Aries",
+  "@ariesSign": {
+    "description": "Aries zodiac sign",
+    "type": "text",
+    "placeholders": {}
+  },
+  "taurusSign": "Taurus",
+  "@taurusSign": {
+    "description": "Taurus zodiac sign",
+    "type": "text",
+    "placeholders": {}
+  },
+  "geminiSign": "Gemini",
+  "@geminiSign": {
+    "description": "Gemini zodiac sign",
+    "type": "text",
+    "placeholders": {}
+  },
+  "cancerSign": "Cancer",
+  "@cancerSign": {
+    "description": "Cancer zodiac sign",
+    "type": "text",
+    "placeholders": {}
+  },
+  "leoSign": "Leo",
+  "@leoSign": {
+    "description": "Leo zodiac sign",
+    "type": "text",
+    "placeholders": {}
+  },
+  "virgoSign": "Virgo",
+  "@virgoSign": {
+    "description": "Virgo zodiac sign",
+    "type": "text",
+    "placeholders": {}
+  },
+  "libraSign": "Libra",
+  "@libraSign": {
+    "description": "Libra zodiac sign",
+    "type": "text",
+    "placeholders": {}
+  },
+  "scorpioSign": "Scorpio",
+  "@scorpioSign": {
+    "description": "Scorpio zodiac sign",
+    "type": "text",
+    "placeholders": {}
+  },
+  "sagittariusSign": "Sagittarius",
+  "@sagittariusSign": {
+    "description": "Sagittarius zodiac sign",
+    "type": "text",
+    "placeholders": {}
+  },
+  "capricornSign": "Capricorn",
+  "@capricornSign": {
+    "description": "Capricorn zodiac sign",
+    "type": "text",
+    "placeholders": {}
+  },
+  "aquariusSign": "Aquarius",
+  "@aquariusSign": {
+    "description": "Aquarius zodiac sign",
+    "type": "text",
+    "placeholders": {}
+  },
+  "piscesSign": "Pisces",
+  "@piscesSign": {
+    "description": "Pisces zodiac sign",
+    "type": "text",
+    "placeholders": {}
+  },
+  "unknown": "Unknown",
+  "@unknown": {
+    "description": "Unknown value",
     "type": "text",
     "placeholders": {}
   }
