@@ -2,7 +2,7 @@
 // Copyright © 2022.
 
 import 'package:flutter/material.dart';
-import 'package:simple_app/l10n/app_localizations.dart';
+import 'package:opfan/l10n/app_localizations.dart';
 
 class UnexistentSearch extends StatelessWidget {
   const UnexistentSearch({Key? key, required this.query}) : super(key: key);

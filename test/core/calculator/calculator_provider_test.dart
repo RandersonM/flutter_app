@@ -2,7 +2,7 @@
 // Copyright © 2022.
 
 import 'package:flutter_test/flutter_test.dart';
-import 'package:simple_app/core/calculator/calculator_provider.dart';
+import 'package:opfan/core/calculator/calculator_provider.dart';
 
 void main() {
   group(' Calculator provider', () {

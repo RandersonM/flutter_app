@@ -64,4 +64,94 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get strawHat => 'Straw Hat Pirates';
+
+  @override
+  String get featuredCharacter => 'Featured Character';
+
+  @override
+  String get randomCharacter => 'Random Character';
+
+  @override
+  String get refresh => 'Refresh';
+
+  @override
+  String get statistics => 'Details';
+
+  @override
+  String get totalCharacters => 'Total Characters';
+
+  @override
+  String get highestBounty => 'Highest Bounty';
+
+  @override
+  String get crews => 'Crews';
+
+  @override
+  String get searchingVideo => 'Searching AMV video...';
+
+  @override
+  String get loadingError => 'Error loading character';
+
+  @override
+  String get tryAgain => 'Try Again';
+
+  @override
+  String get loading => 'Loading...';
+
+  @override
+  String get imageUnavailable => 'Image\nUnavailable';
+
+  @override
+  String get selectCharacter => 'Select Character';
+
+  @override
+  String get signo => 'Zodiac Sign';
+
+  @override
+  String get status => 'Status';
+
+  @override
+  String get devilFruit => 'Devil Fruit';
+
+  @override
+  String get crew => 'Crew';
+
+  @override
+  String get ariesSign => 'Aries';
+
+  @override
+  String get taurusSign => 'Taurus';
+
+  @override
+  String get geminiSign => 'Gemini';
+
+  @override
+  String get cancerSign => 'Cancer';
+
+  @override
+  String get leoSign => 'Leo';
+
+  @override
+  String get virgoSign => 'Virgo';
+
+  @override
+  String get libraSign => 'Libra';
+
+  @override
+  String get scorpioSign => 'Scorpio';
+
+  @override
+  String get sagittariusSign => 'Sagittarius';
+
+  @override
+  String get capricornSign => 'Capricorn';
+
+  @override
+  String get aquariusSign => 'Aquarius';
+
+  @override
+  String get piscesSign => 'Pisces';
+
+  @override
+  String get unknown => 'Unknown';
 }

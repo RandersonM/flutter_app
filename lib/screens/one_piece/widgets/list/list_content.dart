@@ -4,9 +4,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import 'package:simple_app/core/one_piece/characters_cubit.dart';
-import 'package:simple_app/core/one_piece/models/character.dart';
-import 'package:simple_app/screens/one_piece/widgets/list/character_grid_list.dart';
+import 'package:opfan/screens/one_piece/blocs/characters_cubit.dart';
+import 'package:opfan/core/one_piece/models/character.dart';
+import 'package:opfan/screens/one_piece/widgets/list/character_grid_list.dart';
 
 class ListContent extends StatefulWidget {
   const ListContent({Key? key}) : super(key: key);

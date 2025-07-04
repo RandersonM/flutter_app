@@ -2,7 +2,8 @@
 // Copyright © 2022.
 
 import 'package:flutter/material.dart';
-import 'package:simple_app/utils/constants.dart';
+import 'package:opfan/l10n/app_localizations.dart';
+import 'package:opfan/utils/constants.dart';
 
 class DetailsImage extends StatefulWidget {
   const DetailsImage({Key? key, required this.image}) : super(key: key);
@@ -18,17 +19,17 @@ class _DetailsImageState extends State<DetailsImage> {
 
   @override
   Widget build(BuildContext context) => SliverAppBar(
-        leading: Container(),
+        leading: const SizedBox.shrink(),
         forceElevated: true,
         backgroundColor: Colors.white,
         expandedHeight: MediaQuery.of(context).size.height / 3,
         flexibleSpace: FlexibleSpaceBar(
           background: Container(
             margin: const EdgeInsets.all(Constants.margin),
-            decoration: BoxDecoration(
+            decoration: const BoxDecoration(
               borderRadius:
-                  const BorderRadius.all(Radius.circular(Constants.margin * 3)),
-              color: Colors.grey[200],
+                  BorderRadius.all(Radius.circular(Constants.margin * 3)),
+              color: Colors.white,
             ),
             child: ClipRRect(
               borderRadius:
@@ -37,7 +38,7 @@ class _DetailsImageState extends State<DetailsImage> {
                   ? _buildPlaceholder()
                   : Image.network(
                       widget.image,
-                      fit: BoxFit.cover,
+                      fit: BoxFit.fill,
                       width: double.infinity,
                       height: double.infinity,
                       loadingBuilder: (context, child, loadingProgress) {
@@ -71,7 +72,7 @@ class _DetailsImageState extends State<DetailsImage> {
     return Container(
       width: double.infinity,
       height: double.infinity,
-      color: Colors.grey[300],
+      color: Colors.transparent,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
@@ -82,7 +83,7 @@ class _DetailsImageState extends State<DetailsImage> {
           ),
           const SizedBox(height: 16),
           Text(
-            'Image Unavailable',
+            AppLocalizations.of(context)!.imageUnavailable,
             textAlign: TextAlign.center,
             style: TextStyle(
               color: Colors.grey[600],

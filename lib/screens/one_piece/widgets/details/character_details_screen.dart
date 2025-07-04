@@ -3,16 +3,16 @@
 
 import 'package:flutter/material.dart';
 
-import 'package:simple_app/core/one_piece/models/character.dart';
-import 'package:simple_app/screens/one_piece/widgets/details/fields/details_affiliation.dart';
-import 'package:simple_app/screens/one_piece/widgets/details/fields/details_bounty.dart';
-import 'package:simple_app/screens/one_piece/widgets/details/fields/details_haki.dart';
-import 'package:simple_app/screens/one_piece/widgets/details/fields/details_image.dart';
-import 'package:simple_app/screens/one_piece/widgets/details/fields/details_name.dart';
-import 'package:simple_app/screens/one_piece/widgets/details/fields/details_occupation.dart';
-import 'package:simple_app/widgets/molecules/default_app_bar.dart';
-import 'package:simple_app/widgets/organisms/bottom_navigation.dart';
-import 'package:simple_app/utils/constants.dart';
+import 'package:opfan/core/one_piece/models/character.dart';
+import 'package:opfan/screens/one_piece/widgets/details/fields/details_affiliation.dart';
+import 'package:opfan/screens/one_piece/widgets/details/fields/details_bounty.dart';
+import 'package:opfan/screens/one_piece/widgets/details/fields/details_haki.dart';
+import 'package:opfan/screens/one_piece/widgets/details/fields/details_image.dart';
+import 'package:opfan/screens/one_piece/widgets/details/fields/details_name.dart';
+import 'package:opfan/screens/one_piece/widgets/details/fields/details_occupation.dart';
+import 'package:opfan/widgets/molecules/default_app_bar.dart';
+import 'package:opfan/widgets/organisms/bottom_navigation.dart';
+import 'package:opfan/utils/constants.dart';
 
 class CharacterDetailsScreen extends StatefulWidget {
   const CharacterDetailsScreen({Key? key, required this.character})

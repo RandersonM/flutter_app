@@ -100,5 +100,185 @@
     "description": "Filter label on search section one piece",
     "type": "text",
     "placeholders": {}
+  },
+  "featuredCharacter": "Personagem em Destaque",
+  "@featuredCharacter": {
+    "description": "Title for featured character section on home screen",
+    "type": "text",
+    "placeholders": {}
+  },
+  "randomCharacter": "Personagem Aleatório",
+  "@randomCharacter": {
+    "description": "Button text to load a random character",
+    "type": "text",
+    "placeholders": {}
+  },
+  "refresh": "Atualizar",
+  "@refresh": {
+    "description": "Button text to refresh content",
+    "type": "text",
+    "placeholders": {}
+  },
+  "statistics": "Detalhes",
+  "@statistics": {
+    "description": "Title for details section",
+    "type": "text",
+    "placeholders": {}
+  },
+  "totalCharacters": "Total de Personagens",
+  "@totalCharacters": {
+    "description": "Label for total characters statistic",
+    "type": "text",
+    "placeholders": {}
+  },
+  "highestBounty": "Bounty Mais Alta",
+  "@highestBounty": {
+    "description": "Label for highest bounty statistic",
+    "type": "text",
+    "placeholders": {}
+  },
+  "crews": "Tripulações",
+  "@crews": {
+    "description": "Label for crews statistic",
+    "type": "text",
+    "placeholders": {}
+  },
+  "searchingVideo": "Buscando vídeo AMV...",
+  "@searchingVideo": {
+    "description": "Loading message when searching for YouTube video",
+    "type": "text",
+    "placeholders": {}
+  },
+  "loadingError": "Erro ao carregar personagem",
+  "@loadingError": {
+    "description": "Error message when character fails to load",
+    "type": "text",
+    "placeholders": {}
+  },
+  "tryAgain": "Tentar Novamente",
+  "@tryAgain": {
+    "description": "Button text to retry an action",
+    "type": "text",
+    "placeholders": {}
+  },
+  "loading": "Carregando...",
+  "@loading": {
+    "description": "General loading message",
+    "type": "text",
+    "placeholders": {}
+  },
+  "imageUnavailable": "Imagem\nIndisponível",
+  "@imageUnavailable": {
+    "description": "Text shown when character image cannot be loaded",
+    "type": "text",
+    "placeholders": {}
+  },
+  "selectCharacter": "Selecionar Personagem",
+  "@selectCharacter": {
+    "description": "Button text to open character selection screen",
+    "type": "text",
+    "placeholders": {}
+  },
+  "signo": "Signo",
+  "@signo": {
+    "description": "Label for zodiac sign",
+    "type": "text",
+    "placeholders": {}
+  },
+  "status": "Status",
+  "@status": {
+    "description": "Label for status when devil fruit is not available",
+    "type": "text",
+    "placeholders": {}
+  },
+  "devilFruit": "Fruta do Diabo",
+  "@devilFruit": {
+    "description": "Label for devil fruit",
+    "type": "text",
+    "placeholders": {}
+  },
+  "crew": "Tripulação",
+  "@crew": {
+    "description": "Label for crew",
+    "type": "text",
+    "placeholders": {}
+  },
+  "ariesSign": "Áries",
+  "@ariesSign": {
+    "description": "Aries zodiac sign",
+    "type": "text",
+    "placeholders": {}
+  },
+  "taurusSign": "Touro",
+  "@taurusSign": {
+    "description": "Taurus zodiac sign",
+    "type": "text",
+    "placeholders": {}
+  },
+  "geminiSign": "Gêmeos",
+  "@geminiSign": {
+    "description": "Gemini zodiac sign",
+    "type": "text",
+    "placeholders": {}
+  },
+  "cancerSign": "Câncer",
+  "@cancerSign": {
+    "description": "Cancer zodiac sign",
+    "type": "text",
+    "placeholders": {}
+  },
+  "leoSign": "Leão",
+  "@leoSign": {
+    "description": "Leo zodiac sign",
+    "type": "text",
+    "placeholders": {}
+  },
+  "virgoSign": "Virgem",
+  "@virgoSign": {
+    "description": "Virgo zodiac sign",
+    "type": "text",
+    "placeholders": {}
+  },
+  "libraSign": "Libra",
+  "@libraSign": {
+    "description": "Libra zodiac sign",
+    "type": "text",
+    "placeholders": {}
+  },
+  "scorpioSign": "Escorpião",
+  "@scorpioSign": {
+    "description": "Scorpio zodiac sign",
+    "type": "text",
+    "placeholders": {}
+  },
+  "sagittariusSign": "Sagitário",
+  "@sagittariusSign": {
+    "description": "Sagittarius zodiac sign",
+    "type": "text",
+    "placeholders": {}
+  },
+  "capricornSign": "Capricórnio",
+  "@capricornSign": {
+    "description": "Capricorn zodiac sign",
+    "type": "text",
+    "placeholders": {}
+  },
+  "aquariusSign": "Aquário",
+  "@aquariusSign": {
+    "description": "Aquarius zodiac sign",
+    "type": "text",
+    "placeholders": {}
+  },
+  "piscesSign": "Peixes",
+  "@piscesSign": {
+    "description": "Pisces zodiac sign",
+    "type": "text",
+    "placeholders": {}
+  },
+  "unknown": "Desconhecido",
+  "@unknown": {
+    "description": "Unknown value",
+    "type": "text",
+    "placeholders": {}
   }
 }

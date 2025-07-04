@@ -64,4 +64,94 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get strawHat => 'Straw Hat Pirates';
+
+  @override
+  String get featuredCharacter => 'Personagem em Destaque';
+
+  @override
+  String get randomCharacter => 'Personagem Aleatório';
+
+  @override
+  String get refresh => 'Atualizar';
+
+  @override
+  String get statistics => 'Detalhes';
+
+  @override
+  String get totalCharacters => 'Total de Personagens';
+
+  @override
+  String get highestBounty => 'Bounty Mais Alta';
+
+  @override
+  String get crews => 'Tripulações';
+
+  @override
+  String get searchingVideo => 'Buscando vídeo AMV...';
+
+  @override
+  String get loadingError => 'Erro ao carregar personagem';
+
+  @override
+  String get tryAgain => 'Tentar Novamente';
+
+  @override
+  String get loading => 'Carregando...';
+
+  @override
+  String get imageUnavailable => 'Imagem\nIndisponível';
+
+  @override
+  String get selectCharacter => 'Selecionar Personagem';
+
+  @override
+  String get signo => 'Signo';
+
+  @override
+  String get status => 'Status';
+
+  @override
+  String get devilFruit => 'Fruta do Diabo';
+
+  @override
+  String get crew => 'Tripulação';
+
+  @override
+  String get ariesSign => 'Áries';
+
+  @override
+  String get taurusSign => 'Touro';
+
+  @override
+  String get geminiSign => 'Gêmeos';
+
+  @override
+  String get cancerSign => 'Câncer';
+
+  @override
+  String get leoSign => 'Leão';
+
+  @override
+  String get virgoSign => 'Virgem';
+
+  @override
+  String get libraSign => 'Libra';
+
+  @override
+  String get scorpioSign => 'Escorpião';
+
+  @override
+  String get sagittariusSign => 'Sagitário';
+
+  @override
+  String get capricornSign => 'Capricórnio';
+
+  @override
+  String get aquariusSign => 'Aquário';
+
+  @override
+  String get piscesSign => 'Peixes';
+
+  @override
+  String get unknown => 'Desconhecido';
 }

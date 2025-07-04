@@ -1,0 +1,89 @@
+// Developed by Randerson Mayllon
+// Copyright © 2022.
+
+import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+
+/// Molecular component - Displays a statistic item with icon, value and label
+class StatisticItem extends StatelessWidget {
+  const StatisticItem({
+    super.key,
+    required this.label,
+    required this.value,
+    this.icon,
+    this.svgPath,
+    this.iconColor,
+    this.iconSize = 32.0,
+    this.valueStyle,
+    this.labelStyle,
+    this.spacing = 4.0,
+    this.onTap,
+  });
+
+  final String label;
+  final String value;
+  final IconData? icon;
+  final String? svgPath;
+  final Color? iconColor;
+  final double iconSize;
+  final TextStyle? valueStyle;
+  final TextStyle? labelStyle;
+  final double spacing;
+  final VoidCallback? onTap;
+
+  Widget _buildIcon(BuildContext context) {
+    if (svgPath != null) {
+      return SvgPicture.asset(
+        svgPath!,
+        width: iconSize,
+        height: iconSize,
+        colorFilter: iconColor != null
+            ? ColorFilter.mode(iconColor!, BlendMode.srcIn)
+            : ColorFilter.mode(
+                Theme.of(context).colorScheme.primary, BlendMode.srcIn),
+      );
+    } else if (icon != null) {
+      return Icon(
+        icon,
+        size: iconSize,
+        color: iconColor ?? Theme.of(context).colorScheme.primary,
+      );
+    } else {
+      return Icon(
+        Icons.help_outline,
+        size: iconSize,
+        color: iconColor ?? Theme.of(context).colorScheme.primary,
+      );
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: onTap,
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          _buildIcon(context),
+          SizedBox(height: spacing),
+          Text(
+            value,
+            style: valueStyle ??
+                Theme.of(context).textTheme.bodyMedium?.copyWith(
+                      fontWeight: FontWeight.bold,
+                    ),
+            textAlign: TextAlign.center,
+          ),
+          SizedBox(height: spacing / 2),
+          Text(
+            label,
+            style: labelStyle ?? Theme.of(context).textTheme.bodySmall,
+            textAlign: TextAlign.center,
+            maxLines: 2,
+            overflow: TextOverflow.ellipsis,
+          ),
+        ],
+      ),
+    );
+  }
+}

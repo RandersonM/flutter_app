@@ -3,17 +3,33 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:hive_flutter/hive_flutter.dart';
+import 'package:opfan/screens/one_piece/blocs/search_cubit.dart';
+import 'package:opfan/core/services/environment_service.dart';
+import 'package:opfan/core/services/service_locator.dart';
+import 'package:opfan/core/one_piece/models/featured_character.dart';
 import 'l10n/app_localizations.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import 'package:simple_app/core/one_piece/characters_cubit.dart';
-import 'package:simple_app/core/one_piece/search_cubit.dart';
-import 'package:simple_app/screens/splash/splash_screen.dart';
-import 'package:simple_app/utils/app_routes.dart';
+import 'package:opfan/screens/one_piece/blocs/characters_cubit.dart';
 
-import 'package:simple_app/utils/theme.dart';
+import 'package:opfan/screens/splash/splash_screen.dart';
+import 'package:opfan/utils/app_routes.dart';
 
-void main() {
+import 'package:opfan/utils/theme.dart';
+
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  
+  await Hive.initFlutter();
+
+  Hive.registerAdapter(FeaturedCharacterAdapter());
+
+  await Future.wait([
+    EnvironmentService.initialize(),
+    configureDependencies(),
+  ]);
+
   SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
     statusBarColor: Colors.white24,
   ));
@@ -30,16 +46,16 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) => MultiBlocProvider(
         providers: [
           BlocProvider<CharactersCubit>(
-            create: (_) => CharactersCubit(),
+            create: (_) => getIt<CharactersCubit>(),
             lazy: false,
           ),
           BlocProvider<SearchCubit>(
-            create: (_) => SearchCubit(),
+            create: (_) => getIt<SearchCubit>(),
             lazy: true,
           ),
         ],
         child: MaterialApp(
-          title: 'Simple App',
+          title: EnvironmentService.instance.appName,
           locale: locale,
           localizationsDelegates: AppLocalizations.localizationsDelegates,
           supportedLocales: const <Locale>[

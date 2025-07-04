@@ -100,7 +100,7 @@ class DynamicScroll {
 
       await scrollController.animateTo(
         finalPosition,
-        duration: const Duration(milliseconds: 400),
+        duration: const Duration(milliseconds: 200),
         curve: Curves.easeInOut,
       );
     } catch (e) {
