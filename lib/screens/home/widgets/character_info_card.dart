@@ -46,26 +46,7 @@ class CharacterInfoCard extends StatelessWidget {
                   ),
                 ),
                 child: ClipOval(
-                  child: CachedNetworkImage(
-                    imageUrl: characterImage,
-                    fit: BoxFit.cover,
-                    placeholder: (context, url) => Container(
-                      color: Colors.grey[300],
-                      child: const Center(
-                        child: CircularProgressIndicator(
-                          strokeWidth: 2,
-                        ),
-                      ),
-                    ),
-                    errorWidget: (context, url, error) => Container(
-                      color: Colors.grey[300],
-                      child: const Icon(
-                        Icons.person,
-                        size: 30,
-                        color: Colors.grey,
-                      ),
-                    ),
-                  ),
+                  child: _buildImage(),
                 ),
               ),
 
@@ -113,6 +94,45 @@ class CharacterInfoCard extends StatelessWidget {
               ),
             ],
           ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildImage() {
+    if (characterImage.startsWith('assets/')) {
+      return Image.asset(
+        characterImage,
+        fit: BoxFit.cover,
+        errorBuilder: (context, error, stackTrace) => Container(
+          color: Colors.grey[300],
+          child: const Icon(
+            Icons.person,
+            size: 30,
+            color: Colors.grey,
+          ),
+        ),
+      );
+    }
+
+    // Use CachedNetworkImage for network images
+    return CachedNetworkImage(
+      imageUrl: characterImage,
+      fit: BoxFit.cover,
+      placeholder: (context, url) => Container(
+        color: Colors.grey[300],
+        child: const Center(
+          child: CircularProgressIndicator(
+            strokeWidth: 2,
+          ),
+        ),
+      ),
+      errorWidget: (context, url, error) => Container(
+        color: Colors.grey[300],
+        child: const Icon(
+          Icons.person,
+          size: 30,
+          color: Colors.grey,
         ),
       ),
     );

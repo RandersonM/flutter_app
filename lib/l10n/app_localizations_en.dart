@@ -75,7 +75,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get refresh => 'Refresh';
 
   @override
-  String get statistics => 'Statistics';
+  String get statistics => 'Details';
 
   @override
   String get totalCharacters => 'Total Characters';
@@ -103,4 +103,55 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get selectCharacter => 'Select Character';
+
+  @override
+  String get signo => 'Zodiac Sign';
+
+  @override
+  String get status => 'Status';
+
+  @override
+  String get devilFruit => 'Devil Fruit';
+
+  @override
+  String get crew => 'Crew';
+
+  @override
+  String get ariesSign => 'Aries';
+
+  @override
+  String get taurusSign => 'Taurus';
+
+  @override
+  String get geminiSign => 'Gemini';
+
+  @override
+  String get cancerSign => 'Cancer';
+
+  @override
+  String get leoSign => 'Leo';
+
+  @override
+  String get virgoSign => 'Virgo';
+
+  @override
+  String get libraSign => 'Libra';
+
+  @override
+  String get scorpioSign => 'Scorpio';
+
+  @override
+  String get sagittariusSign => 'Sagittarius';
+
+  @override
+  String get capricornSign => 'Capricorn';
+
+  @override
+  String get aquariusSign => 'Aquarius';
+
+  @override
+  String get piscesSign => 'Pisces';
+
+  @override
+  String get unknown => 'Unknown';
 }

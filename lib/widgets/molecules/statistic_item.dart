@@ -2,6 +2,7 @@
 // Copyright © 2022.
 
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 /// Molecular component - Displays a statistic item with icon, value and label
 class StatisticItem extends StatelessWidget {
@@ -9,7 +10,8 @@ class StatisticItem extends StatelessWidget {
     super.key,
     required this.label,
     required this.value,
-    required this.icon,
+    this.icon,
+    this.svgPath,
     this.iconColor,
     this.iconSize = 32.0,
     this.valueStyle,
@@ -20,7 +22,8 @@ class StatisticItem extends StatelessWidget {
 
   final String label;
   final String value;
-  final IconData icon;
+  final IconData? icon;
+  final String? svgPath;
   final Color? iconColor;
   final double iconSize;
   final TextStyle? valueStyle;
@@ -28,45 +31,59 @@ class StatisticItem extends StatelessWidget {
   final double spacing;
   final VoidCallback? onTap;
 
-  @override
-  Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-
-    final content = Column(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        Icon(
-          icon,
-          size: iconSize,
-          color: iconColor ?? theme.primaryColor,
-        ),
-        SizedBox(height: spacing),
-        Text(
-          value,
-          style: valueStyle ??
-              theme.textTheme.titleMedium?.copyWith(
-                fontWeight: FontWeight.bold,
-              ),
-        ),
-        Text(
-          label,
-          style: labelStyle ?? theme.textTheme.bodySmall,
-          textAlign: TextAlign.center,
-        ),
-      ],
-    );
-
-    if (onTap != null) {
-      return InkWell(
-        onTap: onTap,
-        borderRadius: BorderRadius.circular(8),
-        child: Padding(
-          padding: const EdgeInsets.all(8),
-          child: content,
-        ),
+  Widget _buildIcon(BuildContext context) {
+    if (svgPath != null) {
+      return SvgPicture.asset(
+        svgPath!,
+        width: iconSize,
+        height: iconSize,
+        colorFilter: iconColor != null
+            ? ColorFilter.mode(iconColor!, BlendMode.srcIn)
+            : ColorFilter.mode(
+                Theme.of(context).colorScheme.primary, BlendMode.srcIn),
+      );
+    } else if (icon != null) {
+      return Icon(
+        icon,
+        size: iconSize,
+        color: iconColor ?? Theme.of(context).colorScheme.primary,
+      );
+    } else {
+      return Icon(
+        Icons.help_outline,
+        size: iconSize,
+        color: iconColor ?? Theme.of(context).colorScheme.primary,
       );
     }
+  }
 
-    return content;
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: onTap,
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          _buildIcon(context),
+          SizedBox(height: spacing),
+          Text(
+            value,
+            style: valueStyle ??
+                Theme.of(context).textTheme.bodyMedium?.copyWith(
+                      fontWeight: FontWeight.bold,
+                    ),
+            textAlign: TextAlign.center,
+          ),
+          SizedBox(height: spacing / 2),
+          Text(
+            label,
+            style: labelStyle ?? Theme.of(context).textTheme.bodySmall,
+            textAlign: TextAlign.center,
+            maxLines: 2,
+            overflow: TextOverflow.ellipsis,
+          ),
+        ],
+      ),
+    );
   }
 }

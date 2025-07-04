@@ -41,6 +41,18 @@ class FeaturedCharacter extends HiveObject {
   @HiveField(10)
   late bool isManuallySelected;
 
+  @HiveField(11)
+  String? characterSigno;
+
+  @HiveField(12)
+  String? characterCrew;
+
+  @HiveField(13)
+  String? characterStatus;
+
+  @HiveField(14)
+  int? characterAge;
+
   FeaturedCharacter();
 
   FeaturedCharacter.fromCharacter(Character character, this.date,
@@ -54,6 +66,10 @@ class FeaturedCharacter extends HiveObject {
     characterHaki = character.haki;
     characterDevilFruit = character.devilFruit;
     characterOccupation = character.occupation;
+    characterSigno = character.signo;
+    characterCrew = character.crew;
+    characterStatus = character.status;
+    characterAge = character.age;
   }
 
   Character toCharacter() {
@@ -67,6 +83,10 @@ class FeaturedCharacter extends HiveObject {
       haki: characterHaki,
       devilFruit: characterDevilFruit,
       occupation: characterOccupation,
+      signo: characterSigno,
+      crew: characterCrew,
+      status: characterStatus,
+      age: characterAge,
     );
   }
 

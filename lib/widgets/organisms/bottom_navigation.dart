@@ -2,6 +2,8 @@
 // Copyright © 2022.
 
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 import 'package:opfan/l10n/app_localizations.dart';
 import 'package:opfan/utils/app_routes.dart';
@@ -76,13 +78,16 @@ class BottomNavigationState extends State<BottomNavigation> {
     final localizations = AppLocalizations.of(context)!;
     
     final (String label, IconData icon) = switch (page) {
-      BottomNavigationPages.home => (localizations.home, Icons.home_rounded),
+      BottomNavigationPages.home => (
+          localizations.home,
+          FontAwesomeIcons.water
+        ),
       BottomNavigationPages.onePiece => (
           localizations.onePiece,
           OnePieceIcons.jollyRoger
         ),
       BottomNavigationPages.devilFruit => (
-          'Akuma no Mi',
+          localizations.devilFruit,
           Icons.apple 
         ),
     };
@@ -94,8 +99,18 @@ class BottomNavigationState extends State<BottomNavigation> {
           bottom: Constants.margin * 0.75,
         ),
         child: icon == Icons.apple
-            ? Image.asset('assets/logo/gomu_gomu.png',
-                width: IconSize.medium, height: IconSize.medium)
+            ? SvgPicture.asset(
+                'assets/svg/gomu-gomu.svg',
+                width: IconSize.medium,
+                height: IconSize.medium,
+                colorFilter: ColorFilter.mode(
+                  Theme.of(context)
+                      .colorScheme
+                      .onSurface
+                      .withValues(alpha: 0.6),
+                  BlendMode.srcIn,
+                ),
+              )
             : Icon(
           icon,
           size: IconSize.medium,
@@ -107,8 +122,15 @@ class BottomNavigationState extends State<BottomNavigation> {
           bottom: Constants.margin * 0.75,
         ),
         child: icon == Icons.apple
-            ? Image.asset('assets/logo/gomu_gomu.png',
-                width: IconSize.medium, height: IconSize.medium)
+            ? SvgPicture.asset(
+                'assets/svg/gomu-gomu.svg',
+                width: IconSize.medium,
+                height: IconSize.medium,
+                colorFilter: ColorFilter.mode(
+                  Theme.of(context).colorScheme.primary,
+                  BlendMode.srcIn,
+                ),
+              )
             : Icon(
           icon,
           size: IconSize.medium,

@@ -38,7 +38,7 @@ class _DetailsImageState extends State<DetailsImage> {
                   ? _buildPlaceholder()
                   : Image.network(
                       widget.image,
-                      fit: BoxFit.cover,
+                      fit: BoxFit.fill,
                       width: double.infinity,
                       height: double.infinity,
                       loadingBuilder: (context, child, loadingProgress) {
