@@ -206,4 +206,11 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get skipForNow => 'Skip for now';
+
+  @override
+  String get loginWelcomeSubtitle =>
+      'Explore the world of One Piece and discover your favorite characters';
+
+  @override
+  String get version => 'version';
 }
