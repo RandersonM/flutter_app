@@ -292,5 +292,107 @@
     "description": "Unknown value",
     "type": "text",
     "placeholders": {}
+  },
+  "welcome": "Welcome,",
+  "@welcome": {
+    "description": "Welcome greeting",
+    "type": "text",
+    "placeholders": {}
+  },
+  "welcomeToOpfan": "Welcome to OpFan",
+  "@welcomeToOpfan": {
+    "description": "Welcome message for login screen",
+    "type": "text",
+    "placeholders": {}
+  },
+  "signInWithGoogle": "Sign in with Google",
+  "@signInWithGoogle": {
+    "description": "Google sign in button text",
+    "type": "text",
+    "placeholders": {}
+  },
+  "signingIn": "Signing in...",
+  "@signingIn": {
+    "description": "Loading text when signing in",
+    "type": "text",
+    "placeholders": {}
+  },
+  "authenticationError": "Authentication Error",
+  "@authenticationError": {
+    "description": "Authentication error title",
+    "type": "text",
+    "placeholders": {}
+  },
+  "tryAgainButton": "Try Again",
+  "@tryAgainButton": {
+    "description": "Try again button text",
+    "type": "text",
+    "placeholders": {}
+  },
+  "clearDataAndContinue": "Clear data and continue",
+  "@clearDataAndContinue": {
+    "description": "Clear data button text",
+    "type": "text",
+    "placeholders": {}
+  },
+  "searchPlaceholder": "Search by roman or japanese name...",
+  "@searchPlaceholder": {
+    "description": "Search input placeholder text",
+    "type": "text",
+    "placeholders": {}
+  },
+  "filterByType": "Filter by type",
+  "@filterByType": {
+    "description": "Filter by type button text",
+    "type": "text",
+    "placeholders": {}
+  },
+  "clear": "Clear",
+  "@clear": {
+    "description": "Clear button text",
+    "type": "text",
+    "placeholders": {}
+  },
+  "clearFilters": "Clear Filters",
+  "@clearFilters": {
+    "description": "Clear filters button text",
+    "type": "text",
+    "placeholders": {}
+  },
+  "noFruitFound": "No fruit found",
+  "@noFruitFound": {
+    "description": "No fruit found message",
+    "type": "text",
+    "placeholders": {}
+  },
+  "noDevilFruitAvailable": "No Devil Fruit available",
+  "@noDevilFruitAvailable": {
+    "description": "No devil fruit available message",
+    "type": "text",
+    "placeholders": {}
+  },
+  "adjustFiltersOrSearch": "Try adjusting the filters or search for other terms",
+  "@adjustFiltersOrSearch": {
+    "description": "Suggestion text when no results found",
+    "type": "text",
+    "placeholders": {}
+  },
+  "errorLoadingContent": "Error loading content",
+  "@errorLoadingContent": {
+    "description": "Error loading content message",
+    "type": "text",
+    "placeholders": {}
+  },
+  "searching": "Searching...",
+  "@searching": {
+    "description": "Searching loading text",
+    "type": "text",
+    "placeholders": {}
+  },
+  "skipForNow": "Skip for now",
+  "@skipForNow": {
+    "description": "Skip login button text",
+    "type": "text",
+    "placeholders": {}
   }
 }

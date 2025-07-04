@@ -177,7 +177,7 @@ class _VideoBannerState extends State<VideoBanner> {
             ),
             SizedBox(height: 8),
             Text(
-              'Erro ao carregar conteúdo',
+              'Error loading content',
               style: TextStyle(
                 color: Colors.white,
                 fontSize: 16,

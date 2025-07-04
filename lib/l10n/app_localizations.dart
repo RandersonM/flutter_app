@@ -391,6 +391,108 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Unknown'**
   String get unknown;
+
+  /// Welcome greeting
+  ///
+  /// In en, this message translates to:
+  /// **'Welcome,'**
+  String get welcome;
+
+  /// Welcome message for login screen
+  ///
+  /// In en, this message translates to:
+  /// **'Welcome to OpFan'**
+  String get welcomeToOpfan;
+
+  /// Google sign in button text
+  ///
+  /// In en, this message translates to:
+  /// **'Sign in with Google'**
+  String get signInWithGoogle;
+
+  /// Loading text when signing in
+  ///
+  /// In en, this message translates to:
+  /// **'Signing in...'**
+  String get signingIn;
+
+  /// Authentication error title
+  ///
+  /// In en, this message translates to:
+  /// **'Authentication Error'**
+  String get authenticationError;
+
+  /// Try again button text
+  ///
+  /// In en, this message translates to:
+  /// **'Try Again'**
+  String get tryAgainButton;
+
+  /// Clear data button text
+  ///
+  /// In en, this message translates to:
+  /// **'Clear data and continue'**
+  String get clearDataAndContinue;
+
+  /// Search input placeholder text
+  ///
+  /// In en, this message translates to:
+  /// **'Search by roman or japanese name...'**
+  String get searchPlaceholder;
+
+  /// Filter by type button text
+  ///
+  /// In en, this message translates to:
+  /// **'Filter by type'**
+  String get filterByType;
+
+  /// Clear button text
+  ///
+  /// In en, this message translates to:
+  /// **'Clear'**
+  String get clear;
+
+  /// Clear filters button text
+  ///
+  /// In en, this message translates to:
+  /// **'Clear Filters'**
+  String get clearFilters;
+
+  /// No fruit found message
+  ///
+  /// In en, this message translates to:
+  /// **'No fruit found'**
+  String get noFruitFound;
+
+  /// No devil fruit available message
+  ///
+  /// In en, this message translates to:
+  /// **'No Devil Fruit available'**
+  String get noDevilFruitAvailable;
+
+  /// Suggestion text when no results found
+  ///
+  /// In en, this message translates to:
+  /// **'Try adjusting the filters or search for other terms'**
+  String get adjustFiltersOrSearch;
+
+  /// Error loading content message
+  ///
+  /// In en, this message translates to:
+  /// **'Error loading content'**
+  String get errorLoadingContent;
+
+  /// Searching loading text
+  ///
+  /// In en, this message translates to:
+  /// **'Searching...'**
+  String get searching;
+
+  /// Skip login button text
+  ///
+  /// In en, this message translates to:
+  /// **'Skip for now'**
+  String get skipForNow;
 }
 
 class _AppLocalizationsDelegate

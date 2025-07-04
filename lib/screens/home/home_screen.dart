@@ -6,7 +6,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:opfan/core/one_piece/models/character.dart';
 import 'package:opfan/core/services/service_locator.dart';
 import 'package:opfan/l10n/app_localizations.dart';
-import 'package:opfan/widgets/molecules/default_app_bar.dart';
 import 'package:opfan/widgets/molecules/statistics_grid.dart';
 import 'package:opfan/widgets/organisms/bottom_navigation.dart';
 import 'package:opfan/screens/home/widgets/simple_video_banner.dart';
@@ -15,6 +14,7 @@ import 'package:opfan/screens/home/blocs/index.dart';
 import 'package:opfan/utils/app_routes.dart';
 import 'package:opfan/utils/constants.dart';
 import 'package:opfan/utils/zodiac_icons.dart';
+import 'package:opfan/core/auth/blocs/index.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -28,13 +28,18 @@ class _HomeScreenState extends State<HomeScreen> {
   
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) =>
-          getIt<HomeBloc>()..add(const LoadFeaturedCharacter()),
-      child: Scaffold(
-        appBar: DefaultAppBar(
-          title: Text(AppLocalizations.of(context)!.home),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(
+          create: (context) =>
+              getIt<HomeBloc>()..add(const LoadFeaturedCharacter()),
         ),
+        BlocProvider.value(
+          value: getIt<AuthBloc>(),
+        ),
+      ],
+      child: Scaffold(
+        appBar: _buildAppBar(context),
         body: BlocBuilder<HomeBloc, HomeState>(
           builder: (context, state) {
             return SingleChildScrollView(
@@ -109,6 +114,72 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
         bottomNavigationBar: const BottomNavigation(BottomNavigationPages.home),
       ),
+    );
+  }
+
+  PreferredSizeWidget _buildAppBar(BuildContext context) {
+    return AppBar(
+      title: BlocBuilder<AuthBloc, AuthState>(
+        builder: (context, state) {
+          if (state is AuthAuthenticated) {
+            return Row(
+              children: [
+                CircleAvatar(
+                  backgroundImage: state.user.photoUrl != null
+                      ? NetworkImage(state.user.photoUrl!)
+                      : null,
+                  child: state.user.photoUrl == null
+                      ? const Icon(Icons.person)
+                      : null,
+                ),
+                const SizedBox(width: Constants.margin),
+                Expanded(
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        AppLocalizations.of(context)!.welcome,
+                        style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                              color: Theme.of(context).colorScheme.onSurface,
+                            ),
+                      ),
+                      Text(
+                        state.user.displayName,
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
+                        style: Theme.of(context)
+                            .textTheme
+                            .titleMedium
+                            ?.copyWith(
+                              color: Theme.of(context).colorScheme.onSurface,
+                              fontWeight: FontWeight.bold,
+                            ),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            );
+          }
+          return Text(AppLocalizations.of(context)!.home);
+        },
+      ),
+      actions: [
+        BlocBuilder<AuthBloc, AuthState>(
+          builder: (context, state) {
+            if (state is AuthAuthenticated) {
+              return IconButton(
+                icon: const Icon(Icons.logout),
+                onPressed: () {
+                  context.read<AuthBloc>().add(const AuthSignOutRequested());
+                },
+              );
+            }
+            return const SizedBox.shrink();
+          },
+        ),
+      ],
     );
   }
 

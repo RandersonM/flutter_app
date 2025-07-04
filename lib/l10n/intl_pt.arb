@@ -280,5 +280,107 @@
     "description": "Unknown value",
     "type": "text",
     "placeholders": {}
+  },
+  "welcome": "Bem-vindo,",
+  "@welcome": {
+    "description": "Welcome greeting",
+    "type": "text",
+    "placeholders": {}
+  },
+  "welcomeToOpfan": "Bem-vindo ao OpFan",
+  "@welcomeToOpfan": {
+    "description": "Welcome message for login screen",
+    "type": "text",
+    "placeholders": {}
+  },
+  "signInWithGoogle": "Entrar com Google",
+  "@signInWithGoogle": {
+    "description": "Google sign in button text",
+    "type": "text",
+    "placeholders": {}
+  },
+  "signingIn": "Entrando...",
+  "@signingIn": {
+    "description": "Loading text when signing in",
+    "type": "text",
+    "placeholders": {}
+  },
+  "authenticationError": "Erro na Autenticação",
+  "@authenticationError": {
+    "description": "Authentication error title",
+    "type": "text",
+    "placeholders": {}
+  },
+  "tryAgainButton": "Tentar Novamente",
+  "@tryAgainButton": {
+    "description": "Try again button text",
+    "type": "text",
+    "placeholders": {}
+  },
+  "clearDataAndContinue": "Limpar dados e continuar",
+  "@clearDataAndContinue": {
+    "description": "Clear data button text",
+    "type": "text",
+    "placeholders": {}
+  },
+  "searchPlaceholder": "Pesquisar por nome romano ou japonês...",
+  "@searchPlaceholder": {
+    "description": "Search input placeholder text",
+    "type": "text",
+    "placeholders": {}
+  },
+  "filterByType": "Filtrar por tipo",
+  "@filterByType": {
+    "description": "Filter by type button text",
+    "type": "text",
+    "placeholders": {}
+  },
+  "clear": "Limpar",
+  "@clear": {
+    "description": "Clear button text",
+    "type": "text",
+    "placeholders": {}
+  },
+  "clearFilters": "Limpar Filtros",
+  "@clearFilters": {
+    "description": "Clear filters button text",
+    "type": "text",
+    "placeholders": {}
+  },
+  "noFruitFound": "Nenhuma fruta encontrada",
+  "@noFruitFound": {
+    "description": "No fruit found message",
+    "type": "text",
+    "placeholders": {}
+  },
+  "noDevilFruitAvailable": "Nenhuma Akuma no Mi disponível",
+  "@noDevilFruitAvailable": {
+    "description": "No devil fruit available message",
+    "type": "text",
+    "placeholders": {}
+  },
+  "adjustFiltersOrSearch": "Tente ajustar os filtros ou buscar por outros termos",
+  "@adjustFiltersOrSearch": {
+    "description": "Suggestion text when no results found",
+    "type": "text",
+    "placeholders": {}
+  },
+  "errorLoadingContent": "Erro ao carregar conteúdo",
+  "@errorLoadingContent": {
+    "description": "Error loading content message",
+    "type": "text",
+    "placeholders": {}
+  },
+  "searching": "Pesquisando...",
+  "@searching": {
+    "description": "Searching loading text",
+    "type": "text",
+    "placeholders": {}
+  },
+  "skipForNow": "Pular por agora",
+  "@skipForNow": {
+    "description": "Skip login button text",
+    "type": "text",
+    "placeholders": {}
   }
 }

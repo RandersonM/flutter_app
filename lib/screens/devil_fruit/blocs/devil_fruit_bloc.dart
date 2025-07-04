@@ -148,7 +148,7 @@ class DevilFruitBloc extends Bloc<DevilFruitEvent, DevilFruitState> {
       debugPrint('DevilFruitBloc: Error filtering devil fruits - $e');
       emit(currentState.copyWith(
         isSearching: false,
-        error: 'Erro ao filtrar Akuma no Mi: $e',
+        error: 'Error filtering Devil Fruits: $e',
       ));
     }
   }

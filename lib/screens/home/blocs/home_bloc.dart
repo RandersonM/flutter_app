@@ -45,7 +45,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
       add(LoadCharacterVideo(character.name));
     } catch (e) {
       debugPrint('Home: Error loading featured character - $e');
-      emit(HomeError('Erro ao carregar personagem em destaque: $e'));
+      emit(HomeError('Error loading featured character: $e'));
     }
   }
 
@@ -69,7 +69,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
       add(LoadCharacterVideo(character.name));
     } catch (e) {
       debugPrint('Home: Error loading random character - $e');
-      emit(HomeError('Erro ao carregar personagem aleatório: $e'));
+      emit(HomeError('Error loading random character: $e'));
     }
   }
 
@@ -90,7 +90,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
       add(LoadCharacterVideo(character.name));
     } catch (e) {
       debugPrint('Home: Error refreshing home - $e');
-      emit(HomeError('Erro ao atualizar a tela: $e'));
+      emit(HomeError('Error refreshing screen: $e'));
     }
   }
 
