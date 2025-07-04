@@ -2,10 +2,10 @@
 // Copyright © 2022.
 
 import 'package:flutter/material.dart';
-import 'package:simple_app/screens/one_piece/widgets/search/filter/filter_chip_list.dart';
-import 'package:simple_app/screens/one_piece/widgets/search/search_input.dart';
+import 'package:opfan/screens/one_piece/widgets/search/filter/filter_chip_list.dart';
+import 'package:opfan/screens/one_piece/widgets/search/search_input.dart';
 
-import 'package:simple_app/utils/constants.dart';
+import 'package:opfan/utils/constants.dart';
 
 class SearchHeader extends StatelessWidget {
   const SearchHeader({Key? key}) : super(key: key);

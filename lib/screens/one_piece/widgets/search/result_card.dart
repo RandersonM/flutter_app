@@ -2,9 +2,9 @@
 // Copyright © 2022.
 
 import 'package:flutter/material.dart';
-import 'package:simple_app/core/one_piece/models/character.dart';
+import 'package:opfan/core/one_piece/models/character.dart';
 
-import 'package:simple_app/screens/one_piece/widgets/details/character_details_screen.dart';
+import 'package:opfan/utils/app_routes.dart';
 
 class ResultCard extends StatefulWidget {
   const ResultCard({Key? key, required this.character}) : super(key: key);
@@ -22,11 +22,10 @@ class _ResultCardState extends State<ResultCard> {
   Widget build(BuildContext context) => Card(
         color: Theme.of(context).colorScheme.onSecondary,
         child: ListTile(
-          onTap: () => Navigator.push(
+          onTap: () => Navigator.pushNamed(
             context,
-            MaterialPageRoute<dynamic>(
-                builder: (BuildContext context) =>
-                    CharacterDetailsScreen(character: widget.character)),
+            AppRoutes.characterDetails,
+            arguments: widget.character,
           ),
           leading: _buildAvatar(),
           title: Text(widget.character.name),

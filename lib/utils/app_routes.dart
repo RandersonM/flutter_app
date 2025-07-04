@@ -2,28 +2,58 @@
 // Copyright © 2022.
 
 import 'package:flutter/material.dart';
-import 'package:simple_app/screens/calculator/calculator_screen.dart';
-import 'package:simple_app/screens/counter/counter_screen.dart';
-import 'package:simple_app/screens/one_piece/characters_list_screen.dart';
+import 'package:opfan/core/home/models/youtube_video_model.dart';
+import 'package:opfan/core/one_piece/models/character.dart';
+import 'package:opfan/screens/calculator/calculator_screen.dart';
+import 'package:opfan/screens/fav_character_selection_screen/character_selection_screen.dart';
+import 'package:opfan/screens/home/home_screen.dart';
+import 'package:opfan/screens/one_piece/characters_list_screen.dart';
+import 'package:opfan/screens/one_piece/widgets/details/character_details_screen.dart';
+import 'package:opfan/screens/youtube/youtube_player_screen.dart';
+import 'package:opfan/screens/devil_fruit/devil_fruit_list.dart';
 
-import 'package:simple_app/utils/transitions/material_page_route_without_tansition.dart';
+import 'package:opfan/utils/transitions/material_page_route_without_tansition.dart';
 
 class AppRoutes {
-  static const String counter = '/counter';
+  // Main navigation routes
+  static const String home = '/home';
   static const String calculator = '/calculator';
   static const String onePiece = '/onePiece';
+  static const String devilFruit = '/devilFruit';
+  
+  // Additional screen routes
+  static const String youtubePlayer = '/youtubePlayer';
+  static const String characterSelection = '/characterSelection';
+  static const String characterDetails = '/characterDetails';
 
   static MaterialPageRoute<dynamic>? getRoute(RouteSettings settings) {
     switch (settings.name) {
-      case counter:
+      case home:
         return MaterialPageRouteWithoutTransition<dynamic>(
-            builder: (_) => const CounterScreen(), settings: settings);
+            builder: (_) => const HomeScreen(), settings: settings);
       case calculator:
         return MaterialPageRouteWithoutTransition<dynamic>(
             builder: (_) => const CalculatorScreen(), settings: settings);
       case onePiece:
         return MaterialPageRouteWithoutTransition<dynamic>(
             builder: (_) => const CharactersListScreen(), settings: settings);
+      case devilFruit:
+        return MaterialPageRouteWithoutTransition<dynamic>(
+            builder: (_) => const DevilFruitListScreen(), settings: settings);
+      case youtubePlayer:
+        final video = settings.arguments as YouTubeVideo;
+        return MaterialPageRoute<dynamic>(
+            builder: (_) => YouTubePlayerScreen(video: video),
+            settings: settings);
+      case characterSelection:
+        return MaterialPageRoute<Character>(
+            builder: (_) => const CharacterSelectionScreen(),
+            settings: settings);
+      case characterDetails:
+        final character = settings.arguments as Character;
+        return MaterialPageRoute<dynamic>(
+            builder: (_) => CharacterDetailsScreen(character: character),
+            settings: settings);
     }
 
     return null;

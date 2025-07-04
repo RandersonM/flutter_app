@@ -2,11 +2,12 @@
 // Copyright © 2022.
 
 import 'package:flutter/material.dart';
+import 'package:opfan/screens/one_piece/blocs/search_cubit.dart';
 import '../../../../l10n/app_localizations.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import 'package:simple_app/core/one_piece/search_cubit.dart';
-import 'package:simple_app/utils/theme.dart';
+
+import 'package:opfan/utils/theme.dart';
 
 enum InputState { empty, filled }
 
