@@ -19,6 +19,19 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
+  late String _backgroundImage;
+  final List<String> _loginImages = [
+    'assets/logo/login-image.jpg',
+    'assets/logo/login-image-2.jpg',
+    'assets/logo/login-image3.jpeg',
+  ];
+
+  @override
+  void initState() {
+    super.initState();
+    _backgroundImage = (_loginImages..shuffle()).first;
+  }
+
   @override
   Widget build(BuildContext context) {
     return BlocProvider.value(
@@ -37,57 +50,39 @@ class _LoginScreenState extends State<LoginScreen> {
           }
         },
         child: Scaffold(
-          body: Container(
-            decoration: BoxDecoration(
-              gradient: LinearGradient(
-                begin: const Alignment(-0.2, 1),
-                end: Alignment.topRight,
-                colors: <Color>[
-                  AppColors.gradientPurple[200]!,
-                  AppColors.gradientPurple[500]!,
-                  AppColors.gradientPurple[800]!,
-                ],
+          body: Stack(
+            fit: StackFit.expand,
+            children: [
+              Image.asset(
+                _backgroundImage,
+                fit: BoxFit.cover,
               ),
-            ),
-            child: SafeArea(
-              child: Padding(
-                padding: const EdgeInsets.all(Constants.margin),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    const Spacer(),
-                    _buildLogo(),
-                    const SizedBox(height: Constants.margin * 2),
-                    _buildWelcomeText(),
-                    const SizedBox(height: Constants.margin),
-                    _buildSubtitleText(),
-                    const SizedBox(height: Constants.margin * 3),
-                    _buildLoginButton(),
-                    const SizedBox(height: Constants.margin * 2),
-                    _buildSkipButton(),
-                    const Spacer(),
-                    _buildFooter(),
-                  ],
+              Container(
+                color: Colors.black.withValues(alpha: 0.45),
+              ),
+              SafeArea(
+                child: Padding(
+                  padding: const EdgeInsets.all(Constants.margin),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      const Spacer(),
+                      _buildWelcomeText(),
+                      const SizedBox(height: Constants.margin),
+                      _buildSubtitleText(),
+                      const SizedBox(height: Constants.margin * 3),
+                      _buildLoginButton(),
+                      const SizedBox(height: Constants.margin * 2),
+                      _buildSkipButton(),
+                      const Spacer(),
+                      _buildFooter(),
+                    ],
+                  ),
                 ),
               ),
-            ),
+            ],
           ),
         ),
-      ),
-    );
-  }
-
-  Widget _buildLogo() {
-    return Container(
-      padding: const EdgeInsets.all(Constants.margin),
-      decoration: BoxDecoration(
-        color: Colors.white.withValues(alpha: 0.1),
-        borderRadius: BorderRadius.circular(20),
-      ),
-      child: Image.asset(
-        'assets/logo/gomu_gomu.png',
-        height: 120,
-        width: 120,
       ),
     );
   }
@@ -105,9 +100,9 @@ class _LoginScreenState extends State<LoginScreen> {
 
   Widget _buildSubtitleText() {
     return Text(
-      'Explore o mundo de One Piece e descubra seus personagens favoritos',
+      AppLocalizations.of(context)!.loginWelcomeSubtitle,
       style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-            color: Colors.white.withValues(alpha: 0.8),
+            color: Colors.white,
           ),
       textAlign: TextAlign.center,
     );
@@ -180,7 +175,7 @@ class _LoginScreenState extends State<LoginScreen> {
         style: TextStyle(
           color: Colors.white.withValues(alpha: 0.8),
           fontSize: 16,
-          fontWeight: FontWeight.w500,
+          fontWeight: FontWeight.bold,
         ),
       ),
     );
@@ -191,17 +186,16 @@ class _LoginScreenState extends State<LoginScreen> {
       children: [
         const Row(
           mainAxisAlignment: MainAxisAlignment.center,
+          spacing: 8,
           children: [
             CircleIndicator(
               isActive: true,
               activeColor: Colors.white,
             ),
-            SizedBox(width: 8),
             CircleIndicator(
               isActive: false,
               inactiveColor: Colors.white,
             ),
-            SizedBox(width: 8),
             CircleIndicator(
               isActive: false,
               inactiveColor: Colors.white,
@@ -210,7 +204,7 @@ class _LoginScreenState extends State<LoginScreen> {
         ),
         const SizedBox(height: Constants.margin),
         Text(
-          'Versão 1.0.1',
+          '${AppLocalizations.of(context)!.version} 1.0.1',
           style: TextStyle(
             color: Colors.white.withValues(alpha: 0.6),
             fontSize: 12,
