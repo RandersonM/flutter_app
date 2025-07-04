@@ -382,5 +382,17 @@
     "description": "Skip login button text",
     "type": "text",
     "placeholders": {}
+  },
+  "loginWelcomeSubtitle": "Explore o mundo de One Piece e descubra seus personagens favoritos",
+  "@loginWelcomeSubtitle": {
+    "description": "Subtítulo mostrado na tela de login convidando o usuário a explorar os personagens de One Piece.",
+    "type": "text",
+    "placeholders": {}
+  },
+  "version": "versão ",
+  "@version": {
+    "description": "version word.",
+    "type": "text",
+    "placeholders": {}
   }
 }

@@ -394,5 +394,17 @@
     "description": "Skip login button text",
     "type": "text",
     "placeholders": {}
+  },
+  "loginWelcomeSubtitle": "Explore the world of One Piece and discover your favorite characters",
+  "@loginWelcomeSubtitle": {
+    "description": "Subtitle shown on the login screen to invite users to explore One Piece characters.",
+    "type": "text",
+    "placeholders": {}
+  },
+  "version": "version",
+  "@version": {
+    "description": "version word.",
+    "type": "text",
+    "placeholders": {}
   }
 }
