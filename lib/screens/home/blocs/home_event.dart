@@ -2,7 +2,7 @@
 // Copyright © 2022.
 
 import 'package:equatable/equatable.dart';
-import 'package:opfan/core/models/one_piece/character.dart';
+import 'package:opfan/core/models/character_model.dart';
 
 abstract class HomeEvent extends Equatable {
   const HomeEvent();
@@ -33,7 +33,7 @@ class LoadCharacterVideo extends HomeEvent {
 }
 
 class SelectCharacter extends HomeEvent {
-  final Character character;
+  final CharacterModel character;
 
   const SelectCharacter(this.character);
 

@@ -36,30 +36,43 @@ class CharacterBackgroundSection extends StatelessWidget {
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
     
-    final statusOptions = [l10n.alive, l10n.dead, l10n.unknown];
-    final affiliationOptions = [
-      l10n.marines,
-      l10n.revolutionaries,
-      l10n.yonkou,
-      l10n.shichibukai,
-      l10n.independent,
-      l10n.pirate,
-    ];
-    final occupationOptions = [
-      l10n.captain,
-      l10n.admiral,
-      l10n.viceAdmiral,
-      l10n.revolutionary,
-      l10n.merchant,
-      l10n.doctor,
-      l10n.navigator,
-      l10n.cook,
-      l10n.sniper,
-      l10n.swordsman,
-      l10n.carpenter,
-      l10n.archaeologist,
-      l10n.sharpshooter,
-    ];
+    // Status mapping: English key -> Translated value
+    final statusMapping = {
+      'alive': l10n.alive,
+      'dead': l10n.dead,
+      'unknown': l10n.unknown,
+    };
+
+    // Affiliation mapping: English key -> Translated value
+    final affiliationMapping = {
+      'marines': l10n.marines,
+      'revolutionaries': l10n.revolutionaries,
+      'yonkou': l10n.yonkou,
+      'shichibukai': l10n.shichibukai,
+      'independent': l10n.independent,
+      'pirate': l10n.pirate,
+      'pirateAlliance': l10n.pirateAlliance,
+    };
+
+    final occupationMapping = {
+      'captain': l10n.captain,
+      'admiral': l10n.admiral,
+      'viceAdmiral': l10n.viceAdmiral,
+      'revolutionary': l10n.revolutionary,
+      'merchant': l10n.merchant,
+      'doctor': l10n.doctor,
+      'navigator': l10n.navigator,
+      'cook': l10n.cook,
+      'sniper': l10n.sniper,
+      'swordsman': l10n.swordsman,
+      'carpenter': l10n.carpenter,
+      'archaeologist': l10n.archaeologist,
+      'sharpshooter': l10n.sharpshooter,
+    };
+
+    final statusOptions = statusMapping.values.toList();
+    final affiliationOptions = affiliationMapping.values.toList();
+    final occupationOptions = occupationMapping.values.toList();
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -72,7 +85,7 @@ class CharacterBackgroundSection extends StatelessWidget {
         ),
         const SizedBox(height: 16),
         CustomTextField(
-          label: l10n.crew,
+          label: l10n.crew(0),
           hint: l10n.crewHint,
           controller: crewController,
         ),
@@ -94,25 +107,54 @@ class CharacterBackgroundSection extends StatelessWidget {
         ),
         CustomDropdown<String>(
           label: l10n.status,
-          value: selectedStatus,
+          value: selectedStatus != null ? statusMapping[selectedStatus!] : null,
           items: statusOptions,
           itemToString: (status) => status,
-          onChanged: onStatusChanged,
+          onChanged: (translatedStatus) {
+            final key = statusMapping.entries
+                .firstWhere((entry) => entry.value == translatedStatus)
+                .key;
+            onStatusChanged(key);
+          },
         ),
         CustomChipSelector(
           label: l10n.occupations,
           options: occupationOptions,
-          selectedOptions: selectedOccupations,
-          onOptionSelected: onOccupationSelected,
-          onOptionDeselected: onOccupationDeselected,
+          selectedOptions: selectedOccupations
+              .map((key) => occupationMapping[key] ?? key)
+              .toList(),
+          onOptionSelected: (translatedOccupation) {
+            final key = occupationMapping.entries
+                .firstWhere((entry) => entry.value == translatedOccupation)
+                .key;
+            onOccupationSelected(key);
+          },
+          onOptionDeselected: (translatedOccupation) {
+            final key = occupationMapping.entries
+                .firstWhere((entry) => entry.value == translatedOccupation)
+                .key;
+            onOccupationDeselected(key);
+          },
           maxSelections: 3,
         ),
         CustomChipSelector(
           label: l10n.affiliations,
           options: affiliationOptions,
-          selectedOptions: selectedAffiliations,
-          onOptionSelected: onAffiliationSelected,
-          onOptionDeselected: onAffiliationDeselected,
+          selectedOptions: selectedAffiliations
+              .map((key) => affiliationMapping[key] ?? key)
+              .toList(),
+          onOptionSelected: (translatedAffiliation) {
+            final key = affiliationMapping.entries
+                .firstWhere((entry) => entry.value == translatedAffiliation)
+                .key;
+            onAffiliationSelected(key);
+          },
+          onOptionDeselected: (translatedAffiliation) {
+            final key = affiliationMapping.entries
+                .firstWhere((entry) => entry.value == translatedAffiliation)
+                .key;
+            onAffiliationDeselected(key);
+          },
         ),
       ],
     );

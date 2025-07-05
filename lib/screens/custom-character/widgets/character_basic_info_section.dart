@@ -50,12 +50,10 @@ class CharacterBasicInfoSection extends StatelessWidget {
           controller: birthDateController,
           validator: (value) {
             if (value != null && value.isNotEmpty) {
-              // Validar formato da data
               if (!RegExp(r'^\d{2}/\d{2}/\d{4}$').hasMatch(value)) {
                 return 'Data inválida. Use o formato DD/MM/AAAA';
               }
-              
-              // Validar se a data é válida
+            
               final parts = value.split('/');
               final day = int.parse(parts[0]);
               final month = int.parse(parts[1]);

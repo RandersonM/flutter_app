@@ -6,18 +6,18 @@ import 'dart:math';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
-import 'package:opfan/core/models/one_piece/character.dart';
+import 'package:opfan/core/models/character_model.dart';
 
 class CharactersBackendService {
   int _totalCount = 0;
 
-  Future<List<Character>> fetchAll() async => fetch(totalCount);
+  Future<List<CharacterModel>> fetchAll() async => fetch(totalCount);
 
   int get totalCount {
     return _totalCount;
   }
 
-  Future<List<Character>> fetch(int page) async {
+  Future<List<CharacterModel>> fetch(int page) async {
     try {
       String data = await rootBundle.loadString('assets/bounties.json');
       
@@ -25,8 +25,8 @@ class CharactersBackendService {
         _totalCount = jsonDecode(data)['total_count'];
       }
 
-      List<Character> fetched = (jsonDecode(data)['characters'] as List)
-          .map((data) => Character.fromJson(data))
+      List<CharacterModel> fetched = (jsonDecode(data)['characters'] as List)
+          .map((data) => CharacterModel.fromJson(data))
           .toList();
       
       final result = fetched.sublist(0, page < totalCount ? page : totalCount);
@@ -38,7 +38,7 @@ class CharactersBackendService {
     }
   }
 
-  Future<Character> fetchRandomCharacter() async {
+  Future<CharacterModel> fetchRandomCharacter() async {
     try {
       String data = await rootBundle.loadString('assets/bounties.json');
 
@@ -46,8 +46,8 @@ class CharactersBackendService {
         _totalCount = jsonDecode(data)['total_count'];
       }
 
-      List<Character> characters = (jsonDecode(data)['characters'] as List)
-          .map((data) => Character.fromJson(data))
+      List<CharacterModel> characters = (jsonDecode(data)['characters'] as List)
+          .map((data) => CharacterModel.fromJson(data))
           .toList();
 
       final random = Random();

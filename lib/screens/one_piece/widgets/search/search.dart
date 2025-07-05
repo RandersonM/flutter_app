@@ -3,7 +3,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:opfan/core/models/one_piece/character.dart';
+import 'package:opfan/core/models/character_model.dart';
 import 'package:opfan/screens/one_piece/blocs/search_cubit.dart';
 import 'package:opfan/screens/one_piece/widgets/search/unexistent_search.dart';
 import 'package:opfan/screens/one_piece/widgets/search/result_card.dart';
@@ -18,7 +18,7 @@ class Search extends StatelessWidget {
   Widget build(BuildContext context) => BlocBuilder<SearchCubit, SearchState>(
           builder: (BuildContext context, SearchState state) {
         String query = '';
-        List<Character> queryResults = [];
+        List<CharacterModel> queryResults = [];
 
         if (state is SearchLoaded) {
           query = state.query;
@@ -36,7 +36,7 @@ class Search extends StatelessWidget {
             const SearchHeader(),
             if (queryResults.isNotEmpty)
               ...queryResults
-                  .map((Character character) => Padding(
+                  .map((CharacterModel character) => Padding(
                         padding: const EdgeInsets.all(Constants.margin),
                         child: ResultCard(
                           character: character,

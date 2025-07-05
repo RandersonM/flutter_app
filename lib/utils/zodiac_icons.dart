@@ -1,6 +1,9 @@
 // Developed by Randerson Mayllon
 // Copyright © 2022.
 
+import 'package:flutter/material.dart';
+import 'package:opfan/l10n/app_localizations.dart';
+
 class ZodiacIcons {
   static String? getZodiacIconPath(String? zodiacSign) {
     if (zodiacSign == null || zodiacSign.isEmpty) {
@@ -93,6 +96,49 @@ class ZodiacIcons {
     }
   }
 
+  /// Returns the localized name of the zodiac sign
+  ///
+  /// [context] - The build context to access localizations
+  /// [zodiacSign] - The zodiac sign name (e.g., 'aries', 'taurus', etc.)
+  /// Returns the localized name of the zodiac sign or 'Unknown' if not found
+  static String getLocalizedZodiacSign(
+      BuildContext context, String? zodiacSign) {
+    if (zodiacSign == null || zodiacSign.isEmpty) {
+      return AppLocalizations.of(context)!.unknown;
+    }
+
+    final translationKey = getZodiacTranslationKey(zodiacSign);
+
+    switch (translationKey) {
+      case 'ariesSign':
+        return AppLocalizations.of(context)!.ariesSign;
+      case 'taurusSign':
+        return AppLocalizations.of(context)!.taurusSign;
+      case 'geminiSign':
+        return AppLocalizations.of(context)!.geminiSign;
+      case 'cancerSign':
+        return AppLocalizations.of(context)!.cancerSign;
+      case 'leoSign':
+        return AppLocalizations.of(context)!.leoSign;
+      case 'virgoSign':
+        return AppLocalizations.of(context)!.virgoSign;
+      case 'libraSign':
+        return AppLocalizations.of(context)!.libraSign;
+      case 'scorpioSign':
+        return AppLocalizations.of(context)!.scorpioSign;
+      case 'sagittariusSign':
+        return AppLocalizations.of(context)!.sagittariusSign;
+      case 'capricornSign':
+        return AppLocalizations.of(context)!.capricornSign;
+      case 'aquariusSign':
+        return AppLocalizations.of(context)!.aquariusSign;
+      case 'piscesSign':
+        return AppLocalizations.of(context)!.piscesSign;
+      default:
+        return AppLocalizations.of(context)!.unknown;
+    }
+  }
+
   static String? getZodiacSignFromDate(DateTime birthDate) {
     final month = birthDate.month;
     final day = birthDate.day;
@@ -127,7 +173,6 @@ class ZodiacIcons {
   }
 
   static DateTime? parseDateFromString(String dateString) {
-    try {
       final parts = dateString.split('/');
       if (parts.length == 3) {
         final day = int.parse(parts[0]);
@@ -143,7 +188,7 @@ class ZodiacIcons {
           return DateTime(year, month, day);
         }
       }
-    } catch (e) {}
+    
     return null;
   }
 

@@ -9,7 +9,16 @@ class AppLocalizationsEn extends AppLocalizations {
   AppLocalizationsEn([String locale = 'en']) : super(locale);
 
   @override
-  String get affiliation => 'Affiliation';
+  String affiliation(num count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Affiliations',
+      one: 'Affiliation',
+      zero: 'Affiliation',
+    );
+    return '$_temp0';
+  }
 
   @override
   String get beastsPirates => 'Beasts Pirates';
@@ -48,7 +57,16 @@ class AppLocalizationsEn extends AppLocalizations {
   String get noResultsFound => 'No results found for';
 
   @override
-  String get occupation => 'Occupation';
+  String occupation(num count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Occupations',
+      one: 'Occupation',
+      zero: 'Occupation',
+    );
+    return '$_temp0';
+  }
 
   @override
   String get onePiece => 'One Piece';
@@ -148,6 +166,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get nicknameHint => 'Ex: Luffy, Straw Hat';
 
   @override
+  String get age => 'Idade';
+
+  @override
   String get birthDate => 'Birth Date';
 
   @override
@@ -188,6 +209,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get imageUrlHint => 'Ex: https://example.com/image.jpg';
+
+  @override
+  String get captured => 'Captured';
 
   @override
   String get alive => 'Alive';
@@ -301,7 +325,16 @@ class AppLocalizationsEn extends AppLocalizations {
   String get devilFruit => 'Devil Fruit';
 
   @override
-  String get crew => 'Crew';
+  String crew(num count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Crews',
+      one: 'Crew',
+      zero: 'Crew',
+    );
+    return '$_temp0';
+  }
 
   @override
   String get ariesSign => 'Aries';
@@ -415,4 +448,17 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get createCustomCharacter => 'Create character';
+
+  @override
+  String get createCrew => 'Create new crew';
+
+  @override
+  String viewingCharacter(String characterName) {
+    return 'Viewing $characterName';
+  }
+
+  @override
+  String editingCharacter(String characterName) {
+    return 'Editing $characterName';
+  }
 }

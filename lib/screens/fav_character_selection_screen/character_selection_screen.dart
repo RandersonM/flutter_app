@@ -2,7 +2,7 @@
 // Copyright © 2022.
 
 import 'package:flutter/material.dart';
-import 'package:opfan/core/models/one_piece/character.dart';
+import 'package:opfan/core/models/character_model.dart';
 import 'package:opfan/l10n/app_localizations.dart';
 import 'package:opfan/widgets/molecules/default_app_bar.dart';
 import 'package:opfan/widgets/organisms/character_selection_grid.dart';
@@ -21,7 +21,7 @@ class CharacterSelectionScreen extends StatelessWidget {
         ),
       ),
       body: CharacterSelectionGrid(
-        onCharacterSelected: (Character character) {
+        onCharacterSelected: (CharacterModel character) {
           Navigator.of(context).pop(character);
         },
       ),

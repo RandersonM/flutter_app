@@ -2,83 +2,292 @@
 // Copyright © 2022.
 
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
-import 'package:opfan/core/models/one_piece/character.dart';
-import 'package:opfan/screens/one_piece/widgets/details/fields/details_affiliation.dart';
+import 'package:opfan/core/models/character_model.dart';
+import 'package:opfan/l10n/app_localizations.dart';
 import 'package:opfan/screens/one_piece/widgets/details/fields/details_bounty.dart';
-import 'package:opfan/screens/one_piece/widgets/details/fields/details_haki.dart';
 import 'package:opfan/screens/one_piece/widgets/details/fields/details_image.dart';
 import 'package:opfan/screens/one_piece/widgets/details/fields/details_name.dart';
-import 'package:opfan/screens/one_piece/widgets/details/fields/details_occupation.dart';
 import 'package:opfan/widgets/molecules/default_app_bar.dart';
 import 'package:opfan/widgets/organisms/bottom_navigation.dart';
 import 'package:opfan/utils/constants.dart';
+import 'package:opfan/utils/zodiac_icons.dart';
+import 'package:opfan/utils/character_display_utils.dart';
 
-class CharacterDetailsScreen extends StatefulWidget {
+class CharacterDetailsScreen extends StatelessWidget {
   const CharacterDetailsScreen({Key? key, required this.character})
       : super(key: key);
 
-  final Character character;
+  final CharacterModel character;
 
-  @override
-  State<CharacterDetailsScreen> createState() => _CharacterDetailsScreenState();
-}
-
-class _CharacterDetailsScreenState extends State<CharacterDetailsScreen> {
-  late final ScrollController _scrollController;
-
-  @override
-  void initState() {
-    super.initState();
-    _scrollController = ScrollController();
+  Widget _buildInfoTile({
+    required Widget leading,
+    required String label,
+    required String? value,
+  }) {
+    if (value == null || value.isEmpty) return const SizedBox.shrink();
+    return ListTile(
+      leading: leading,
+      title: Text(label, style: const TextStyle(fontWeight: FontWeight.bold)),
+      subtitle: Text(value),
+    );
   }
 
-  @override
-  void dispose() {
-    _scrollController.dispose();
-    super.dispose();
-  }
+  Widget _buildChipSection(
+      {required String label,
+      required List<String>? values,
+      IconData? icon,
+      required BuildContext context}) {
+    if (values == null || values.isEmpty) return const SizedBox.shrink();
+    
+    final l10n = AppLocalizations.of(context)!;
 
-  @override
-  Widget build(BuildContext context) => Scaffold(
-        backgroundColor: Colors.white,
-        appBar: DefaultAppBar(
-          title: Text(widget.character.nickname ?? widget.character.name),
-        ),
-        body: CustomScrollView(controller: _scrollController, slivers: <Widget>[
-          DetailsImage(image: widget.character.image),
-          SliverToBoxAdapter(
-              child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: Constants.margin),
-            child: DetailsName(
-              name: widget.character.name,
-              nickname: widget.character.nickname,
-              devilFruit: widget.character.devilFruit,
-            ),
-          )),
-          SliverToBoxAdapter(
-              child: Padding(
-            padding: const EdgeInsets.only(
-                top: Constants.margin * 2, bottom: Constants.margin),
-            child: DetailsBounty(bounty: widget.character.bounty),
-          )),
-          SliverToBoxAdapter(
-            child:
-                DetailsAffiliation(affiliations: widget.character.affiliations),
+    // Check if this is a custom character and internationalize the values
+    List<String> displayValues = values;
+    if (character.isCustomCharacter) {
+      if (label == l10n.affiliations) {
+        displayValues =
+            CharacterDisplayUtils.getAffiliationsDisplay(values, l10n);
+      } else if (label == l10n.occupations) {
+        displayValues =
+            CharacterDisplayUtils.getOccupationsDisplay(values, l10n);
+      }
+    }
+    
+    return Padding(
+      padding: const EdgeInsets.symmetric(
+          horizontal: Constants.margin * 2, vertical: Constants.margin),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              if (icon != null) Icon(icon, size: 20),
+              if (icon != null) const SizedBox(width: 6),
+              Text(label, style: const TextStyle(fontWeight: FontWeight.bold)),
+            ],
           ),
-          SliverToBoxAdapter(
-              child: Padding(
-            padding: const EdgeInsets.symmetric(vertical: Constants.margin * 2),
-            child: DetailsOccupation(occupations: widget.character.occupation),
-          )),
-          SliverToBoxAdapter(
-              child: Padding(
-            padding: const EdgeInsets.only(bottom: Constants.margin * 2),
-            child: DetailsHaki(haki: widget.character.haki),
-          )),
-          const SliverToBoxAdapter(child: SizedBox(height: 100)),
-        ]),
-        bottomNavigationBar:
-            const BottomNavigation(BottomNavigationPages.onePiece),
+          const SizedBox(height: 6),
+          Wrap(
+            spacing: 8,
+            children: displayValues.map((v) => Chip(label: Text(v))).toList(),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildZodiacIcon(String? zodiacSign) {
+    final iconPath = ZodiacIcons.getZodiacIconPath(zodiacSign);
+    if (iconPath != null) {
+      return SvgPicture.asset(
+        iconPath,
+        width: 24,
+        height: 24,
+        colorFilter: const ColorFilter.mode(Colors.grey, BlendMode.srcIn),
       );
+    }
+    return const Icon(Icons.star, color: Colors.grey);
+  }
+
+  Map<String, dynamic> _getStatusTheme(String? status, AppLocalizations l10n) {
+    final statusLower = status?.toLowerCase() ?? '';
+
+    if (statusLower.contains('captured') ||
+        statusLower.contains('imprisoned')) {
+      return {
+        'backgroundColor': Colors.grey,
+        'textColor': Colors.white,
+        'icon': Icons.lock,
+        'displayText': l10n.captured,
+      };
+    }
+
+    if (statusLower.contains('deceased')) {
+      return {
+        'backgroundColor': Colors.red,
+        'textColor': Colors.white,
+        'icon': FontAwesomeIcons.skullCrossbones,
+        'displayText': l10n.dead,
+      };
+    }
+
+    if (statusLower.contains('living') || statusLower.contains('live')) {
+      return {
+        'backgroundColor': Colors.green[500],
+        'textColor': Colors.white,
+        'icon': FontAwesomeIcons.wind,
+        'displayText': l10n.alive,
+      };
+    }
+
+    return {
+      'backgroundColor': Colors.grey.withValues(alpha: 0.6),
+      'textColor': Colors.white,
+      'icon': Icons.question_mark,
+      'displayText': l10n.unknown,
+    };
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final l10n = AppLocalizations.of(context)!;
+    final statusTheme = _getStatusTheme(character.status, l10n);
+
+    return Scaffold(
+      backgroundColor: theme.colorScheme.surface,
+      appBar: DefaultAppBar(
+        title: Text(character.nickname ?? character.name),
+      ),
+      body: ListView(
+        padding: EdgeInsets.zero,
+        children: [
+          Stack(
+            children: [
+              DetailsImage(image: character.image),
+              Positioned(
+                left: 16,
+                bottom: 16,
+                child: Container(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                  decoration: BoxDecoration(
+                    color: statusTheme['backgroundColor'],
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Icon(
+                        statusTheme['icon'],
+                        size: 16,
+                        color: statusTheme['textColor'],
+                      ),
+                      const SizedBox(width: 4),
+                      Text(
+                        statusTheme['displayText'],
+                        style: theme.textTheme.headlineSmall
+                            ?.copyWith(color: statusTheme['textColor']),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ],
+          ),
+          Padding(
+            padding: const EdgeInsets.symmetric(
+                horizontal: Constants.margin * 2, vertical: Constants.margin),
+            child: DetailsName(
+              name: character.name,
+              nickname: character.nickname,
+              devilFruit: character.devilFruit,
+            ),
+          ),
+          DetailsBounty(bounty: character.bounty),
+          _buildChipSection(
+              label: l10n.affiliations,
+              values: character.affiliations,
+              icon: Icons.groups,
+              context: context),
+          _buildChipSection(
+              label: l10n.occupations,
+              values: character.occupation,
+              icon: Icons.work,
+              context: context),
+          _buildChipSection(
+              label: l10n.haki,
+              values: character.haki,
+              icon: Icons.flash_on,
+              context: context),
+          Card(
+            margin: const EdgeInsets.symmetric(
+                horizontal: Constants.margin * 2, vertical: Constants.margin),
+            child: Column(
+              children: [
+                _buildInfoTile(
+                  leading: const Icon(Icons.cake),
+                  label: l10n.age,
+                  value: character.calculatedAge?.toString(),
+                ),
+                _buildInfoTile(
+                  leading: const Icon(Icons.calendar_today),
+                  label: l10n.birthDate,
+                  value: character.birthDate != null
+                      ? '${character.birthDate!.day.toString().padLeft(2, '0')}/${character.birthDate!.month.toString().padLeft(2, '0')}/${character.birthDate!.year}'
+                      : null,
+                ),
+                _buildInfoTile(
+                  leading: _buildZodiacIcon(character.signo),
+                  label: l10n.signo,
+                  value: character.signo != null
+                      ? ZodiacIcons.getLocalizedZodiacSign(
+                          context, character.signo!)
+                      : null,
+                ),
+                _buildInfoTile(
+                  leading: const Icon(Icons.sailing),
+                  label: l10n.crew(0),
+                  value: character.crew,
+                ),
+                _buildInfoTile(
+                  leading: const Icon(Icons.info),
+                  label: l10n.status,
+                  value: character.isCustomCharacter && character.status != null
+                      ? CharacterDisplayUtils.getStatusDisplay(
+                          character.status, l10n)
+                      : character.status,
+                ),
+              ],
+            ),
+          ),
+          if (character.description != null &&
+              character.description!.isNotEmpty)
+            Card(
+              margin: const EdgeInsets.symmetric(
+                  horizontal: Constants.margin * 2, vertical: Constants.margin),
+              child: Padding(
+                padding: const EdgeInsets.all(Constants.margin * 2),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Row(
+                      children: [
+                        Icon(Icons.description, size: 20),
+                        SizedBox(width: 6),
+                        Text('Descrição',
+                            style: TextStyle(fontWeight: FontWeight.bold)),
+                      ],
+                    ),
+                    const SizedBox(height: 8),
+                    Text(character.description!),
+                  ],
+                ),
+              ),
+            ),
+          if (character.isCustomCharacter)
+            const Card(
+              margin: EdgeInsets.symmetric(
+                  horizontal: Constants.margin * 2, vertical: Constants.margin),
+              child: Padding(
+                padding: EdgeInsets.all(Constants.margin * 2),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text('Informações Customizadas',
+                        style: TextStyle(fontWeight: FontWeight.bold)),
+                  ],
+                ),
+              ),
+            ),
+          const SizedBox(height: 100),
+        ],
+      ),
+      bottomNavigationBar:
+          const BottomNavigation(BottomNavigationPages.onePiece),
+    );
+  }
 }

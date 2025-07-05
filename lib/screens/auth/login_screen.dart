@@ -88,7 +88,6 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   void _handleSuccessfulAuth(BuildContext context) {
-    // Check if there's a return route from arguments
     final arguments = ModalRoute.of(context)?.settings.arguments;
 
     if (arguments != null && arguments is Map<String, dynamic>) {
@@ -96,14 +95,12 @@ class _LoginScreenState extends State<LoginScreen> {
       final returnArguments = arguments['returnArguments'];
 
       if (returnRoute != null) {
-        // Navigate to the return route with its arguments
         Navigator.of(context)
             .pushReplacementNamed(returnRoute, arguments: returnArguments);
         return;
       }
     }
 
-    // Default navigation to home
     Navigator.of(context).pushReplacementNamed(AppRoutes.home);
   }
 

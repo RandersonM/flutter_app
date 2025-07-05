@@ -18,53 +18,46 @@ class _DetailsImageState extends State<DetailsImage> {
   bool _imageLoadError = false;
 
   @override
-  Widget build(BuildContext context) => SliverAppBar(
-        leading: const SizedBox.shrink(),
-        forceElevated: true,
-        backgroundColor: Colors.white,
-        expandedHeight: MediaQuery.of(context).size.height / 3,
-        flexibleSpace: FlexibleSpaceBar(
-          background: Container(
-            margin: const EdgeInsets.all(Constants.margin),
-            decoration: const BoxDecoration(
-              borderRadius:
-                  BorderRadius.all(Radius.circular(Constants.margin * 3)),
-              color: Colors.white,
-            ),
-            child: ClipRRect(
-              borderRadius:
-                  const BorderRadius.all(Radius.circular(Constants.margin * 3)),
-              child: _imageLoadError
-                  ? _buildPlaceholder()
-                  : Image.network(
-                      widget.image,
-                      fit: BoxFit.fill,
-                      width: double.infinity,
-                      height: double.infinity,
-                      loadingBuilder: (context, child, loadingProgress) {
-                        if (loadingProgress == null) return child;
-                        return Center(
-                          child: CircularProgressIndicator(
-                            value: loadingProgress.expectedTotalBytes != null
-                                ? loadingProgress.cumulativeBytesLoaded /
-                                    loadingProgress.expectedTotalBytes!
-                                : null,
-                          ),
-                        );
-                      },
-                      errorBuilder: (context, error, stackTrace) {
-                        WidgetsBinding.instance.addPostFrameCallback((_) {
-                          if (mounted) {
-                            setState(() {
-                              _imageLoadError = true;
-                            });
-                          }
+  Widget build(BuildContext context) => Container(
+        height: MediaQuery.of(context).size.height / 3,
+        width: double.infinity,
+        margin: const EdgeInsets.all(Constants.margin),
+        decoration: const BoxDecoration(
+          borderRadius: BorderRadius.all(Radius.circular(Constants.margin * 3)),
+          color: Colors.white,
+        ),
+        child: ClipRRect(
+          borderRadius:
+              const BorderRadius.all(Radius.circular(Constants.margin * 3)),
+          child: _imageLoadError
+              ? _buildPlaceholder()
+              : Image.network(
+                  widget.image,
+                  fit: BoxFit.cover,
+                  width: double.infinity,
+                  height: double.infinity,
+                  loadingBuilder: (context, child, loadingProgress) {
+                    if (loadingProgress == null) return child;
+                    return Center(
+                      child: CircularProgressIndicator(
+                        value: loadingProgress.expectedTotalBytes != null
+                            ? loadingProgress.cumulativeBytesLoaded /
+                                loadingProgress.expectedTotalBytes!
+                            : null,
+                      ),
+                    );
+                  },
+                  errorBuilder: (context, error, stackTrace) {
+                    WidgetsBinding.instance.addPostFrameCallback((_) {
+                      if (mounted) {
+                        setState(() {
+                          _imageLoadError = true;
                         });
-                        return _buildPlaceholder();
-                      },
-                    ),
-            ),
-          ),
+                      }
+                    });
+                    return _buildPlaceholder();
+                  },
+                ),
         ),
       );
 
