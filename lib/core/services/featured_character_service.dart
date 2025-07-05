@@ -1,10 +1,9 @@
 // Developed by Randerson Mayllon
 // Copyright © 2022.
 
-import 'package:flutter/foundation.dart';
 import 'package:hive/hive.dart';
-import 'package:opfan/core/one_piece/models/featured_character.dart';
-import 'package:opfan/core/one_piece/models/character.dart';
+import 'package:opfan/core/models/one_piece/featured_character.dart';
+import 'package:opfan/core/models/character_model.dart';
 import 'package:opfan/core/services/characters_backend_service.dart';
 
 class FeaturedCharacterService {
@@ -20,21 +19,17 @@ class FeaturedCharacterService {
 
   Future<void> init() async {
     _box = await Hive.openBox<FeaturedCharacter>(_boxName);
-    debugPrint(
-        'FeaturedCharacterService: Initialized with ${_box.length} characters');
+  
   }
 
-  Future<Character> getTodaysFeaturedCharacter() async {
+  Future<CharacterModel> getTodaysFeaturedCharacter() async {
     final today = _getTodayString();
     final currentCharacter = _box.get(_currentCharacterKey);
 
     if (currentCharacter != null && currentCharacter.isToday) {
-      debugPrint(
-          'FeaturedCharacterService: Found cached character for today - ${currentCharacter.characterName}');
       return currentCharacter.toCharacter();
     }
 
-    debugPrint('FeaturedCharacterService: Fetching new character for today');
     final newCharacter = await _charactersService.fetchRandomCharacter();
 
     await _saveFeaturedCharacter(newCharacter, today, false);
@@ -42,8 +37,7 @@ class FeaturedCharacterService {
     return newCharacter;
   }
 
-  Future<Character> getRandomCharacter() async {
-    debugPrint('FeaturedCharacterService: Getting random character');
+  Future<CharacterModel> getRandomCharacter() async {
     final character = await _charactersService.fetchRandomCharacter();
 
     await _saveFeaturedCharacter(character, _getTodayString(), true);
@@ -51,14 +45,12 @@ class FeaturedCharacterService {
     return character;
   }
 
-  Future<void> saveSelectedCharacter(Character character) async {
-    debugPrint(
-        'FeaturedCharacterService: Saving manually selected character - ${character.name}');
+  Future<void> saveSelectedCharacter(CharacterModel character) async {
     await _saveFeaturedCharacter(character, _getTodayString(), true);
   }
 
   Future<void> _saveFeaturedCharacter(
-      Character character, String date, bool isManuallySelected) async {
+      CharacterModel character, String date, bool isManuallySelected) async {
     final featuredCharacter = FeaturedCharacter.fromCharacter(
       character,
       date,
@@ -66,8 +58,6 @@ class FeaturedCharacterService {
     );
 
     await _box.put(_currentCharacterKey, featuredCharacter);
-    debugPrint(
-        'FeaturedCharacterService: Saved character - ${character.name} (manually: $isManuallySelected)');
   }
 
   String _getTodayString() {
@@ -77,12 +67,10 @@ class FeaturedCharacterService {
 
   Future<void> clearCache() async {
     await _box.clear();
-    debugPrint('FeaturedCharacterService: Cache cleared');
   }
 
   Future<void> clearTodaysCharacter() async {
     await _box.delete(_currentCharacterKey);
-    debugPrint('FeaturedCharacterService: Today\'s character cleared');
   }
 
   FeaturedCharacter? get currentCharacter => _box.get(_currentCharacterKey);
@@ -125,7 +113,5 @@ class FeaturedCharacterService {
       await _box.delete(key);
     }
 
-    debugPrint(
-        'FeaturedCharacterService: Cleaned ${keysToDelete.length} old characters');
   }
 }

@@ -5,7 +5,7 @@ import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/foundation.dart';
 
-import 'package:opfan/core/one_piece/models/character.dart';
+import 'package:opfan/core/models/character_model.dart';
 import 'package:opfan/core/services/characters_backend_service.dart';
 
 abstract class CharactersState extends Equatable {
@@ -18,7 +18,7 @@ abstract class CharactersState extends Equatable {
 class CharactersInitial extends CharactersState {}
 
 class CharactersLoading extends CharactersState {
-  final List<Character> characters;
+  final List<CharacterModel> characters;
   final bool isLoadingMore;
 
   const CharactersLoading(
@@ -29,7 +29,7 @@ class CharactersLoading extends CharactersState {
 }
 
 class CharactersLoaded extends CharactersState {
-  final List<Character> characters;
+  final List<CharacterModel> characters;
   final bool hasMoreData;
 
   const CharactersLoaded({
@@ -43,7 +43,7 @@ class CharactersLoaded extends CharactersState {
 
 class CharactersError extends CharactersState {
   final String message;
-  final List<Character> characters;
+  final List<CharacterModel> characters;
 
   const CharactersError({
     required this.message,
@@ -58,10 +58,10 @@ class CharactersCubit extends Cubit<CharactersState> {
   CharactersCubit(this.backend) : super(CharactersInitial());
 
   final CharactersBackendService backend;
-  List<Character> _characters = [];
+  List<CharacterModel> _characters = [];
   int _pages = 0;
 
-  List<Character> get characters => List<Character>.from(_characters);
+  List<CharacterModel> get characters => List<CharacterModel>.from(_characters);
   bool get hasMoreData {
     if (backend.totalCount == 0) {
       return true;
@@ -93,7 +93,6 @@ class CharactersCubit extends Cubit<CharactersState> {
     try {
       _pages += 10;
       _characters = await backend.fetch(_pages);
-      debugPrint('CharactersCubit: Fetched ${_characters.length} characters');
 
       await Future.delayed(const Duration(seconds: 1));
 
@@ -104,7 +103,6 @@ class CharactersCubit extends Cubit<CharactersState> {
         hasMoreData: newHasMoreData,
       ));
 
-      debugPrint('CharactersCubit: Load completed successfully');
     } catch (e) {
       debugPrint('CharactersCubit: Error - $e');
       emit(CharactersError(
@@ -115,7 +113,6 @@ class CharactersCubit extends Cubit<CharactersState> {
   }
 
   void reset() {
-    debugPrint('CharactersCubit: Reset called');
     _characters = [];
     _pages = 0;
     emit(CharactersInitial());

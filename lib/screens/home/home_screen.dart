@@ -3,18 +3,20 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:opfan/core/one_piece/models/character.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:opfan/core/models/character_model.dart';
 import 'package:opfan/core/services/service_locator.dart';
 import 'package:opfan/l10n/app_localizations.dart';
-import 'package:opfan/widgets/molecules/default_app_bar.dart';
 import 'package:opfan/widgets/molecules/statistics_grid.dart';
 import 'package:opfan/widgets/organisms/bottom_navigation.dart';
 import 'package:opfan/screens/home/widgets/simple_video_banner.dart';
 import 'package:opfan/screens/home/widgets/character_info_card.dart';
+import 'package:opfan/screens/home/widgets/home_app_bar.dart';
 import 'package:opfan/screens/home/blocs/index.dart';
 import 'package:opfan/utils/app_routes.dart';
 import 'package:opfan/utils/constants.dart';
 import 'package:opfan/utils/zodiac_icons.dart';
+import 'package:opfan/core/auth/blocs/index.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -28,89 +30,103 @@ class _HomeScreenState extends State<HomeScreen> {
   
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) =>
-          getIt<HomeBloc>()..add(const LoadFeaturedCharacter()),
-      child: Scaffold(
-        appBar: DefaultAppBar(
-          title: Text(AppLocalizations.of(context)!.home),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(
+          create: (context) =>
+              getIt<HomeBloc>()..add(const LoadFeaturedCharacter()),
         ),
-        body: BlocBuilder<HomeBloc, HomeState>(
-          builder: (context, state) {
-            return SingleChildScrollView(
-              padding: const EdgeInsets.all(Constants.margin),
-              child: Column(
-                spacing: Constants.margin,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  _buildDynamicBanner(state),
-                  const SizedBox.shrink(),
-                  Text(
-                    AppLocalizations.of(context)!.featuredCharacter,
-                    style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                          fontWeight: FontWeight.bold,
-                        ),
-                  ),
-                  _buildCharacterCard(context, state),
-                  Row(
+        BlocProvider.value(
+          value: getIt<AuthBloc>(),
+        ),
+      ],
+      child: BlocBuilder<AuthBloc, AuthState>(
+        builder: (context, authState) {
+          return Scaffold(
+            appBar: const HomeAppBar(),
+            body: BlocBuilder<HomeBloc, HomeState>(
+              builder: (context, state) {
+                return SingleChildScrollView(
+                  padding: const EdgeInsets.all(Constants.margin),
+                  child: Column(
                     spacing: Constants.margin,
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Expanded(
-                        child: OutlinedButton.icon(
-                          onPressed: state is HomeLoading
-                              ? null
-                              : () async {
-                                  final selectedCharacter =
-                                      await Navigator.pushNamed<Character>(
-                                    context,
-                                    AppRoutes.characterSelection,
-                                  );
+                      _buildDynamicBanner(state),
+                      const SizedBox.shrink(),
+                      Text(
+                        AppLocalizations.of(context)!.featuredCharacter,
+                        style:
+                            Theme.of(context).textTheme.headlineSmall?.copyWith(
+                                  fontWeight: FontWeight.bold,
+                                ),
+                      ),
+                      _buildCharacterCard(context, state),
+                      Row(
+                        spacing: Constants.margin,
+                        children: [
+                          Expanded(
+                            child: OutlinedButton.icon(
+                              onPressed: state is HomeLoading
+                                  ? null
+                                  : () async {
+                                      final selectedCharacter =
+                                          await Navigator
+                                          .pushNamed<CharacterModel>(
+                                        context,
+                                        AppRoutes.characterSelection,
+                                      );
 
-                                  if (selectedCharacter != null &&
-                                      context.mounted) {
-                                    context.read<HomeBloc>().add(
-                                        SelectCharacter(selectedCharacter));
-                                  }
-                                },
-                          icon: const Icon(Icons.person_search),
-                          label: Text(
-                              AppLocalizations.of(context)!.selectCharacter),
-                        ),
+                                      if (selectedCharacter != null &&
+                                          context.mounted) {
+                                        context.read<HomeBloc>().add(
+                                            SelectCharacter(selectedCharacter));
+                                      }
+                                    },
+                              icon: const Icon(Icons.person_search),
+                              label: Text(AppLocalizations.of(context)!
+                                  .selectCharacter),
+                            ),
+                          ),
+                          Expanded(
+                            child: ElevatedButton.icon(
+                              onPressed: state is HomeLoading
+                                  ? null
+                                  : () {
+                                      context
+                                          .read<HomeBloc>()
+                                          .add(const LoadRandomCharacter());
+                                    },
+                              icon: state is HomeLoading
+                                  ? const SizedBox(
+                                      width: 16,
+                                      height: 16,
+                                      child: CircularProgressIndicator(
+                                          strokeWidth: 2),
+                                    )
+                                  : const Icon(Icons.shuffle),
+                              label: Text(AppLocalizations.of(context)!
+                                  .randomCharacter),
+                            ),
+                          ),
+                        ],
                       ),
-                      Expanded(
-                        child: ElevatedButton.icon(
-                          onPressed: state is HomeLoading
-                              ? null
-                              : () {
-                                  context
-                                      .read<HomeBloc>()
-                                      .add(const LoadRandomCharacter());
-                                },
-                          icon: state is HomeLoading
-                              ? const SizedBox(
-                                  width: 16,
-                                  height: 16,
-                                  child:
-                                      CircularProgressIndicator(strokeWidth: 2),
-                                )
-                              : const Icon(Icons.shuffle),
-                          label: Text(
-                              AppLocalizations.of(context)!.randomCharacter),
-                        ),
-                      ),
+                      const SizedBox(height: Constants.margin),
+                      _buildCharacterStatistics(context, state),
                     ],
                   ),
-                  const SizedBox.shrink(),
-                  _buildCharacterStatistics(context, state),
-                ],
-              ),
-            );
-          },
-        ),
-        bottomNavigationBar: const BottomNavigation(BottomNavigationPages.home),
+                );
+              },
+            ),
+            bottomNavigationBar:
+                const BottomNavigation(BottomNavigationPages.home),
+          );
+        },
       ),
     );
   }
+
+
 
   Widget _buildDynamicBanner(HomeState state) {
     if (state is HomeLoaded) {
@@ -179,38 +195,7 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  String _getLocalizedZodiacSign(BuildContext context, String zodiacSign) {
-    final translationKey = ZodiacIcons.getZodiacTranslationKey(zodiacSign);
 
-    switch (translationKey) {
-      case 'ariesSign':
-        return AppLocalizations.of(context)!.ariesSign;
-      case 'taurusSign':
-        return AppLocalizations.of(context)!.taurusSign;
-      case 'geminiSign':
-        return AppLocalizations.of(context)!.geminiSign;
-      case 'cancerSign':
-        return AppLocalizations.of(context)!.cancerSign;
-      case 'leoSign':
-        return AppLocalizations.of(context)!.leoSign;
-      case 'virgoSign':
-        return AppLocalizations.of(context)!.virgoSign;
-      case 'libraSign':
-        return AppLocalizations.of(context)!.libraSign;
-      case 'scorpioSign':
-        return AppLocalizations.of(context)!.scorpioSign;
-      case 'sagittariusSign':
-        return AppLocalizations.of(context)!.sagittariusSign;
-      case 'capricornSign':
-        return AppLocalizations.of(context)!.capricornSign;
-      case 'aquariusSign':
-        return AppLocalizations.of(context)!.aquariusSign;
-      case 'piscesSign':
-        return AppLocalizations.of(context)!.piscesSign;
-      default:
-        return AppLocalizations.of(context)!.unknown;
-    }
-  }
 
   Widget _buildCharacterCard(BuildContext context, HomeState state) {
     if (state is HomeLoading) {
@@ -292,9 +277,9 @@ class _HomeScreenState extends State<HomeScreen> {
         title: AppLocalizations.of(context)!.statistics,
         statistics: [
           StatisticData(
-            label: AppLocalizations.of(context)!.crew,
+            label: AppLocalizations.of(context)!.crew(0),
             value: character.crew ?? 'N/A',
-            svgPath: 'assets/logo/ship-crew.svg',
+            icon: FontAwesomeIcons.ship,
           ),
           StatisticData(
             label:
@@ -313,7 +298,7 @@ class _HomeScreenState extends State<HomeScreen> {
           StatisticData(
             label: AppLocalizations.of(context)!.signo,
             value: character.signo != null
-                ? _getLocalizedZodiacSign(context, character.signo!)
+                ? ZodiacIcons.getLocalizedZodiacSign(context, character.signo!)
                 : 'N/A',
             svgPath: zodiacIconPath,
             icon: zodiacIconPath == null ? Icons.star : null,
@@ -331,7 +316,7 @@ class _HomeScreenState extends State<HomeScreen> {
           icon: Icons.flag,
         ),
         StatisticData(
-          label: AppLocalizations.of(context)!.crew,
+          label: AppLocalizations.of(context)!.crew(0),
           value: '...',
           svgPath: 'assets/logo/ship-crew.svg',
         ),

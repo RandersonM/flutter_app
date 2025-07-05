@@ -2,7 +2,8 @@
 // Copyright © 2022.
 
 import 'package:flutter/material.dart';
-import 'package:opfan/core/one_piece/models/devil_fruit.dart';
+import 'package:opfan/core/models/one_piece/devil_fruit.dart';
+import 'package:opfan/l10n/app_localizations.dart';
 import 'package:opfan/utils/constants.dart';
 
 class DevilFruitCard extends StatelessWidget {
@@ -33,7 +34,6 @@ class DevilFruitCard extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // Imagem da fruta e tipo
               Expanded(
                 flex: 3,
                 child: Container(
@@ -41,7 +41,6 @@ class DevilFruitCard extends StatelessWidget {
                   padding: const EdgeInsets.all(Constants.margin),
                   child: Column(
                     children: [
-                      // Tipo da fruta
                       Container(
                         padding: const EdgeInsets.symmetric(
                           horizontal: Constants.margin,
@@ -76,7 +75,6 @@ class DevilFruitCard extends StatelessWidget {
 
                       const SizedBox(height: Constants.margin),
 
-                      // Imagem da fruta
                       Expanded(
                         child: Container(
                           width: double.infinity,
@@ -113,11 +111,11 @@ class DevilFruitCard extends StatelessWidget {
                                       );
                                     },
                                     errorBuilder: (context, error, stackTrace) {
-                                      return _buildPlaceholderImage();
+                                      return _buildPlaceholderImage(context);
                                     },
                                   ),
                                 )
-                              : _buildPlaceholderImage(),
+                              : _buildPlaceholderImage(context),
                         ),
                       ),
                     ],
@@ -125,7 +123,6 @@ class DevilFruitCard extends StatelessWidget {
                 ),
               ),
 
-              // Nome da fruta
               Expanded(
                 flex: 2,
                 child: Container(
@@ -135,7 +132,6 @@ class DevilFruitCard extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      // Nome romano (principal)
                       Text(
                         devilFruit.romanName,
                         style: Theme.of(context).textTheme.titleSmall?.copyWith(
@@ -146,7 +142,6 @@ class DevilFruitCard extends StatelessWidget {
                         overflow: TextOverflow.ellipsis,
                       ),
                       const SizedBox(height: Constants.margin / 2),
-                      // Nome japonês (secundário)
                       Text(
                         devilFruit.name,
                         style: Theme.of(context).textTheme.bodySmall?.copyWith(
@@ -167,7 +162,8 @@ class DevilFruitCard extends StatelessWidget {
     );
   }
 
-  Widget _buildPlaceholderImage() {
+  Widget _buildPlaceholderImage(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     return Container(
       width: double.infinity,
       height: double.infinity,
@@ -185,7 +181,7 @@ class DevilFruitCard extends StatelessWidget {
           ),
           const SizedBox(height: Constants.margin / 2),
           Text(
-            'Akuma no Mi',
+            l10n.devilFruit,
             style: TextStyle(
               color: Colors.white.withValues(alpha: 0.7),
               fontSize: 10,

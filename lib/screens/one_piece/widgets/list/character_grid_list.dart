@@ -3,7 +3,7 @@
 
 import 'package:flutter/material.dart';
 
-import 'package:opfan/core/one_piece/models/character.dart';
+import 'package:opfan/core/models/character_model.dart';
 import 'package:opfan/screens/one_piece/widgets/list/character_card.dart';
 import 'package:opfan/utils/constants.dart';
 
@@ -14,7 +14,7 @@ class CharacterGridList extends StatelessWidget {
     this.controller,
   }) : super(key: key);
 
-  final List<Character> characters;
+  final List<CharacterModel> characters;
   final ScrollController? controller;
 
   @override
@@ -26,7 +26,7 @@ class CharacterGridList extends StatelessWidget {
       mainAxisSpacing: Constants.margin,
       crossAxisSpacing: Constants.margin,
       children: characters
-          .map((Character character) => CharacterCard(
+          .map((CharacterModel character) => CharacterCard(
                 character: character,
               ))
           .toList());

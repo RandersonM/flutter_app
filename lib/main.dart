@@ -4,16 +4,20 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:opfan/core/auth/models/user_model.dart';
 import 'package:opfan/screens/one_piece/blocs/search_cubit.dart';
 import 'package:opfan/core/services/environment_service.dart';
 import 'package:opfan/core/services/service_locator.dart';
-import 'package:opfan/core/one_piece/models/featured_character.dart';
+import 'package:opfan/core/models/one_piece/featured_character.dart';
 import 'l10n/app_localizations.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'firebase_options.dart';
 
 import 'package:opfan/screens/one_piece/blocs/characters_cubit.dart';
+import 'package:opfan/core/auth/app_wrapper.dart';
+import 'package:opfan/core/auth/blocs/index.dart';
 
-import 'package:opfan/screens/splash/splash_screen.dart';
 import 'package:opfan/utils/app_routes.dart';
 
 import 'package:opfan/utils/theme.dart';
@@ -24,11 +28,27 @@ void main() async {
   await Hive.initFlutter();
 
   Hive.registerAdapter(FeaturedCharacterAdapter());
+  Hive.registerAdapter(UserModelAdapter());
 
-  await Future.wait([
-    EnvironmentService.initialize(),
-    configureDependencies(),
-  ]);
+  try {
+    await Future.wait([
+      () async {
+        await Firebase.initializeApp(
+          options: DefaultFirebaseOptions.currentPlatform,
+        );
+      }(),
+      () async {
+        await EnvironmentService.initialize();
+      }(),
+      () async {
+        await configureDependencies();
+      }(),
+    ]);
+  } catch (e, stackTrace) {
+    debugPrint('MAIN: Initialization error: $e');
+    debugPrint('MAIN: Stack trace: $stackTrace');
+    rethrow;
+  }
 
   SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
     statusBarColor: Colors.white24,
@@ -45,6 +65,10 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) => MultiBlocProvider(
         providers: [
+          BlocProvider<AuthBloc>(
+            create: (_) => getIt<AuthBloc>(),
+            lazy: false,
+          ),
           BlocProvider<CharactersCubit>(
             create: (_) => getIt<CharactersCubit>(),
             lazy: false,
@@ -54,17 +78,25 @@ class MyApp extends StatelessWidget {
             lazy: true,
           ),
         ],
-        child: MaterialApp(
-          title: EnvironmentService.instance.appName,
-          locale: locale,
-          localizationsDelegates: AppLocalizations.localizationsDelegates,
-          supportedLocales: const <Locale>[
-            Locale('en', ''),
-            Locale('pt', ''),
-          ],
-          theme: appTheme,
-          home: const SplashScreen(),
-          onGenerateRoute: AppRoutes.getRoute,
+        child: BlocBuilder<AuthBloc, AuthState>(
+          builder: (context, authState) {
+            return MaterialApp(
+              title: EnvironmentService.instance.appName,
+              locale: locale,
+              localizationsDelegates: AppLocalizations.localizationsDelegates,
+              supportedLocales: const <Locale>[
+                Locale('en', ''),
+                Locale('pt', ''),
+              ],
+              theme: appTheme,
+              home: const AppWrapper(),
+              onGenerateRoute: (settings) =>
+                  AuthRouteMiddleware.onGenerateRoute(
+                settings,
+                authState,
+              ),
+            );
+          },
         ),
       );
 }
