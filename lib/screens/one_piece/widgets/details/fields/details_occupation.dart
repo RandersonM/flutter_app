@@ -32,7 +32,8 @@ class DetailsOccupation extends StatelessWidget {
             tilePadding: const EdgeInsets.only(right: Constants.margin),
             title: ExpansionTileTitle(
               title: occupations.first,
-              leading: AppLocalizations.of(context)!.occupation,
+              leading:
+                  AppLocalizations.of(context)!.occupation(occupations.length),
             ),
             children: occupations
                 .map((String occupation) =>

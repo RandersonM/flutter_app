@@ -5,7 +5,7 @@ import 'dart:math';
 
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
-import '../home/models/youtube_video_model.dart';
+import '../models/youtube_video_model.dart';
 import 'environment_service.dart';
 
 class YouTubeService {
@@ -33,7 +33,6 @@ class YouTubeService {
       _dio.interceptors.add(LogInterceptor(
         requestBody: true,
         responseBody: true,
-        logPrint: (obj) => debugPrint(obj.toString()),
       ));
     }
   }
@@ -41,8 +40,6 @@ class YouTubeService {
   Future<YouTubeVideo?> searchCharacterAMV(String characterName) async {
     final cacheKey = _getCacheKey(characterName);
     if (_videoCache.containsKey(cacheKey)) {
-      debugPrint(
-          'YouTube Service: Returning cached video for "$characterName"');
       return _videoCache[cacheKey];
     }
 
@@ -111,8 +108,7 @@ class YouTubeService {
       {int maxResults = 3}) async {
     final cacheKey = _getCacheKey(characterName, maxResults);
     if (_multipleVideoCache.containsKey(cacheKey)) {
-      debugPrint(
-          'YouTube Service: Returning cached videos for "$characterName"');
+      
       return _multipleVideoCache[cacheKey]!;
     }
 

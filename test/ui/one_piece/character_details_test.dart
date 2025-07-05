@@ -6,8 +6,9 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:opfan/core/models/character_model.dart';
 
-import 'package:opfan/core/one_piece/models/character.dart';
+
 import 'package:opfan/screens/one_piece/widgets/details/character_details_screen.dart';
 
 import '../../testable_widget.dart';
@@ -18,9 +19,9 @@ void main() {
   group('Character Details Screen', () {
     const Key charactersKey = Key('charactersKey');
     File file = File('test/fixtures/character_list.json');
-    List<Character> characters =
+    List<CharacterModel> characters =
         (jsonDecode(file.readAsStringSync())['characters'] as List)
-            .map((e) => Character.fromJson(e))
+            .map((e) => CharacterModel.fromJson(e))
             .toList();
 
     Widget charactersDetails = CharacterDetailsScreen(

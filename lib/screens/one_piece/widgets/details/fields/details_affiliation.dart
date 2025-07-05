@@ -32,7 +32,8 @@ class DetailsAffiliation extends StatelessWidget {
           tilePadding: const EdgeInsets.only(right: Constants.margin),
           title: ExpansionTileTitle(
             title: affiliations.first,
-            leading: AppLocalizations.of(context)!.affiliation,
+            leading:
+                AppLocalizations.of(context)!.affiliation(affiliations.length),
           ),
           children: affiliations
               .map((String affiliation) =>

@@ -3,7 +3,7 @@
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:opfan/core/one_piece/models/devil_fruit.dart';
+import 'package:opfan/core/models/one_piece/devil_fruit.dart';
 import 'package:opfan/core/services/devil_fruit_service.dart';
 import 'devil_fruit_event.dart';
 import 'devil_fruit_state.dart';
@@ -38,7 +38,7 @@ class DevilFruitBloc extends Bloc<DevilFruitEvent, DevilFruitState> {
         availableTypes: types,
       ));
 
-      debugPrint('DevilFruitBloc: Loaded ${fruits.length} devil fruits');
+    
     } catch (e) {
       debugPrint('DevilFruitBloc: Error loading devil fruits - $e');
       emit(DevilFruitError('Erro ao carregar Akuma no Mi: $e'));
@@ -62,7 +62,6 @@ class DevilFruitBloc extends Bloc<DevilFruitEvent, DevilFruitState> {
         availableTypes: types,
       ));
 
-      debugPrint('DevilFruitBloc: Refreshed ${fruits.length} devil fruits');
     } catch (e) {
       debugPrint('DevilFruitBloc: Error refreshing devil fruits - $e');
       emit(DevilFruitError('Erro ao atualizar Akuma no Mi: $e'));
@@ -97,8 +96,6 @@ class DevilFruitBloc extends Bloc<DevilFruitEvent, DevilFruitState> {
         isSearching: false,
       ));
 
-      debugPrint(
-          'DevilFruitBloc: Search completed - ${filteredFruits.length} results');
     } catch (e) {
       debugPrint('DevilFruitBloc: Error searching devil fruits - $e');
       emit(currentState.copyWith(
@@ -142,13 +139,11 @@ class DevilFruitBloc extends Bloc<DevilFruitEvent, DevilFruitState> {
         isSearching: false,
       ));
 
-      debugPrint(
-          'DevilFruitBloc: Filter by type completed - ${filteredFruits.length} results');
     } catch (e) {
       debugPrint('DevilFruitBloc: Error filtering devil fruits - $e');
       emit(currentState.copyWith(
         isSearching: false,
-        error: 'Erro ao filtrar Akuma no Mi: $e',
+        error: 'Error filtering Devil Fruits: $e',
       ));
     }
   }
@@ -166,7 +161,5 @@ class DevilFruitBloc extends Bloc<DevilFruitEvent, DevilFruitState> {
       selectedType: null,
       isSearching: false,
     ));
-
-    debugPrint('DevilFruitBloc: Filters cleared');
   }
 }

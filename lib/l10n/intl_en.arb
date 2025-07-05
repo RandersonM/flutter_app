@@ -1,9 +1,14 @@
 {  
-  "affiliation": "Affiliation",
+  "affiliation": "{count, plural, =0 {Affiliation} =1 {Affiliation} other {Affiliations}}",
   "@affiliation": {
-    "description": "Text show at bounty section on character detail screen",
+    "description": "Text show at bounty section on character detail screen with pluralization",
     "type": "text",
-    "placeholders": {}
+    "placeholders": {
+      "count": {
+        "type": "num",
+        "example": "1"
+      }
+    }
   },  
   "beastsPirates": "Beasts Pirates",
   "@beastsPirates": {
@@ -77,11 +82,16 @@
     "type": "text",
     "placeholders": {}
   },
-  "occupation": "Occupation",
+  "occupation": "{count, plural, =0 {Occupation} =1 {Occupation} other {Occupations}}",
   "@occupation": {
-    "description": "Text show at occupation section on character detail screen",
+    "description": "Text show at occupation section on character detail screen with pluralization",
     "type": "text",
-    "placeholders": {}
+    "placeholders": {
+      "count": {
+        "type": "num",
+        "example": "1"
+      }
+    }
   },
   "onePiece": "One Piece",
   "@onePiece": {
@@ -134,6 +144,12 @@
   "statistics": "Details",
   "@statistics": {
     "description": "Title for details section",
+    "type": "text",
+    "placeholders": {}
+  },
+  "myCharacters": "My Characters",
+  "@myCharacters": {
+    "description": "Label for my characters",
     "type": "text",
     "placeholders": {}
   },
@@ -198,8 +214,391 @@
     "placeholders": {}
   },
   "status": "Status",
+  "edit": "Edit",
+  "@edit": {
+    "description": "Button text to edit an item",
+    "type": "text",
+    "placeholders": {}
+  },
+  "delete": "Delete",
+  "@delete": {
+    "description": "Button text to delete an item",
+    "type": "text",
+    "placeholders": {}
+  },
+  "noImage": "No Image",
+  "@noImage": {
+    "description": "Text shown when no image is available",
+    "type": "text",
+    "placeholders": {}
+  },
   "@status": {
     "description": "Label for status when devil fruit is not available",
+    "type": "text",
+    "placeholders": {}
+  },
+  "createCustomCharacterTitle": "Create Custom Character",
+  "@createCustomCharacterTitle": {
+    "description": "Title for create custom character screen",
+    "type": "text",
+    "placeholders": {}
+  },
+  "createCustomCharacterSubtitle": "Fill in the information below to create your unique character in the One Piece world!",
+  "@createCustomCharacterSubtitle": {
+    "description": "Subtitle for create custom character screen",
+    "type": "text",
+    "placeholders": {}
+  },
+  "basicInfo": "Basic Information",
+  "@basicInfo": {
+    "description": "Section title for basic character information",
+    "type": "text",
+    "placeholders": {}
+  },
+  "name": "Name",
+  "@name": {
+    "description": "Label for character name field",
+    "type": "text",
+    "placeholders": {}
+  },
+  "nameRequired": "Please enter a name",
+  "@nameRequired": {
+    "description": "Validation message for required name field",
+    "type": "text",
+    "placeholders": {}
+  },
+  "nameHint": "Ex: Monkey D. Luffy",
+  "@nameHint": {
+    "description": "Hint text for name field",
+    "type": "text",
+    "placeholders": {}
+  },
+  "nickname": "Nickname",
+  "@nickname": {
+    "description": "Label for character nickname field",
+    "type": "text",
+    "placeholders": {}
+  },
+  "nicknameHint": "Ex: Luffy, Straw Hat",
+  "@nicknameHint": {
+    "description": "Hint text for nickname field",
+    "type": "text",
+    "placeholders": {}
+  },
+  "age": "Idade",
+  "@age": {
+    "description": "Label for character age field",
+    "type": "text",
+    "placeholders": {}
+  },
+  "birthDate": "Birth Date",
+  "@birthDate": {
+    "description": "Label for character birth date field",
+    "type": "text",
+    "placeholders": {}
+  },
+  "birthDateHint": "DD/MM/YYYY",
+  "@birthDateHint": {
+    "description": "Hint text for birth date field",
+    "type": "text",
+    "placeholders": {}
+  },
+  "powers": "Powers",
+  "@powers": {
+    "description": "Section title for character powers",
+    "type": "text",
+    "placeholders": {}
+  },
+  "devilFruitHint": "Ex: Gomu Gomu no Mi",
+  "@devilFruitHint": {
+    "description": "Hint text for devil fruit field",
+    "type": "text",
+    "placeholders": {}
+  },
+  "hakiTypes": "Haki Types",
+  "@hakiTypes": {
+    "description": "Label for haki types selection",
+    "type": "text",
+    "placeholders": {}
+  },
+  "haoshokuHaki": "Haoshoku Haki (King's Haki)",
+  "@haoshokuHaki": {
+    "description": "Option for Haoshoku Haki",
+    "type": "text",
+    "placeholders": {}
+  },
+  "busoshokuHaki": "Busoshoku Haki (Armament Haki)",
+  "@busoshokuHaki": {
+    "description": "Option for Busoshoku Haki",
+    "type": "text",
+    "placeholders": {}
+  },
+  "kenbunshokuHaki": "Kenbunshoku Haki (Observation Haki)",
+  "@kenbunshokuHaki": {
+    "description": "Option for Kenbunshoku Haki",
+    "type": "text",
+    "placeholders": {}
+  },
+  "background": "Background",
+  "@background": {
+    "description": "Section title for character background",
+    "type": "text",
+    "placeholders": {}
+  },
+  "crewHint": "Ex: Straw Hat Pirates",
+  "@crewHint": {
+    "description": "Hint text for crew field",
+    "type": "text",
+    "placeholders": {}
+  },
+  "bountyRequired": "Please enter a bounty",
+  "@bountyRequired": {
+    "description": "Validation message for required bounty field",
+    "type": "text",
+    "placeholders": {}
+  },
+  "bountyHint": "Ex: 3,000,000,000 Berries",
+  "@bountyHint": {
+    "description": "Hint text for bounty field",
+    "type": "text",
+    "placeholders": {}
+  },
+  "imageUrl": "Image URL",
+  "@imageUrl": {
+    "description": "Label for character image URL field",
+    "type": "text",
+    "placeholders": {}
+  },
+  "imageUrlHint": "Ex: https://example.com/image.jpg",
+  "@imageUrlHint": {
+    "description": "Hint text for image URL field",
+    "type": "text",
+    "placeholders": {}
+  },
+  "captured": "Captured",
+  "@captured": {
+    "description": "Status option for alive character",
+    "type": "text",
+    "placeholders": {}
+  },
+  "alive": "Alive",
+  "@alive": {
+    "description": "Status option for alive character",
+    "type": "text",
+    "placeholders": {}
+  },
+  "dead": "Dead",
+  "@dead": {
+    "description": "Status option for dead character",
+    "type": "text",
+    "placeholders": {}
+  },
+  "unknown": "Unknown",
+  "@unknown": {
+    "description": "Status option for unknown status",
+    "type": "text",
+    "placeholders": {}
+  },
+  "affiliations": "Affiliations",
+  "@affiliations": {
+    "description": "Label for affiliations selection",
+    "type": "text",
+    "placeholders": {}
+  },
+  "marines": "Marines",
+  "@marines": {
+    "description": "Affiliation option for Marines",
+    "type": "text",
+    "placeholders": {}
+  },
+  "revolutionaries": "Revolutionaries",
+  "@revolutionaries": {
+    "description": "Affiliation option for Revolutionaries",
+    "type": "text",
+    "placeholders": {}
+  },
+  "yonkou": "Yonkou",
+  "@yonkou": {
+    "description": "Affiliation option for Yonkou",
+    "type": "text",
+    "placeholders": {}
+  },
+  "shichibukai": "Shichibukai",
+  "@shichibukai": {
+    "description": "Affiliation option for Shichibukai",
+    "type": "text",
+    "placeholders": {}
+  },
+  "independent": "Independent",
+  "@independent": {
+    "description": "Affiliation option for independent character",
+    "type": "text",
+    "placeholders": {}
+  },
+  "pirate": "Pirate",
+  "@pirate": {
+    "description": "Affiliation option for pirate",
+    "type": "text",
+    "placeholders": {}
+  },
+  "pirateAlliance": "Pirate Alliance",
+  "@pirateAlliance": {
+    "description": "Affiliation option for pirate alliance",
+    "type": "text",
+    "placeholders": {}
+  },
+  "occupations": "Occupations",
+  "@occupations": {
+    "description": "Label for occupations selection",
+    "type": "text",
+    "placeholders": {}
+  },
+  "captain": "Captain",
+  "@captain": {
+    "description": "Occupation option for captain",
+    "type": "text",
+    "placeholders": {}
+  },
+  "pirate": "Pirate",
+  "@pirate": {
+    "description": "Occupation option for pirate",
+    "type": "text",
+    "placeholders": {}
+  },
+  "admiral": "Admiral",
+  "@admiral": {
+    "description": "Occupation option for admiral",
+    "type": "text",
+    "placeholders": {}
+  },
+  "viceAdmiral": "Vice Admiral",
+  "@viceAdmiral": {
+    "description": "Occupation option for vice admiral",
+    "type": "text",
+    "placeholders": {}
+  },
+  "revolutionary": "Revolutionary",
+  "@revolutionary": {
+    "description": "Occupation option for revolutionary",
+    "type": "text",
+    "placeholders": {}
+  },
+  "merchant": "Merchant",
+  "@merchant": {
+    "description": "Occupation option for merchant",
+    "type": "text",
+    "placeholders": {}
+  },
+  "doctor": "Doctor",
+  "@doctor": {
+    "description": "Occupation option for doctor",
+    "type": "text",
+    "placeholders": {}
+  },
+  "navigator": "Navigator",
+  "@navigator": {
+    "description": "Occupation option for navigator",
+    "type": "text",
+    "placeholders": {}
+  },
+  "cook": "Cook",
+  "@cook": {
+    "description": "Occupation option for cook",
+    "type": "text",
+    "placeholders": {}
+  },
+  "sniper": "Sniper",
+  "@sniper": {
+    "description": "Occupation option for sniper",
+    "type": "text",
+    "placeholders": {}
+  },
+  "swordsman": "Swordsman",
+  "@swordsman": {
+    "description": "Occupation option for swordsman",
+    "type": "text",
+    "placeholders": {}
+  },
+  "carpenter": "Carpenter",
+  "@carpenter": {
+    "description": "Occupation option for carpenter",
+    "type": "text",
+    "placeholders": {}
+  },
+  "archaeologist": "Archaeologist",
+  "@archaeologist": {
+    "description": "Occupation option for archaeologist",
+    "type": "text",
+    "placeholders": {}
+  },
+  "sharpshooter": "Sharpshooter",
+  "@sharpshooter": {
+    "description": "Occupation option for sharpshooter",
+    "type": "text",
+    "placeholders": {}
+  },
+  "description": "Description",
+  "@description": {
+    "description": "Section title for character description",
+    "type": "text",
+    "placeholders": {}
+  },
+  "characterStory": "Character Story",
+  "@characterStory": {
+    "description": "Label for character story field",
+    "type": "text",
+    "placeholders": {}
+  },
+  "characterStoryHint": "Tell the story of your custom character...",
+  "@characterStoryHint": {
+    "description": "Hint text for character story field",
+    "type": "text",
+    "placeholders": {}
+  },
+  "createCharacter": "Create Character",
+  "@createCharacter": {
+    "description": "Button text to create character",
+    "type": "text",
+    "placeholders": {}
+  },
+  "cancel": "Cancel",
+  "@cancel": {
+    "description": "Button text to cancel action",
+    "type": "text",
+    "placeholders": {}
+  },
+  "success": "Success!",
+  "@success": {
+    "description": "Success dialog title",
+    "type": "text",
+    "placeholders": {}
+  },
+  "characterCreatedSuccess": "Custom character created successfully!",
+  "@characterCreatedSuccess": {
+    "description": "Success message when character is created",
+    "type": "text",
+    "placeholders": {}
+  },
+  "error": "Error",
+  "@error": {
+    "description": "Error dialog title",
+    "type": "text",
+    "placeholders": {}
+  },
+  "characterCreationError": "Error creating character: {message}",
+  "@characterCreationError": {
+    "description": "Error message when character creation fails",
+    "type": "text",
+    "placeholders": {
+      "message": {
+        "type": "String",
+        "example": "Network error"
+      }
+    }
+  },
+  "ok": "OK",
+  "@ok": {
+    "description": "Button text for OK action",
     "type": "text",
     "placeholders": {}
   },
@@ -209,11 +608,16 @@
     "type": "text",
     "placeholders": {}
   },
-  "crew": "Crew",
+  "crew": "{count, plural, =0 {Crew} =1 {Crew} other {Crews}}",
   "@crew": {
-    "description": "Label for crew",
+    "description": "Label for crew with pluralization",
     "type": "text",
-    "placeholders": {}
+    "placeholders": {
+      "count": {
+        "type": "num",
+        "example": "1"
+      }
+    }
   },
   "ariesSign": "Aries",
   "@ariesSign": {
@@ -292,5 +696,189 @@
     "description": "Unknown value",
     "type": "text",
     "placeholders": {}
+  },
+  "welcome": "Welcome,",
+  "@welcome": {
+    "description": "Welcome greeting",
+    "type": "text",
+    "placeholders": {}
+  },
+  "welcomeToOpfan": "Welcome to OpFan",
+  "@welcomeToOpfan": {
+    "description": "Welcome message for login screen",
+    "type": "text",
+    "placeholders": {}
+  },
+  "signInWithGoogle": "Sign in with Google",
+  "@signInWithGoogle": {
+    "description": "Google sign in button text",
+    "type": "text",
+    "placeholders": {}
+  },
+  "signingIn": "Signing in...",
+  "@signingIn": {
+    "description": "Loading text when signing in",
+    "type": "text",
+    "placeholders": {}
+  },
+  "authenticationError": "Authentication Error",
+  "@authenticationError": {
+    "description": "Authentication error title",
+    "type": "text",
+    "placeholders": {}
+  },
+  "tryAgainButton": "Try Again",
+  "@tryAgainButton": {
+    "description": "Try again button text",
+    "type": "text",
+    "placeholders": {}
+  },
+  "clearDataAndContinue": "Clear data and continue",
+  "@clearDataAndContinue": {
+    "description": "Clear data button text",
+    "type": "text",
+    "placeholders": {}
+  },
+  "searchPlaceholder": "Search by roman or japanese name...",
+  "@searchPlaceholder": {
+    "description": "Search input placeholder text",
+    "type": "text",
+    "placeholders": {}
+  },
+  "filterByType": "Filter by type",
+  "@filterByType": {
+    "description": "Filter by type button text",
+    "type": "text",
+    "placeholders": {}
+  },
+  "clear": "Clear",
+  "@clear": {
+    "description": "Clear button text",
+    "type": "text",
+    "placeholders": {}
+  },
+  "clearFilters": "Clear Filters",
+  "@clearFilters": {
+    "description": "Clear filters button text",
+    "type": "text",
+    "placeholders": {}
+  },
+  "noFruitFound": "No fruit found",
+  "@noFruitFound": {
+    "description": "No fruit found message",
+    "type": "text",
+    "placeholders": {}
+  },
+  "noDevilFruitAvailable": "No Devil Fruit available",
+  "@noDevilFruitAvailable": {
+    "description": "No devil fruit available message",
+    "type": "text",
+    "placeholders": {}
+  },
+  "adjustFiltersOrSearch": "Try adjusting the filters or search for other terms",
+  "@adjustFiltersOrSearch": {
+    "description": "Suggestion text when no results found",
+    "type": "text",
+    "placeholders": {}
+  },
+  "errorLoadingContent": "Error loading content",
+  "@errorLoadingContent": {
+    "description": "Error loading content message",
+    "type": "text",
+    "placeholders": {}
+  },
+  "searching": "Searching...",
+  "@searching": {
+    "description": "Searching loading text",
+    "type": "text",
+    "placeholders": {}
+  },
+  "skipForNow": "Skip for now",
+  "@skipForNow": {
+    "description": "Skip login button text",
+    "type": "text",
+    "placeholders": {}
+  },
+  "loginWelcomeSubtitle": "Explore the world of One Piece and discover your favorite characters",
+  "@loginWelcomeSubtitle": {
+    "description": "Subtitle shown on the login screen to invite users to explore One Piece characters.",
+    "type": "text",
+    "placeholders": {}
+  },
+  "version": "version",
+  "@version": {
+    "description": "version word.",
+    "type": "text",
+    "placeholders": {}
+  },
+  "profile": "Profile",
+  "@profile": {
+    "description": "Profile menu item in user drawer",
+    "type": "text",
+    "placeholders": {}
+  },
+  "settings": "Settings",
+  "@settings": {
+    "description": "Settings menu item in user drawer",
+    "type": "text",
+    "placeholders": {}
+  },
+  "logout": "Logout",
+  "@logout": {
+    "description": "Logout menu item in user drawer",
+    "type": "text",
+    "placeholders": {}
+  },
+  "close": "Close",
+  "@close": {
+    "description": "Close button text",
+    "type": "text",
+    "placeholders": {}
+  },
+  "type": "Type",
+  "@type": {
+    "description": "Type label",
+    "type": "text",
+    "placeholders": {}
+  },
+  "description": "Description",
+  "@description": {
+    "description": "Description label",
+    "type": "text",
+    "placeholders": {}
+  },
+  "createCustomCharacter": "Create character",
+  "@createCustomCharacter": {
+    "description": "Description label",
+    "type": "text",
+    "placeholders": {}
+  },
+  "createCrew": "Create new crew",
+  "@createCrew": {
+    "description": "Tooltip for create new crew",
+    "type": "text",
+    "placeholders": {}
+  },
+  "viewingCharacter": "Viewing {characterName}",
+  "@viewingCharacter": {
+    "description": "Snackbar message when viewing a character",
+    "type": "text",
+    "placeholders": {
+      "characterName": {
+        "type": "String",
+        "example": "Luffy"
+      }
+    }
+  },
+  "editingCharacter": "Editing {characterName}",
+  "@editingCharacter": {
+    "description": "Snackbar message when editing a character",
+    "type": "text",
+    "placeholders": {
+      "characterName": {
+        "type": "String",
+        "example": "Luffy"
+      }
+    }
   }
 }

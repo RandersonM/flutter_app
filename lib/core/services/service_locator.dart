@@ -10,8 +10,12 @@ import 'package:opfan/core/services/devil_fruit_service.dart';
 import 'package:opfan/core/services/environment_service.dart';
 import 'package:opfan/core/services/youtube_service.dart';
 import 'package:opfan/core/services/featured_character_service.dart';
+import 'package:opfan/core/services/auth_service.dart';
+import 'package:opfan/core/services/firestore_service.dart';
+import 'package:opfan/core/repository/custom_character_repository.dart';
 import 'package:opfan/screens/home/blocs/home_bloc.dart';
 import 'package:opfan/screens/devil_fruit/blocs/devil_fruit_bloc.dart';
+import 'package:opfan/core/auth/blocs/index.dart';
 
 final GetIt getIt = GetIt.instance;
 
@@ -33,6 +37,25 @@ Future<void> configureDependencies() async {
   getIt.registerLazySingleton<FeaturedCharacterService>(
     () => FeaturedCharacterService(
         charactersService: getIt<CharactersBackendService>()),
+  );
+
+  getIt.registerLazySingleton<AuthService>(
+    () {
+      final authService = AuthService();
+      return authService;
+    },
+  );
+
+  getIt.registerLazySingleton<FirestoreService>(
+    () => FirestoreService(),
+  );
+
+  getIt.registerLazySingleton<CustomCharacterRepository>(
+    () => CustomCharacterRepository(),
+  );
+
+  getIt.registerLazySingleton<CustomCharacterService>(
+    () => CustomCharacterService(),
   );
 
   getIt.registerFactory<CalculatorProvider>(
@@ -59,6 +82,15 @@ Future<void> configureDependencies() async {
       devilFruitService: getIt<DevilFruitService>(),
     ),
   );
+
+  getIt.registerLazySingleton<AuthBloc>(
+    () {
+      final authService = getIt<AuthService>();
+      final authBloc = AuthBloc(authService: authService);
+      authBloc.add(const AuthStarted());
+      return authBloc;
+    },
+  );
 }
 
 Future<void> resetDependencies() async {
@@ -69,7 +101,8 @@ bool isDependencyConfigured() {
   return getIt.isRegistered<EnvironmentService>() &&
       getIt.isRegistered<CharactersBackendService>() &&
       getIt.isRegistered<DevilFruitService>() &&
-      getIt.isRegistered<YouTubeService>();
+      getIt.isRegistered<YouTubeService>() &&
+      getIt.isRegistered<AuthService>();
 }
 
 extension ServiceLocatorExtensions on GetIt {
@@ -80,6 +113,13 @@ extension ServiceLocatorExtensions on GetIt {
   YouTubeService get youTubeService => get<YouTubeService>();
   FeaturedCharacterService get featuredCharacterService =>
       get<FeaturedCharacterService>();
+  AuthService get authService => get<AuthService>();
+  FirestoreService get firestoreService => get<FirestoreService>();
+  CustomCharacterRepository get customCharacterRepository =>
+      get<CustomCharacterRepository>();
+
+  CustomCharacterService get customCharacterService =>
+      get<CustomCharacterService>();
 
   CalculatorProvider get calculatorProvider => get<CalculatorProvider>();
 
@@ -87,6 +127,7 @@ extension ServiceLocatorExtensions on GetIt {
   SearchCubit get searchCubit => get<SearchCubit>();
   HomeBloc get homeBloc => get<HomeBloc>();
   DevilFruitBloc get devilFruitBloc => get<DevilFruitBloc>();
+  AuthBloc get authBloc => get<AuthBloc>();
 }
 
 void registerTestDependencies() {
@@ -128,10 +169,12 @@ Map<String, dynamic> getDependencyInfo() {
     'characters_service': getIt.isRegistered<CharactersBackendService>(),
     'devil_fruit_service': getIt.isRegistered<DevilFruitService>(),
     'youtube_service': getIt.isRegistered<YouTubeService>(),
+    'auth_service': getIt.isRegistered<AuthService>(),
     'calculator_provider': getIt.isRegistered<CalculatorProvider>(),
     'characters_cubit': getIt.isRegistered<CharactersCubit>(),
     'search_cubit': getIt.isRegistered<SearchCubit>(),
     'home_bloc': getIt.isRegistered<HomeBloc>(),
     'devil_fruit_bloc': getIt.isRegistered<DevilFruitBloc>(),
+    'auth_bloc': getIt.isRegistered<AuthBloc>(),
   };
 }

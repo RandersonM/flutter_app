@@ -2,8 +2,8 @@
 // Copyright © 2022.
 
 import 'package:equatable/equatable.dart';
-import 'package:opfan/core/one_piece/models/character.dart';
-import 'package:opfan/core/home/models/youtube_video_model.dart';
+import 'package:opfan/core/models/character_model.dart';
+import 'package:opfan/core/models/youtube_video_model.dart';
 
 abstract class HomeState extends Equatable {
   const HomeState();
@@ -21,7 +21,7 @@ class HomeLoading extends HomeState {
 }
 
 class HomeLoaded extends HomeState {
-  final Character featuredCharacter;
+  final CharacterModel featuredCharacter;
   final bool isRandomCharacter;
   final YouTubeVideo? currentVideo;
   final bool isLoadingVideo;
@@ -42,7 +42,7 @@ class HomeLoaded extends HomeState {
       ];
 
   HomeLoaded copyWith({
-    Character? featuredCharacter,
+    CharacterModel? featuredCharacter,
     bool? isRandomCharacter,
     YouTubeVideo? currentVideo,
     bool? clearVideo,

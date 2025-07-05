@@ -3,6 +3,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:opfan/l10n/app_localizations.dart';
 import 'package:opfan/screens/devil_fruit/blocs/index.dart';
 import 'package:opfan/utils/constants.dart';
 
@@ -63,7 +64,7 @@ class _DevilFruitSearchHeaderState extends State<DevilFruitSearchHeader> {
             child: TextField(
               controller: _searchController,
               decoration: InputDecoration(
-                hintText: 'Pesquisar por nome romano ou japonês...',
+                hintText: AppLocalizations.of(context)!.searchPlaceholder,
                 hintStyle: TextStyle(color: Colors.grey[600]),
                 prefixIcon: Icon(
                   Icons.search,
@@ -99,21 +100,21 @@ class _DevilFruitSearchHeaderState extends State<DevilFruitSearchHeader> {
           ),
 
           if (_isSearching)
-            const Padding(
-              padding: EdgeInsets.only(top: Constants.margin),
+            Padding(
+              padding: const EdgeInsets.only(top: Constants.margin),
               child: Row(
                 children: [
-                  SizedBox(
+                  const SizedBox(
                     width: 16,
                     height: 16,
                     child: CircularProgressIndicator(
                       strokeWidth: 2,
                     ),
                   ),
-                  SizedBox(width: Constants.margin),
+                  const SizedBox(width: Constants.margin),
                   Text(
-                    'Pesquisando...',
-                    style: TextStyle(
+                    AppLocalizations.of(context)!.searching,
+                    style: const TextStyle(
                       color: Colors.grey,
                       fontSize: 12,
                     ),

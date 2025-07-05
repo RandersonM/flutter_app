@@ -2,6 +2,7 @@
 // Copyright © 2022.
 
 import 'package:flutter/material.dart';
+import 'package:opfan/l10n/app_localizations.dart';
 import 'package:opfan/utils/constants.dart';
 
 class EmptyDevilFruitList extends StatelessWidget {
@@ -38,8 +39,8 @@ class EmptyDevilFruitList extends StatelessWidget {
 
           Text(
             hasFilters
-                ? 'Nenhuma fruta encontrada'
-                : 'Nenhuma Akuma no Mi disponível',
+                ? AppLocalizations.of(context)!.noFruitFound
+                : AppLocalizations.of(context)!.noDevilFruitAvailable,
             style: Theme.of(context).textTheme.headlineSmall?.copyWith(
                   fontWeight: FontWeight.bold,
                   color: Colors.grey[700],
@@ -51,8 +52,8 @@ class EmptyDevilFruitList extends StatelessWidget {
 
           Text(
             hasFilters
-                ? 'Tente ajustar os filtros ou buscar por outros termos'
-                : 'Não há frutas do diabo para exibir no momento',
+                ? AppLocalizations.of(context)!.adjustFiltersOrSearch
+                : 'No devil fruits to display at the moment',
             style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                   color: Colors.grey[600],
                 ),
@@ -65,7 +66,7 @@ class EmptyDevilFruitList extends StatelessWidget {
             ElevatedButton.icon(
               onPressed: onClearFilters,
               icon: const Icon(Icons.clear),
-              label: const Text('Limpar Filtros'),
+              label: Text(AppLocalizations.of(context)!.clearFilters),
               style: ElevatedButton.styleFrom(
                 padding: const EdgeInsets.symmetric(
                   horizontal: Constants.margin * 2,

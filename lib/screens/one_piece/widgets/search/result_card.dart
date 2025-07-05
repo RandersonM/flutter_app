@@ -2,14 +2,14 @@
 // Copyright © 2022.
 
 import 'package:flutter/material.dart';
-import 'package:opfan/core/one_piece/models/character.dart';
+import 'package:opfan/core/models/character_model.dart';
 
 import 'package:opfan/utils/app_routes.dart';
 
 class ResultCard extends StatefulWidget {
   const ResultCard({Key? key, required this.character}) : super(key: key);
 
-  final Character character;
+  final CharacterModel character;
 
   @override
   State<ResultCard> createState() => _ResultCardState();
