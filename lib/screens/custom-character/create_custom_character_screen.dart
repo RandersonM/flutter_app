@@ -21,7 +21,6 @@ class CreateCustomCharacterScreen extends StatefulWidget {
 class _CreateCustomCharacterScreenState extends State<CreateCustomCharacterScreen> {
   final _formKey = GlobalKey<FormState>();
   
-  // Controllers
   final _nameController = TextEditingController();
   final _nicknameController = TextEditingController();
   final _birthDateController = TextEditingController();
@@ -30,7 +29,6 @@ class _CreateCustomCharacterScreenState extends State<CreateCustomCharacterScree
   final _imageUrlController = TextEditingController();
   final _descriptionController = TextEditingController();
   
-  // State variables
   String? _selectedStatus;
   List<String> _selectedOccupations = [];
   final List<String> _selectedHaki = [];
@@ -41,7 +39,7 @@ class _CreateCustomCharacterScreenState extends State<CreateCustomCharacterScree
   @override
   void initState() {
     super.initState();
-    _selectedAffiliations = ['Independente'];
+    _selectedAffiliations = ['independent'];
     _selectedOccupations = [];
     _loadDevilFruits();
   }
@@ -98,7 +96,6 @@ class _CreateCustomCharacterScreenState extends State<CreateCustomCharacterScree
                   padding: const EdgeInsets.all(16.0),
                   child: Column(
                     children: [
-                      // Header
                       Container(
                         width: double.infinity,
                         padding: const EdgeInsets.all(16),
@@ -126,7 +123,6 @@ class _CreateCustomCharacterScreenState extends State<CreateCustomCharacterScree
                       ),
                       const SizedBox(height: 24),
                       
-                      // Form
                       CharacterForm(
                         formKey: _formKey,
                         nameController: _nameController,
@@ -217,9 +213,12 @@ class _CreateCustomCharacterScreenState extends State<CreateCustomCharacterScree
         nickname: _nicknameController.text.trim().isNotEmpty 
             ? _nicknameController.text.trim() 
             : null,
-        devilFruit: _selectedDevilFruit?.name,
+        devilFruit: _selectedDevilFruit?.romanName,
         haki: _selectedHaki.isNotEmpty ? _selectedHaki : null,
-        affiliations: _selectedAffiliations + (_crewController.text.trim().isNotEmpty ? [_crewController.text.trim()] : []),
+        affiliations: _selectedAffiliations +
+            (_crewController.text.trim().isNotEmpty
+                ? [_crewController.text.trim()]
+                : []),
         image: _imageUrlController.text.trim().isNotEmpty 
             ? _imageUrlController.text.trim()
             : 'https://via.placeholder.com/300x400/FF6B6B/FFFFFF?text=Personagem+Customizado',

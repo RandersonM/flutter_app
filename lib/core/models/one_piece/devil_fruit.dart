@@ -26,7 +26,7 @@ class DevilFruit {
   @JsonKey(name: 'description', defaultValue: 'Descrição não disponível')
   String description;
 
-  @JsonKey(name: 'roman_name', defaultValue: 'Nome romano não disponível')
+  @JsonKey(name: 'roman_name', defaultValue: '')
   String romanName;
 
   @JsonKey(name: 'type', defaultValue: 'Tipo não disponível')

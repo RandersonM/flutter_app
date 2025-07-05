@@ -1,9 +1,6 @@
 import 'package:opfan/l10n/app_localizations.dart';
 
-/// Utility class to map Firestore data keys to localized strings
 class CharacterLocalizationMapper {
-  
-  /// Map status values from Firestore to localized strings
   static String mapStatusToLocalized(String? status, AppLocalizations l10n) {
     switch (status?.toLowerCase()) {
       case 'alive':
@@ -17,7 +14,6 @@ class CharacterLocalizationMapper {
     }
   }
 
-  /// Map status from localized string to Firestore value
   static String mapLocalizedToStatus(String localizedStatus, AppLocalizations l10n) {
     if (localizedStatus == l10n.alive) return 'alive';
     if (localizedStatus == l10n.dead) return 'dead';
@@ -25,7 +21,6 @@ class CharacterLocalizationMapper {
     return 'unknown';
   }
 
-  /// Map affiliation values from Firestore to localized strings
   static String mapAffiliationToLocalized(String affiliation, AppLocalizations l10n) {
     switch (affiliation.toLowerCase()) {
       case 'marines':
@@ -43,11 +38,10 @@ class CharacterLocalizationMapper {
       case 'pirate alliance':
         return l10n.pirateAlliance;
       default:
-        return affiliation; // Return original if no mapping found
+        return affiliation;
     }
   }
 
-  /// Map affiliation from localized string to Firestore value
   static String mapLocalizedToAffiliation(String localizedAffiliation, AppLocalizations l10n) {
     if (localizedAffiliation == l10n.marines) return 'marines';
     if (localizedAffiliation == l10n.revolutionaries) return 'revolutionaries';
@@ -59,7 +53,6 @@ class CharacterLocalizationMapper {
     return localizedAffiliation.toLowerCase(); // Return lowercase if no mapping found
   }
 
-  /// Map occupation values from Firestore to localized strings
   static String mapOccupationToLocalized(String occupation, AppLocalizations l10n) {
     switch (occupation.toLowerCase()) {
       case 'captain':
@@ -89,11 +82,10 @@ class CharacterLocalizationMapper {
       case 'sharpshooter':
         return l10n.sharpshooter;
       default:
-        return occupation; // Return original if no mapping found
+        return occupation;
     }
-  }
+  } 
 
-  /// Map occupation from localized string to Firestore value
   static String mapLocalizedToOccupation(String localizedOccupation, AppLocalizations l10n) {
     if (localizedOccupation == l10n.captain) return 'captain';
     if (localizedOccupation == l10n.admiral) return 'admiral';
@@ -111,7 +103,6 @@ class CharacterLocalizationMapper {
     return localizedOccupation.toLowerCase(); // Return lowercase if no mapping found
   }
 
-  /// Map haki values from Firestore to localized strings
   static String mapHakiToLocalized(String haki, AppLocalizations l10n) {
     switch (haki.toLowerCase()) {
       case 'haoshoku haki (king\'s haki)':
@@ -121,11 +112,10 @@ class CharacterLocalizationMapper {
       case 'kenbunshoku haki (observation haki)':
         return l10n.kenbunshokuHaki;
       default:
-        return haki; // Return original if no mapping found
+        return haki;
     }
   }
 
-  /// Map haki from localized string to Firestore value
   static String mapLocalizedToHaki(String localizedHaki, AppLocalizations l10n) {
     if (localizedHaki == l10n.haoshokuHaki) return 'haoshoku haki (king\'s haki)';
     if (localizedHaki == l10n.busoshokuHaki) return 'busoshoku haki (armament haki)';
@@ -133,12 +123,10 @@ class CharacterLocalizationMapper {
     return localizedHaki.toLowerCase(); // Return lowercase if no mapping found
   }
 
-  /// Get all available status options in localized format
   static List<String> getLocalizedStatusOptions(AppLocalizations l10n) {
     return [l10n.alive, l10n.dead, l10n.unknown];
   }
 
-  /// Get all available affiliation options in localized format
   static List<String> getLocalizedAffiliationOptions(AppLocalizations l10n) {
     return [
       l10n.marines,
@@ -151,7 +139,6 @@ class CharacterLocalizationMapper {
     ];
   }
 
-  /// Get all available occupation options in localized format
   static List<String> getLocalizedOccupationOptions(AppLocalizations l10n) {
     return [
       l10n.captain,
@@ -170,7 +157,6 @@ class CharacterLocalizationMapper {
     ];
   }
 
-  /// Get all available haki options in localized format
   static List<String> getLocalizedHakiOptions(AppLocalizations l10n) {
     return [
       l10n.haoshokuHaki,

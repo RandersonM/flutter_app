@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:opfan/core/auth/models/user_model.dart';
 import 'package:opfan/widgets/atoms/circle_avatar.dart';
 import 'package:opfan/utils/constants.dart';
@@ -43,21 +44,20 @@ class UserDrawerContent extends StatelessWidget {
           ),
           const Divider(),
           ListTile(
-            leading: const Icon(Icons.create),
-            title: Text(AppLocalizations.of(context)!.createCustomCharacter),
+              leading: const Icon(FontAwesomeIcons.person),
+              title: Text(AppLocalizations.of(context)!.myCharacters),
+              onTap: () {
+                Navigator.of(context).pushNamed(AppRoutes.customCharacterList);
+              }),
+          ListTile(
+            leading: const Icon(FontAwesomeIcons.ship),
+            title: Text(AppLocalizations.of(context)!.crew(2)),
             onTap: () {
               Navigator.pushNamed(
                 context,
                 AppRoutes.createCustomCharacter,
               );
             },
-          ),
-          ListTile(
-            leading: const Icon(Icons.list),
-            title: Text(AppLocalizations.of(context)!.myCharacters),
-            onTap: () {
-              Navigator.of(context).pushNamed(AppRoutes.customCharacterList);
-            }
           ),
           const Divider(),
           ListTile(

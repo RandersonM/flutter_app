@@ -45,7 +45,8 @@ class CharacterPowerSection extends StatelessWidget {
         CustomDropdown<DevilFruit>(
           label: l10n.devilFruit,
           value: selectedDevilFruit,
-          items: devilFruits,
+          items:
+              devilFruits.where((fruit) => fruit.romanName.isNotEmpty).toList(),
           itemToString: (fruit) => fruit.romanName,
           onChanged: onDevilFruitChanged,
         ),

@@ -2,7 +2,7 @@
 // Copyright © 2022.
 
 import 'package:hive/hive.dart';
-import 'package:opfan/core/models/one_piece/character.dart';
+import 'package:opfan/core/models/character_model.dart';
 
 part 'featured_character.g.dart';
 
@@ -55,9 +55,9 @@ class FeaturedCharacter extends HiveObject {
 
   FeaturedCharacter();
 
-  FeaturedCharacter.fromCharacter(Character character, this.date,
+  FeaturedCharacter.fromCharacter(CharacterModel character, this.date,
       {this.isManuallySelected = false}) {
-    characterId = character.id;
+    characterId = int.tryParse(character.id ?? '0') ?? 0;
     characterName = character.name;
     characterImage = character.image;
     characterBounty = character.bounty;
@@ -72,9 +72,9 @@ class FeaturedCharacter extends HiveObject {
     characterAge = character.age;
   }
 
-  Character toCharacter() {
-    return Character(
-      id: characterId,
+  CharacterModel toCharacter() {
+    return CharacterModel(
+      id: characterId.toString(),
       name: characterName,
       image: characterImage,
       bounty: characterBounty,

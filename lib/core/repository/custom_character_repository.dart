@@ -180,7 +180,6 @@ class CustomCharacterRepository implements ICustomCharacterRepository {
           .map((doc) => CustomCharacterModel.fromFirestore(doc, doc['id'] as String))
           .toList();
 
-      // Ordenação local como fallback
       if (orderBy != null) {
         characters.sort((a, b) {
           int comparison = 0;

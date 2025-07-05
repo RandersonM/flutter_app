@@ -1,9 +1,14 @@
 {
-  "affiliation": "Afiliação",
+  "affiliation": "{count, plural, =0 {Afiliação} =1 {Afiliação} other {Afiliações}}",
   "@affiliation": {
-    "description": "Text show at bounty section on character detail screen",
+    "description": "Text show at bounty section on character detail screen with pluralization",
     "type": "text",
-    "placeholders": {}
+    "placeholders": {
+      "count": {
+        "type": "num",
+        "example": "1"
+      }
+    }
   }, 
   "bounty": "Recompensa",
   "@bounty": {
@@ -65,11 +70,16 @@
     "type": "text",
     "placeholders": {}
   },  
-  "occupation": "Ocupação",
+  "occupation": "{count, plural, =0 {Ocupação} =1 {Ocupação} other {Ocupações}}",
   "@occupation": {
-    "description": "Text show at occupation section on character detail screen",
+    "description": "Text show at occupation section on character detail screen with pluralization",
     "type": "text",
-    "placeholders": {}
+    "placeholders": {
+      "count": {
+        "type": "num",
+        "example": "1"
+      }
+    }
   },
   "onePiece": "One Piece",
   "@onePiece": {
@@ -221,11 +231,16 @@
     "type": "text",
     "placeholders": {}
   },
-  "crew": "Tripulação",
+  "crew": "{count, plural, =0 {Tripulação} =1 {Tripulação} other {Tripulações}}",
   "@crew": {
-    "description": "Label for crew",
+    "description": "Label for crew with pluralization",
     "type": "text",
-    "placeholders": {}
+    "placeholders": {
+      "count": {
+        "type": "num",
+        "example": "1"
+      }
+    }
   },
   "ariesSign": "Áries",
   "@ariesSign": {
@@ -509,6 +524,12 @@
     "type": "text",
     "placeholders": {}
   },
+  "age": "Idade",
+  "@age": {
+    "description": "Label for character age field",
+    "type": "text",
+    "placeholders": {}
+  },
   "birthDate": "Data de Nascimento",
   "@birthDate": {
     "description": "Label for character birth date field",
@@ -590,6 +611,12 @@
   "imageUrlHint": "Ex: https://example.com/image.jpg",
   "@imageUrlHint": {
     "description": "Hint text for image URL field",
+    "type": "text",
+    "placeholders": {}
+  },
+  "captured": "Capturado",
+  "@captured": {
+    "description": "Status option for alive character",
     "type": "text",
     "placeholders": {}
   },
@@ -807,5 +834,33 @@
     "description": "Button text for OK action",
     "type": "text",
     "placeholders": {}
+  },
+  "createNewCharacter": "Criar novo personagem",
+  "@createNewCharacter": {
+    "description": "Tooltip for create new character button",
+    "type": "text",
+    "placeholders": {}
+  },
+  "viewingCharacter": "Visualizando {characterName}",
+  "@viewingCharacter": {
+    "description": "Snackbar message when viewing a character",
+    "type": "text",
+    "placeholders": {
+      "characterName": {
+        "type": "String",
+        "example": "Luffy"
+      }
+    }
+  },
+  "editingCharacter": "Editando {characterName}",
+  "@editingCharacter": {
+    "description": "Snackbar message when editing a character",
+    "type": "text",
+    "placeholders": {
+      "characterName": {
+        "type": "String",
+        "example": "Luffy"
+      }
+    }
   }
 }

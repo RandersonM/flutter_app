@@ -3,7 +3,8 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:opfan/core/models/one_piece/character.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:opfan/core/models/character_model.dart';
 import 'package:opfan/core/services/service_locator.dart';
 import 'package:opfan/l10n/app_localizations.dart';
 import 'package:opfan/widgets/molecules/statistics_grid.dart';
@@ -70,7 +71,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                   ? null
                                   : () async {
                                       final selectedCharacter =
-                                          await Navigator.pushNamed<Character>(
+                                          await Navigator
+                                          .pushNamed<CharacterModel>(
                                         context,
                                         AppRoutes.characterSelection,
                                       );
@@ -193,38 +195,7 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  String _getLocalizedZodiacSign(BuildContext context, String zodiacSign) {
-    final translationKey = ZodiacIcons.getZodiacTranslationKey(zodiacSign);
 
-    switch (translationKey) {
-      case 'ariesSign':
-        return AppLocalizations.of(context)!.ariesSign;
-      case 'taurusSign':
-        return AppLocalizations.of(context)!.taurusSign;
-      case 'geminiSign':
-        return AppLocalizations.of(context)!.geminiSign;
-      case 'cancerSign':
-        return AppLocalizations.of(context)!.cancerSign;
-      case 'leoSign':
-        return AppLocalizations.of(context)!.leoSign;
-      case 'virgoSign':
-        return AppLocalizations.of(context)!.virgoSign;
-      case 'libraSign':
-        return AppLocalizations.of(context)!.libraSign;
-      case 'scorpioSign':
-        return AppLocalizations.of(context)!.scorpioSign;
-      case 'sagittariusSign':
-        return AppLocalizations.of(context)!.sagittariusSign;
-      case 'capricornSign':
-        return AppLocalizations.of(context)!.capricornSign;
-      case 'aquariusSign':
-        return AppLocalizations.of(context)!.aquariusSign;
-      case 'piscesSign':
-        return AppLocalizations.of(context)!.piscesSign;
-      default:
-        return AppLocalizations.of(context)!.unknown;
-    }
-  }
 
   Widget _buildCharacterCard(BuildContext context, HomeState state) {
     if (state is HomeLoading) {
@@ -306,9 +277,9 @@ class _HomeScreenState extends State<HomeScreen> {
         title: AppLocalizations.of(context)!.statistics,
         statistics: [
           StatisticData(
-            label: AppLocalizations.of(context)!.crew,
+            label: AppLocalizations.of(context)!.crew(0),
             value: character.crew ?? 'N/A',
-            svgPath: 'assets/logo/ship-crew.svg',
+            icon: FontAwesomeIcons.ship,
           ),
           StatisticData(
             label:
@@ -327,7 +298,7 @@ class _HomeScreenState extends State<HomeScreen> {
           StatisticData(
             label: AppLocalizations.of(context)!.signo,
             value: character.signo != null
-                ? _getLocalizedZodiacSign(context, character.signo!)
+                ? ZodiacIcons.getLocalizedZodiacSign(context, character.signo!)
                 : 'N/A',
             svgPath: zodiacIconPath,
             icon: zodiacIconPath == null ? Icons.star : null,
@@ -345,7 +316,7 @@ class _HomeScreenState extends State<HomeScreen> {
           icon: Icons.flag,
         ),
         StatisticData(
-          label: AppLocalizations.of(context)!.crew,
+          label: AppLocalizations.of(context)!.crew(0),
           value: '...',
           svgPath: 'assets/logo/ship-crew.svg',
         ),

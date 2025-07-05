@@ -1,9 +1,14 @@
 {  
-  "affiliation": "Affiliation",
+  "affiliation": "{count, plural, =0 {Affiliation} =1 {Affiliation} other {Affiliations}}",
   "@affiliation": {
-    "description": "Text show at bounty section on character detail screen",
+    "description": "Text show at bounty section on character detail screen with pluralization",
     "type": "text",
-    "placeholders": {}
+    "placeholders": {
+      "count": {
+        "type": "num",
+        "example": "1"
+      }
+    }
   },  
   "beastsPirates": "Beasts Pirates",
   "@beastsPirates": {
@@ -77,11 +82,16 @@
     "type": "text",
     "placeholders": {}
   },
-  "occupation": "Occupation",
+  "occupation": "{count, plural, =0 {Occupation} =1 {Occupation} other {Occupations}}",
   "@occupation": {
-    "description": "Text show at occupation section on character detail screen",
+    "description": "Text show at occupation section on character detail screen with pluralization",
     "type": "text",
-    "placeholders": {}
+    "placeholders": {
+      "count": {
+        "type": "num",
+        "example": "1"
+      }
+    }
   },
   "onePiece": "One Piece",
   "@onePiece": {
@@ -275,6 +285,12 @@
     "type": "text",
     "placeholders": {}
   },
+  "age": "Idade",
+  "@age": {
+    "description": "Label for character age field",
+    "type": "text",
+    "placeholders": {}
+  },
   "birthDate": "Birth Date",
   "@birthDate": {
     "description": "Label for character birth date field",
@@ -356,6 +372,12 @@
   "imageUrlHint": "Ex: https://example.com/image.jpg",
   "@imageUrlHint": {
     "description": "Hint text for image URL field",
+    "type": "text",
+    "placeholders": {}
+  },
+  "captured": "Captured",
+  "@captured": {
+    "description": "Status option for alive character",
     "type": "text",
     "placeholders": {}
   },
@@ -586,11 +608,16 @@
     "type": "text",
     "placeholders": {}
   },
-  "crew": "Crew",
+  "crew": "{count, plural, =0 {Crew} =1 {Crew} other {Crews}}",
   "@crew": {
-    "description": "Label for crew",
+    "description": "Label for crew with pluralization",
     "type": "text",
-    "placeholders": {}
+    "placeholders": {
+      "count": {
+        "type": "num",
+        "example": "1"
+      }
+    }
   },
   "ariesSign": "Aries",
   "@ariesSign": {
@@ -825,5 +852,33 @@
     "description": "Description label",
     "type": "text",
     "placeholders": {}
+  },
+  "createCrew": "Create new crew",
+  "@createCrew": {
+    "description": "Tooltip for create new crew",
+    "type": "text",
+    "placeholders": {}
+  },
+  "viewingCharacter": "Viewing {characterName}",
+  "@viewingCharacter": {
+    "description": "Snackbar message when viewing a character",
+    "type": "text",
+    "placeholders": {
+      "characterName": {
+        "type": "String",
+        "example": "Luffy"
+      }
+    }
+  },
+  "editingCharacter": "Editing {characterName}",
+  "@editingCharacter": {
+    "description": "Snackbar message when editing a character",
+    "type": "text",
+    "placeholders": {
+      "characterName": {
+        "type": "String",
+        "example": "Luffy"
+      }
+    }
   }
 }

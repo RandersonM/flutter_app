@@ -1,7 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:opfan/core/models/custom_character_model.dart';
 
-// Events
 abstract class CustomCharacterEvent extends Equatable {
   const CustomCharacterEvent();
 

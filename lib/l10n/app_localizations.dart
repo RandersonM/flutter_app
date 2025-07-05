@@ -98,11 +98,11 @@ abstract class AppLocalizations {
     Locale('pt')
   ];
 
-  /// Text show at bounty section on character detail screen
+  /// Text show at bounty section on character detail screen with pluralization
   ///
   /// In en, this message translates to:
-  /// **'Affiliation'**
-  String get affiliation;
+  /// **'{count, plural, =0 {Affiliation} =1 {Affiliation} other {Affiliations}}'**
+  String affiliation(num count);
 
   /// Filter label on search section one piece
   ///
@@ -176,11 +176,11 @@ abstract class AppLocalizations {
   /// **'No results found for'**
   String get noResultsFound;
 
-  /// Text show at occupation section on character detail screen
+  /// Text show at occupation section on character detail screen with pluralization
   ///
   /// In en, this message translates to:
-  /// **'Occupation'**
-  String get occupation;
+  /// **'{count, plural, =0 {Occupation} =1 {Occupation} other {Occupations}}'**
+  String occupation(num count);
 
   /// Subtitle for bottom menu one piece option
   ///
@@ -374,6 +374,12 @@ abstract class AppLocalizations {
   /// **'Ex: Luffy, Straw Hat'**
   String get nicknameHint;
 
+  /// Label for character age field
+  ///
+  /// In en, this message translates to:
+  /// **'Idade'**
+  String get age;
+
   /// Label for character birth date field
   ///
   /// In en, this message translates to:
@@ -457,6 +463,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Ex: https://example.com/image.jpg'**
   String get imageUrlHint;
+
+  /// Status option for alive character
+  ///
+  /// In en, this message translates to:
+  /// **'Captured'**
+  String get captured;
 
   /// Status option for alive character
   ///
@@ -674,11 +686,11 @@ abstract class AppLocalizations {
   /// **'Devil Fruit'**
   String get devilFruit;
 
-  /// Label for crew
+  /// Label for crew with pluralization
   ///
   /// In en, this message translates to:
-  /// **'Crew'**
-  String get crew;
+  /// **'{count, plural, =0 {Crew} =1 {Crew} other {Crews}}'**
+  String crew(num count);
 
   /// Aries zodiac sign
   ///
@@ -901,6 +913,24 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Create character'**
   String get createCustomCharacter;
+
+  /// Tooltip for create new crew
+  ///
+  /// In en, this message translates to:
+  /// **'Create new crew'**
+  String get createCrew;
+
+  /// Snackbar message when viewing a character
+  ///
+  /// In en, this message translates to:
+  /// **'Viewing {characterName}'**
+  String viewingCharacter(String characterName);
+
+  /// Snackbar message when editing a character
+  ///
+  /// In en, this message translates to:
+  /// **'Editing {characterName}'**
+  String editingCharacter(String characterName);
 }
 
 class _AppLocalizationsDelegate

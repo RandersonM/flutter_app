@@ -115,7 +115,6 @@ class CharacterInfoCard extends StatelessWidget {
       );
     }
 
-    // Use CachedNetworkImage for network images
     return CachedNetworkImage(
       imageUrl: characterImage,
       fit: BoxFit.cover,
