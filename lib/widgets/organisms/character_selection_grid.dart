@@ -4,7 +4,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:opfan/screens/one_piece/blocs/search_cubit.dart';
-import 'package:opfan/core/one_piece/models/character.dart';
+import 'package:opfan/core/models/one_piece/character.dart';
 import 'package:opfan/core/services/service_locator.dart';
 import 'package:opfan/l10n/app_localizations.dart';
 import 'package:opfan/utils/constants.dart';

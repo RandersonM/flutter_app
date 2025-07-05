@@ -4,7 +4,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 
-import 'package:opfan/core/one_piece/models/character.dart';
+import 'package:opfan/core/models/one_piece/character.dart';
 import 'package:opfan/core/services/characters_backend_service.dart';
 
 abstract class SearchState extends Equatable {

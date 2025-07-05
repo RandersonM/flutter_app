@@ -6,7 +6,6 @@ import 'package:flutter/foundation.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:hive/hive.dart';
 import 'package:opfan/core/auth/models/user_model.dart';
-import 'package:flutter/services.dart';
 
 enum AuthStatus { unknown, authenticated, unauthenticated }
 
@@ -63,9 +62,10 @@ class AuthService {
         idToken: googleAuth.idToken,
       );
 
-      final UserCredential userCredential = await _firebaseAuth.signInWithCredential(credential);
-      final User? user = userCredential.user;
+      final UserCredential userCredential =
+          await _firebaseAuth.signInWithCredential(credential);
 
+      final User? user = userCredential.user;
       if (user != null) {
         final userModel = UserModel(
           uid: user.uid,
@@ -73,7 +73,7 @@ class AuthService {
           displayName: user.displayName ?? '',
           photoUrl: user.photoURL,
           emailVerified: user.emailVerified,
-          providerId: 'google.com',
+          providerId: user.providerData.first.providerId,
           createdAt: user.metadata.creationTime ?? DateTime.now(),
           lastSignIn: user.metadata.lastSignInTime ?? DateTime.now(),
         );
@@ -81,17 +81,10 @@ class AuthService {
         await _saveUser(userModel);
         return userModel;
       }
+
       return null;
-    } catch (e, stackTrace) {
-      debugPrint('AuthService: Error in Google sign in - $e');
-      debugPrint('AuthService: Stack trace - $stackTrace');
-      
-      if (e is PlatformException) {
-        debugPrint('AuthService: PlatformException - Code: ${e.code}');
-        debugPrint('AuthService: Message: ${e.message}');
-        debugPrint('AuthService: Details: ${e.details}');
-      }
-      
+    } catch (e) {
+      debugPrint('AuthService: Error in Google Sign-In - $e');
       rethrow;
     }
   }
@@ -133,7 +126,6 @@ class AuthService {
             lastSignIn: DateTime.now(),
           );
           await _saveUser(updatedUser);
-
           return updatedUser;
         }
 

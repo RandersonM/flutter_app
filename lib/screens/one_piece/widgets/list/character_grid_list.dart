@@ -3,7 +3,7 @@
 
 import 'package:flutter/material.dart';
 
-import 'package:opfan/core/one_piece/models/character.dart';
+import 'package:opfan/core/models/one_piece/character.dart';
 import 'package:opfan/screens/one_piece/widgets/list/character_card.dart';
 import 'package:opfan/utils/constants.dart';
 

@@ -78,6 +78,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get statistics => 'Details';
 
   @override
+  String get myCharacters => 'My Characters';
+
+  @override
   String get totalCharacters => 'Total Characters';
 
   @override
@@ -109,6 +112,190 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get status => 'Status';
+
+  @override
+  String get edit => 'Edit';
+
+  @override
+  String get delete => 'Delete';
+
+  @override
+  String get noImage => 'No Image';
+
+  @override
+  String get createCustomCharacterTitle => 'Create Custom Character';
+
+  @override
+  String get createCustomCharacterSubtitle =>
+      'Fill in the information below to create your unique character in the One Piece world!';
+
+  @override
+  String get basicInfo => 'Basic Information';
+
+  @override
+  String get name => 'Name';
+
+  @override
+  String get nameRequired => 'Please enter a name';
+
+  @override
+  String get nameHint => 'Ex: Monkey D. Luffy';
+
+  @override
+  String get nickname => 'Nickname';
+
+  @override
+  String get nicknameHint => 'Ex: Luffy, Straw Hat';
+
+  @override
+  String get birthDate => 'Birth Date';
+
+  @override
+  String get birthDateHint => 'DD/MM/YYYY';
+
+  @override
+  String get powers => 'Powers';
+
+  @override
+  String get devilFruitHint => 'Ex: Gomu Gomu no Mi';
+
+  @override
+  String get hakiTypes => 'Haki Types';
+
+  @override
+  String get haoshokuHaki => 'Haoshoku Haki (King\'s Haki)';
+
+  @override
+  String get busoshokuHaki => 'Busoshoku Haki (Armament Haki)';
+
+  @override
+  String get kenbunshokuHaki => 'Kenbunshoku Haki (Observation Haki)';
+
+  @override
+  String get background => 'Background';
+
+  @override
+  String get crewHint => 'Ex: Straw Hat Pirates';
+
+  @override
+  String get bountyRequired => 'Please enter a bounty';
+
+  @override
+  String get bountyHint => 'Ex: 3,000,000,000 Berries';
+
+  @override
+  String get imageUrl => 'Image URL';
+
+  @override
+  String get imageUrlHint => 'Ex: https://example.com/image.jpg';
+
+  @override
+  String get alive => 'Alive';
+
+  @override
+  String get dead => 'Dead';
+
+  @override
+  String get unknown => 'Unknown';
+
+  @override
+  String get affiliations => 'Affiliations';
+
+  @override
+  String get marines => 'Marines';
+
+  @override
+  String get revolutionaries => 'Revolutionaries';
+
+  @override
+  String get yonkou => 'Yonkou';
+
+  @override
+  String get shichibukai => 'Shichibukai';
+
+  @override
+  String get independent => 'Independent';
+
+  @override
+  String get pirate => 'Pirate';
+
+  @override
+  String get pirateAlliance => 'Pirate Alliance';
+
+  @override
+  String get occupations => 'Occupations';
+
+  @override
+  String get captain => 'Captain';
+
+  @override
+  String get admiral => 'Admiral';
+
+  @override
+  String get viceAdmiral => 'Vice Admiral';
+
+  @override
+  String get revolutionary => 'Revolutionary';
+
+  @override
+  String get merchant => 'Merchant';
+
+  @override
+  String get doctor => 'Doctor';
+
+  @override
+  String get navigator => 'Navigator';
+
+  @override
+  String get cook => 'Cook';
+
+  @override
+  String get sniper => 'Sniper';
+
+  @override
+  String get swordsman => 'Swordsman';
+
+  @override
+  String get carpenter => 'Carpenter';
+
+  @override
+  String get archaeologist => 'Archaeologist';
+
+  @override
+  String get sharpshooter => 'Sharpshooter';
+
+  @override
+  String get description => 'Description';
+
+  @override
+  String get characterStory => 'Character Story';
+
+  @override
+  String get characterStoryHint => 'Tell the story of your custom character...';
+
+  @override
+  String get createCharacter => 'Create Character';
+
+  @override
+  String get cancel => 'Cancel';
+
+  @override
+  String get success => 'Success!';
+
+  @override
+  String get characterCreatedSuccess =>
+      'Custom character created successfully!';
+
+  @override
+  String get error => 'Error';
+
+  @override
+  String characterCreationError(String message) {
+    return 'Error creating character: $message';
+  }
+
+  @override
+  String get ok => 'OK';
 
   @override
   String get devilFruit => 'Devil Fruit';
@@ -151,9 +338,6 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get piscesSign => 'Pisces';
-
-  @override
-  String get unknown => 'Unknown';
 
   @override
   String get welcome => 'Welcome,';
@@ -213,4 +397,22 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get version => 'version';
+
+  @override
+  String get profile => 'Profile';
+
+  @override
+  String get settings => 'Settings';
+
+  @override
+  String get logout => 'Logout';
+
+  @override
+  String get close => 'Close';
+
+  @override
+  String get type => 'Type';
+
+  @override
+  String get createCustomCharacter => 'Create character';
 }

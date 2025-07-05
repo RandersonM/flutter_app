@@ -63,7 +63,7 @@ class AppLocalizationsPt extends AppLocalizations {
   String get superRookie => 'Super Rookie';
 
   @override
-  String get strawHat => 'Straw Hat Pirates';
+  String get strawHat => 'Piratas do Chapéu de Palha';
 
   @override
   String get featuredCharacter => 'Personagem em Destaque';
@@ -76,6 +76,9 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get statistics => 'Detalhes';
+
+  @override
+  String get myCharacters => 'Meus Personagens';
 
   @override
   String get totalCharacters => 'Total de Personagens';
@@ -109,6 +112,191 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get status => 'Status';
+
+  @override
+  String get edit => 'Editar';
+
+  @override
+  String get delete => 'Deletar';
+
+  @override
+  String get noImage => 'Sem Imagem';
+
+  @override
+  String get createCustomCharacterTitle => 'Criar Personagem Customizado';
+
+  @override
+  String get createCustomCharacterSubtitle =>
+      'Preencha as informações abaixo para criar seu personagem único no mundo de One Piece!';
+
+  @override
+  String get basicInfo => 'Informações Básicas';
+
+  @override
+  String get name => 'Nome';
+
+  @override
+  String get nameRequired => 'Por favor, insira um nome';
+
+  @override
+  String get nameHint => 'Ex: Monkey D. Luffy';
+
+  @override
+  String get nickname => 'Alcunha';
+
+  @override
+  String get nicknameHint => 'Ex: Luffy, Chapéu de Palha';
+
+  @override
+  String get birthDate => 'Data de Nascimento';
+
+  @override
+  String get birthDateHint => 'DD/MM/AAAA';
+
+  @override
+  String get powers => 'Poderes';
+
+  @override
+  String get devilFruitHint => 'Ex: Gomu Gomu no Mi';
+
+  @override
+  String get hakiTypes => 'Tipos de Haki';
+
+  @override
+  String get haoshokuHaki => 'Haoshoku Haki (Haki do Rei)';
+
+  @override
+  String get busoshokuHaki => 'Busoshoku Haki (Haki da Armadura)';
+
+  @override
+  String get kenbunshokuHaki => 'Kenbunshoku Haki (Haki da Observação)';
+
+  @override
+  String get background => 'Background';
+
+  @override
+  String get crewHint => 'Ex: Piratas do Chapéu de Palha';
+
+  @override
+  String get bountyRequired => 'Por favor, insira uma recompensa';
+
+  @override
+  String get bountyHint => 'Ex: 3,000,000,000 Berries';
+
+  @override
+  String get imageUrl => 'URL da Imagem';
+
+  @override
+  String get imageUrlHint => 'Ex: https://example.com/image.jpg';
+
+  @override
+  String get alive => 'Vivo';
+
+  @override
+  String get dead => 'Morto';
+
+  @override
+  String get unknown => 'Desconhecido';
+
+  @override
+  String get affiliations => 'Afiliações';
+
+  @override
+  String get marines => 'Marinha';
+
+  @override
+  String get revolutionaries => 'Revolucionários';
+
+  @override
+  String get yonkou => 'Yonkou';
+
+  @override
+  String get shichibukai => 'Shichibukai';
+
+  @override
+  String get independent => 'Independente';
+
+  @override
+  String get pirate => 'Pirata';
+
+  @override
+  String get pirateAlliance => 'Aliança Pirata';
+
+  @override
+  String get occupations => 'Ocupações';
+
+  @override
+  String get captain => 'Capitão';
+
+  @override
+  String get admiral => 'Almirante';
+
+  @override
+  String get viceAdmiral => 'Vice-Almirante';
+
+  @override
+  String get revolutionary => 'Revolucionário';
+
+  @override
+  String get merchant => 'Mercador';
+
+  @override
+  String get doctor => 'Médico';
+
+  @override
+  String get navigator => 'Navegador';
+
+  @override
+  String get cook => 'Cozinheiro';
+
+  @override
+  String get sniper => 'Arqueiro';
+
+  @override
+  String get swordsman => 'Espadachim';
+
+  @override
+  String get carpenter => 'Carpinteiro';
+
+  @override
+  String get archaeologist => 'Arqueólogo';
+
+  @override
+  String get sharpshooter => 'Atirador';
+
+  @override
+  String get description => 'Descrição';
+
+  @override
+  String get characterStory => 'História do Personagem';
+
+  @override
+  String get characterStoryHint =>
+      'Conte a história do seu personagem customizado...';
+
+  @override
+  String get createCharacter => 'Criar Personagem';
+
+  @override
+  String get cancel => 'Cancelar';
+
+  @override
+  String get success => 'Sucesso!';
+
+  @override
+  String get characterCreatedSuccess =>
+      'Personagem customizado criado com sucesso!';
+
+  @override
+  String get error => 'Erro';
+
+  @override
+  String characterCreationError(String message) {
+    return 'Erro ao criar personagem: $message';
+  }
+
+  @override
+  String get ok => 'OK';
 
   @override
   String get devilFruit => 'Fruta do Diabo';
@@ -151,9 +339,6 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get piscesSign => 'Peixes';
-
-  @override
-  String get unknown => 'Desconhecido';
 
   @override
   String get welcome => 'Bem-vindo,';
@@ -213,4 +398,22 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get version => 'versão ';
+
+  @override
+  String get profile => 'Perfil';
+
+  @override
+  String get settings => 'Configurações';
+
+  @override
+  String get logout => 'Sair';
+
+  @override
+  String get close => 'Fechar';
+
+  @override
+  String get type => 'Tipo';
+
+  @override
+  String get createCustomCharacter => 'Criar personagem';
 }

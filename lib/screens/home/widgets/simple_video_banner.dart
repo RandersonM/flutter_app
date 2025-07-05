@@ -3,7 +3,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:opfan/core/home/models/youtube_video_model.dart';
+import 'package:opfan/core/models/youtube_video_model.dart';
 
 enum SimpleBannerType {
   gif,

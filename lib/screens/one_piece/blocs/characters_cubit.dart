@@ -5,7 +5,7 @@ import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/foundation.dart';
 
-import 'package:opfan/core/one_piece/models/character.dart';
+import 'package:opfan/core/models/one_piece/character.dart';
 import 'package:opfan/core/services/characters_backend_service.dart';
 
 abstract class CharactersState extends Equatable {
@@ -93,7 +93,6 @@ class CharactersCubit extends Cubit<CharactersState> {
     try {
       _pages += 10;
       _characters = await backend.fetch(_pages);
-      debugPrint('CharactersCubit: Fetched ${_characters.length} characters');
 
       await Future.delayed(const Duration(seconds: 1));
 
@@ -104,7 +103,6 @@ class CharactersCubit extends Cubit<CharactersState> {
         hasMoreData: newHasMoreData,
       ));
 
-      debugPrint('CharactersCubit: Load completed successfully');
     } catch (e) {
       debugPrint('CharactersCubit: Error - $e');
       emit(CharactersError(
@@ -115,7 +113,6 @@ class CharactersCubit extends Cubit<CharactersState> {
   }
 
   void reset() {
-    debugPrint('CharactersCubit: Reset called');
     _characters = [];
     _pages = 0;
     emit(CharactersInitial());

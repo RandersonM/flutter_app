@@ -3,7 +3,7 @@
 
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
-import 'package:opfan/core/one_piece/models/devil_fruit.dart';
+import 'package:opfan/core/models/one_piece/devil_fruit.dart';
 import 'package:opfan/core/services/environment_service.dart';
 
 class DevilFruitService {
@@ -29,14 +29,11 @@ class DevilFruitService {
 
   Future<List<DevilFruit>> fetchAll() async {
     if (_isLoaded && _cachedFruits.isNotEmpty) {
-      debugPrint(
-          'DevilFruitService: Returning cached fruits (${_cachedFruits.length})');
       return _cachedFruits;
     }
 
     try {
       final url = _env.devilFruitApiUrl;
-      debugPrint('DevilFruitService: Fetching from $url');
 
       final response = await _dio.get(url);
 
@@ -46,7 +43,7 @@ class DevilFruitService {
             jsonData.map((json) => DevilFruit.fromJson(json)).toList();
         _isLoaded = true;
 
-        debugPrint('DevilFruitService: Loaded ${_cachedFruits.length} fruits');
+        
         return _cachedFruits;
       } else {
         throw Exception('Failed to load devil fruits: ${response.statusCode}');
@@ -69,7 +66,6 @@ class DevilFruitService {
     try {
       return _cachedFruits.firstWhere((fruit) => fruit.id == id);
     } catch (e) {
-      debugPrint('DevilFruitService: Fruit with id $id not found');
       return null;
     }
   }
@@ -105,6 +101,5 @@ class DevilFruitService {
   void clearCache() {
     _cachedFruits.clear();
     _isLoaded = false;
-    debugPrint('DevilFruitService: Cache cleared');
   }
 }

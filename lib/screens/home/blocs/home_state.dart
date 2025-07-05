@@ -2,8 +2,8 @@
 // Copyright © 2022.
 
 import 'package:equatable/equatable.dart';
-import 'package:opfan/core/one_piece/models/character.dart';
-import 'package:opfan/core/home/models/youtube_video_model.dart';
+import 'package:opfan/core/models/one_piece/character.dart';
+import 'package:opfan/core/models/youtube_video_model.dart';
 
 abstract class HomeState extends Equatable {
   const HomeState();

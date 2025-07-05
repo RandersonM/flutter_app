@@ -1,0 +1,315 @@
+// Developed by Randerson Mayllon
+// Copyright © 2022.
+
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:opfan/core/models/custom_character_model.dart';
+import 'package:opfan/screens/custom-character/blocs/custom_character_bloc.dart';
+import 'package:opfan/screens/custom-character/blocs/custom_character_event.dart';
+import 'package:opfan/screens/custom-character/blocs/custom_character_state.dart';
+import 'package:opfan/utils/constants.dart';
+import 'package:opfan/widgets/atoms/custom_character_card.dart';
+import 'package:opfan/widgets/molecules/custom_character_search_header.dart';
+
+class CustomCharacterGridList extends StatefulWidget {
+  final Function(CustomCharacterModel)? onCharacterTap;
+  final Function(CustomCharacterModel)? onCharacterEdit;
+  final Function(CustomCharacterModel)? onCharacterDelete;
+
+  const CustomCharacterGridList({
+    Key? key,
+    this.onCharacterTap,
+    this.onCharacterEdit,
+    this.onCharacterDelete,
+  }) : super(key: key);
+
+  @override
+  State<CustomCharacterGridList> createState() => _CustomCharacterGridListState();
+}
+
+class _CustomCharacterGridListState extends State<CustomCharacterGridList> {
+  final TextEditingController _searchController = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      context.read<CustomCharacterBloc>().add(const LoadCustomCharacters());
+    });
+  }
+
+  @override
+  void dispose() {
+    _searchController.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        CustomCharacterSearchHeader(
+          searchController: _searchController,
+          onSearch: _onSearch,
+          onFilter: _showFilterDialog,
+          filterLabel: 'Filtrar por Fruta/Equipe',
+        ),
+        Expanded(
+          child: BlocBuilder<CustomCharacterBloc, CustomCharacterState>(
+            builder: (context, state) {
+              
+              if (state is CustomCharacterLoading) {
+                return const Center(
+                  child: CircularProgressIndicator(),
+                );
+              }
+
+              if (state is CustomCharacterError) {
+                return Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Icon(
+                        Icons.error_outline,
+                        size: 64,
+                        color: Colors.grey[600],
+                      ),
+                      const SizedBox(height: Constants.margin),
+                      Text(
+                        'Erro ao carregar personagens',
+                        style: Theme.of(context).textTheme.titleMedium,
+                        textAlign: TextAlign.center,
+                      ),
+                      const SizedBox(height: Constants.margin),
+                      Text(
+                        state.message,
+                        style: Theme.of(context).textTheme.bodySmall,
+                        textAlign: TextAlign.center,
+                      ),
+                      const SizedBox(height: Constants.margin),
+                      ElevatedButton(
+                        onPressed: () {
+                          context.read<CustomCharacterBloc>().add(const LoadCustomCharacters());
+                        },
+                        child: const Text('Tentar novamente'),
+                      ),
+                    ],
+                  ),
+                );
+              }
+
+              if (state is CustomCharacterLoaded) {
+                if (state.characters.isEmpty) {
+                  return Center(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Icon(
+                          Icons.person_add,
+                          size: 64,
+                          color: Colors.grey[600],
+                        ),
+                        const SizedBox(height: Constants.margin),
+                        Text(
+                          'Nenhum personagem customizado encontrado',
+                          style: Theme.of(context).textTheme.titleMedium,
+                          textAlign: TextAlign.center,
+                        ),
+                        const SizedBox(height: Constants.margin),
+                        Text(
+                          'Crie seu primeiro personagem customizado!',
+                          style: Theme.of(context).textTheme.bodySmall,
+                          textAlign: TextAlign.center,
+                        ),
+                      ],
+                    ),
+                  );
+                }
+
+                return GridView.builder(
+                  padding: const EdgeInsets.all(Constants.margin),
+                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 2,
+                    childAspectRatio: 0.75,
+                    crossAxisSpacing: Constants.margin,
+                    mainAxisSpacing: Constants.margin,
+                  ),
+                  itemCount: state.characters.length,
+                  itemBuilder: (context, index) {
+                    final character = state.characters[index];
+                    return CustomCharacterCard(
+                      character: character,
+                      onTap: () => widget.onCharacterTap?.call(character),
+                      onEdit: () => widget.onCharacterEdit?.call(character),
+                      onDelete: () => _showDeleteConfirmation(character),
+                    );
+                  },
+                );
+              }
+
+              return Center(
+                child: Text(
+                  'Carregando...',
+                  style: Theme.of(context).textTheme.titleMedium,
+                ),
+              );
+            },
+          ),
+        ),
+      ],
+    );
+  }
+
+  void _onSearch() {
+    final query = _searchController.text.trim();
+    if (query.isEmpty) {
+      context.read<CustomCharacterBloc>().add(const LoadCustomCharacters());
+    } else {
+      context.read<CustomCharacterBloc>().add(SearchCustomCharacters(query));
+    }
+  }
+
+  void _showFilterDialog() {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text('Filtrar por'),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            ListTile(
+              leading: const Icon(Icons.local_fire_department),
+              title: const Text('Fruta do Diabo'),
+              onTap: () {
+                Navigator.pop(context);
+                _showDevilFruitFilter();
+              },
+            ),
+            ListTile(
+              leading: const Icon(Icons.group),
+              title: const Text('Equipe'),
+              onTap: () {
+                Navigator.pop(context);
+                _showCrewFilter();
+              },
+            ),
+          ],
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: const Text('Cancelar'),
+          ),
+        ],
+      ),
+    );
+  }
+
+  void _showDevilFruitFilter() {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text('Filtrar por Fruta do Diabo'),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            TextField(
+              decoration: const InputDecoration(
+                labelText: 'Nome da fruta',
+                hintText: 'Ex: Gomu Gomu no Mi',
+              ),
+              onSubmitted: (value) {
+                Navigator.pop(context);
+                if (value.isNotEmpty) {
+                  context.read<CustomCharacterBloc>().add(
+                    FilterCustomCharactersByDevilFruit(value),
+                  );
+                }
+              },
+            ),
+          ],
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: const Text('Cancelar'),
+          ),
+          TextButton(
+            onPressed: () {
+              Navigator.pop(context);
+              context.read<CustomCharacterBloc>().add(const LoadCustomCharacters());
+            },
+            child: const Text('Limpar filtros'),
+          ),
+        ],
+      ),
+    );
+  }
+
+  void _showCrewFilter() {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text('Filtrar por Equipe'),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            TextField(
+              decoration: const InputDecoration(
+                labelText: 'Nome da equipe',
+                hintText: 'Ex: Piratas do Chapéu de Palha',
+              ),
+              onSubmitted: (value) {
+                Navigator.pop(context);
+                if (value.isNotEmpty) {
+                  context.read<CustomCharacterBloc>().add(
+                    FilterCustomCharactersByCrew(value),
+                  );
+                }
+              },
+            ),
+          ],
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: const Text('Cancelar'),
+          ),
+          TextButton(
+            onPressed: () {
+              Navigator.pop(context);
+              context.read<CustomCharacterBloc>().add(const LoadCustomCharacters());
+            },
+            child: const Text('Limpar filtros'),
+          ),
+        ],
+      ),
+    );
+  }
+
+  void _showDeleteConfirmation(CustomCharacterModel character) {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text('Confirmar exclusão'),
+        content: Text('Tem certeza que deseja excluir "${character.name}"?'),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: const Text('Cancelar'),
+          ),
+          TextButton(
+            onPressed: () {
+              Navigator.pop(context);
+              context.read<CustomCharacterBloc>().add(
+                DeleteCustomCharacter(character.id!),
+              );
+            },
+            style: TextButton.styleFrom(foregroundColor: Colors.red),
+            child: const Text('Excluir'),
+          ),
+        ],
+      ),
+    );
+  }
+} 
