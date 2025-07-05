@@ -6,7 +6,7 @@ import 'dart:math';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
-import 'package:opfan/core/one_piece/models/character.dart';
+import 'package:opfan/core/models/one_piece/character.dart';
 
 class CharactersBackendService {
   int _totalCount = 0;
@@ -23,7 +23,6 @@ class CharactersBackendService {
       
       if (_totalCount == 0) {
         _totalCount = jsonDecode(data)['total_count'];
-        debugPrint('Backend: Total count loaded - $_totalCount');
       }
 
       List<Character> fetched = (jsonDecode(data)['characters'] as List)
@@ -31,7 +30,6 @@ class CharactersBackendService {
           .toList();
       
       final result = fetched.sublist(0, page < totalCount ? page : totalCount);
-      debugPrint('Backend: Returning ${result.length} characters');
 
       return result;
     } catch (e) {
@@ -46,7 +44,6 @@ class CharactersBackendService {
 
       if (_totalCount == 0) {
         _totalCount = jsonDecode(data)['total_count'];
-        debugPrint('Backend: Total count loaded - $_totalCount');
       }
 
       List<Character> characters = (jsonDecode(data)['characters'] as List)
@@ -57,8 +54,6 @@ class CharactersBackendService {
       final randomIndex = random.nextInt(characters.length);
 
       final randomCharacter = characters[randomIndex];
-      debugPrint(
-          'Backend: Returning random character - ${randomCharacter.name} (index: $randomIndex)');
 
       return randomCharacter;
     } catch (e) {

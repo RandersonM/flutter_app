@@ -3,13 +3,14 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:opfan/core/one_piece/models/character.dart';
+import 'package:opfan/core/models/one_piece/character.dart';
 import 'package:opfan/core/services/service_locator.dart';
 import 'package:opfan/l10n/app_localizations.dart';
 import 'package:opfan/widgets/molecules/statistics_grid.dart';
 import 'package:opfan/widgets/organisms/bottom_navigation.dart';
 import 'package:opfan/screens/home/widgets/simple_video_banner.dart';
 import 'package:opfan/screens/home/widgets/character_info_card.dart';
+import 'package:opfan/screens/home/widgets/home_app_bar.dart';
 import 'package:opfan/screens/home/blocs/index.dart';
 import 'package:opfan/utils/app_routes.dart';
 import 'package:opfan/utils/constants.dart';
@@ -38,150 +39,92 @@ class _HomeScreenState extends State<HomeScreen> {
           value: getIt<AuthBloc>(),
         ),
       ],
-      child: Scaffold(
-        appBar: _buildAppBar(context),
-        body: BlocBuilder<HomeBloc, HomeState>(
-          builder: (context, state) {
-            return SingleChildScrollView(
-              padding: const EdgeInsets.all(Constants.margin),
-              child: Column(
-                spacing: Constants.margin,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  _buildDynamicBanner(state),
-                  const SizedBox.shrink(),
-                  Text(
-                    AppLocalizations.of(context)!.featuredCharacter,
-                    style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                          fontWeight: FontWeight.bold,
-                        ),
-                  ),
-                  _buildCharacterCard(context, state),
-                  Row(
-                    spacing: Constants.margin,
-                    children: [
-                      Expanded(
-                        child: OutlinedButton.icon(
-                          onPressed: state is HomeLoading
-                              ? null
-                              : () async {
-                                  final selectedCharacter =
-                                      await Navigator.pushNamed<Character>(
-                                    context,
-                                    AppRoutes.characterSelection,
-                                  );
-
-                                  if (selectedCharacter != null &&
-                                      context.mounted) {
-                                    context.read<HomeBloc>().add(
-                                        SelectCharacter(selectedCharacter));
-                                  }
-                                },
-                          icon: const Icon(Icons.person_search),
-                          label: Text(
-                              AppLocalizations.of(context)!.selectCharacter),
-                        ),
-                      ),
-                      Expanded(
-                        child: ElevatedButton.icon(
-                          onPressed: state is HomeLoading
-                              ? null
-                              : () {
-                                  context
-                                      .read<HomeBloc>()
-                                      .add(const LoadRandomCharacter());
-                                },
-                          icon: state is HomeLoading
-                              ? const SizedBox(
-                                  width: 16,
-                                  height: 16,
-                                  child:
-                                      CircularProgressIndicator(strokeWidth: 2),
-                                )
-                              : const Icon(Icons.shuffle),
-                          label: Text(
-                              AppLocalizations.of(context)!.randomCharacter),
-                        ),
-                      ),
-                    ],
-                  ),
-                  const SizedBox.shrink(),
-                  _buildCharacterStatistics(context, state),
-                ],
-              ),
-            );
-          },
-        ),
-        bottomNavigationBar: const BottomNavigation(BottomNavigationPages.home),
-      ),
-    );
-  }
-
-  PreferredSizeWidget _buildAppBar(BuildContext context) {
-    return AppBar(
-      title: BlocBuilder<AuthBloc, AuthState>(
-        builder: (context, state) {
-          if (state is AuthAuthenticated) {
-            return Row(
-              children: [
-                CircleAvatar(
-                  backgroundImage: state.user.photoUrl != null
-                      ? NetworkImage(state.user.photoUrl!)
-                      : null,
-                  child: state.user.photoUrl == null
-                      ? const Icon(Icons.person)
-                      : null,
-                ),
-                const SizedBox(width: Constants.margin),
-                Expanded(
+      child: BlocBuilder<AuthBloc, AuthState>(
+        builder: (context, authState) {
+          return Scaffold(
+            appBar: const HomeAppBar(),
+            body: BlocBuilder<HomeBloc, HomeState>(
+              builder: (context, state) {
+                return SingleChildScrollView(
+                  padding: const EdgeInsets.all(Constants.margin),
                   child: Column(
-                    mainAxisSize: MainAxisSize.min,
+                    spacing: Constants.margin,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
+                      _buildDynamicBanner(state),
+                      const SizedBox.shrink(),
                       Text(
-                        AppLocalizations.of(context)!.welcome,
-                        style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                              color: Theme.of(context).colorScheme.onSurface,
-                            ),
+                        AppLocalizations.of(context)!.featuredCharacter,
+                        style:
+                            Theme.of(context).textTheme.headlineSmall?.copyWith(
+                                  fontWeight: FontWeight.bold,
+                                ),
                       ),
-                      Text(
-                        state.user.displayName,
-                        maxLines: 2,
-                        overflow: TextOverflow.ellipsis,
-                        style: Theme.of(context)
-                            .textTheme
-                            .titleMedium
-                            ?.copyWith(
-                              color: Theme.of(context).colorScheme.onSurface,
-                              fontWeight: FontWeight.bold,
+                      _buildCharacterCard(context, state),
+                      Row(
+                        spacing: Constants.margin,
+                        children: [
+                          Expanded(
+                            child: OutlinedButton.icon(
+                              onPressed: state is HomeLoading
+                                  ? null
+                                  : () async {
+                                      final selectedCharacter =
+                                          await Navigator.pushNamed<Character>(
+                                        context,
+                                        AppRoutes.characterSelection,
+                                      );
+
+                                      if (selectedCharacter != null &&
+                                          context.mounted) {
+                                        context.read<HomeBloc>().add(
+                                            SelectCharacter(selectedCharacter));
+                                      }
+                                    },
+                              icon: const Icon(Icons.person_search),
+                              label: Text(AppLocalizations.of(context)!
+                                  .selectCharacter),
                             ),
+                          ),
+                          Expanded(
+                            child: ElevatedButton.icon(
+                              onPressed: state is HomeLoading
+                                  ? null
+                                  : () {
+                                      context
+                                          .read<HomeBloc>()
+                                          .add(const LoadRandomCharacter());
+                                    },
+                              icon: state is HomeLoading
+                                  ? const SizedBox(
+                                      width: 16,
+                                      height: 16,
+                                      child: CircularProgressIndicator(
+                                          strokeWidth: 2),
+                                    )
+                                  : const Icon(Icons.shuffle),
+                              label: Text(AppLocalizations.of(context)!
+                                  .randomCharacter),
+                            ),
+                          ),
+                        ],
                       ),
+                      const SizedBox(height: Constants.margin),
+                      _buildCharacterStatistics(context, state),
                     ],
                   ),
-                ),
-              ],
-            );
-          }
-          return Text(AppLocalizations.of(context)!.home);
+                );
+              },
+            ),
+            bottomNavigationBar:
+                const BottomNavigation(BottomNavigationPages.home),
+          );
         },
       ),
-      actions: [
-        BlocBuilder<AuthBloc, AuthState>(
-          builder: (context, state) {
-            if (state is AuthAuthenticated) {
-              return IconButton(
-                icon: const Icon(Icons.logout),
-                onPressed: () {
-                  context.read<AuthBloc>().add(const AuthSignOutRequested());
-                },
-              );
-            }
-            return const SizedBox.shrink();
-          },
-        ),
-      ],
     );
   }
+
+
 
   Widget _buildDynamicBanner(HomeState state) {
     if (state is HomeLoaded) {

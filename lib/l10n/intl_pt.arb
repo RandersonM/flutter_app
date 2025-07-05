@@ -95,7 +95,7 @@
     "type": "text",
     "placeholders": {}
   },
-  "strawHat": "Straw Hat Pirates",
+  "strawHat": "Piratas do Chapéu de Palha",
   "@strawHat": {
     "description": "Filter label on search section one piece",
     "type": "text",
@@ -122,6 +122,12 @@
   "statistics": "Detalhes",
   "@statistics": {
     "description": "Title for details section",
+    "type": "text",
+    "placeholders": {}
+  },
+  "myCharacters": "Meus Personagens",
+  "@myCharacters": {
+    "description": "Label for my characters",
     "type": "text",
     "placeholders": {}
   },
@@ -186,6 +192,24 @@
     "placeholders": {}
   },
   "status": "Status",
+  "edit": "Editar",
+  "@edit": {
+    "description": "Button text to edit an item",
+    "type": "text",
+    "placeholders": {}
+  },
+  "delete": "Deletar",
+  "@delete": {
+    "description": "Button text to delete an item",
+    "type": "text",
+    "placeholders": {}
+  },
+  "noImage": "Sem Imagem",
+  "@noImage": {
+    "description": "Text shown when no image is available",
+    "type": "text",
+    "placeholders": {}
+  },
   "@status": {
     "description": "Label for status when devil fruit is not available",
     "type": "text",
@@ -392,6 +416,395 @@
   "version": "versão ",
   "@version": {
     "description": "version word.",
+    "type": "text",
+    "placeholders": {}
+  },
+  "profile": "Perfil",
+  "@profile": {
+    "description": "Profile menu item in user drawer",
+    "type": "text",
+    "placeholders": {}
+  },
+  "settings": "Configurações",
+  "@settings": {
+    "description": "Settings menu item in user drawer",
+    "type": "text",
+    "placeholders": {}
+  },
+  "logout": "Sair",
+  "@logout": {
+    "description": "Logout menu item in user drawer",
+    "type": "text",
+    "placeholders": {}
+  },
+  "close": "Fechar",
+  "@close": {
+    "description": "Close button text",
+    "type": "text",
+    "placeholders": {}
+  },
+  "type": "Tipo",
+  "@type": {
+    "description": "Type label",
+    "type": "text",
+    "placeholders": {}
+  },
+  "description": "Descrição",
+  "@description": {
+    "description": "Description label",
+    "type": "text",
+    "placeholders": {}
+  },
+  "createCustomCharacter": "Criar personagem",
+  "@createCustomCharacter": {
+    "description": "Description label",
+    "type": "text",
+    "placeholders": {}
+  },
+  "createCustomCharacterTitle": "Criar Personagem Customizado",
+  "@createCustomCharacterTitle": {
+    "description": "Title for create custom character screen",
+    "type": "text",
+    "placeholders": {}
+  },
+  "createCustomCharacterSubtitle": "Preencha as informações abaixo para criar seu personagem único no mundo de One Piece!",
+  "@createCustomCharacterSubtitle": {
+    "description": "Subtitle for create custom character screen",
+    "type": "text",
+    "placeholders": {}
+  },
+  "basicInfo": "Informações Básicas",
+  "@basicInfo": {
+    "description": "Section title for basic character information",
+    "type": "text",
+    "placeholders": {}
+  },
+  "name": "Nome",
+  "@name": {
+    "description": "Label for character name field",
+    "type": "text",
+    "placeholders": {}
+  },
+  "nameRequired": "Por favor, insira um nome",
+  "@nameRequired": {
+    "description": "Validation message for required name field",
+    "type": "text",
+    "placeholders": {}
+  },
+  "nameHint": "Ex: Monkey D. Luffy",
+  "@nameHint": {
+    "description": "Hint text for name field",
+    "type": "text",
+    "placeholders": {}
+  },
+  "nickname": "Alcunha",
+  "@nickname": {
+    "description": "Label for character nickname field",
+    "type": "text",
+    "placeholders": {}
+  },
+  "nicknameHint": "Ex: Luffy, Chapéu de Palha",
+  "@nicknameHint": {
+    "description": "Hint text for nickname field",
+    "type": "text",
+    "placeholders": {}
+  },
+  "birthDate": "Data de Nascimento",
+  "@birthDate": {
+    "description": "Label for character birth date field",
+    "type": "text",
+    "placeholders": {}
+  },
+  "birthDateHint": "DD/MM/AAAA",
+  "@birthDateHint": {
+    "description": "Hint text for birth date field",
+    "type": "text",
+    "placeholders": {}
+  },
+  "powers": "Poderes",
+  "@powers": {
+    "description": "Section title for character powers",
+    "type": "text",
+    "placeholders": {}
+  },
+  "devilFruitHint": "Ex: Gomu Gomu no Mi",
+  "@devilFruitHint": {
+    "description": "Hint text for devil fruit field",
+    "type": "text",
+    "placeholders": {}
+  },
+  "hakiTypes": "Tipos de Haki",
+  "@hakiTypes": {
+    "description": "Label for haki types selection",
+    "type": "text",
+    "placeholders": {}
+  },
+  "haoshokuHaki": "Haoshoku Haki (Haki do Rei)",
+  "@haoshokuHaki": {
+    "description": "Option for Haoshoku Haki",
+    "type": "text",
+    "placeholders": {}
+  },
+  "busoshokuHaki": "Busoshoku Haki (Haki da Armadura)",
+  "@busoshokuHaki": {
+    "description": "Option for Busoshoku Haki",
+    "type": "text",
+    "placeholders": {}
+  },
+  "kenbunshokuHaki": "Kenbunshoku Haki (Haki da Observação)",
+  "@kenbunshokuHaki": {
+    "description": "Option for Kenbunshoku Haki",
+    "type": "text",
+    "placeholders": {}
+  },
+  "background": "Background",
+  "@background": {
+    "description": "Section title for character background",
+    "type": "text",
+    "placeholders": {}
+  },
+  "crewHint": "Ex: Piratas do Chapéu de Palha",
+  "@crewHint": {
+    "description": "Hint text for crew field",
+    "type": "text",
+    "placeholders": {}
+  },
+  "bountyRequired": "Por favor, insira uma recompensa",
+  "@bountyRequired": {
+    "description": "Validation message for required bounty field",
+    "type": "text",
+    "placeholders": {}
+  },
+  "bountyHint": "Ex: 3,000,000,000 Berries",
+  "@bountyHint": {
+    "description": "Hint text for bounty field",
+    "type": "text",
+    "placeholders": {}
+  },
+  "imageUrl": "URL da Imagem",
+  "@imageUrl": {
+    "description": "Label for character image URL field",
+    "type": "text",
+    "placeholders": {}
+  },
+  "imageUrlHint": "Ex: https://example.com/image.jpg",
+  "@imageUrlHint": {
+    "description": "Hint text for image URL field",
+    "type": "text",
+    "placeholders": {}
+  },
+  "alive": "Vivo",
+  "@alive": {
+    "description": "Status option for alive character",
+    "type": "text",
+    "placeholders": {}
+  },
+  "dead": "Morto",
+  "@dead": {
+    "description": "Status option for dead character",
+    "type": "text",
+    "placeholders": {}
+  },
+  "unknown": "Desconhecido",
+  "@unknown": {
+    "description": "Status option for unknown status",
+    "type": "text",
+    "placeholders": {}
+  },
+  "affiliations": "Afiliações",
+  "@affiliations": {
+    "description": "Label for affiliations selection",
+    "type": "text",
+    "placeholders": {}
+  },
+  "marines": "Marinha",
+  "@marines": {
+    "description": "Affiliation option for Marines",
+    "type": "text",
+    "placeholders": {}
+  },
+  "revolutionaries": "Revolucionários",
+  "@revolutionaries": {
+    "description": "Affiliation option for Revolutionaries",
+    "type": "text",
+    "placeholders": {}
+  },
+  "yonkou": "Yonkou",
+  "@yonkou": {
+    "description": "Affiliation option for Yonkou",
+    "type": "text",
+    "placeholders": {}
+  },
+  "shichibukai": "Shichibukai",
+  "@shichibukai": {
+    "description": "Affiliation option for Shichibukai",
+    "type": "text",
+    "placeholders": {}
+  },
+  "independent": "Independente",
+  "@independent": {
+    "description": "Affiliation option for independent character",
+    "type": "text",
+    "placeholders": {}
+  },
+  "pirate": "Pirata",
+  "@pirate": {
+    "description": "Affiliation option for pirate",
+    "type": "text",
+    "placeholders": {}
+  },
+  "pirateAlliance": "Aliança Pirata",
+  "@pirateAlliance": {
+    "description": "Affiliation option for pirate alliance",
+    "type": "text",
+    "placeholders": {}
+  },
+  "occupations": "Ocupações",
+  "@occupations": {
+    "description": "Label for occupations selection",
+    "type": "text",
+    "placeholders": {}
+  },
+  "captain": "Capitão",
+  "@captain": {
+    "description": "Occupation option for captain",
+    "type": "text",
+    "placeholders": {}
+  },
+  "pirate": "Pirata",
+  "@pirate": {
+    "description": "Occupation option for pirate",
+    "type": "text",
+    "placeholders": {}
+  },
+  "admiral": "Almirante",
+  "@admiral": {
+    "description": "Occupation option for admiral",
+    "type": "text",
+    "placeholders": {}
+  },
+  "viceAdmiral": "Vice-Almirante",
+  "@viceAdmiral": {
+    "description": "Occupation option for vice admiral",
+    "type": "text",
+    "placeholders": {}
+  },
+  "revolutionary": "Revolucionário",
+  "@revolutionary": {
+    "description": "Occupation option for revolutionary",
+    "type": "text",
+    "placeholders": {}
+  },
+  "merchant": "Mercador",
+  "@merchant": {
+    "description": "Occupation option for merchant",
+    "type": "text",
+    "placeholders": {}
+  },
+  "doctor": "Médico",
+  "@doctor": {
+    "description": "Occupation option for doctor",
+    "type": "text",
+    "placeholders": {}
+  },
+  "navigator": "Navegador",
+  "@navigator": {
+    "description": "Occupation option for navigator",
+    "type": "text",
+    "placeholders": {}
+  },
+  "cook": "Cozinheiro",
+  "@cook": {
+    "description": "Occupation option for cook",
+    "type": "text",
+    "placeholders": {}
+  },
+  "sniper": "Arqueiro",
+  "@sniper": {
+    "description": "Occupation option for sniper",
+    "type": "text",
+    "placeholders": {}
+  },
+  "swordsman": "Espadachim",
+  "@swordsman": {
+    "description": "Occupation option for swordsman",
+    "type": "text",
+    "placeholders": {}
+  },
+  "carpenter": "Carpinteiro",
+  "@carpenter": {
+    "description": "Occupation option for carpenter",
+    "type": "text",
+    "placeholders": {}
+  },
+  "archaeologist": "Arqueólogo",
+  "@archaeologist": {
+    "description": "Occupation option for archaeologist",
+    "type": "text",
+    "placeholders": {}
+  },
+  "sharpshooter": "Atirador",
+  "@sharpshooter": {
+    "description": "Occupation option for sharpshooter",
+    "type": "text",
+    "placeholders": {}
+  },
+  "characterStory": "História do Personagem",
+  "@characterStory": {
+    "description": "Label for character story field",
+    "type": "text",
+    "placeholders": {}
+  },
+  "characterStoryHint": "Conte a história do seu personagem customizado...",
+  "@characterStoryHint": {
+    "description": "Hint text for character story field",
+    "type": "text",
+    "placeholders": {}
+  },
+  "createCharacter": "Criar Personagem",
+  "@createCharacter": {
+    "description": "Button text to create character",
+    "type": "text",
+    "placeholders": {}
+  },
+  "cancel": "Cancelar",
+  "@cancel": {
+    "description": "Button text to cancel action",
+    "type": "text",
+    "placeholders": {}
+  },
+  "success": "Sucesso!",
+  "@success": {
+    "description": "Success dialog title",
+    "type": "text",
+    "placeholders": {}
+  },
+  "characterCreatedSuccess": "Personagem customizado criado com sucesso!",
+  "@characterCreatedSuccess": {
+    "description": "Success message when character is created",
+    "type": "text",
+    "placeholders": {}
+  },
+  "error": "Erro",
+  "@error": {
+    "description": "Error dialog title",
+    "type": "text",
+    "placeholders": {}
+  },
+  "characterCreationError": "Erro ao criar personagem: {message}",
+  "@characterCreationError": {
+    "description": "Error message when character creation fails",
+    "type": "text",
+    "placeholders": {
+      "message": {
+        "type": "String",
+        "example": "Erro de rede"
+      }
+    }
+  },
+  "ok": "OK",
+  "@ok": {
+    "description": "Button text for OK action",
     "type": "text",
     "placeholders": {}
   }

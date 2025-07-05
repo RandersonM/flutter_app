@@ -11,6 +11,8 @@ import 'package:opfan/core/services/environment_service.dart';
 import 'package:opfan/core/services/youtube_service.dart';
 import 'package:opfan/core/services/featured_character_service.dart';
 import 'package:opfan/core/services/auth_service.dart';
+import 'package:opfan/core/services/firestore_service.dart';
+import 'package:opfan/core/repository/custom_character_repository.dart';
 import 'package:opfan/screens/home/blocs/home_bloc.dart';
 import 'package:opfan/screens/devil_fruit/blocs/devil_fruit_bloc.dart';
 import 'package:opfan/core/auth/blocs/index.dart';
@@ -42,6 +44,18 @@ Future<void> configureDependencies() async {
       final authService = AuthService();
       return authService;
     },
+  );
+
+  getIt.registerLazySingleton<FirestoreService>(
+    () => FirestoreService(),
+  );
+
+  getIt.registerLazySingleton<CustomCharacterRepository>(
+    () => CustomCharacterRepository(),
+  );
+
+  getIt.registerLazySingleton<CustomCharacterService>(
+    () => CustomCharacterService(),
   );
 
   getIt.registerFactory<CalculatorProvider>(
@@ -100,6 +114,12 @@ extension ServiceLocatorExtensions on GetIt {
   FeaturedCharacterService get featuredCharacterService =>
       get<FeaturedCharacterService>();
   AuthService get authService => get<AuthService>();
+  FirestoreService get firestoreService => get<FirestoreService>();
+  CustomCharacterRepository get customCharacterRepository =>
+      get<CustomCharacterRepository>();
+
+  CustomCharacterService get customCharacterService =>
+      get<CustomCharacterService>();
 
   CalculatorProvider get calculatorProvider => get<CalculatorProvider>();
 

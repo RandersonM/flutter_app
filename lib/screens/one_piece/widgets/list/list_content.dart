@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:opfan/screens/one_piece/blocs/characters_cubit.dart';
-import 'package:opfan/core/one_piece/models/character.dart';
+import 'package:opfan/core/models/one_piece/character.dart';
 import 'package:opfan/screens/one_piece/widgets/list/character_grid_list.dart';
 
 class ListContent extends StatefulWidget {

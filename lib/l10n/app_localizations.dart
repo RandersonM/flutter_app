@@ -236,6 +236,12 @@ abstract class AppLocalizations {
   /// **'Details'**
   String get statistics;
 
+  /// Label for my characters
+  ///
+  /// In en, this message translates to:
+  /// **'My Characters'**
+  String get myCharacters;
+
   /// Label for total characters statistic
   ///
   /// In en, this message translates to:
@@ -301,6 +307,366 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Status'**
   String get status;
+
+  /// Button text to edit an item
+  ///
+  /// In en, this message translates to:
+  /// **'Edit'**
+  String get edit;
+
+  /// Button text to delete an item
+  ///
+  /// In en, this message translates to:
+  /// **'Delete'**
+  String get delete;
+
+  /// Text shown when no image is available
+  ///
+  /// In en, this message translates to:
+  /// **'No Image'**
+  String get noImage;
+
+  /// Title for create custom character screen
+  ///
+  /// In en, this message translates to:
+  /// **'Create Custom Character'**
+  String get createCustomCharacterTitle;
+
+  /// Subtitle for create custom character screen
+  ///
+  /// In en, this message translates to:
+  /// **'Fill in the information below to create your unique character in the One Piece world!'**
+  String get createCustomCharacterSubtitle;
+
+  /// Section title for basic character information
+  ///
+  /// In en, this message translates to:
+  /// **'Basic Information'**
+  String get basicInfo;
+
+  /// Label for character name field
+  ///
+  /// In en, this message translates to:
+  /// **'Name'**
+  String get name;
+
+  /// Validation message for required name field
+  ///
+  /// In en, this message translates to:
+  /// **'Please enter a name'**
+  String get nameRequired;
+
+  /// Hint text for name field
+  ///
+  /// In en, this message translates to:
+  /// **'Ex: Monkey D. Luffy'**
+  String get nameHint;
+
+  /// Label for character nickname field
+  ///
+  /// In en, this message translates to:
+  /// **'Nickname'**
+  String get nickname;
+
+  /// Hint text for nickname field
+  ///
+  /// In en, this message translates to:
+  /// **'Ex: Luffy, Straw Hat'**
+  String get nicknameHint;
+
+  /// Label for character birth date field
+  ///
+  /// In en, this message translates to:
+  /// **'Birth Date'**
+  String get birthDate;
+
+  /// Hint text for birth date field
+  ///
+  /// In en, this message translates to:
+  /// **'DD/MM/YYYY'**
+  String get birthDateHint;
+
+  /// Section title for character powers
+  ///
+  /// In en, this message translates to:
+  /// **'Powers'**
+  String get powers;
+
+  /// Hint text for devil fruit field
+  ///
+  /// In en, this message translates to:
+  /// **'Ex: Gomu Gomu no Mi'**
+  String get devilFruitHint;
+
+  /// Label for haki types selection
+  ///
+  /// In en, this message translates to:
+  /// **'Haki Types'**
+  String get hakiTypes;
+
+  /// Option for Haoshoku Haki
+  ///
+  /// In en, this message translates to:
+  /// **'Haoshoku Haki (King\'s Haki)'**
+  String get haoshokuHaki;
+
+  /// Option for Busoshoku Haki
+  ///
+  /// In en, this message translates to:
+  /// **'Busoshoku Haki (Armament Haki)'**
+  String get busoshokuHaki;
+
+  /// Option for Kenbunshoku Haki
+  ///
+  /// In en, this message translates to:
+  /// **'Kenbunshoku Haki (Observation Haki)'**
+  String get kenbunshokuHaki;
+
+  /// Section title for character background
+  ///
+  /// In en, this message translates to:
+  /// **'Background'**
+  String get background;
+
+  /// Hint text for crew field
+  ///
+  /// In en, this message translates to:
+  /// **'Ex: Straw Hat Pirates'**
+  String get crewHint;
+
+  /// Validation message for required bounty field
+  ///
+  /// In en, this message translates to:
+  /// **'Please enter a bounty'**
+  String get bountyRequired;
+
+  /// Hint text for bounty field
+  ///
+  /// In en, this message translates to:
+  /// **'Ex: 3,000,000,000 Berries'**
+  String get bountyHint;
+
+  /// Label for character image URL field
+  ///
+  /// In en, this message translates to:
+  /// **'Image URL'**
+  String get imageUrl;
+
+  /// Hint text for image URL field
+  ///
+  /// In en, this message translates to:
+  /// **'Ex: https://example.com/image.jpg'**
+  String get imageUrlHint;
+
+  /// Status option for alive character
+  ///
+  /// In en, this message translates to:
+  /// **'Alive'**
+  String get alive;
+
+  /// Status option for dead character
+  ///
+  /// In en, this message translates to:
+  /// **'Dead'**
+  String get dead;
+
+  /// Unknown value
+  ///
+  /// In en, this message translates to:
+  /// **'Unknown'**
+  String get unknown;
+
+  /// Label for affiliations selection
+  ///
+  /// In en, this message translates to:
+  /// **'Affiliations'**
+  String get affiliations;
+
+  /// Affiliation option for Marines
+  ///
+  /// In en, this message translates to:
+  /// **'Marines'**
+  String get marines;
+
+  /// Affiliation option for Revolutionaries
+  ///
+  /// In en, this message translates to:
+  /// **'Revolutionaries'**
+  String get revolutionaries;
+
+  /// Affiliation option for Yonkou
+  ///
+  /// In en, this message translates to:
+  /// **'Yonkou'**
+  String get yonkou;
+
+  /// Affiliation option for Shichibukai
+  ///
+  /// In en, this message translates to:
+  /// **'Shichibukai'**
+  String get shichibukai;
+
+  /// Affiliation option for independent character
+  ///
+  /// In en, this message translates to:
+  /// **'Independent'**
+  String get independent;
+
+  /// Occupation option for pirate
+  ///
+  /// In en, this message translates to:
+  /// **'Pirate'**
+  String get pirate;
+
+  /// Affiliation option for pirate alliance
+  ///
+  /// In en, this message translates to:
+  /// **'Pirate Alliance'**
+  String get pirateAlliance;
+
+  /// Label for occupations selection
+  ///
+  /// In en, this message translates to:
+  /// **'Occupations'**
+  String get occupations;
+
+  /// Occupation option for captain
+  ///
+  /// In en, this message translates to:
+  /// **'Captain'**
+  String get captain;
+
+  /// Occupation option for admiral
+  ///
+  /// In en, this message translates to:
+  /// **'Admiral'**
+  String get admiral;
+
+  /// Occupation option for vice admiral
+  ///
+  /// In en, this message translates to:
+  /// **'Vice Admiral'**
+  String get viceAdmiral;
+
+  /// Occupation option for revolutionary
+  ///
+  /// In en, this message translates to:
+  /// **'Revolutionary'**
+  String get revolutionary;
+
+  /// Occupation option for merchant
+  ///
+  /// In en, this message translates to:
+  /// **'Merchant'**
+  String get merchant;
+
+  /// Occupation option for doctor
+  ///
+  /// In en, this message translates to:
+  /// **'Doctor'**
+  String get doctor;
+
+  /// Occupation option for navigator
+  ///
+  /// In en, this message translates to:
+  /// **'Navigator'**
+  String get navigator;
+
+  /// Occupation option for cook
+  ///
+  /// In en, this message translates to:
+  /// **'Cook'**
+  String get cook;
+
+  /// Occupation option for sniper
+  ///
+  /// In en, this message translates to:
+  /// **'Sniper'**
+  String get sniper;
+
+  /// Occupation option for swordsman
+  ///
+  /// In en, this message translates to:
+  /// **'Swordsman'**
+  String get swordsman;
+
+  /// Occupation option for carpenter
+  ///
+  /// In en, this message translates to:
+  /// **'Carpenter'**
+  String get carpenter;
+
+  /// Occupation option for archaeologist
+  ///
+  /// In en, this message translates to:
+  /// **'Archaeologist'**
+  String get archaeologist;
+
+  /// Occupation option for sharpshooter
+  ///
+  /// In en, this message translates to:
+  /// **'Sharpshooter'**
+  String get sharpshooter;
+
+  /// Description label
+  ///
+  /// In en, this message translates to:
+  /// **'Description'**
+  String get description;
+
+  /// Label for character story field
+  ///
+  /// In en, this message translates to:
+  /// **'Character Story'**
+  String get characterStory;
+
+  /// Hint text for character story field
+  ///
+  /// In en, this message translates to:
+  /// **'Tell the story of your custom character...'**
+  String get characterStoryHint;
+
+  /// Button text to create character
+  ///
+  /// In en, this message translates to:
+  /// **'Create Character'**
+  String get createCharacter;
+
+  /// Button text to cancel action
+  ///
+  /// In en, this message translates to:
+  /// **'Cancel'**
+  String get cancel;
+
+  /// Success dialog title
+  ///
+  /// In en, this message translates to:
+  /// **'Success!'**
+  String get success;
+
+  /// Success message when character is created
+  ///
+  /// In en, this message translates to:
+  /// **'Custom character created successfully!'**
+  String get characterCreatedSuccess;
+
+  /// Error dialog title
+  ///
+  /// In en, this message translates to:
+  /// **'Error'**
+  String get error;
+
+  /// Error message when character creation fails
+  ///
+  /// In en, this message translates to:
+  /// **'Error creating character: {message}'**
+  String characterCreationError(String message);
+
+  /// Button text for OK action
+  ///
+  /// In en, this message translates to:
+  /// **'OK'**
+  String get ok;
 
   /// Label for devil fruit
   ///
@@ -385,12 +751,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Pisces'**
   String get piscesSign;
-
-  /// Unknown value
-  ///
-  /// In en, this message translates to:
-  /// **'Unknown'**
-  String get unknown;
 
   /// Welcome greeting
   ///
@@ -505,6 +865,42 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'version'**
   String get version;
+
+  /// Profile menu item in user drawer
+  ///
+  /// In en, this message translates to:
+  /// **'Profile'**
+  String get profile;
+
+  /// Settings menu item in user drawer
+  ///
+  /// In en, this message translates to:
+  /// **'Settings'**
+  String get settings;
+
+  /// Logout menu item in user drawer
+  ///
+  /// In en, this message translates to:
+  /// **'Logout'**
+  String get logout;
+
+  /// Close button text
+  ///
+  /// In en, this message translates to:
+  /// **'Close'**
+  String get close;
+
+  /// Type label
+  ///
+  /// In en, this message translates to:
+  /// **'Type'**
+  String get type;
+
+  /// Description label
+  ///
+  /// In en, this message translates to:
+  /// **'Create character'**
+  String get createCustomCharacter;
 }
 
 class _AppLocalizationsDelegate

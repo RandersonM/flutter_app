@@ -39,7 +39,7 @@ class _LoginScreenState extends State<LoginScreen> {
       child: BlocListener<AuthBloc, AuthState>(
         listener: (context, state) {
           if (state is AuthAuthenticated) {
-            Navigator.of(context).pushReplacementNamed(AppRoutes.home);
+            _handleSuccessfulAuth(context);
           } else if (state is AuthError) {
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
@@ -85,6 +85,26 @@ class _LoginScreenState extends State<LoginScreen> {
         ),
       ),
     );
+  }
+
+  void _handleSuccessfulAuth(BuildContext context) {
+    // Check if there's a return route from arguments
+    final arguments = ModalRoute.of(context)?.settings.arguments;
+
+    if (arguments != null && arguments is Map<String, dynamic>) {
+      final returnRoute = arguments['returnRoute'] as String?;
+      final returnArguments = arguments['returnArguments'];
+
+      if (returnRoute != null) {
+        // Navigate to the return route with its arguments
+        Navigator.of(context)
+            .pushReplacementNamed(returnRoute, arguments: returnArguments);
+        return;
+      }
+    }
+
+    // Default navigation to home
+    Navigator.of(context).pushReplacementNamed(AppRoutes.home);
   }
 
   Widget _buildWelcomeText() {

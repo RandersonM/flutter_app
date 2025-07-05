@@ -210,7 +210,7 @@ class _DevilFruitListScreenState extends State<DevilFruitListScreen> {
             mainAxisSize: MainAxisSize.min,
             children: [
               Text(
-                'Tipo: ${fruit.type}',
+                '${AppLocalizations.of(context)!.type}: ${fruit.type}',
                 style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                       color: Theme.of(context).primaryColor,
                       fontWeight: FontWeight.bold,
@@ -218,7 +218,7 @@ class _DevilFruitListScreenState extends State<DevilFruitListScreen> {
               ),
               const SizedBox.shrink(),
               Text(
-                'Descrição:',
+                '${AppLocalizations.of(context)!.description}:',
                 style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                       fontWeight: FontWeight.bold,
                     ),
@@ -233,7 +233,7 @@ class _DevilFruitListScreenState extends State<DevilFruitListScreen> {
         actions: [
           TextButton(
             onPressed: () => Navigator.of(context).pop(),
-            child: const Text('Fechar'),
+            child: Text(AppLocalizations.of(context)!.close),
           ),
         ],
       ),
