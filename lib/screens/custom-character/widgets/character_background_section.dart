@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:opfan/l10n/app_localizations.dart';
+import 'package:opfan/core/models/one_piece/crew_model.dart';
 import '../../../widgets/atoms/custom_text_field.dart';
 import '../../../widgets/atoms/custom_dropdown.dart';
 import '../../../widgets/atoms/custom_chip_selector.dart';
 
 class CharacterBackgroundSection extends StatelessWidget {
-  final TextEditingController crewController;
   final TextEditingController bountyController;
   final TextEditingController imageUrlController;
   final String? selectedStatus;
@@ -16,10 +16,14 @@ class CharacterBackgroundSection extends StatelessWidget {
   final List<String> selectedAffiliations;
   final void Function(String) onAffiliationSelected;
   final void Function(String) onAffiliationDeselected;
+  final List<CrewModel> availableCrews;
+  final String? selectedCrewId;
+  final void Function(String?) onCrewChanged;
+  final String? selectedCrewRole;
+  final void Function(String?) onCrewRoleChanged;
 
   const CharacterBackgroundSection({
     Key? key,
-    required this.crewController,
     required this.bountyController,
     required this.imageUrlController,
     required this.selectedStatus,
@@ -30,20 +34,23 @@ class CharacterBackgroundSection extends StatelessWidget {
     required this.selectedAffiliations,
     required this.onAffiliationSelected,
     required this.onAffiliationDeselected,
+    required this.availableCrews,
+    required this.selectedCrewId,
+    required this.onCrewChanged,
+    required this.selectedCrewRole,
+    required this.onCrewRoleChanged,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
     
-    // Status mapping: English key -> Translated value
     final statusMapping = {
       'alive': l10n.alive,
       'dead': l10n.dead,
       'unknown': l10n.unknown,
     };
 
-    // Affiliation mapping: English key -> Translated value
     final affiliationMapping = {
       'marines': l10n.marines,
       'revolutionaries': l10n.revolutionaries,
@@ -56,6 +63,7 @@ class CharacterBackgroundSection extends StatelessWidget {
 
     final occupationMapping = {
       'captain': l10n.captain,
+      'vice-captain': l10n.viceCaptain,
       'admiral': l10n.admiral,
       'viceAdmiral': l10n.viceAdmiral,
       'revolutionary': l10n.revolutionary,
@@ -70,9 +78,24 @@ class CharacterBackgroundSection extends StatelessWidget {
       'sharpshooter': l10n.sharpshooter,
     };
 
+    final crewRoleMapping = {
+      'helmsman': l10n.helmsman,
+      'captain': l10n.captain,
+      'viceCaptain': l10n.viceCaptain,
+      'navigator': l10n.navigator,
+      'cook': l10n.cook,
+      'doctor': l10n.doctor,
+      'musician': l10n.musician,
+      'carpenter': l10n.carpenter,
+      'sharpshooter': l10n.sharpshooter,
+      'archaeologist': l10n.archaeologist,
+      'boatswain': l10n.boatswain,
+    };
+
     final statusOptions = statusMapping.values.toList();
     final affiliationOptions = affiliationMapping.values.toList();
     final occupationOptions = occupationMapping.values.toList();
+    final crewRoleOptions = crewRoleMapping.values.toList();
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -84,11 +107,42 @@ class CharacterBackgroundSection extends StatelessWidget {
           ),
         ),
         const SizedBox(height: 16),
-        CustomTextField(
+        CustomDropdown<String>(
           label: l10n.crew(0),
-          hint: l10n.crewHint,
-          controller: crewController,
+          value: selectedCrewId != null
+              ? availableCrews
+                  .firstWhere((crew) => crew.id == selectedCrewId,
+                      orElse: () => CrewModel(name: '', userId: ''))
+                  .name
+              : null,
+          items: availableCrews.map((crew) => crew.name).toList(),
+          itemToString: (crewName) => crewName,
+          onChanged: (crewName) {
+            final selectedCrew = availableCrews.firstWhere(
+              (crew) => crew.name == crewName,
+              orElse: () => CrewModel(name: '', userId: ''),
+            );
+            onCrewChanged(
+                selectedCrew.name.isNotEmpty ? selectedCrew.id : null);
+          },
         ),
+        if (selectedCrewId != null) ...[
+          const SizedBox(height: 16),
+          CustomDropdown<String>(
+            label: l10n.crewRole,
+            value: selectedCrewRole != null
+                ? crewRoleMapping[selectedCrewRole!]
+                : null,
+            items: crewRoleOptions,
+            itemToString: (role) => role,
+            onChanged: (translatedRole) {
+              final key = crewRoleMapping.entries
+                  .firstWhere((entry) => entry.value == translatedRole)
+                  .key;
+              onCrewRoleChanged(key);
+            },
+          ),
+        ],
         CurrencyTextField(
           label: '${l10n.bounty} *',
           hint: l10n.bountyHint,

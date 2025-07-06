@@ -2,7 +2,7 @@
 // Copyright © 2022.
 
 import 'package:flutter/material.dart';
-import 'package:opfan/core/models/character_model.dart';
+import 'package:opfan/core/models/one_piece/character_model.dart';
 import 'package:opfan/l10n/app_localizations.dart';
 import 'package:opfan/widgets/molecules/default_app_bar.dart';
 import 'package:opfan/widgets/organisms/character_selection_grid.dart';

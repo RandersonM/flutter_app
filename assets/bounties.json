@@ -70,7 +70,7 @@
       "image": "https://images3.alphacoders.com/643/thumb-1920-643521.jpg",
       "bounty": "฿4,611,100,000",
       "crew": "Beasts Pirates",
-      "status": "living",
+      "status": "deceased",
       "age": 59,
       "signo": "taurus"
     },
@@ -97,7 +97,7 @@
       "image": "https://comicvine.gamespot.com/a/uploads/scale_small/11117/111178336/7078991-3720139327-unkno.png",
       "bounty": "฿4,388,000,000",
       "crew": "Big Mom Pirates",
-      "status": "living",
+      "status": "deceased",
       "age": 68,
       "signo": "aquarius"
     },
@@ -241,7 +241,7 @@
       "image": "https://ovicio.com.br/wp-content/uploads/2020/05/20200513-trafalgar-law_-full_-2675514.jpg",
       "bounty": "฿3,000,000,000",
       "crew": "Heart Pirates",
-      "status": "living",
+      "status": "captured",
       "age": 26,
       "signo": "libra"
     },
@@ -266,7 +266,7 @@
       "image": "https://i.pinimg.com/736x/12/3b/37/123b378e116680cefd2d2837a708a675.jpg",
       "bounty": "฿3,000,000,000",
       "crew": "Kid Pirates",
-      "status": "living",
+      "status": "deceased",
       "age": 23,
       "signo": "capricorn"
     },
@@ -282,7 +282,7 @@
       "image": "https://i.pinimg.com/736x/9f/a7/80/9fa7806f1e9f666ddd1b93294d18f3aa.jpg",
       "bounty": "฿2,600,000,000",
       "crew": "Elbaf Giants",
-      "status": "living",
+      "status": "captured",
       "age": 63,
       "signo": "unknown"
     },
@@ -303,7 +303,7 @@
       "image": "https://i.pinimg.com/736x/9e/94/68/9e946869450b94f70b7af238b92d54a8.jpg",
       "bounty": "฿1,965,000,000",
       "crew": "Cross Guild",
-      "status": "living",
+      "status": "captured",
       "age": 46,
       "signo": "virgo"
     },
@@ -397,7 +397,7 @@
       "image": "https://i.pinimg.com/originals/91/6d/59/916d595d00feb13fc02138b38db5f443.jpg",
       "bounty": "฿1,320,000,000",
       "crew": "Beasts Pirates",
-      "status": "living",
+      "status": "captured",
       "age": 56,
       "signo": "cancer"
     },
@@ -510,7 +510,7 @@
       "image": "https://i.pinimg.com/originals/ab/cc/db/abccdba7df9c5356ce48ca7994e9cdc7.jpg",
       "bounty": "฿1,000,000,000",
       "crew": "Beasts Pirates",
-      "status": "living",
+      "status": "captured",
       "age": 28,
       "signo": "libra"
     },
@@ -907,7 +907,7 @@
       "image": "https://comicvine.gamespot.com/a/uploads/scale_small/11117/111178336/7080204-8435747647-unkno.png",
       "bounty": "฿340,000,000",
       "crew": "Donquixote Pirates",
-      "status": "living",
+      "status": "captured",
       "age": 41,
       "signo": "scorpio"
     },
@@ -928,7 +928,7 @@
       "bounty": "฿320,000,000",
       "image": "https://i.pinimg.com/736x/b5/b8/df/b5b8df97087c4bda776890b939a03cf8.jpg",
       "crew": "Hawkins Pirates",
-      "status": "living",
+      "status": "deceased",
       "age": 31,
       "signo": "virgo"
     },
@@ -964,7 +964,7 @@
       "bounty": "฿320,000,000",
       "image": "https://i.pinimg.com/736x/52/52/73/52527327cbb0900c2374e1e1f378e77a.jpg",
       "crew": "Thriller Bark Pirates",
-      "status": "living",
+      "status": "captured",
       "age": 50,
       "signo": "virgo"
     },
@@ -1055,7 +1055,7 @@
       "bounty": "฿296,000,000",
       "image": "https://i.pinimg.com/736x/0b/e5/41/0be541a5ba8af72f09a4020f35e5a1ca.jpg",
       "crew": "Revolutionary Army",
-      "status": "living",
+      "status": "unknown",
       "age": 47,
       "signo": "aquarius"
     },

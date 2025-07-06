@@ -14,3 +14,14 @@ BoxDecoration purpleGradient() => BoxDecoration(
         AppColors.gradientPurple[800]!,
       ],
     ));
+
+BoxDecoration backgroundGradient() => BoxDecoration(
+        gradient: LinearGradient(
+      end: const Alignment(1, 1),
+      begin: Alignment.topRight,
+      colors: <Color>[
+        Colors.white,
+        AppColors.purple[50]!,
+        AppColors.purple[100]!,
+      ],
+    ));

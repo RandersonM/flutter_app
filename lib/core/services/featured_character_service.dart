@@ -3,7 +3,7 @@
 
 import 'package:hive/hive.dart';
 import 'package:opfan/core/models/one_piece/featured_character.dart';
-import 'package:opfan/core/models/character_model.dart';
+import 'package:opfan/core/models/one_piece/character_model.dart';
 import 'package:opfan/core/services/characters_backend_service.dart';
 
 class FeaturedCharacterService {

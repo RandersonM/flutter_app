@@ -1,5 +1,5 @@
 import 'package:equatable/equatable.dart';
-import 'package:opfan/core/models/custom_character_model.dart';
+import 'package:opfan/core/models/one_piece/custom_character_model.dart';
 
 abstract class CustomCharacterEvent extends Equatable {
   const CustomCharacterEvent();
@@ -14,11 +14,13 @@ class LoadCustomCharacters extends CustomCharacterEvent {
 
 class CreateCustomCharacter extends CustomCharacterEvent {
   final CustomCharacterModel character;
+  final String? crewId;
+  final String? crewRole;
 
-  const CreateCustomCharacter(this.character);
+  const CreateCustomCharacter(this.character, {this.crewId, this.crewRole});
 
   @override
-  List<Object?> get props => [character];
+  List<Object?> get props => [character, crewId, crewRole];
 }
 
 class UpdateCustomCharacter extends CustomCharacterEvent {

@@ -542,11 +542,17 @@ abstract class AppLocalizations {
   /// **'Occupations'**
   String get occupations;
 
-  /// Occupation option for captain
+  /// Crew role - captain
   ///
   /// In en, this message translates to:
   /// **'Captain'**
   String get captain;
+
+  /// Crew role - vice captain
+  ///
+  /// In en, this message translates to:
+  /// **'Vice Captain'**
+  String get viceCaptain;
 
   /// Occupation option for admiral
   ///
@@ -572,19 +578,19 @@ abstract class AppLocalizations {
   /// **'Merchant'**
   String get merchant;
 
-  /// Occupation option for doctor
+  /// Crew role - doctor
   ///
   /// In en, this message translates to:
   /// **'Doctor'**
   String get doctor;
 
-  /// Occupation option for navigator
+  /// Crew role - navigator
   ///
   /// In en, this message translates to:
   /// **'Navigator'**
   String get navigator;
 
-  /// Occupation option for cook
+  /// Crew role - cook
   ///
   /// In en, this message translates to:
   /// **'Cook'**
@@ -602,19 +608,19 @@ abstract class AppLocalizations {
   /// **'Swordsman'**
   String get swordsman;
 
-  /// Occupation option for carpenter
+  /// Crew role - carpenter
   ///
   /// In en, this message translates to:
   /// **'Carpenter'**
   String get carpenter;
 
-  /// Occupation option for archaeologist
+  /// Crew role - archaeologist
   ///
   /// In en, this message translates to:
   /// **'Archaeologist'**
   String get archaeologist;
 
-  /// Occupation option for sharpshooter
+  /// Crew role - sharpshooter
   ///
   /// In en, this message translates to:
   /// **'Sharpshooter'**
@@ -920,6 +926,36 @@ abstract class AppLocalizations {
   /// **'Create new crew'**
   String get createCrew;
 
+  /// Label for crew role field
+  ///
+  /// In en, this message translates to:
+  /// **'Crew Role'**
+  String get crewRole;
+
+  /// Hint text for crew role field
+  ///
+  /// In en, this message translates to:
+  /// **'Select your role in the crew'**
+  String get crewRoleHint;
+
+  /// Crew role - helmsman
+  ///
+  /// In en, this message translates to:
+  /// **'Helmsman'**
+  String get helmsman;
+
+  /// Crew role - musician
+  ///
+  /// In en, this message translates to:
+  /// **'Musician'**
+  String get musician;
+
+  /// Crew role - boatswain
+  ///
+  /// In en, this message translates to:
+  /// **'Boatswain'**
+  String get boatswain;
+
   /// Snackbar message when viewing a character
   ///
   /// In en, this message translates to:
@@ -931,6 +967,78 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Editing {characterName}'**
   String editingCharacter(String characterName);
+
+  /// Text shown for total berries in crew card
+  ///
+  /// In en, this message translates to:
+  /// **'Berries total'**
+  String get berriesTotal;
+
+  /// Text shown for crew members count with pluralization
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =0 {Member} =1 {Member} other {Members}}'**
+  String members(num count);
+
+  /// Search input placeholder for crews
+  ///
+  /// In en, this message translates to:
+  /// **'Search crews...'**
+  String get searchCrews;
+
+  /// Filter button tooltip
+  ///
+  /// In en, this message translates to:
+  /// **'Filter'**
+  String get filter;
+
+  /// Title for my crews screen
+  ///
+  /// In en, this message translates to:
+  /// **'My Crews'**
+  String get myCrews;
+
+  /// Error message when crews fail to load
+  ///
+  /// In en, this message translates to:
+  /// **'Error loading crews'**
+  String get errorLoadingCrews;
+
+  /// Message when no crews are found
+  ///
+  /// In en, this message translates to:
+  /// **'No crews found'**
+  String get noCrewsFound;
+
+  /// Message encouraging user to create first crew
+  ///
+  /// In en, this message translates to:
+  /// **'Create your first crew!'**
+  String get createFirstCrew;
+
+  /// Title for delete confirmation dialog
+  ///
+  /// In en, this message translates to:
+  /// **'Confirm deletion'**
+  String get confirmDelete;
+
+  /// Delete confirmation message for crew
+  ///
+  /// In en, this message translates to:
+  /// **'Are you sure you want to delete the crew \"{crewName}\"?'**
+  String confirmDeleteCrew(String crewName);
+
+  /// Snackbar message when viewing a crew
+  ///
+  /// In en, this message translates to:
+  /// **'Viewing crew: {crewName}'**
+  String viewingCrew(String crewName);
+
+  /// Snackbar message when editing a crew
+  ///
+  /// In en, this message translates to:
+  /// **'Editing crew: {crewName}'**
+  String editingCrew(String crewName);
 }
 
 class _AppLocalizationsDelegate

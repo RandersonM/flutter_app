@@ -459,6 +459,12 @@
     "type": "text",
     "placeholders": {}
   },
+  "viceCaptain": "Vice-Captain",
+  "@viceCaptain": {
+    "description": "Occupation option for vice-captain",
+    "type": "text",
+    "placeholders": {}
+  },
   "pirate": "Pirate",
   "@pirate": {
     "description": "Occupation option for pirate",
@@ -859,6 +865,84 @@
     "type": "text",
     "placeholders": {}
   },
+  "crewRole": "Crew Role",
+  "@crewRole": {
+    "description": "Label for crew role field",
+    "type": "text",
+    "placeholders": {}
+  },
+  "crewRoleHint": "Select your role in the crew",
+  "@crewRoleHint": {
+    "description": "Hint text for crew role field",
+    "type": "text",
+    "placeholders": {}
+  },
+  "helmsman": "Helmsman",
+  "@helmsman": {
+    "description": "Crew role - helmsman",
+    "type": "text",
+    "placeholders": {}
+  },
+  "captain": "Captain",
+  "@captain": {
+    "description": "Crew role - captain",
+    "type": "text",
+    "placeholders": {}
+  },
+  "viceCaptain": "Vice Captain",
+  "@viceCaptain": {
+    "description": "Crew role - vice captain",
+    "type": "text",
+    "placeholders": {}
+  },
+  "navigator": "Navigator",
+  "@navigator": {
+    "description": "Crew role - navigator",
+    "type": "text",
+    "placeholders": {}
+  },
+  "cook": "Cook",
+  "@cook": {
+    "description": "Crew role - cook",
+    "type": "text",
+    "placeholders": {}
+  },
+  "doctor": "Doctor",
+  "@doctor": {
+    "description": "Crew role - doctor",
+    "type": "text",
+    "placeholders": {}
+  },
+  "musician": "Musician",
+  "@musician": {
+    "description": "Crew role - musician",
+    "type": "text",
+    "placeholders": {}
+  },
+  "carpenter": "Carpenter",
+  "@carpenter": {
+    "description": "Crew role - carpenter",
+    "type": "text",
+    "placeholders": {}
+  },
+  "sharpshooter": "Sharpshooter",
+  "@sharpshooter": {
+    "description": "Crew role - sharpshooter",
+    "type": "text",
+    "placeholders": {}
+  },
+  "archaeologist": "Archaeologist",
+  "@archaeologist": {
+    "description": "Crew role - archaeologist",
+    "type": "text",
+    "placeholders": {}
+  },
+  "boatswain": "Boatswain",
+  "@boatswain": {
+    "description": "Crew role - boatswain",
+    "type": "text",
+    "placeholders": {}
+  },
   "viewingCharacter": "Viewing {characterName}",
   "@viewingCharacter": {
     "description": "Snackbar message when viewing a character",
@@ -878,6 +962,98 @@
       "characterName": {
         "type": "String",
         "example": "Luffy"
+      }
+    }
+  },
+  "berriesTotal": "Berries total",
+  "@berriesTotal": {
+    "description": "Text shown for total berries in crew card",
+    "type": "text",
+    "placeholders": {}
+  },
+  "members": "{count, plural, =0 {Member} =1 {Member} other {Members}}",
+  "@members": {
+    "description": "Text shown for crew members count with pluralization",
+    "type": "text",
+    "placeholders": {
+      "count": {
+        "type": "num",
+        "example": "1"
+      }
+    }
+  },
+  "searchCrews": "Search crews...",
+  "@searchCrews": {
+    "description": "Search input placeholder for crews",
+    "type": "text",
+    "placeholders": {}
+  },
+  "filter": "Filter",
+  "@filter": {
+    "description": "Filter button tooltip",
+    "type": "text",
+    "placeholders": {}
+  },
+  "myCrews": "My Crews",
+  "@myCrews": {
+    "description": "Title for my crews screen",
+    "type": "text",
+    "placeholders": {}
+  },
+  "errorLoadingCrews": "Error loading crews",
+  "@errorLoadingCrews": {
+    "description": "Error message when crews fail to load",
+    "type": "text",
+    "placeholders": {}
+  },
+  "noCrewsFound": "No crews found",
+  "@noCrewsFound": {
+    "description": "Message when no crews are found",
+    "type": "text",
+    "placeholders": {}
+  },
+  "createFirstCrew": "Create your first crew!",
+  "@createFirstCrew": {
+    "description": "Message encouraging user to create first crew",
+    "type": "text",
+    "placeholders": {}
+  },
+  "confirmDelete": "Confirm deletion",
+  "@confirmDelete": {
+    "description": "Title for delete confirmation dialog",
+    "type": "text",
+    "placeholders": {}
+  },
+  "confirmDeleteCrew": "Are you sure you want to delete the crew \"{crewName}\"?",
+  "@confirmDeleteCrew": {
+    "description": "Delete confirmation message for crew",
+    "type": "text",
+    "placeholders": {
+      "crewName": {
+        "type": "String",
+        "example": "Straw Hat Pirates"
+      }
+    }
+  },
+  "viewingCrew": "Viewing crew: {crewName}",
+  "@viewingCrew": {
+    "description": "Snackbar message when viewing a crew",
+    "type": "text",
+    "placeholders": {
+      "crewName": {
+        "type": "String",
+        "example": "Straw Hat Pirates"
+      }
+    }
+  },
+  "editingCrew": "Editing crew: {crewName}",
+  "@editingCrew": {
+    "description": "Snackbar message when editing a crew",
+    "type": "text",
+    "placeholders": {
+      "crewName": {
+        "type": "String",
+        "example": "Straw Hat Pirates"
       }
     }
   }

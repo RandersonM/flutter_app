@@ -13,9 +13,11 @@ import 'package:opfan/core/services/featured_character_service.dart';
 import 'package:opfan/core/services/auth_service.dart';
 import 'package:opfan/core/services/firestore_service.dart';
 import 'package:opfan/core/repository/custom_character_repository.dart';
+import 'package:opfan/core/repository/crew_repository.dart';
 import 'package:opfan/screens/home/blocs/home_bloc.dart';
 import 'package:opfan/screens/devil_fruit/blocs/devil_fruit_bloc.dart';
 import 'package:opfan/core/auth/blocs/index.dart';
+import 'package:opfan/screens/crews/blocs/index.dart';
 
 final GetIt getIt = GetIt.instance;
 
@@ -58,6 +60,10 @@ Future<void> configureDependencies() async {
     () => CustomCharacterService(),
   );
 
+  getIt.registerLazySingleton<CrewRepository>(
+    () => CrewRepository(),
+  );
+
   getIt.registerFactory<CalculatorProvider>(
     () => CalculatorProvider(),
   );
@@ -81,6 +87,10 @@ Future<void> configureDependencies() async {
     () => DevilFruitBloc(
       devilFruitService: getIt<DevilFruitService>(),
     ),
+  );
+
+  getIt.registerFactory<ListCrewsBloc>(
+    () => ListCrewsBloc(crewRepository: getIt<CrewRepository>()),
   );
 
   getIt.registerLazySingleton<AuthBloc>(
@@ -121,12 +131,15 @@ extension ServiceLocatorExtensions on GetIt {
   CustomCharacterService get customCharacterService =>
       get<CustomCharacterService>();
 
+  CrewRepository get crewRepository => get<CrewRepository>();
+
   CalculatorProvider get calculatorProvider => get<CalculatorProvider>();
 
   CharactersCubit get charactersCubit => get<CharactersCubit>();
   SearchCubit get searchCubit => get<SearchCubit>();
   HomeBloc get homeBloc => get<HomeBloc>();
   DevilFruitBloc get devilFruitBloc => get<DevilFruitBloc>();
+  ListCrewsBloc get listCrewsBloc => get<ListCrewsBloc>();
   AuthBloc get authBloc => get<AuthBloc>();
 }
 

@@ -3,7 +3,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:opfan/core/models/character_model.dart';
+import 'package:opfan/core/models/one_piece/character_model.dart';
 import 'package:opfan/screens/one_piece/blocs/search_cubit.dart';
 import 'package:opfan/screens/one_piece/widgets/search/unexistent_search.dart';
 import 'package:opfan/screens/one_piece/widgets/search/result_card.dart';

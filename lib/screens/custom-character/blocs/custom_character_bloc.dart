@@ -1,13 +1,20 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:opfan/core/repository/custom_character_repository.dart';
+import 'package:opfan/core/repository/crew_repository.dart';
+import 'package:opfan/core/models/one_piece/crew_model.dart';
 import 'custom_character_event.dart';
 import 'custom_character_state.dart';
 
 class CustomCharacterBloc extends Bloc<CustomCharacterEvent, CustomCharacterState> {
   final CustomCharacterService _customCharacterService;
+  final CrewRepository _crewRepository;
 
-  CustomCharacterBloc({required CustomCharacterService customCharacterService})
-      : _customCharacterService = customCharacterService,
+  CustomCharacterBloc({
+    required CustomCharacterService customCharacterService,
+    required CrewRepository crewRepository,
+  })  : _customCharacterService = customCharacterService,
+        _crewRepository = crewRepository,
         super(CustomCharacterInitial()) {
     on<LoadCustomCharacters>(_onLoadCustomCharacters);
     on<CreateCustomCharacter>(_onCreateCustomCharacter);
@@ -40,6 +47,23 @@ class CustomCharacterBloc extends Bloc<CustomCharacterEvent, CustomCharacterStat
     emit(CustomCharacterCreating());
     try {
       final characterId = await _customCharacterService.createCustomCharacter(event.character);
+      
+      if (event.crewId != null && event.crewRole != null) {
+        try {
+          final crewMember = CrewMember(
+            characterId: characterId,
+            name: event.character.name,
+            nickname: event.character.nickname,
+            role: event.crewRole,
+            bounty: event.character.bounty,
+          );
+
+          await _crewRepository.addMemberToCrew(event.crewId!, crewMember);
+        } catch (e) {
+          debugPrint('Erro ao adicionar personagem à tripulação: $e');
+        }
+      }
+      
       emit(CustomCharacterCreated(characterId));
       
       await Future.delayed(const Duration(milliseconds: 500));

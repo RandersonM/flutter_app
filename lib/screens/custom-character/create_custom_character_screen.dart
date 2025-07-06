@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import 'package:opfan/core/models/custom_character_model.dart';
+import 'package:opfan/core/models/one_piece/custom_character_model.dart';
 import 'package:opfan/core/models/one_piece/devil_fruit.dart';
+import 'package:opfan/core/models/one_piece/crew_model.dart';
 import 'package:opfan/core/services/service_locator.dart';
 import 'package:opfan/l10n/app_localizations.dart';
 import 'package:opfan/screens/custom-character/blocs/index.dart';
@@ -24,7 +25,6 @@ class _CreateCustomCharacterScreenState extends State<CreateCustomCharacterScree
   final _nameController = TextEditingController();
   final _nicknameController = TextEditingController();
   final _birthDateController = TextEditingController();
-  final _crewController = TextEditingController();
   final _bountyController = TextEditingController();
   final _imageUrlController = TextEditingController();
   final _descriptionController = TextEditingController();
@@ -35,6 +35,9 @@ class _CreateCustomCharacterScreenState extends State<CreateCustomCharacterScree
   List<String> _selectedAffiliations = [];
   DevilFruit? _selectedDevilFruit;
   List<DevilFruit> _devilFruits = [];
+  List<CrewModel> _availableCrews = [];
+  String? _selectedCrewId;
+  String? _selectedCrewRole;
 
   @override
   void initState() {
@@ -42,6 +45,7 @@ class _CreateCustomCharacterScreenState extends State<CreateCustomCharacterScree
     _selectedAffiliations = ['independent'];
     _selectedOccupations = [];
     _loadDevilFruits();
+    _loadCrews();
   }
 
   Future<void> _loadDevilFruits() async {
@@ -59,11 +63,26 @@ class _CreateCustomCharacterScreenState extends State<CreateCustomCharacterScree
     }
   }
 
+  Future<void> _loadCrews() async {
+    try {
+      final crewRepository = getIt.crewRepository;
+      final crews = await crewRepository.getUserCrews();
+      setState(() {
+        _availableCrews = crews;
+      });
+    } catch (e) {
+      setState(() {
+        _availableCrews = [];
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return BlocProvider<CustomCharacterBloc>(
       create: (context) => CustomCharacterBloc(
         customCharacterService: getIt.customCharacterService,
+        crewRepository: getIt.crewRepository,
       ),
       child: Builder(
         builder: (context) => Scaffold(
@@ -135,7 +154,22 @@ class _CreateCustomCharacterScreenState extends State<CreateCustomCharacterScree
                             _selectedDevilFruit = fruit;
                           });
                         },
-                        crewController: _crewController,
+                        availableCrews: _availableCrews,
+                        selectedCrewId: _selectedCrewId,
+                        onCrewChanged: (crewId) {
+                          setState(() {
+                            _selectedCrewId = crewId;
+                            if (crewId == null) {
+                              _selectedCrewRole = null;
+                            }
+                          });
+                        },
+                        selectedCrewRole: _selectedCrewRole,
+                        onCrewRoleChanged: (role) {
+                          setState(() {
+                            _selectedCrewRole = role;
+                          });
+                        },
                         bountyController: _bountyController,
                         imageUrlController: _imageUrlController,
                         descriptionController: _descriptionController,
@@ -215,10 +249,7 @@ class _CreateCustomCharacterScreenState extends State<CreateCustomCharacterScree
             : null,
         devilFruit: _selectedDevilFruit?.romanName,
         haki: _selectedHaki.isNotEmpty ? _selectedHaki : null,
-        affiliations: _selectedAffiliations +
-            (_crewController.text.trim().isNotEmpty
-                ? [_crewController.text.trim()]
-                : []),
+        affiliations: _selectedAffiliations,
         image: _imageUrlController.text.trim().isNotEmpty 
             ? _imageUrlController.text.trim()
             : 'https://via.placeholder.com/300x400/FF6B6B/FFFFFF?text=Personagem+Customizado',
@@ -227,8 +258,10 @@ class _CreateCustomCharacterScreenState extends State<CreateCustomCharacterScree
         signo: _birthDateController.text.trim().isNotEmpty 
             ? _calculateSignoFromBirthDate(_birthDateController.text.trim())
             : null,
-        crew: _crewController.text.trim().isNotEmpty 
-            ? _crewController.text.trim() 
+        crew: _selectedCrewId != null
+            ? _availableCrews
+                .firstWhere((crew) => crew.id == _selectedCrewId)
+                .name
             : null,
         status: _selectedStatus,
         age: _birthDateController.text.trim().isNotEmpty 
@@ -239,7 +272,11 @@ class _CreateCustomCharacterScreenState extends State<CreateCustomCharacterScree
             : null,
       );
       
-      context.read<CustomCharacterBloc>().add(CreateCustomCharacter(newCharacter));
+      context.read<CustomCharacterBloc>().add(CreateCustomCharacter(
+            newCharacter,
+            crewId: _selectedCrewId,
+            crewRole: _selectedCrewRole,
+          ));
     }
   }
 
@@ -309,7 +346,6 @@ class _CreateCustomCharacterScreenState extends State<CreateCustomCharacterScree
     _nameController.dispose();
     _nicknameController.dispose();
     _birthDateController.dispose();
-    _crewController.dispose();
     _bountyController.dispose();
     _imageUrlController.dispose();
     _descriptionController.dispose();

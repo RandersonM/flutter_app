@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
-import 'package:opfan/core/models/character_model.dart';
+import 'package:opfan/core/models/one_piece/character_model.dart';
 import 'package:opfan/l10n/app_localizations.dart';
 import 'package:opfan/screens/one_piece/widgets/details/fields/details_bounty.dart';
 import 'package:opfan/screens/one_piece/widgets/details/fields/details_image.dart';
@@ -44,7 +44,6 @@ class CharacterDetailsScreen extends StatelessWidget {
     
     final l10n = AppLocalizations.of(context)!;
 
-    // Check if this is a custom character and internationalize the values
     List<String> displayValues = values;
     if (character.isCustomCharacter) {
       if (label == l10n.affiliations) {
@@ -136,7 +135,6 @@ class CharacterDetailsScreen extends StatelessWidget {
     final theme = Theme.of(context);
     final l10n = AppLocalizations.of(context)!;
     final statusTheme = _getStatusTheme(character.status, l10n);
-
     return Scaffold(
       backgroundColor: theme.colorScheme.surface,
       appBar: DefaultAppBar(
@@ -236,7 +234,7 @@ class CharacterDetailsScreen extends StatelessWidget {
                 _buildInfoTile(
                   leading: const Icon(Icons.info),
                   label: l10n.status,
-                  value: character.isCustomCharacter && character.status != null
+                  value: character.status != null
                       ? CharacterDisplayUtils.getStatusDisplay(
                           character.status, l10n)
                       : character.status,

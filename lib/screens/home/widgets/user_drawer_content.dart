@@ -55,7 +55,7 @@ class UserDrawerContent extends StatelessWidget {
             onTap: () {
               Navigator.pushNamed(
                 context,
-                AppRoutes.createCustomCharacter,
+                AppRoutes.listCrews,
               );
             },
           ),

@@ -4,7 +4,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:opfan/core/auth/blocs/index.dart';
-import 'package:opfan/core/models/character_model.dart';
+import 'package:opfan/core/models/one_piece/character_model.dart';
 import 'package:opfan/core/models/youtube_video_model.dart';
 import 'package:opfan/screens/calculator/calculator_screen.dart';
 import 'package:opfan/screens/fav_character_selection_screen/character_selection_screen.dart';
@@ -17,6 +17,8 @@ import 'package:opfan/screens/auth/login_screen.dart';
 import 'package:opfan/screens/profile/profile_screen.dart';
 import 'package:opfan/screens/custom-character/create_custom_character_screen.dart';
 import 'package:opfan/screens/custom-character/custom_character_list_screen.dart';
+import 'package:opfan/screens/crews/create_crew_screen.dart';
+import 'package:opfan/screens/crews/list_crews_screen.dart';
 
 import 'package:opfan/utils/transitions/material_page_route_without_tansition.dart';
 
@@ -41,6 +43,8 @@ class AppRoutes {
   static const String favorites = '/favorites';
   static const String createCustomCharacter = '/createCustomCharacter';
   static const String customCharacterList = '/customCharacterList';
+  static const String createCrew = '/createCrew';
+  static const String listCrews = '/listCrews';
 
   // Define which routes require authentication
   static const Set<String> _privateRoutes = {
@@ -49,6 +53,8 @@ class AppRoutes {
     favorites,
     createCustomCharacter,
     customCharacterList,
+    createCrew,
+    listCrews,
     // Add more private routes here as needed
   };
 
@@ -122,6 +128,12 @@ class AppRoutes {
         return MaterialPageRoute<dynamic>(
             builder: (_) => const CustomCharacterListScreen(),
             settings: settings);
+      case createCrew:
+        return MaterialPageRoute<dynamic>(
+            builder: (_) => const CreateCrewScreen(), settings: settings);
+      case listCrews:
+        return MaterialPageRoute<dynamic>(
+            builder: (_) => const ListCrewsScreen(), settings: settings);
       // Add more private routes here when they are created
       // case settings:
       //   return MaterialPageRoute<dynamic>(
