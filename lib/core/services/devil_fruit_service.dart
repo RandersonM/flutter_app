@@ -22,7 +22,6 @@ class DevilFruitService {
       _dio.interceptors.add(LogInterceptor(
         requestBody: true,
         responseBody: true,
-        logPrint: (obj) => debugPrint(obj.toString()),
       ));
     }
   }

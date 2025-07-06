@@ -4,8 +4,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:opfan/l10n/app_localizations.dart';
-import 'package:opfan/core/models/custom_character_model.dart';
-import 'package:opfan/core/repository/custom_character_repository.dart';
+import 'package:opfan/core/models/one_piece/custom_character_model.dart';
+import 'package:opfan/core/services/service_locator.dart';
 import 'package:opfan/screens/custom-character/blocs/custom_character_bloc.dart';
 import 'package:opfan/utils/app_routes.dart';
 
@@ -21,7 +21,8 @@ class CustomCharacterListScreen extends StatelessWidget {
     
     return BlocProvider(
       create: (context) => CustomCharacterBloc(
-        customCharacterService: CustomCharacterService(),
+        customCharacterService: getIt.customCharacterService,
+        crewRepository: getIt.crewRepository,
       ),
       child: Scaffold(
         appBar: DefaultAppBar(

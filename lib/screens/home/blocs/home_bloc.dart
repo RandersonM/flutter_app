@@ -23,6 +23,8 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     on<RefreshHome>(_onRefreshHome);
     on<LoadCharacterVideo>(_onLoadCharacterVideo);
     on<SelectCharacter>(_onSelectCharacter);
+    on<PlayVideoInline>(_onPlayVideoInline);
+    on<StopVideoInline>(_onStopVideoInline);
   }
 
   Future<void> _onLoadFeaturedCharacter(
@@ -40,6 +42,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
       emit(HomeLoaded(
         featuredCharacter: character,
         isRandomCharacter: false,
+        isPlayingVideo: false,
       ));
 
       add(LoadCharacterVideo(character.name));
@@ -64,6 +67,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
       emit(HomeLoaded(
         featuredCharacter: character,
         isRandomCharacter: true,
+        isPlayingVideo: false,
       ));
 
       add(LoadCharacterVideo(character.name));
@@ -86,6 +90,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
       emit(HomeLoaded(
         featuredCharacter: character,
         isRandomCharacter: false,
+        isPlayingVideo: false,
       ));
       add(LoadCharacterVideo(character.name));
     } catch (e) {
@@ -142,8 +147,31 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
       isRandomCharacter: false,
       clearVideo: true,
       isLoadingVideo: false,
+      isPlayingVideo: false,
     ));
 
     add(LoadCharacterVideo(event.character.name));
+  }
+
+  void _onPlayVideoInline(
+    PlayVideoInline event,
+    Emitter<HomeState> emit,
+  ) {
+    final currentState = state;
+    if (currentState is! HomeLoaded || currentState.currentVideo == null) {
+      return;
+    }
+
+    emit(currentState.copyWith(isPlayingVideo: true));
+  }
+
+  void _onStopVideoInline(
+    StopVideoInline event,
+    Emitter<HomeState> emit,
+  ) {
+    final currentState = state;
+    if (currentState is! HomeLoaded) return;
+
+    emit(currentState.copyWith(isPlayingVideo: false));
   }
 }

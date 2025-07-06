@@ -1,15 +1,15 @@
 import 'package:opfan/l10n/app_localizations.dart';
 
 class CharacterDisplayUtils {
-  // Convert English keys to translated values for display
   static String getStatusDisplay(String? statusKey, AppLocalizations l10n) {
     if (statusKey == null) return '';
-    
     switch (statusKey) {
-      case 'alive':
+      case 'alive' || 'living':
         return l10n.alive;
-      case 'dead':
+      case 'dead' || 'deceased':
         return l10n.dead;
+      case 'captured':
+        return l10n.captured;
       case 'unknown':
         return l10n.unknown;
       default:
@@ -73,7 +73,7 @@ class CharacterDisplayUtils {
     }
   }
 
-  // Convert lists of English keys to translated values
+
   static List<String> getOccupationsDisplay(List<String> occupationKeys, AppLocalizations l10n) {
     return occupationKeys.map((key) => getOccupationDisplay(key, l10n)).toList();
   }

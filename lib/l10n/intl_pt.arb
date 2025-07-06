@@ -476,7 +476,7 @@
     "type": "text",
     "placeholders": {}
   },
-  "createCustomCharacterTitle": "Criar Personagem Customizado",
+  "createCustomCharacterTitle": "Criar Personagem",
   "@createCustomCharacterTitle": {
     "description": "Title for create custom character screen",
     "type": "text",
@@ -698,6 +698,12 @@
     "type": "text",
     "placeholders": {}
   },
+  "viceCaptain": "Vice-Capitão",
+  "@viceCaptain": {
+    "description": "Occupation option for vice-captain",
+    "type": "text",
+    "placeholders": {}
+  },
   "pirate": "Pirata",
   "@pirate": {
     "description": "Occupation option for pirate",
@@ -794,6 +800,12 @@
     "type": "text",
     "placeholders": {}
   },
+  "createCrew": "Criar nova tripulação",
+  "@createCrew": {
+    "description": "Tooltip for create new crew",
+    "type": "text",
+    "placeholders": {}
+  },
   "cancel": "Cancelar",
   "@cancel": {
     "description": "Button text to cancel action",
@@ -860,6 +872,128 @@
       "characterName": {
         "type": "String",
         "example": "Luffy"
+      }
+    }
+  },
+  "crewRole": "Cargo na Tripulação",
+  "@crewRole": {
+    "description": "Label for crew role field",
+    "type": "text",
+    "placeholders": {}
+  },
+  "crewRoleHint": "Selecione seu cargo na tripulação",
+  "@crewRoleHint": {
+    "description": "Hint text for crew role field",
+    "type": "text",
+    "placeholders": {}
+  },
+  "helmsman": "Timoneiro",
+  "@helmsman": {
+    "description": "Crew role - helmsman",
+    "type": "text",
+    "placeholders": {}
+  },
+  "musician": "Músico",
+  "@musician": {
+    "description": "Crew role - musician",
+    "type": "text",
+    "placeholders": {}
+  },
+  "boatswain": "Contramestre",
+  "@boatswain": {
+    "description": "Crew role - boatswain",
+    "type": "text",
+    "placeholders": {}
+  },
+  "berriesTotal": "Berries total",
+  "@berriesTotal": {
+    "description": "Text shown for total berries in crew card",
+    "type": "text",
+    "placeholders": {}
+  },
+  "members": "{count, plural, =0 {Membro} =1 {Membro} other {Membros}}",
+  "@members": {
+    "description": "Text shown for crew members count with pluralization",
+    "type": "text",
+    "placeholders": {
+      "count": {
+        "type": "num",
+        "example": "1"
+      }
+    }
+  },
+  "searchCrews": "Buscar tripulações...",
+  "@searchCrews": {
+    "description": "Search input placeholder for crews",
+    "type": "text",
+    "placeholders": {}
+  },
+  "filter": "Filtrar",
+  "@filter": {
+    "description": "Filter button tooltip",
+    "type": "text",
+    "placeholders": {}
+  },
+  "myCrews": "Minhas Tripulações",
+  "@myCrews": {
+    "description": "Title for my crews screen",
+    "type": "text",
+    "placeholders": {}
+  },
+  "errorLoadingCrews": "Erro ao carregar tripulações",
+  "@errorLoadingCrews": {
+    "description": "Error message when crews fail to load",
+    "type": "text",
+    "placeholders": {}
+  },
+  "noCrewsFound": "Nenhuma tripulação encontrada",
+  "@noCrewsFound": {
+    "description": "Message when no crews are found",
+    "type": "text",
+    "placeholders": {}
+  },
+  "createFirstCrew": "Crie sua primeira tripulação!",
+  "@createFirstCrew": {
+    "description": "Message encouraging user to create first crew",
+    "type": "text",
+    "placeholders": {}
+  },
+  "confirmDelete": "Confirmar exclusão",
+  "@confirmDelete": {
+    "description": "Title for delete confirmation dialog",
+    "type": "text",
+    "placeholders": {}
+  },
+  "confirmDeleteCrew": "Tem certeza que deseja excluir a tripulação \"{crewName}\"?",
+  "@confirmDeleteCrew": {
+    "description": "Delete confirmation message for crew",
+    "type": "text",
+    "placeholders": {
+      "crewName": {
+        "type": "String",
+        "example": "Piratas do Chapéu de Palha"
+      }
+    }
+  },
+  "viewingCrew": "Visualizando tripulação: {crewName}",
+  "@viewingCrew": {
+    "description": "Snackbar message when viewing a crew",
+    "type": "text",
+    "placeholders": {
+      "crewName": {
+        "type": "String",
+        "example": "Piratas do Chapéu de Palha"
+      }
+    }
+  },
+  "editingCrew": "Editando tripulação: {crewName}",
+  "@editingCrew": {
+    "description": "Snackbar message when editing a crew",
+    "type": "text",
+    "placeholders": {
+      "crewName": {
+        "type": "String",
+        "example": "Piratas do Chapéu de Palha"
       }
     }
   }

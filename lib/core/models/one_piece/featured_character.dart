@@ -2,7 +2,7 @@
 // Copyright © 2022.
 
 import 'package:hive/hive.dart';
-import 'package:opfan/core/models/character_model.dart';
+import 'package:opfan/core/models/one_piece/character_model.dart';
 
 part 'featured_character.g.dart';
 

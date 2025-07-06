@@ -253,6 +253,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get captain => 'Captain';
 
   @override
+  String get viceCaptain => 'Vice Captain';
+
+  @override
   String get admiral => 'Admiral';
 
   @override
@@ -453,6 +456,21 @@ class AppLocalizationsEn extends AppLocalizations {
   String get createCrew => 'Create new crew';
 
   @override
+  String get crewRole => 'Crew Role';
+
+  @override
+  String get crewRoleHint => 'Select your role in the crew';
+
+  @override
+  String get helmsman => 'Helmsman';
+
+  @override
+  String get musician => 'Musician';
+
+  @override
+  String get boatswain => 'Boatswain';
+
+  @override
   String viewingCharacter(String characterName) {
     return 'Viewing $characterName';
   }
@@ -460,5 +478,56 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String editingCharacter(String characterName) {
     return 'Editing $characterName';
+  }
+
+  @override
+  String get berriesTotal => 'Berries total';
+
+  @override
+  String members(num count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Members',
+      one: 'Member',
+      zero: 'Member',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get searchCrews => 'Search crews...';
+
+  @override
+  String get filter => 'Filter';
+
+  @override
+  String get myCrews => 'My Crews';
+
+  @override
+  String get errorLoadingCrews => 'Error loading crews';
+
+  @override
+  String get noCrewsFound => 'No crews found';
+
+  @override
+  String get createFirstCrew => 'Create your first crew!';
+
+  @override
+  String get confirmDelete => 'Confirm deletion';
+
+  @override
+  String confirmDeleteCrew(String crewName) {
+    return 'Are you sure you want to delete the crew \"$crewName\"?';
+  }
+
+  @override
+  String viewingCrew(String crewName) {
+    return 'Viewing crew: $crewName';
+  }
+
+  @override
+  String editingCrew(String crewName) {
+    return 'Editing crew: $crewName';
   }
 }

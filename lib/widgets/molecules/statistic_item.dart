@@ -62,18 +62,12 @@ class StatisticItem extends StatelessWidget {
     return GestureDetector(
       onTap: onTap,
       child: Column(
-        mainAxisSize: MainAxisSize.min,
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        spacing: spacing,
+        mainAxisSize: MainAxisSize.max,
         children: [
           _buildIcon(context),
-          SizedBox(height: spacing),
-          Text(
-            value,
-            style: valueStyle ??
-                Theme.of(context).textTheme.bodyMedium?.copyWith(
-                      fontWeight: FontWeight.bold,
-                    ),
-            textAlign: TextAlign.center,
-          ),
           SizedBox(height: spacing / 2),
           Text(
             label,
@@ -81,6 +75,14 @@ class StatisticItem extends StatelessWidget {
             textAlign: TextAlign.center,
             maxLines: 2,
             overflow: TextOverflow.ellipsis,
+          ),
+          Text(
+            value,
+            style: valueStyle ??
+                Theme.of(context).textTheme.bodySmall?.copyWith(
+                      fontWeight: FontWeight.bold,
+                    ),
+            textAlign: TextAlign.center,
           ),
         ],
       ),

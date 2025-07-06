@@ -5,7 +5,7 @@ import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/foundation.dart';
 
-import 'package:opfan/core/models/character_model.dart';
+import 'package:opfan/core/models/one_piece/character_model.dart';
 import 'package:opfan/core/services/characters_backend_service.dart';
 
 abstract class CharactersState extends Equatable {
@@ -78,8 +78,6 @@ class CharactersCubit extends Cubit<CharactersState> {
 
   Future<void> fetchData() async {
     if (isLoading() || !hasMoreData) {
-      debugPrint(
-          'CharactersCubit: fetchData aborted - isLoading: ${isLoading()}, hasMoreData: $hasMoreData');
       return;
     }
 

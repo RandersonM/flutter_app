@@ -50,7 +50,7 @@ class CharacterLocalizationMapper {
     if (localizedAffiliation == l10n.independent) return 'independent';
     if (localizedAffiliation == l10n.pirate) return 'pirate';
     if (localizedAffiliation == l10n.pirateAlliance) return 'pirate alliance';
-    return localizedAffiliation.toLowerCase(); // Return lowercase if no mapping found
+    return localizedAffiliation.toLowerCase(); 
   }
 
   static String mapOccupationToLocalized(String occupation, AppLocalizations l10n) {

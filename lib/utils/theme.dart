@@ -184,6 +184,11 @@ ThemeData appTheme = ThemeData(
     secondary: AppColors.purple[300],
     onSecondary: AppColors.purple[100],
     error: AppColors.red[500]!,
+    onError: AppColors.red[100],
+    surface: AppColors.grey[100],
+    onSurface: AppColors.grey[900],
+    surfaceContainerLow: AppColors.grey[100],
+    surfaceContainerHigh: AppColors.grey[100],
   ),
   dividerColor: AppColors.grey[300],
   textTheme: const TextTheme(

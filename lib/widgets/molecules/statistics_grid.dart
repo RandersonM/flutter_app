@@ -70,7 +70,7 @@ class StatisticsGrid extends StatelessWidget {
         ],
         Row(
           mainAxisAlignment: mainAxisAlignment,
-          crossAxisAlignment: crossAxisAlignment,
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: statistics
               .map(
                 (stat) => Expanded(

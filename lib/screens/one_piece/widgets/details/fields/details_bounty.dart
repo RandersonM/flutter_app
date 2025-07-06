@@ -20,16 +20,27 @@ class DetailsBounty extends StatelessWidget {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: <Widget>[
-            Padding(
-              padding: const EdgeInsets.symmetric(
-                  horizontal: Constants.margin, vertical: Constants.margin * 2),
-              child: Text(
-                AppLocalizations.of(context)!.bounty,
-                style: Theme.of(context).textTheme.headlineSmall,
-              ),
+            Row(
+              spacing: Constants.margin / 2,
+              children: [
+                const SizedBox.shrink(),
+                Icon(
+                  Icons.monetization_on,
+                  size: 28,
+                  color: Colors.amber[700],
+                ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(
+                      vertical: Constants.margin * 2),
+                  child: Text(
+                    AppLocalizations.of(context)!.bounty,
+                    style: Theme.of(context).textTheme.headlineSmall,
+                  ),
+                ),
+              ],
             ),
             Padding(
-              padding: const EdgeInsets.all(Constants.margin),
+              padding: const EdgeInsets.only(right: Constants.margin),
               child: Text(
                 bounty,
                 style: Theme.of(context).textTheme.headlineSmall,

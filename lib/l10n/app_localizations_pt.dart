@@ -141,7 +141,7 @@ class AppLocalizationsPt extends AppLocalizations {
   String get noImage => 'Sem Imagem';
 
   @override
-  String get createCustomCharacterTitle => 'Criar Personagem Customizado';
+  String get createCustomCharacterTitle => 'Criar Personagem';
 
   @override
   String get createCustomCharacterSubtitle =>
@@ -251,6 +251,9 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get captain => 'Capitão';
+
+  @override
+  String get viceCaptain => 'Vice-Capitão';
 
   @override
   String get admiral => 'Almirante';
@@ -451,7 +454,22 @@ class AppLocalizationsPt extends AppLocalizations {
   String get createCustomCharacter => 'Criar personagem';
 
   @override
-  String get createCrew => 'Create new crew';
+  String get createCrew => 'Criar nova tripulação';
+
+  @override
+  String get crewRole => 'Cargo na Tripulação';
+
+  @override
+  String get crewRoleHint => 'Selecione seu cargo na tripulação';
+
+  @override
+  String get helmsman => 'Timoneiro';
+
+  @override
+  String get musician => 'Músico';
+
+  @override
+  String get boatswain => 'Contramestre';
 
   @override
   String viewingCharacter(String characterName) {
@@ -461,5 +479,56 @@ class AppLocalizationsPt extends AppLocalizations {
   @override
   String editingCharacter(String characterName) {
     return 'Editando $characterName';
+  }
+
+  @override
+  String get berriesTotal => 'Berries total';
+
+  @override
+  String members(num count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Membros',
+      one: 'Membro',
+      zero: 'Membro',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get searchCrews => 'Buscar tripulações...';
+
+  @override
+  String get filter => 'Filtrar';
+
+  @override
+  String get myCrews => 'Minhas Tripulações';
+
+  @override
+  String get errorLoadingCrews => 'Erro ao carregar tripulações';
+
+  @override
+  String get noCrewsFound => 'Nenhuma tripulação encontrada';
+
+  @override
+  String get createFirstCrew => 'Crie sua primeira tripulação!';
+
+  @override
+  String get confirmDelete => 'Confirmar exclusão';
+
+  @override
+  String confirmDeleteCrew(String crewName) {
+    return 'Tem certeza que deseja excluir a tripulação \"$crewName\"?';
+  }
+
+  @override
+  String viewingCrew(String crewName) {
+    return 'Visualizando tripulação: $crewName';
+  }
+
+  @override
+  String editingCrew(String crewName) {
+    return 'Editando tripulação: $crewName';
   }
 }
