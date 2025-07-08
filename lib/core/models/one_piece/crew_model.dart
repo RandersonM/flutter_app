@@ -63,6 +63,7 @@ class CrewModel {
   final DateTime? updatedAt;
   final String? jollyRogerUrl;
   final String? boatImageUrl;
+  final String? boatName;
   final String? description;
   final List<CrewMember> members;
   final List<String> tags;
@@ -78,6 +79,7 @@ class CrewModel {
     this.updatedAt,
     this.jollyRogerUrl,
     this.boatImageUrl,
+    this.boatName,
     this.description,
     this.members = const [],
     this.tags = const [],
@@ -93,6 +95,7 @@ class CrewModel {
       'updatedAt': FieldValue.serverTimestamp(),
       'jollyRogerUrl': jollyRogerUrl,
       'boatImageUrl': boatImageUrl,
+      'boatName': boatName,
       'description': description,
       'members': members.map((member) => member.toMap()).toList(),
       'tags': tags,
@@ -115,6 +118,7 @@ class CrewModel {
           : null,
       jollyRogerUrl: data['jollyRogerUrl'],
       boatImageUrl: data['boatImageUrl'],
+      boatName: data['boatName'],
       description: data['description'],
       members: (data['members'] as List<dynamic>? ?? [])
           .map((member) => CrewMember.fromMap(member))
@@ -134,6 +138,7 @@ class CrewModel {
     DateTime? updatedAt,
     String? jollyRogerUrl,
     String? boatImageUrl,
+    String? boatName,
     String? description,
     List<CrewMember>? members,
     List<String>? tags,
@@ -149,6 +154,7 @@ class CrewModel {
       updatedAt: updatedAt ?? this.updatedAt,
       jollyRogerUrl: jollyRogerUrl ?? this.jollyRogerUrl,
       boatImageUrl: boatImageUrl ?? this.boatImageUrl,
+      boatName: boatName ?? this.boatName,
       description: description ?? this.description,
       members: members ?? this.members,
       tags: tags ?? this.tags,

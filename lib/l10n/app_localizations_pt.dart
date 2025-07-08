@@ -407,7 +407,7 @@ class AppLocalizationsPt extends AppLocalizations {
   String get clear => 'Limpar';
 
   @override
-  String get clearFilters => 'Limpar Filtros';
+  String get clearFilters => 'Limpar filtros';
 
   @override
   String get noFruitFound => 'Nenhuma fruta encontrada';
@@ -454,7 +454,10 @@ class AppLocalizationsPt extends AppLocalizations {
   String get createCustomCharacter => 'Criar personagem';
 
   @override
-  String get createCrew => 'Criar nova tripulação';
+  String get createCrew => 'Criar Tripulação';
+
+  @override
+  String get crewBoatName => 'Nome do Barco';
 
   @override
   String get crewRole => 'Cargo na Tripulação';
@@ -531,4 +534,190 @@ class AppLocalizationsPt extends AppLocalizations {
   String editingCrew(String crewName) {
     return 'Editando tripulação: $crewName';
   }
+
+  @override
+  String get aiImageGeneration => 'Geração de Imagem por IA';
+
+  @override
+  String get aiImageGenerationSubtitle =>
+      'Gere uma imagem única para seu personagem usando IA';
+
+  @override
+  String get imagePrompt => 'Prompt da Imagem';
+
+  @override
+  String get imagePromptHint => 'Descreva como seu personagem deve parecer...';
+
+  @override
+  String get generateImage => 'Gerar Imagem';
+
+  @override
+  String get generatingImage => 'Gerando...';
+
+  @override
+  String get imageLoadError => 'Falha ao carregar imagem';
+
+  @override
+  String get regenerateImage => 'Regenerar';
+
+  @override
+  String get useImage => 'Usar Imagem';
+
+  @override
+  String get promptRequired => 'Por favor, insira um prompt';
+
+  @override
+  String get imageGenerationError => 'Falha ao gerar imagem. Tente novamente.';
+
+  @override
+  String get selectDevilFruit => 'Selecionar Akuma no Mi';
+
+  @override
+  String get selectDevilFruitPlaceholder => 'Selecione uma Akuma no Mi';
+
+  @override
+  String get searchDevilFruit => 'Buscar Akuma no Mi...';
+
+  @override
+  String get noDevilFruitFound => 'Nenhuma Akuma no Mi encontrada';
+
+  @override
+  String get filterBy => 'Filtrar por';
+
+  @override
+  String get crewTeam => 'Equipe';
+
+  @override
+  String get filterByDevilFruit => 'Filtrar por Fruta do Diabo';
+
+  @override
+  String get filterByCrew => 'Filtrar por Equipe';
+
+  @override
+  String get addTag => 'Adicionar Tag';
+
+  @override
+  String get addMember => 'Adicionar Membro';
+
+  @override
+  String get noCharactersAvailable =>
+      'Nenhum personagem disponível para adicionar';
+
+  @override
+  String get tagName => 'Nome da tag';
+
+  @override
+  String get tagNameHint => 'Ex: Piratas, Aventureiros, etc.';
+
+  @override
+  String get crewName => 'Nome da Tripulação *';
+
+  @override
+  String get crewNameHint => 'Ex: Mugiwaras Custom';
+
+  @override
+  String get descriptionHint => 'Conte um pouco sobre sua tripulação...';
+
+  @override
+  String get pirateFlagUrl => 'URL da Bandeira Pirata';
+
+  @override
+  String get pirateFlagUrlHint => 'https://exemplo.com/bandeira.jpg';
+
+  @override
+  String get shipImageUrl => 'URL da Imagem do Barco';
+
+  @override
+  String get shipImageUrlHint => 'https://exemplo.com/barco.jpg';
+
+  @override
+  String get devilFruitName => 'Nome da fruta';
+
+  @override
+  String get devilFruitNameHint => 'Ex: Gomu Gomu no Mi';
+
+  @override
+  String get crewNameFilter => 'Nome da equipe';
+
+  @override
+  String get crewNameFilterHint => 'Ex: Piratas do Chapéu de Palha';
+
+  @override
+  String get dateFormat => 'DD/MM/AAAA';
+
+  @override
+  String get numberFormat => '0';
+
+  @override
+  String get editProfileTapped => 'Perfil editado tocado';
+
+  @override
+  String get notificationsTapped => 'Notificações tocadas';
+
+  @override
+  String get languageTapped => 'Idioma tocado';
+
+  @override
+  String get themeTapped => 'Tema tocado';
+
+  @override
+  String get helpSupportTapped => 'Ajuda e Suporte tocado';
+
+  @override
+  String get aboutTapped => 'Sobre tocado';
+
+  @override
+  String get characterDeleted => 'Personagem excluído com sucesso';
+
+  @override
+  String get crewCreated => 'Tripulação criada com sucesso';
+
+  @override
+  String get crewCreationError => 'Erro ao criar tripulação';
+
+  @override
+  String get crewDeleted => 'Tripulação excluída com sucesso';
+
+  @override
+  String get crewDeletionError => 'Erro ao excluir tripulação';
+
+  @override
+  String get memberAdded => 'Membro adicionado com sucesso';
+
+  @override
+  String get memberAdditionError => 'Erro ao adicionar membro';
+
+  @override
+  String get memberRemoved => 'Membro removido com sucesso';
+
+  @override
+  String get memberRemovalError => 'Erro ao remover membro';
+
+  @override
+  String get crewUpdated => 'Tripulação atualizada com sucesso';
+
+  @override
+  String get crewUpdateError => 'Erro ao atualizar tripulação';
+
+  @override
+  String get loginError => 'Erro de login';
+
+  @override
+  String get videoLoadError => 'Erro ao carregar vídeo';
+
+  @override
+  String get videoLoadSuccess => 'Vídeo carregado com sucesso';
+
+  @override
+  String devilFruitSearchError(String error) {
+    return 'Erro ao buscar Akuma no Mi: $error';
+  }
+
+  @override
+  String get noCustomCharactersFound =>
+      'Nenhum personagem customizado encontrado';
+
+  @override
+  String get createFirstCustomCharacter =>
+      'Crie seu primeiro personagem customizado!';
 }

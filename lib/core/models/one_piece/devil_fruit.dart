@@ -1,6 +1,3 @@
-// Developed by Randerson Mayllon
-// Copyright © 2022.
-
 import 'package:json_annotation/json_annotation.dart';
 
 part 'devil_fruit.g.dart';

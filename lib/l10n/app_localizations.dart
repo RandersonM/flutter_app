@@ -686,13 +686,13 @@ abstract class AppLocalizations {
   /// **'OK'**
   String get ok;
 
-  /// Label for devil fruit
+  /// Label for devil fruit filter
   ///
   /// In en, this message translates to:
   /// **'Devil Fruit'**
   String get devilFruit;
 
-  /// Label for crew with pluralization
+  /// Label for crew filter
   ///
   /// In en, this message translates to:
   /// **'{count, plural, =0 {Crew} =1 {Crew} other {Crews}}'**
@@ -830,10 +830,10 @@ abstract class AppLocalizations {
   /// **'Clear'**
   String get clear;
 
-  /// Clear filters button text
+  /// Button text to clear all filters
   ///
   /// In en, this message translates to:
-  /// **'Clear Filters'**
+  /// **'Clear filters'**
   String get clearFilters;
 
   /// No fruit found message
@@ -920,11 +920,17 @@ abstract class AppLocalizations {
   /// **'Create character'**
   String get createCustomCharacter;
 
-  /// Tooltip for create new crew
+  /// Title for create crew screen
   ///
   /// In en, this message translates to:
-  /// **'Create new crew'**
+  /// **'Create Crew'**
   String get createCrew;
+
+  /// Label for crew boat name field
+  ///
+  /// In en, this message translates to:
+  /// **' Boat name'**
+  String get crewBoatName;
 
   /// Label for crew role field
   ///
@@ -1039,6 +1045,366 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Editing crew: {crewName}'**
   String editingCrew(String crewName);
+
+  /// Title for AI image generation section
+  ///
+  /// In en, this message translates to:
+  /// **'AI Image Generation'**
+  String get aiImageGeneration;
+
+  /// Subtitle for AI image generation section
+  ///
+  /// In en, this message translates to:
+  /// **'Generate a unique image for your character using AI'**
+  String get aiImageGenerationSubtitle;
+
+  /// Label for image prompt field
+  ///
+  /// In en, this message translates to:
+  /// **'Image Prompt'**
+  String get imagePrompt;
+
+  /// Hint text for image prompt field
+  ///
+  /// In en, this message translates to:
+  /// **'Describe how your character should look...'**
+  String get imagePromptHint;
+
+  /// Button text to generate image
+  ///
+  /// In en, this message translates to:
+  /// **'Generate Image'**
+  String get generateImage;
+
+  /// Text shown while generating image
+  ///
+  /// In en, this message translates to:
+  /// **'Generating...'**
+  String get generatingImage;
+
+  /// Error message when image fails to load
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to load image'**
+  String get imageLoadError;
+
+  /// Button text to regenerate image
+  ///
+  /// In en, this message translates to:
+  /// **'Regenerate'**
+  String get regenerateImage;
+
+  /// Button text to use generated image
+  ///
+  /// In en, this message translates to:
+  /// **'Use Image'**
+  String get useImage;
+
+  /// Error message when prompt is required
+  ///
+  /// In en, this message translates to:
+  /// **'Please enter a prompt'**
+  String get promptRequired;
+
+  /// Error message when image generation fails
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to generate image. Please try again.'**
+  String get imageGenerationError;
+
+  /// Title for devil fruit selection dialog
+  ///
+  /// In en, this message translates to:
+  /// **'Select Devil Fruit'**
+  String get selectDevilFruit;
+
+  /// Placeholder text when no devil fruit is selected
+  ///
+  /// In en, this message translates to:
+  /// **'Select a Devil Fruit'**
+  String get selectDevilFruitPlaceholder;
+
+  /// Hint text for devil fruit search field
+  ///
+  /// In en, this message translates to:
+  /// **'Search Devil Fruit...'**
+  String get searchDevilFruit;
+
+  /// Message when no devil fruit matches search
+  ///
+  /// In en, this message translates to:
+  /// **'No Devil Fruit found'**
+  String get noDevilFruitFound;
+
+  /// Title for filter dialog
+  ///
+  /// In en, this message translates to:
+  /// **'Filter by'**
+  String get filterBy;
+
+  /// No description provided for @crewTeam.
+  ///
+  /// In en, this message translates to:
+  /// **'Crew'**
+  String get crewTeam;
+
+  /// Title for devil fruit filter dialog
+  ///
+  /// In en, this message translates to:
+  /// **'Filter by Devil Fruit'**
+  String get filterByDevilFruit;
+
+  /// Title for crew filter dialog
+  ///
+  /// In en, this message translates to:
+  /// **'Filter by Crew'**
+  String get filterByCrew;
+
+  /// Title for add tag dialog
+  ///
+  /// In en, this message translates to:
+  /// **'Add Tag'**
+  String get addTag;
+
+  /// Label for add member button
+  ///
+  /// In en, this message translates to:
+  /// **'Add Member'**
+  String get addMember;
+
+  /// Message when no characters are available to add to crew
+  ///
+  /// In en, this message translates to:
+  /// **'No characters available to add'**
+  String get noCharactersAvailable;
+
+  /// Label for tag name field
+  ///
+  /// In en, this message translates to:
+  /// **'Tag name'**
+  String get tagName;
+
+  /// Hint text for tag name field
+  ///
+  /// In en, this message translates to:
+  /// **'Ex: Pirates, Adventurers, etc.'**
+  String get tagNameHint;
+
+  /// Label for crew name field
+  ///
+  /// In en, this message translates to:
+  /// **'Crew Name *'**
+  String get crewName;
+
+  /// Hint text for crew name field
+  ///
+  /// In en, this message translates to:
+  /// **'Ex: Custom Mugiwara'**
+  String get crewNameHint;
+
+  /// Hint text for description field
+  ///
+  /// In en, this message translates to:
+  /// **'Tell us about your crew...'**
+  String get descriptionHint;
+
+  /// Label for pirate flag URL field
+  ///
+  /// In en, this message translates to:
+  /// **'Pirate Flag URL'**
+  String get pirateFlagUrl;
+
+  /// Hint text for pirate flag URL field
+  ///
+  /// In en, this message translates to:
+  /// **'https://example.com/flag.jpg'**
+  String get pirateFlagUrlHint;
+
+  /// Label for ship image URL field
+  ///
+  /// In en, this message translates to:
+  /// **'Ship Image URL'**
+  String get shipImageUrl;
+
+  /// Hint text for ship image URL field
+  ///
+  /// In en, this message translates to:
+  /// **'https://example.com/ship.jpg'**
+  String get shipImageUrlHint;
+
+  /// Label for devil fruit name field
+  ///
+  /// In en, this message translates to:
+  /// **'Devil fruit name'**
+  String get devilFruitName;
+
+  /// Hint text for devil fruit name field
+  ///
+  /// In en, this message translates to:
+  /// **'Ex: Gomu Gomu no Mi'**
+  String get devilFruitNameHint;
+
+  /// Label for crew name filter field
+  ///
+  /// In en, this message translates to:
+  /// **'Crew name'**
+  String get crewNameFilter;
+
+  /// Hint text for crew name filter field
+  ///
+  /// In en, this message translates to:
+  /// **'Ex: Straw Hat Pirates'**
+  String get crewNameFilterHint;
+
+  /// Date format hint
+  ///
+  /// In en, this message translates to:
+  /// **'DD/MM/YYYY'**
+  String get dateFormat;
+
+  /// Number format hint
+  ///
+  /// In en, this message translates to:
+  /// **'0'**
+  String get numberFormat;
+
+  /// Snackbar message when edit profile is tapped
+  ///
+  /// In en, this message translates to:
+  /// **'Edit Profile tapped'**
+  String get editProfileTapped;
+
+  /// Snackbar message when notifications is tapped
+  ///
+  /// In en, this message translates to:
+  /// **'Notifications tapped'**
+  String get notificationsTapped;
+
+  /// Snackbar message when language is tapped
+  ///
+  /// In en, this message translates to:
+  /// **'Language tapped'**
+  String get languageTapped;
+
+  /// Snackbar message when theme is tapped
+  ///
+  /// In en, this message translates to:
+  /// **'Theme tapped'**
+  String get themeTapped;
+
+  /// Snackbar message when help & support is tapped
+  ///
+  /// In en, this message translates to:
+  /// **'Help & Support tapped'**
+  String get helpSupportTapped;
+
+  /// Snackbar message when about is tapped
+  ///
+  /// In en, this message translates to:
+  /// **'About tapped'**
+  String get aboutTapped;
+
+  /// Success message when character is deleted
+  ///
+  /// In en, this message translates to:
+  /// **'Character deleted successfully'**
+  String get characterDeleted;
+
+  /// Success message when crew is created
+  ///
+  /// In en, this message translates to:
+  /// **'Crew created successfully'**
+  String get crewCreated;
+
+  /// Error message when crew creation fails
+  ///
+  /// In en, this message translates to:
+  /// **'Error creating crew'**
+  String get crewCreationError;
+
+  /// Success message when crew is deleted
+  ///
+  /// In en, this message translates to:
+  /// **'Crew deleted successfully'**
+  String get crewDeleted;
+
+  /// Error message when crew deletion fails
+  ///
+  /// In en, this message translates to:
+  /// **'Error deleting crew'**
+  String get crewDeletionError;
+
+  /// Success message when member is added to crew
+  ///
+  /// In en, this message translates to:
+  /// **'Member added successfully'**
+  String get memberAdded;
+
+  /// Error message when adding member fails
+  ///
+  /// In en, this message translates to:
+  /// **'Error adding member'**
+  String get memberAdditionError;
+
+  /// Success message when member is removed from crew
+  ///
+  /// In en, this message translates to:
+  /// **'Member removed successfully'**
+  String get memberRemoved;
+
+  /// Error message when removing member fails
+  ///
+  /// In en, this message translates to:
+  /// **'Error removing member'**
+  String get memberRemovalError;
+
+  /// Success message when crew is updated
+  ///
+  /// In en, this message translates to:
+  /// **'Crew updated successfully'**
+  String get crewUpdated;
+
+  /// Error message when crew update fails
+  ///
+  /// In en, this message translates to:
+  /// **'Error updating crew'**
+  String get crewUpdateError;
+
+  /// Error message for login
+  ///
+  /// In en, this message translates to:
+  /// **'Login error'**
+  String get loginError;
+
+  /// Error message when video fails to load
+  ///
+  /// In en, this message translates to:
+  /// **'Error loading video'**
+  String get videoLoadError;
+
+  /// Success message when video loads
+  ///
+  /// In en, this message translates to:
+  /// **'Video loaded successfully'**
+  String get videoLoadSuccess;
+
+  /// Error message when devil fruit search fails
+  ///
+  /// In en, this message translates to:
+  /// **'Error searching Devil Fruit: {error}'**
+  String devilFruitSearchError(String error);
+
+  /// Message when no custom characters are found
+  ///
+  /// In en, this message translates to:
+  /// **'No custom characters found'**
+  String get noCustomCharactersFound;
+
+  /// Message encouraging user to create first custom character
+  ///
+  /// In en, this message translates to:
+  /// **'Create your first custom character!'**
+  String get createFirstCustomCharacter;
 }
 
 class _AppLocalizationsDelegate

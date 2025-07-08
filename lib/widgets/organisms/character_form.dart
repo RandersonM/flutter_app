@@ -34,6 +34,7 @@ class CharacterForm extends StatelessWidget {
   final void Function(String?) onCrewChanged;
   final String? selectedCrewRole;
   final void Function(String?) onCrewRoleChanged;
+  final bool showAiGenerator;
 
   const CharacterForm({
     Key? key,
@@ -63,6 +64,7 @@ class CharacterForm extends StatelessWidget {
     required this.onCrewChanged,
     required this.selectedCrewRole,
     required this.onCrewRoleChanged,
+    this.showAiGenerator = true,
   }) : super(key: key);
 
   @override
@@ -101,6 +103,10 @@ class CharacterForm extends StatelessWidget {
             onCrewChanged: onCrewChanged,
             selectedCrewRole: selectedCrewRole,
             onCrewRoleChanged: onCrewRoleChanged,
+            characterName: nameController.text.trim(),
+            devilFruit: selectedDevilFruit?.romanName,
+            haki: selectedHaki,
+            showAiGenerator: showAiGenerator,
           ),
           CharacterDescriptionSection(
             descriptionController: descriptionController,

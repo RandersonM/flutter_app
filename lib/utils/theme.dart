@@ -206,6 +206,11 @@ ThemeData appTheme = ThemeData(
       bodySmall: _Typography.bodySmall,
       labelSmall: _Typography.overline),
   fontFamily: 'Lato',
+  chipTheme: ChipThemeData(
+    backgroundColor: AppColors.grey[50],
+    labelStyle: _Typography.bodySmall.copyWith(color: AppColors.purple[500]),
+    side: BorderSide(color: AppColors.purple[500]!),
+  ),
   cardTheme: CardThemeData(
     shape: RoundedRectangleBorder(
         side: const BorderSide(color: AppColors.purple),

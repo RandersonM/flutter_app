@@ -81,6 +81,12 @@ class CharacterLocalizationMapper {
         return l10n.archaeologist;
       case 'sharpshooter':
         return l10n.sharpshooter;
+      case 'musician':
+        return l10n.musician;
+      case 'vicecaptain':
+      case 'vice-captain':
+      case 'vice captain':
+        return l10n.viceCaptain;
       default:
         return occupation;
     }
@@ -88,6 +94,7 @@ class CharacterLocalizationMapper {
 
   static String mapLocalizedToOccupation(String localizedOccupation, AppLocalizations l10n) {
     if (localizedOccupation == l10n.captain) return 'captain';
+    if (localizedOccupation == l10n.viceCaptain) return 'vicecaptain';
     if (localizedOccupation == l10n.admiral) return 'admiral';
     if (localizedOccupation == l10n.viceAdmiral) return 'vice admiral';
     if (localizedOccupation == l10n.revolutionary) return 'revolutionary';
@@ -142,6 +149,7 @@ class CharacterLocalizationMapper {
   static List<String> getLocalizedOccupationOptions(AppLocalizations l10n) {
     return [
       l10n.captain,
+      l10n.viceCaptain,
       l10n.admiral,
       l10n.viceAdmiral,
       l10n.revolutionary,

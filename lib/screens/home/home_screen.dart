@@ -62,6 +62,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         style:
                             Theme.of(context).textTheme.headlineSmall?.copyWith(
                                   fontWeight: FontWeight.bold,
+                                  color: Theme.of(context).colorScheme.primary,
                                 ),
                       ),
                       _buildCharacterCard(context, state),

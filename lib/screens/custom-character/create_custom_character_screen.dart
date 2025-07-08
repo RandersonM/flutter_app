@@ -56,7 +56,6 @@ class _CreateCustomCharacterScreenState extends State<CreateCustomCharacterScree
         _devilFruits = fruits;
       });
     } catch (e) {
-    
       setState(() {
         _devilFruits = [];
       });
@@ -79,163 +78,174 @@ class _CreateCustomCharacterScreenState extends State<CreateCustomCharacterScree
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider<CustomCharacterBloc>(
+    return BlocProvider(
       create: (context) => CustomCharacterBloc(
         customCharacterService: getIt.customCharacterService,
         crewRepository: getIt.crewRepository,
       ),
       child: Builder(
-        builder: (context) => Scaffold(
-          appBar: DefaultAppBar(
-            title: Text(AppLocalizations.of(context)!.createCustomCharacterTitle),
-            leading: IconButton(
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-              icon: const Icon(Icons.arrow_back),
+        builder: (context) {
+          return Scaffold(
+            appBar: DefaultAppBar(
+              title: Text(
+                  AppLocalizations.of(context)!.createCustomCharacterTitle),
+              leading: IconButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+                icon: const Icon(Icons.arrow_back),
+              ),
             ),
-          ),
-          body: BlocListener<CustomCharacterBloc, CustomCharacterState>(
-            listenWhen: (previous, current) {
-              return current is CustomCharacterCreated || 
-                     (current is CustomCharacterError && !current.message.contains('mas houve um erro ao atualizar a lista'));
-            },
-            listener: (context, state) {
-              if (state is CustomCharacterCreated) {
-                _showSuccessDialog(context);
-              } else if (state is CustomCharacterError) {
-                _showErrorDialog(context, state.message);
-              }
-            },
-            child: BlocBuilder<CustomCharacterBloc, CustomCharacterState>(
-              builder: (context, state) {
-                final isLoading = state is CustomCharacterCreating;
-                
-                return SingleChildScrollView(
-                  padding: const EdgeInsets.all(16.0),
-                  child: Column(
-                    children: [
-                      Container(
-                        width: double.infinity,
-                        padding: const EdgeInsets.all(16),
-                        decoration: BoxDecoration(
-                          color: Theme.of(context).primaryColor.withValues(alpha: 0.1),
-                          borderRadius: BorderRadius.circular(8),
-                        ),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              AppLocalizations.of(context)!.createCustomCharacterTitle,
-                              style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                                fontWeight: FontWeight.bold,
-                                color: Theme.of(context).primaryColor,
+            body: BlocListener<CustomCharacterBloc, CustomCharacterState>(
+              listenWhen: (previous, current) {
+                return current is CustomCharacterCreated ||
+                    (current is CustomCharacterError &&
+                        !current.message.contains(
+                            'mas houve um erro ao atualizar a lista'));
+              },
+              listener: (context, state) {
+                if (state is CustomCharacterCreated) {
+                  _showSuccessDialog(context);
+                } else if (state is CustomCharacterError) {
+                  _showErrorDialog(context, state.message);
+                }
+              },
+              child: BlocBuilder<CustomCharacterBloc, CustomCharacterState>(
+                builder: (context, state) {
+                  final isLoading = state is CustomCharacterCreating;
+
+                  return SingleChildScrollView(
+                    padding: const EdgeInsets.all(16.0),
+                    child: Column(
+                      children: [
+                        Container(
+                          width: double.infinity,
+                          padding: const EdgeInsets.all(16),
+                          decoration: BoxDecoration(
+                            color: Theme.of(context)
+                                .primaryColor
+                                .withValues(alpha: 0.1),
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                AppLocalizations.of(context)!
+                                    .createCustomCharacterTitle,
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .headlineSmall
+                                    ?.copyWith(
+                                      fontWeight: FontWeight.bold,
+                                      color: Theme.of(context).primaryColor,
+                                    ),
                               ),
-                            ),
-                            const SizedBox(height: 8),
-                            Text(
-                              AppLocalizations.of(context)!.createCustomCharacterSubtitle,
-                              style: Theme.of(context).textTheme.bodyMedium,
-                            ),
-                          ],
+                              const SizedBox(height: 8),
+                              Text(
+                                AppLocalizations.of(context)!
+                                    .createCustomCharacterSubtitle,
+                                style: Theme.of(context).textTheme.bodyMedium,
+                              ),
+                            ],
+                          ),
                         ),
-                      ),
-                      const SizedBox(height: 24),
-                      
-                      CharacterForm(
-                        formKey: _formKey,
-                        nameController: _nameController,
-                        nicknameController: _nicknameController,
-                        birthDateController: _birthDateController,
-                        devilFruits: _devilFruits,
-                        selectedDevilFruit: _selectedDevilFruit,
-                        onDevilFruitChanged: (fruit) {
-                          setState(() {
-                            _selectedDevilFruit = fruit;
-                          });
-                        },
-                        availableCrews: _availableCrews,
-                        selectedCrewId: _selectedCrewId,
-                        onCrewChanged: (crewId) {
-                          setState(() {
-                            _selectedCrewId = crewId;
-                            if (crewId == null) {
-                              _selectedCrewRole = null;
-                            }
-                          });
-                        },
-                        selectedCrewRole: _selectedCrewRole,
-                        onCrewRoleChanged: (role) {
-                          setState(() {
-                            _selectedCrewRole = role;
-                          });
-                        },
-                        bountyController: _bountyController,
-                        imageUrlController: _imageUrlController,
-                        descriptionController: _descriptionController,
-                        selectedStatus: _selectedStatus,
-                        selectedHaki: _selectedHaki,
-                        selectedAffiliations: _selectedAffiliations,
-                        selectedOccupations: _selectedOccupations,
-                        onStatusChanged: (status) {
-                          setState(() {
-                            _selectedStatus = status;
-                          });
-                        },
-                        onHakiSelected: (haki) {
-                          setState(() {
-                            if (!_selectedHaki.contains(haki)) {
-                              _selectedHaki.add(haki);
-                            }
-                          });
-                        },
-                        onHakiDeselected: (haki) {
-                          setState(() {
-                            _selectedHaki.remove(haki);
-                          });
-                        },
-                        onAffiliationSelected: (affiliation) {
-                          setState(() {
-                            if (!_selectedAffiliations.contains(affiliation)) {
-                              _selectedAffiliations.add(affiliation);
-                            }
-                          });
-                        },
-                        onAffiliationDeselected: (affiliation) {
-                          setState(() {
-                            _selectedAffiliations.remove(affiliation);
-                          });
-                        },
-                        onOccupationSelected: (occupation) {
-                          setState(() {
-                            if (_selectedOccupations.length < 3 && !_selectedOccupations.contains(occupation)) {
-                              _selectedOccupations.add(occupation);
-                            }
-                          });
-                        },
-                        onOccupationDeselected: (occupation) {
-                          setState(() {
-                            _selectedOccupations.remove(occupation);
-                          });
-                        },
-                      ),
-                      
-                      const SizedBox(height: 24),
-                      
-                      FormActions(
-                        onSave: () => _submitForm(context),
-                        onCancel: _cancelForm,
-                        isLoading: isLoading,
-                      ),
-                      
-                      const SizedBox(height: 24),
-                    ],
-                  ),
-                );
-              },
+                        const SizedBox(height: 24),
+                        CharacterForm(
+                          formKey: _formKey,
+                          nameController: _nameController,
+                          nicknameController: _nicknameController,
+                          birthDateController: _birthDateController,
+                          devilFruits: _devilFruits,
+                          selectedDevilFruit: _selectedDevilFruit,
+                          onDevilFruitChanged: (fruit) {
+                            setState(() {
+                              _selectedDevilFruit = fruit;
+                            });
+                          },
+                          availableCrews: _availableCrews,
+                          selectedCrewId: _selectedCrewId,
+                          onCrewChanged: (crewId) {
+                            setState(() {
+                              _selectedCrewId = crewId;
+                              if (crewId == null) {
+                                _selectedCrewRole = null;
+                              }
+                            });
+                          },
+                          selectedCrewRole: _selectedCrewRole,
+                          onCrewRoleChanged: (role) {
+                            setState(() {
+                              _selectedCrewRole = role;
+                            });
+                          },
+                          bountyController: _bountyController,
+                          imageUrlController: _imageUrlController,
+                          descriptionController: _descriptionController,
+                          selectedStatus: _selectedStatus,
+                          selectedHaki: _selectedHaki,
+                          selectedAffiliations: _selectedAffiliations,
+                          selectedOccupations: _selectedOccupations,
+                          onStatusChanged: (status) {
+                            setState(() {
+                              _selectedStatus = status;
+                            });
+                          },
+                          onHakiSelected: (haki) {
+                            setState(() {
+                              if (!_selectedHaki.contains(haki)) {
+                                _selectedHaki.add(haki);
+                              }
+                            });
+                          },
+                          onHakiDeselected: (haki) {
+                            setState(() {
+                              _selectedHaki.remove(haki);
+                            });
+                          },
+                          onAffiliationSelected: (affiliation) {
+                            setState(() {
+                              if (!_selectedAffiliations
+                                  .contains(affiliation)) {
+                                _selectedAffiliations.add(affiliation);
+                              }
+                            });
+                          },
+                          onAffiliationDeselected: (affiliation) {
+                            setState(() {
+                              _selectedAffiliations.remove(affiliation);
+                            });
+                          },
+                          onOccupationSelected: (occupation) {
+                            setState(() {
+                              if (_selectedOccupations.length < 3 &&
+                                  !_selectedOccupations.contains(occupation)) {
+                                _selectedOccupations.add(occupation);
+                              }
+                            });
+                          },
+                          onOccupationDeselected: (occupation) {
+                            setState(() {
+                              _selectedOccupations.remove(occupation);
+                            });
+                          },
+                          showAiGenerator: true,
+                        ),
+                        const SizedBox(height: 24),
+                        FormActions(
+                          onSave: () => _submitForm(context),
+                          onCancel: _cancelForm,
+                          isLoading: isLoading,
+                        ),
+                        const SizedBox(height: 24),
+                      ],
+                    ),
+                  );
+                },
+              ),
             ),
-          ),
-        ),
+          );
+        },
       ),
     );
   }
@@ -311,8 +321,8 @@ class _CreateCustomCharacterScreenState extends State<CreateCustomCharacterScree
         actions: [
           TextButton(
             onPressed: () {
-              Navigator.of(context).pop(); 
-              Navigator.of(context).pop(); 
+              Navigator.of(context).pop();
+              Navigator.of(context).pop(true);
             },
             child: Text(l10n.ok),
           ),

@@ -1,6 +1,3 @@
-// Developed by Randerson Mayllon
-// Copyright © 2022.
-
 import 'package:get_it/get_it.dart';
 import 'package:opfan/core/calculator/calculator_provider.dart';
 import 'package:opfan/screens/one_piece/blocs/characters_cubit.dart';
@@ -12,6 +9,7 @@ import 'package:opfan/core/services/youtube_service.dart';
 import 'package:opfan/core/services/featured_character_service.dart';
 import 'package:opfan/core/services/auth_service.dart';
 import 'package:opfan/core/services/firestore_service.dart';
+import 'package:opfan/core/services/ai_image_service.dart';
 import 'package:opfan/core/repository/custom_character_repository.dart';
 import 'package:opfan/core/repository/crew_repository.dart';
 import 'package:opfan/screens/home/blocs/home_bloc.dart';
@@ -34,6 +32,10 @@ Future<void> configureDependencies() async {
 
   getIt.registerLazySingleton<YouTubeService>(
     () => YouTubeService(),
+  );
+
+  getIt.registerLazySingleton<AiImageService>(
+    () => AiImageService(),
   );
 
   getIt.registerLazySingleton<FeaturedCharacterService>(
@@ -121,6 +123,7 @@ extension ServiceLocatorExtensions on GetIt {
       get<CharactersBackendService>();
   DevilFruitService get devilFruitService => get<DevilFruitService>();
   YouTubeService get youTubeService => get<YouTubeService>();
+  AiImageService get aiImageService => get<AiImageService>();
   FeaturedCharacterService get featuredCharacterService =>
       get<FeaturedCharacterService>();
   AuthService get authService => get<AuthService>();
@@ -143,51 +146,4 @@ extension ServiceLocatorExtensions on GetIt {
   AuthBloc get authBloc => get<AuthBloc>();
 }
 
-void registerTestDependencies() {
-  if (getIt.isRegistered<CharactersBackendService>()) {
-    getIt.unregister<CharactersBackendService>();
-  }
 
-  if (getIt.isRegistered<DevilFruitService>()) {
-    getIt.unregister<DevilFruitService>();
-  }
-
-  if (getIt.isRegistered<YouTubeService>()) {
-    getIt.unregister<YouTubeService>();
-  }
-}
-
-void validateDependencies() {
-  if (!getIt.isRegistered<EnvironmentService>()) {
-    throw Exception('Serviço obrigatório não registrado: EnvironmentService');
-  }
-
-  if (!getIt.isRegistered<CharactersBackendService>()) {
-    throw Exception(
-        'Serviço obrigatório não registrado: CharactersBackendService');
-  }
-
-  if (!getIt.isRegistered<DevilFruitService>()) {
-    throw Exception('Serviço obrigatório não registrado: DevilFruitService');
-  }
-
-  if (!getIt.isRegistered<YouTubeService>()) {
-    throw Exception('Serviço obrigatório não registrado: YouTubeService');
-  }
-}
-
-Map<String, dynamic> getDependencyInfo() {
-  return {
-    'environment_service': getIt.isRegistered<EnvironmentService>(),
-    'characters_service': getIt.isRegistered<CharactersBackendService>(),
-    'devil_fruit_service': getIt.isRegistered<DevilFruitService>(),
-    'youtube_service': getIt.isRegistered<YouTubeService>(),
-    'auth_service': getIt.isRegistered<AuthService>(),
-    'calculator_provider': getIt.isRegistered<CalculatorProvider>(),
-    'characters_cubit': getIt.isRegistered<CharactersCubit>(),
-    'search_cubit': getIt.isRegistered<SearchCubit>(),
-    'home_bloc': getIt.isRegistered<HomeBloc>(),
-    'devil_fruit_bloc': getIt.isRegistered<DevilFruitBloc>(),
-    'auth_bloc': getIt.isRegistered<AuthBloc>(),
-  };
-}

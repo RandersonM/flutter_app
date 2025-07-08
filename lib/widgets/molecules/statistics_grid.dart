@@ -2,6 +2,7 @@
 // Copyright © 2022.
 
 import 'package:flutter/material.dart';
+import 'package:opfan/utils/constants.dart';
 import 'statistic_item.dart';
 
 /// Data model for a statistic item
@@ -54,40 +55,44 @@ class StatisticsGrid extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
 
-    final content = Column(
-      mainAxisSize: MainAxisSize.min,
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        if (title != null) ...[
-          Text(
-            title!,
-            style: titleStyle ??
-                theme.textTheme.titleLarge?.copyWith(
-                  fontWeight: FontWeight.bold,
-                ),
-          ),
-          SizedBox(height: spacing),
-        ],
-        Row(
-          mainAxisAlignment: mainAxisAlignment,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: statistics
-              .map(
-                (stat) => Expanded(
-                  child: Center(
-                    child: StatisticItem(
-                      label: stat.label,
-                      value: stat.value,
-                      icon: stat.icon,
-                      svgPath: stat.svgPath,
-                      onTap: stat.onTap,
+    final content = Padding(
+      padding: const EdgeInsets.all(Constants.margin),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          if (title != null) ...[
+            Text(
+              title!,
+              style: titleStyle ??
+                  theme.textTheme.titleLarge?.copyWith(
+                    fontWeight: FontWeight.bold,
+                    color: theme.colorScheme.primary,
+                  ),
+            ),
+            SizedBox(height: spacing),
+          ],
+          Row(
+            mainAxisAlignment: mainAxisAlignment,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: statistics
+                .map(
+                  (stat) => Expanded(
+                    child: Center(
+                      child: StatisticItem(
+                        label: stat.label,
+                        value: stat.value,
+                        icon: stat.icon,
+                        svgPath: stat.svgPath,
+                        onTap: stat.onTap,
+                      ),
                     ),
                   ),
-                ),
-              )
-              .toList(),
-        ),
-      ],
+                )
+                .toList(),
+          ),
+        ],
+      ),
     );
 
     if (isCard) {

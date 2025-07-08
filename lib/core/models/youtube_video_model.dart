@@ -1,6 +1,3 @@
-// Developed by Randerson Mayllon
-// Copyright © 2022.
-
 class YouTubeVideo {
   final String videoId;
   final String title;

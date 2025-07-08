@@ -5,8 +5,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:opfan/core/auth/blocs/index.dart';
 import 'package:opfan/core/models/one_piece/character_model.dart';
+import 'package:opfan/core/models/one_piece/crew_model.dart';
 import 'package:opfan/core/models/youtube_video_model.dart';
 import 'package:opfan/screens/calculator/calculator_screen.dart';
+import 'package:opfan/screens/crews/crew_details_screen.dart';
 import 'package:opfan/screens/fav_character_selection_screen/character_selection_screen.dart';
 import 'package:opfan/screens/home/home_screen.dart';
 import 'package:opfan/screens/one_piece/characters_list_screen.dart';
@@ -20,7 +22,7 @@ import 'package:opfan/screens/custom-character/custom_character_list_screen.dart
 import 'package:opfan/screens/crews/create_crew_screen.dart';
 import 'package:opfan/screens/crews/list_crews_screen.dart';
 
-import 'package:opfan/utils/transitions/material_page_route_without_tansition.dart';
+import 'package:opfan/utils/transitions/material_page_route_without_transition.dart';
 
 class AppRoutes {
   // Auth routes
@@ -45,6 +47,7 @@ class AppRoutes {
   static const String customCharacterList = '/customCharacterList';
   static const String createCrew = '/createCrew';
   static const String listCrews = '/listCrews';
+  static const String crewDetails = '/crewDetails';
 
   // Define which routes require authentication
   static const Set<String> _privateRoutes = {
@@ -134,6 +137,10 @@ class AppRoutes {
       case listCrews:
         return MaterialPageRoute<dynamic>(
             builder: (_) => const ListCrewsScreen(), settings: settings);
+      case crewDetails:
+        final crew = settings.arguments as CrewModel;
+        return MaterialPageRoute<dynamic>(
+            builder: (_) => CrewDetailsScreen(crew: crew), settings: settings);
       // Add more private routes here when they are created
       // case settings:
       //   return MaterialPageRoute<dynamic>(

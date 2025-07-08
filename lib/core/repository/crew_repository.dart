@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:opfan/core/models/one_piece/crew_model.dart';
 import 'package:opfan/core/services/firestore_service.dart';
 import 'package:opfan/core/repository/interfaces/crew_repository_interface.dart';
@@ -284,11 +285,11 @@ class CrewRepository implements ICrewRepository {
         if (!updatedRolesFilled.contains(member.role)) {
           updatedRolesFilled.add(member.role!);
         }
-        
+        debugPrint('member.role: ${member.role}');
         if (member.role!.toLowerCase() == 'captain') {
           updatedCaptain = member.name;
         } else if (member.role!.toLowerCase() == 'vice-captain' || 
-                   member.role!.toLowerCase() == 'vice captain') {
+            member.role!.toLowerCase() == 'vicecaptain') {
           updatedViceCaptain = member.name;
         }
       }
