@@ -6,7 +6,7 @@ import 'package:provider/provider.dart';
 
 import 'package:opfan/core/calculator/calculator_provider.dart';
 import 'package:opfan/screens/calculator/widgets/calculator_button.dart';
-import 'package:opfan/screens/calculator/widgets/calculator_header.dart.dart';
+import 'package:opfan/screens/calculator/widgets/calculator_header.dart';
 import 'package:opfan/utils/constants.dart';
 
 class CalculatorContent extends StatelessWidget {

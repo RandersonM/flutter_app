@@ -1,6 +1,3 @@
-// Developed by Randerson Mayllon
-// Copyright © 2022.
-
 import 'dart:convert';
 import 'dart:io';
 

@@ -865,6 +865,12 @@
     "type": "text",
     "placeholders": {}
   },
+  "crewBoatName": " Boat name",
+  "@crewBoatName": {
+    "description": "Label for crew boat name field",
+    "type": "text",
+    "placeholders": {}
+  },
   "crewRole": "Crew Role",
   "@crewRole": {
     "description": "Label for crew role field",
@@ -1056,5 +1062,388 @@
         "example": "Straw Hat Pirates"
       }
     }
+  },
+  "aiImageGeneration": "AI Image Generation",
+  "@aiImageGeneration": {
+    "description": "Title for AI image generation section",
+    "type": "text",
+    "placeholders": {}
+  },
+  "aiImageGenerationSubtitle": "Generate a unique image for your character using AI",
+  "@aiImageGenerationSubtitle": {
+    "description": "Subtitle for AI image generation section",
+    "type": "text",
+    "placeholders": {}
+  },
+  "imagePrompt": "Image Prompt",
+  "@imagePrompt": {
+    "description": "Label for image prompt field",
+    "type": "text",
+    "placeholders": {}
+  },
+  "imagePromptHint": "Describe how your character should look...",
+  "@imagePromptHint": {
+    "description": "Hint text for image prompt field",
+    "type": "text",
+    "placeholders": {}
+  },
+  "generateImage": "Generate Image",
+  "@generateImage": {
+    "description": "Button text to generate image",
+    "type": "text",
+    "placeholders": {}
+  },
+  "generatingImage": "Generating...",
+  "@generatingImage": {
+    "description": "Text shown while generating image",
+    "type": "text",
+    "placeholders": {}
+  },
+  "imageLoadError": "Failed to load image",
+  "@imageLoadError": {
+    "description": "Error message when image fails to load",
+    "type": "text",
+    "placeholders": {}
+  },
+  "regenerateImage": "Regenerate",
+  "@regenerateImage": {
+    "description": "Button text to regenerate image",
+    "type": "text",
+    "placeholders": {}
+  },
+  "useImage": "Use Image",
+  "@useImage": {
+    "description": "Button text to use generated image",
+    "type": "text",
+    "placeholders": {}
+  },
+  "promptRequired": "Please enter a prompt",
+  "@promptRequired": {
+    "description": "Error message when prompt is required",
+    "type": "text",
+    "placeholders": {}
+  },
+  "imageGenerationError": "Failed to generate image. Please try again.",
+  "@imageGenerationError": {
+    "description": "Error message when image generation fails",
+    "type": "text",
+    "placeholders": {}
+  },
+  "selectDevilFruit": "Select Devil Fruit",
+  "@selectDevilFruit": {
+    "description": "Title for devil fruit selection dialog",
+    "type": "text",
+    "placeholders": {}
+  },
+  "selectDevilFruitPlaceholder": "Select a Devil Fruit",
+  "@selectDevilFruitPlaceholder": {
+    "description": "Placeholder text when no devil fruit is selected",
+    "type": "text",
+    "placeholders": {}
+  },
+  "searchDevilFruit": "Search Devil Fruit...",
+  "@searchDevilFruit": {
+    "description": "Hint text for devil fruit search field",
+    "type": "text",
+    "placeholders": {}
+  },
+  "noDevilFruitFound": "No Devil Fruit found",
+  "@noDevilFruitFound": {
+    "description": "Message when no devil fruit matches search",
+    "type": "text",
+    "placeholders": {}
+  },
+  "filterBy": "Filter by",
+  "@filterBy": {
+    "description": "Title for filter dialog",
+    "type": "text",
+    "placeholders": {}
+  },
+  "devilFruit": "Devil Fruit",
+  "@devilFruit": {
+    "description": "Label for devil fruit filter",
+    "type": "text",
+    "placeholders": {}
+  },
+  "crewTeam": "Crew",
+  "@crew": {
+    "description": "Label for crew filter",
+    "type": "text",
+    "placeholders": {}
+  },
+  "filterByDevilFruit": "Filter by Devil Fruit",
+  "@filterByDevilFruit": {
+    "description": "Title for devil fruit filter dialog",
+    "type": "text",
+    "placeholders": {}
+  },
+  "filterByCrew": "Filter by Crew",
+  "@filterByCrew": {
+    "description": "Title for crew filter dialog",
+    "type": "text",
+    "placeholders": {}
+  },
+  "clearFilters": "Clear filters",
+  "@clearFilters": {
+    "description": "Button text to clear all filters",
+    "type": "text",
+    "placeholders": {}
+  },
+  "addTag": "Add Tag",
+  "@addTag": {
+    "description": "Title for add tag dialog",
+    "type": "text",
+    "placeholders": {}
+  },
+  "createCrew": "Create Crew",
+  "@createCrew": {
+    "description": "Title for create crew screen",
+    "type": "text",
+    "placeholders": {}
+  },
+  "addMember": "Add Member",
+  "@addMember": {
+    "description": "Label for add member button",
+    "type": "text",
+    "placeholders": {}
+  },
+  "noCharactersAvailable": "No characters available to add",
+  "@noCharactersAvailable": {
+    "description": "Message when no characters are available to add to crew",
+    "type": "text",
+    "placeholders": {}
+  },
+  "tagName": "Tag name",
+  "@tagName": {
+    "description": "Label for tag name field",
+    "type": "text",
+    "placeholders": {}
+  },
+  "tagNameHint": "Ex: Pirates, Adventurers, etc.",
+  "@tagNameHint": {
+    "description": "Hint text for tag name field",
+    "type": "text",
+    "placeholders": {}
+  },
+  "crewName": "Crew Name *",
+  "@crewName": {
+    "description": "Label for crew name field",
+    "type": "text",
+    "placeholders": {}
+  },
+  "crewNameHint": "Ex: Custom Mugiwara",
+  "@crewNameHint": {
+    "description": "Hint text for crew name field",
+    "type": "text",
+    "placeholders": {}
+  },
+  "descriptionHint": "Tell us about your crew...",
+  "@descriptionHint": {
+    "description": "Hint text for description field",
+    "type": "text",
+    "placeholders": {}
+  },
+  "pirateFlagUrl": "Pirate Flag URL",
+  "@pirateFlagUrl": {
+    "description": "Label for pirate flag URL field",
+    "type": "text",
+    "placeholders": {}
+  },
+  "pirateFlagUrlHint": "https://example.com/flag.jpg",
+  "@pirateFlagUrlHint": {
+    "description": "Hint text for pirate flag URL field",
+    "type": "text",
+    "placeholders": {}
+  },
+  "shipImageUrl": "Ship Image URL",
+  "@shipImageUrl": {
+    "description": "Label for ship image URL field",
+    "type": "text",
+    "placeholders": {}
+  },
+  "shipImageUrlHint": "https://example.com/ship.jpg",
+  "@shipImageUrlHint": {
+    "description": "Hint text for ship image URL field",
+    "type": "text",
+    "placeholders": {}
+  },
+  "devilFruitName": "Devil fruit name",
+  "@devilFruitName": {
+    "description": "Label for devil fruit name field",
+    "type": "text",
+    "placeholders": {}
+  },
+  "devilFruitNameHint": "Ex: Gomu Gomu no Mi",
+  "@devilFruitNameHint": {
+    "description": "Hint text for devil fruit name field",
+    "type": "text",
+    "placeholders": {}
+  },
+  "crewNameFilter": "Crew name",
+  "@crewNameFilter": {
+    "description": "Label for crew name filter field",
+    "type": "text",
+    "placeholders": {}
+  },
+  "crewNameFilterHint": "Ex: Straw Hat Pirates",
+  "@crewNameFilterHint": {
+    "description": "Hint text for crew name filter field",
+    "type": "text",
+    "placeholders": {}
+  },
+  "dateFormat": "DD/MM/YYYY",
+  "@dateFormat": {
+    "description": "Date format hint",
+    "type": "text",
+    "placeholders": {}
+  },
+  "numberFormat": "0",
+  "@numberFormat": {
+    "description": "Number format hint",
+    "type": "text",
+    "placeholders": {}
+  },
+  "editProfileTapped": "Edit Profile tapped",
+  "@editProfileTapped": {
+    "description": "Snackbar message when edit profile is tapped",
+    "type": "text",
+    "placeholders": {}
+  },
+  "notificationsTapped": "Notifications tapped",
+  "@notificationsTapped": {
+    "description": "Snackbar message when notifications is tapped",
+    "type": "text",
+    "placeholders": {}
+  },
+  "languageTapped": "Language tapped",
+  "@languageTapped": {
+    "description": "Snackbar message when language is tapped",
+    "type": "text",
+    "placeholders": {}
+  },
+  "themeTapped": "Theme tapped",
+  "@themeTapped": {
+    "description": "Snackbar message when theme is tapped",
+    "type": "text",
+    "placeholders": {}
+  },
+  "helpSupportTapped": "Help & Support tapped",
+  "@helpSupportTapped": {
+    "description": "Snackbar message when help & support is tapped",
+    "type": "text",
+    "placeholders": {}
+  },
+  "aboutTapped": "About tapped",
+  "@aboutTapped": {
+    "description": "Snackbar message when about is tapped",
+    "type": "text",
+    "placeholders": {}
+  },
+  "characterDeleted": "Character deleted successfully",
+  "@characterDeleted": {
+    "description": "Success message when character is deleted",
+    "type": "text",
+    "placeholders": {}
+  },
+  "crewCreated": "Crew created successfully",
+  "@crewCreated": {
+    "description": "Success message when crew is created",
+    "type": "text",
+    "placeholders": {}
+  },
+  "crewCreationError": "Error creating crew",
+  "@crewCreationError": {
+    "description": "Error message when crew creation fails",
+    "type": "text",
+    "placeholders": {}
+  },
+  "crewDeleted": "Crew deleted successfully",
+  "@crewDeleted": {
+    "description": "Success message when crew is deleted",
+    "type": "text",
+    "placeholders": {}
+  },
+  "crewDeletionError": "Error deleting crew",
+  "@crewDeletionError": {
+    "description": "Error message when crew deletion fails",
+    "type": "text",
+    "placeholders": {}
+  },
+  "memberAdded": "Member added successfully",
+  "@memberAdded": {
+    "description": "Success message when member is added to crew",
+    "type": "text",
+    "placeholders": {}
+  },
+  "memberAdditionError": "Error adding member",
+  "@memberAdditionError": {
+    "description": "Error message when adding member fails",
+    "type": "text",
+    "placeholders": {}
+  },
+  "memberRemoved": "Member removed successfully",
+  "@memberRemoved": {
+    "description": "Success message when member is removed from crew",
+    "type": "text",
+    "placeholders": {}
+  },
+  "memberRemovalError": "Error removing member",
+  "@memberRemovalError": {
+    "description": "Error message when removing member fails",
+    "type": "text",
+    "placeholders": {}
+  },
+  "crewUpdated": "Crew updated successfully",
+  "@crewUpdated": {
+    "description": "Success message when crew is updated",
+    "type": "text",
+    "placeholders": {}
+  },
+  "crewUpdateError": "Error updating crew",
+  "@crewUpdateError": {
+    "description": "Error message when crew update fails",
+    "type": "text",
+    "placeholders": {}
+  },
+  "loginError": "Login error",
+  "@loginError": {
+    "description": "Error message for login",
+    "type": "text",
+    "placeholders": {}
+  },
+  "videoLoadError": "Error loading video",
+  "@videoLoadError": {
+    "description": "Error message when video fails to load",
+    "type": "text",
+    "placeholders": {}
+  },
+  "videoLoadSuccess": "Video loaded successfully",
+  "@videoLoadSuccess": {
+    "description": "Success message when video loads",
+    "type": "text",
+    "placeholders": {}
+  },
+  "devilFruitSearchError": "Error searching Devil Fruit: {error}",
+  "@devilFruitSearchError": {
+    "description": "Error message when devil fruit search fails",
+    "type": "text",
+    "placeholders": {
+      "error": {
+        "type": "String",
+        "example": "Network error"
+      }
+    }
+  },
+  "noCustomCharactersFound": "No custom characters found",
+  "@noCustomCharactersFound": {
+    "description": "Message when no custom characters are found",
+    "type": "text",
+    "placeholders": {}
+  },
+  "createFirstCustomCharacter": "Create your first custom character!",
+  "@createFirstCustomCharacter": {
+    "description": "Message encouraging user to create first custom character",
+    "type": "text",
+    "placeholders": {}
   }
 }

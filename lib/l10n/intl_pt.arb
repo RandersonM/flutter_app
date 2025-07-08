@@ -518,7 +518,7 @@
     "type": "text",
     "placeholders": {}
   },
-  "nicknameHint": "Ex: Luffy, Chapéu de Palha",
+  "nicknameHint": "Ex: Chapéu de Palha",
   "@nicknameHint": {
     "description": "Hint text for nickname field",
     "type": "text",
@@ -881,6 +881,12 @@
     "type": "text",
     "placeholders": {}
   },
+  "crewBoatName": "Nome do Barco",
+  "@crewBoatName": {
+    "description": "Label for crew boat name field",
+    "type": "text",
+    "placeholders": {}
+  },
   "crewRoleHint": "Selecione seu cargo na tripulação",
   "@crewRoleHint": {
     "description": "Hint text for crew role field",
@@ -996,5 +1002,388 @@
         "example": "Piratas do Chapéu de Palha"
       }
     }
+  },
+  "aiImageGeneration": "Geração de Imagem por IA",
+  "@aiImageGeneration": {
+    "description": "Title for AI image generation section",
+    "type": "text",
+    "placeholders": {}
+  },
+  "aiImageGenerationSubtitle": "Gere uma imagem única para seu personagem usando IA",
+  "@aiImageGenerationSubtitle": {
+    "description": "Subtitle for AI image generation section",
+    "type": "text",
+    "placeholders": {}
+  },
+  "imagePrompt": "Prompt da Imagem",
+  "@imagePrompt": {
+    "description": "Label for image prompt field",
+    "type": "text",
+    "placeholders": {}
+  },
+  "imagePromptHint": "Descreva como seu personagem deve parecer...",
+  "@imagePromptHint": {
+    "description": "Hint text for image prompt field",
+    "type": "text",
+    "placeholders": {}
+  },
+  "generateImage": "Gerar Imagem",
+  "@generateImage": {
+    "description": "Button text to generate image",
+    "type": "text",
+    "placeholders": {}
+  },
+  "generatingImage": "Gerando...",
+  "@generatingImage": {
+    "description": "Text shown while generating image",
+    "type": "text",
+    "placeholders": {}
+  },
+  "imageLoadError": "Falha ao carregar imagem",
+  "@imageLoadError": {
+    "description": "Error message when image fails to load",
+    "type": "text",
+    "placeholders": {}
+  },
+  "regenerateImage": "Regenerar",
+  "@regenerateImage": {
+    "description": "Button text to regenerate image",
+    "type": "text",
+    "placeholders": {}
+  },
+  "useImage": "Usar Imagem",
+  "@useImage": {
+    "description": "Button text to use generated image",
+    "type": "text",
+    "placeholders": {}
+  },
+  "promptRequired": "Por favor, insira um prompt",
+  "@promptRequired": {
+    "description": "Error message when prompt is required",
+    "type": "text",
+    "placeholders": {}
+  },
+  "imageGenerationError": "Falha ao gerar imagem. Tente novamente.",
+  "@imageGenerationError": {
+    "description": "Error message when image generation fails",
+    "type": "text",
+    "placeholders": {}
+  },
+  "selectDevilFruit": "Selecionar Akuma no Mi",
+  "@selectDevilFruit": {
+    "description": "Title for devil fruit selection dialog",
+    "type": "text",
+    "placeholders": {}
+  },
+  "selectDevilFruitPlaceholder": "Selecione uma Akuma no Mi",
+  "@selectDevilFruitPlaceholder": {
+    "description": "Placeholder text when no devil fruit is selected",
+    "type": "text",
+    "placeholders": {}
+  },
+  "searchDevilFruit": "Buscar Akuma no Mi...",
+  "@searchDevilFruit": {
+    "description": "Hint text for devil fruit search field",
+    "type": "text",
+    "placeholders": {}
+  },
+  "noDevilFruitFound": "Nenhuma Akuma no Mi encontrada",
+  "@noDevilFruitFound": {
+    "description": "Message when no devil fruit matches search",
+    "type": "text",
+    "placeholders": {}
+  },
+  "filterBy": "Filtrar por",
+  "@filterBy": {
+    "description": "Title for filter dialog",
+    "type": "text",
+    "placeholders": {}
+  },
+  "devilFruit": "Fruta do Diabo",
+  "@devilFruit": {
+    "description": "Label for devil fruit filter",
+    "type": "text",
+    "placeholders": {}
+  },
+  "crewTeam": "Equipe",
+  "@crew": {
+    "description": "Label for crew filter",
+    "type": "text",
+    "placeholders": {}
+  },
+  "filterByDevilFruit": "Filtrar por Fruta do Diabo",
+  "@filterByDevilFruit": {
+    "description": "Title for devil fruit filter dialog",
+    "type": "text",
+    "placeholders": {}
+  },
+  "filterByCrew": "Filtrar por Equipe",
+  "@filterByCrew": {
+    "description": "Title for crew filter dialog",
+    "type": "text",
+    "placeholders": {}
+  },
+  "clearFilters": "Limpar filtros",
+  "@clearFilters": {
+    "description": "Button text to clear all filters",
+    "type": "text",
+    "placeholders": {}
+  },
+  "addTag": "Adicionar Tag",
+  "@addTag": {
+    "description": "Title for add tag dialog",
+    "type": "text",
+    "placeholders": {}
+  },
+  "createCrew": "Criar Tripulação",
+  "@createCrew": {
+    "description": "Title for create crew screen",
+    "type": "text",
+    "placeholders": {}
+  },
+  "addMember": "Adicionar Membro",
+  "@addMember": {
+    "description": "Label for add member button",
+    "type": "text",
+    "placeholders": {}
+  },
+  "noCharactersAvailable": "Nenhum personagem disponível para adicionar",
+  "@noCharactersAvailable": {
+    "description": "Message when no characters are available to add to crew",
+    "type": "text",
+    "placeholders": {}
+  },
+  "tagName": "Nome da tag",
+  "@tagName": {
+    "description": "Label for tag name field",
+    "type": "text",
+    "placeholders": {}
+  },
+  "tagNameHint": "Ex: Piratas, Aventureiros, etc.",
+  "@tagNameHint": {
+    "description": "Hint text for tag name field",
+    "type": "text",
+    "placeholders": {}
+  },
+  "crewName": "Nome da Tripulação *",
+  "@crewName": {
+    "description": "Label for crew name field",
+    "type": "text",
+    "placeholders": {}
+  },
+  "crewNameHint": "Ex: Mugiwaras Custom",
+  "@crewNameHint": {
+    "description": "Hint text for crew name field",
+    "type": "text",
+    "placeholders": {}
+  },
+  "descriptionHint": "Conte um pouco sobre sua tripulação...",
+  "@descriptionHint": {
+    "description": "Hint text for description field",
+    "type": "text",
+    "placeholders": {}
+  },
+  "pirateFlagUrl": "URL da Bandeira Pirata",
+  "@pirateFlagUrl": {
+    "description": "Label for pirate flag URL field",
+    "type": "text",
+    "placeholders": {}
+  },
+  "pirateFlagUrlHint": "https://exemplo.com/bandeira.jpg",
+  "@pirateFlagUrlHint": {
+    "description": "Hint text for pirate flag URL field",
+    "type": "text",
+    "placeholders": {}
+  },
+  "shipImageUrl": "URL da Imagem do Barco",
+  "@shipImageUrl": {
+    "description": "Label for ship image URL field",
+    "type": "text",
+    "placeholders": {}
+  },
+  "shipImageUrlHint": "https://exemplo.com/barco.jpg",
+  "@shipImageUrlHint": {
+    "description": "Hint text for ship image URL field",
+    "type": "text",
+    "placeholders": {}
+  },
+  "devilFruitName": "Nome da fruta",
+  "@devilFruitName": {
+    "description": "Label for devil fruit name field",
+    "type": "text",
+    "placeholders": {}
+  },
+  "devilFruitNameHint": "Ex: Gomu Gomu no Mi",
+  "@devilFruitNameHint": {
+    "description": "Hint text for devil fruit name field",
+    "type": "text",
+    "placeholders": {}
+  },
+  "crewNameFilter": "Nome da equipe",
+  "@crewNameFilter": {
+    "description": "Label for crew name filter field",
+    "type": "text",
+    "placeholders": {}
+  },
+  "crewNameFilterHint": "Ex: Piratas do Chapéu de Palha",
+  "@crewNameFilterHint": {
+    "description": "Hint text for crew name filter field",
+    "type": "text",
+    "placeholders": {}
+  },
+  "dateFormat": "DD/MM/AAAA",
+  "@dateFormat": {
+    "description": "Date format hint",
+    "type": "text",
+    "placeholders": {}
+  },
+  "numberFormat": "0",
+  "@numberFormat": {
+    "description": "Number format hint",
+    "type": "text",
+    "placeholders": {}
+  },
+  "editProfileTapped": "Perfil editado tocado",
+  "@editProfileTapped": {
+    "description": "Snackbar message when edit profile is tapped",
+    "type": "text",
+    "placeholders": {}
+  },
+  "notificationsTapped": "Notificações tocadas",
+  "@notificationsTapped": {
+    "description": "Snackbar message when notifications is tapped",
+    "type": "text",
+    "placeholders": {}
+  },
+  "languageTapped": "Idioma tocado",
+  "@languageTapped": {
+    "description": "Snackbar message when language is tapped",
+    "type": "text",
+    "placeholders": {}
+  },
+  "themeTapped": "Tema tocado",
+  "@themeTapped": {
+    "description": "Snackbar message when theme is tapped",
+    "type": "text",
+    "placeholders": {}
+  },
+  "helpSupportTapped": "Ajuda e Suporte tocado",
+  "@helpSupportTapped": {
+    "description": "Snackbar message when help & support is tapped",
+    "type": "text",
+    "placeholders": {}
+  },
+  "aboutTapped": "Sobre tocado",
+  "@aboutTapped": {
+    "description": "Snackbar message when about is tapped",
+    "type": "text",
+    "placeholders": {}
+  },
+  "characterDeleted": "Personagem excluído com sucesso",
+  "@characterDeleted": {
+    "description": "Success message when character is deleted",
+    "type": "text",
+    "placeholders": {}
+  },
+  "crewCreated": "Tripulação criada com sucesso",
+  "@crewCreated": {
+    "description": "Success message when crew is created",
+    "type": "text",
+    "placeholders": {}
+  },
+  "crewCreationError": "Erro ao criar tripulação",
+  "@crewCreationError": {
+    "description": "Error message when crew creation fails",
+    "type": "text",
+    "placeholders": {}
+  },
+  "crewDeleted": "Tripulação excluída com sucesso",
+  "@crewDeleted": {
+    "description": "Success message when crew is deleted",
+    "type": "text",
+    "placeholders": {}
+  },
+  "crewDeletionError": "Erro ao excluir tripulação",
+  "@crewDeletionError": {
+    "description": "Error message when crew deletion fails",
+    "type": "text",
+    "placeholders": {}
+  },
+  "memberAdded": "Membro adicionado com sucesso",
+  "@memberAdded": {
+    "description": "Success message when member is added to crew",
+    "type": "text",
+    "placeholders": {}
+  },
+  "memberAdditionError": "Erro ao adicionar membro",
+  "@memberAdditionError": {
+    "description": "Error message when adding member fails",
+    "type": "text",
+    "placeholders": {}
+  },
+  "memberRemoved": "Membro removido com sucesso",
+  "@memberRemoved": {
+    "description": "Success message when member is removed from crew",
+    "type": "text",
+    "placeholders": {}
+  },
+  "memberRemovalError": "Erro ao remover membro",
+  "@memberRemovalError": {
+    "description": "Error message when removing member fails",
+    "type": "text",
+    "placeholders": {}
+  },
+  "crewUpdated": "Tripulação atualizada com sucesso",
+  "@crewUpdated": {
+    "description": "Success message when crew is updated",
+    "type": "text",
+    "placeholders": {}
+  },
+  "crewUpdateError": "Erro ao atualizar tripulação",
+  "@crewUpdateError": {
+    "description": "Error message when crew update fails",
+    "type": "text",
+    "placeholders": {}
+  },
+  "loginError": "Erro de login",
+  "@loginError": {
+    "description": "Error message for login",
+    "type": "text",
+    "placeholders": {}
+  },
+  "videoLoadError": "Erro ao carregar vídeo",
+  "@videoLoadError": {
+    "description": "Error message when video fails to load",
+    "type": "text",
+    "placeholders": {}
+  },
+  "videoLoadSuccess": "Vídeo carregado com sucesso",
+  "@videoLoadSuccess": {
+    "description": "Success message when video loads",
+    "type": "text",
+    "placeholders": {}
+  },
+  "devilFruitSearchError": "Erro ao buscar Akuma no Mi: {error}",
+  "@devilFruitSearchError": {
+    "description": "Error message when devil fruit search fails",
+    "type": "text",
+    "placeholders": {
+      "error": {
+        "type": "String",
+        "example": "Erro de rede"
+      }
+    }
+  },
+  "noCustomCharactersFound": "Nenhum personagem customizado encontrado",
+  "@noCustomCharactersFound": {
+    "description": "Message when no custom characters are found",
+    "type": "text",
+    "placeholders": {}
+  },
+  "createFirstCustomCharacter": "Crie seu primeiro personagem customizado!",
+  "@createFirstCustomCharacter": {
+    "description": "Message encouraging user to create first custom character",
+    "type": "text",
+    "placeholders": {}
   }
 }

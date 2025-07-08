@@ -1,6 +1,3 @@
-// Developed by Randerson Mayllon
-// Copyright © 2022.
-
 import 'package:flutter/material.dart';
 
 class DefaultAppBar extends StatelessWidget implements PreferredSizeWidget {
@@ -26,7 +23,7 @@ class DefaultAppBar extends StatelessWidget implements PreferredSizeWidget {
               colors: <Color>[
                 Theme.of(context).colorScheme.secondary,
                 Theme.of(context).colorScheme.onSecondary,
-                Colors.white,
+                Theme.of(context).colorScheme.surface,
               ]),
         )),
         leading: leading,

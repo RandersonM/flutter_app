@@ -1,12 +1,9 @@
-// Developed by Randerson Mayllon
-// Copyright © 2022.
-
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import 'package:opfan/screens/calculator/calculator_screen.dart';
 import 'package:opfan/screens/calculator/widgets/calculator_button.dart';
-import 'package:opfan/screens/calculator/widgets/calculator_header.dart.dart';
+import 'package:opfan/screens/calculator/widgets/calculator_header.dart';
 import 'package:opfan/widgets/molecules/default_app_bar.dart'
     show DefaultAppBar;
 

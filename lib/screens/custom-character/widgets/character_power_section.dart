@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:opfan/l10n/app_localizations.dart';
 import 'package:opfan/core/models/one_piece/devil_fruit.dart';
-import '../../../widgets/atoms/custom_dropdown.dart';
+import '../../../widgets/atoms/devil_fruit_search_dropdown.dart';
 import '../../../widgets/atoms/custom_chip_selector.dart';
 
 class CharacterPowerSection extends StatelessWidget {
@@ -42,12 +42,11 @@ class CharacterPowerSection extends StatelessWidget {
           ),
         ),
         const SizedBox(height: 16),
-        CustomDropdown<DevilFruit>(
+        DevilFruitSearchDropdown(
           label: l10n.devilFruit,
           value: selectedDevilFruit,
           items:
               devilFruits.where((fruit) => fruit.romanName.isNotEmpty).toList(),
-          itemToString: (fruit) => fruit.romanName,
           onChanged: onDevilFruitChanged,
         ),
         CustomChipSelector(

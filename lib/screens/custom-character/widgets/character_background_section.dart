@@ -4,6 +4,7 @@ import 'package:opfan/core/models/one_piece/crew_model.dart';
 import '../../../widgets/atoms/custom_text_field.dart';
 import '../../../widgets/atoms/custom_dropdown.dart';
 import '../../../widgets/atoms/custom_chip_selector.dart';
+import '../../../widgets/molecules/ai_image_generator.dart';
 
 class CharacterBackgroundSection extends StatelessWidget {
   final TextEditingController bountyController;
@@ -21,6 +22,10 @@ class CharacterBackgroundSection extends StatelessWidget {
   final void Function(String?) onCrewChanged;
   final String? selectedCrewRole;
   final void Function(String?) onCrewRoleChanged;
+  final String? characterName;
+  final String? devilFruit;
+  final List<String>? haki;
+  final bool showAiGenerator;
 
   const CharacterBackgroundSection({
     Key? key,
@@ -39,6 +44,10 @@ class CharacterBackgroundSection extends StatelessWidget {
     required this.onCrewChanged,
     required this.selectedCrewRole,
     required this.onCrewRoleChanged,
+    this.characterName,
+    this.devilFruit,
+    this.haki,
+    this.showAiGenerator = true,
   }) : super(key: key);
 
   @override
@@ -76,6 +85,7 @@ class CharacterBackgroundSection extends StatelessWidget {
       'carpenter': l10n.carpenter,
       'archaeologist': l10n.archaeologist,
       'sharpshooter': l10n.sharpshooter,
+      'musician': l10n.musician,
     };
 
     final crewRoleMapping = {
@@ -154,6 +164,20 @@ class CharacterBackgroundSection extends StatelessWidget {
             return null;
           },
         ),
+        if (showAiGenerator) ...[
+          const SizedBox(height: 16),
+          AiImageGenerator(
+            characterName: characterName,
+            devilFruit: devilFruit,
+            haki: haki,
+            status: selectedStatus,
+            occupations: selectedOccupations,
+            onImageGenerated: (imageUrl) {
+              imageUrlController.text = imageUrl;
+            },
+          ),
+          const SizedBox(height: 16),
+        ],
         CustomTextField(
           label: l10n.imageUrl,
           hint: l10n.imageUrlHint,

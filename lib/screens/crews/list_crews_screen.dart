@@ -44,6 +44,7 @@ class _ListCrewsScreenContent extends StatelessWidget {
       body: CrewList(
         onCrewTap: (crew) => _onCrewTap(context, crew),
         onCrewEdit: (crew) => _onCrewEdit(context, crew),
+        onCrewDelete: (crew) => _onCrewDelete(context, crew),
       ), 
     );
   }
@@ -51,34 +52,48 @@ class _ListCrewsScreenContent extends StatelessWidget {
   Future<void> _navigateToCreateCrew(BuildContext context) async {
     final result = await Navigator.pushNamed(context, AppRoutes.createCrew);
     
-    // Se uma nova tripulação foi criada, recarregar a lista
-    if (result != null && result is Map<String, dynamic> && result['action'] == 'created') {
-      // Aguardar um pouco para garantir que os dados foram salvos
+    if (result != null &&
+        result is Map<String, dynamic> &&
+        result['action'] == 'created') {
       await Future.delayed(const Duration(milliseconds: 500));
-      // Recarregar a lista de tripulações
       if (context.mounted) {
         context.read<ListCrewsBloc>().add(LoadCrews());
       }
     }
   }
 
-  void _onCrewTap(BuildContext context, CrewModel crew) {
+  Future<void> _onCrewTap(BuildContext context, CrewModel crew) async {
+    final result = await Navigator.pushNamed(context, AppRoutes.crewDetails,
+        arguments: crew);
+
+    if (result != null &&
+        result is Map<String, dynamic> &&
+        result['action'] == 'deleted') {
+      await Future.delayed(const Duration(milliseconds: 500));
+      if (context.mounted) {
+        context.read<ListCrewsBloc>().add(LoadCrews());
+      }
+    }
+  }
+
+  void _onCrewEdit(BuildContext context, CrewModel crew) {
     final l10n = AppLocalizations.of(context)!;
-    // TODO: Implementar navegação para detalhes da tripulação
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
-        content: Text(l10n.viewingCrew(crew.name)),
+        content: Text(l10n.editingCrew(crew.name)),
         duration: const Duration(seconds: 2),
       ),
     );
   }
 
-  void _onCrewEdit(BuildContext context, CrewModel crew) {
-    final l10n = AppLocalizations.of(context)!;
-    // TODO: Implementar navegação para edição da tripulação
+  void _onCrewDelete(BuildContext context, CrewModel crew) {
+    context.read<ListCrewsBloc>().add(DeleteCrew(crew.id!));
+    context.read<ListCrewsBloc>().add(LoadCrews());
+    
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
-        content: Text(l10n.editingCrew(crew.name)),
+        content: Text('Tripulação "${crew.name}" excluída'),
+        backgroundColor: Colors.red,
         duration: const Duration(seconds: 2),
       ),
     );

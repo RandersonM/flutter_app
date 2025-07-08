@@ -47,6 +47,9 @@ class CharacterDisplayUtils {
         return l10n.archaeologist;
       case 'sharpshooter':
         return l10n.sharpshooter;
+      case 'vicecaptain':
+      case 'vice-captain':
+        return l10n.viceCaptain;
       default:
         return occupationKey;
     }

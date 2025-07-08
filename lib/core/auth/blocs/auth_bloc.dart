@@ -5,6 +5,8 @@ import 'dart:async';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:opfan/core/services/auth_service.dart';
+import 'package:opfan/core/middleware/user_name_middleware.dart';
+import 'package:opfan/core/auth/models/user_model.dart';
 import 'auth_event.dart';
 import 'auth_state.dart';
 
@@ -38,7 +40,8 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       final user = await _authService.checkAuthStatus();
 
       if (user != null) {
-        emit(AuthAuthenticated(user: user));
+        final processedUser = _processUserWithMiddleware(user);
+        emit(AuthAuthenticated(user: processedUser));
       } else {
         emit(const AuthUnauthenticated());
       }
@@ -71,7 +74,8 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       final user = await _authService.signInWithGoogle();
 
       if (user != null) {
-        emit(AuthAuthenticated(user: user, isFirstLogin: true));
+        final processedUser = _processUserWithMiddleware(user);
+        emit(AuthAuthenticated(user: processedUser, isFirstLogin: true));
       } else {
         emit(const AuthUnauthenticated());
       }
@@ -102,7 +106,8 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     Emitter<AuthState> emit,
   ) async {
     if (event.user != null) {
-      emit(AuthAuthenticated(user: event.user!));
+      final processedUser = _processUserWithMiddleware(event.user!);
+      emit(AuthAuthenticated(user: processedUser));
     } else {
       emit(const AuthUnauthenticated());
     }
@@ -160,7 +165,8 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       final user = await _authService.checkAuthStatus();
 
       if (user != null) {
-        emit(AuthAuthenticated(user: user));
+        final processedUser = _processUserWithMiddleware(user);
+        emit(AuthAuthenticated(user: processedUser));
       } else {
         emit(const AuthUnauthenticated());
       }
@@ -181,6 +187,18 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       debugPrint('AuthBloc: Error clearing cache - $e');
       emit(AuthError(message: 'Cache clear error: $e'));
     }
+  }
+
+  /// Processa o usuário aplicando o middleware de nome
+  UserModel _processUserWithMiddleware(UserModel user) {
+    final processedDisplayName =
+        UserNameMiddleware.processDisplayName(user.displayName);
+
+    if (processedDisplayName != user.displayName) {
+      return user.copyWith(displayName: processedDisplayName);
+    }
+
+    return user;
   }
 
   Map<String, dynamic> getServiceStatus() {

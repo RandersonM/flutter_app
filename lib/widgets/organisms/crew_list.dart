@@ -180,8 +180,7 @@ class _CrewListState extends State<CrewList> {
           ),
           ElevatedButton(
             onPressed: () {
-              context.read<ListCrewsBloc>().add(DeleteCrew(crew.id!));
-              context.read<ListCrewsBloc>().add(LoadCrews());
+              widget.onCrewDelete?.call(crew);
               Navigator.pop(context);
             },
             style: ElevatedButton.styleFrom(

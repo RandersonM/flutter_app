@@ -406,7 +406,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get clear => 'Clear';
 
   @override
-  String get clearFilters => 'Clear Filters';
+  String get clearFilters => 'Clear filters';
 
   @override
   String get noFruitFound => 'No fruit found';
@@ -453,7 +453,10 @@ class AppLocalizationsEn extends AppLocalizations {
   String get createCustomCharacter => 'Create character';
 
   @override
-  String get createCrew => 'Create new crew';
+  String get createCrew => 'Create Crew';
+
+  @override
+  String get crewBoatName => ' Boat name';
 
   @override
   String get crewRole => 'Crew Role';
@@ -530,4 +533,189 @@ class AppLocalizationsEn extends AppLocalizations {
   String editingCrew(String crewName) {
     return 'Editing crew: $crewName';
   }
+
+  @override
+  String get aiImageGeneration => 'AI Image Generation';
+
+  @override
+  String get aiImageGenerationSubtitle =>
+      'Generate a unique image for your character using AI';
+
+  @override
+  String get imagePrompt => 'Image Prompt';
+
+  @override
+  String get imagePromptHint => 'Describe how your character should look...';
+
+  @override
+  String get generateImage => 'Generate Image';
+
+  @override
+  String get generatingImage => 'Generating...';
+
+  @override
+  String get imageLoadError => 'Failed to load image';
+
+  @override
+  String get regenerateImage => 'Regenerate';
+
+  @override
+  String get useImage => 'Use Image';
+
+  @override
+  String get promptRequired => 'Please enter a prompt';
+
+  @override
+  String get imageGenerationError =>
+      'Failed to generate image. Please try again.';
+
+  @override
+  String get selectDevilFruit => 'Select Devil Fruit';
+
+  @override
+  String get selectDevilFruitPlaceholder => 'Select a Devil Fruit';
+
+  @override
+  String get searchDevilFruit => 'Search Devil Fruit...';
+
+  @override
+  String get noDevilFruitFound => 'No Devil Fruit found';
+
+  @override
+  String get filterBy => 'Filter by';
+
+  @override
+  String get crewTeam => 'Crew';
+
+  @override
+  String get filterByDevilFruit => 'Filter by Devil Fruit';
+
+  @override
+  String get filterByCrew => 'Filter by Crew';
+
+  @override
+  String get addTag => 'Add Tag';
+
+  @override
+  String get addMember => 'Add Member';
+
+  @override
+  String get noCharactersAvailable => 'No characters available to add';
+
+  @override
+  String get tagName => 'Tag name';
+
+  @override
+  String get tagNameHint => 'Ex: Pirates, Adventurers, etc.';
+
+  @override
+  String get crewName => 'Crew Name *';
+
+  @override
+  String get crewNameHint => 'Ex: Custom Mugiwara';
+
+  @override
+  String get descriptionHint => 'Tell us about your crew...';
+
+  @override
+  String get pirateFlagUrl => 'Pirate Flag URL';
+
+  @override
+  String get pirateFlagUrlHint => 'https://example.com/flag.jpg';
+
+  @override
+  String get shipImageUrl => 'Ship Image URL';
+
+  @override
+  String get shipImageUrlHint => 'https://example.com/ship.jpg';
+
+  @override
+  String get devilFruitName => 'Devil fruit name';
+
+  @override
+  String get devilFruitNameHint => 'Ex: Gomu Gomu no Mi';
+
+  @override
+  String get crewNameFilter => 'Crew name';
+
+  @override
+  String get crewNameFilterHint => 'Ex: Straw Hat Pirates';
+
+  @override
+  String get dateFormat => 'DD/MM/YYYY';
+
+  @override
+  String get numberFormat => '0';
+
+  @override
+  String get editProfileTapped => 'Edit Profile tapped';
+
+  @override
+  String get notificationsTapped => 'Notifications tapped';
+
+  @override
+  String get languageTapped => 'Language tapped';
+
+  @override
+  String get themeTapped => 'Theme tapped';
+
+  @override
+  String get helpSupportTapped => 'Help & Support tapped';
+
+  @override
+  String get aboutTapped => 'About tapped';
+
+  @override
+  String get characterDeleted => 'Character deleted successfully';
+
+  @override
+  String get crewCreated => 'Crew created successfully';
+
+  @override
+  String get crewCreationError => 'Error creating crew';
+
+  @override
+  String get crewDeleted => 'Crew deleted successfully';
+
+  @override
+  String get crewDeletionError => 'Error deleting crew';
+
+  @override
+  String get memberAdded => 'Member added successfully';
+
+  @override
+  String get memberAdditionError => 'Error adding member';
+
+  @override
+  String get memberRemoved => 'Member removed successfully';
+
+  @override
+  String get memberRemovalError => 'Error removing member';
+
+  @override
+  String get crewUpdated => 'Crew updated successfully';
+
+  @override
+  String get crewUpdateError => 'Error updating crew';
+
+  @override
+  String get loginError => 'Login error';
+
+  @override
+  String get videoLoadError => 'Error loading video';
+
+  @override
+  String get videoLoadSuccess => 'Video loaded successfully';
+
+  @override
+  String devilFruitSearchError(String error) {
+    return 'Error searching Devil Fruit: $error';
+  }
+
+  @override
+  String get noCustomCharactersFound => 'No custom characters found';
+
+  @override
+  String get createFirstCustomCharacter =>
+      'Create your first custom character!';
 }

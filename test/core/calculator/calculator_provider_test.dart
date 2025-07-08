@@ -1,6 +1,3 @@
-// Developed by Randerson Mayllon
-// Copyright © 2022.
-
 import 'package:flutter_test/flutter_test.dart';
 import 'package:opfan/core/calculator/calculator_provider.dart';
 

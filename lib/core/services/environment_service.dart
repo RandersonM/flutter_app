@@ -1,6 +1,3 @@
-// Developed by Randerson Mayllon
-// Copyright © 2022.
-
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 class EnvironmentService {
@@ -27,6 +24,17 @@ class EnvironmentService {
 
   String get devilFruitApiUrl => _getString(
       'DEVIL_FRUIT_API_URL', 'https://api.api-onepiece.com/v2/fruits/en');
+
+  String get huggingFaceBaseUrl => _getString(
+      'HUGGING_FACE_BASE_URL', 'https://api-inference.huggingface.co');
+
+  String get huggingFaceApiKey =>
+      _getString('HUGGING_FACE_API_KEY', 'dev_mode');
+
+  String get stabilityApiKey => _getString('STABILITY_API_KEY', 'dev_mode');
+
+  String get stabilityBaseUrl => _getString(
+      'STABILITY_BASE_URL', 'https://api.stability.ai/v1/generation');
 
   String get appName => _getString('APP_NAME', 'One Piece Simple App');
 
@@ -101,6 +109,7 @@ class EnvironmentService {
       'app_version': appVersion,
       'debug_mode': debugMode,
       'youtube_api_configured': youtubeApiKey.isNotEmpty,
+      'huggingface_api_configured': huggingFaceApiKey.isNotEmpty,
       'onepiece_api_url': onepieceApiUrl,
       'network_timeout': networkTimeout,
       'retry_count': retryCount,
