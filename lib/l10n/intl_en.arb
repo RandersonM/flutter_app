@@ -1117,6 +1117,12 @@
     "type": "text",
     "placeholders": {}
   },
+  "imageConfirmed": "Image Confirmed",
+  "@imageConfirmed": {
+    "description": "Button text when image is confirmed",
+    "type": "text",
+    "placeholders": {}
+  },
   "promptRequired": "Please enter a prompt",
   "@promptRequired": {
     "description": "Error message when prompt is required",

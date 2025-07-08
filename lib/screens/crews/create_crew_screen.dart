@@ -4,6 +4,7 @@ import 'package:opfan/screens/crews/blocs/index.dart';
 import 'package:opfan/utils/theme.dart';
 import 'package:opfan/utils/decorations/gradient.dart';
 import 'package:opfan/core/auth/blocs/index.dart';
+import 'package:opfan/core/services/crew_image_service.dart';
 
 class CreateCrewScreen extends StatefulWidget {
   const CreateCrewScreen({super.key});
@@ -16,16 +17,22 @@ class _CreateCrewScreenState extends State<CreateCrewScreen> {
   final _formKey = GlobalKey<FormState>();
   final _nameController = TextEditingController();
   final _descriptionController = TextEditingController();
-  final _jollyRogerUrlController = TextEditingController();
-  final _boatImageUrlController = TextEditingController();
+  final _jollyRogerPromptController = TextEditingController();
+  final _boatPromptController = TextEditingController();
   final List<String> _tags = [];
+  
+  final CrewImageService _crewImageService = CrewImageService();
+  String? _generatedJollyRogerUrl;
+  String? _generatedBoatUrl;
+  bool _isGeneratingJollyRoger = false;
+  bool _isGeneratingBoat = false;
 
   @override
   void dispose() {
     _nameController.dispose();
     _descriptionController.dispose();
-    _jollyRogerUrlController.dispose();
-    _boatImageUrlController.dispose();
+    _jollyRogerPromptController.dispose();
+    _boatPromptController.dispose();
     super.dispose();
   }
 
@@ -72,6 +79,112 @@ class _CreateCrewScreenState extends State<CreateCrewScreen> {
         ],
       ),
     );
+  }
+
+  Future<void> _generateJollyRoger() async {
+    if (_jollyRogerPromptController.text.trim().isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Digite um prompt para gerar a bandeira pirata'),
+          backgroundColor: Colors.orange,
+        ),
+      );
+      return;
+    }
+
+    setState(() {
+      _isGeneratingJollyRoger = true;
+    });
+
+    try {
+      final imageUrl = await _crewImageService.generateJollyRogerImage(
+        crewName: _nameController.text.isNotEmpty
+            ? _nameController.text
+            : 'Tripulação',
+        prompt: _jollyRogerPromptController.text.trim(),
+        tags: _tags,
+        description: _descriptionController.text.isNotEmpty
+            ? _descriptionController.text
+            : null,
+      );
+
+      setState(() {
+        _generatedJollyRogerUrl = imageUrl;
+        _isGeneratingJollyRoger = false;
+      });
+
+      if (imageUrl != null) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Bandeira pirata gerada com sucesso!'),
+            backgroundColor: Colors.green,
+          ),
+        );
+      }
+    } catch (e) {
+      setState(() {
+        _isGeneratingJollyRoger = false;
+      });
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Erro ao gerar bandeira: $e'),
+          backgroundColor: Theme.of(context).colorScheme.error,
+        ),
+      );
+    }
+  }
+
+  Future<void> _generateBoat() async {
+    if (_boatPromptController.text.trim().isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Digite um prompt para gerar o barco'),
+          backgroundColor: Colors.orange,
+        ),
+      );
+      return;
+    }
+
+    setState(() {
+      _isGeneratingBoat = true;
+    });
+
+    try {
+      final imageUrl = await _crewImageService.generateBoatImage(
+        crewName: _nameController.text.isNotEmpty
+            ? _nameController.text
+            : 'Tripulação',
+        prompt: _boatPromptController.text.trim(),
+        tags: _tags,
+        description: _descriptionController.text.isNotEmpty
+            ? _descriptionController.text
+            : null,
+      );
+
+      setState(() {
+        _generatedBoatUrl = imageUrl;
+        _isGeneratingBoat = false;
+      });
+
+      if (imageUrl != null) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Barco gerado com sucesso!'),
+            backgroundColor: Colors.green,
+          ),
+        );
+      }
+    } catch (e) {
+      setState(() {
+        _isGeneratingBoat = false;
+      });
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Erro ao gerar barco: $e'),
+          backgroundColor: Theme.of(context).colorScheme.error,
+        ),
+      );
+    }
   }
 
   @override
@@ -194,40 +307,7 @@ class _CreateCrewScreenState extends State<CreateCrewScreen> {
                           
                           const SizedBox(height: 16),
                           
-                          TextFormField(
-                            controller: _jollyRogerUrlController,
-                            decoration: InputDecoration(
-                              labelText: 'URL da Bandeira Pirata',
-                              hintText: 'https://exemplo.com/bandeira.jpg',
-                              prefixIcon: const Icon(Icons.image),
-                              border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(12),
-                              ),
-                              filled: true,
-                              fillColor: Colors.white.withValues(alpha: 0.1),
-                            ),
-                            style: TextStyle(color: AppColors.purple[600]!),
-                          ),
-                          
-                          const SizedBox(height: 16),
-                          
-                          TextFormField(
-                            controller: _boatImageUrlController,
-                            decoration: InputDecoration(
-                              labelText: 'URL da Imagem do Barco',
-                              hintText: 'https://exemplo.com/barco.jpg',
-                              prefixIcon: const Icon(Icons.directions_boat),
-                              border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(12),
-                              ),
-                              filled: true,
-                              fillColor: Colors.white.withValues(alpha: 0.1),
-                            ),
-                            style: TextStyle(color: AppColors.purple[600]!),
-                          ),
-                          
-                          const SizedBox(height: 16),
-                          
+                          // Seção de Tags
                           Container(
                             padding: const EdgeInsets.all(16),
                             decoration: BoxDecoration(
@@ -296,6 +376,228 @@ class _CreateCrewScreenState extends State<CreateCrewScreen> {
                           
                           const SizedBox(height: 24),
                           
+                          // Seção de Geração de Jolly Roger
+                          Container(
+                            padding: const EdgeInsets.all(16),
+                            decoration: BoxDecoration(
+                              color: AppColors.purple[200]!,
+                              borderRadius: BorderRadius.circular(12),
+                              border: Border.all(
+                                color: AppColors.purple[600]!,
+                              ),
+                            ),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                const Row(
+                                  children: [
+                                    Icon(
+                                      Icons.flag,
+                                      color: Colors.white,
+                                    ),
+                                    SizedBox(width: 8),
+                                    Text(
+                                      'Bandeira Pirata (Jolly Roger)',
+                                      style: TextStyle(
+                                        color: Colors.white,
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.w500,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                const SizedBox(height: 12),
+                                TextFormField(
+                                  controller: _jollyRogerPromptController,
+                                  decoration: InputDecoration(
+                                    labelText: 'Prompt para IA',
+                                    hintText:
+                                        'Ex: caveira com espadas cruzadas, bandeira negra',
+                                    border: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(8),
+                                    ),
+                                    filled: true,
+                                    fillColor:
+                                        Colors.white.withValues(alpha: 0.1),
+                                  ),
+                                  style:
+                                      TextStyle(color: AppColors.purple[600]!),
+                                ),
+                                const SizedBox(height: 12),
+                                Row(
+                                  children: [
+                                    Expanded(
+                                      child: ElevatedButton.icon(
+                                        onPressed: _isGeneratingJollyRoger
+                                            ? null
+                                            : _generateJollyRoger,
+                                        icon: _isGeneratingJollyRoger
+                                            ? const SizedBox(
+                                                width: 16,
+                                                height: 16,
+                                                child:
+                                                    CircularProgressIndicator(
+                                                  strokeWidth: 2,
+                                                  valueColor:
+                                                      AlwaysStoppedAnimation<
+                                                          Color>(Colors.white),
+                                                ),
+                                              )
+                                            : const Icon(Icons.auto_awesome),
+                                        label: Text(_isGeneratingJollyRoger
+                                            ? 'Gerando...'
+                                            : 'Gerar Bandeira'),
+                                        style: ElevatedButton.styleFrom(
+                                          backgroundColor:
+                                              AppColors.purple[500],
+                                          foregroundColor: Colors.white,
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                if (_generatedJollyRogerUrl != null) ...[
+                                  const SizedBox(height: 12),
+                                  Container(
+                                    height: 120,
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(8),
+                                      border: Border.all(
+                                          color: AppColors.purple[600]!),
+                                    ),
+                                    child: ClipRRect(
+                                      borderRadius: BorderRadius.circular(8),
+                                      child: Image.network(
+                                        _generatedJollyRogerUrl!,
+                                        fit: BoxFit.cover,
+                                        errorBuilder:
+                                            (context, error, stackTrace) {
+                                          return Container(
+                                            color: Colors.grey[300],
+                                            child: const Icon(Icons.error),
+                                          );
+                                        },
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ],
+                            ),
+                          ),
+
+                          const SizedBox(height: 16),
+
+                          // Seção de Geração de Barco
+                          Container(
+                            padding: const EdgeInsets.all(16),
+                            decoration: BoxDecoration(
+                              color: AppColors.purple[200]!,
+                              borderRadius: BorderRadius.circular(12),
+                              border: Border.all(
+                                color: AppColors.purple[600]!,
+                              ),
+                            ),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Row(
+                                  children: [
+                                    const Icon(
+                                      Icons.directions_boat,
+                                      color: Colors.white,
+                                    ),
+                                    const SizedBox(width: 8),
+                                    const Text(
+                                      'Barco da Tripulação',
+                                      style: TextStyle(
+                                        color: Colors.white,
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.w500,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                const SizedBox(height: 12),
+                                TextFormField(
+                                  controller: _boatPromptController,
+                                  decoration: InputDecoration(
+                                    labelText: 'Prompt para IA',
+                                    hintText:
+                                        'Ex: navio pirata de madeira com velas pretas',
+                                    border: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(8),
+                                    ),
+                                    filled: true,
+                                    fillColor:
+                                        Colors.white.withValues(alpha: 0.1),
+                                  ),
+                                  style:
+                                      TextStyle(color: AppColors.purple[600]!),
+                                ),
+                                const SizedBox(height: 12),
+                                Row(
+                                  children: [
+                                    Expanded(
+                                      child: ElevatedButton.icon(
+                                        onPressed: _isGeneratingBoat
+                                            ? null
+                                            : _generateBoat,
+                                        icon: _isGeneratingBoat
+                                            ? const SizedBox(
+                                                width: 16,
+                                                height: 16,
+                                                child:
+                                                    CircularProgressIndicator(
+                                                  strokeWidth: 2,
+                                                  valueColor:
+                                                      AlwaysStoppedAnimation<
+                                                          Color>(Colors.white),
+                                                ),
+                                              )
+                                            : const Icon(Icons.auto_awesome),
+                                        label: Text(_isGeneratingBoat
+                                            ? 'Gerando...'
+                                            : 'Gerar Barco'),
+                                        style: ElevatedButton.styleFrom(
+                                          backgroundColor:
+                                              AppColors.purple[500],
+                                          foregroundColor: Colors.white,
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                if (_generatedBoatUrl != null) ...[
+                                  const SizedBox(height: 12),
+                                  Container(
+                                    height: 120,
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(8),
+                                      border: Border.all(
+                                          color: AppColors.purple[600]!),
+                                    ),
+                                    child: ClipRRect(
+                                      borderRadius: BorderRadius.circular(8),
+                                      child: Image.network(
+                                        _generatedBoatUrl!,
+                                        fit: BoxFit.cover,
+                                        errorBuilder:
+                                            (context, error, stackTrace) {
+                                          return Container(
+                                            color: Colors.grey[300],
+                                            child: const Icon(Icons.error),
+                                          );
+                                        },
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ],
+                            ),
+                          ),
+
+                          const SizedBox(height: 24),
+                          
                           Container(
                             padding: const EdgeInsets.all(16),
                             decoration: BoxDecoration(
@@ -314,8 +616,8 @@ class _CreateCrewScreenState extends State<CreateCrewScreen> {
                                 const SizedBox(width: 12),
                                 Expanded(
                                   child: Text(
-                                    'Você pode adicionar membros à tripulação depois de criá-la. '
-                                    'Capitão e vice-capitão serão definidos quando os personagens forem adicionados.',
+                                    'Use prompts descritivos para gerar imagens únicas da sua tripulação. '
+                                    'As imagens geradas serão salvas automaticamente.',
                                     style: TextStyle(
                                       color: AppColors.purple[400]!,
                                       fontSize: 14,
@@ -341,12 +643,10 @@ class _CreateCrewScreenState extends State<CreateCrewScreen> {
                                                   description: _descriptionController.text.isEmpty 
                                                       ? null 
                                                       : _descriptionController.text,
-                                                  jollyRogerUrl: _jollyRogerUrlController.text.isEmpty 
-                                                      ? null 
-                                                      : _jollyRogerUrlController.text,
-                                                  boatImageUrl: _boatImageUrlController.text.isEmpty 
-                                                      ? null 
-                                                      : _boatImageUrlController.text,
+                                                  jollyRogerUrl:
+                                                      _generatedJollyRogerUrl,
+                                                  boatImageUrl:
+                                                      _generatedBoatUrl,
                                                   tags: _tags,
                                                 ),
                                               );

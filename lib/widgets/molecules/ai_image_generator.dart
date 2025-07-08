@@ -12,6 +12,7 @@ class AiImageGenerator extends StatefulWidget {
   final List<String>? occupations;
   final Function(String) onImageGenerated;
   final bool isLoading;
+  final String? currentImageUrl;
 
   const AiImageGenerator({
     Key? key,
@@ -23,6 +24,7 @@ class AiImageGenerator extends StatefulWidget {
     this.occupations,
     required this.onImageGenerated,
     this.isLoading = false,
+    this.currentImageUrl,
   }) : super(key: key);
 
   @override
@@ -36,11 +38,35 @@ class _AiImageGeneratorState extends State<AiImageGenerator> {
   String? _generatedImageUrl;
   bool _isGenerating = false;
   String? _errorMessage;
+  bool _isImageConfirmed = false;
 
   @override
   void initState() {
     super.initState();
     _promptController.text = widget.initialPrompt ?? '';
+    _checkImageConfirmation();
+  }
+
+  @override
+  void didUpdateWidget(AiImageGenerator oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.currentImageUrl != widget.currentImageUrl) {
+      _checkImageConfirmation();
+    }
+  }
+
+  void _checkImageConfirmation() {
+    if (widget.currentImageUrl != null &&
+        _generatedImageUrl != null &&
+        widget.currentImageUrl == _generatedImageUrl) {
+      setState(() {
+        _isImageConfirmed = true;
+      });
+    } else {
+      setState(() {
+        _isImageConfirmed = false;
+      });
+    }
   }
 
   @override
@@ -154,10 +180,16 @@ class _AiImageGeneratorState extends State<AiImageGenerator> {
                   onPressed: () {
                     if (_generatedImageUrl != null) {
                       widget.onImageGenerated(_generatedImageUrl!);
+                      setState(() {
+                        _isImageConfirmed = true;
+                      });
                     }
                   },
-                  icon: const Icon(Icons.check),
-                  label: Text(l10n.useImage),
+                  icon: _isImageConfirmed
+                      ? const Icon(Icons.check)
+                      : const Icon(Icons.pending),
+                  label: Text(
+                      _isImageConfirmed ? l10n.imageConfirmed : l10n.useImage),
                 ),
               ),
             ],
@@ -222,6 +254,7 @@ class _AiImageGeneratorState extends State<AiImageGenerator> {
     setState(() {
       _isGenerating = true;
       _errorMessage = null;
+      _isImageConfirmed = false;
     });
 
     try {

@@ -563,6 +563,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get useImage => 'Use Image';
 
   @override
+  String get imageConfirmed => 'Image Confirmed';
+
+  @override
   String get promptRequired => 'Please enter a prompt';
 
   @override

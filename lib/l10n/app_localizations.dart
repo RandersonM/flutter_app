@@ -1100,6 +1100,12 @@ abstract class AppLocalizations {
   /// **'Use Image'**
   String get useImage;
 
+  /// Button text when image is confirmed
+  ///
+  /// In en, this message translates to:
+  /// **'Image Confirmed'**
+  String get imageConfirmed;
+
   /// Error message when prompt is required
   ///
   /// In en, this message translates to:

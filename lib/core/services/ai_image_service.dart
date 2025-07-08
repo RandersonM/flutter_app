@@ -71,7 +71,6 @@ class AiImageService {
       final enhancedPrompt = _buildEnhancedPrompt(
         characterName: characterName,
         prompt: prompt,
-        devilFruit: devilFruit,
         haki: haki,
         status: status,
         occupations: occupations,
@@ -150,15 +149,6 @@ class AiImageService {
       'character name: $characterName',
     ];
 
-    if (devilFruit != null && devilFruit.isNotEmpty) {
-      promptParts.add('devil fruit user: $devilFruit');
-    }
-
-    if (haki != null && haki.isNotEmpty) {
-      final hakiTypes = haki.join(', ');
-      promptParts.add('haki types: $hakiTypes');
-    }
-
     if (status != null && status.isNotEmpty) {
       promptParts.add('status: $status');
     }
@@ -168,7 +158,6 @@ class AiImageService {
       promptParts.add('occupations: $occupationTypes');
     }
 
-    // Adicionar elementos visuais do One Piece
     promptParts.addAll([
       'anime style',
       'One Piece universe',
@@ -183,11 +172,7 @@ class AiImageService {
   }
 
   Future<String> _uploadImageToServer(Uint8List imageData) async {
-    // Por enquanto, vamos usar um serviço de upload temporário
-    // Em produção, você pode usar Imgur, Cloudinary, ou seu próprio servidor
-    
     try {
-      // Usar Imgur API para upload (gratuito)
       final uploadDio = Dio();
       final formData = FormData.fromMap({
         'image': base64Encode(imageData),
@@ -199,7 +184,7 @@ class AiImageService {
         data: formData,
         options: Options(
           headers: {
-            'Authorization': 'Client-ID 546c25a59c58ad7', // Imgur Client ID público
+            'Authorization': 'Client-ID 546c25a59c58ad7', 
           },
         ),
       );
@@ -211,7 +196,6 @@ class AiImageService {
       debugPrint('AI Image Service: Failed to upload image - $e');
     }
     
-    // Fallback: converter para data URL
     return 'data:image/png;base64,${base64Encode(imageData)}';
   }
 
@@ -241,7 +225,6 @@ class AiImageService {
       ['FF4500', 'FFFFFF'], // Laranja-avermelhado - Agressivo
     ];
     
-    // Escolher cor baseada no prompt
     int colorIndex = 0;
     final promptLower = prompt.toLowerCase();
     
