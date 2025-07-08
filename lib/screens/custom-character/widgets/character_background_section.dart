@@ -172,6 +172,7 @@ class CharacterBackgroundSection extends StatelessWidget {
             haki: haki,
             status: selectedStatus,
             occupations: selectedOccupations,
+            currentImageUrl: imageUrlController.text,
             onImageGenerated: (imageUrl) {
               imageUrlController.text = imageUrl;
             },

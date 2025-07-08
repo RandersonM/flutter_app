@@ -163,7 +163,7 @@ class AppLocalizationsPt extends AppLocalizations {
   String get nickname => 'Alcunha';
 
   @override
-  String get nicknameHint => 'Ex: Luffy, Chapéu de Palha';
+  String get nicknameHint => 'Ex: Chapéu de Palha';
 
   @override
   String get age => 'Idade';
@@ -562,6 +562,9 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get useImage => 'Usar Imagem';
+
+  @override
+  String get imageConfirmed => 'Imagem Confirmada';
 
   @override
   String get promptRequired => 'Por favor, insira um prompt';

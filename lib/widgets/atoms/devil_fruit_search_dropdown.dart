@@ -90,7 +90,7 @@ class _DevilFruitSearchDropdownState extends State<DevilFruitSearchDropdown> {
                         ? _buildSelectedDevilFruitItem(widget.value!)
                         : Text(
                             AppLocalizations.of(context)!.selectDevilFruitPlaceholder,
-                            style: const TextStyle(color: Colors.grey),
+                            
                           ),
                   ),
                   const Icon(Icons.arrow_drop_down),
