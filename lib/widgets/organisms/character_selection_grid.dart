@@ -3,7 +3,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:opfan/core/models/one_piece/character_model.dart';
+import 'package:opfan/core/models/one_piece/custom_character_model.dart';
 import 'package:opfan/screens/one_piece/blocs/search_cubit.dart';
 
 import 'package:opfan/core/services/service_locator.dart';
@@ -16,7 +16,7 @@ class CharacterSelectionGrid extends StatefulWidget {
     required this.onCharacterSelected,
   });
 
-  final Function(CharacterModel) onCharacterSelected;
+  final Function(CustomCharacterModel) onCharacterSelected;
 
   @override
   State<CharacterSelectionGrid> createState() => _CharacterSelectionGridState();
@@ -161,7 +161,7 @@ class _CharacterSelectionGridState extends State<CharacterSelectionGrid> {
     );
   }
 
-  Widget _buildSelectableCharacterCard(CharacterModel character) {
+  Widget _buildSelectableCharacterCard(CustomCharacterModel character) {
     return Card(
       shape: RoundedRectangleBorder(
         side: const BorderSide(color: Colors.white),

@@ -3,7 +3,7 @@
 
 import 'package:hive/hive.dart';
 import 'package:opfan/core/models/one_piece/featured_character.dart';
-import 'package:opfan/core/models/one_piece/character_model.dart';
+import 'package:opfan/core/models/one_piece/custom_character_model.dart';
 import 'package:opfan/core/services/characters_backend_service.dart';
 
 class FeaturedCharacterService {
@@ -22,7 +22,7 @@ class FeaturedCharacterService {
   
   }
 
-  Future<CharacterModel> getTodaysFeaturedCharacter() async {
+  Future<CustomCharacterModel> getTodaysFeaturedCharacter() async {
     final today = _getTodayString();
     final currentCharacter = _box.get(_currentCharacterKey);
 
@@ -37,7 +37,7 @@ class FeaturedCharacterService {
     return newCharacter;
   }
 
-  Future<CharacterModel> getRandomCharacter() async {
+  Future<CustomCharacterModel> getRandomCharacter() async {
     final character = await _charactersService.fetchRandomCharacter();
 
     await _saveFeaturedCharacter(character, _getTodayString(), true);
@@ -45,12 +45,13 @@ class FeaturedCharacterService {
     return character;
   }
 
-  Future<void> saveSelectedCharacter(CharacterModel character) async {
+  Future<void> saveSelectedCharacter(CustomCharacterModel character) async {
     await _saveFeaturedCharacter(character, _getTodayString(), true);
   }
 
   Future<void> _saveFeaturedCharacter(
-      CharacterModel character, String date, bool isManuallySelected) async {
+      CustomCharacterModel character,
+      String date, bool isManuallySelected) async {
     final featuredCharacter = FeaturedCharacter.fromCharacter(
       character,
       date,

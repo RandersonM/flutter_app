@@ -72,20 +72,16 @@ class CharacterBackgroundSection extends StatelessWidget {
 
     final occupationMapping = {
       'captain': l10n.captain,
-      'vice-captain': l10n.viceCaptain,
-      'admiral': l10n.admiral,
-      'viceAdmiral': l10n.viceAdmiral,
-      'revolutionary': l10n.revolutionary,
-      'merchant': l10n.merchant,
-      'doctor': l10n.doctor,
+      'viceCaptain': l10n.viceCaptain,
       'navigator': l10n.navigator,
       'cook': l10n.cook,
+      'doctor': l10n.doctor,
       'sniper': l10n.sniper,
-      'swordsman': l10n.swordsman,
       'carpenter': l10n.carpenter,
       'archaeologist': l10n.archaeologist,
-      'sharpshooter': l10n.sharpshooter,
       'musician': l10n.musician,
+      'helmsman': l10n.helmsman,
+      'boatswain': l10n.boatswain,
     };
 
     final crewRoleMapping = {

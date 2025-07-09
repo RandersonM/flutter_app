@@ -614,6 +614,12 @@
     "type": "text",
     "placeholders": {}
   },
+  "noDevilFruit": "No Devil Fruit",
+  "@noDevilFruit": {
+    "description": "Label for devil fruit",
+    "type": "text",
+    "placeholders": {}
+  },
   "crew": "{count, plural, =0 {Crew} =1 {Crew} other {Crews}}",
   "@crew": {
     "description": "Label for crew with pluralization",
@@ -1449,6 +1455,120 @@
   "createFirstCustomCharacter": "Create your first custom character!",
   "@createFirstCustomCharacter": {
     "description": "Message encouraging user to create first custom character",
+    "type": "text",
+    "placeholders": {}
+  },
+  "dualWielder": "Dual Wielder",
+  "@dualWielder": {
+    "description": "Fighting type option for dual wielder",
+    "type": "text",
+    "placeholders": {}
+  },
+  "fighter": "Fighter",
+  "@fighter": {
+    "description": "Fighting type option for fighter",
+    "type": "text",
+    "placeholders": {}
+  },
+  "taekwondo": "Taekwondo",
+  "@taekwondo": {
+    "description": "Fighting type option for taekwondo",
+    "type": "text",
+    "placeholders": {}
+  },
+  "kicker": "Kicker",
+  "@kicker": {
+    "description": "Fighting type option for kicker",
+    "type": "text",
+    "placeholders": {}
+  },
+  "archer": "Archer",
+  "@archer": {
+    "description": "Fighting type option for archer",
+    "type": "text",
+    "placeholders": {}
+  },
+  "staff": "Staff",
+  "@staff": {
+    "description": "Fighting type option for staff wielder",
+    "type": "text",
+    "placeholders": {}
+  },
+  "other": "Other",
+  "@other": {
+    "description": "Fighting type option for other",
+    "type": "text",
+    "placeholders": {}
+  },
+  "race": "Race",
+  "@race": {
+    "description": "Label for race selection",
+    "type": "text",
+    "placeholders": {}
+  },
+  "human": "Human",
+  "@human": {
+    "description": "Race option for human",
+    "type": "text",
+    "placeholders": {}
+  },
+  "giant": "Giant",
+  "@giant": {
+    "description": "Race option for giant",
+    "type": "text",
+    "placeholders": {}
+  },
+  "fishman": "Fishman",
+  "@fishman": {
+    "description": "Race option for fishman",
+    "type": "text",
+    "placeholders": {}
+  },
+  "mermaid": "Mermaid",
+  "@mermaid": {
+    "description": "Race option for mermaid",
+    "type": "text",
+    "placeholders": {}
+  },
+  "mink": "Mink",
+  "@mink": {
+    "description": "Race option for mink",
+    "type": "text",
+    "placeholders": {}
+  },
+  "lunarian": "Lunarian",
+  "@lunarian": {
+    "description": "Race option for lunarian",
+    "type": "text",
+    "placeholders": {}
+  },
+  "buccaneer": "Buccaneer",
+  "@buccaneer": {
+    "description": "Race option for buccaneer",
+    "type": "text",
+    "placeholders": {}
+  },
+  "oni": "Oni",
+  "@oni": {
+    "description": "Race option for oni",
+    "type": "text",
+    "placeholders": {}
+  },
+  "skypiean": "Skypiean",
+  "@skypiean": {
+    "description": "Race option for skypiean",
+    "type": "text",
+    "placeholders": {}
+  },
+  "longarm": "Longarm",
+  "@longarm": {
+    "description": "Race option for longarm",
+    "type": "text",
+    "placeholders": {}
+  },
+  "tonatta": "Tonatta",
+  "@tonatta": {
+    "description": "Race option for tonatta",
     "type": "text",
     "placeholders": {}
   }

@@ -328,6 +328,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get devilFruit => 'Devil Fruit';
 
   @override
+  String get noDevilFruit => 'No Devil Fruit';
+
+  @override
   String crew(num count) {
     String _temp0 = intl.Intl.pluralLogic(
       count,
@@ -721,4 +724,61 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get createFirstCustomCharacter =>
       'Create your first custom character!';
+
+  @override
+  String get dualWielder => 'Dual Wielder';
+
+  @override
+  String get fighter => 'Fighter';
+
+  @override
+  String get taekwondo => 'Taekwondo';
+
+  @override
+  String get kicker => 'Kicker';
+
+  @override
+  String get archer => 'Archer';
+
+  @override
+  String get staff => 'Staff';
+
+  @override
+  String get other => 'Other';
+
+  @override
+  String get race => 'Race';
+
+  @override
+  String get human => 'Human';
+
+  @override
+  String get giant => 'Giant';
+
+  @override
+  String get fishman => 'Fishman';
+
+  @override
+  String get mermaid => 'Mermaid';
+
+  @override
+  String get mink => 'Mink';
+
+  @override
+  String get lunarian => 'Lunarian';
+
+  @override
+  String get buccaneer => 'Buccaneer';
+
+  @override
+  String get oni => 'Oni';
+
+  @override
+  String get skypiean => 'Skypiean';
+
+  @override
+  String get longarm => 'Longarm';
+
+  @override
+  String get tonatta => 'Tonatta';
 }

@@ -64,7 +64,7 @@ class _CustomCharacterListScreenContent extends StatelessWidget {
 
   void _onCharacterTap(BuildContext context, CustomCharacterModel character) =>
       Navigator.pushNamed(context, AppRoutes.characterDetails,
-          arguments: character.toCharacterModel());
+          arguments: character);
 
   void _onCharacterEdit(BuildContext context, CustomCharacterModel character) {
     final l10n = AppLocalizations.of(context)!;

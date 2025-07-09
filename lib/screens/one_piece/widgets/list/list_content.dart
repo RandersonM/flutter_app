@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:opfan/screens/one_piece/blocs/characters_cubit.dart';
-import 'package:opfan/core/models/one_piece/character_model.dart';
+import 'package:opfan/core/models/one_piece/custom_character_model.dart';
 import 'package:opfan/screens/one_piece/widgets/list/character_grid_list.dart';
 
 class ListContent extends StatefulWidget {
@@ -55,7 +55,7 @@ class _ListContentState extends State<ListContent> {
           return const Center(child: CircularProgressIndicator());
         }
 
-        List<CharacterModel> characters = [];
+        List<CustomCharacterModel> characters = [];
         bool isLoadingMore = false;
 
         if (state is CharactersLoading) {

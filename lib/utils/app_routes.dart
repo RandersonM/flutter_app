@@ -4,7 +4,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:opfan/core/auth/blocs/index.dart';
-import 'package:opfan/core/models/one_piece/character_model.dart';
+import 'package:opfan/core/models/one_piece/custom_character_model.dart';
 import 'package:opfan/core/models/one_piece/crew_model.dart';
 import 'package:opfan/core/models/youtube_video_model.dart';
 import 'package:opfan/screens/calculator/calculator_screen.dart';
@@ -112,11 +112,11 @@ class AppRoutes {
             builder: (_) => YouTubePlayerScreen(video: video),
             settings: settings);
       case characterSelection:
-        return MaterialPageRoute<CharacterModel>(
+        return MaterialPageRoute<CustomCharacterModel>(
             builder: (_) => const CharacterSelectionScreen(),
             settings: settings);
       case characterDetails:
-        final character = settings.arguments as CharacterModel;
+        final character = settings.arguments as CustomCharacterModel;
         return MaterialPageRoute<dynamic>(
             builder: (_) => CharacterDetailsScreen(character: character),
             settings: settings);

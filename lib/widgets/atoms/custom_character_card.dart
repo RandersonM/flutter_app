@@ -108,6 +108,7 @@ class CustomCharacterCard extends StatelessWidget {
                               ),
                         ),
                       ),
+                  
                   ],
                 ),
               ),

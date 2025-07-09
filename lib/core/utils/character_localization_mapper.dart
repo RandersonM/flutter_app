@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:opfan/l10n/app_localizations.dart';
 
 class CharacterLocalizationMapper {
@@ -51,6 +52,39 @@ class CharacterLocalizationMapper {
     if (localizedAffiliation == l10n.pirate) return 'pirate';
     if (localizedAffiliation == l10n.pirateAlliance) return 'pirate alliance';
     return localizedAffiliation.toLowerCase(); 
+  }
+
+  static List<String> getFightingTypes() {
+    return [
+      'devil_fruit',
+      'swordsman',
+      'dual-wielder',
+      'sharpshooter',
+      'sniper',
+      'fighter',
+      'taekwondo',
+      'kicker',
+      'archer',
+      'staff',
+      'other',
+    ];
+  }
+
+  static String getFightingTypeLabel(String type, AppLocalizations l10n) {
+    final typeMapping = {
+      'devil_fruit': l10n.devilFruit,
+      'swordsman': l10n.swordsman,
+      'dual-wielder': l10n.dualWielder,
+      'sharpshooter': l10n.sniper,
+      'sniper': l10n.sniper,
+      'fighter': l10n.fighter,
+      'taekwondo': l10n.taekwondo,
+      'kicker': l10n.kicker,
+      'archer': l10n.archer,
+      'staff': l10n.staff,
+      'other': l10n.other,
+    };
+    return typeMapping[type] ?? type;
   }
 
   static String mapOccupationToLocalized(String occupation, AppLocalizations l10n) {
@@ -165,11 +199,60 @@ class CharacterLocalizationMapper {
     ];
   }
 
+  static List<String> getRaces() {
+    return [
+      'human',
+      'giant',
+      'fishman',
+      'mermaid',
+      'mink',
+      'lunarian',
+      'buccaneer',
+      'oni',
+      'skypiean',
+      'longarm',
+      'tonatta',
+    ];
+  }
+
+  static String getRaceLabel(String race, AppLocalizations l10n) {
+    final raceMapping = {
+      'human': l10n.human,
+      'giant': l10n.giant,
+      'fishman': l10n.fishman,
+      'mermaid': l10n.mermaid,
+      'mink': l10n.mink,
+      'lunarian': l10n.lunarian,
+      'buccaneer': l10n.buccaneer,
+      'oni': l10n.oni,
+      'skypiean': l10n.skypiean,
+      'longarm': l10n.longarm,
+      'tonatta': l10n.tonatta,
+    };
+    return raceMapping[race] ?? race;
+  }
+
   static List<String> getLocalizedHakiOptions(AppLocalizations l10n) {
     return [
       l10n.haoshokuHaki,
       l10n.busoshokuHaki,
       l10n.kenbunshokuHaki,
+    ];
+  }
+
+  static List<String> getLocalizedRaceOptions(AppLocalizations l10n) {
+    return [
+      l10n.human,
+      l10n.giant,
+      l10n.fishman,
+      l10n.mermaid,
+      l10n.mink,
+      l10n.lunarian,
+      l10n.buccaneer,
+      l10n.oni,
+      l10n.skypiean,
+      l10n.longarm,
+      l10n.tonatta,
     ];
   }
 } 

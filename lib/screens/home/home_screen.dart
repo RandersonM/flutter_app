@@ -4,7 +4,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:opfan/core/models/one_piece/character_model.dart';
+import 'package:opfan/core/models/one_piece/custom_character_model.dart';
 import 'package:opfan/core/services/service_locator.dart';
 import 'package:opfan/l10n/app_localizations.dart';
 import 'package:opfan/widgets/molecules/statistics_grid.dart';
@@ -76,7 +76,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                   : () async {
                                       final selectedCharacter =
                                           await Navigator
-                                          .pushNamed<CharacterModel>(
+                                          .pushNamed<CustomCharacterModel>(
                                         context,
                                         AppRoutes.characterSelection,
                                       );
@@ -218,11 +218,11 @@ class _HomeScreenState extends State<HomeScreen> {
             label:
                 character.devilFruit != null && character.devilFruit!.isNotEmpty
                     ? AppLocalizations.of(context)!.devilFruit
-                    : AppLocalizations.of(context)!.status,
+                    : AppLocalizations.of(context)!.noDevilFruit,
             value:
                 character.devilFruit != null && character.devilFruit!.isNotEmpty
                     ? character.devilFruit!
-                    : character.status ?? 'Unknown',
+                    : 'Unknown',
             svgPath:
                 character.devilFruit != null && character.devilFruit!.isNotEmpty
                     ? 'assets/svg/gomu-gomu.svg'
@@ -230,7 +230,7 @@ class _HomeScreenState extends State<HomeScreen> {
             icon:
                 character.devilFruit != null && character.devilFruit!.isNotEmpty
                     ? null
-                    : Icons.flag,
+                    : FontAwesomeIcons.personSwimming,
           ),
           StatisticData(
             label: AppLocalizations.of(context)!.signo,

@@ -113,7 +113,7 @@ class _CreateCrewScreenState extends State<CreateCrewScreen> {
         _isGeneratingJollyRoger = false;
       });
 
-      if (imageUrl != null) {
+      if (imageUrl != null && mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
             content: Text('Bandeira pirata gerada com sucesso!'),
@@ -125,12 +125,14 @@ class _CreateCrewScreenState extends State<CreateCrewScreen> {
       setState(() {
         _isGeneratingJollyRoger = false;
       });
+      if (mounted) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text('Erro ao gerar bandeira: $e'),
-          backgroundColor: Theme.of(context).colorScheme.error,
-        ),
-      );
+            backgroundColor: Theme.of(context).colorScheme.error,
+          ),
+        );
+      }
     }
   }
 
@@ -166,7 +168,7 @@ class _CreateCrewScreenState extends State<CreateCrewScreen> {
         _isGeneratingBoat = false;
       });
 
-      if (imageUrl != null) {
+      if (imageUrl != null && mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
             content: Text('Barco gerado com sucesso!'),
@@ -178,12 +180,14 @@ class _CreateCrewScreenState extends State<CreateCrewScreen> {
       setState(() {
         _isGeneratingBoat = false;
       });
+      if (mounted) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text('Erro ao gerar barco: $e'),
           backgroundColor: Theme.of(context).colorScheme.error,
         ),
       );
+      }
     }
   }
 
@@ -500,14 +504,14 @@ class _CreateCrewScreenState extends State<CreateCrewScreen> {
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Row(
+                                const Row(
                                   children: [
-                                    const Icon(
+                                    Icon(
                                       Icons.directions_boat,
                                       color: Colors.white,
                                     ),
-                                    const SizedBox(width: 8),
-                                    const Text(
+                                    SizedBox(width: 8),
+                                    Text(
                                       'Barco da Tripulação',
                                       style: TextStyle(
                                         color: Colors.white,

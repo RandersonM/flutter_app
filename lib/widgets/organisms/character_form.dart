@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:opfan/core/models/one_piece/devil_fruit.dart';
 import 'package:opfan/core/models/one_piece/crew_model.dart';
+import 'package:opfan/core/models/one_piece/fighting_style_model.dart';
 import 'package:opfan/utils/constants.dart';
 import '../../screens/custom-character/widgets/character_basic_info_section.dart';
 import '../../screens/custom-character/widgets/character_power_section.dart';
 import '../../screens/custom-character/widgets/character_background_section.dart';
 import '../../screens/custom-character/widgets/character_description_section.dart';
+import '../../screens/custom-character/widgets/character_fighting_style_section.dart';
+import '../../screens/custom-character/widgets/character_race_section.dart';
 
 class CharacterForm extends StatelessWidget {
   final GlobalKey<FormState> formKey;
@@ -22,6 +25,7 @@ class CharacterForm extends StatelessWidget {
   final List<String> selectedHaki;
   final List<String> selectedAffiliations;
   final List<String> selectedOccupations;
+  final FightingStyleModel? fightingStyle;
   final void Function(String?) onStatusChanged;
   final void Function(String) onHakiSelected;
   final void Function(String) onHakiDeselected;
@@ -29,11 +33,14 @@ class CharacterForm extends StatelessWidget {
   final void Function(String) onAffiliationDeselected;
   final void Function(String) onOccupationSelected;
   final void Function(String) onOccupationDeselected;
+  final void Function(FightingStyleModel?) onFightingStyleChanged;
   final List<CrewModel> availableCrews;
   final String? selectedCrewId;
   final void Function(String?) onCrewChanged;
   final String? selectedCrewRole;
   final void Function(String?) onCrewRoleChanged;
+  final String? selectedRace;
+  final void Function(String?) onRaceChanged;
   final bool showAiGenerator;
 
   const CharacterForm({
@@ -52,6 +59,7 @@ class CharacterForm extends StatelessWidget {
     required this.selectedHaki,
     required this.selectedAffiliations,
     required this.selectedOccupations,
+    this.fightingStyle,
     required this.onStatusChanged,
     required this.onHakiSelected,
     required this.onHakiDeselected,
@@ -59,11 +67,14 @@ class CharacterForm extends StatelessWidget {
     required this.onAffiliationDeselected,
     required this.onOccupationSelected,
     required this.onOccupationDeselected,
+    required this.onFightingStyleChanged,
     required this.availableCrews,
     required this.selectedCrewId,
     required this.onCrewChanged,
     required this.selectedCrewRole,
     required this.onCrewRoleChanged,
+    this.selectedRace,
+    required this.onRaceChanged,
     this.showAiGenerator = true,
   }) : super(key: key);
 
@@ -78,6 +89,10 @@ class CharacterForm extends StatelessWidget {
             nameController: nameController,
             nicknameController: nicknameController,
             birthDateController: birthDateController,
+          ),
+          CharacterRaceSection(
+            selectedRace: selectedRace,
+            onRaceChanged: onRaceChanged,
           ),
           CharacterPowerSection(
             devilFruits: devilFruits,
@@ -107,6 +122,10 @@ class CharacterForm extends StatelessWidget {
             devilFruit: selectedDevilFruit?.romanName,
             haki: selectedHaki,
             showAiGenerator: showAiGenerator,
+          ),
+          CharacterFightingStyleSection(
+            fightingStyle: fightingStyle,
+            onFightingStyleChanged: onFightingStyleChanged,
           ),
           CharacterDescriptionSection(
             descriptionController: descriptionController,

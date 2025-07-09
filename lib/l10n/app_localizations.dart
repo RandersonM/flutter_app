@@ -692,6 +692,12 @@ abstract class AppLocalizations {
   /// **'Devil Fruit'**
   String get devilFruit;
 
+  /// Label for devil fruit
+  ///
+  /// In en, this message translates to:
+  /// **'No Devil Fruit'**
+  String get noDevilFruit;
+
   /// Label for crew filter
   ///
   /// In en, this message translates to:
@@ -1411,6 +1417,120 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Create your first custom character!'**
   String get createFirstCustomCharacter;
+
+  /// Fighting type option for dual wielder
+  ///
+  /// In en, this message translates to:
+  /// **'Dual Wielder'**
+  String get dualWielder;
+
+  /// Fighting type option for fighter
+  ///
+  /// In en, this message translates to:
+  /// **'Fighter'**
+  String get fighter;
+
+  /// Fighting type option for taekwondo
+  ///
+  /// In en, this message translates to:
+  /// **'Taekwondo'**
+  String get taekwondo;
+
+  /// Fighting type option for kicker
+  ///
+  /// In en, this message translates to:
+  /// **'Kicker'**
+  String get kicker;
+
+  /// Fighting type option for archer
+  ///
+  /// In en, this message translates to:
+  /// **'Archer'**
+  String get archer;
+
+  /// Fighting type option for staff wielder
+  ///
+  /// In en, this message translates to:
+  /// **'Staff'**
+  String get staff;
+
+  /// Fighting type option for other
+  ///
+  /// In en, this message translates to:
+  /// **'Other'**
+  String get other;
+
+  /// Label for race selection
+  ///
+  /// In en, this message translates to:
+  /// **'Race'**
+  String get race;
+
+  /// Race option for human
+  ///
+  /// In en, this message translates to:
+  /// **'Human'**
+  String get human;
+
+  /// Race option for giant
+  ///
+  /// In en, this message translates to:
+  /// **'Giant'**
+  String get giant;
+
+  /// Race option for fishman
+  ///
+  /// In en, this message translates to:
+  /// **'Fishman'**
+  String get fishman;
+
+  /// Race option for mermaid
+  ///
+  /// In en, this message translates to:
+  /// **'Mermaid'**
+  String get mermaid;
+
+  /// Race option for mink
+  ///
+  /// In en, this message translates to:
+  /// **'Mink'**
+  String get mink;
+
+  /// Race option for lunarian
+  ///
+  /// In en, this message translates to:
+  /// **'Lunarian'**
+  String get lunarian;
+
+  /// Race option for buccaneer
+  ///
+  /// In en, this message translates to:
+  /// **'Buccaneer'**
+  String get buccaneer;
+
+  /// Race option for oni
+  ///
+  /// In en, this message translates to:
+  /// **'Oni'**
+  String get oni;
+
+  /// Race option for skypiean
+  ///
+  /// In en, this message translates to:
+  /// **'Skypiean'**
+  String get skypiean;
+
+  /// Race option for longarm
+  ///
+  /// In en, this message translates to:
+  /// **'Longarm'**
+  String get longarm;
+
+  /// Race option for tonatta
+  ///
+  /// In en, this message translates to:
+  /// **'Tonatta'**
+  String get tonatta;
 }
 
 class _AppLocalizationsDelegate

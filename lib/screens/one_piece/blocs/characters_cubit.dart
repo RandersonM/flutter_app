@@ -5,7 +5,7 @@ import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/foundation.dart';
 
-import 'package:opfan/core/models/one_piece/character_model.dart';
+import 'package:opfan/core/models/one_piece/custom_character_model.dart';
 import 'package:opfan/core/services/characters_backend_service.dart';
 
 abstract class CharactersState extends Equatable {
@@ -18,7 +18,7 @@ abstract class CharactersState extends Equatable {
 class CharactersInitial extends CharactersState {}
 
 class CharactersLoading extends CharactersState {
-  final List<CharacterModel> characters;
+  final List<CustomCharacterModel> characters;
   final bool isLoadingMore;
 
   const CharactersLoading(
@@ -29,7 +29,7 @@ class CharactersLoading extends CharactersState {
 }
 
 class CharactersLoaded extends CharactersState {
-  final List<CharacterModel> characters;
+  final List<CustomCharacterModel> characters;
   final bool hasMoreData;
 
   const CharactersLoaded({
@@ -43,7 +43,7 @@ class CharactersLoaded extends CharactersState {
 
 class CharactersError extends CharactersState {
   final String message;
-  final List<CharacterModel> characters;
+  final List<CustomCharacterModel> characters;
 
   const CharactersError({
     required this.message,
@@ -58,10 +58,11 @@ class CharactersCubit extends Cubit<CharactersState> {
   CharactersCubit(this.backend) : super(CharactersInitial());
 
   final CharactersBackendService backend;
-  List<CharacterModel> _characters = [];
+  List<CustomCharacterModel> _characters = [];
   int _pages = 0;
 
-  List<CharacterModel> get characters => List<CharacterModel>.from(_characters);
+  List<CustomCharacterModel> get characters =>
+      List<CustomCharacterModel>.from(_characters);
   bool get hasMoreData {
     if (backend.totalCount == 0) {
       return true;
