@@ -1,5 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'character_model.dart';
+import 'fighting_style_model.dart';
 
 class CustomCharacterModel {
   final String? id;
@@ -10,11 +10,13 @@ class CustomCharacterModel {
   final List<String>? haki;
   final List<String> affiliations;
   final String image;
-  final List<String> occupation;
+  final List<String> occupation; // apenas funções de tripulação
+  final FightingStyleModel? fightingStyle; // novo campo para estilo de luta
   final String bounty;
   final String? signo;
   final String? crew;
   final String? status;
+  final String? race;
   final int? age;
   final String? description;
   final DateTime? createdAt;
@@ -30,10 +32,12 @@ class CustomCharacterModel {
     required this.affiliations,
     required this.image,
     required this.occupation,
+    this.fightingStyle,
     required this.bounty,
     this.signo,
     this.crew,
     this.status,
+    this.race,
     this.age,
     this.description,
     this.createdAt,
@@ -53,10 +57,15 @@ class CustomCharacterModel {
       affiliations: List<String>.from(data['affiliations'] as List),
       image: data['image'] as String,
       occupation: List<String>.from(data['occupation'] as List),
+      fightingStyle: data['fightingStyle'] != null
+          ? FightingStyleModel.fromMap(
+              data['fightingStyle'] as Map<String, dynamic>)
+          : null,
       bounty: data['bounty'] as String,
       signo: data['signo'] as String?,
       crew: data['crew'] as String?,
       status: data['status'] as String?,
+      race: data['race'] as String?,
       age: data['age'] as int?,
       description: data['description'] as String?,
       createdAt: data['createdAt'] != null 
@@ -64,6 +73,38 @@ class CustomCharacterModel {
           : null,
       updatedAt: data['updatedAt'] != null 
           ? (data['updatedAt'] as Timestamp).toDate() 
+          : null,
+    );
+  }
+
+  factory CustomCharacterModel.fromJson(Map<String, dynamic> json) {
+    return CustomCharacterModel(
+      id: json['id']?.toString(),
+      userId: json['userId'] as String?,
+      name: json['name'] as String,
+      nickname: json['nickname'] as String?,
+      devilFruit: json['devilFruit'] as String?,
+      haki:
+          json['haki'] != null ? List<String>.from(json['haki'] as List) : null,
+      affiliations: List<String>.from(json['affiliations'] as List),
+      image: json['image'] as String,
+      occupation: List<String>.from(json['occupation'] as List),
+      fightingStyle: json['fightingStyle'] != null
+          ? FightingStyleModel.fromMap(
+              json['fightingStyle'] as Map<String, dynamic>)
+          : null,
+      bounty: json['bounty'] as String,
+      signo: json['signo'] as String?,
+      crew: json['crew'] as String?,
+      status: json['status'] as String?,
+      race: json['race'] as String?,
+      age: json['age'] as int?,
+      description: json['description'] as String?,
+      createdAt: json['createdAt'] != null
+          ? DateTime.parse(json['createdAt'] as String)
+          : null,
+      updatedAt: json['updatedAt'] != null
+          ? DateTime.parse(json['updatedAt'] as String)
           : null,
     );
   }
@@ -77,10 +118,12 @@ class CustomCharacterModel {
       'affiliations': affiliations,
       'image': image,
       'occupation': occupation,
+      'fightingStyle': fightingStyle?.toMap(),
       'bounty': bounty,
       'signo': signo,
       'crew': crew,
       'status': status,
+      'race': race,
       'age': age,
       'description': description,
     };
@@ -95,10 +138,12 @@ class CustomCharacterModel {
       'affiliations': affiliations,
       'image': image,
       'occupation': occupation,
+      'fightingStyle': fightingStyle?.toMap(),
       'bounty': bounty,
       'signo': signo,
       'crew': crew,
       'status': status,
+      'race': race,
       'age': age,
       'description': description,
     };
@@ -114,10 +159,12 @@ class CustomCharacterModel {
     List<String>? affiliations,
     String? image,
     List<String>? occupation,
+    FightingStyleModel? fightingStyle,
     String? bounty,
     String? signo,
     String? crew,
     String? status,
+    String? race,
     int? age,
     String? description,
     DateTime? createdAt,
@@ -133,10 +180,12 @@ class CustomCharacterModel {
       affiliations: affiliations ?? this.affiliations,
       image: image ?? this.image,
       occupation: occupation ?? this.occupation,
+      fightingStyle: fightingStyle ?? this.fightingStyle,
       bounty: bounty ?? this.bounty,
       signo: signo ?? this.signo,
       crew: crew ?? this.crew,
       status: status ?? this.status,
+      race: race ?? this.race,
       age: age ?? this.age,
       description: description ?? this.description,
       createdAt: createdAt ?? this.createdAt,
@@ -171,25 +220,15 @@ class CustomCharacterModel {
         bounty.hashCode;
   }
 
-  CharacterModel toCharacterModel() {
-    return CharacterModel(
-      id: id,
-      userId: userId,
-      name: name,
-      nickname: nickname,
-      devilFruit: devilFruit,
-      haki: haki,
-      affiliations: affiliations,
-      image: image,
-      occupation: occupation,
-      bounty: bounty,
-      signo: signo,
-      crew: crew,
-      status: status,
-      age: age,
-      description: description,
-      createdAt: createdAt,
-      updatedAt: updatedAt,
-    );
+  bool get isCustomCharacter => userId != null;
+
+  int? get calculatedAge => age;
+
+  DateTime? get birthDate {
+    if (age == null) return null;
+    final now = DateTime.now();
+    return DateTime(now.year - age!, now.month, now.day);
   }
+
+
 } 

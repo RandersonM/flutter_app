@@ -2,13 +2,13 @@
 // Copyright © 2022.
 
 import 'package:flutter/material.dart';
-import 'package:opfan/core/models/one_piece/character_model.dart';
+import 'package:opfan/core/models/one_piece/custom_character_model.dart';
 import 'package:opfan/l10n/app_localizations.dart';
 import 'package:opfan/utils/app_routes.dart';
 import 'package:opfan/utils/constants.dart';
 
 class CharacterCard extends StatefulWidget {
-  final CharacterModel character;
+  final CustomCharacterModel character;
 
   const CharacterCard({Key? key, required this.character}) : super(key: key);
 
@@ -83,20 +83,23 @@ class _CharacterCardState extends State<CharacterCard> {
                 const SizedBox(height: Constants.margin),
                 Expanded(
                   flex: 1,
-                  child: FittedBox(
-                    fit: BoxFit.scaleDown,
-                    child: Text(
-                      widget.character.name,
-                      textAlign: TextAlign.center,
-                      maxLines: 2,
-                      overflow: TextOverflow.ellipsis,
-                      style: Theme.of(context).textTheme.bodySmall!.merge(
-                          TextStyle(
-                              fontWeight: FontWeight.bold,
-                              color: Theme.of(context)
-                                  .appBarTheme
-                                  .titleTextStyle!
-                                  .color)),
+                  child: Container(
+                    width: double.infinity,
+                    child: FittedBox(
+                      fit: BoxFit.scaleDown,
+                      child: Text(
+                        widget.character.name,
+                        textAlign: TextAlign.center,
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
+                        style: Theme.of(context).textTheme.bodySmall!.merge(
+                            TextStyle(
+                                fontWeight: FontWeight.bold,
+                                color: Theme.of(context)
+                                    .appBarTheme
+                                    .titleTextStyle!
+                                    .color)),
+                      ),
                     ),
                   ),
                 ),

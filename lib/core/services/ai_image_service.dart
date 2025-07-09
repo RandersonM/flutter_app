@@ -137,7 +137,6 @@ class AiImageService {
   String _buildEnhancedPrompt({
     required String characterName,
     required String prompt,
-    String? devilFruit,
     List<String>? haki,
     String? status,
     List<String>? occupations,

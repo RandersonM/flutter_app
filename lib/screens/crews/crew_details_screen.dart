@@ -515,8 +515,8 @@ class _CrewDetailsScreenState extends State<CrewDetailsScreen> {
       Navigator.of(context).pop();
 
       if (character != null) {
-        final characterModel = character.toCharacterModel();
-        Navigator.pushNamed(context, AppRoutes.characterDetails, arguments: characterModel);
+        Navigator.pushNamed(context, AppRoutes.characterDetails,
+            arguments: character);
         
       } else {
         WidgetsBinding.instance.addPostFrameCallback((_) {

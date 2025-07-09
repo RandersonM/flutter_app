@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:opfan/core/models/one_piece/custom_character_model.dart';
 import 'package:opfan/core/models/one_piece/devil_fruit.dart';
 import 'package:opfan/core/models/one_piece/crew_model.dart';
+import 'package:opfan/core/models/one_piece/fighting_style_model.dart';
 import 'package:opfan/core/services/service_locator.dart';
 import 'package:opfan/l10n/app_localizations.dart';
 import 'package:opfan/screens/custom-character/blocs/index.dart';
@@ -38,6 +39,8 @@ class _CreateCustomCharacterScreenState extends State<CreateCustomCharacterScree
   List<CrewModel> _availableCrews = [];
   String? _selectedCrewId;
   String? _selectedCrewRole;
+  String? _selectedRace = 'human';
+  FightingStyleModel? _fightingStyle;
 
   @override
   void initState() {
@@ -229,6 +232,18 @@ class _CreateCustomCharacterScreenState extends State<CreateCustomCharacterScree
                               _selectedOccupations.remove(occupation);
                             });
                           },
+                          selectedRace: _selectedRace,
+                          onRaceChanged: (race) {
+                            setState(() {
+                              _selectedRace = race;
+                            });
+                          },
+                          fightingStyle: _fightingStyle,
+                          onFightingStyleChanged: (fightingStyle) {
+                            setState(() {
+                              _fightingStyle = fightingStyle;
+                            });
+                          },
                           showAiGenerator: true,
                         ),
                         const SizedBox(height: 24),
@@ -264,6 +279,7 @@ class _CreateCustomCharacterScreenState extends State<CreateCustomCharacterScree
             ? _imageUrlController.text.trim()
             : 'https://via.placeholder.com/300x400/FF6B6B/FFFFFF?text=Personagem+Customizado',
         occupation: _selectedOccupations,
+        fightingStyle: _fightingStyle,
         bounty: _bountyController.text.trim(),
         signo: _birthDateController.text.trim().isNotEmpty 
             ? _calculateSignoFromBirthDate(_birthDateController.text.trim())
@@ -274,6 +290,7 @@ class _CreateCustomCharacterScreenState extends State<CreateCustomCharacterScree
                 .name
             : null,
         status: _selectedStatus,
+        race: _selectedRace,
         age: _birthDateController.text.trim().isNotEmpty 
             ? _calculateAgeFromBirthDate(_birthDateController.text.trim())
             : null,

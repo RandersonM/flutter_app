@@ -5,11 +5,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
-import 'package:opfan/core/models/one_piece/character_model.dart';
+import 'package:opfan/core/models/one_piece/custom_character_model.dart';
+import 'package:opfan/core/utils/character_localization_mapper.dart';
 import 'package:opfan/l10n/app_localizations.dart';
 import 'package:opfan/screens/one_piece/widgets/details/fields/details_bounty.dart';
 import 'package:opfan/screens/one_piece/widgets/details/fields/details_image.dart';
 import 'package:opfan/screens/one_piece/widgets/details/fields/details_name.dart';
+import 'package:opfan/widgets/atoms/fighting_style_details.dart'
+    show FightingStyleDetails;
 import 'package:opfan/widgets/molecules/default_app_bar.dart';
 import 'package:opfan/widgets/organisms/bottom_navigation.dart';
 import 'package:opfan/utils/constants.dart';
@@ -17,10 +20,12 @@ import 'package:opfan/utils/zodiac_icons.dart';
 import 'package:opfan/utils/character_display_utils.dart';
 
 class CharacterDetailsScreen extends StatelessWidget {
-  const CharacterDetailsScreen({Key? key, required this.character})
-      : super(key: key);
+  const CharacterDetailsScreen({
+    Key? key,
+    required this.character,
+  }) : super(key: key);
 
-  final CharacterModel character;
+  final CustomCharacterModel character;
 
   Widget _buildInfoTile({
     required Widget leading,
@@ -130,11 +135,20 @@ class CharacterDetailsScreen extends StatelessWidget {
     };
   }
 
+  String? _getRaceDisplayValue(BuildContext context) {
+    if (character.race?.isNotEmpty == true) {
+      return CharacterLocalizationMapper.getRaceLabel(
+          character.race!, AppLocalizations.of(context)!);
+    }
+    return null;
+  }
+
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final l10n = AppLocalizations.of(context)!;
     final statusTheme = _getStatusTheme(character.status, l10n);
+    debugPrint('character.crew: ${character}');
     return Scaffold(
       backgroundColor: theme.colorScheme.surface,
       appBar: DefaultAppBar(
@@ -207,16 +221,9 @@ class CharacterDetailsScreen extends StatelessWidget {
             child: Column(
               children: [
                 _buildInfoTile(
-                  leading: const Icon(Icons.cake),
-                  label: l10n.age,
-                  value: character.calculatedAge?.toString(),
-                ),
-                _buildInfoTile(
-                  leading: const Icon(Icons.calendar_today),
-                  label: l10n.birthDate,
-                  value: character.birthDate != null
-                      ? '${character.birthDate!.day.toString().padLeft(2, '0')}/${character.birthDate!.month.toString().padLeft(2, '0')}/${character.birthDate!.year}'
-                      : null,
+                  leading: const Icon(Icons.people),
+                  label: l10n.race,
+                  value: _getRaceDisplayValue(context),
                 ),
                 _buildInfoTile(
                   leading: _buildZodiacIcon(character.signo),
@@ -225,6 +232,11 @@ class CharacterDetailsScreen extends StatelessWidget {
                       ? ZodiacIcons.getLocalizedZodiacSign(
                           context, character.signo!)
                       : null,
+                ),
+                _buildInfoTile(
+                  leading: const Icon(Icons.cake),
+                  label: l10n.age,
+                  value: character.calculatedAge?.toString(),
                 ),
                 _buildInfoTile(
                   leading: const Icon(Icons.sailing),
@@ -239,9 +251,19 @@ class CharacterDetailsScreen extends StatelessWidget {
                           character.status, l10n)
                       : character.status,
                 ),
+                _buildInfoTile(
+                  leading: const Icon(Icons.calendar_month_outlined),
+                  label: l10n.birthDate,
+                  value: character.birthDate != null
+                      ? '${character.birthDate!.day.toString().padLeft(2, '0')}/${character.birthDate!.month.toString().padLeft(2, '0')}/${character.birthDate!.year}'
+                      : null,
+                ),
               ],
             ),
           ),
+          if (character.fightingStyle != null) ...[
+            FightingStyleDetails(fightingStyle: character.fightingStyle),
+          ],
           if (character.description != null &&
               character.description!.isNotEmpty)
             Card(
@@ -262,21 +284,6 @@ class CharacterDetailsScreen extends StatelessWidget {
                     ),
                     const SizedBox(height: 8),
                     Text(character.description!),
-                  ],
-                ),
-              ),
-            ),
-          if (character.isCustomCharacter)
-            const Card(
-              margin: EdgeInsets.symmetric(
-                  horizontal: Constants.margin * 2, vertical: Constants.margin),
-              child: Padding(
-                padding: EdgeInsets.all(Constants.margin * 2),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text('Informações Customizadas',
-                        style: TextStyle(fontWeight: FontWeight.bold)),
                   ],
                 ),
               ),
