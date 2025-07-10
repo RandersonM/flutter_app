@@ -18,6 +18,7 @@ import 'widgets/crew_members_list.dart';
 import 'widgets/crew_tags_section.dart';
 import 'widgets/crew_info_section.dart';
 import 'widgets/crew_boat_section.dart';
+import 'package:opfan/core/utils/character_localization_mapper.dart';
 
 class CrewDetailsScreen extends StatefulWidget {
   final CrewModel crew;
@@ -180,42 +181,26 @@ class _CrewDetailsScreenState extends State<CrewDetailsScreen> {
   void _showAddMemberDialog() {
     final l10n = AppLocalizations.of(context)!;
 
-    final crewRoleMapping = {
-      'helmsman': l10n.helmsman,
-      'captain': l10n.captain,
-      'viceCaptain': l10n.viceCaptain,
-      'navigator': l10n.navigator,
-      'cook': l10n.cook,
-      'doctor': l10n.doctor,
-      'musician': l10n.musician,
-      'carpenter': l10n.carpenter,
-      'sharpshooter': l10n.sharpshooter,
-      'archaeologist': l10n.archaeologist,
-      'boatswain': l10n.boatswain,
-    };
+    final allRoles = [
+      l10n.helmsman,
+      l10n.captain,
+      l10n.viceCaptain,
+      l10n.navigator,
+      l10n.cook,
+      l10n.doctor,
+      l10n.musician,
+      l10n.carpenter,
+      l10n.sharpshooter,
+      l10n.archaeologist,
+      l10n.boatswain,
+    ];
 
-    final occupationMapping = {
-      'captain': l10n.captain,
-      'vice-captain': l10n.viceCaptain,
-      'admiral': l10n.admiral,
-      'viceAdmiral': l10n.viceAdmiral,
-      'revolutionary': l10n.revolutionary,
-      'merchant': l10n.merchant,
-      'doctor': l10n.doctor,
-      'navigator': l10n.navigator,
-      'cook': l10n.cook,
-      'sniper': l10n.sniper,
-      'swordsman': l10n.swordsman,
-      'carpenter': l10n.carpenter,
-      'archaeologist': l10n.archaeologist,
-      'sharpshooter': l10n.sharpshooter,
-      'musician': l10n.musician,
-    };
-
-    final availableRoles = crewRoleMapping.entries
-        .where((entry) => !_crew.rolesFilled.contains(entry.key))
-        .map((entry) => entry.value)
-        .toList();
+    final filledRoles = _crew.rolesFilled
+        .map((roleKey) =>
+            CharacterLocalizationMapper.mapOccupationToLocalized(roleKey, l10n))
+        .toSet();
+    final availableRoles =
+        allRoles.where((role) => !filledRoles.contains(role)).toList();
 
     if (availableRoles.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
@@ -248,7 +233,7 @@ class _CrewDetailsScreenState extends State<CrewDetailsScreen> {
                     }
 
                     if (snapshot.hasError) {
-                      return Text('Erro: ${snapshot.error}');
+                      return Text('Erro:  [${snapshot.error}');
                     }
 
                     final availableCharacters = snapshot.data ?? [];
@@ -266,7 +251,7 @@ class _CrewDetailsScreenState extends State<CrewDetailsScreen> {
                         items: availableCharacters.map((character) {
                           return DropdownMenuItem<CustomCharacterModel>(
                             value: character,
-                            child: _buildCharacterDropdownItem(character, occupationMapping),
+                            child: _buildCharacterDropdownItem(character, l10n),
                           );
                         }).toList(),
                         onChanged: (character) {
@@ -319,7 +304,8 @@ class _CrewDetailsScreenState extends State<CrewDetailsScreen> {
               onPressed: selectedCharacter != null && selectedRole != null
                   ? () async {
                       Navigator.of(context).pop();
-                      await _addMemberToCrew(selectedCharacter!, selectedRole!, crewRoleMapping);
+                      await _addMemberToCrew(
+                          selectedCharacter!, selectedRole!, l10n);
                     }
                   : null,
               child: const Text('Adicionar'),
@@ -348,14 +334,12 @@ class _CrewDetailsScreenState extends State<CrewDetailsScreen> {
         }
       }
       
-      // Filtrar personagens que não estão em nenhuma tripulação
       final availableCharacters = allCharacters
           .where((character) => !usedCharacterIds.contains(character.id))
           .toList();
       
       return availableCharacters;
     } catch (e) {
-      // Em caso de erro, retornar lista vazia
       return [];
     }
   }
@@ -383,9 +367,11 @@ class _CrewDetailsScreenState extends State<CrewDetailsScreen> {
     );
   }
 
-  Widget _buildCharacterDropdownItem(CustomCharacterModel character, Map<String, String> occupationMapping) {
+  Widget _buildCharacterDropdownItem(
+      CustomCharacterModel character, AppLocalizations l10n) {
     final occupations = character.occupation
-        .map((occ) => occupationMapping[occ] ?? occ)
+        .map((occ) =>
+            CharacterLocalizationMapper.mapOccupationToLocalized(occ, l10n))
         .take(2)
         .join(', ');
     
@@ -437,12 +423,10 @@ class _CrewDetailsScreenState extends State<CrewDetailsScreen> {
   Future<void> _addMemberToCrew(
     CustomCharacterModel character,
     String translatedRole,
-    Map<String, String> crewRoleMapping,
+    AppLocalizations l10n,
   ) async {
     try {
-      final roleKey = crewRoleMapping.entries
-          .firstWhere((entry) => entry.value == translatedRole)
-          .key;
+      final roleKey = _getRoleKeyFromLocalized(translatedRole, l10n);
 
       final newMember = CrewMember(
         characterId: character.id!,
@@ -459,7 +443,6 @@ class _CrewDetailsScreenState extends State<CrewDetailsScreen> {
         members: updatedMembers,
         rolesFilled: updatedRolesFilled,
       );
-
 
       final crewRepository = CrewRepository();
       await crewRepository.updateCrew(_crew.id!, updatedCrew);
@@ -497,6 +480,35 @@ class _CrewDetailsScreenState extends State<CrewDetailsScreen> {
           );
         }
       });
+    }
+  }
+
+  String _getRoleKeyFromLocalized(String localizedRole, AppLocalizations l10n) {
+    switch (localizedRole) {
+      case var v when v == l10n.helmsman:
+        return 'helmsman';
+      case var v when v == l10n.captain:
+        return 'captain';
+      case var v when v == l10n.viceCaptain:
+        return 'viceCaptain';
+      case var v when v == l10n.navigator:
+        return 'navigator';
+      case var v when v == l10n.cook:
+        return 'cook';
+      case var v when v == l10n.doctor:
+        return 'doctor';
+      case var v when v == l10n.musician:
+        return 'musician';
+      case var v when v == l10n.carpenter:
+        return 'carpenter';
+      case var v when v == l10n.sharpshooter:
+        return 'sharpshooter';
+      case var v when v == l10n.archaeologist:
+        return 'archaeologist';
+      case var v when v == l10n.boatswain:
+        return 'boatswain';
+      default:
+        return '';
     }
   }
 
