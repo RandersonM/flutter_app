@@ -7,6 +7,7 @@ import 'package:opfan/core/models/one_piece/crew_model.dart';
 import 'package:opfan/l10n/app_localizations.dart';
 import 'package:opfan/screens/crews/blocs/index.dart';
 import 'package:opfan/utils/app_routes.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 import 'package:opfan/widgets/molecules/default_app_bar.dart';
 import 'package:opfan/widgets/organisms/crew_list.dart';
@@ -29,6 +30,7 @@ class _ListCrewsScreenContent extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
+    final currentUser = FirebaseAuth.instance.currentUser;
     
     return Scaffold(
       appBar: DefaultAppBar(
@@ -45,8 +47,13 @@ class _ListCrewsScreenContent extends StatelessWidget {
         onCrewTap: (crew) => _onCrewTap(context, crew),
         onCrewEdit: (crew) => _onCrewEdit(context, crew),
         onCrewDelete: (crew) => _onCrewDelete(context, crew),
+        showEditDeleteButtons: (crew) => _canEditCrew(crew, currentUser?.uid),
       ), 
     );
+  }
+
+  bool _canEditCrew(CrewModel crew, String? currentUserId) {
+    return crew.userId == currentUserId;
   }
 
   Future<void> _navigateToCreateCrew(BuildContext context) async {

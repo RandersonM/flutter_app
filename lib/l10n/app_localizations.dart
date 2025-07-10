@@ -986,6 +986,36 @@ abstract class AppLocalizations {
   /// **'Editing {characterName}'**
   String editingCharacter(String characterName);
 
+  /// Title for edit custom character screen
+  ///
+  /// In en, this message translates to:
+  /// **'Edit Custom Character'**
+  String get editCustomCharacterTitle;
+
+  /// Subtitle for edit custom character screen
+  ///
+  /// In en, this message translates to:
+  /// **'Modify your character\'s information'**
+  String get editCustomCharacterSubtitle;
+
+  /// Button text to update/save changes
+  ///
+  /// In en, this message translates to:
+  /// **'Update'**
+  String get update;
+
+  /// Success message when character is updated
+  ///
+  /// In en, this message translates to:
+  /// **'Character updated successfully'**
+  String get characterUpdatedSuccess;
+
+  /// Error message when character update fails
+  ///
+  /// In en, this message translates to:
+  /// **'Error updating character: {message}'**
+  String characterUpdateError(String message);
+
   /// Text shown for total berries in crew card
   ///
   /// In en, this message translates to:

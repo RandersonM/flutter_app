@@ -10,6 +10,12 @@ abstract class ICrewRepository {
     int? limit,
   });
   
+  Future<List<CrewModel>> getAllCrews({
+    String? orderBy,
+    bool descending = false,
+    int? limit,
+  });
+  
   Future<void> updateCrew(String documentId, CrewModel crew);
   
   Future<void> deleteCrew(String documentId);

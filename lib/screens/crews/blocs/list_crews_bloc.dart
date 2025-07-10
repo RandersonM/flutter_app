@@ -21,7 +21,7 @@ class ListCrewsBloc extends Bloc<ListCrewsEvent, ListCrewsState> {
     emit(ListCrewsLoading());
     
     try {
-      final crews = await _crewRepository.getUserCrews();
+      final crews = await _crewRepository.getAllCrews();
       emit(ListCrewsLoaded(crews));
     } catch (e) {
       emit(ListCrewsError(e.toString()));
@@ -35,8 +35,12 @@ class ListCrewsBloc extends Bloc<ListCrewsEvent, ListCrewsState> {
     emit(ListCrewsLoading());
     
     try {
-      final crews = await _crewRepository.searchCrewsByName(event.query);
-      emit(ListCrewsLoaded(crews));
+      final allCrews = await _crewRepository.getAllCrews();
+      final filteredCrews = allCrews
+          .where((crew) =>
+              crew.name.toLowerCase().contains(event.query.toLowerCase()))
+          .toList();
+      emit(ListCrewsLoaded(filteredCrews));
     } catch (e) {
       emit(ListCrewsError(e.toString()));
     }

@@ -16,12 +16,14 @@ class CrewList extends StatefulWidget {
   final Function(CrewModel)? onCrewTap;
   final Function(CrewModel)? onCrewEdit;
   final Function(CrewModel)? onCrewDelete;
+  final bool Function(CrewModel)? showEditDeleteButtons;
 
   const CrewList({
     Key? key,
     this.onCrewTap,
     this.onCrewEdit,
     this.onCrewDelete,
+    this.showEditDeleteButtons,
   }) : super(key: key);
 
   @override
@@ -131,11 +133,15 @@ class _CrewListState extends State<CrewList> {
                   itemCount: state.crews.length,
                   itemBuilder: (context, index) {
                     final crew = state.crews[index];
+                    final canEdit =
+                        widget.showEditDeleteButtons?.call(crew) ?? true;
                     return CrewCard(
                       crew: crew,
                       onTap: () => widget.onCrewTap?.call(crew),
-                      onEdit: () => widget.onCrewEdit?.call(crew),
-                      onDelete: () => _showDeleteConfirmation(crew),
+                      onEdit:
+                          canEdit ? () => widget.onCrewEdit?.call(crew) : null,
+                      onDelete:
+                          canEdit ? () => _showDeleteConfirmation(crew) : null,
                     );
                   },
                 );

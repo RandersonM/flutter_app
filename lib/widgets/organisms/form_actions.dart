@@ -5,12 +5,14 @@ class FormActions extends StatelessWidget {
   final VoidCallback onSave;
   final VoidCallback onCancel;
   final bool isLoading;
+  final String? saveButtonText;
 
   const FormActions({
     Key? key,
     required this.onSave,
     required this.onCancel,
     this.isLoading = false,
+    this.saveButtonText,
   }) : super(key: key);
 
   @override
@@ -53,7 +55,7 @@ class FormActions extends StatelessWidget {
                       child: CircularProgressIndicator(strokeWidth: 2),
                     )
                   : Text(
-                      l10n.createCharacter,
+                      saveButtonText ?? l10n.createCharacter,
                       style: const TextStyle(fontSize: 16),
                     ),
             ),

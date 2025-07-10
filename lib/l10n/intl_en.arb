@@ -983,6 +983,41 @@
       }
     }
   },
+  "editCustomCharacterTitle": "Edit Custom Character",
+  "@editCustomCharacterTitle": {
+    "description": "Title for edit custom character screen",
+    "type": "text",
+    "placeholders": {}
+  },
+  "editCustomCharacterSubtitle": "Modify your character's information",
+  "@editCustomCharacterSubtitle": {
+    "description": "Subtitle for edit custom character screen",
+    "type": "text",
+    "placeholders": {}
+  },
+  "update": "Update",
+  "@update": {
+    "description": "Button text to update/save changes",
+    "type": "text",
+    "placeholders": {}
+  },
+  "characterUpdatedSuccess": "Character updated successfully",
+  "@characterUpdatedSuccess": {
+    "description": "Success message when character is updated",
+    "type": "text",
+    "placeholders": {}
+  },
+  "characterUpdateError": "Error updating character: {message}",
+  "@characterUpdateError": {
+    "description": "Error message when character update fails",
+    "type": "text",
+    "placeholders": {
+      "message": {
+        "type": "String",
+        "example": "Network error"
+      }
+    }
+  },
   "berriesTotal": "Berries total",
   "@berriesTotal": {
     "description": "Text shown for total berries in crew card",

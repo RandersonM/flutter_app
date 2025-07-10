@@ -19,6 +19,7 @@ import 'package:opfan/screens/auth/login_screen.dart';
 import 'package:opfan/screens/profile/profile_screen.dart';
 import 'package:opfan/screens/custom-character/create_custom_character_screen.dart';
 import 'package:opfan/screens/custom-character/custom_character_list_screen.dart';
+import 'package:opfan/screens/custom-character/edit_custom_character_screen.dart';
 import 'package:opfan/screens/crews/create_crew_screen.dart';
 import 'package:opfan/screens/crews/list_crews_screen.dart';
 
@@ -45,6 +46,7 @@ class AppRoutes {
   static const String favorites = '/favorites';
   static const String createCustomCharacter = '/createCustomCharacter';
   static const String customCharacterList = '/customCharacterList';
+  static const String editCustomCharacter = '/editCustomCharacter';
   static const String createCrew = '/createCrew';
   static const String listCrews = '/listCrews';
   static const String crewDetails = '/crewDetails';
@@ -56,6 +58,7 @@ class AppRoutes {
     favorites,
     createCustomCharacter,
     customCharacterList,
+    editCustomCharacter,
     createCrew,
     listCrews,
     // Add more private routes here as needed
@@ -130,6 +133,11 @@ class AppRoutes {
       case customCharacterList:
         return MaterialPageRoute<dynamic>(
             builder: (_) => const CustomCharacterListScreen(),
+            settings: settings);
+      case editCustomCharacter:
+        final character = settings.arguments as CustomCharacterModel;
+        return MaterialPageRoute<dynamic>(
+            builder: (_) => EditCustomCharacterScreen(character: character),
             settings: settings);
       case createCrew:
         return MaterialPageRoute<dynamic>(

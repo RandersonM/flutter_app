@@ -69,13 +69,10 @@ class _CustomCharacterListScreenContent extends StatelessWidget {
           arguments: character);
 
   void _onCharacterEdit(BuildContext context, CustomCharacterModel character) {
-    final l10n = AppLocalizations.of(context)!;
-    
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text(l10n.editingCharacter(character.name)),
-        duration: const Duration(seconds: 2),
-      ),
+    Navigator.pushNamed(
+      context,
+      AppRoutes.editCustomCharacter,
+      arguments: character,
     );
   }
 
