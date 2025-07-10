@@ -39,8 +39,7 @@ class CharacterDisplayUtils {
         return l10n.cook;
       case 'sniper':
         return l10n.sniper;
-      case 'swordsman':
-        return l10n.swordsman;
+
       case 'carpenter':
         return l10n.carpenter;
       case 'archaeologist':

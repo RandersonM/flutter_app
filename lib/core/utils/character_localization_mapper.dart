@@ -53,6 +53,22 @@ class CharacterLocalizationMapper {
     return localizedAffiliation.toLowerCase(); 
   }
 
+  static List<String> getOccupations() {
+    return [
+      'captain',
+      'viceCaptain',
+      'navigator',
+      'cook',
+      'doctor',
+      'sharpshooter',
+      'carpenter',
+      'archaeologist',
+      'musician',
+      'helmsman',
+      'boatswain',
+    ];
+  }
+
   static List<String> getFightingTypes() {
     return [
       'devil_fruit',
@@ -106,8 +122,6 @@ class CharacterLocalizationMapper {
         return l10n.cook;
       case 'sniper':
         return l10n.sniper;
-      case 'swordsman':
-        return l10n.swordsman;
       case 'carpenter':
         return l10n.carpenter;
       case 'archaeologist':
@@ -136,7 +150,6 @@ class CharacterLocalizationMapper {
     if (localizedOccupation == l10n.navigator) return 'navigator';
     if (localizedOccupation == l10n.cook) return 'cook';
     if (localizedOccupation == l10n.sniper) return 'sniper';
-    if (localizedOccupation == l10n.swordsman) return 'swordsman';
     if (localizedOccupation == l10n.carpenter) return 'carpenter';
     if (localizedOccupation == l10n.archaeologist) return 'archaeologist';
     if (localizedOccupation == l10n.sharpshooter) return 'sharpshooter';
@@ -190,8 +203,6 @@ class CharacterLocalizationMapper {
       l10n.doctor,
       l10n.navigator,
       l10n.cook,
-      l10n.sniper,
-      l10n.swordsman,
       l10n.carpenter,
       l10n.archaeologist,
       l10n.sharpshooter,
