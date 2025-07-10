@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:opfan/core/utils/character_localization_mapper.dart';
 import 'package:opfan/l10n/app_localizations.dart';
 import 'package:opfan/core/models/one_piece/crew_model.dart';
 import '../../../widgets/atoms/custom_text_field.dart';
@@ -55,54 +56,12 @@ class CharacterBackgroundSection extends StatelessWidget {
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
     
-    final statusMapping = {
-      'alive': l10n.alive,
-      'dead': l10n.dead,
-      'unknown': l10n.unknown,
-    };
-
-    final affiliationMapping = {
-      'marines': l10n.marines,
-      'revolutionaries': l10n.revolutionaries,
-      'yonkou': l10n.yonkou,
-      'shichibukai': l10n.shichibukai,
-      'independent': l10n.independent,
-      'pirate': l10n.pirate,
-      'pirateAlliance': l10n.pirateAlliance,
-    };
-
-    final occupationMapping = {
-      'captain': l10n.captain,
-      'viceCaptain': l10n.viceCaptain,
-      'navigator': l10n.navigator,
-      'cook': l10n.cook,
-      'doctor': l10n.doctor,
-      'sniper': l10n.sniper,
-      'carpenter': l10n.carpenter,
-      'archaeologist': l10n.archaeologist,
-      'musician': l10n.musician,
-      'helmsman': l10n.helmsman,
-      'boatswain': l10n.boatswain,
-    };
-
-    final crewRoleMapping = {
-      'helmsman': l10n.helmsman,
-      'captain': l10n.captain,
-      'viceCaptain': l10n.viceCaptain,
-      'navigator': l10n.navigator,
-      'cook': l10n.cook,
-      'doctor': l10n.doctor,
-      'musician': l10n.musician,
-      'carpenter': l10n.carpenter,
-      'sharpshooter': l10n.sharpshooter,
-      'archaeologist': l10n.archaeologist,
-      'boatswain': l10n.boatswain,
-    };
-
-    final statusOptions = statusMapping.values.toList();
-    final affiliationOptions = affiliationMapping.values.toList();
-    final occupationOptions = occupationMapping.values.toList();
-    final crewRoleOptions = crewRoleMapping.values.toList();
+    final statusOptions =
+        CharacterLocalizationMapper.getLocalizedStatusOptions(l10n);
+    final affiliationOptions =
+        CharacterLocalizationMapper.getLocalizedAffiliationOptions(l10n);
+    final occupationOptions =
+        CharacterLocalizationMapper.getLocalizedOccupationOptions(l10n);
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -138,14 +97,15 @@ class CharacterBackgroundSection extends StatelessWidget {
           CustomDropdown<String>(
             label: l10n.crewRole,
             value: selectedCrewRole != null
-                ? crewRoleMapping[selectedCrewRole!]
+                ? CharacterLocalizationMapper.mapOccupationToLocalized(
+                    selectedCrewRole!, l10n)
                 : null,
-            items: crewRoleOptions,
+            items: occupationOptions,
             itemToString: (role) => role,
             onChanged: (translatedRole) {
-              final key = crewRoleMapping.entries
-                  .firstWhere((entry) => entry.value == translatedRole)
-                  .key;
+              if (translatedRole == null) return;
+              final key = CharacterLocalizationMapper.mapLocalizedToOccupation(
+                  translatedRole, l10n);
               onCrewRoleChanged(key);
             },
           ),
@@ -194,13 +154,16 @@ class CharacterBackgroundSection extends StatelessWidget {
         ),
         CustomDropdown<String>(
           label: l10n.status,
-          value: selectedStatus != null ? statusMapping[selectedStatus!] : null,
+          value: selectedStatus != null
+              ? CharacterLocalizationMapper.mapStatusToLocalized(
+                  selectedStatus, l10n)
+              : null,
           items: statusOptions,
           itemToString: (status) => status,
           onChanged: (translatedStatus) {
-            final key = statusMapping.entries
-                .firstWhere((entry) => entry.value == translatedStatus)
-                .key;
+            if (translatedStatus == null) return;
+            final key = CharacterLocalizationMapper.mapLocalizedToStatus(
+                translatedStatus, l10n);
             onStatusChanged(key);
           },
         ),
@@ -208,18 +171,18 @@ class CharacterBackgroundSection extends StatelessWidget {
           label: l10n.occupations,
           options: occupationOptions,
           selectedOptions: selectedOccupations
-              .map((key) => occupationMapping[key] ?? key)
+              .map((key) =>
+                  CharacterLocalizationMapper.mapOccupationToLocalized(
+                      key, l10n))
               .toList(),
           onOptionSelected: (translatedOccupation) {
-            final key = occupationMapping.entries
-                .firstWhere((entry) => entry.value == translatedOccupation)
-                .key;
+            final key = CharacterLocalizationMapper.mapLocalizedToOccupation(
+                translatedOccupation, l10n);
             onOccupationSelected(key);
           },
           onOptionDeselected: (translatedOccupation) {
-            final key = occupationMapping.entries
-                .firstWhere((entry) => entry.value == translatedOccupation)
-                .key;
+            final key = CharacterLocalizationMapper.mapLocalizedToOccupation(
+                translatedOccupation, l10n);
             onOccupationDeselected(key);
           },
           maxSelections: 3,
@@ -228,18 +191,18 @@ class CharacterBackgroundSection extends StatelessWidget {
           label: l10n.affiliations,
           options: affiliationOptions,
           selectedOptions: selectedAffiliations
-              .map((key) => affiliationMapping[key] ?? key)
+              .map((key) =>
+                  CharacterLocalizationMapper.mapAffiliationToLocalized(
+                      key, l10n))
               .toList(),
           onOptionSelected: (translatedAffiliation) {
-            final key = affiliationMapping.entries
-                .firstWhere((entry) => entry.value == translatedAffiliation)
-                .key;
+            final key = CharacterLocalizationMapper.mapLocalizedToAffiliation(
+                translatedAffiliation, l10n);
             onAffiliationSelected(key);
           },
           onOptionDeselected: (translatedAffiliation) {
-            final key = affiliationMapping.entries
-                .firstWhere((entry) => entry.value == translatedAffiliation)
-                .key;
+            final key = CharacterLocalizationMapper.mapLocalizedToAffiliation(
+                translatedAffiliation, l10n);
             onAffiliationDeselected(key);
           },
         ),

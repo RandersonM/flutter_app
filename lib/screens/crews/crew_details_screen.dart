@@ -19,6 +19,7 @@ import 'widgets/crew_tags_section.dart';
 import 'widgets/crew_info_section.dart';
 import 'widgets/crew_boat_section.dart';
 import 'package:opfan/core/utils/character_localization_mapper.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class CrewDetailsScreen extends StatefulWidget {
   final CrewModel crew;
@@ -39,22 +40,26 @@ class _CrewDetailsScreenState extends State<CrewDetailsScreen> {
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
     final theme = Theme.of(context);
+    final currentUser = FirebaseAuth.instance.currentUser;
+    final canEdit = _crew.userId == currentUser?.uid;
 
     return Scaffold(
       backgroundColor: theme.colorScheme.surface,
       appBar: DefaultAppBar(
         title: Text(_crew.name),
         actions: [
-          IconButton(
-            onPressed: _onEditCrew,
-            icon: const Icon(Icons.edit),
-            tooltip: l10n.edit,
-          ),
-          IconButton(
-            onPressed: _onDeleteCrew,
-            icon: const Icon(Icons.delete, color: Colors.red),
-            tooltip: l10n.delete,
-          ),
+          if (canEdit) ...[
+            IconButton(
+              onPressed: _onEditCrew,
+              icon: const Icon(Icons.edit),
+              tooltip: l10n.edit,
+            ),
+            IconButton(
+              onPressed: _onDeleteCrew,
+              icon: const Icon(Icons.delete, color: Colors.red),
+              tooltip: l10n.delete,
+            ),
+          ],
         ],
       ),
       body: SingleChildScrollView(
@@ -82,17 +87,32 @@ class _CrewDetailsScreenState extends State<CrewDetailsScreen> {
           ],
         ),
       ),
-      floatingActionButton: FloatingActionButton.extended(
+      floatingActionButton: canEdit
+          ? FloatingActionButton.extended(
         onPressed: _onAddMember,
         backgroundColor: theme.colorScheme.primary,
         foregroundColor: Colors.white,
         icon: const Icon(Icons.person_add),
         label: const Text('Adicionar Membro'),
-      ),
+            )
+          : null,
     );
   }
 
-  void _onEditCrew() {  
+  void _onEditCrew() {
+    final currentUser = FirebaseAuth.instance.currentUser;
+    final canEdit = _crew.userId == currentUser?.uid;
+
+    if (!canEdit) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Você não tem permissão para editar esta tripulação'),
+          backgroundColor: Colors.orange,
+        ),
+      );
+      return;
+    }
+    
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: Text('Editar tripulação: ${_crew.name}'),
@@ -102,6 +122,19 @@ class _CrewDetailsScreenState extends State<CrewDetailsScreen> {
   }
 
   void _onDeleteCrew() {
+    final currentUser = FirebaseAuth.instance.currentUser;
+    final canEdit = _crew.userId == currentUser?.uid;
+
+    if (!canEdit) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Você não tem permissão para excluir esta tripulação'),
+          backgroundColor: Colors.orange,
+        ),
+      );
+      return;
+    }
+    
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
@@ -175,6 +208,20 @@ class _CrewDetailsScreenState extends State<CrewDetailsScreen> {
   }
 
   void _onAddMember() {
+    final currentUser = FirebaseAuth.instance.currentUser;
+    final canEdit = _crew.userId == currentUser?.uid;
+
+    if (!canEdit) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text(
+              'Você não tem permissão para adicionar membros a esta tripulação'),
+          backgroundColor: Colors.orange,
+        ),
+      );
+      return;
+    }
+    
     _showAddMemberDialog();
   }
 

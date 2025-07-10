@@ -490,6 +490,24 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
+  String get editCustomCharacterTitle => 'Edit Custom Character';
+
+  @override
+  String get editCustomCharacterSubtitle =>
+      'Modify your character\'s information';
+
+  @override
+  String get update => 'Update';
+
+  @override
+  String get characterUpdatedSuccess => 'Character updated successfully';
+
+  @override
+  String characterUpdateError(String message) {
+    return 'Error updating character: $message';
+  }
+
+  @override
   String get berriesTotal => 'Berries total';
 
   @override

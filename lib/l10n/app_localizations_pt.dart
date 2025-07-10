@@ -491,6 +491,24 @@ class AppLocalizationsPt extends AppLocalizations {
   }
 
   @override
+  String get editCustomCharacterTitle => 'Editar Personagem Customizado';
+
+  @override
+  String get editCustomCharacterSubtitle =>
+      'Modifique as informações do seu personagem';
+
+  @override
+  String get update => 'Atualizar';
+
+  @override
+  String get characterUpdatedSuccess => 'Personagem atualizado com sucesso';
+
+  @override
+  String characterUpdateError(String message) {
+    return 'Erro ao atualizar personagem: $message';
+  }
+
+  @override
   String get berriesTotal => 'Berries total';
 
   @override

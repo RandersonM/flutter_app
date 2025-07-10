@@ -89,6 +89,51 @@ class CrewRepository implements ICrewRepository {
   }
 
   @override
+  Future<List<CrewModel>> getAllCrews({
+    String? orderBy,
+    bool descending = false,
+    int? limit,
+  }) async {
+    try {
+      final documents = await _firestoreService.getDocuments(
+        collection: _collection,
+        orderBy: null, // Remove ordenação temporariamente
+        descending: false,
+        limit: limit,
+      );
+
+      var crews = documents.map((doc) {
+        return CrewModel.fromFirestore(doc, doc['id'] as String);
+      }).toList();
+
+      if (orderBy != null) {
+        crews.sort((a, b) {
+          int comparison = 0;
+          switch (orderBy) {
+            case 'createdAt':
+              comparison = (a.createdAt ?? DateTime.now())
+                  .compareTo(b.createdAt ?? DateTime.now());
+              break;
+            case 'name':
+              comparison = a.name.compareTo(b.name);
+              break;
+            case 'members':
+              comparison = a.members.length.compareTo(b.members.length);
+              break;
+            default:
+              comparison = 0;
+          }
+          return descending ? -comparison : comparison;
+        });
+      }
+
+      return crews;
+    } catch (e) {
+      throw Exception('Erro ao buscar todas as tripulações: $e');
+    }
+  }
+
+  @override
   Future<void> updateCrew(String documentId, CrewModel crew) async {
     try {
       final data = crew.toFirestore();
@@ -464,6 +509,17 @@ class CrewService {
     descending: descending,
     limit: limit,
   );
+
+  Future<List<CrewModel>> getAllCrews({
+    String? orderBy,
+    bool descending = false,
+    int? limit,
+  }) =>
+      _repository.getAllCrews(
+        orderBy: orderBy,
+        descending: descending,
+        limit: limit,
+      );
 
   Future<void> updateCrew(String documentId, CrewModel crew) => 
       _repository.updateCrew(documentId, crew);

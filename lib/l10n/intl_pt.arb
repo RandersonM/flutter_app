@@ -881,6 +881,41 @@
       }
     }
   },
+  "editCustomCharacterTitle": "Editar Personagem Customizado",
+  "@editCustomCharacterTitle": {
+    "description": "Title for edit custom character screen",
+    "type": "text",
+    "placeholders": {}
+  },
+  "editCustomCharacterSubtitle": "Modifique as informações do seu personagem",
+  "@editCustomCharacterSubtitle": {
+    "description": "Subtitle for edit custom character screen",
+    "type": "text",
+    "placeholders": {}
+  },
+  "update": "Atualizar",
+  "@update": {
+    "description": "Button text to update/save changes",
+    "type": "text",
+    "placeholders": {}
+  },
+  "characterUpdatedSuccess": "Personagem atualizado com sucesso",
+  "@characterUpdatedSuccess": {
+    "description": "Success message when character is updated",
+    "type": "text",
+    "placeholders": {}
+  },
+  "characterUpdateError": "Erro ao atualizar personagem: {message}",
+  "@characterUpdateError": {
+    "description": "Error message when character update fails",
+    "type": "text",
+    "placeholders": {
+      "message": {
+        "type": "String",
+        "example": "Erro de rede"
+      }
+    }
+  },
   "crewRole": "Cargo na Tripulação",
   "@crewRole": {
     "description": "Label for crew role field",
