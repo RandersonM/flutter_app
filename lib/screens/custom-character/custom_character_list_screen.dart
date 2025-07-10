@@ -46,6 +46,8 @@ class _CustomCharacterListScreenContent extends StatelessWidget {
       body: CustomCharacterGridList(
         onCharacterTap: (character) => _onCharacterTap(context, character),
         onCharacterEdit: (character) => _onCharacterEdit(context, character),
+        onCharacterDelete: (character) =>
+            _onCharacterDelete(context, character),
       ),
     );
   }
@@ -72,6 +74,24 @@ class _CustomCharacterListScreenContent extends StatelessWidget {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: Text(l10n.editingCharacter(character.name)),
+        duration: const Duration(seconds: 2),
+      ),
+    );
+  }
+
+  void _onCharacterDelete(
+      BuildContext context, CustomCharacterModel character) {
+    final l10n = AppLocalizations.of(context)!;
+    context
+        .read<CustomCharacterBloc>()
+        .add(DeleteCustomCharacter(character.id!));
+    context.read<CustomCharacterBloc>().add(const LoadCustomCharacters());
+
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(
+            '${l10n.featuredCharacter} "${character.name}" ${l10n.delete}'),
+        backgroundColor: Theme.of(context).colorScheme.error,
         duration: const Duration(seconds: 2),
       ),
     );

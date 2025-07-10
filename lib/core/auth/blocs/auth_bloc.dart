@@ -37,12 +37,18 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
 
       await _authService.init();
 
-      final user = await _authService.checkAuthStatus();
+      final isSessionValid = await _authService.isSessionValid();
 
-      if (user != null) {
-        final processedUser = _processUserWithMiddleware(user);
-        emit(AuthAuthenticated(user: processedUser));
+      if (isSessionValid) {
+        final user = await _authService.checkAuthStatus();
+        if (user != null) {
+          final processedUser = _processUserWithMiddleware(user);
+          emit(AuthAuthenticated(user: processedUser));
+        } else {
+          emit(const AuthUnauthenticated());
+        }
       } else {
+        await _authService.clearCache();
         emit(const AuthUnauthenticated());
       }
 
@@ -162,12 +168,18 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     Emitter<AuthState> emit,
   ) async {
     try {
-      final user = await _authService.checkAuthStatus();
+      final isSessionValid = await _authService.isSessionValid();
 
-      if (user != null) {
-        final processedUser = _processUserWithMiddleware(user);
-        emit(AuthAuthenticated(user: processedUser));
+      if (isSessionValid) {
+        final user = await _authService.checkAuthStatus();
+        if (user != null) {
+          final processedUser = _processUserWithMiddleware(user);
+          emit(AuthAuthenticated(user: processedUser));
+        } else {
+          emit(const AuthUnauthenticated());
+        }
       } else {
+        await _authService.clearCache();
         emit(const AuthUnauthenticated());
       }
     } catch (e) {
@@ -189,7 +201,6 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     }
   }
 
-  /// Processa o usuário aplicando o middleware de nome
   UserModel _processUserWithMiddleware(UserModel user) {
     final processedDisplayName =
         UserNameMiddleware.processDisplayName(user.displayName);

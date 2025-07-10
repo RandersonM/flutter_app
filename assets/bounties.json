@@ -398,7 +398,7 @@
       "age": 26,
       "race": "human",
       "signo": "libra",
-      "status": "captured",
+      "status": "unknown",
       "occupation": [
         "Pirate",
         "Captain",
@@ -523,7 +523,7 @@
       "age": 46,
       "race": "human",
       "signo": "virgo",
-      "status": "captured",
+      "status": "living",
       "occupation": [
         "Pirate",
         "Former Warlord"
@@ -738,7 +738,7 @@
       ],
       "bounty": "1,111,000,000",
       "description": "The swordsman of the Straw Hat Pirates and Luffy's right-hand man, known for his three-sword style and ambition to become the world's greatest swordsman",
-      "image": "https://comicvine.gamespot.com/a/uploads/original/11117/111178336/7079106-2959453555-latest",
+      "image": "https://render.fineartamerica.com/images/rendered/default/print/6/8/break/images/artworkimages/medium/2/zoro-one-piece-anime-ihab-design.jpg",
       "crew": "Straw Hat Pirates",
       "devilFruit": null,
       "fightingStyle": {

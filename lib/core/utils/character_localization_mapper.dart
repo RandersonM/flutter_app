@@ -1,4 +1,3 @@
-import 'package:flutter/foundation.dart';
 import 'package:opfan/l10n/app_localizations.dart';
 
 class CharacterLocalizationMapper {

@@ -10,21 +10,58 @@ class CrewImageService {
   
   final Map<String, String> _imageCache = {};
   final List<DateTime> _requestTimestamps = [];
-  static const int _maxRequestsPerHour = 10;
+  static const int _maxRequestsPerHour = 15; // Gemini tem limite mais generoso
 
   bool _quotaExceeded = false;
   DateTime? _quotaExceededTime;
   static const Duration _quotaResetDuration = Duration(hours: 24);
 
   CrewImageService() {
+    _initializeDio();
+  }
+
+  void _initializeDio() {
     _dio = Dio(BaseOptions(
-      baseUrl: _env.stabilityBaseUrl,
       connectTimeout: Duration(milliseconds: _env.networkTimeout),
       receiveTimeout: Duration(milliseconds: _env.networkTimeout),
-      headers: {
-        'Authorization': 'Bearer ${_env.stabilityApiKey}',
-        'Content-Type': 'application/json',
-        'Accept': 'application/json',
+      sendTimeout: Duration(milliseconds: _env.networkTimeout),
+      // Configurações para melhorar a estabilidade da conexão
+      validateStatus: (status) => status != null && status < 500,
+      maxRedirects: 3,
+    ));
+
+    // Adicionar interceptor para retry automático
+    _dio.interceptors.add(InterceptorsWrapper(
+      onError: (error, handler) async {
+        if (error.type == DioExceptionType.connectionError ||
+            error.type == DioExceptionType.connectionTimeout ||
+            error.type == DioExceptionType.receiveTimeout ||
+            error.type == DioExceptionType.sendTimeout) {
+          debugPrint('Crew Image Service: Network error detected, retrying...');
+
+          await Future.delayed(const Duration(milliseconds: 1000));
+
+          try {
+            final retryOptions = Options(
+              receiveTimeout: const Duration(seconds: 60),
+              sendTimeout: const Duration(seconds: 60),
+            );
+
+            final retryResponse = await _dio.request(
+              error.requestOptions.path,
+              data: error.requestOptions.data,
+              queryParameters: error.requestOptions.queryParameters,
+              options: retryOptions,
+            );
+
+            handler.resolve(retryResponse);
+            return;
+          } catch (retryError) {
+            debugPrint('Crew Image Service: Retry failed - $retryError');
+          }
+        }
+
+        handler.next(error);
       },
     ));
 
@@ -47,10 +84,7 @@ class CrewImageService {
       return _imageCache[cacheKey];
     }
 
-    // Verificar se a API key está configurada
-    if (_env.stabilityApiKey == 'dev_mode' || 
-        _env.stabilityApiKey.isEmpty || 
-        !_env.stabilityApiKey.startsWith('sk-')) {
+    if (_env.geminiApiKey == 'dev_mode' || _env.geminiApiKey.isEmpty) {
       debugPrint('Crew Image Service: Development mode or invalid API key, using fallback');
       return await _getJollyRogerFallbackImage(crewName, prompt, tags, description);
     }
@@ -73,59 +107,26 @@ class CrewImageService {
         description: description,
       );
 
-      debugPrint('Crew Image Service: Generating Jolly Roger with prompt: $enhancedPrompt');
-
       _recordRequest();
 
-      final response = await _dio.post(
-        '/stable-diffusion-xl-1024-v1-0/text-to-image',
-        data: {
-          'text_prompts': [
-            {
-              'text': enhancedPrompt,
-              'weight': 1.0,
-            },
-            {
-              'text': 'blurry, low quality, distorted, ugly, bad anatomy, text, letters, words',
-              'weight': -1.0,
-            }
-          ],
-          'cfg_scale': 7,
-          'height': 1024,
-          'width': 1024,
-          'samples': 1,
-          'steps': 30,
-        },
-      );
-
-      if (response.statusCode == 200) {
-        final data = response.data;
-        if (data['artifacts'] != null && data['artifacts'].isNotEmpty) {
-          final artifact = data['artifacts'][0];
-          if (artifact['base64'] != null) {
-            final imageData = base64Decode(artifact['base64']);
-            final imageUrl = await _uploadImageToServer(imageData);
-            _imageCache[cacheKey] = imageUrl;
-            debugPrint('Crew Image Service: Jolly Roger generated successfully');
-            return imageUrl;
-          }
-        }
+      final imageUrl = await _generateImageWithGemini(enhancedPrompt);
+      
+      if (imageUrl != null && imageUrl.isNotEmpty) {
+        _imageCache[cacheKey] = imageUrl;
+        return imageUrl;
       }
       
-      debugPrint('Crew Image Service: Invalid response from Stability AI');
+      debugPrint('Crew Image Service: Invalid response from Gemini AI');
       return await _getJollyRogerFallbackImage(crewName, prompt, tags, description);
       
-    } on DioException catch (e) {
-      debugPrint('Crew Image Service: DioException - ${e.message}');
-      debugPrint('Crew Image Service: Response data - ${e.response?.data}');
+    } catch (e) {
+      debugPrint('Crew Image Service: Error - $e');
       
-      if (e.response?.statusCode == 429) {
+      if (e.toString().contains('quota') ||
+          e.toString().contains('rate limit')) {
         _handleQuotaExceeded();
       }
 
-      return await _getJollyRogerFallbackImage(crewName, prompt, tags, description);
-    } catch (e) {
-      debugPrint('Crew Image Service: Unexpected error - $e');
       return await _getJollyRogerFallbackImage(crewName, prompt, tags, description);
     }
   }
@@ -141,10 +142,7 @@ class CrewImageService {
       return _imageCache[cacheKey];
     }
 
-    // Verificar se a API key está configurada
-    if (_env.stabilityApiKey == 'dev_mode' || 
-        _env.stabilityApiKey.isEmpty || 
-        !_env.stabilityApiKey.startsWith('sk-')) {
+    if (_env.geminiApiKey == 'dev_mode' || _env.geminiApiKey.isEmpty) {
       debugPrint('Crew Image Service: Development mode or invalid API key, using fallback');
       return await _getBoatFallbackImage(crewName, prompt, tags, description);
     }
@@ -167,60 +165,96 @@ class CrewImageService {
         description: description,
       );
 
-      debugPrint('Crew Image Service: Generating boat with prompt: $enhancedPrompt');
-
       _recordRequest();
 
-      final response = await _dio.post(
-        '/stable-diffusion-xl-1024-v1-0/text-to-image',
-        data: {
-          'text_prompts': [
-            {
-              'text': enhancedPrompt,
-              'weight': 1.0,
-            },
-            {
-              'text': 'blurry, low quality, distorted, ugly, bad anatomy, text, letters, words',
-              'weight': -1.0,
-            }
-          ],
-          'cfg_scale': 7,
-          'height': 1024,
-          'width': 1024,
-          'samples': 1,
-          'steps': 30,
-        },
-      );
+      final imageUrl = await _generateImageWithGemini(enhancedPrompt);
 
-      if (response.statusCode == 200) {
-        final data = response.data;
-        if (data['artifacts'] != null && data['artifacts'].isNotEmpty) {
-          final artifact = data['artifacts'][0];
-          if (artifact['base64'] != null) {
-            final imageData = base64Decode(artifact['base64']);
-            final imageUrl = await _uploadImageToServer(imageData);
-            _imageCache[cacheKey] = imageUrl;
-            debugPrint('Crew Image Service: Boat generated successfully');
-            return imageUrl;
-          }
-        }
+      if (imageUrl != null && imageUrl.isNotEmpty) {
+        _imageCache[cacheKey] = imageUrl;
+        return imageUrl;
       }
-      
-      debugPrint('Crew Image Service: Invalid response from Stability AI');
+
+      debugPrint('Crew Image Service: Invalid response from Gemini AI');
       return await _getBoatFallbackImage(crewName, prompt, tags, description);
-      
-    } on DioException catch (e) {
-      debugPrint('Crew Image Service: DioException - ${e.message}');
-      debugPrint('Crew Image Service: Response data - ${e.response?.data}');
-      
-      if (e.response?.statusCode == 429) {
+    } catch (e) {
+      debugPrint('Crew Image Service: Error - $e');
+
+      if (e.toString().contains('quota') ||
+          e.toString().contains('rate limit')) {
         _handleQuotaExceeded();
       }
 
       return await _getBoatFallbackImage(crewName, prompt, tags, description);
+    }
+  }
+
+  Future<String?> _generateImageWithGemini(String prompt) async {
+    try {
+      final apiKey = _env.geminiApiKey;
+
+      final url =
+          'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash-preview-image-generation:generateContent?key=$apiKey';
+
+      final body = {
+        "contents": [
+          {
+            "parts": [
+              {
+                "text": prompt}
+            ]
+          }
+        ],
+        "generationConfig": {
+          "responseModalities": ["TEXT", "IMAGE"]
+        }
+      };
+
+      final response = await _dio.post(
+        url,
+        data: jsonEncode(body),
+        options: Options(
+          headers: {
+            'Content-Type': 'application/json',
+            'User-Agent': 'Dart/3.0',
+          },
+          receiveTimeout: const Duration(seconds: 120),
+          sendTimeout: const Duration(seconds: 60),
+        ),
+      );
+
+      if (response.statusCode == 200 && response.data != null) {
+        final candidates = response.data['candidates'] as List?;
+        if (candidates != null && candidates.isNotEmpty) {
+          final parts = candidates[0]['content']['parts'] as List?;
+          if (parts != null) {
+            for (final part in parts) {
+              if (part['inlineData'] != null &&
+                  part['inlineData']['mimeType'] == 'image/png') {
+                final base64Image = part['inlineData']['data'];
+                final imageData = base64Decode(base64Image);
+                final imageUrl = await _uploadImageToServer(imageData);
+                debugPrint(
+                    'Crew Image Service: Gemini REST image generated and uploaded to Imgur');
+                return imageUrl;
+              }
+            }
+          }
+        }
+      }
+      
+      debugPrint('Crew Image Service: No image returned from Gemini REST API');
+      return null;
+    } on DioException catch (e) {
+      debugPrint(
+          'Crew Image Service: DioException in Gemini REST image generation - ${e.message}');
+      debugPrint('Crew Image Service: DioException type - ${e.type}');
+      debugPrint(
+          'Crew Image Service: DioException response - ${e.response?.data}');
+      return null;
     } catch (e) {
-      debugPrint('Crew Image Service: Unexpected error - $e');
-      return await _getBoatFallbackImage(crewName, prompt, tags, description);
+      debugPrint(
+          'Crew Image Service: Unexpected error in Gemini REST image generation - $e');
+      return null;
     }
   }
 
@@ -250,7 +284,6 @@ class CrewImageService {
       'One Piece style',
       'pirate flag design',
       'jolly roger',
-      'skull and crossbones',
       'detailed flag design',
       'high quality',
       'professional illustration',
@@ -341,7 +374,6 @@ class CrewImageService {
     
     final random = Random();
     
-    // Cores temáticas para bandeiras piratas
     final colors = [
       ['000000', 'FFFFFF'], // Preto e branco - Clássico
       ['8B0000', 'FFFFFF'], // Vermelho escuro - Sangue
@@ -357,13 +389,13 @@ class CrewImageService {
     final promptLower = prompt.toLowerCase();
     
     if (promptLower.contains('sangue') || promptLower.contains('blood')) {
-      colorIndex = 1; // Vermelho escuro
+      colorIndex = 1; 
     } else if (promptLower.contains('mar') || promptLower.contains('sea')) {
-      colorIndex = 2; // Verde escuro
+      colorIndex = 2; 
     } else if (promptLower.contains('mistério') || promptLower.contains('mystery')) {
-      colorIndex = 3; // Roxo
+      colorIndex = 3; 
     } else if (promptLower.contains('fogo') || promptLower.contains('fire')) {
-      colorIndex = 4; // Laranja-avermelhado
+      colorIndex = 4; 
     } else {
       colorIndex = random.nextInt(colors.length);
     }
@@ -393,7 +425,6 @@ class CrewImageService {
       selectedElements = skullElements;
     }
     
-    // Adicionar elementos baseados em tags
     if (tags != null && tags.isNotEmpty) {
       for (final tag in tags) {
         final tagLower = tag.toLowerCase();
@@ -407,15 +438,12 @@ class CrewImageService {
       }
     }
     
-    // Escolher 2-3 elementos aleatórios
     selectedElements.shuffle();
     final finalElements = selectedElements.take(2 + random.nextInt(2)).toList();
     
-    // Criar texto da bandeira
     final displayName = crewName.isNotEmpty ? crewName : 'Tripulação';
     final elementText = finalElements.join(' ');
     
-    // Adicionar informações extras se disponíveis
     String extraInfo = '';
     if (tags != null && tags.isNotEmpty) {
       extraInfo += ' | ${tags.join(', ')}';
@@ -436,7 +464,6 @@ class CrewImageService {
     
     final random = Random();
     
-    // Cores temáticas para barcos
     final colors = [
       ['8B4513', 'FFFFFF'], // Marrom - Madeira
       ['2F4F4F', 'FFFFFF'], // Cinza escuro - Tempestade
@@ -452,13 +479,13 @@ class CrewImageService {
     final promptLower = prompt.toLowerCase();
     
     if (promptLower.contains('madeira') || promptLower.contains('wood')) {
-      colorIndex = 0; // Marrom
+      colorIndex = 0; 
     } else if (promptLower.contains('tempestade') || promptLower.contains('storm')) {
-      colorIndex = 1; // Cinza escuro
+      colorIndex = 1; 
     } else if (promptLower.contains('oceano') || promptLower.contains('ocean')) {
-      colorIndex = 2; // Azul marinho
+      colorIndex = 2; 
     } else if (promptLower.contains('mar') || promptLower.contains('sea')) {
-      colorIndex = 3; // Verde escuro
+      colorIndex = 3; 
     } else {
       colorIndex = random.nextInt(colors.length);
     }
@@ -490,7 +517,6 @@ class CrewImageService {
       selectedElements = boatElements;
     }
     
-    // Adicionar elementos baseados em tags
     if (tags != null && tags.isNotEmpty) {
       for (final tag in tags) {
         final tagLower = tag.toLowerCase();
@@ -504,15 +530,12 @@ class CrewImageService {
       }
     }
     
-    // Escolher 2-3 elementos aleatórios
     selectedElements.shuffle();
     final finalElements = selectedElements.take(2 + random.nextInt(2)).toList();
     
-    // Criar texto do barco
     final displayName = crewName.isNotEmpty ? crewName : 'Tripulação';
     final elementText = finalElements.join(' ');
     
-    // Adicionar informações extras se disponíveis
     String extraInfo = '';
     if (tags != null && tags.isNotEmpty) {
       extraInfo += ' | ${tags.join(', ')}';
@@ -572,7 +595,7 @@ class CrewImageService {
       'requests_this_hour': _requestTimestamps.length,
       'max_requests_per_hour': _maxRequestsPerHour,
       'cache_size': _imageCache.length,
-      'api_configured': _env.stabilityApiKey.isNotEmpty && _env.stabilityApiKey.startsWith('sk-'),
+      'api_configured': _env.geminiApiKey.isNotEmpty,
     };
   }
 } 

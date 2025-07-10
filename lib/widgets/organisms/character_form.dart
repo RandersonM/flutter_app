@@ -119,7 +119,7 @@ class CharacterForm extends StatelessWidget {
             selectedCrewRole: selectedCrewRole,
             onCrewRoleChanged: onCrewRoleChanged,
             characterName: nameController.text.trim(),
-            devilFruit: selectedDevilFruit?.romanName,
+            race: selectedRace,
             haki: selectedHaki,
             showAiGenerator: showAiGenerator,
           ),

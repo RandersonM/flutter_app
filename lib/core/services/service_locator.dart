@@ -10,6 +10,7 @@ import 'package:opfan/core/services/featured_character_service.dart';
 import 'package:opfan/core/services/auth_service.dart';
 import 'package:opfan/core/services/firestore_service.dart';
 import 'package:opfan/core/services/ai_image_service.dart';
+import 'package:opfan/core/services/gemini_image_service.dart';
 import 'package:opfan/core/repository/custom_character_repository.dart';
 import 'package:opfan/core/repository/crew_repository.dart';
 import 'package:opfan/screens/home/blocs/home_bloc.dart';
@@ -36,6 +37,10 @@ Future<void> configureDependencies() async {
 
   getIt.registerLazySingleton<AiImageService>(
     () => AiImageService(),
+  );
+
+  getIt.registerLazySingleton<GeminiImageService>(
+    () => GeminiImageService(),
   );
 
   getIt.registerLazySingleton<FeaturedCharacterService>(
@@ -124,6 +129,7 @@ extension ServiceLocatorExtensions on GetIt {
   DevilFruitService get devilFruitService => get<DevilFruitService>();
   YouTubeService get youTubeService => get<YouTubeService>();
   AiImageService get aiImageService => get<AiImageService>();
+  GeminiImageService get geminiImageService => get<GeminiImageService>();
   FeaturedCharacterService get featuredCharacterService =>
       get<FeaturedCharacterService>();
   AuthService get authService => get<AuthService>();

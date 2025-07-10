@@ -460,6 +460,9 @@ class AppLocalizationsPt extends AppLocalizations {
   String get createCrew => 'Criar Tripulação';
 
   @override
+  String get boat => ' Barco';
+
+  @override
   String get crewBoatName => 'Nome do Barco';
 
   @override

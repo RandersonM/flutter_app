@@ -4,27 +4,68 @@ import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:opfan/core/services/environment_service.dart';
 
-class AiImageService {
-  late final Dio _dio;
+class GeminiImageService {
   final EnvironmentService _env = EnvironmentService.instance;
   
   final Map<String, String> _imageCache = {};
   final List<DateTime> _requestTimestamps = [];
-  static const int _maxRequestsPerHour = 10;
+  static const int _maxRequestsPerHour = 15; // Gemini tem limite mais generoso
 
   bool _quotaExceeded = false;
   DateTime? _quotaExceededTime;
   static const Duration _quotaResetDuration = Duration(hours: 24);
 
-  AiImageService() {
+  late final Dio _dio;
+
+  GeminiImageService() {
+    _initializeDio();
+  }
+
+  void _initializeDio() {
     _dio = Dio(BaseOptions(
-      baseUrl: _env.stabilityBaseUrl,
       connectTimeout: Duration(milliseconds: _env.networkTimeout),
       receiveTimeout: Duration(milliseconds: _env.networkTimeout),
-      headers: {
-        'Authorization': 'Bearer ${_env.stabilityApiKey}',
-        'Content-Type': 'application/json',
-        'Accept': 'application/json',
+      sendTimeout: Duration(milliseconds: _env.networkTimeout),
+      // Configurações para melhorar a estabilidade da conexão
+      validateStatus: (status) => status != null && status < 500,
+      maxRedirects: 3,
+    ));
+
+    // Adicionar interceptor para retry automático
+    _dio.interceptors.add(InterceptorsWrapper(
+      onError: (error, handler) async {
+        if (error.type == DioExceptionType.connectionError ||
+            error.type == DioExceptionType.connectionTimeout ||
+            error.type == DioExceptionType.receiveTimeout ||
+            error.type == DioExceptionType.sendTimeout) {
+          
+          debugPrint('Gemini Image Service: Network error detected, retrying...');
+          
+          // Aguardar um pouco antes de tentar novamente
+          await Future.delayed(Duration(milliseconds: 1000));
+          
+          try {
+            // Tentar novamente com timeout maior
+            final retryOptions = Options(
+              receiveTimeout: Duration(seconds: 60),
+              sendTimeout: Duration(seconds: 60),
+            );
+            
+            final retryResponse = await _dio.request(
+              error.requestOptions.path,
+              data: error.requestOptions.data,
+              queryParameters: error.requestOptions.queryParameters,
+              options: retryOptions,
+            );
+            
+            handler.resolve(retryResponse);
+            return;
+          } catch (retryError) {
+            debugPrint('Gemini Image Service: Retry failed - $retryError');
+          }
+        }
+        
+        handler.next(error);
       },
     ));
 
@@ -52,20 +93,19 @@ class AiImageService {
       return _imageCache[cacheKey];
     }
 
-    if (_env.stabilityApiKey == 'dev_mode' || 
-        _env.stabilityApiKey.isEmpty || 
-        !_env.stabilityApiKey.startsWith('sk-')) {
-      debugPrint('AI Image Service: Development mode or invalid API key, using fallback');
+    if (_env.geminiApiKey == 'dev_mode' || 
+        _env.geminiApiKey.isEmpty) {
+      debugPrint('Gemini Image Service: Development mode or invalid API key, using fallback');
       return await _getEnhancedFallbackImage(characterName, prompt, devilFruit, haki, status, occupations);
     }
 
     if (_isQuotaExceeded()) {
-      debugPrint('AI Image Service: Quota exceeded, using fallback');
+      debugPrint('Gemini Image Service: Quota exceeded, using fallback');
       return await _getEnhancedFallbackImage(characterName, prompt, devilFruit, haki, status, occupations);
     }
 
     if (!_canMakeRequest()) {
-      debugPrint('AI Image Service: Rate limit exceeded, using fallback');
+      debugPrint('Gemini Image Service: Rate limit exceeded, using fallback');
       return await _getEnhancedFallbackImage(characterName, prompt, devilFruit, haki, status, occupations);
     }
 
@@ -84,66 +124,144 @@ class AiImageService {
         occupations: occupations,
       );
 
-      debugPrint('AI Image Service: Generating image with prompt: $enhancedPrompt');
+      debugPrint('Gemini Image Service: Generating image with prompt: $enhancedPrompt');
 
       _recordRequest();
 
-      // Usar o modelo Stable Diffusion XL da Stability AI
-      final response = await _dio.post(
-        '/stable-diffusion-xl-1024-v1-0/text-to-image',
-        data: {
-          'text_prompts': [
-            {
-              'text': enhancedPrompt,
-              'weight': 1.0,
-            },
-            {
-              'text': 'blurry, low quality, distorted, ugly, bad anatomy',
-              'weight': -1.0,
-            }
-          ],
-          'cfg_scale': 7,
-          'height': 1024,
-          'width': 1024,
-          'samples': 1,
-          'steps': 30,
-        },
-      );
-
-      if (response.statusCode == 200) {
-        final data = response.data;
-        if (data['artifacts'] != null && data['artifacts'].isNotEmpty) {
-          final artifact = data['artifacts'][0];
-          if (artifact['base64'] != null) {
-            final imageData = base64Decode(artifact['base64']);
-            final imageUrl = await _uploadImageToServer(imageData);
-            // Só armazenar no cache se não for uma regeneração forçada
-            if (!isForcedRegeneration) {
-              _imageCache[cacheKey] = imageUrl;
-            }
-            debugPrint('AI Image Service: Success with Stability AI');
-            return imageUrl;
-          }
+      // Usar a API REST do Gemini para geração de imagens conforme documentação oficial
+      final imageUrl = await _generateImageWithGemini(enhancedPrompt);
+      
+      if (imageUrl != null && imageUrl.isNotEmpty) {
+        // Só armazenar no cache se não for uma regeneração forçada
+        if (!isForcedRegeneration) {
+          _imageCache[cacheKey] = imageUrl;
         }
+        debugPrint('Gemini Image Service: Success with Gemini AI');
+        debugPrint('Gemini Image Service: Image URL - $imageUrl');
+        return imageUrl;
       }
       
-      debugPrint('AI Image Service: Invalid response from Stability AI');
+      debugPrint('Gemini Image Service: Invalid response from Gemini AI');
       return await _getEnhancedFallbackImage(characterName, prompt, devilFruit, haki, status, occupations);
       
-    } on DioException catch (e) {
-      debugPrint('AI Image Service: DioException - ${e.message}');
-      debugPrint('AI Image Service: Response data - ${e.response?.data}');
+    } catch (e) {
+      debugPrint('Gemini Image Service: Error - $e');
       
-      if (e.response?.statusCode == 429) {
+      if (e.toString().contains('quota') || e.toString().contains('rate limit')) {
         _handleQuotaExceeded();
       }
 
       return await _getEnhancedFallbackImage(characterName, prompt, devilFruit, haki, status, occupations);
-    } catch (e) {
-      debugPrint('AI Image Service: Unexpected error - $e');
-      return await _getEnhancedFallbackImage(characterName, prompt, devilFruit, haki, status, occupations);
     }
   }
+
+  Future<String?> _generateImageWithGemini(String prompt) async {
+    try {
+      final apiKey = _env.geminiApiKey;
+      
+      // Usar o modelo correto para geração de imagens conforme documentação oficial
+      final url = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash-preview-image-generation:generateContent?key=$apiKey';
+
+      // Estrutura correta baseada na documentação oficial
+      final body = {
+        "contents": [
+          {
+            "parts": [
+              {
+                "text": prompt
+              }
+            ]
+          }
+        ],
+        "generationConfig": {
+          "responseModalities": ["TEXT", "IMAGE"]
+        }
+      };
+
+      debugPrint('Gemini Image Service: Sending request to Gemini API');
+      debugPrint('Gemini Image Service: Request body: ${jsonEncode(body)}');
+
+      final response = await _dio.post(
+        url,
+        data: jsonEncode(body),
+        options: Options(
+          headers: {
+            'Content-Type': 'application/json',
+            'User-Agent': 'Dart/3.0',
+          },
+          // Timeouts mais generosos para evitar problemas de conexão
+          receiveTimeout: Duration(seconds: 120),
+          sendTimeout: Duration(seconds: 60),
+        ),
+      );
+
+      debugPrint('Gemini Image Service: Response status: ${response.statusCode}');
+      debugPrint('Gemini Image Service: Response data: ${response.data}');
+
+      if (response.statusCode == 200 && response.data != null) {
+        final candidates = response.data['candidates'] as List?;
+        if (candidates != null && candidates.isNotEmpty) {
+          final parts = candidates[0]['content']['parts'] as List?;
+          if (parts != null) {
+            for (final part in parts) {
+              if (part['inlineData'] != null && part['inlineData']['mimeType'] == 'image/png') {
+                final base64Image = part['inlineData']['data'];
+                final imageData = base64Decode(base64Image);
+                final imageUrl = await _uploadImageToServer(imageData);
+                debugPrint('Gemini Image Service: Gemini REST image generated and uploaded to Imgur');
+                return imageUrl;
+              }
+            }
+          }
+        }
+      }
+      
+      debugPrint('Gemini Image Service: No image returned from Gemini REST API');
+      return null;
+    } on DioException catch (e) {
+      debugPrint('Gemini Image Service: DioException in Gemini REST image generation - ${e.message}');
+      debugPrint('Gemini Image Service: DioException type - ${e.type}');
+      debugPrint('Gemini Image Service: DioException response - ${e.response?.data}');
+      return null;
+    } catch (e) {
+      debugPrint('Gemini Image Service: Unexpected error in Gemini REST image generation - $e');
+      return null;
+    }
+  }
+
+
+
+
+
+  Future<String> _uploadImageToServer(Uint8List imageData) async {
+    try {
+      final uploadDio = Dio();
+      final formData = FormData.fromMap({
+        'image': base64Encode(imageData),
+        'type': 'base64',
+      });
+      
+      final response = await uploadDio.post(
+        'https://api.imgur.com/3/image',
+        data: formData,
+        options: Options(
+          headers: {
+            'Authorization': 'Client-ID 546c25a59c58ad7', 
+          },
+        ),
+      );
+      
+      if (response.statusCode == 200 && response.data['data'] != null) {
+        return response.data['data']['link'];
+      }
+    } catch (e) {
+      debugPrint('Gemini Image Service: Failed to upload image - $e');
+    }
+    
+    return 'data:image/png;base64,${base64Encode(imageData)}';
+  }
+
+
 
   String _buildEnhancedPrompt({
     required String race,
@@ -178,36 +296,8 @@ class AiImageService {
       'vibrant colors',
     ]);
 
-    debugPrint('AI Image Service: Prompt parts - $promptParts');
+    debugPrint('Gemini Image Service: Prompt parts - $promptParts');
     return promptParts.join(', ');
-  }
-
-  Future<String> _uploadImageToServer(Uint8List imageData) async {
-    try {
-      final uploadDio = Dio();
-      final formData = FormData.fromMap({
-        'image': base64Encode(imageData),
-        'type': 'base64',
-      });
-      
-      final response = await uploadDio.post(
-        'https://api.imgur.com/3/image',
-        data: formData,
-        options: Options(
-          headers: {
-            'Authorization': 'Client-ID 546c25a59c58ad7', 
-          },
-        ),
-      );
-      
-      if (response.statusCode == 200 && response.data['data'] != null) {
-        return response.data['data']['link'];
-      }
-    } catch (e) {
-      debugPrint('AI Image Service: Failed to upload image - $e');
-    }
-    
-    return 'data:image/png;base64,${base64Encode(imageData)}';
   }
 
   Future<String> _getEnhancedFallbackImage(
@@ -222,13 +312,10 @@ class AiImageService {
     
     final random = Random();
     
-    // Verificar se é uma regeneração forçada
     final isForcedRegeneration = prompt.contains('[regeneration_');
 
-    // Se for regeneração forçada, usar informações do sufixo para criar variação
     int variationOffset = 0;
     if (isForcedRegeneration) {
-      // Extrair informações do sufixo de regeneração para criar variação
       final regenerationMatch =
           RegExp(r'\[regeneration_(\d+)_(\d+)_(\d+)\]').firstMatch(prompt);
       if (regenerationMatch != null) {
@@ -236,12 +323,10 @@ class AiImageService {
         final timestamp = int.parse(regenerationMatch.group(2)!);
         final randomSuffix = int.parse(regenerationMatch.group(3)!);
 
-        // Usar essas informações para criar um offset único
         variationOffset = (count + timestamp + randomSuffix) % 1000;
       }
     }
     
-    // Cores temáticas baseadas no prompt e características
     final colors = [
       ['FF6B6B', 'FFFFFF'], // Vermelho - Piratas
       ['4ECDC4', 'FFFFFF'], // Turquesa - Marinha
@@ -259,20 +344,19 @@ class AiImageService {
     final promptLower = prompt.toLowerCase();
     
     if (promptLower.contains('pirata') || promptLower.contains('pirate')) {
-      colorIndex = 0; // Vermelho
+      colorIndex = 0; 
     } else if (promptLower.contains('marinha') || promptLower.contains('marine')) {
-      colorIndex = 1; // Turquesa
+      colorIndex = 1; 
     } else if (promptLower.contains('água') || promptLower.contains('water')) {
-      colorIndex = 2; // Azul
+      colorIndex = 2; 
     } else if (promptLower.contains('natureza') || promptLower.contains('nature')) {
-      colorIndex = 3; // Verde
+      colorIndex = 3; 
     } else if (promptLower.contains('ouro') || promptLower.contains('gold')) {
-      colorIndex = 4; // Amarelo
+      colorIndex = 4; 
     } else {
       colorIndex = random.nextInt(colors.length);
     }
     
-    // Se for regeneração forçada, usar uma cor diferente baseada no offset
     if (isForcedRegeneration) {
       colorIndex = (colorIndex + variationOffset) % colors.length;
     }
@@ -282,50 +366,47 @@ class AiImageService {
     final textColor = colorPair[1];
     
     final elements = [
-      '⚓', // Âncora
-      '🏴‍☠️', // Bandeira pirata
-      '🗡️', // Espada
-      '💀', // Caveira
-      '🌊', // Onda
-      '⚔️', // Espadas cruzadas
-      '🏝️', // Ilha
-      '⚡', // Poder
-      '🔥', // Fogo
-      '💎', // Tesouro
-      '👑', // Coroa
-      '🛡️', // Escudo
+      'PIRATA', 
+      'CAPITAO', 
+      'ESPADA', 
+      'PODER', 
+      'MAR', 
+      'ILHA', 
+      'TESOURO', 
+      'COROA', 
+      'NAVIO', 
+      'BANDEIRA', 
+      'LUTA', 
+      'AVENTURA', 
     ];
     
     List<String> selectedElements = [];
     
     if (promptLower.contains('pirata') || promptLower.contains('pirate')) {
-      selectedElements.addAll(['🏴‍☠️', '⚓', '🗡️']);
+      selectedElements.addAll(['PIRATA', 'MAR', 'ESPADA']);
     } else if (promptLower.contains('capitão') || promptLower.contains('captain')) {
-      selectedElements.addAll(['👑', '⚔️', '🛡️']);
+      selectedElements.addAll(['COROA', 'CAPITAO', 'PODER']);
     } else if (promptLower.contains('espada') || promptLower.contains('sword')) {
-      selectedElements.addAll(['🗡️', '⚔️', '🛡️']);
+      selectedElements.addAll(['ESPADA', 'PIRATA', 'LUTA']);
     } else if (promptLower.contains('poder') || promptLower.contains('power')) {
-      selectedElements.addAll(['⚡', '🔥', '💎']);
+      selectedElements.addAll(['PODER', 'TESOURO', 'COROA']);
     } else {
       selectedElements = elements;
     }
     
-    // Adicionar elementos baseados em características específicas
     if (devilFruit != null && devilFruit.isNotEmpty) {
-      selectedElements.add('⚡');
+      selectedElements.add('PODER');
     }
     if (haki != null && haki.isNotEmpty) {
-      selectedElements.add('🔥');
+      selectedElements.add('LUTA');
     }
     if (status == 'dead') {
-      selectedElements.add('💀');
+      selectedElements.add('PIRATA');
     }
     
-    // Escolher 2-3 elementos aleatórios
     selectedElements.shuffle();
     final finalElements = selectedElements.take(2 + random.nextInt(2)).toList();
     
-    // Se for regeneração forçada, reorganizar os elementos baseado no offset
     if (isForcedRegeneration) {
       final tempElements = List<String>.from(finalElements);
       for (int i = 0; i < tempElements.length; i++) {
@@ -334,11 +415,9 @@ class AiImageService {
       }
     }
     
-    // Criar texto do personagem
     final displayName = characterName.isNotEmpty ? characterName : 'Personagem';
     final elementText = finalElements.join(' ');
     
-    // Adicionar informações extras se disponíveis
     String extraInfo = '';
     if (devilFruit != null && devilFruit.isNotEmpty) {
       extraInfo += ' | $devilFruit';
@@ -349,12 +428,15 @@ class AiImageService {
     
     final fullText = '$elementText $displayName$extraInfo $elementText';
     
-    // Se for regeneração forçada, adicionar um parâmetro único para evitar cache do navegador
     final cacheBuster = isForcedRegeneration
         ? '&v=${DateTime.now().millisecondsSinceEpoch}'
         : '';
 
-    return 'https://via.placeholder.com/512x768/$bgColor/$textColor?text=${Uri.encodeComponent(fullText)}$cacheBuster';
+    final encodedText = Uri.encodeComponent(fullText);
+    final imageUrl = 'https://dummyimage.com/512x768/$bgColor/$textColor&text=$encodedText$cacheBuster';
+    
+    debugPrint('Gemini Image Service: Generated fallback image URL');
+    return imageUrl;
   }
 
   String _getCacheKey(String characterName, String prompt) {
@@ -392,7 +474,7 @@ class AiImageService {
   void _handleQuotaExceeded() {
     _quotaExceeded = true;
     _quotaExceededTime = DateTime.now();
-    debugPrint('AI Image Service: Quota exceeded, will reset in $_quotaResetDuration');
+    debugPrint('Gemini Image Service: Quota exceeded, will reset in $_quotaResetDuration');
   }
 
   void clearCache() {
@@ -406,7 +488,7 @@ class AiImageService {
       'requests_this_hour': _requestTimestamps.length,
       'max_requests_per_hour': _maxRequestsPerHour,
       'cache_size': _imageCache.length,
-      'api_configured': _env.stabilityApiKey.isNotEmpty && _env.stabilityApiKey.startsWith('sk-'),
+      'api_configured': _env.geminiApiKey.isNotEmpty && _env.geminiApiKey != 'dev_mode',
     };
   }
 } 

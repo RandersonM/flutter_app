@@ -459,6 +459,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get createCrew => 'Create Crew';
 
   @override
+  String get boat => ' Boat';
+
+  @override
   String get crewBoatName => ' Boat name';
 
   @override

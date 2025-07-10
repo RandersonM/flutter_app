@@ -42,8 +42,8 @@ class DetailsBounty extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.only(right: Constants.margin),
               child: Text(
-                bounty,
-                style: Theme.of(context).textTheme.headlineSmall,
+                '฿${Constants.formatBounty(bounty)}',
+                style: Theme.of(context).textTheme.headlineSmall
               ),
             )
           ],

@@ -6,6 +6,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:opfan/core/models/one_piece/crew_model.dart';
 import 'package:opfan/utils/constants.dart';
 import 'package:opfan/l10n/app_localizations.dart';
+import 'package:opfan/widgets/atoms/clickable_image.dart';
 
 class CrewHeader extends StatelessWidget {
   final CrewModel crew;
@@ -25,21 +26,32 @@ class CrewHeader extends StatelessWidget {
     return Column(
       spacing: Constants.margin,
       children: [
-        Container(
-          width: double.infinity,
-          height: 200,
-          decoration: BoxDecoration(
-            image: DecorationImage(
-              image: _getBackgroundImageProvider(),
-              fit: BoxFit.cover,
-              colorFilter: ColorFilter.mode(
-                Colors.black.withValues(alpha: 0.3),
-                BlendMode.darken,
-              ),
-            ),
+        if (crew.jollyRogerUrl != null && crew.jollyRogerUrl!.isNotEmpty)
+          ClickableImage(
+            imageUrl: crew.jollyRogerUrl!,
+            width: double.infinity,
+            height: 200,
+            fit: BoxFit.cover,
             borderRadius: BorderRadius.circular(Constants.margin * 2),
+            title: crew.name,
+            showTitleInDialog: true,
+          )
+        else
+          Container(
+            width: double.infinity,
+            height: 200,
+            decoration: BoxDecoration(
+              image: DecorationImage(
+                image: _getBackgroundImageProvider(),
+                fit: BoxFit.cover,
+                colorFilter: ColorFilter.mode(
+                  Colors.black.withValues(alpha: 0.3),
+                  BlendMode.darken,
+                ),
+              ),
+              borderRadius: BorderRadius.circular(Constants.margin * 2),
+            ),
           ),
-        ),
         Container(
           width: double.infinity,
           decoration: BoxDecoration(

@@ -244,16 +244,6 @@ class CrewMembersList extends StatelessWidget {
   }
 
   String _formatBounty(String bounty) {
-    final bountyValue = double.tryParse(bounty.replaceAll(RegExp(r'[^\d.]'), '')) ?? 0;
-    
-    if (bountyValue >= 1000000000) {
-      return '${(bountyValue / 1000000000).toStringAsFixed(1)}B';
-    } else if (bountyValue >= 1000000) {
-      return '${(bountyValue / 1000000).toStringAsFixed(1)}M';
-    } else if (bountyValue >= 1000) {
-      return '${(bountyValue / 1000).toStringAsFixed(1)}K';
-    } else {
-      return bountyValue.toStringAsFixed(0);
-    }
+    return Constants.formatBounty(bounty);
   }
 } 

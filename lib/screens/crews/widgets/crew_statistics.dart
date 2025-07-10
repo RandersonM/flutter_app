@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:opfan/core/models/one_piece/crew_model.dart';
 import 'package:opfan/widgets/molecules/statistics_grid.dart';
 import 'package:opfan/l10n/app_localizations.dart';
+import 'package:opfan/utils/constants.dart';
 
 class CrewStatistics extends StatelessWidget {
   final CrewModel crew;
@@ -31,12 +32,12 @@ class CrewStatistics extends StatelessWidget {
       ),
       StatisticData(
         label: l10n.berriesTotal,
-        value: _formatBounty(totalBounty),
+        value: Constants.formatAbbreviateBounty(totalBounty),
         icon: Icons.monetization_on,
       ),
       StatisticData(
         label: 'Bounty Média',
-        value: _formatBounty(double.parse(averageBounty)),
+        value: Constants.formatAbbreviateBounty(double.parse(averageBounty)),
         icon: Icons.trending_up,
       ),
       StatisticData(
@@ -46,17 +47,14 @@ class CrewStatistics extends StatelessWidget {
       ),
     ];
 
-    return 
-      
-      StatisticsGrid(
-        statistics: statistics,
-        title: l10n.statistics,
-        spacing: 12.0,
-        padding: const EdgeInsets.all(32.0),
-        backgroundColor: Colors.white,
-        borderRadius: 16.0,
-        elevation: 2.0,
-      
+    return StatisticsGrid(
+      statistics: statistics,
+      title: l10n.statistics,
+      spacing: 12.0,
+      padding: const EdgeInsets.all(32.0),
+      backgroundColor: Colors.white,
+      borderRadius: 16.0,
+      elevation: 2.0,
     );
   }
 
@@ -69,15 +67,4 @@ class CrewStatistics extends StatelessWidget {
     return total;
   }
 
-  String _formatBounty(double bounty) {
-    if (bounty >= 1000000000) {
-      return '${(bounty / 1000000000).toStringAsFixed(1)}B';
-    } else if (bounty >= 1000000) {
-      return '${(bounty / 1000000).toStringAsFixed(1)}M';
-    } else if (bounty >= 1000) {
-      return '${(bounty / 1000).toStringAsFixed(1)}K';
-    } else {
-      return bounty.toStringAsFixed(0);
-    }
-  }
 } 

@@ -182,7 +182,7 @@ class _HomeScreenState extends State<HomeScreen> {
       final character = state.featuredCharacter;
       return CharacterInfoCard(
         characterName: character.name,
-        characterBounty: character.bounty,
+        characterBounty: '฿${Constants.formatBounty(character.bounty)}',
         characterImage: character.image,
         onTap: () => Navigator.pushNamed(
           context,
@@ -222,7 +222,7 @@ class _HomeScreenState extends State<HomeScreen> {
             value:
                 character.devilFruit != null && character.devilFruit!.isNotEmpty
                     ? character.devilFruit!
-                    : 'Unknown',
+                    : '',
             svgPath:
                 character.devilFruit != null && character.devilFruit!.isNotEmpty
                     ? 'assets/svg/gomu-gomu.svg'

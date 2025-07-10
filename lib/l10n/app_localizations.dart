@@ -935,6 +935,12 @@ abstract class AppLocalizations {
   /// Label for crew boat name field
   ///
   /// In en, this message translates to:
+  /// **' Boat'**
+  String get boat;
+
+  /// Label for crew boat name field
+  ///
+  /// In en, this message translates to:
   /// **' Boat name'**
   String get crewBoatName;
 

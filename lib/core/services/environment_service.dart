@@ -36,6 +36,8 @@ class EnvironmentService {
   String get stabilityBaseUrl => _getString(
       'STABILITY_BASE_URL', 'https://api.stability.ai/v1/generation');
 
+  String get geminiApiKey => _getString('GEMINI_API_KEY', 'dev_mode');
+
   String get appName => _getString('APP_NAME', 'One Piece Simple App');
 
   String get appVersion => _getString('APP_VERSION', '1.0.1');
@@ -110,6 +112,8 @@ class EnvironmentService {
       'debug_mode': debugMode,
       'youtube_api_configured': youtubeApiKey.isNotEmpty,
       'huggingface_api_configured': huggingFaceApiKey.isNotEmpty,
+      'gemini_api_configured':
+          geminiApiKey.isNotEmpty && geminiApiKey != 'dev_mode',
       'onepiece_api_url': onepieceApiUrl,
       'network_timeout': networkTimeout,
       'retry_count': retryCount,

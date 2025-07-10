@@ -290,26 +290,30 @@ class _CustomCharacterGridListState extends State<CustomCharacterGridList> {
   }
 
   void _showDeleteConfirmation(CustomCharacterModel character) {
+    final l10n = AppLocalizations.of(context)!;
+    
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: Text(AppLocalizations.of(context)!.confirmDelete),
+        title: Text(l10n.confirmDelete),
         content: Text(
-            AppLocalizations.of(context)!.confirmDeleteCrew(character.name)),
+          l10n.confirmDeleteCrew(character.name),
+        ),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
-            child: Text(AppLocalizations.of(context)!.cancel),
+            child: Text(l10n.cancel),
           ),
-          TextButton(
+          ElevatedButton(
             onPressed: () {
+              widget.onCharacterDelete?.call(character);
               Navigator.pop(context);
-              context.read<CustomCharacterBloc>().add(
-                DeleteCustomCharacter(character.id!),
-              );
             },
-            style: TextButton.styleFrom(foregroundColor: Colors.red),
-            child: Text(AppLocalizations.of(context)!.delete),
+            style: ElevatedButton.styleFrom(
+              backgroundColor: Colors.red,
+              foregroundColor: Colors.white,
+            ),
+            child: Text(l10n.delete),
           ),
         ],
       ),

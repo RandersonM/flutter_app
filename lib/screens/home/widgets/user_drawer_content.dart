@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:opfan/core/auth/models/user_model.dart';
+import 'package:opfan/utils/theme.dart';
 import 'package:opfan/widgets/atoms/circle_avatar.dart';
+import 'package:opfan/widgets/atoms/wavy_divider.dart';
 import 'package:opfan/utils/constants.dart';
 import 'package:opfan/core/auth/blocs/index.dart';
 import 'package:opfan/l10n/app_localizations.dart';
@@ -42,9 +44,9 @@ class UserDrawerContent extends StatelessWidget {
               ],
             ),
           ),
-          const Divider(),
+          WavyDivider(color: AppColors.purple[600]!),
           ListTile(
-              leading: const Icon(FontAwesomeIcons.person),
+              leading: const Icon(FontAwesomeIcons.userAstronaut),
               title: Text(AppLocalizations.of(context)!.myCharacters),
               onTap: () {
                 Navigator.of(context).pushNamed(AppRoutes.customCharacterList);
@@ -59,7 +61,6 @@ class UserDrawerContent extends StatelessWidget {
               );
             },
           ),
-          const Divider(),
           ListTile(
             leading: const Icon(Icons.person),
             title: Text(AppLocalizations.of(context)!.profile),
@@ -68,17 +69,17 @@ class UserDrawerContent extends StatelessWidget {
               Navigator.pushNamed(context, AppRoutes.profile);
             },
           ),
+          WavyDivider(color: AppColors.purple[600]!),
           ListTile(
-            leading: const Icon(Icons.settings),
-            title: Text(AppLocalizations.of(context)!.settings),
-            onTap: () {
-              Navigator.of(context).pushNamed(AppRoutes.customCharacterList);
-            },
-          ),
-          const Divider(),
-          ListTile(
-            leading: const Icon(Icons.logout),
-            title: Text(AppLocalizations.of(context)!.logout),
+            leading:
+                Icon(Icons.logout, color: Theme.of(context).colorScheme.error),
+            title: Text(
+              AppLocalizations.of(context)!.logout,
+              style: Theme.of(context)
+                  .textTheme
+                  .bodyMedium
+                  ?.copyWith(color: Theme.of(context).colorScheme.error),
+            ),
             onTap: () {
               Navigator.pop(context);
               authBloc.add(const AuthSignOutRequested());
