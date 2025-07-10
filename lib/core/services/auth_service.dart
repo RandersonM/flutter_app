@@ -26,6 +26,24 @@ class AuthService {
   Future<void> init() async {
     try {
       _box = await Hive.openBox<UserModel>(_boxName);
+      
+      final cachedUser = currentUser;
+      if (cachedUser != null) {
+        final firebaseUser = _firebaseAuth.currentUser;
+        if (firebaseUser != null && firebaseUser.uid == cachedUser.uid) {
+          try {
+            await firebaseUser.getIdToken(true);
+            debugPrint('AuthService: Valid cached session found');
+          } catch (e) {
+            debugPrint(
+                'AuthService: Cached session expired, clearing cache - $e');
+            await _clearUser();
+          }
+        } else {
+          debugPrint('AuthService: Cached user mismatch, clearing cache');
+          await _clearUser();
+        }
+      }
     } catch (e) {
       debugPrint('AuthService: Error opening Hive box - $e');
       rethrow;
@@ -47,6 +65,53 @@ class AuthService {
   bool get isAuthenticated =>
       currentUser != null && _firebaseAuth.currentUser != null;
 
+  Future<bool> isSessionValid() async {
+    try {
+      final firebaseUser = _firebaseAuth.currentUser;
+      if (firebaseUser == null) return false;
+
+      await firebaseUser.getIdToken(true);
+
+      final cachedUser = currentUser;
+      if (cachedUser == null || cachedUser.uid != firebaseUser.uid) {
+        return false;
+      }
+
+      return true;
+    } catch (e) {
+      debugPrint('AuthService: Session validation error - $e');
+      return false;
+    }
+  }
+
+  /// Renova o token do Firebase se necessário
+  Future<bool> refreshToken() async {
+    try {
+      final firebaseUser = _firebaseAuth.currentUser;
+      if (firebaseUser == null) return false;
+
+      await firebaseUser.getIdToken(true);
+      return true;
+    } catch (e) {
+      debugPrint('AuthService: Error refreshing token - $e');
+      return false;
+    }
+  }
+
+  Future<bool> restoreGoogleSession() async {
+    try {
+      final googleUser = await _googleSignIn.signInSilently();
+      if (googleUser != null) {
+        debugPrint('AuthService: Google session restored successfully');
+        return true;
+      }
+      return false;
+    } catch (e) {
+      debugPrint('AuthService: Error restoring Google session - $e');
+      return false;
+    }
+  }
+
   Future<UserModel?> signInWithGoogle() async {
     try {
       final GoogleSignInAccount? googleUser = await _googleSignIn.signIn();
@@ -67,6 +132,8 @@ class AuthService {
 
       final User? user = userCredential.user;
       if (user != null) {
+        await user.getIdToken(true);
+        
         final userModel = UserModel(
           uid: user.uid,
           email: user.email ?? '',
@@ -79,6 +146,7 @@ class AuthService {
         );
 
         await _saveUser(userModel);
+        debugPrint('AuthService: User signed in successfully and cached');
         return userModel;
       }
 
@@ -108,14 +176,33 @@ class AuthService {
       final User? firebaseUser = _firebaseAuth.currentUser;
 
       if (firebaseUser != null) {
+        try {
+          await firebaseUser.getIdToken(true);
+        } catch (e) {
+          debugPrint('AuthService: Firebase token expired, signing out - $e');
+          await signOut();
+          return null;
+        }
+
         final isGoogleProvider = firebaseUser.providerData
             .any((provider) => provider.providerId == 'google.com');
         
         if (isGoogleProvider) {
-          final googleUser = _googleSignIn.currentUser;
-          if (googleUser == null) {
-            await signOut();
-            return null;
+          try {
+            final googleUser = _googleSignIn.currentUser;
+            if (googleUser == null) {
+              // Tenta restaurar a sessão do Google
+              final restored = await restoreGoogleSession();
+              if (!restored) {
+                debugPrint('AuthService: Google session expired, signing out');
+                await signOut();
+                return null;
+              }
+            }
+          } catch (e) {
+            debugPrint('AuthService: Error checking Google session - $e');
+            // Se houver erro na verificação do Google, mas o Firebase ainda é válido,
+            // mantemos a sessão do Firebase
           }
         }
 
@@ -213,6 +300,9 @@ class AuthService {
       'firebaseUser': _firebaseAuth.currentUser?.email,
       'cachedUsers': _box.length,
       'isGoogleSignedIn': _googleSignIn.currentUser != null,
+      'firebaseUid': _firebaseAuth.currentUser?.uid,
+      'cachedUid': currentUser?.uid,
+      'sessionValid': _firebaseAuth.currentUser != null && currentUser != null,
     };
   }
 }

@@ -148,7 +148,6 @@ class CharacterDetailsScreen extends StatelessWidget {
     final theme = Theme.of(context);
     final l10n = AppLocalizations.of(context)!;
     final statusTheme = _getStatusTheme(character.status, l10n);
-    debugPrint('character.crew: ${character}');
     return Scaffold(
       backgroundColor: theme.colorScheme.surface,
       appBar: DefaultAppBar(

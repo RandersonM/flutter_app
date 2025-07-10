@@ -252,22 +252,16 @@ class _CrewCardState extends State<CrewCard> {
   }
 
   int _calculateTotalBounty() {
-    return widget.crew.members.fold<int>(0, (sum, member) {
+    var totalBounty = widget.crew.members.fold<int>(0, (sum, member) {
       final bountyString = member.bounty.replaceAll(RegExp(r'[^\d]'), '');
       final bounty = int.tryParse(bountyString) ?? 0;
       return sum + bounty;
     });
+    return totalBounty %
+        (widget.crew.members.isNotEmpty ? widget.crew.members.length : 1);
   }
 
   String _formatBounty(int bounty) {
-    if (bounty >= 1000000000) {
-      return '${(bounty / 1000000000).toStringAsFixed(1)}B';
-    } else if (bounty >= 1000000) {
-      return '${(bounty / 1000000).toStringAsFixed(1)}M';
-    } else if (bounty >= 1000) {
-      return '${(bounty / 1000).toStringAsFixed(1)}K';
-    } else {
-      return bounty.toString();
-    }
+    return Constants.formatBounty(bounty.toString());
   }
 } 

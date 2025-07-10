@@ -5,6 +5,7 @@ import '../../../widgets/atoms/custom_text_field.dart';
 import '../../../widgets/atoms/custom_dropdown.dart';
 import '../../../widgets/atoms/custom_chip_selector.dart';
 import '../../../widgets/molecules/ai_image_generator.dart';
+import '../../../widgets/atoms/clickable_image.dart';
 
 class CharacterBackgroundSection extends StatelessWidget {
   final TextEditingController bountyController;
@@ -23,7 +24,7 @@ class CharacterBackgroundSection extends StatelessWidget {
   final String? selectedCrewRole;
   final void Function(String?) onCrewRoleChanged;
   final String? characterName;
-  final String? devilFruit;
+  final String? race;
   final List<String>? haki;
   final bool showAiGenerator;
 
@@ -45,7 +46,7 @@ class CharacterBackgroundSection extends StatelessWidget {
     required this.selectedCrewRole,
     required this.onCrewRoleChanged,
     this.characterName,
-    this.devilFruit,
+    this.race,
     this.haki,
     this.showAiGenerator = true,
   }) : super(key: key);
@@ -163,8 +164,8 @@ class CharacterBackgroundSection extends StatelessWidget {
         if (showAiGenerator) ...[
           const SizedBox(height: 16),
           AiImageGenerator(
+            race: race!,
             characterName: characterName,
-            devilFruit: devilFruit,
             haki: haki,
             status: selectedStatus,
             occupations: selectedOccupations,
@@ -174,6 +175,17 @@ class CharacterBackgroundSection extends StatelessWidget {
             },
           ),
           const SizedBox(height: 16),
+        ],
+        if (imageUrlController.text.isNotEmpty) ...[
+          const SizedBox(height: 16),
+          ClickableImage(
+            imageUrl: imageUrlController.text,
+            width: double.infinity,
+            height: 220,
+            fit: BoxFit.cover,
+            borderRadius: BorderRadius.circular(12),
+            showTitleInDialog: false,
+          ),
         ],
         CustomTextField(
           label: l10n.imageUrl,

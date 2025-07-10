@@ -13,6 +13,7 @@ class CreateCrewSubmitted extends CreateCrewEvent {
   final String? jollyRogerUrl;
   final String? boatImageUrl;
   final List<String> tags;
+  final String? boatName;
 
   const CreateCrewSubmitted({
     required this.name,
@@ -20,10 +21,12 @@ class CreateCrewSubmitted extends CreateCrewEvent {
     this.jollyRogerUrl,
     this.boatImageUrl,
     this.tags = const [],
+    this.boatName,
   });
 
   @override
-  List<Object?> get props => [name, description, jollyRogerUrl, boatImageUrl, tags];
+  List<Object?> get props =>
+      [name, description, jollyRogerUrl, boatImageUrl, tags, boatName];
 }
 
 class CreateCrewReset extends CreateCrewEvent {} 

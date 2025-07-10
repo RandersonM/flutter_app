@@ -36,6 +36,7 @@ class CreateCrewBloc extends Bloc<CreateCrewEvent, CreateCrewState> {
         jollyRogerUrl: event.jollyRogerUrl?.trim(),
         boatImageUrl: event.boatImageUrl?.trim(),
         tags: event.tags,
+        boatName: event.boatName?.trim(),
         members: [], 
         captain: null,
         viceCaptain: null,

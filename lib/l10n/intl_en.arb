@@ -871,6 +871,12 @@
     "type": "text",
     "placeholders": {}
   },
+  "boat": " Boat",
+  "@boat": {
+    "description": "Label for crew boat name field",
+    "type": "text",
+    "placeholders": {}
+  },
   "crewBoatName": " Boat name",
   "@crewBoatName": {
     "description": "Label for crew boat name field",

@@ -17,6 +17,7 @@ import 'widgets/crew_statistics.dart';
 import 'widgets/crew_members_list.dart';
 import 'widgets/crew_tags_section.dart';
 import 'widgets/crew_info_section.dart';
+import 'widgets/crew_boat_section.dart';
 
 class CrewDetailsScreen extends StatefulWidget {
   final CrewModel crew;
@@ -72,6 +73,7 @@ class _CrewDetailsScreenState extends State<CrewDetailsScreen> {
               onMemberTap: _onMemberTap,
             ),
               
+            CrewBoatSection(crew: _crew),
             CrewTagsSection(crew: _crew),
             CrewInfoSection(crew: _crew),
             

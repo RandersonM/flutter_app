@@ -887,6 +887,12 @@
     "type": "text",
     "placeholders": {}
   },
+  "boat": " Barco",
+  "@boat": {
+    "description": "Label for crew boat name field",
+    "type": "text",
+    "placeholders": {}
+  },
   "crewBoatName": "Nome do Barco",
   "@crewBoatName": {
     "description": "Label for crew boat name field",

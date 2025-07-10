@@ -28,4 +28,34 @@ class Constants {
     '=',
     '+',
   ];
+
+  static String formatAbbreviateBounty(double bounty) {
+    if (bounty >= 1000000000) {
+      return '${(bounty / 1000000000).toStringAsFixed(1)}B';
+    } else if (bounty >= 1000000) {
+      return '${(bounty / 1000000).toStringAsFixed(1)}M';
+    } else if (bounty >= 1000) {
+      return '${(bounty / 1000).toStringAsFixed(1)}K';
+    } else {
+      return bounty.toStringAsFixed(0);
+    }
+  }
+
+  /// Formats bounty value with currency mask
+  /// Examples: 1000 -> 1,000 | 1000000 -> 1,000,000 | 1000000000 -> 1,000,000,000
+  static String formatBounty(String bounty) {
+    // Remove any non-digit characters and convert to int
+    final cleanBounty = bounty.replaceAll(RegExp(r'[^\d]'), '');
+    if (cleanBounty.isEmpty) return '0';
+
+    final number = int.tryParse(cleanBounty) ?? 0;
+
+    // Format with commas for thousands separators
+    final formatted = number.toString().replaceAllMapped(
+          RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'),
+          (Match match) => '${match[1]},',
+        );
+
+    return formatted;
+  }
 }

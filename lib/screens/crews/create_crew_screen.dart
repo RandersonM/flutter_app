@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:opfan/l10n/app_localizations.dart';
 import 'package:opfan/screens/crews/blocs/index.dart';
 import 'package:opfan/utils/theme.dart';
 import 'package:opfan/utils/decorations/gradient.dart';
 import 'package:opfan/core/auth/blocs/index.dart';
 import 'package:opfan/core/services/crew_image_service.dart';
+import 'package:opfan/widgets/atoms/clickable_image.dart';
 
 class CreateCrewScreen extends StatefulWidget {
   const CreateCrewScreen({super.key});
@@ -19,6 +21,7 @@ class _CreateCrewScreenState extends State<CreateCrewScreen> {
   final _descriptionController = TextEditingController();
   final _jollyRogerPromptController = TextEditingController();
   final _boatPromptController = TextEditingController();
+  final _boatNameController = TextEditingController();
   final List<String> _tags = [];
   
   final CrewImageService _crewImageService = CrewImageService();
@@ -33,6 +36,7 @@ class _CreateCrewScreenState extends State<CreateCrewScreen> {
     _descriptionController.dispose();
     _jollyRogerPromptController.dispose();
     _boatPromptController.dispose();
+    _boatNameController.dispose();
     super.dispose();
   }
 
@@ -200,6 +204,7 @@ class _CreateCrewScreenState extends State<CreateCrewScreen> {
       create: (context) => CreateCrewBloc(userId: userId),
       child: Builder(
         builder: (context) {
+          final l10n = AppLocalizations.of(context)!;
           return Scaffold(
             appBar: AppBar(
               title: const Text('Criar Tripulação'),
@@ -471,16 +476,12 @@ class _CreateCrewScreenState extends State<CreateCrewScreen> {
                                     ),
                                     child: ClipRRect(
                                       borderRadius: BorderRadius.circular(8),
-                                      child: Image.network(
-                                        _generatedJollyRogerUrl!,
+                                      child: ClickableImage(
+                                        imageUrl: _generatedJollyRogerUrl!,
+                                        height: 120,
                                         fit: BoxFit.cover,
-                                        errorBuilder:
-                                            (context, error, stackTrace) {
-                                          return Container(
-                                            color: Colors.grey[300],
-                                            child: const Icon(Icons.error),
-                                          );
-                                        },
+                                        borderRadius: BorderRadius.circular(8),
+                                        title: 'Bandeira Pirata',
                                       ),
                                     ),
                                   ),
@@ -520,6 +521,24 @@ class _CreateCrewScreenState extends State<CreateCrewScreen> {
                                       ),
                                     ),
                                   ],
+                                ),
+                                const SizedBox(height: 12),
+                                TextFormField(
+                                  controller: _boatNameController,
+                                  decoration: InputDecoration(
+                                    labelText: 'Nome do Barco',
+                                    hintText: 'Ex: Going Merry',
+                                    prefixIcon:
+                                        const Icon(Icons.directions_boat),
+                                    border: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(12),
+                                    ),
+                                    filled: true,
+                                    fillColor:
+                                        Colors.white.withValues(alpha: 0.1),
+                                  ),
+                                  style:
+                                      TextStyle(color: AppColors.purple[600]!),
                                 ),
                                 const SizedBox(height: 12),
                                 TextFormField(
@@ -582,16 +601,12 @@ class _CreateCrewScreenState extends State<CreateCrewScreen> {
                                     ),
                                     child: ClipRRect(
                                       borderRadius: BorderRadius.circular(8),
-                                      child: Image.network(
-                                        _generatedBoatUrl!,
+                                      child: ClickableImage(
+                                        imageUrl: _generatedBoatUrl!,
+                                        height: 120,
                                         fit: BoxFit.cover,
-                                        errorBuilder:
-                                            (context, error, stackTrace) {
-                                          return Container(
-                                            color: Colors.grey[300],
-                                            child: const Icon(Icons.error),
-                                          );
-                                        },
+                                        borderRadius: BorderRadius.circular(8),
+                                        title: 'Barco da Tripulação',
                                       ),
                                     ),
                                   ),
@@ -652,6 +667,11 @@ class _CreateCrewScreenState extends State<CreateCrewScreen> {
                                                   boatImageUrl:
                                                       _generatedBoatUrl,
                                                   tags: _tags,
+                                                  boatName: _boatNameController
+                                                          .text.isEmpty
+                                                      ? null
+                                                      : _boatNameController
+                                                          .text,
                                                 ),
                                               );
                                         }

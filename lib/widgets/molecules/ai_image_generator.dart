@@ -2,11 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:opfan/core/services/service_locator.dart';
 import 'package:opfan/l10n/app_localizations.dart';
 import '../atoms/custom_text_field.dart';
+import '../atoms/clickable_image.dart';
+import 'dart:math';
 
 class AiImageGenerator extends StatefulWidget {
   final String? initialPrompt;
   final String? characterName;
-  final String? devilFruit;
+  final String race;
   final List<String>? haki;
   final String? status;
   final List<String>? occupations;
@@ -18,10 +20,10 @@ class AiImageGenerator extends StatefulWidget {
     Key? key,
     this.initialPrompt,
     this.characterName,
-    this.devilFruit,
     this.haki,
     this.status,
     this.occupations,
+    required this.race,
     required this.onImageGenerated,
     this.isLoading = false,
     this.currentImageUrl,
@@ -33,12 +35,13 @@ class AiImageGenerator extends StatefulWidget {
 
 class _AiImageGeneratorState extends State<AiImageGenerator> {
   final _promptController = TextEditingController();
-  final _aiImageService = getIt.aiImageService;
+  final _geminiImageService = getIt.geminiImageService;
   
   String? _generatedImageUrl;
   bool _isGenerating = false;
   String? _errorMessage;
   bool _isImageConfirmed = false;
+  int _regenerationCount = 0;
 
   @override
   void initState() {
@@ -169,7 +172,7 @@ class _AiImageGeneratorState extends State<AiImageGenerator> {
             children: [
               Expanded(
                 child: OutlinedButton.icon(
-                  onPressed: _generateImage,
+                  onPressed: () => _generateImage(forceRegeneration: true),
                   icon: const Icon(Icons.refresh),
                   label: Text(l10n.regenerateImage),
                 ),
@@ -200,50 +203,18 @@ class _AiImageGeneratorState extends State<AiImageGenerator> {
   }
 
   Widget _buildImageWithSmartCrop() {
-    final l10n = AppLocalizations.of(context)!;
-    return Image.network(
-      _generatedImageUrl!,
+    return ClickableImage(
+      imageUrl: _generatedImageUrl!,
+      width: double.infinity,
+      height: 300,
       fit: BoxFit.fill,
-      alignment: Alignment.topCenter,
-      loadingBuilder: (context, child, loadingProgress) {
-        if (loadingProgress == null) return child;
-        return Center(
-          child: CircularProgressIndicator(
-            value: loadingProgress.expectedTotalBytes != null
-                ? loadingProgress.cumulativeBytesLoaded /
-                    loadingProgress.expectedTotalBytes!
-                : null,
-          ),
-        );
-      },
-      errorBuilder: (context, error, stackTrace) {
-        return Container(
-          color: Theme.of(context).colorScheme.surfaceContainerHighest,
-          child: Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Icon(
-                  Icons.broken_image,
-                  size: 48,
-                  color: Theme.of(context).colorScheme.onSurfaceVariant,
-                ),
-                const SizedBox(height: 8),
-                Text(
-                  l10n.imageLoadError,
-                  style: TextStyle(
-                    color: Theme.of(context).colorScheme.onSurfaceVariant,
-                  ),
-                ),
-              ],
-            ),
-          ),
-        );
-      },
+      borderRadius: BorderRadius.circular(12),
+      title: 'Imagem Gerada por IA',
+      showTitleInDialog: true,
     );
   }
 
-  Future<void> _generateImage() async {
+  Future<void> _generateImage({bool forceRegeneration = false}) async {
     if (_promptController.text.trim().isEmpty) {
       setState(() {
         _errorMessage = AppLocalizations.of(context)!.promptRequired;
@@ -258,10 +229,21 @@ class _AiImageGeneratorState extends State<AiImageGenerator> {
     });
 
     try {
-      final imageUrl = await _aiImageService.generateCharacterImage(
+      // Se for uma regeneração forçada, adicionar um sufixo único ao prompt
+      String prompt = _promptController.text.trim();
+      if (forceRegeneration) {
+        _regenerationCount++;
+        final random = Random();
+        final timestamp = DateTime.now().millisecondsSinceEpoch;
+        final randomSuffix = random.nextInt(1000);
+        prompt =
+            '$prompt [regeneration_${_regenerationCount}_${timestamp}_$randomSuffix]';
+      }
+
+      final imageUrl = await _geminiImageService.generateCharacterImage(
         characterName: widget.characterName ?? '',
-        prompt: _promptController.text.trim(),
-        devilFruit: widget.devilFruit,
+        prompt: prompt,
+        race: widget.race,
         haki: widget.haki,
         status: widget.status,
         occupations: widget.occupations,
