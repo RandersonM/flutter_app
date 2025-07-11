@@ -989,9 +989,11 @@
   },
   "myCrews": "Minhas Tripulações",
   "@myCrews": {
-    "description": "Title for my crews screen",
-    "type": "text",
-    "placeholders": {}
+    "description": "Rótulo minhas tripulações"
+  },
+  "allCrews": "Todas as Tripulações",
+  "@allCrews": {
+    "description": "Rótulo todas as tripulações"
   },
   "errorLoadingCrews": "Erro ao carregar tripulações",
   "@errorLoadingCrews": {
@@ -1147,6 +1149,35 @@
     "placeholders": {}
   },
   "filterBy": "Filtrar por",
+  "editCrewTitle": "Editar Tripulação",
+  "@editCrewTitle": {
+    "description": "Title for edit crew screen",
+    "type": "text",
+    "placeholders": {}
+  },
+  "editCrewSubtitle": "Modifique as informações da sua tripulação",
+  "@editCrewSubtitle": {
+    "description": "Subtitle for edit crew screen",
+    "type": "text",
+    "placeholders": {}
+  },
+  "crewUpdatedSuccess": "Tripulação atualizada com sucesso",
+  "@crewUpdatedSuccess": {
+    "description": "Success message when crew is updated",
+    "type": "text",
+    "placeholders": {}
+  },
+  "crewUpdateError": "Erro ao atualizar tripulação: {message}",
+  "@crewUpdateError": {
+    "description": "Error message when crew update fails",
+    "type": "text",
+    "placeholders": {
+      "message": {
+        "type": "String",
+        "example": "Erro de rede"
+      }
+    }
+  },
   "@filterBy": {
     "description": "Title for filter dialog",
     "type": "text",
@@ -1550,6 +1581,126 @@
   "tonatta": "Tonatta",
   "@tonatta": {
     "description": "Race option for tonatta",
+    "type": "text",
+    "placeholders": {}
+  },
+  "add": "Adicionar",
+  "@add": {
+    "description": "Button text for add action",
+    "type": "text",
+    "placeholders": {}
+  },
+  "noPermissionToEdit": "Você não tem permissão para editar esta tripulação",
+  "@noPermissionToEdit": {
+    "description": "Error message when user doesn't have permission to edit crew",
+    "type": "text",
+    "placeholders": {}
+  },
+  "noPermissionToDelete": "Você não tem permissão para excluir esta tripulação",
+  "@noPermissionToDelete": {
+    "description": "Error message when user doesn't have permission to delete crew",
+    "type": "text",
+    "placeholders": {}
+  },
+  "allRolesFilled": "Todas as roles já estão preenchidas",
+  "@allRolesFilled": {
+    "description": "Message when all roles in crew are already filled",
+    "type": "text",
+    "placeholders": {}
+  },
+  "characterNotFound": "Personagem não encontrado",
+  "@characterNotFound": {
+    "description": "Error message when character is not found",
+    "type": "text",
+    "placeholders": {}
+  },
+  "characterLoadError": "Erro ao carregar personagem",
+  "@characterLoadError": {
+    "description": "Error message when character fails to load",
+    "type": "text",
+    "placeholders": {}
+  },
+  "memberAddedAsRole": "{characterName} adicionado como {role}",
+  "@memberAddedAsRole": {
+    "description": "Success message when member is added to crew with role",
+    "type": "text",
+    "placeholders": {
+      "characterName": {
+        "type": "String",
+        "example": "Luffy"
+      },
+      "role": {
+        "type": "String",
+        "example": "Capitão"
+      }
+    }
+  },
+  "crewDeletedWithName": "Tripulação \"{crewName}\" excluída",
+  "@crewDeletedWithName": {
+    "description": "Success message when crew is deleted with crew name",
+    "type": "text",
+    "placeholders": {
+      "crewName": {
+        "type": "String",
+        "example": "Piratas do Chapéu de Palha"
+      }
+    }
+  },
+  "generatePirateFlagPrompt": "Digite um prompt para gerar a bandeira pirata",
+  "@generatePirateFlagPrompt": {
+    "description": "Prompt text for generating pirate flag",
+    "type": "text",
+    "placeholders": {}
+  },
+  "pirateFlagGeneratedSuccess": "Bandeira pirata gerada com sucesso!",
+  "@pirateFlagGeneratedSuccess": {
+    "description": "Success message when pirate flag is generated",
+    "type": "text",
+    "placeholders": {}
+  },
+  "pirateFlagGenerationError": "Erro ao gerar bandeira: {error}",
+  "@pirateFlagGenerationError": {
+    "description": "Error message when pirate flag generation fails",
+    "type": "text",
+    "placeholders": {
+      "error": {
+        "type": "String",
+        "example": "Erro de rede"
+      }
+    }
+  },
+  "generateBoatPrompt": "Digite um prompt para gerar o barco",
+  "@generateBoatPrompt": {
+    "description": "Prompt text for generating boat",
+    "type": "text",
+    "placeholders": {}
+  },
+  "boatGeneratedSuccess": "Barco gerado com sucesso!",
+  "@boatGeneratedSuccess": {
+    "description": "Success message when boat is generated",
+    "type": "text",
+    "placeholders": {}
+  },
+  "boatGenerationError": "Erro ao gerar barco: {error}",
+  "@boatGenerationError": {
+    "description": "Error message when boat generation fails",
+    "type": "text",
+    "placeholders": {
+      "error": {
+        "type": "String",
+        "example": "Erro de rede"
+      }
+    }
+  },
+  "description": "Descrição",
+  "@description": {
+    "description": "Label for description field",
+    "type": "text",
+    "placeholders": {}
+  },
+  "profilePhotoTapped": "Foto do perfil tocada",
+  "@profilePhotoTapped": {
+    "description": "Snackbar message when profile photo is tapped",
     "type": "text",
     "placeholders": {}
   }

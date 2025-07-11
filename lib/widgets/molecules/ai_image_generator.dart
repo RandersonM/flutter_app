@@ -93,14 +93,13 @@ class _AiImageGeneratorState extends State<AiImageGenerator> {
           ),
         ),
         const SizedBox(height: 16),
-        
-        // Campo de prompt
+
         CustomTextField(
           label: l10n.imagePrompt,
           hint: l10n.imagePromptHint,
           controller: _promptController,
-          maxLines: 3,
-          maxLength: 200,
+          maxLines: 8,
+          maxLength: 400,
         ),
         const SizedBox(height: 16),
         

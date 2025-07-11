@@ -1,6 +1,7 @@
 import 'package:opfan/core/models/one_piece/custom_character_model.dart';
 import 'package:opfan/core/services/firestore_service.dart';
 import 'package:opfan/core/repository/interfaces/custom_character_repository_interface.dart';
+import 'package:opfan/core/repository/crew_repository.dart';
 
 class CustomCharacterRepository implements ICustomCharacterRepository {
   static final CustomCharacterRepository _instance = CustomCharacterRepository._internal();
@@ -103,6 +104,40 @@ class CustomCharacterRepository implements ICustomCharacterRepository {
   @override
   Future<void> deleteCustomCharacter(String documentId) async {
     try {
+      final character = await getCustomCharacter(documentId);
+      if (character == null) {
+        throw Exception('Personagem não encontrado');
+      }
+
+      final crewRepository = CrewRepository();
+      final crewsWithCharacter =
+          await crewRepository.getCrewsByMember(documentId);
+
+      for (final crew in crewsWithCharacter) {
+        if (crew.id != null) {
+          try {
+            final member = crew.members.firstWhere(
+              (member) => member.characterId == documentId,
+              orElse: () =>
+                  throw Exception('Membro não encontrado na tripulação'),
+            );
+
+            await crewRepository.removeMemberFromCrew(crew.id!, documentId);
+
+            if (member.role?.toLowerCase() == 'captain' &&
+                crew.captain == member.name) {
+              await crewRepository.setCaptain(crew.id!, '');
+            } else if ((member.role?.toLowerCase() == 'vice-captain' ||
+                    member.role?.toLowerCase() == 'vicecaptain') &&
+                crew.viceCaptain == member.name) {
+              await crewRepository.setViceCaptain(crew.id!, '');
+            }
+          } catch (e) {
+            print('Erro ao remover personagem da tripulação ${crew.id}: $e');
+          }
+        }
+      }
+
       await _firestoreService.deleteDocument(
         collection: _collection,
         documentId: documentId,

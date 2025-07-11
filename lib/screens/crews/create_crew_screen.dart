@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:opfan/l10n/app_localizations.dart';
 import 'package:opfan/screens/crews/blocs/index.dart';
 import 'package:opfan/utils/theme.dart';
 import 'package:opfan/utils/decorations/gradient.dart';
 import 'package:opfan/core/auth/blocs/index.dart';
 import 'package:opfan/core/services/crew_image_service.dart';
 import 'package:opfan/widgets/atoms/clickable_image.dart';
+import 'package:opfan/l10n/app_localizations.dart';
 
 class CreateCrewScreen extends StatefulWidget {
   const CreateCrewScreen({super.key});
@@ -59,7 +59,7 @@ class _CreateCrewScreenState extends State<CreateCrewScreen> {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text('Adicionar Tag'),
+        title: Text(AppLocalizations.of(context)!.addTag),
         content: TextField(
           controller: tagController,
           decoration: const InputDecoration(
@@ -71,14 +71,14 @@ class _CreateCrewScreenState extends State<CreateCrewScreen> {
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
-            child: const Text('Cancelar'),
+            child: Text(AppLocalizations.of(context)!.cancel),
           ),
           ElevatedButton(
             onPressed: () {
               _addTag(tagController.text.trim());
               Navigator.pop(context);
             },
-            child: const Text('Adicionar'),
+            child: Text(AppLocalizations.of(context)!.add),
           ),
         ],
       ),
@@ -204,7 +204,6 @@ class _CreateCrewScreenState extends State<CreateCrewScreen> {
       create: (context) => CreateCrewBloc(userId: userId),
       child: Builder(
         builder: (context) {
-          final l10n = AppLocalizations.of(context)!;
           return Scaffold(
             appBar: AppBar(
               title: const Text('Criar Tripulação'),
@@ -316,7 +315,6 @@ class _CreateCrewScreenState extends State<CreateCrewScreen> {
                           
                           const SizedBox(height: 16),
                           
-                          // Seção de Tags
                           Container(
                             padding: const EdgeInsets.all(16),
                             decoration: BoxDecoration(

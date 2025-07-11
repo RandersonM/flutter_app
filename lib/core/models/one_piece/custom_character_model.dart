@@ -18,6 +18,7 @@ class CustomCharacterModel {
   final String? status;
   final String? race;
   final int? age;
+  final DateTime? birthDate;
   final String? description;
   final DateTime? createdAt;
   final DateTime? updatedAt;
@@ -39,6 +40,7 @@ class CustomCharacterModel {
     this.status,
     this.race,
     this.age,
+    this.birthDate,
     this.description,
     this.createdAt,
     this.updatedAt,
@@ -67,6 +69,9 @@ class CustomCharacterModel {
       status: data['status'] as String?,
       race: data['race'] as String?,
       age: data['age'] as int?,
+      birthDate: data['birthDate'] != null
+          ? (data['birthDate'] as Timestamp).toDate()
+          : null,
       description: data['description'] as String?,
       createdAt: data['createdAt'] != null 
           ? (data['createdAt'] as Timestamp).toDate() 
@@ -99,6 +104,9 @@ class CustomCharacterModel {
       status: json['status'] as String?,
       race: json['race'] as String?,
       age: json['age'] as int?,
+      birthDate: json['birthDate'] != null
+          ? DateTime.parse(json['birthDate'] as String)
+          : null,
       description: json['description'] as String?,
       createdAt: json['createdAt'] != null
           ? DateTime.parse(json['createdAt'] as String)
@@ -125,6 +133,7 @@ class CustomCharacterModel {
       'status': status,
       'race': race,
       'age': age,
+      'birthDate': birthDate != null ? Timestamp.fromDate(birthDate!) : null,
       'description': description,
     };
   }
@@ -145,6 +154,7 @@ class CustomCharacterModel {
       'status': status,
       'race': race,
       'age': age,
+      'birthDate': birthDate != null ? Timestamp.fromDate(birthDate!) : null,
       'description': description,
     };
   }
@@ -166,6 +176,7 @@ class CustomCharacterModel {
     String? status,
     String? race,
     int? age,
+    DateTime? birthDate,
     String? description,
     DateTime? createdAt,
     DateTime? updatedAt,
@@ -187,6 +198,7 @@ class CustomCharacterModel {
       status: status ?? this.status,
       race: race ?? this.race,
       age: age ?? this.age,
+      birthDate: birthDate ?? this.birthDate,
       description: description ?? this.description,
       createdAt: createdAt ?? this.createdAt,
       updatedAt: updatedAt ?? this.updatedAt,
@@ -224,11 +236,6 @@ class CustomCharacterModel {
 
   int? get calculatedAge => age;
 
-  DateTime? get birthDate {
-    if (age == null) return null;
-    final now = DateTime.now();
-    return DateTime(now.year - age!, now.month, now.day);
-  }
-
-
+  // Removendo o getter birthDate que estava calculando incorretamente
+  // Agora usamos o campo birthDate diretamente
 } 

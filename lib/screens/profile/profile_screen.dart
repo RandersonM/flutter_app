@@ -60,8 +60,9 @@ class ProfileScreen extends StatelessWidget {
                   onTap: () {
                     // Could open image viewer or edit profile
                     ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(
-                        content: Text('Profile photo tapped'),
+                      SnackBar(
+                        content: Text(
+                            AppLocalizations.of(context)!.profilePhotoTapped),
                       ),
                     );
                   },
@@ -99,7 +100,9 @@ class ProfileScreen extends StatelessWidget {
                 onTap: () {
                   // Navigate to edit profile
                   ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(content: Text('Edit Profile tapped')),
+                    SnackBar(
+                        content: Text(
+                            AppLocalizations.of(context)!.editProfileTapped)),
                   );
                 },
               ),
@@ -111,7 +114,9 @@ class ProfileScreen extends StatelessWidget {
                 onTap: () {
                   // Navigate to notifications settings
                   ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(content: Text('Notifications tapped')),
+                    SnackBar(
+                        content: Text(
+                            AppLocalizations.of(context)!.notificationsTapped)),
                   );
                 },
               ),
@@ -132,7 +137,9 @@ class ProfileScreen extends StatelessWidget {
                 onTap: () {
                   // Navigate to language settings
                   ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(content: Text('Language tapped')),
+                    SnackBar(
+                        content:
+                            Text(AppLocalizations.of(context)!.languageTapped)),
                   );
                 },
               ),
@@ -144,7 +151,9 @@ class ProfileScreen extends StatelessWidget {
                 onTap: () {
                   // Navigate to theme settings
                   ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(content: Text('Theme tapped')),
+                    SnackBar(
+                        content:
+                            Text(AppLocalizations.of(context)!.themeTapped)),
                   );
                 },
               ),
@@ -165,7 +174,9 @@ class ProfileScreen extends StatelessWidget {
                 onTap: () {
                   // Navigate to help
                   ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(content: Text('Help & Support tapped')),
+                    SnackBar(
+                        content: Text(
+                            AppLocalizations.of(context)!.helpSupportTapped)),
                   );
                 },
               ),
@@ -177,7 +188,9 @@ class ProfileScreen extends StatelessWidget {
                 onTap: () {
                   // Navigate to about
                   ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(content: Text('About tapped')),
+                    SnackBar(
+                        content:
+                            Text(AppLocalizations.of(context)!.aboutTapped)),
                   );
                 },
               ),

@@ -17,6 +17,8 @@ class CrewList extends StatefulWidget {
   final Function(CrewModel)? onCrewEdit;
   final Function(CrewModel)? onCrewDelete;
   final bool Function(CrewModel)? showEditDeleteButtons;
+  final bool isUserCrews;
+  final void Function(String query)? onSearch;
 
   const CrewList({
     Key? key,
@@ -24,6 +26,8 @@ class CrewList extends StatefulWidget {
     this.onCrewEdit,
     this.onCrewDelete,
     this.showEditDeleteButtons,
+    this.isUserCrews = false,
+    this.onSearch,
   }) : super(key: key);
 
   @override
@@ -37,7 +41,11 @@ class _CrewListState extends State<CrewList> {
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      context.read<ListCrewsBloc>().add(LoadCrews());
+      if (widget.isUserCrews) {
+        context.read<ListCrewsBloc>().add(LoadUserCrews());
+      } else {
+        context.read<ListCrewsBloc>().add(LoadCrews());
+      }
     });
   }
 
@@ -91,7 +99,11 @@ class _CrewListState extends State<CrewList> {
                       const SizedBox(height: Constants.margin),
                       ElevatedButton(
                         onPressed: () {
-                          context.read<ListCrewsBloc>().add(LoadCrews());
+                          if (widget.isUserCrews) {
+                            context.read<ListCrewsBloc>().add(LoadUserCrews());
+                          } else {
+                            context.read<ListCrewsBloc>().add(LoadCrews());
+                          }
                         },
                         child: Text(l10n.tryAgain),
                       ),
@@ -162,10 +174,22 @@ class _CrewListState extends State<CrewList> {
 
   void _onSearch() {
     final query = _searchController.text.trim();
-    if (query.isEmpty) {
-      context.read<ListCrewsBloc>().add(LoadCrews());
+    if (widget.onSearch != null) {
+      widget.onSearch!(query);
     } else {
-      context.read<ListCrewsBloc>().add(SearchCrews(query));
+      if (query.isEmpty) {
+        if (widget.isUserCrews) {
+          context.read<ListCrewsBloc>().add(LoadUserCrews());
+        } else {
+          context.read<ListCrewsBloc>().add(LoadCrews());
+        }
+      } else {
+        if (widget.isUserCrews) {
+          context.read<ListCrewsBloc>().add(SearchUserCrews(query));
+        } else {
+          context.read<ListCrewsBloc>().add(SearchCrews(query));
+        }
+      }
     }
   }
 

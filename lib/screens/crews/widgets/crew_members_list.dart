@@ -187,8 +187,8 @@ class CrewMembersList extends StatelessWidget {
                             Text(
                               '฿',
                               style: theme.textTheme.bodySmall?.copyWith(
-                                color: Colors.grey[600],
-                                fontWeight: FontWeight.w500,
+                                color: theme.colorScheme.primary,
+                                fontWeight: FontWeight.bold,
                               ),
                             ),
                           ],

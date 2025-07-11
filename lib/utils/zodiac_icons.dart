@@ -173,8 +173,10 @@ class ZodiacIcons {
   }
 
   static DateTime? parseDateFromString(String dateString) {
-      final parts = dateString.split('/');
-      if (parts.length == 3) {
+    final parts = dateString.split('/');
+    
+    if (parts.length == 3) {
+      try {
         final day = int.parse(parts[0]);
         final month = int.parse(parts[1]);
         final year = int.parse(parts[2]);
@@ -187,7 +189,10 @@ class ZodiacIcons {
             day <= 31) {
           return DateTime(year, month, day);
         }
+      } catch (e) {
+        // Silently handle parsing errors
       }
+    }
     
     return null;
   }

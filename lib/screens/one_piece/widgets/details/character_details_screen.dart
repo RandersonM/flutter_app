@@ -17,7 +17,6 @@ import 'package:opfan/widgets/molecules/default_app_bar.dart';
 import 'package:opfan/widgets/organisms/bottom_navigation.dart';
 import 'package:opfan/utils/constants.dart';
 import 'package:opfan/utils/zodiac_icons.dart';
-import 'package:opfan/utils/character_display_utils.dart';
 
 class CharacterDetailsScreen extends StatelessWidget {
   const CharacterDetailsScreen({
@@ -40,12 +39,13 @@ class CharacterDetailsScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildChipSection(
-      {required String label,
-      required List<String>? values,
-      IconData? icon,
-      required BuildContext context}) {
-    if (values == null || values.isEmpty) return const SizedBox.shrink();
+  Widget _buildChipSection({
+    required String label,
+    required List<String> values,
+    IconData? icon,
+    required BuildContext context,
+  }) {
+    if (values.isEmpty) return const SizedBox.shrink();
     
     final l10n = AppLocalizations.of(context)!;
 
@@ -53,10 +53,14 @@ class CharacterDetailsScreen extends StatelessWidget {
     if (character.isCustomCharacter) {
       if (label == l10n.affiliations) {
         displayValues =
-            CharacterDisplayUtils.getAffiliationsDisplay(values, l10n);
+            CharacterLocalizationMapper.mapAffiliationsToLocalized(
+            values, l10n);
       } else if (label == l10n.occupations) {
         displayValues =
-            CharacterDisplayUtils.getOccupationsDisplay(values, l10n);
+            CharacterLocalizationMapper.mapOccupationsToLocalized(values, l10n);
+      } else if (label == l10n.haki) {
+        displayValues =
+            CharacterLocalizationMapper.mapHakiListToLocalized(values, l10n);
       }
     }
     
@@ -211,7 +215,7 @@ class CharacterDetailsScreen extends StatelessWidget {
               context: context),
           _buildChipSection(
               label: l10n.haki,
-              values: character.haki,
+              values: character.haki ?? [],
               icon: Icons.flash_on,
               context: context),
           Card(
@@ -246,7 +250,7 @@ class CharacterDetailsScreen extends StatelessWidget {
                   leading: const Icon(Icons.info),
                   label: l10n.status,
                   value: character.status != null
-                      ? CharacterDisplayUtils.getStatusDisplay(
+                      ? CharacterLocalizationMapper.mapStatusToLocalized(
                           character.status, l10n)
                       : character.status,
                 ),

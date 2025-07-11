@@ -532,6 +532,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get myCrews => 'My Crews';
 
   @override
+  String get allCrews => 'All Crews';
+
+  @override
   String get errorLoadingCrews => 'Error loading crews';
 
   @override
@@ -579,6 +582,18 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get imageLoadError => 'Failed to load image';
+
+  @override
+  String get editCrewTitle => 'Edit Crew';
+
+  @override
+  String get editCrewSubtitle => 'Modify your crew\'s information';
+
+  @override
+  String get crewUpdatedSuccess => 'Crew updated successfully';
+
+  @override
+  String get crewUpdateError => 'Error updating crew';
 
   @override
   String get regenerateImage => 'Regenerate';
@@ -723,9 +738,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String get crewUpdated => 'Crew updated successfully';
 
   @override
-  String get crewUpdateError => 'Error updating crew';
-
-  @override
   String get loginError => 'Login error';
 
   @override
@@ -802,4 +814,61 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get tonatta => 'Tonatta';
+
+  @override
+  String get add => 'Add';
+
+  @override
+  String get noPermissionToEdit =>
+      'You don\'t have permission to edit this crew';
+
+  @override
+  String get noPermissionToDelete =>
+      'You don\'t have permission to delete this crew';
+
+  @override
+  String get allRolesFilled => 'All roles are already filled';
+
+  @override
+  String get characterNotFound => 'Character not found';
+
+  @override
+  String get characterLoadError => 'Error loading character';
+
+  @override
+  String memberAddedAsRole(String characterName, String role) {
+    return '$characterName added as $role';
+  }
+
+  @override
+  String crewDeletedWithName(String crewName) {
+    return 'Crew \"$crewName\" deleted';
+  }
+
+  @override
+  String get generatePirateFlagPrompt =>
+      'Enter a prompt to generate the pirate flag';
+
+  @override
+  String get pirateFlagGeneratedSuccess =>
+      'Pirate flag generated successfully!';
+
+  @override
+  String pirateFlagGenerationError(String error) {
+    return 'Error generating flag: $error';
+  }
+
+  @override
+  String get generateBoatPrompt => 'Enter a prompt to generate the boat';
+
+  @override
+  String get boatGeneratedSuccess => 'Boat generated successfully!';
+
+  @override
+  String boatGenerationError(String error) {
+    return 'Error generating boat: $error';
+  }
+
+  @override
+  String get profilePhotoTapped => 'Profile photo tapped';
 }
