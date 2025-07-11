@@ -313,6 +313,19 @@ class CrewRepository implements ICrewRepository {
   }
 
   @override
+  Future<List<CrewModel>> getCrewsByMember(String characterId) async {
+    try {
+      final allCrews = await getUserCrews();
+      return allCrews
+          .where((crew) =>
+              crew.members.any((member) => member.characterId == characterId))
+          .toList();
+    } catch (e) {
+      throw Exception('Erro ao buscar tripulações por membro: $e');
+    }
+  }
+
+  @override
   Future<void> addMemberToCrew(String crewId, CrewMember member) async {
     try {
       final crew = await getCrew(crewId);
@@ -573,6 +586,9 @@ class CrewService {
     minMembers: minMembers,
     maxMembers: maxMembers,
   );
+
+  Future<List<CrewModel>> getCrewsByMember(String characterId) =>
+      _repository.getCrewsByMember(characterId);
 
   Future<void> addMemberToCrew(String crewId, CrewMember member) => 
       _repository.addMemberToCrew(crewId, member);

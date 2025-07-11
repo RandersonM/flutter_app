@@ -626,7 +626,7 @@ abstract class AppLocalizations {
   /// **'Sharpshooter'**
   String get sharpshooter;
 
-  /// Description label
+  /// Label for description field
   ///
   /// In en, this message translates to:
   /// **'Description'**
@@ -1040,11 +1040,17 @@ abstract class AppLocalizations {
   /// **'Filter'**
   String get filter;
 
-  /// Title for my crews screen
+  /// My crews label
   ///
   /// In en, this message translates to:
   /// **'My Crews'**
   String get myCrews;
+
+  /// All crews label
+  ///
+  /// In en, this message translates to:
+  /// **'All Crews'**
+  String get allCrews;
 
   /// Error message when crews fail to load
   ///
@@ -1129,6 +1135,30 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Failed to load image'**
   String get imageLoadError;
+
+  /// Title for edit crew screen
+  ///
+  /// In en, this message translates to:
+  /// **'Edit Crew'**
+  String get editCrewTitle;
+
+  /// Subtitle for edit crew screen
+  ///
+  /// In en, this message translates to:
+  /// **'Modify your crew\'s information'**
+  String get editCrewSubtitle;
+
+  /// Success message when crew is updated
+  ///
+  /// In en, this message translates to:
+  /// **'Crew updated successfully'**
+  String get crewUpdatedSuccess;
+
+  /// Error message when crew update fails
+  ///
+  /// In en, this message translates to:
+  /// **'Error updating crew'**
+  String get crewUpdateError;
 
   /// Button text to regenerate image
   ///
@@ -1412,12 +1442,6 @@ abstract class AppLocalizations {
   /// **'Crew updated successfully'**
   String get crewUpdated;
 
-  /// Error message when crew update fails
-  ///
-  /// In en, this message translates to:
-  /// **'Error updating crew'**
-  String get crewUpdateError;
-
   /// Error message for login
   ///
   /// In en, this message translates to:
@@ -1567,6 +1591,96 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Tonatta'**
   String get tonatta;
+
+  /// Button text for add action
+  ///
+  /// In en, this message translates to:
+  /// **'Add'**
+  String get add;
+
+  /// Error message when user doesn't have permission to edit crew
+  ///
+  /// In en, this message translates to:
+  /// **'You don\'t have permission to edit this crew'**
+  String get noPermissionToEdit;
+
+  /// Error message when user doesn't have permission to delete crew
+  ///
+  /// In en, this message translates to:
+  /// **'You don\'t have permission to delete this crew'**
+  String get noPermissionToDelete;
+
+  /// Message when all roles in crew are already filled
+  ///
+  /// In en, this message translates to:
+  /// **'All roles are already filled'**
+  String get allRolesFilled;
+
+  /// Error message when character is not found
+  ///
+  /// In en, this message translates to:
+  /// **'Character not found'**
+  String get characterNotFound;
+
+  /// Error message when character fails to load
+  ///
+  /// In en, this message translates to:
+  /// **'Error loading character'**
+  String get characterLoadError;
+
+  /// Success message when member is added to crew with role
+  ///
+  /// In en, this message translates to:
+  /// **'{characterName} added as {role}'**
+  String memberAddedAsRole(String characterName, String role);
+
+  /// Success message when crew is deleted with crew name
+  ///
+  /// In en, this message translates to:
+  /// **'Crew \"{crewName}\" deleted'**
+  String crewDeletedWithName(String crewName);
+
+  /// Prompt text for generating pirate flag
+  ///
+  /// In en, this message translates to:
+  /// **'Enter a prompt to generate the pirate flag'**
+  String get generatePirateFlagPrompt;
+
+  /// Success message when pirate flag is generated
+  ///
+  /// In en, this message translates to:
+  /// **'Pirate flag generated successfully!'**
+  String get pirateFlagGeneratedSuccess;
+
+  /// Error message when pirate flag generation fails
+  ///
+  /// In en, this message translates to:
+  /// **'Error generating flag: {error}'**
+  String pirateFlagGenerationError(String error);
+
+  /// Prompt text for generating boat
+  ///
+  /// In en, this message translates to:
+  /// **'Enter a prompt to generate the boat'**
+  String get generateBoatPrompt;
+
+  /// Success message when boat is generated
+  ///
+  /// In en, this message translates to:
+  /// **'Boat generated successfully!'**
+  String get boatGeneratedSuccess;
+
+  /// Error message when boat generation fails
+  ///
+  /// In en, this message translates to:
+  /// **'Error generating boat: {error}'**
+  String boatGenerationError(String error);
+
+  /// Snackbar message when profile photo is tapped
+  ///
+  /// In en, this message translates to:
+  /// **'Profile photo tapped'**
+  String get profilePhotoTapped;
 }
 
 class _AppLocalizationsDelegate

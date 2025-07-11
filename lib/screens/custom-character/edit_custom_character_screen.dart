@@ -12,6 +12,7 @@ import 'package:opfan/widgets/molecules/default_app_bar.dart';
 import '../../widgets/organisms/character_form.dart';
 import '../../widgets/organisms/form_actions.dart';
 import '../../utils/zodiac_icons.dart';
+import 'package:opfan/core/utils/character_localization_mapper.dart';
 
 class EditCustomCharacterScreen extends StatefulWidget {
   final CustomCharacterModel character;
@@ -46,6 +47,7 @@ class _EditCustomCharacterScreenState extends State<EditCustomCharacterScreen> {
   String? _selectedCrewRole;
   String? _selectedRace = 'human';
   FightingStyleModel? _fightingStyle;
+  bool _hasMappedHaki = false;
 
   @override
   void initState() {
@@ -60,7 +62,7 @@ class _EditCustomCharacterScreenState extends State<EditCustomCharacterScreen> {
     
     _nameController.text = character.name;
     _nicknameController.text = character.nickname ?? '';
-    _bountyController.text = character.bounty ?? '';
+    _bountyController.text = character.bounty;
     _imageUrlController.text = character.image;
     _descriptionController.text = character.description ?? '';
     _selectedStatus = character.status;
@@ -69,9 +71,13 @@ class _EditCustomCharacterScreenState extends State<EditCustomCharacterScreen> {
     
     _selectedAffiliations = [];
     _selectedOccupations = [];
+    _selectedHaki.clear(); // Limpar a lista antes de adicionar
     
     if (character.haki != null) {
+      debugPrint('character.haki: ${character.haki}');
+      // Adicionar os dados de Haki sem mapeamento inicialmente
       _selectedHaki.addAll(character.haki!);
+      debugPrint('_selectedHaki before mapping: ${_selectedHaki}');
     }
     if (character.affiliations.isNotEmpty) {
       _selectedAffiliations = List.from(character.affiliations);
@@ -87,17 +93,36 @@ class _EditCustomCharacterScreenState extends State<EditCustomCharacterScreen> {
     setState(() {});
   }
 
+  void _mapHakiDataIfNeeded() {
+    if (!_hasMappedHaki && widget.character.haki != null) {
+      _selectedHaki.clear();
+      for (final haki in widget.character.haki!) {
+        final localizedHaki = CharacterLocalizationMapper.mapHakiToLocalized(
+            haki, AppLocalizations.of(context)!);
+        if (!_selectedHaki.contains(localizedHaki)) {
+          _selectedHaki.add(localizedHaki);
+        }
+      }
+      debugPrint('_selectedHaki after mapping: ${_selectedHaki}');
+      _hasMappedHaki = true;
+      setState(() {});
+    }
+  }
+
   Future<void> _loadDevilFruits() async {
     try {
       final devilFruitService = getIt.devilFruitService;
       final fruits = await devilFruitService.fetchAll();
       setState(() {
         _devilFruits = fruits;
-        if (widget.character.devilFruit != null) {
-          _selectedDevilFruit = fruits.firstWhere(
-            (fruit) => fruit.romanName == widget.character.devilFruit,
-            orElse: () => fruits.first,
-          );
+        if (widget.character.devilFruit != null && fruits.isNotEmpty) {
+          try {
+            _selectedDevilFruit = fruits.firstWhere(
+              (fruit) => fruit.romanName == widget.character.devilFruit,
+            );
+          } catch (e) {
+            _selectedDevilFruit = fruits.first;
+          }
         }
       });
     } catch (e) {
@@ -130,6 +155,9 @@ class _EditCustomCharacterScreenState extends State<EditCustomCharacterScreen> {
 
   @override
   Widget build(BuildContext context) {
+    // Mapear dados de Haki se necessário
+    _mapHakiDataIfNeeded();
+    
     return BlocProvider(
       create: (context) => CustomCharacterBloc(
         customCharacterService: getIt.customCharacterService,
@@ -317,6 +345,16 @@ class _EditCustomCharacterScreenState extends State<EditCustomCharacterScreen> {
 
   void _submitForm(BuildContext context) {
     if (_formKey.currentState!.validate()) {
+      final birthDate = _birthDateController.text.trim().isNotEmpty
+          ? ZodiacIcons.parseDateFromString(_birthDateController.text.trim())
+          : null;
+
+      // Mapear os dados de Haki do formato localizado para o formato salvo
+      final mappedHaki = _selectedHaki.map((localizedHaki) {
+        return CharacterLocalizationMapper.mapLocalizedToHaki(
+            localizedHaki, AppLocalizations.of(context)!);
+      }).toList();
+          
       final updatedCharacter = CustomCharacterModel(
         id: widget.character.id,
         name: _nameController.text.trim(),
@@ -324,7 +362,7 @@ class _EditCustomCharacterScreenState extends State<EditCustomCharacterScreen> {
             ? _nicknameController.text.trim() 
             : null,
         devilFruit: _selectedDevilFruit?.romanName,
-        haki: _selectedHaki.isNotEmpty ? _selectedHaki : null,
+        haki: mappedHaki.isNotEmpty ? mappedHaki : null,
         affiliations: _selectedAffiliations,
         image: _imageUrlController.text.trim().isNotEmpty 
             ? _imageUrlController.text.trim()
@@ -332,8 +370,8 @@ class _EditCustomCharacterScreenState extends State<EditCustomCharacterScreen> {
         occupation: _selectedOccupations,
         fightingStyle: _fightingStyle,
         bounty: _bountyController.text.trim(),
-        signo: _birthDateController.text.trim().isNotEmpty 
-            ? _calculateSignoFromBirthDate(_birthDateController.text.trim())
+        signo: birthDate != null
+            ? ZodiacIcons.getZodiacSignFromDate(birthDate)
             : null,
         crew: _selectedCrewId != null
             ? _availableCrews
@@ -342,9 +380,9 @@ class _EditCustomCharacterScreenState extends State<EditCustomCharacterScreen> {
             : null,
         status: _selectedStatus,
         race: _selectedRace,
-        age: _birthDateController.text.trim().isNotEmpty 
-            ? _calculateAgeFromBirthDate(_birthDateController.text.trim())
+        age: birthDate != null ? ZodiacIcons.calculateAge(birthDate)
             : null,
+        birthDate: birthDate,
         description: _descriptionController.text.trim().isNotEmpty 
             ? _descriptionController.text.trim() 
             : null,
@@ -359,22 +397,6 @@ class _EditCustomCharacterScreenState extends State<EditCustomCharacterScreen> {
 
   void _cancelForm() {
     Navigator.of(context).pop();
-  }
-
-  int? _calculateAgeFromBirthDate(String birthDateString) {
-    final birthDate = ZodiacIcons.parseDateFromString(birthDateString);
-    if (birthDate != null) {
-      return ZodiacIcons.calculateAge(birthDate);
-    }
-    return null;
-  }
-
-  String? _calculateSignoFromBirthDate(String birthDateString) {
-    final birthDate = ZodiacIcons.parseDateFromString(birthDateString);
-    if (birthDate != null) {
-      return ZodiacIcons.getZodiacSignFromDate(birthDate);
-    }
-    return null;
   }
 
   void _showSuccessDialog(BuildContext context) {

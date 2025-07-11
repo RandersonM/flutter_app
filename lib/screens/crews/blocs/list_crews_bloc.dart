@@ -10,7 +10,9 @@ class ListCrewsBloc extends Bloc<ListCrewsEvent, ListCrewsState> {
       : _crewRepository = crewRepository ?? CrewRepository(),
         super(ListCrewsInitial()) {
     on<LoadCrews>(_onLoadCrews);
+    on<LoadUserCrews>(_onLoadUserCrews);
     on<SearchCrews>(_onSearchCrews);
+    on<SearchUserCrews>(_onSearchUserCrews);
     on<DeleteCrew>(_onDeleteCrew);
   }
 
@@ -28,6 +30,20 @@ class ListCrewsBloc extends Bloc<ListCrewsEvent, ListCrewsState> {
     }
   }
 
+  Future<void> _onLoadUserCrews(
+    LoadUserCrews event,
+    Emitter<ListCrewsState> emit,
+  ) async {
+    emit(ListCrewsLoading());
+
+    try {
+      final crews = await _crewRepository.getUserCrews();
+      emit(ListCrewsLoaded(crews));
+    } catch (e) {
+      emit(ListCrewsError(e.toString()));
+    }
+  }
+
   Future<void> _onSearchCrews(
     SearchCrews event,
     Emitter<ListCrewsState> emit,
@@ -37,6 +53,24 @@ class ListCrewsBloc extends Bloc<ListCrewsEvent, ListCrewsState> {
     try {
       final allCrews = await _crewRepository.getAllCrews();
       final filteredCrews = allCrews
+          .where((crew) =>
+              crew.name.toLowerCase().contains(event.query.toLowerCase()))
+          .toList();
+      emit(ListCrewsLoaded(filteredCrews));
+    } catch (e) {
+      emit(ListCrewsError(e.toString()));
+    }
+  }
+
+  Future<void> _onSearchUserCrews(
+    SearchUserCrews event,
+    Emitter<ListCrewsState> emit,
+  ) async {
+    emit(ListCrewsLoading());
+
+    try {
+      final userCrews = await _crewRepository.getUserCrews();
+      final filteredCrews = userCrews
           .where((crew) =>
               crew.name.toLowerCase().contains(event.query.toLowerCase()))
           .toList();

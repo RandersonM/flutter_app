@@ -49,6 +49,8 @@ abstract class ICrewRepository {
     required int maxMembers,
   });
   
+  Future<List<CrewModel>> getCrewsByMember(String characterId);
+  
   Future<void> addMemberToCrew(String crewId, CrewMember member);
   
   Future<void> removeMemberFromCrew(String crewId, String characterId);

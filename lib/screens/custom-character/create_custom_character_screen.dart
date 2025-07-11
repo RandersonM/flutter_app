@@ -12,6 +12,7 @@ import 'package:opfan/widgets/molecules/default_app_bar.dart';
 import '../../widgets/organisms/character_form.dart';
 import '../../widgets/organisms/form_actions.dart';
 import '../../utils/zodiac_icons.dart';
+import 'package:opfan/core/utils/character_localization_mapper.dart';
 
 class CreateCustomCharacterScreen extends StatefulWidget {
   const CreateCustomCharacterScreen({Key? key}) : super(key: key);
@@ -267,13 +268,23 @@ class _CreateCustomCharacterScreenState extends State<CreateCustomCharacterScree
 
   void _submitForm(BuildContext context) {
     if (_formKey.currentState!.validate()) {
+      final birthDate = _birthDateController.text.trim().isNotEmpty
+          ? ZodiacIcons.parseDateFromString(_birthDateController.text.trim())
+          : null;
+
+      // Mapear os dados de Haki do formato localizado para o formato salvo
+      final mappedHaki = _selectedHaki.map((localizedHaki) {
+        return CharacterLocalizationMapper.mapLocalizedToHaki(
+            localizedHaki, AppLocalizations.of(context)!);
+      }).toList();
+      
       final newCharacter = CustomCharacterModel(
         name: _nameController.text.trim(),
         nickname: _nicknameController.text.trim().isNotEmpty 
             ? _nicknameController.text.trim() 
             : null,
         devilFruit: _selectedDevilFruit?.romanName,
-        haki: _selectedHaki.isNotEmpty ? _selectedHaki : null,
+        haki: mappedHaki.isNotEmpty ? mappedHaki : null,
         affiliations: _selectedAffiliations,
         image: _imageUrlController.text.trim().isNotEmpty 
             ? _imageUrlController.text.trim()
@@ -281,8 +292,8 @@ class _CreateCustomCharacterScreenState extends State<CreateCustomCharacterScree
         occupation: _selectedOccupations,
         fightingStyle: _fightingStyle,
         bounty: _bountyController.text.trim(),
-        signo: _birthDateController.text.trim().isNotEmpty 
-            ? _calculateSignoFromBirthDate(_birthDateController.text.trim())
+        signo: birthDate != null
+            ? ZodiacIcons.getZodiacSignFromDate(birthDate)
             : null,
         crew: _selectedCrewId != null
             ? _availableCrews
@@ -291,13 +302,18 @@ class _CreateCustomCharacterScreenState extends State<CreateCustomCharacterScree
             : null,
         status: _selectedStatus,
         race: _selectedRace,
-        age: _birthDateController.text.trim().isNotEmpty 
-            ? _calculateAgeFromBirthDate(_birthDateController.text.trim())
+        age: birthDate != null ? ZodiacIcons.calculateAge(birthDate)
             : null,
+        birthDate: birthDate,
         description: _descriptionController.text.trim().isNotEmpty 
             ? _descriptionController.text.trim() 
             : null,
       );
+      
+      debugPrint(
+          'CreateCharacter: Character birth date: ${newCharacter.birthDate}');
+      debugPrint('CreateCharacter: Character age: ${newCharacter.age}');
+      debugPrint('CreateCharacter: Character signo: ${newCharacter.signo}');
       
       context.read<CustomCharacterBloc>().add(CreateCustomCharacter(
             newCharacter,
@@ -309,22 +325,6 @@ class _CreateCustomCharacterScreenState extends State<CreateCustomCharacterScree
 
   void _cancelForm() {
     Navigator.of(context).pop();
-  }
-
-  int? _calculateAgeFromBirthDate(String birthDateString) {
-    final birthDate = ZodiacIcons.parseDateFromString(birthDateString);
-    if (birthDate != null) {
-      return ZodiacIcons.calculateAge(birthDate);
-    }
-    return null;
-  }
-
-  String? _calculateSignoFromBirthDate(String birthDateString) {
-    final birthDate = ZodiacIcons.parseDateFromString(birthDateString);
-    if (birthDate != null) {
-      return ZodiacIcons.getZodiacSignFromDate(birthDate);
-    }
-    return null;
   }
 
   void _showSuccessDialog(BuildContext context) {

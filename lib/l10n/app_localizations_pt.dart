@@ -533,6 +533,9 @@ class AppLocalizationsPt extends AppLocalizations {
   String get myCrews => 'Minhas Tripulações';
 
   @override
+  String get allCrews => 'Todas as Tripulações';
+
+  @override
   String get errorLoadingCrews => 'Erro ao carregar tripulações';
 
   @override
@@ -580,6 +583,18 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get imageLoadError => 'Falha ao carregar imagem';
+
+  @override
+  String get editCrewTitle => 'Editar Tripulação';
+
+  @override
+  String get editCrewSubtitle => 'Modifique as informações da sua tripulação';
+
+  @override
+  String get crewUpdatedSuccess => 'Tripulação atualizada com sucesso';
+
+  @override
+  String get crewUpdateError => 'Erro ao atualizar tripulação';
 
   @override
   String get regenerateImage => 'Regenerar';
@@ -724,9 +739,6 @@ class AppLocalizationsPt extends AppLocalizations {
   String get crewUpdated => 'Tripulação atualizada com sucesso';
 
   @override
-  String get crewUpdateError => 'Erro ao atualizar tripulação';
-
-  @override
   String get loginError => 'Erro de login';
 
   @override
@@ -804,4 +816,61 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get tonatta => 'Tonatta';
+
+  @override
+  String get add => 'Adicionar';
+
+  @override
+  String get noPermissionToEdit =>
+      'Você não tem permissão para editar esta tripulação';
+
+  @override
+  String get noPermissionToDelete =>
+      'Você não tem permissão para excluir esta tripulação';
+
+  @override
+  String get allRolesFilled => 'Todas as roles já estão preenchidas';
+
+  @override
+  String get characterNotFound => 'Personagem não encontrado';
+
+  @override
+  String get characterLoadError => 'Erro ao carregar personagem';
+
+  @override
+  String memberAddedAsRole(String characterName, String role) {
+    return '$characterName adicionado como $role';
+  }
+
+  @override
+  String crewDeletedWithName(String crewName) {
+    return 'Tripulação \"$crewName\" excluída';
+  }
+
+  @override
+  String get generatePirateFlagPrompt =>
+      'Digite um prompt para gerar a bandeira pirata';
+
+  @override
+  String get pirateFlagGeneratedSuccess =>
+      'Bandeira pirata gerada com sucesso!';
+
+  @override
+  String pirateFlagGenerationError(String error) {
+    return 'Erro ao gerar bandeira: $error';
+  }
+
+  @override
+  String get generateBoatPrompt => 'Digite um prompt para gerar o barco';
+
+  @override
+  String get boatGeneratedSuccess => 'Barco gerado com sucesso!';
+
+  @override
+  String boatGenerationError(String error) {
+    return 'Erro ao gerar barco: $error';
+  }
+
+  @override
+  String get profilePhotoTapped => 'Foto do perfil tocada';
 }

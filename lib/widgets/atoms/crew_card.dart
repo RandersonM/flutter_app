@@ -99,7 +99,12 @@ class _CrewCardState extends State<CrewCard> {
                     _buildInfoRow(
                       context,
                       Icons.monetization_on,
-                      '${_formatBounty(_calculateTotalBounty())} ${l10n.berriesTotal}',
+                      '${_formatBounty(widget.crew.members.fold<int>(0, (sum, member) {
+                        final bountyString =
+                            member.bounty.replaceAll(RegExp(r'[^\d]'), '');
+                        final bounty = int.tryParse(bountyString) ?? 0;
+                        return sum + bounty;
+                      }).toInt())} ${l10n.berriesTotal}',
                     ),
                     _buildInfoRow(
                       context,
@@ -251,17 +256,7 @@ class _CrewCardState extends State<CrewCard> {
     );
   }
 
-  int _calculateTotalBounty() {
-    var totalBounty = widget.crew.members.fold<int>(0, (sum, member) {
-      final bountyString = member.bounty.replaceAll(RegExp(r'[^\d]'), '');
-      final bounty = int.tryParse(bountyString) ?? 0;
-      return sum + bounty;
-    });
-    return totalBounty %
-        (widget.crew.members.isNotEmpty ? widget.crew.members.length : 1);
-  }
-
   String _formatBounty(int bounty) {
-    return Constants.formatBounty(bounty.toString());
+    return Constants.formatAbbreviateBounty(bounty.toDouble());
   }
 } 

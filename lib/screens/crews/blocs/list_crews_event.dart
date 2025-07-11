@@ -9,10 +9,21 @@ abstract class ListCrewsEvent extends Equatable {
 
 class LoadCrews extends ListCrewsEvent {}
 
+class LoadUserCrews extends ListCrewsEvent {}
+
 class SearchCrews extends ListCrewsEvent {
   final String query;
 
   const SearchCrews(this.query);
+
+  @override
+  List<Object?> get props => [query];
+}
+
+class SearchUserCrews extends ListCrewsEvent {
+  final String query;
+
+  const SearchUserCrews(this.query);
 
   @override
   List<Object?> get props => [query];

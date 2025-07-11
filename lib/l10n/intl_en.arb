@@ -1049,9 +1049,11 @@
   },
   "myCrews": "My Crews",
   "@myCrews": {
-    "description": "Title for my crews screen",
-    "type": "text",
-    "placeholders": {}
+    "description": "My crews label"
+  },
+  "allCrews": "All Crews",
+  "@allCrews": {
+    "description": "All crews label"
   },
   "errorLoadingCrews": "Error loading crews",
   "@errorLoadingCrews": {
@@ -1147,6 +1149,35 @@
     "placeholders": {}
   },
   "imageLoadError": "Failed to load image",
+  "editCrewTitle": "Edit Crew",
+  "@editCrewTitle": {
+    "description": "Title for edit crew screen",
+    "type": "text",
+    "placeholders": {}
+  },
+  "editCrewSubtitle": "Modify your crew's information",
+  "@editCrewSubtitle": {
+    "description": "Subtitle for edit crew screen",
+    "type": "text",
+    "placeholders": {}
+  },
+  "crewUpdatedSuccess": "Crew updated successfully",
+  "@crewUpdatedSuccess": {
+    "description": "Success message when crew is updated",
+    "type": "text",
+    "placeholders": {}
+  },
+  "crewUpdateError": "Error updating crew: {message}",
+  "@crewUpdateError": {
+    "description": "Error message when crew update fails",
+    "type": "text",
+    "placeholders": {
+      "message": {
+        "type": "String",
+        "example": "Network error"
+      }
+    }
+  },
   "@imageLoadError": {
     "description": "Error message when image fails to load",
     "type": "text",
@@ -1610,6 +1641,126 @@
   "tonatta": "Tonatta",
   "@tonatta": {
     "description": "Race option for tonatta",
+    "type": "text",
+    "placeholders": {}
+  },
+  "add": "Add",
+  "@add": {
+    "description": "Button text for add action",
+    "type": "text",
+    "placeholders": {}
+  },
+  "noPermissionToEdit": "You don't have permission to edit this crew",
+  "@noPermissionToEdit": {
+    "description": "Error message when user doesn't have permission to edit crew",
+    "type": "text",
+    "placeholders": {}
+  },
+  "noPermissionToDelete": "You don't have permission to delete this crew",
+  "@noPermissionToDelete": {
+    "description": "Error message when user doesn't have permission to delete crew",
+    "type": "text",
+    "placeholders": {}
+  },
+  "allRolesFilled": "All roles are already filled",
+  "@allRolesFilled": {
+    "description": "Message when all roles in crew are already filled",
+    "type": "text",
+    "placeholders": {}
+  },
+  "characterNotFound": "Character not found",
+  "@characterNotFound": {
+    "description": "Error message when character is not found",
+    "type": "text",
+    "placeholders": {}
+  },
+  "characterLoadError": "Error loading character",
+  "@characterLoadError": {
+    "description": "Error message when character fails to load",
+    "type": "text",
+    "placeholders": {}
+  },
+  "memberAddedAsRole": "{characterName} added as {role}",
+  "@memberAddedAsRole": {
+    "description": "Success message when member is added to crew with role",
+    "type": "text",
+    "placeholders": {
+      "characterName": {
+        "type": "String",
+        "example": "Luffy"
+      },
+      "role": {
+        "type": "String",
+        "example": "Captain"
+      }
+    }
+  },
+  "crewDeletedWithName": "Crew \"{crewName}\" deleted",
+  "@crewDeletedWithName": {
+    "description": "Success message when crew is deleted with crew name",
+    "type": "text",
+    "placeholders": {
+      "crewName": {
+        "type": "String",
+        "example": "Straw Hat Pirates"
+      }
+    }
+  },
+  "generatePirateFlagPrompt": "Enter a prompt to generate the pirate flag",
+  "@generatePirateFlagPrompt": {
+    "description": "Prompt text for generating pirate flag",
+    "type": "text",
+    "placeholders": {}
+  },
+  "pirateFlagGeneratedSuccess": "Pirate flag generated successfully!",
+  "@pirateFlagGeneratedSuccess": {
+    "description": "Success message when pirate flag is generated",
+    "type": "text",
+    "placeholders": {}
+  },
+  "pirateFlagGenerationError": "Error generating flag: {error}",
+  "@pirateFlagGenerationError": {
+    "description": "Error message when pirate flag generation fails",
+    "type": "text",
+    "placeholders": {
+      "error": {
+        "type": "String",
+        "example": "Network error"
+      }
+    }
+  },
+  "generateBoatPrompt": "Enter a prompt to generate the boat",
+  "@generateBoatPrompt": {
+    "description": "Prompt text for generating boat",
+    "type": "text",
+    "placeholders": {}
+  },
+  "boatGeneratedSuccess": "Boat generated successfully!",
+  "@boatGeneratedSuccess": {
+    "description": "Success message when boat is generated",
+    "type": "text",
+    "placeholders": {}
+  },
+  "boatGenerationError": "Error generating boat: {error}",
+  "@boatGenerationError": {
+    "description": "Error message when boat generation fails",
+    "type": "text",
+    "placeholders": {
+      "error": {
+        "type": "String",
+        "example": "Network error"
+      }
+    }
+  },
+  "description": "Description",
+  "@description": {
+    "description": "Label for description field",
+    "type": "text",
+    "placeholders": {}
+  },
+  "profilePhotoTapped": "Profile photo tapped",
+  "@profilePhotoTapped": {
+    "description": "Snackbar message when profile photo is tapped",
     "type": "text",
     "placeholders": {}
   }

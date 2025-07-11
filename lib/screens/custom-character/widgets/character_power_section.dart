@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:opfan/l10n/app_localizations.dart';
 import 'package:opfan/core/models/one_piece/devil_fruit.dart';
+import 'package:opfan/core/utils/character_localization_mapper.dart';
 import '../../../widgets/atoms/devil_fruit_search_dropdown.dart';
 import '../../../widgets/atoms/custom_chip_selector.dart';
 
@@ -26,11 +27,8 @@ class CharacterPowerSection extends StatelessWidget {
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
     
-    final hakiOptions = [
-      l10n.haoshokuHaki,
-      l10n.busoshokuHaki,
-      l10n.kenbunshokuHaki,
-    ];
+    final hakiOptions =
+        CharacterLocalizationMapper.getLocalizedHakiOptions(l10n);
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,

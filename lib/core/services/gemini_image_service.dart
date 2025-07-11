@@ -41,14 +41,12 @@ class GeminiImageService {
           
           debugPrint('Gemini Image Service: Network error detected, retrying...');
           
-          // Aguardar um pouco antes de tentar novamente
-          await Future.delayed(Duration(milliseconds: 1000));
+          await Future.delayed(const Duration(milliseconds: 1000));
           
           try {
-            // Tentar novamente com timeout maior
             final retryOptions = Options(
-              receiveTimeout: Duration(seconds: 60),
-              sendTimeout: Duration(seconds: 60),
+              receiveTimeout: const Duration(seconds: 60),
+              sendTimeout: const Duration(seconds: 60),
             );
             
             final retryResponse = await _dio.request(
@@ -189,14 +187,12 @@ class GeminiImageService {
             'Content-Type': 'application/json',
             'User-Agent': 'Dart/3.0',
           },
-          // Timeouts mais generosos para evitar problemas de conexão
-          receiveTimeout: Duration(seconds: 120),
-          sendTimeout: Duration(seconds: 60),
+        
+          receiveTimeout: const Duration(seconds: 120),
+          sendTimeout: const Duration(seconds: 60),
         ),
       );
 
-      debugPrint('Gemini Image Service: Response status: ${response.statusCode}');
-      debugPrint('Gemini Image Service: Response data: ${response.data}');
 
       if (response.statusCode == 200 && response.data != null) {
         final candidates = response.data['candidates'] as List?;
@@ -216,7 +212,6 @@ class GeminiImageService {
         }
       }
       
-      debugPrint('Gemini Image Service: No image returned from Gemini REST API');
       return null;
     } on DioException catch (e) {
       debugPrint('Gemini Image Service: DioException in Gemini REST image generation - ${e.message}');
@@ -292,11 +287,9 @@ class GeminiImageService {
       'detailed character design',
       'high quality',
       'professional illustration',
-      'character portrait',
       'vibrant colors',
     ]);
 
-    debugPrint('Gemini Image Service: Prompt parts - $promptParts');
     return promptParts.join(', ');
   }
 

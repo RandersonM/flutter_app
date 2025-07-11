@@ -113,12 +113,7 @@ class _CrewDetailsScreenState extends State<CrewDetailsScreen> {
       return;
     }
     
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text('Editar tripulação: ${_crew.name}'),
-        backgroundColor: Theme.of(context).colorScheme.primary,
-      ),
-    );
+    Navigator.pushNamed(context, AppRoutes.editCrew, arguments: _crew);
   }
 
   void _onDeleteCrew() {
