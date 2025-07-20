@@ -2,7 +2,7 @@
 // Copyright © 2022.
 
 import 'package:flutter/material.dart';
-import 'package:opfan/core/models/custom_character_model.dart';
+import 'package:opfan/core/models/one_piece/custom_character_model.dart';
 import 'package:opfan/utils/constants.dart';
 import 'package:opfan/l10n/app_localizations.dart';
 
@@ -108,6 +108,7 @@ class CustomCharacterCard extends StatelessWidget {
                               ),
                         ),
                       ),
+                  
                   ],
                 ),
               ),

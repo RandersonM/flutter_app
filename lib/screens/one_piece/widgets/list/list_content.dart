@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:opfan/screens/one_piece/blocs/characters_cubit.dart';
-import 'package:opfan/core/models/character_model.dart';
+import 'package:opfan/core/models/one_piece/custom_character_model.dart';
 import 'package:opfan/screens/one_piece/widgets/list/character_grid_list.dart';
 
 class ListContent extends StatefulWidget {
@@ -22,7 +22,6 @@ class _ListContentState extends State<ListContent> {
     if (controller.position.pixels == controller.position.maxScrollExtent) {
       final cubit = context.read<CharactersCubit>();
       if (!cubit.isLoading() && cubit.hasMoreData) {
-        debugPrint('ListContent: Calling fetchData from scroll');
         cubit.fetchData();
       }
     }
@@ -31,14 +30,11 @@ class _ListContentState extends State<ListContent> {
   @override
   void initState() {
     super.initState();
-    debugPrint('ListContent: initState called');
     controller = ScrollController()..addListener(_scrollListener);
     
-    // Carrega os dados iniciais apenas uma vez
     WidgetsBinding.instance.addPostFrameCallback((_) {
       final cubit = context.read<CharactersCubit>();
       if (cubit.state is CharactersInitial) {
-        debugPrint('ListContent: Calling initial fetchData');
         cubit.fetchData();
       }
     });
@@ -59,7 +55,7 @@ class _ListContentState extends State<ListContent> {
           return const Center(child: CircularProgressIndicator());
         }
 
-        List<CharacterModel> characters = [];
+        List<CustomCharacterModel> characters = [];
         bool isLoadingMore = false;
 
         if (state is CharactersLoading) {
@@ -67,10 +63,8 @@ class _ListContentState extends State<ListContent> {
           isLoadingMore = state.isLoadingMore;
         } else if (state is CharactersLoaded) {
           characters = state.characters;
-          debugPrint('ListContent: Loaded ${characters.length} characters');
         } else if (state is CharactersError) {
           characters = state.characters;
-          debugPrint('ListContent: Error - ${state.message}');
         }
 
         if (characters.isEmpty && state is CharactersLoading) {

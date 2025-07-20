@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:opfan/core/utils/character_localization_mapper.dart';
 import 'package:opfan/l10n/app_localizations.dart';
+import 'package:opfan/core/models/one_piece/crew_model.dart';
 import '../../../widgets/atoms/custom_text_field.dart';
 import '../../../widgets/atoms/custom_dropdown.dart';
 import '../../../widgets/atoms/custom_chip_selector.dart';
+import '../../../widgets/molecules/ai_image_generator.dart';
+import '../../../widgets/atoms/clickable_image.dart';
 
 class CharacterBackgroundSection extends StatelessWidget {
-  final TextEditingController crewController;
   final TextEditingController bountyController;
   final TextEditingController imageUrlController;
   final String? selectedStatus;
@@ -16,10 +19,18 @@ class CharacterBackgroundSection extends StatelessWidget {
   final List<String> selectedAffiliations;
   final void Function(String) onAffiliationSelected;
   final void Function(String) onAffiliationDeselected;
+  final List<CrewModel> availableCrews;
+  final String? selectedCrewId;
+  final void Function(String?) onCrewChanged;
+  final String? selectedCrewRole;
+  final void Function(String?) onCrewRoleChanged;
+  final String? characterName;
+  final String? race;
+  final List<String>? haki;
+  final bool showAiGenerator;
 
   const CharacterBackgroundSection({
     Key? key,
-    required this.crewController,
     required this.bountyController,
     required this.imageUrlController,
     required this.selectedStatus,
@@ -30,49 +41,27 @@ class CharacterBackgroundSection extends StatelessWidget {
     required this.selectedAffiliations,
     required this.onAffiliationSelected,
     required this.onAffiliationDeselected,
+    required this.availableCrews,
+    required this.selectedCrewId,
+    required this.onCrewChanged,
+    required this.selectedCrewRole,
+    required this.onCrewRoleChanged,
+    this.characterName,
+    this.race,
+    this.haki,
+    this.showAiGenerator = true,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
     
-    // Status mapping: English key -> Translated value
-    final statusMapping = {
-      'alive': l10n.alive,
-      'dead': l10n.dead,
-      'unknown': l10n.unknown,
-    };
-
-    // Affiliation mapping: English key -> Translated value
-    final affiliationMapping = {
-      'marines': l10n.marines,
-      'revolutionaries': l10n.revolutionaries,
-      'yonkou': l10n.yonkou,
-      'shichibukai': l10n.shichibukai,
-      'independent': l10n.independent,
-      'pirate': l10n.pirate,
-      'pirateAlliance': l10n.pirateAlliance,
-    };
-
-    final occupationMapping = {
-      'captain': l10n.captain,
-      'admiral': l10n.admiral,
-      'viceAdmiral': l10n.viceAdmiral,
-      'revolutionary': l10n.revolutionary,
-      'merchant': l10n.merchant,
-      'doctor': l10n.doctor,
-      'navigator': l10n.navigator,
-      'cook': l10n.cook,
-      'sniper': l10n.sniper,
-      'swordsman': l10n.swordsman,
-      'carpenter': l10n.carpenter,
-      'archaeologist': l10n.archaeologist,
-      'sharpshooter': l10n.sharpshooter,
-    };
-
-    final statusOptions = statusMapping.values.toList();
-    final affiliationOptions = affiliationMapping.values.toList();
-    final occupationOptions = occupationMapping.values.toList();
+    final statusOptions =
+        CharacterLocalizationMapper.getLocalizedStatusOptions(l10n);
+    final affiliationOptions =
+        CharacterLocalizationMapper.getLocalizedAffiliationOptions(l10n);
+    final occupationOptions =
+        CharacterLocalizationMapper.getLocalizedOccupationOptions(l10n);
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -84,11 +73,43 @@ class CharacterBackgroundSection extends StatelessWidget {
           ),
         ),
         const SizedBox(height: 16),
-        CustomTextField(
+        CustomDropdown<String>(
           label: l10n.crew(0),
-          hint: l10n.crewHint,
-          controller: crewController,
+          value: selectedCrewId != null
+              ? availableCrews
+                  .firstWhere((crew) => crew.id == selectedCrewId,
+                      orElse: () => CrewModel(name: '', userId: ''))
+                  .name
+              : null,
+          items: availableCrews.map((crew) => crew.name).toList(),
+          itemToString: (crewName) => crewName,
+          onChanged: (crewName) {
+            final selectedCrew = availableCrews.firstWhere(
+              (crew) => crew.name == crewName,
+              orElse: () => CrewModel(name: '', userId: ''),
+            );
+            onCrewChanged(
+                selectedCrew.name.isNotEmpty ? selectedCrew.id : null);
+          },
         ),
+        if (selectedCrewId != null) ...[
+          const SizedBox(height: 16),
+          CustomDropdown<String>(
+            label: l10n.crewRole,
+            value: selectedCrewRole != null
+                ? CharacterLocalizationMapper.mapOccupationToLocalized(
+                    selectedCrewRole!, l10n)
+                : null,
+            items: occupationOptions,
+            itemToString: (role) => role,
+            onChanged: (translatedRole) {
+              if (translatedRole == null) return;
+              final key = CharacterLocalizationMapper.mapLocalizedToOccupation(
+                  translatedRole, l10n);
+              onCrewRoleChanged(key);
+            },
+          ),
+        ],
         CurrencyTextField(
           label: '${l10n.bounty} *',
           hint: l10n.bountyHint,
@@ -100,6 +121,32 @@ class CharacterBackgroundSection extends StatelessWidget {
             return null;
           },
         ),
+        if (showAiGenerator) ...[
+          const SizedBox(height: 16),
+          AiImageGenerator(
+            race: race!,
+            characterName: characterName,
+            haki: haki,
+            status: selectedStatus,
+            occupations: selectedOccupations,
+            currentImageUrl: imageUrlController.text,
+            onImageGenerated: (imageUrl) {
+              imageUrlController.text = imageUrl;
+            },
+          ),
+          const SizedBox(height: 16),
+        ],
+        if (imageUrlController.text.isNotEmpty) ...[
+          const SizedBox(height: 16),
+          ClickableImage(
+            imageUrl: imageUrlController.text,
+            width: double.infinity,
+            height: 220,
+            fit: BoxFit.cover,
+            borderRadius: BorderRadius.circular(12),
+            showTitleInDialog: false,
+          ),
+        ],
         CustomTextField(
           label: l10n.imageUrl,
           hint: l10n.imageUrlHint,
@@ -107,13 +154,16 @@ class CharacterBackgroundSection extends StatelessWidget {
         ),
         CustomDropdown<String>(
           label: l10n.status,
-          value: selectedStatus != null ? statusMapping[selectedStatus!] : null,
+          value: selectedStatus != null
+              ? CharacterLocalizationMapper.mapStatusToLocalized(
+                  selectedStatus, l10n)
+              : null,
           items: statusOptions,
           itemToString: (status) => status,
           onChanged: (translatedStatus) {
-            final key = statusMapping.entries
-                .firstWhere((entry) => entry.value == translatedStatus)
-                .key;
+            if (translatedStatus == null) return;
+            final key = CharacterLocalizationMapper.mapLocalizedToStatus(
+                translatedStatus, l10n);
             onStatusChanged(key);
           },
         ),
@@ -121,18 +171,18 @@ class CharacterBackgroundSection extends StatelessWidget {
           label: l10n.occupations,
           options: occupationOptions,
           selectedOptions: selectedOccupations
-              .map((key) => occupationMapping[key] ?? key)
+              .map((key) =>
+                  CharacterLocalizationMapper.mapOccupationToLocalized(
+                      key, l10n))
               .toList(),
           onOptionSelected: (translatedOccupation) {
-            final key = occupationMapping.entries
-                .firstWhere((entry) => entry.value == translatedOccupation)
-                .key;
+            final key = CharacterLocalizationMapper.mapLocalizedToOccupation(
+                translatedOccupation, l10n);
             onOccupationSelected(key);
           },
           onOptionDeselected: (translatedOccupation) {
-            final key = occupationMapping.entries
-                .firstWhere((entry) => entry.value == translatedOccupation)
-                .key;
+            final key = CharacterLocalizationMapper.mapLocalizedToOccupation(
+                translatedOccupation, l10n);
             onOccupationDeselected(key);
           },
           maxSelections: 3,
@@ -141,18 +191,18 @@ class CharacterBackgroundSection extends StatelessWidget {
           label: l10n.affiliations,
           options: affiliationOptions,
           selectedOptions: selectedAffiliations
-              .map((key) => affiliationMapping[key] ?? key)
+              .map((key) =>
+                  CharacterLocalizationMapper.mapAffiliationToLocalized(
+                      key, l10n))
               .toList(),
           onOptionSelected: (translatedAffiliation) {
-            final key = affiliationMapping.entries
-                .firstWhere((entry) => entry.value == translatedAffiliation)
-                .key;
+            final key = CharacterLocalizationMapper.mapLocalizedToAffiliation(
+                translatedAffiliation, l10n);
             onAffiliationSelected(key);
           },
           onOptionDeselected: (translatedAffiliation) {
-            final key = affiliationMapping.entries
-                .firstWhere((entry) => entry.value == translatedAffiliation)
-                .key;
+            final key = CharacterLocalizationMapper.mapLocalizedToAffiliation(
+                translatedAffiliation, l10n);
             onAffiliationDeselected(key);
           },
         ),

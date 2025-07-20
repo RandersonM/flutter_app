@@ -184,6 +184,11 @@ ThemeData appTheme = ThemeData(
     secondary: AppColors.purple[300],
     onSecondary: AppColors.purple[100],
     error: AppColors.red[500]!,
+    onError: AppColors.red[100],
+    surface: AppColors.grey[100],
+    onSurface: AppColors.grey[900],
+    surfaceContainerLow: AppColors.grey[100],
+    surfaceContainerHigh: AppColors.grey[100],
   ),
   dividerColor: AppColors.grey[300],
   textTheme: const TextTheme(
@@ -201,6 +206,11 @@ ThemeData appTheme = ThemeData(
       bodySmall: _Typography.bodySmall,
       labelSmall: _Typography.overline),
   fontFamily: 'Lato',
+  chipTheme: ChipThemeData(
+    backgroundColor: AppColors.grey[50],
+    labelStyle: _Typography.bodySmall.copyWith(color: AppColors.purple[500]),
+    side: BorderSide(color: AppColors.purple[500]!),
+  ),
   cardTheme: CardThemeData(
     shape: RoundedRectangleBorder(
         side: const BorderSide(color: AppColors.purple),
@@ -209,4 +219,42 @@ ThemeData appTheme = ThemeData(
     shadowColor: AppColors.purple[700],
   ),
   scaffoldBackgroundColor: Colors.white,
+  inputDecorationTheme: InputDecorationTheme(
+    border: OutlineInputBorder(
+      borderSide: BorderSide(color: AppColors.purple[200]!),
+      borderRadius: BorderRadius.circular(Constants.margin * 2),
+    ),
+    disabledBorder: OutlineInputBorder(
+      borderSide: BorderSide(color: AppColors.grey[200]!),
+      borderRadius: BorderRadius.circular(Constants.margin * 2),
+    ),
+    enabledBorder: OutlineInputBorder(
+      borderSide: BorderSide(color: AppColors.purple[200]!),
+      borderRadius: BorderRadius.circular(Constants.margin * 2),
+    ),
+    focusedBorder: OutlineInputBorder(
+      borderSide: BorderSide(color: AppColors.purple[500]!),
+      borderRadius: BorderRadius.circular(Constants.margin * 2),
+    ),
+  ),
+  dropdownMenuTheme: DropdownMenuThemeData(
+    menuStyle: MenuStyle(
+      backgroundColor: WidgetStateProperty.all(AppColors.grey[100]),
+    ),
+    inputDecorationTheme: InputDecorationTheme(
+      disabledBorder: OutlineInputBorder(
+        borderSide: BorderSide(color: AppColors.grey[200]!),
+        borderRadius: BorderRadius.circular(Constants.margin * 2),
+      ),
+      enabledBorder: OutlineInputBorder(
+        borderSide: BorderSide(color: AppColors.purple[200]!),
+        borderRadius: BorderRadius.circular(Constants.margin * 2),
+      ),
+      focusedBorder: OutlineInputBorder(
+        borderSide: BorderSide(color: AppColors.purple[500]!),
+        borderRadius: BorderRadius.circular(Constants.margin * 2),
+      ),
+    ),
+  ),
+  
 );

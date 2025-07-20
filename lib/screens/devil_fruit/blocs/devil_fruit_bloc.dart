@@ -1,6 +1,3 @@
-// Developed by Randerson Mayllon
-// Copyright © 2022.
-
 import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:opfan/core/models/one_piece/devil_fruit.dart';

@@ -2,14 +2,15 @@
 // Copyright © 2022.
 
 import 'package:flutter/material.dart';
-import 'package:opfan/core/models/character_model.dart';
+import 'package:opfan/core/models/one_piece/custom_character_model.dart';
 
 import 'package:opfan/utils/app_routes.dart';
+import 'package:opfan/utils/constants.dart';
 
 class ResultCard extends StatefulWidget {
   const ResultCard({Key? key, required this.character}) : super(key: key);
 
-  final CharacterModel character;
+  final CustomCharacterModel character;
 
   @override
   State<ResultCard> createState() => _ResultCardState();
@@ -29,7 +30,8 @@ class _ResultCardState extends State<ResultCard> {
           ),
           leading: _buildAvatar(),
           title: Text(widget.character.name),
-          subtitle: Text(widget.character.nickname ?? widget.character.bounty),
+          subtitle: Text(widget.character.nickname ??
+              '฿${Constants.formatBounty(widget.character.bounty)}'),
         ),
       );
 

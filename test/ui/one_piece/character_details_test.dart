@@ -1,12 +1,9 @@
-// Developed by Randerson Mayllon
-// Copyright © 2022.
-
 import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:opfan/core/models/character_model.dart';
+import 'package:opfan/core/models/one_piece/custom_character_model.dart';
 
 
 import 'package:opfan/screens/one_piece/widgets/details/character_details_screen.dart';
@@ -19,9 +16,9 @@ void main() {
   group('Character Details Screen', () {
     const Key charactersKey = Key('charactersKey');
     File file = File('test/fixtures/character_list.json');
-    List<CharacterModel> characters =
+    List<CustomCharacterModel> characters =
         (jsonDecode(file.readAsStringSync())['characters'] as List)
-            .map((e) => CharacterModel.fromJson(e))
+            .map((e) => CustomCharacterModel.fromJson(e))
             .toList();
 
     Widget charactersDetails = CharacterDetailsScreen(

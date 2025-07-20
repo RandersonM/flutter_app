@@ -2,7 +2,7 @@
 // Copyright © 2022.
 
 import 'package:equatable/equatable.dart';
-import 'package:opfan/core/models/character_model.dart';
+import 'package:opfan/core/models/one_piece/custom_character_model.dart';
 
 abstract class HomeEvent extends Equatable {
   const HomeEvent();
@@ -33,10 +33,18 @@ class LoadCharacterVideo extends HomeEvent {
 }
 
 class SelectCharacter extends HomeEvent {
-  final CharacterModel character;
+  final CustomCharacterModel character;
 
   const SelectCharacter(this.character);
 
   @override
   List<Object> get props => [character];
+}
+
+class PlayVideoInline extends HomeEvent {
+  const PlayVideoInline();
+}
+
+class StopVideoInline extends HomeEvent {
+  const StopVideoInline();
 }

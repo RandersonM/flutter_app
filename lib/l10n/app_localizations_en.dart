@@ -253,6 +253,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get captain => 'Captain';
 
   @override
+  String get viceCaptain => 'Vice Captain';
+
+  @override
   String get admiral => 'Admiral';
 
   @override
@@ -323,6 +326,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get devilFruit => 'Devil Fruit';
+
+  @override
+  String get noDevilFruit => 'No Devil Fruit';
 
   @override
   String crew(num count) {
@@ -403,7 +409,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get clear => 'Clear';
 
   @override
-  String get clearFilters => 'Clear Filters';
+  String get clearFilters => 'Clear filters';
 
   @override
   String get noFruitFound => 'No fruit found';
@@ -450,7 +456,28 @@ class AppLocalizationsEn extends AppLocalizations {
   String get createCustomCharacter => 'Create character';
 
   @override
-  String get createCrew => 'Create new crew';
+  String get createCrew => 'Create Crew';
+
+  @override
+  String get boat => ' Boat';
+
+  @override
+  String get crewBoatName => ' Boat name';
+
+  @override
+  String get crewRole => 'Crew Role';
+
+  @override
+  String get crewRoleHint => 'Select your role in the crew';
+
+  @override
+  String get helmsman => 'Helmsman';
+
+  @override
+  String get musician => 'Musician';
+
+  @override
+  String get boatswain => 'Boatswain';
 
   @override
   String viewingCharacter(String characterName) {
@@ -461,4 +488,387 @@ class AppLocalizationsEn extends AppLocalizations {
   String editingCharacter(String characterName) {
     return 'Editing $characterName';
   }
+
+  @override
+  String get editCustomCharacterTitle => 'Edit Custom Character';
+
+  @override
+  String get editCustomCharacterSubtitle =>
+      'Modify your character\'s information';
+
+  @override
+  String get update => 'Update';
+
+  @override
+  String get characterUpdatedSuccess => 'Character updated successfully';
+
+  @override
+  String characterUpdateError(String message) {
+    return 'Error updating character: $message';
+  }
+
+  @override
+  String get berriesTotal => 'Berries total';
+
+  @override
+  String members(num count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Members',
+      one: 'Member',
+      zero: 'Member',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get searchCrews => 'Search crews...';
+
+  @override
+  String get filter => 'Filter';
+
+  @override
+  String get myCrews => 'My Crews';
+
+  @override
+  String get allCrews => 'All Crews';
+
+  @override
+  String get errorLoadingCrews => 'Error loading crews';
+
+  @override
+  String get noCrewsFound => 'No crews found';
+
+  @override
+  String get createFirstCrew => 'Create your first crew!';
+
+  @override
+  String get confirmDelete => 'Confirm deletion';
+
+  @override
+  String confirmDeleteCrew(String crewName) {
+    return 'Are you sure you want to delete the crew \"$crewName\"?';
+  }
+
+  @override
+  String viewingCrew(String crewName) {
+    return 'Viewing crew: $crewName';
+  }
+
+  @override
+  String editingCrew(String crewName) {
+    return 'Editing crew: $crewName';
+  }
+
+  @override
+  String get aiImageGeneration => 'AI Image Generation';
+
+  @override
+  String get aiImageGenerationSubtitle =>
+      'Generate a unique image for your character using AI';
+
+  @override
+  String get imagePrompt => 'Image Prompt';
+
+  @override
+  String get imagePromptHint => 'Describe how your character should look...';
+
+  @override
+  String get generateImage => 'Generate Image';
+
+  @override
+  String get generatingImage => 'Generating...';
+
+  @override
+  String get imageLoadError => 'Failed to load image';
+
+  @override
+  String get editCrewTitle => 'Edit Crew';
+
+  @override
+  String get editCrewSubtitle => 'Modify your crew\'s information';
+
+  @override
+  String get crewUpdatedSuccess => 'Crew updated successfully';
+
+  @override
+  String get crewUpdateError => 'Error updating crew';
+
+  @override
+  String get regenerateImage => 'Regenerate';
+
+  @override
+  String get useImage => 'Use Image';
+
+  @override
+  String get imageConfirmed => 'Image Confirmed';
+
+  @override
+  String get promptRequired => 'Please enter a prompt';
+
+  @override
+  String get imageGenerationError =>
+      'Failed to generate image. Please try again.';
+
+  @override
+  String get selectDevilFruit => 'Select Devil Fruit';
+
+  @override
+  String get selectDevilFruitPlaceholder => 'Select a Devil Fruit';
+
+  @override
+  String get searchDevilFruit => 'Search Devil Fruit...';
+
+  @override
+  String get noDevilFruitFound => 'No Devil Fruit found';
+
+  @override
+  String get filterBy => 'Filter by';
+
+  @override
+  String get crewTeam => 'Crew';
+
+  @override
+  String get filterByDevilFruit => 'Filter by Devil Fruit';
+
+  @override
+  String get filterByCrew => 'Filter by Crew';
+
+  @override
+  String get addTag => 'Add Tag';
+
+  @override
+  String get addMember => 'Add Member';
+
+  @override
+  String get noCharactersAvailable => 'No characters available to add';
+
+  @override
+  String get tagName => 'Tag name';
+
+  @override
+  String get tagNameHint => 'Ex: Pirates, Adventurers, etc.';
+
+  @override
+  String get crewName => 'Crew Name *';
+
+  @override
+  String get crewNameHint => 'Ex: Custom Mugiwara';
+
+  @override
+  String get descriptionHint => 'Tell us about your crew...';
+
+  @override
+  String get pirateFlagUrl => 'Pirate Flag URL';
+
+  @override
+  String get pirateFlagUrlHint => 'https://example.com/flag.jpg';
+
+  @override
+  String get shipImageUrl => 'Ship Image URL';
+
+  @override
+  String get shipImageUrlHint => 'https://example.com/ship.jpg';
+
+  @override
+  String get devilFruitName => 'Devil fruit name';
+
+  @override
+  String get devilFruitNameHint => 'Ex: Gomu Gomu no Mi';
+
+  @override
+  String get crewNameFilter => 'Crew name';
+
+  @override
+  String get crewNameFilterHint => 'Ex: Straw Hat Pirates';
+
+  @override
+  String get dateFormat => 'DD/MM/YYYY';
+
+  @override
+  String get numberFormat => '0';
+
+  @override
+  String get editProfileTapped => 'Edit Profile tapped';
+
+  @override
+  String get notificationsTapped => 'Notifications tapped';
+
+  @override
+  String get languageTapped => 'Language tapped';
+
+  @override
+  String get themeTapped => 'Theme tapped';
+
+  @override
+  String get helpSupportTapped => 'Help & Support tapped';
+
+  @override
+  String get aboutTapped => 'About tapped';
+
+  @override
+  String get characterDeleted => 'Character deleted successfully';
+
+  @override
+  String get crewCreated => 'Crew created successfully';
+
+  @override
+  String get crewCreationError => 'Error creating crew';
+
+  @override
+  String get crewDeleted => 'Crew deleted successfully';
+
+  @override
+  String get crewDeletionError => 'Error deleting crew';
+
+  @override
+  String get memberAdded => 'Member added successfully';
+
+  @override
+  String get memberAdditionError => 'Error adding member';
+
+  @override
+  String get memberRemoved => 'Member removed successfully';
+
+  @override
+  String get memberRemovalError => 'Error removing member';
+
+  @override
+  String get crewUpdated => 'Crew updated successfully';
+
+  @override
+  String get loginError => 'Login error';
+
+  @override
+  String get videoLoadError => 'Error loading video';
+
+  @override
+  String get videoLoadSuccess => 'Video loaded successfully';
+
+  @override
+  String devilFruitSearchError(String error) {
+    return 'Error searching Devil Fruit: $error';
+  }
+
+  @override
+  String get noCustomCharactersFound => 'No custom characters found';
+
+  @override
+  String get createFirstCustomCharacter =>
+      'Create your first custom character!';
+
+  @override
+  String get dualWielder => 'Dual Wielder';
+
+  @override
+  String get fighter => 'Fighter';
+
+  @override
+  String get taekwondo => 'Taekwondo';
+
+  @override
+  String get kicker => 'Kicker';
+
+  @override
+  String get archer => 'Archer';
+
+  @override
+  String get staff => 'Staff';
+
+  @override
+  String get other => 'Other';
+
+  @override
+  String get race => 'Race';
+
+  @override
+  String get human => 'Human';
+
+  @override
+  String get giant => 'Giant';
+
+  @override
+  String get fishman => 'Fishman';
+
+  @override
+  String get mermaid => 'Mermaid';
+
+  @override
+  String get mink => 'Mink';
+
+  @override
+  String get lunarian => 'Lunarian';
+
+  @override
+  String get buccaneer => 'Buccaneer';
+
+  @override
+  String get oni => 'Oni';
+
+  @override
+  String get skypiean => 'Skypiean';
+
+  @override
+  String get longarm => 'Longarm';
+
+  @override
+  String get tonatta => 'Tonatta';
+
+  @override
+  String get add => 'Add';
+
+  @override
+  String get noPermissionToEdit =>
+      'You don\'t have permission to edit this crew';
+
+  @override
+  String get noPermissionToDelete =>
+      'You don\'t have permission to delete this crew';
+
+  @override
+  String get allRolesFilled => 'All roles are already filled';
+
+  @override
+  String get characterNotFound => 'Character not found';
+
+  @override
+  String get characterLoadError => 'Error loading character';
+
+  @override
+  String memberAddedAsRole(String characterName, String role) {
+    return '$characterName added as $role';
+  }
+
+  @override
+  String crewDeletedWithName(String crewName) {
+    return 'Crew \"$crewName\" deleted';
+  }
+
+  @override
+  String get generatePirateFlagPrompt =>
+      'Enter a prompt to generate the pirate flag';
+
+  @override
+  String get pirateFlagGeneratedSuccess =>
+      'Pirate flag generated successfully!';
+
+  @override
+  String pirateFlagGenerationError(String error) {
+    return 'Error generating flag: $error';
+  }
+
+  @override
+  String get generateBoatPrompt => 'Enter a prompt to generate the boat';
+
+  @override
+  String get boatGeneratedSuccess => 'Boat generated successfully!';
+
+  @override
+  String boatGenerationError(String error) {
+    return 'Error generating boat: $error';
+  }
+
+  @override
+  String get profilePhotoTapped => 'Profile photo tapped';
 }

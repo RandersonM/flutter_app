@@ -3,7 +3,7 @@
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:opfan/core/models/character_model.dart';
+import 'package:opfan/core/models/one_piece/custom_character_model.dart';
 
 
 import 'package:opfan/core/services/characters_backend_service.dart';
@@ -43,7 +43,7 @@ class SearchLoading extends SearchState {
 
 class SearchLoaded extends SearchState {
   final String query;
-  final List<CharacterModel> queryResults;
+  final List<CustomCharacterModel> queryResults;
   final List<String> statusFilters;
 
   const SearchLoaded({
@@ -81,13 +81,13 @@ class SearchCubit extends Cubit<SearchState> {
   }
 
   final CharactersBackendService backend;
-  List<CharacterModel> _queryResults = [];
+  List<CustomCharacterModel> _queryResults = [];
   String _query = '';
   final List<String> _statusFilters = <String>[];
 
   List<String> get statusFilters => List<String>.from(_statusFilters);
-  List<CharacterModel> get queryResults =>
-      List<CharacterModel>.from(_queryResults);
+  List<CustomCharacterModel> get queryResults =>
+      List<CustomCharacterModel>.from(_queryResults);
   String get query => _query;
 
   Future<void> setQuery(String query) async {
@@ -102,7 +102,7 @@ class SearchCubit extends Cubit<SearchState> {
     ));
 
     try {
-      List<CharacterModel> partialResults = await backend.fetchAll();
+      List<CustomCharacterModel> partialResults = await backend.fetchAll();
 
       if (_query.isNotEmpty) {
         partialResults = _applySearch(partialResults);
@@ -125,10 +125,11 @@ class SearchCubit extends Cubit<SearchState> {
     }
   }
 
-  List<CharacterModel> _applyFilters(List<CharacterModel> characters) {
-    List<CharacterModel> result = [];
+  List<CustomCharacterModel> _applyFilters(
+      List<CustomCharacterModel> characters) {
+    List<CustomCharacterModel> result = [];
     if (_statusFilters.isNotEmpty) {
-      for (CharacterModel character in characters) {
+      for (CustomCharacterModel character in characters) {
         character.affiliations.where((String affiliation) {
           if (_statusFilters.contains(affiliation)) {
             result.add(character);
@@ -158,8 +159,8 @@ class SearchCubit extends Cubit<SearchState> {
         .contains(RegExp(_query, caseSensitive: false, unicode: true));
   }
 
-  List<CharacterModel> _applySearch(List<CharacterModel> logs) {
-    return logs.where((CharacterModel character) {
+  List<CustomCharacterModel> _applySearch(List<CustomCharacterModel> logs) {
+    return logs.where((CustomCharacterModel character) {
       String characterName = character.name;
       String? characterNickname = character.nickname;
 

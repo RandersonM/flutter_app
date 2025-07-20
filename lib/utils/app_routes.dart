@@ -4,9 +4,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:opfan/core/auth/blocs/index.dart';
-import 'package:opfan/core/models/character_model.dart';
+import 'package:opfan/core/models/one_piece/custom_character_model.dart';
+import 'package:opfan/core/models/one_piece/crew_model.dart';
 import 'package:opfan/core/models/youtube_video_model.dart';
 import 'package:opfan/screens/calculator/calculator_screen.dart';
+import 'package:opfan/screens/crews/crew_details_screen.dart';
 import 'package:opfan/screens/fav_character_selection_screen/character_selection_screen.dart';
 import 'package:opfan/screens/home/home_screen.dart';
 import 'package:opfan/screens/one_piece/characters_list_screen.dart';
@@ -17,8 +19,12 @@ import 'package:opfan/screens/auth/login_screen.dart';
 import 'package:opfan/screens/profile/profile_screen.dart';
 import 'package:opfan/screens/custom-character/create_custom_character_screen.dart';
 import 'package:opfan/screens/custom-character/custom_character_list_screen.dart';
+import 'package:opfan/screens/custom-character/edit_custom_character_screen.dart';
+import 'package:opfan/screens/crews/create_crew_screen.dart';
+import 'package:opfan/screens/crews/edit_crew_screen.dart';
+import 'package:opfan/screens/crews/list_crews_screen.dart';
 
-import 'package:opfan/utils/transitions/material_page_route_without_tansition.dart';
+import 'package:opfan/utils/transitions/material_page_route_without_transition.dart';
 
 class AppRoutes {
   // Auth routes
@@ -41,6 +47,11 @@ class AppRoutes {
   static const String favorites = '/favorites';
   static const String createCustomCharacter = '/createCustomCharacter';
   static const String customCharacterList = '/customCharacterList';
+  static const String editCustomCharacter = '/editCustomCharacter';
+  static const String createCrew = '/createCrew';
+  static const String editCrew = '/editCrew';
+  static const String listCrews = '/listCrews';
+  static const String crewDetails = '/crewDetails';
 
   // Define which routes require authentication
   static const Set<String> _privateRoutes = {
@@ -49,6 +60,10 @@ class AppRoutes {
     favorites,
     createCustomCharacter,
     customCharacterList,
+    editCustomCharacter,
+    createCrew,
+    editCrew,
+    listCrews,
     // Add more private routes here as needed
   };
 
@@ -103,11 +118,11 @@ class AppRoutes {
             builder: (_) => YouTubePlayerScreen(video: video),
             settings: settings);
       case characterSelection:
-        return MaterialPageRoute<CharacterModel>(
+        return MaterialPageRoute<CustomCharacterModel>(
             builder: (_) => const CharacterSelectionScreen(),
             settings: settings);
       case characterDetails:
-        final character = settings.arguments as CharacterModel;
+        final character = settings.arguments as CustomCharacterModel;
         return MaterialPageRoute<dynamic>(
             builder: (_) => CharacterDetailsScreen(character: character),
             settings: settings);
@@ -122,6 +137,25 @@ class AppRoutes {
         return MaterialPageRoute<dynamic>(
             builder: (_) => const CustomCharacterListScreen(),
             settings: settings);
+      case editCustomCharacter:
+        final character = settings.arguments as CustomCharacterModel;
+        return MaterialPageRoute<dynamic>(
+            builder: (_) => EditCustomCharacterScreen(character: character),
+            settings: settings);
+      case createCrew:
+        return MaterialPageRoute<dynamic>(
+            builder: (_) => const CreateCrewScreen(), settings: settings);
+      case editCrew:
+        final crew = settings.arguments as CrewModel;
+        return MaterialPageRoute<dynamic>(
+            builder: (_) => EditCrewScreen(crew: crew), settings: settings);
+      case listCrews:
+        return MaterialPageRoute<dynamic>(
+            builder: (_) => const ListCrewsScreen(), settings: settings);
+      case crewDetails:
+        final crew = settings.arguments as CrewModel;
+        return MaterialPageRoute<dynamic>(
+            builder: (_) => CrewDetailsScreen(crew: crew), settings: settings);
       // Add more private routes here when they are created
       // case settings:
       //   return MaterialPageRoute<dynamic>(

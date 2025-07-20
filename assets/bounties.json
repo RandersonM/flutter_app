@@ -5,6 +5,10 @@
       "id": 0,
       "name": "Gol D. Roger",
       "nickname": "Pirate King",
+      "age": 53,
+      "race": "human",
+      "signo": "capricorn",
+      "status": "deceased",
       "occupation": [
         "Pirate",
         "Captain"
@@ -12,99 +16,175 @@
       "affiliations": [
         "Roger Pirates"
       ],
-      "haki": [
-        "Kenbunshoku Haki",
-        "Busoshoku Haki",
-        "Haoshoku Haki"
-      ],
+      "bounty": "5564800000",
+      "description": "The legendary Pirate King who conquered the Grand Line and found the One Piece, inspiring the Great Pirate Era",
       "image": "https://i.pinimg.com/originals/b6/c4/bb/b6c4bb59c6601353f69b31cd63395654.jpg",
-      "bounty": "฿5,564,800,000",
       "crew": "Roger Pirates",
-      "status": "deceased",
-      "age": 53,
-      "signo": "capricorn"
+      "devilFruit": null,
+      "fightingStyle": {
+        "name": "Estilo de Uma Espada",
+        "type": "swordsman",
+        "attacks": [
+          "Divine Departure",
+          "Roger's Slash",
+          "King's Strike",
+          "Conqueror's Blade"
+        ],
+        "weapons": [
+          "Ace (Espada)",
+          "Roger's Saber"
+        ]
+      },
+      "haki": [
+        "Haoshoku Haki (Haki do Rei)",
+        "Busoshoku Haki (Haki da Armadura)",
+        "Kenbunshoku Haki (Haki da Observação)"
+      ],
+      "userId": "system",
+      "createdAt": "2025-01-01T00:00:00-03:00",
+      "updatedAt": "2025-01-01T00:00:00-03:00"
     },
     {
       "id": 1,
       "name": "Edward Newgate",
       "nickname": "Whitebeard",
+      "age": 72,
+      "race": "human",
+      "signo": "aries",
+      "status": "deceased",
       "occupation": [
         "Pirate",
         "Captain"
       ],
-      "devil_fruit": "Gura Gura no Mi",
       "affiliations": [
         "Whitebeard Pirates",
         "Four Emperors"
       ],
-      "haki": [
-        "Kenbunshoku Haki",
-        "Busoshoku Haki",
-        "Haoshoku Haki"
-      ],
+      "bounty": "5046000000",
+      "description": "The Strongest Man in the World and former captain of the Whitebeard Pirates, known for his immense power and fatherly nature",
       "image": "https://i.pinimg.com/originals/c0/ee/8f/c0ee8fa916dcb33b707c4e8ca1aa0d96.png",
-      "bounty": "฿5,046,000,000",
       "crew": "Whitebeard Pirates",
-      "status": "deceased",
-      "age": 72,
-      "signo": "aries"
+      "devilFruit": "Gura Gura no Mi",
+      "fightingStyle": {
+        "name": "Estilo da Fruta do Diabo",
+        "type": "devil_fruit",
+        "attacks": [
+          "Gura Gura no Mi: Quake",
+          "Gura Gura no Mi: Tremor",
+          "Gura Gura no Mi: Shockwave",
+          "Gura Gura no Mi: Tsunami"
+        ],
+        "weapons": [
+          "Bisento Murakumogiri"
+        ]
+      },
+      "haki": [
+        "Haoshoku Haki (Haki do Rei)",
+        "Busoshoku Haki (Haki da Armadura)",
+        "Kenbunshoku Haki (Haki da Observação)"
+      ],
+      "userId": "system",
+      "createdAt": "2025-01-01T00:00:00-03:00",
+      "updatedAt": "2025-01-01T00:00:00-03:00"
     },
     {
       "id": 2,
       "name": "Kaido",
       "nickname": "Kaido of the Beasts",
+      "age": 59,
+      "race": "human",
+      "signo": "taurus",
+      "status": "deceased",
       "occupation": [
         "Pirate",
         "Captain"
       ],
-      "devil_fruit": "Uo Uo no Mi, Model: Seiryu",
       "affiliations": [
         "Beasts Pirates",
         "Four Emperors"
       ],
-      "haki": [
-        "Kenbunshoku Haki",
-        "Busoshoku Haki",
-        "Haoshoku Haki"
-      ],
+      "bounty": "4611100000",
+      "description": "The Strongest Creature in the World and captain of the Beasts Pirates, known for his dragon form and indestructible body",
       "image": "https://images3.alphacoders.com/643/thumb-1920-643521.jpg",
-      "bounty": "฿4,611,100,000",
       "crew": "Beasts Pirates",
-      "status": "living",
-      "age": 59,
-      "signo": "taurus"
+      "devilFruit": "Uo Uo no Mi, Model: Seiryu",
+      "fightingStyle": {
+        "name": "Estilo da Fruta do Diabo",
+        "type": "devil_fruit",
+        "attacks": [
+          "Boro Breath",
+          "Thunder Bagua",
+          "Dragon Twister",
+          "Ragnaraku"
+        ],
+        "weapons": [
+          "Kanabo (Clube de Ferro)"
+        ]
+      },
+      "haki": [
+        "Haoshoku Haki (Haki do Rei)",
+        "Busoshoku Haki (Haki da Armadura)",
+        "Kenbunshoku Haki (Haki da Observação)"
+      ],
+      "userId": "system",
+      "createdAt": "2025-01-01T00:00:00-03:00",
+      "updatedAt": "2025-01-01T00:00:00-03:00"
     },
     {
       "id": 3,
       "name": "Charlotte Linlin",
       "nickname": "Big Mom",
+      "age": 68,
+      "race": "human",
+      "signo": "aquarius",
+      "status": "deceased",
       "occupation": [
         "Pirate",
         "Captain",
         "Queen of Totoland"
       ],
-      "devil_fruit": "Soru Soru no Mi",
       "affiliations": [
         "Big Mom Pirates",
         "Four Emperors",
         "Charlotte Family"
       ],
-      "haki": [
-        "Kenbunshoku Haki",
-        "Busoshoku Haki",
-        "Haoshoku Haki"
-      ],
+      "bounty": "4388000000",
+      "description": "The Queen of Totoland and captain of the Big Mom Pirates, known for her soul manipulation powers and massive family",
       "image": "https://comicvine.gamespot.com/a/uploads/scale_small/11117/111178336/7078991-3720139327-unkno.png",
-      "bounty": "฿4,388,000,000",
       "crew": "Big Mom Pirates",
-      "status": "living",
-      "age": 68,
-      "signo": "aquarius"
+      "devilFruit": "Soru Soru no Mi",
+      "fightingStyle": {
+        "name": "Estilo da Fruta do Diabo",
+        "type": "devil_fruit",
+        "attacks": [
+          "Soru Soru no Mi: Soul Pocus",
+          "Soru Soru no Mi: Homie Creation",
+          "Soru Soru no Mi: Life Drain",
+          "Napoleon Slash"
+        ],
+        "weapons": [
+          "Napoleon (Espada Viva)",
+          "Zeus (Nuvem Viva)",
+          "Prometheus (Fogo Vivo)"
+        ]
+      },
+      "haki": [
+        "Haoshoku Haki (Haki do Rei)",
+        "Busoshoku Haki (Haki da Armadura)",
+        "Kenbunshoku Haki (Haki da Observação)"
+      ],
+      "userId": "system",
+      "createdAt": "2025-01-01T00:00:00-03:00",
+      "updatedAt": "2025-01-01T00:00:00-03:00"
     },
     {
       "id": 4,
       "name": "Shanks",
       "nickname": "Red Hair",
+      "age": 39,
+      "race": "human",
+      "signo": "pisces",
+      "status": "living",
       "occupation": [
         "Pirate",
         "Captain"
@@ -113,46 +193,84 @@
         "Red Hair Pirates",
         "Four Emperors"
       ],
-      "haki": [
-        "Kenbunshoku Haki",
-        "Busoshoku Haki",
-        "Haoshoku Haki"
-      ],
+      "bounty": "4048900000",
+      "description": "The captain of the Red Hair Pirates and one of the Four Emperors, known for his incredible Haki mastery and missing arm",
       "image": "https://comicvine.gamespot.com/a/uploads/scale_small/11117/111178336/7080205-0870339526-unkno.png",
-      "bounty": "฿4,048,900,000",
       "crew": "Red Hair Pirates",
-      "status": "living",
-      "age": 39,
-      "signo": "pisces"
+      "devilFruit": null,
+      "fightingStyle": {
+        "name": "Estilo de Uma Espada",
+        "type": "swordsman",
+        "attacks": [
+          "Divine Departure",
+          "Gryphon Slash",
+          "Conqueror's Strike",
+          "Haki Burst"
+        ],
+        "weapons": [
+          "Gryphon (Espada)"
+        ]
+      },
+      "haki": [
+        "Haoshoku Haki (Haki do Rei)",
+        "Busoshoku Haki (Haki da Armadura)",
+        "Kenbunshoku Haki (Haki da Observação)"
+      ],
+      "userId": "system",
+      "createdAt": "2025-01-01T00:00:00-03:00",
+      "updatedAt": "2025-01-01T00:00:00-03:00"
     },
     {
       "id": 5,
       "name": "Marshall D. Teach",
       "nickname": "Blackbeard",
+      "age": 40,
+      "race": "human",
+      "signo": "leo",
+      "status": "living",
       "occupation": [
         "Pirate",
         "Captain"
       ],
-      "devil_fruit": "Yami Yami no Mi",
       "affiliations": [
         "Blackbeard Pirates",
         "Four Emperors"
       ],
-      "haki": [
-        "Kenbunshoku Haki",
-        "Busoshoku Haki"
-      ],
+      "bounty": "3996000000",
+      "description": "The captain of the Blackbeard Pirates and one of the Four Emperors, known for his darkness powers and ability to steal Devil Fruits",
       "image": "https://comicvine.gamespot.com/a/uploads/scale_small/4/46706/1152176-current_blackbeard.png",
-      "bounty": "฿3,996,000,000",
       "crew": "Blackbeard Pirates",
-      "status": "living",
-      "age": 40,
-      "signo": "leo"
+      "devilFruit": "Yami Yami no Mi",
+      "fightingStyle": {
+        "name": "Estilo da Fruta do Diabo",
+        "type": "devil_fruit",
+        "attacks": [
+          "Darkness Vortex",
+          "Black Hole",
+          "Dark Matter",
+          "Gravity Pull"
+        ],
+        "weapons": [
+          "Claws",
+          "Darkness Powers"
+        ]
+      },
+      "haki": [
+        "Busoshoku Haki (Haki da Armadura)",
+        "Kenbunshoku Haki (Haki da Observação)"
+      ],
+      "userId": "system",
+      "createdAt": "2025-01-01T00:00:00-03:00",
+      "updatedAt": "2025-01-01T00:00:00-03:00"
     },
     {
       "id": 6,
       "name": "Dracule Mihawk",
       "nickname": "Hawk Eyes",
+      "age": 43,
+      "race": "human",
+      "signo": "pisces",
+      "status": "living",
       "occupation": [
         "Pirate",
         "Swordsman"
@@ -160,21 +278,40 @@
       "affiliations": [
         "Cross Guild"
       ],
-      "haki": [
-        "Kenbunshoku Haki",
-        "Busoshoku Haki"
-      ],
+      "bounty": "3590000000",
+      "description": "The World's Greatest Swordsman and member of the Cross Guild, known for his incredible sword skills and hawk-like eyes",
       "image": "https://i.pinimg.com/736x/cb/a3/3b/cba33b8d2fdb4b9efa2d9d3600f7a0d4.jpg",
-      "bounty": "฿3,590,000,000",
       "crew": "Cross Guild",
-      "status": "living",
-      "age": 43,
-      "signo": "pisces"
+      "devilFruit": null,
+      "fightingStyle": {
+        "name": "Estilo de Uma Espada",
+        "type": "swordsman",
+        "attacks": [
+          "Yoru Slash",
+          "World's Strongest Slash",
+          "Hawk Eye Strike",
+          "Cross Guild Cut"
+        ],
+        "weapons": [
+          "Yoru (Espada Negra)"
+        ]
+      },
+      "haki": [
+        "Busoshoku Haki (Haki da Armadura)",
+        "Kenbunshoku Haki (Haki da Observação)"
+      ],
+      "userId": "system",
+      "createdAt": "2025-01-01T00:00:00-03:00",
+      "updatedAt": "2025-01-01T00:00:00-03:00"
     },
     {
       "id": 7,
       "name": "Buggy",
       "nickname": "The Clown",
+      "age": 39,
+      "race": "human",
+      "signo": "leo",
+      "status": "living",
       "occupation": [
         "Pirate",
         "Captain"
@@ -182,449 +319,829 @@
       "affiliations": [
         "Cross Guild"
       ],
-      "haki": [
-        "Kenbunshoku Haki",
-        "Busoshoku Haki"
-      ],
+      "bounty": "3189000000",
+      "description": "The captain of the Cross Guild and former member of Roger's crew, known for his chop-chop powers and comedic nature",
       "image": "https://i.pinimg.com/736x/84/4b/a8/844ba882f3f0817aa652d708eeb8002f.jpg",
-      "bounty": "฿3,189,000,000",
       "crew": "Cross Guild",
-      "status": "living",
-      "age": 39,
-      "signo": "leo"
+      "devilFruit": "Bara Bara no Mi",
+      "fightingStyle": {
+        "name": "Estilo da Fruta do Diabo",
+        "type": "devil_fruit",
+        "attacks": [
+          "Chop Chop Cannon",
+          "Buggy Ball",
+          "Chop Chop Festival",
+          "Buggy Star"
+        ],
+        "weapons": [
+          "Buggy Balls",
+          "Knives"
+        ]
+      },
+      "haki": [
+        "Busoshoku Haki (Haki da Armadura)",
+        "Kenbunshoku Haki (Haki da Observação)"
+      ],
+      "userId": "system",
+      "createdAt": "2025-01-01T00:00:00-03:00",
+      "updatedAt": "2025-01-01T00:00:00-03:00"
     },
     {
       "id": 8,
       "name": "Monkey D. Luffy",
       "nickname": "Straw Hat",
+      "age": 19,
+      "race": "human",
+      "signo": "taurus",
+      "status": "living",
       "occupation": [
         "Pirate",
         "Captain"
       ],
-      "devil_fruit": "Hito Hito no Mi, Model: Nika (Gear 5)",
       "affiliations": [
         "Straw Hat Pirates",
         "Super Rookie",
         "Ninja-Pirate-Mink-Samurai Alliance"
       ],
-      "haki": [
-        "Kenbunshoku Haki",
-        "Busoshoku Haki",
-        "Haoshoku Haki"
-      ],
+      "bounty": "3000000000",
+      "description": "The captain of the Straw Hat Pirates and the man who will become the Pirate King, known for his rubber powers and Gear 5 transformation",
       "image": "https://s.aficionados.com.br/imagens/monkey-d-luffy-2-years-later-pictures-4851_cke.jpg",
-      "bounty": "฿3,000,000,000",
       "crew": "Straw Hat Pirates",
-      "status": "living",
-      "age": 19,
-      "signo": "taurus"
+      "devilFruit": "Hito Hito no Mi, Model: Nika",
+      "fightingStyle": {
+        "name": "Estilo da Fruta do Diabo",
+        "type": "devil_fruit",
+        "attacks": [
+          "Gomu Gomu no Pistol",
+          "Gear 5: Giant Fist",
+          "Gomu Gomu no Red Hawk",
+          "Gear 5: White Star Gun"
+        ],
+        "weapons": [
+          "Rubber Body",
+          "Gear Transformations"
+        ]
+      },
+      "haki": [
+        "Haoshoku Haki (Haki do Rei)",
+        "Busoshoku Haki (Haki da Armadura)",
+        "Kenbunshoku Haki (Haki da Observação)"
+      ],
+      "userId": "system",
+      "createdAt": "2025-01-01T00:00:00-03:00",
+      "updatedAt": "2025-01-01T00:00:00-03:00"
     },
     {
       "id": 9,
       "name": "Trafalgar D. Water Law",
       "nickname": "Surgeon of Death",
+      "age": 26,
+      "race": "human",
+      "signo": "libra",
+      "status": "unknown",
       "occupation": [
         "Pirate",
         "Captain",
         "Doctor"
       ],
-      "devil_fruit": "Ope Ope no Mi",
       "affiliations": [
         "Heart Pirates",
         "Super Rookie",
         "Ninja-Pirate-Mink-Samurai Alliance"
       ],
-      "haki": [
-        "Kenbunshoku Haki",
-        "Busoshoku Haki"
-      ],
+      "bounty": "3,000,000,000",
+      "description": "The captain of the Heart Pirates and a Super Rookie, known for his surgical powers and alliance with Luffy",
       "image": "https://ovicio.com.br/wp-content/uploads/2020/05/20200513-trafalgar-law_-full_-2675514.jpg",
-      "bounty": "฿3,000,000,000",
       "crew": "Heart Pirates",
-      "status": "living",
-      "age": 26,
-      "signo": "libra"
+      "devilFruit": "Ope Ope no Mi",
+      "fightingStyle": {
+        "name": "Estilo da Fruta do Diabo",
+        "type": "devil_fruit",
+        "attacks": [
+          "Room",
+          "Shambles",
+          "Gamma Knife",
+          "Takt"
+        ],
+        "weapons": [
+          "Kikoku (Espada)"
+        ]
+      },
+      "haki": [
+        "Kenbunshoku Haki (Haki da Observação)",
+        "Busoshoku Haki (Haki da Armadura)"
+      ],
+      "userId": "system",
+      "createdAt": "2025-01-01T00:00:00-03:00",
+      "updatedAt": "2025-01-01T00:00:00-03:00"
     },
     {
       "id": 10,
       "name": "Eustass Kid",
       "nickname": "Captain",
+      "age": 23,
+      "race": "human",
+      "signo": "capricorn",
+      "status": "deceased",
       "occupation": [
         "Pirate",
         "Captain"
       ],
-      "devil_fruit": "Jiki Jiki no Mi",
       "affiliations": [
         "Kid Pirates",
         "Super Rookie"
       ],
-      "haki": [
-        "Kenbunshoku Haki",
-        "Busoshoku Haki",
-        "Haoshoku Haki"
-      ],
+      "bounty": "3,000,000,000",
+      "description": "The captain of the Kid Pirates and a Super Rookie, known for his magnetic powers and rivalry with Luffy",
       "image": "https://i.pinimg.com/736x/12/3b/37/123b378e116680cefd2d2837a708a675.jpg",
-      "bounty": "฿3,000,000,000",
       "crew": "Kid Pirates",
-      "status": "living",
-      "age": 23,
-      "signo": "capricorn"
+      "devilFruit": "Jiki Jiki no Mi",
+      "fightingStyle": {
+        "name": "Estilo da Fruta do Diabo",
+        "type": "devil_fruit",
+        "attacks": [
+          "Magnetic Force",
+          "Punk Gibson",
+          "Assign",
+          "Damned Punk"
+        ],
+        "weapons": [
+          "Magnetic Powers",
+          "Metal Objects"
+        ]
+      },
+      "haki": [
+        "Kenbunshoku Haki (Haki da Observação)",
+        "Busoshoku Haki (Haki da Armadura)",
+        "Haoshoku Haki (Haki do Rei)"
+      ],
+      "userId": "system",
+      "createdAt": "2025-01-01T00:00:00-03:00",
+      "updatedAt": "2025-01-01T00:00:00-03:00"
     },
     {
       "id": 11,
       "name": "Loki",
+      "nickname": "",
+      "age": 63,
+      "race": "human",
+      "signo": "unknown",
+      "status": "captured",
       "occupation": [
         "Unknown"
       ],
       "affiliations": [
         "Elbaf"
       ],
+      "bounty": "2,600,000,000",
+      "description": "The prince of Elbaf and a powerful giant warrior, known for his immense strength and connection to the giants",
       "image": "https://i.pinimg.com/736x/9f/a7/80/9fa7806f1e9f666ddd1b93294d18f3aa.jpg",
-      "bounty": "฿2,600,000,000",
       "crew": "Elbaf Giants",
-      "status": "living",
-      "age": 63,
-      "signo": "unknown"
+      "devilFruit": "Unknown",
+      "fightingStyle": {
+        "name": "Estilo da Fruta do Diabo",
+        "type": "devil_fruit",
+        "attacks": [
+          "Giant Strike",
+          "Elbaf Power",
+          "Thunder Attack",
+          "Giant Slash"
+        ],
+        "weapons": [
+          "Giant Weapons"
+        ]
+      },
+      "haki": [],
+      "userId": "system",
+      "createdAt": "2025-01-01T00:00:00-03:00",
+      "updatedAt": "2025-01-01T00:00:00-03:00"
     },
     {
       "id": 12,
       "name": "Crocodile",
       "nickname": "Desert King",
+      "age": 46,
+      "race": "human",
+      "signo": "virgo",
+      "status": "living",
       "occupation": [
         "Pirate",
         "Former Warlord"
       ],
-      "devil_fruit": "Suna Suna no Mi",
       "affiliations": [
         "Baroque Works",
         "Cross Guild"
       ],
-      "haki": [],
+      "bounty": "1,965,000,000",
+      "description": "The former Warlord and leader of Baroque Works, known for his sand powers and desert kingdom",
       "image": "https://i.pinimg.com/736x/9e/94/68/9e946869450b94f70b7af238b92d54a8.jpg",
-      "bounty": "฿1,965,000,000",
       "crew": "Cross Guild",
-      "status": "living",
-      "age": 46,
-      "signo": "virgo"
+      "devilFruit": "Suna Suna no Mi",
+      "fightingStyle": {
+        "name": "Estilo da Fruta do Diabo",
+        "type": "devil_fruit",
+        "attacks": [
+          "Desert Spada",
+          "Ground Death",
+          "Sables",
+          "Desert Storm"
+        ],
+        "weapons": [
+          "Hook Hand"
+        ]
+      },
+      "haki": [],
+      "userId": "system",
+      "createdAt": "2025-01-01T00:00:00-03:00",
+      "updatedAt": "2025-01-01T00:00:00-03:00"
     },
     {
       "id": 13,
       "name": "Boa Hancock",
       "nickname": "Pirate Empress",
+      "age": 31,
+      "race": "human",
+      "signo": "virgo",
+      "status": "living",
       "occupation": [
         "Pirate",
         "Empress"
       ],
-      "devil_fruit": "Mero Mero no Mi",
       "affiliations": [
         "Kuja Pirates",
         "Seven Warlords"
       ],
-      "haki": [
-        "Busoshoku Haki",
-        "Kenbunshoku Haki"
-      ],
+      "bounty": "1,659,000,000",
+      "description": "The Pirate Empress and captain of the Kuja Pirates, known for her beauty and love powers",
       "image": "https://i.pinimg.com/736x/3c/d7/cf/3cd7cf80bf69fbbeaea4a21f9026fa2d.jpg",
-      "bounty": "฿1,659,000,000",
       "crew": "Kuja Pirates",
-      "status": "living",
-      "age": 31,
-      "signo": "virgo"
+      "devilFruit": "Mero Mero no Mi",
+      "fightingStyle": {
+        "name": "Estilo da Fruta do Diabo",
+        "type": "devil_fruit",
+        "attacks": [
+          "Mero Mero no Mellow",
+          "Slave Arrow",
+          "Pistol Kiss",
+          "Perfume Femur"
+        ],
+        "weapons": [
+          "Mero Mero no Mi Powers"
+        ]
+      },
+      "haki": [
+        "Busoshoku Haki (Haki da Armadura)",
+        "Kenbunshoku Haki (Haki da Observação)"
+      ],
+      "userId": "system",
+      "createdAt": "2025-01-01T00:00:00-03:00",
+      "updatedAt": "2025-01-01T00:00:00-03:00"
     },
     {
       "id": 14,
       "name": "King",
       "nickname": "The Conflagration",
+      "age": 47,
+      "race": "human",
+      "signo": "sagittarius",
+      "status": "living",
       "occupation": [
         "Pirate",
         "All-Star"
       ],
-      "devil_fruit": "Ryu Ryu no Mi, Model: Pteranodon",
       "affiliations": [
         "Beasts Pirates"
       ],
-      "haki": [
-        "Kenbunshoku Haki",
-        "Busoshoku Haki"
-      ],
+      "bounty": "1,390,000,000",
+      "description": "The All-Star of the Beasts Pirates and right-hand man of Kaido, known for his ancient zoan powers and fire abilities",
       "image": "https://images5.alphacoders.com/119/thumbbig-1199417.webp",
-      "bounty": "฿1,390,000,000",
       "crew": "Beasts Pirates",
-      "status": "living",
-      "age": 47,
-      "signo": "sagittarius"
+      "devilFruit": "Ryu Ryu no Mi, Model: Pteranodon",
+      "fightingStyle": {
+        "name": "Estilo da Fruta do Diabo",
+        "type": "devil_fruit",
+        "attacks": [
+          "Dragon Twister",
+          "Imperial Flaming Wings",
+          "Dragon Smaher",
+          "Tempered Fire"
+        ],
+        "weapons": [
+          "Katana"
+        ]
+      },
+      "haki": [
+        "Kenbunshoku Haki (Haki da Observação)",
+        "Busoshoku Haki (Haki da Armadura)"
+      ],
+      "userId": "system",
+      "createdAt": "2025-01-01T00:00:00-03:00",
+      "updatedAt": "2025-01-01T00:00:00-03:00"
     },
     {
       "id": 15,
       "name": "Marco",
       "nickname": "The Phoenix",
+      "age": 45,
+      "race": "human",
+      "signo": "libra",
+      "status": "living",
       "occupation": [
         "Pirate",
         "1st Division Commander",
         "Doctor"
       ],
-      "devil_fruit": "Tori Tori no Mi, Model: Phoenix",
       "affiliations": [
         "Whitebeard Pirates"
       ],
-      "haki": [
-        "Kenbunshoku Haki",
-        "Busoshoku Haki"
-      ],
+      "bounty": "1,374,000,000",
+      "description": "The Phoenix and former first division commander of the Whitebeard Pirates, known for his regeneration powers",
       "image": "https://criticalhits.com.br/wp-content/uploads/2021/07/Marco-One-Piece-910x512-1.jpg",
-      "bounty": "฿1,374,000,000",
       "crew": "Whitebeard Pirates",
-      "status": "living",
-      "age": 45,
-      "signo": "libra"
+      "devilFruit": "Tori Tori no Mi, Model: Phoenix",
+      "fightingStyle": {
+        "name": "Estilo da Fruta do Diabo",
+        "type": "devil_fruit",
+        "attacks": [
+          "Phoenix Brand",
+          "Blue Bird",
+          "Phoenix Fire",
+          "Regeneration"
+        ],
+        "weapons": [
+          "Phoenix Powers"
+        ]
+      },
+      "haki": [
+        "Kenbunshoku Haki (Haki da Observação)",
+        "Busoshoku Haki (Haki da Armadura)"
+      ],
+      "userId": "system",
+      "createdAt": "2025-01-01T00:00:00-03:00",
+      "updatedAt": "2025-01-01T00:00:00-03:00"
     },
     {
       "id": 16,
       "name": "Queen",
       "nickname": "The Plague",
+      "age": 56,
+      "race": "human",
+      "signo": "cancer",
+      "status": "captured",
       "occupation": [
         "Pirate",
         "All-Star"
       ],
-      "devil_fruit": "Ryu Ryu no Mi, Model: Brachiosaurus",
       "affiliations": [
         "Beasts Pirates"
       ],
-      "haki": [
-        "Kenbunshoku Haki",
-        "Busoshoku Haki"
-      ],
+      "bounty": "1,320,000,000",
+      "description": "The All-Star of the Beasts Pirates and Kaido's left-hand man, known for his plague powers and mechanical body",
       "image": "https://i.pinimg.com/originals/91/6d/59/916d595d00feb13fc02138b38db5f443.jpg",
-      "bounty": "฿1,320,000,000",
       "crew": "Beasts Pirates",
-      "status": "living",
-      "age": 56,
-      "signo": "cancer"
+      "devilFruit": "Ryu Ryu no Mi, Model: Brachiosaurus",
+      "fightingStyle": {
+        "name": "Estilo da Fruta do Diabo",
+        "type": "devil_fruit",
+        "attacks": [
+          "Brachio Bomber",
+          "Ice Oni",
+          "Plague Rounds",
+          "Queen's Laser"
+        ],
+        "weapons": [
+          "Plague Weapons"
+        ]
+      },
+      "haki": [
+        "Kenbunshoku Haki (Haki da Observação)",
+        "Busoshoku Haki (Haki da Armadura)"
+      ],
+      "userId": "system",
+      "createdAt": "2025-01-01T00:00:00-03:00",
+      "updatedAt": "2025-01-01T00:00:00-03:00"
     },
     {
       "id": 17,
       "name": "Roronoa Zoro",
       "nickname": "Pirate Hunter",
+      "age": 21,
+      "race": "human",
+      "signo": "scorpio",
+      "status": "living",
       "occupation": [
         "Pirate",
         "Swordsman"
       ],
-      "haki": [
-        "Kenbunshoku Haki",
-        "Busoshoku Haki",
-        "Haoshoku Haki"
-      ],
       "affiliations": [
         "Straw Hat Pirates"
       ],
-      "image": "https://comicvine.gamespot.com/a/uploads/original/11117/111178336/7079106-2959453555-latest",
-      "bounty": "฿1,111,000,000",
+      "bounty": "1,111,000,000",
+      "description": "The swordsman of the Straw Hat Pirates and Luffy's right-hand man, known for his three-sword style and ambition to become the world's greatest swordsman",
+      "image": "https://render.fineartamerica.com/images/rendered/default/print/6/8/break/images/artworkimages/medium/2/zoro-one-piece-anime-ihab-design.jpg",
       "crew": "Straw Hat Pirates",
-      "status": "living",
-      "age": 21,
-      "signo": "scorpio"
+      "devilFruit": null,
+      "fightingStyle": {
+        "name": "Estilo de Uma Espada",
+        "type": "swordsman",
+        "attacks": [
+          "Santoryu",
+          "Asura",
+          "Dragon Twister",
+          "King of Hell"
+        ],
+        "weapons": [
+          "Wado Ichimonji",
+          "Sandai Kitetsu",
+          "Enma"
+        ]
+      },
+      "haki": [
+        "Kenbunshoku Haki (Haki da Observação)",
+        "Busoshoku Haki (Haki da Armadura)",
+        "Haoshoku Haki (Haki do Rei)"
+      ],
+      "userId": "system",
+      "createdAt": "2025-01-01T00:00:00-03:00",
+      "updatedAt": "2025-01-01T00:00:00-03:00"
     },
     {
       "id": 18,
       "name": "Jinbe",
       "nickname": "Knight of the Sea",
+      "age": 46,
+      "race": "human",
+      "signo": "pisces",
+      "status": "living",
       "occupation": [
         "Pirate",
         "Helmsman"
       ],
-      "haki": [
-        "Kenbunshoku Haki",
-        "Busoshoku Haki"
-      ],
       "affiliations": [
         "Straw Hat Pirates"
       ],
+      "bounty": "1,100,000,000",
+      "description": "The helmsman of the Straw Hat Pirates and former Warlord, known for his fishman karate and connection to the sea",
       "image": "https://i.pinimg.com/736x/08/1b/da/081bda63cee7ded38bfdcc96fcdab45b.jpg",
-      "bounty": "฿1,100,000,000",
       "crew": "Straw Hat Pirates",
-      "status": "living",
-      "age": 46,
-      "signo": "pisces"
+      "devilFruit": null,
+      "fightingStyle": {
+        "name": "Estilo de Artes Marciais",
+        "type": "martial_arts",
+        "attacks": [
+          "Fishman Karate",
+          "Vagabond Drill",
+          "Shark Skin",
+          "Water Shot"
+        ],
+        "weapons": [
+          "Fishman Karate"
+        ]
+      },
+      "haki": [
+        "Kenbunshoku Haki (Haki da Observação)",
+        "Busoshoku Haki (Haki da Armadura)"
+      ],
+      "userId": "system",
+      "createdAt": "2025-01-01T00:00:00-03:00",
+      "updatedAt": "2025-01-01T00:00:00-03:00"
     },
     {
       "id": 19,
       "name": "Charlotte Katakuri",
+      "nickname": "",
+      "age": 48,
+      "race": "human",
+      "signo": "sagittarius",
+      "status": "living",
       "occupation": [
         "Pirate",
         "Sweet Commander"
       ],
-      "devil_fruit": "Mochi Mochi no Mi",
       "affiliations": [
         "Big Mom Pirates"
       ],
-      "haki": [
-        "Kenbunshoku Haki",
-        "Busoshoku Haki",
-        "Haoshoku Haki"
-      ],
+      "bounty": "1,057,000,000",
+      "description": "The Sweet Commander of the Big Mom Pirates and Linlin's strongest son, known for his mochi powers and future sight",
       "image": "https://i.pinimg.com/originals/40/10/f7/4010f77fc43fa928f82e27361ef21fe4.jpg",
-      "bounty": "฿1,057,000,000",
       "crew": "Big Mom Pirates",
-      "status": "living",
-      "age": 48,
-      "signo": "sagittarius"
+      "devilFruit": "Mochi Mochi no Mi",
+      "fightingStyle": {
+        "name": "Estilo da Fruta do Diabo",
+        "type": "devil_fruit",
+        "attacks": [
+          "Mochi Mochi no Mochi",
+          "Mochi Thrust",
+          "Mochi Mochi no Power Mochi",
+          "Mochi Mochi no Spear"
+        ],
+        "weapons": [
+          "Mochi Powers"
+        ]
+      },
+      "haki": [
+        "Kenbunshoku Haki (Haki da Observação)",
+        "Busoshoku Haki (Haki da Armadura)",
+        "Haoshoku Haki (Haki do Rei)"
+      ],
+      "userId": "system",
+      "createdAt": "2025-01-01T00:00:00-03:00",
+      "updatedAt": "2025-01-01T00:00:00-03:00"
     },
     {
       "id": 20,
       "name": "Vinsmoke Sanji",
       "nickname": "Black Leg",
+      "age": 21,
+      "race": "human",
+      "signo": "pisces",
+      "status": "living",
       "occupation": [
         "Pirate",
         "Cook"
       ],
-      "haki": [
-        "Kenbunshoku Haki",
-        "Busoshoku Haki"
-      ],
       "affiliations": [
         "Straw Hat Pirates"
       ],
+      "bounty": "1,032,000,000",
+      "description": "The cook of the Straw Hat Pirates and former prince of Germa, known for his black leg style and chivalry",
       "image": "https://i.pinimg.com/736x/f3/b8/eb/f3b8eb57a1afac92a26119e4ac595606.jpg",
-      "bounty": "฿1,032,000,000",
       "crew": "Straw Hat Pirates",
-      "status": "living",
-      "age": 21,
-      "signo": "pisces"
+      "devilFruit": null,
+      "fightingStyle": {
+        "name": "Estilo do Zeff Perna Negar",
+        "type": "kicker",
+        "attacks": [
+          "Diable Jambe",
+          "Hell Memories",
+          "Ifrit Jambe",
+          "Concasser"
+        ],
+        "weapons": [
+          "Legs",
+          "Raidsuit"
+        ]
+      },
+      "haki": [
+        "Kenbunshoku Haki (Haki da Observação)",
+        "Busoshoku Haki (Haki da Armadura)"
+      ],
+      "userId": "system",
+      "createdAt": "2025-01-01T00:00:00-03:00",
+      "updatedAt": "2025-01-01T00:00:00-03:00"
     },
     {
       "id": 21,
       "name": "Jack",
       "nickname": "The Drought",
+      "age": 28,
+      "race": "human",
+      "signo": "libra",
+      "status": "captured",
       "occupation": [
         "Pirate",
         "All-Star"
       ],
-      "devil_fruit": "Zou Zou no Mi, Model: Mammoth",
       "affiliations": [
         "Beasts Pirates"
       ],
-      "haki": [
-        "Kenbunshoku Haki",
-        "Busoshoku Haki"
-      ],
+      "bounty": "1,000,000,000",
+      "description": "The All-Star of the Beasts Pirates and Kaido's third commander, known for his mammoth powers and durability",
       "image": "https://i.pinimg.com/originals/ab/cc/db/abccdba7df9c5356ce48ca7994e9cdc7.jpg",
-      "bounty": "฿1,000,000,000",
       "crew": "Beasts Pirates",
-      "status": "living",
-      "age": 28,
-      "signo": "libra"
+      "devilFruit": "Zou Zou no Mi, Model: Mammoth",
+      "fightingStyle": {
+        "name": "Estilo da Fruta do Diabo",
+        "type": "devil_fruit",
+        "attacks": [
+          "Mammoth",
+          "Drought",
+          "Tusks",
+          "Trunk"
+        ],
+        "weapons": [
+          "Mammoth Form"
+        ]
+      },
+      "haki": [
+        "Kenbunshoku Haki (Haki da Observação)",
+        "Busoshoku Haki (Haki da Armadura)"
+      ],
+      "userId": "system",
+      "createdAt": "2025-01-01T00:00:00-03:00",
+      "updatedAt": "2025-01-01T00:00:00-03:00"
     },
     {
       "id": 22,
       "name": "Charlotte Smoothie",
+      "nickname": "",
+      "age": 35,
+      "race": "human",
+      "signo": "libra",
+      "status": "living",
       "occupation": [
         "Pirate",
         "Sweet Commander"
       ],
-      "devil_fruit": "Shibo Shibo no Mi",
       "affiliations": [
         "Big Mom Pirates"
       ],
-      "haki": [
-        "Kenbunshoku Haki",
-        "Busoshoku Haki"
-      ],
+      "bounty": "932,000,000",
+      "description": "The Sweet Commander of the Big Mom Pirates and Linlin's daughter, known for her juice extraction powers",
       "image": "https://comicvine.gamespot.com/a/uploads/scale_small/11117/111178336/7079414-8803789431-unkno.png",
-      "bounty": "฿932,000,000",
       "crew": "Big Mom Pirates",
-      "status": "living",
-      "age": 35,
-      "signo": "libra"
+      "devilFruit": "Shibo Shibo no Mi",
+      "fightingStyle": {
+        "name": "Estilo de Uma Espada",
+        "type": "swordsman",
+        "attacks": [
+          "Squeeze",
+          "Juice Extraction",
+          "Smoothie Slash",
+          "Fruit Power"
+        ],
+        "weapons": [
+          "Sword"
+        ]
+      },
+      "haki": [
+        "Kenbunshoku Haki (Haki da Observação)",
+        "Busoshoku Haki (Haki da Armadura)"
+      ],
+      "userId": "system",
+      "createdAt": "2025-01-01T00:00:00-03:00",
+      "updatedAt": "2025-01-01T00:00:00-03:00"
     },
     {
       "id": 23,
       "name": "Nico Robin",
       "nickname": "Devil Child",
+      "age": 30,
+      "race": "human",
+      "signo": "aquarius",
+      "status": "living",
       "occupation": [
         "Pirate",
         "Archaeologist"
       ],
-      "devil_fruit": "Hana Hana no Mi",
       "affiliations": [
         "Straw Hat Pirates"
       ],
+      "bounty": "930,000,000",
+      "description": "The archaeologist of the Straw Hat Pirates and former Baroque Works agent, known for her flower powers and knowledge of the Void Century",
       "image": "https://i.pinimg.com/736x/06/51/ef/0651eff44b528cfb24e831682526c03c.jpg",
-      "bounty": "฿930,000,000",
       "crew": "Straw Hat Pirates",
-      "status": "living",
-      "age": 30,
-      "signo": "aquarius"
+      "devilFruit": "Hana Hana no Mi",
+      "fightingStyle": {
+        "name": "Estilo da Fruta do Diabo",
+        "type": "devil_fruit",
+        "attacks": [
+          "Mil Fleur",
+          "Gigantesco Mano",
+          "Dos Fleur",
+          "Tres Fleur"
+        ],
+        "weapons": [
+          "Hana Hana no Mi Powers"
+        ]
+      },
+      "haki": [],
+      "userId": "system",
+      "createdAt": "2025-01-01T00:00:00-03:00",
+      "updatedAt": "2025-01-01T00:00:00-03:00"
     },
     {
       "id": 24,
       "name": "Charlotte Cracker",
       "nickname": "Thousand Arms",
+      "age": 45,
+      "race": "human",
+      "signo": "pisces",
+      "status": "living",
       "occupation": [
         "Pirate",
         "Sweet Commander"
       ],
-      "devil_fruit": "Bisu Bisu no Mi",
       "affiliations": [
         "Big Mom Pirates"
       ],
-      "haki": [
-        "Kenbunshoku Haki",
-        "Busoshoku Haki"
-      ],
+      "bounty": "860,000,000",
+      "description": "The Sweet Commander of the Big Mom Pirates and Linlin's son, known for his biscuit soldier powers",
       "image": "https://www.otakupt.com/wp-content/uploads/2020/05/charlote.jpg",
-      "bounty": "฿860,000,000",
       "crew": "Big Mom Pirates",
-      "status": "living",
-      "age": 45,
-      "signo": "pisces"
+      "devilFruit": "Bisu Bisu no Mi",
+      "fightingStyle": {
+        "name": "Estilo de Uma Espada",
+        "type": "swordsman",
+        "attacks": [
+          "Biscuit Soldiers",
+          "Thousand Arms",
+          "Biscuit Shield",
+          "Cracker Slash"
+        ],
+        "weapons": [
+          "Biscuit Soldiers"
+        ]
+      },
+      "haki": [
+        "Kenbunshoku Haki (Haki da Observação)",
+        "Busoshoku Haki (Haki da Armadura)"
+      ],
+      "userId": "system",
+      "createdAt": "2025-01-01T00:00:00-03:00",
+      "updatedAt": "2025-01-01T00:00:00-03:00"
     },
     {
       "id": 25,
       "name": "Charlotte Perospero",
+      "nickname": "",
+      "age": 50,
+      "race": "human",
+      "signo": "pisces",
+      "status": "living",
       "occupation": [
         "Pirate",
         "Sweet Commander"
       ],
-      "devil_fruit": "Pero Pero no Mi",
       "affiliations": [
         "Big Mom Pirates"
       ],
-      "haki": [
-        "Kenbunshoku Haki",
-        "Busoshoku Haki"
-      ],
+      "bounty": "700,000,000",
+      "description": "The Sweet Commander of the Big Mom Pirates and Linlin's eldest son, known for his candy powers",
       "image": "https://comicvine.gamespot.com/a/uploads/scale_small/11117/111178336/7079979-6343637487-unkno.png",
-      "bounty": "฿700,000,000",
       "crew": "Big Mom Pirates",
-      "status": "living",
-      "age": 50,
-      "signo": "pisces"
+      "devilFruit": "Pero Pero no Mi",
+      "fightingStyle": {
+        "name": "Estilo da Fruta do Diabo",
+        "type": "devil_fruit",
+        "attacks": [
+          "Candy Wall",
+          "Candy Arrow",
+          "Candy Rain",
+          "Candy Prison"
+        ],
+        "weapons": [
+          "Candy Powers"
+        ]
+      },
+      "haki": [
+        "Kenbunshoku Haki (Haki da Observação)",
+        "Busoshoku Haki (Haki da Armadura)"
+      ],
+      "userId": "system",
+      "createdAt": "2025-01-01T00:00:00-03:00",
+      "updatedAt": "2025-01-01T00:00:00-03:00"
     },
     {
       "id": 26,
       "name": "Sabo",
+      "nickname": "",
+      "age": 22,
+      "race": "human",
+      "signo": "pisces",
+      "status": "living",
       "occupation": [
         "Revolutionary",
         "Chief of Staff"
       ],
-      "devil_fruit": "Mera Mera no Mi",
       "affiliations": [
         "Revolutionary Army"
       ],
-      "haki": [
-        "Kenbunshoku Haki",
-        "Busoshoku Haki"
-      ],
+      "bounty": "602,000,000",
+      "description": "The Chief of Staff of the Revolutionary Army and Luffy's sworn brother, known for his fire powers and amnesia",
       "image": "https://comicvine.gamespot.com/a/uploads/scale_small/11117/111173561/5307627-2542054701-latest",
-      "bounty": "฿602,000,000",
       "crew": "Revolutionary Army",
-      "status": "living",
-      "age": 22,
-      "signo": "pisces"
+      "devilFruit": "Mera Mera no Mi",
+      "fightingStyle": {
+        "name": "Estilo da Fruta do Diabo",
+        "type": "devil_fruit",
+        "attacks": [
+          "Hiken",
+          "Dragon Claw",
+          "Flame Dragon",
+          "Fire Fist"
+        ],
+        "weapons": [
+          "Pipe",
+          "Mera Mera no Mi"
+        ]
+      },
+      "haki": [
+        "Kenbunshoku Haki (Haki da Observação)",
+        "Busoshoku Haki (Haki da Armadura)"
+      ],
+      "userId": "system",
+      "createdAt": "2025-01-01T00:00:00-03:00",
+      "updatedAt": "2025-01-01T00:00:00-03:00"
     },
     {
       "id": 27,
       "name": "Charlotte Snack",
+      "nickname": "",
+      "age": 30,
+      "race": "human",
+      "signo": "scorpio",
+      "status": "living",
       "occupation": [
         "Pirate",
         "Sweet Commander"
@@ -632,40 +1149,79 @@
       "affiliations": [
         "Big Mom Pirates"
       ],
+      "bounty": "600,000,000",
+      "description": "The former Sweet Commander of the Big Mom Pirates and Linlin's son, known for his sweet powers",
       "image": "https://pbs.twimg.com/media/EQX8bjiXYAAxrmU.jpg",
-      "bounty": "฿600,000,000",
       "crew": "Big Mom Pirates",
-      "status": "living",
-      "age": 30,
-      "signo": "scorpio"
+      "devilFruit": "Soru Soru no Mi",
+      "fightingStyle": {
+        "name": "Estilo da Fruta do Diabo",
+        "type": "devil_fruit",
+        "attacks": [
+          "Sweet Commander",
+          "Snack Attack",
+          "Candy Strike",
+          "Sweet Power"
+        ],
+        "weapons": [
+          "Sweet Powers"
+        ]
+      },
+      "haki": [],
+      "userId": "system",
+      "createdAt": "2025-01-01T00:00:00-03:00",
+      "updatedAt": "2025-01-01T00:00:00-03:00"
     },
     {
       "id": 28,
       "name": "Portgas D. Ace",
       "nickname": "Fire Fist",
+      "age": 20,
+      "race": "human",
+      "signo": "capricorn",
+      "status": "deceased",
       "occupation": [
         "Pirate",
         "2nd Division Commander"
       ],
-      "devil_fruit": "Mera Mera no Mi",
       "affiliations": [
         "Whitebeard Pirates"
       ],
-      "haki": [
-        "Kenbunshoku Haki",
-        "Busoshoku Haki",
-        "Haoshoku Haki"
-      ],
+      "bounty": "550,000,000",
+      "description": "The former second division commander of the Whitebeard Pirates and Luffy's sworn brother, known for his fire powers and sacrifice",
       "image": "https://comicvine.gamespot.com/a/uploads/scale_small/11117/111178336/7078671-9363995852-39fc3.jpg",
-      "bounty": "฿550,000,000",
       "crew": "Whitebeard Pirates",
-      "status": "deceased",
-      "age": 20,
-      "signo": "capricorn"
+      "devilFruit": "Mera Mera no Mi",
+      "fightingStyle": {
+        "name": "Estilo de Uma Espada",
+        "type": "swordsman",
+        "attacks": [
+          "Hiken",
+          "Dai Enkai",
+          "Higan",
+          "Fire Fist"
+        ],
+        "weapons": [
+          "Mera Mera no Mi"
+        ]
+      },
+      "haki": [
+        "Kenbunshoku Haki (Haki da Observação)",
+        "Busoshoku Haki (Haki da Armadura)",
+        "Haoshoku Haki (Haki do Rei)"
+      ],
+      "userId": "system",
+      "createdAt": "2025-01-01T00:00:00-03:00",
+      "updatedAt": "2025-01-01T00:00:00-03:00"
     },
     {
       "id": 29,
       "name": "Little Oars Jr.",
+      "nickname": "",
+      "age": 49,
+      "race": "human",
+      "signo": "aquarius",
+      "status": "deceased",
       "occupation": [
         "Pirate",
         "Captain"
@@ -673,40 +1229,78 @@
       "affiliations": [
         "Whitebeard Pirates"
       ],
-      "status": "deceased",
-      "crew": "Whitebeard Pirates",
-      "age": 49,
+      "bounty": "550,000,000",
+      "description": "The giant pirate and ally of the Whitebeard Pirates, known for his immense size and loyalty to Whitebeard",
       "image": "https://i.pinimg.com/originals/c9/7a/70/c97a70f0b62a98ca5843ee3fee0b9a5a.jpg",
-      "bounty": "฿550,000,000",
-      "signo": "aquarius"
+      "crew": "Whitebeard Pirates",
+      "devilFruit": null,
+      "fightingStyle": {
+        "name": "Giant Oars",
+        "type": "fighter",
+        "attacks": [
+          "Giant Strike",
+          "Oars Attack",
+          "Giant Punch",
+          "Oars Power"
+        ],
+        "weapons": [
+          "Giant Body"
+        ]
+      },
+      "haki": [],
+      "userId": "system",
+      "createdAt": "2025-01-01T00:00:00-03:00",
+      "updatedAt": "2025-01-01T00:00:00-03:00"
     },
     {
       "id": 30,
       "name": "Who's-Who",
       "nickname": "Who of the Droplets",
+      "age": 37,
+      "race": "human",
+      "signo": "pisces",
+      "status": "captured",
       "occupation": [
         "Pirate",
         "Headliner"
       ],
-      "devil_fruit": "Neko Neko no Mi, Model: Saber Tiger",
       "affiliations": [
         "Beasts Pirates"
       ],
-      "haki": [
-        "Kenbunshoku Haki",
-        "Busoshoku Haki"
-      ],
-      "status": "captured",
-      "crew": "Beasts Pirates",
-      "age": 37,
+      "bounty": "546,000,000",
+      "description": "The Headliner of the Beasts Pirates and former CP9 agent, known for his saber tiger powers and past",
       "image": "https://pm1.narvii.com/7965/9ae7052ec6e39813130aeaa8955557138fc3e381r1-948-1144v2_hq.jpg",
-      "bounty": "฿546,000,000",
-      "signo": "pisces"
+      "crew": "Beasts Pirates",
+      "devilFruit": "Neko Neko no Mi, Model: Saber Tiger",
+      "fightingStyle": {
+        "name": "Estilo de Uma Espada",
+        "type": "swordsman",
+        "attacks": [
+          "Fang Over Fang",
+          "Saber Tiger",
+          "Who's Who Slash",
+          "Tiger Claw"
+        ],
+        "weapons": [
+          "Saber Tiger Form"
+        ]
+      },
+      "haki": [
+        "Kenbunshoku Haki (Haki da Observação)",
+        "Busoshoku Haki (Haki da Armadura)"
+      ],
+      "userId": "system",
+      "createdAt": "2025-01-01T00:00:00-03:00",
+      "updatedAt": "2025-01-01T00:00:00-03:00"
     },
     {
       "id": 31,
       "name": "Chinjao",
       "nickname": "The Drill",
+      "age": 68,
+      "race": "human",
+      "signo": "sagittarius",
+      "status": "living",
       "occupation": [
         "Pirate",
         "12th Leader of the Happo Navy"
@@ -716,21 +1310,42 @@
         "Happo Navy",
         "Straw Hat Grand Fleet"
       ],
-      "haki": [
-        "Kenbunshoku Haki",
-        "Busoshoku Haki",
-        "Haoshoku Haki"
-      ],
-      "status": "living",
-      "crew": "Chinjao Family",
-      "age": 68,
-      "bounty": "฿542,000,000",
+      "bounty": "542,000,000",
+      "description": "The leader of the Happo Navy and grandfather of Sai, known for his drill head and haki mastery",
       "image": "https://comicvine.gamespot.com/a/uploads/scale_small/11117/111178336/7079410-0932589975-Scree.jpg",
-      "signo": "sagittarius"
+      "crew": "Chinjao Family",
+      "devilFruit": null,
+      "fightingStyle": {
+        "name": "Estilo da Chinjao Family",
+        "type": "fighter",
+        "attacks": [
+          "Hasshoken",
+          "Drill",
+          "Headbutt",
+          "Chinjao Strike"
+        ],
+        "weapons": [
+          "Head",
+          "Hasshoken"
+        ]
+      },
+      "haki": [
+        "Kenbunshoku Haki (Haki da Observação)",
+        "Busoshoku Haki (Haki da Armadura)",
+        "Haoshoku Haki (Haki do Rei)"
+      ],
+      "userId": "system",
+      "createdAt": "2025-01-01T00:00:00-03:00",
+      "updatedAt": "2025-01-01T00:00:00-03:00"
     },
     {
       "id": 32,
       "name": "Izou",
+      "nickname": "",
+      "age": 49,
+      "race": "human",
+      "signo": "libra",
+      "status": "deceased",
       "occupation": [
         "Pirate",
         "16th Division Commander"
@@ -739,21 +1354,40 @@
         "Whitebeard Pirates",
         "Kouzuki Family"
       ],
-      "haki": [
-        "Kenbunshoku Haki",
-        "Busoshoku Haki"
-      ],
-      "status": "deceased",
-      "crew": "Whitebeard Pirates",
-      "age": 49,
-      "bounty": "฿510,000,000",
+      "bounty": "510,000,000",
+      "description": "The sixteenth division commander of the Whitebeard Pirates and former Kozuki retainer, known for his gun skills and loyalty",
       "image": "https://comicvine.gamespot.com/a/uploads/scale_small/11117/111178336/7080091-0025228125-unkno.png",
-      "signo": "libra"
+      "crew": "Whitebeard Pirates",
+      "devilFruit": null,
+      "fightingStyle": {
+        "name": "Estilo de Uma Espada",
+        "type": "swordsman",
+        "attacks": [
+          "Pistol",
+          "Gunpowder",
+          "Izou Shot",
+          "Pistol Dance"
+        ],
+        "weapons": [
+          "Pistols"
+        ]
+      },
+      "haki": [
+        "Kenbunshoku Haki (Haki da Observação)",
+        "Busoshoku Haki (Haki da Armadura)"
+      ],
+      "userId": "system",
+      "createdAt": "2025-01-01T00:00:00-03:00",
+      "updatedAt": "2025-01-01T00:00:00-03:00"
     },
     {
       "id": 33,
       "name": "Franky",
       "nickname": "Cyborg",
+      "age": 36,
+      "race": "human",
+      "signo": "pisces",
+      "status": "living",
       "occupation": [
         "Pirate",
         "Shipwright"
@@ -761,20 +1395,40 @@
       "affiliations": [
         "Straw Hat Pirates"
       ],
-      "haki": [
-        "Busoshoku Haki"
-      ],
-      "bounty": "฿394,000,000",
+      "bounty": "394,000,000",
+      "description": "The shipwright of the Straw Hat Pirates and former gang leader, known for his cyborg body and cola-powered weapons",
       "image": "https://i.pinimg.com/736x/1a/9f/fd/1a9ffd3046ed4cb8a7e8bf30ee19caa7.jpg",
       "crew": "Straw Hat Pirates",
-      "status": "living",
-      "age": 36,
-      "signo": "pisces"
+      "devilFruit": null,
+      "fightingStyle": {
+        "name": "Cyborg",
+        "type": "fighter",
+        "attacks": [
+          "Franky Radical Beam",
+          "Coup de Vent",
+          "Strong Right",
+          "Franky Boxing"
+        ],
+        "weapons": [
+          "Cyborg Body",
+          "Weapons"
+        ]
+      },
+      "haki": [
+        "Busoshoku Haki (Haki da Armadura)"
+      ],
+      "userId": "system",
+      "createdAt": "2025-01-01T00:00:00-03:00",
+      "updatedAt": "2025-01-01T00:00:00-03:00"
     },
     {
       "id": 34,
       "name": "Brook",
       "nickname": "Soul King",
+      "age": 90,
+      "race": "human",
+      "signo": "aries",
+      "status": "living",
       "occupation": [
         "Pirate",
         "Musician",
@@ -783,20 +1437,39 @@
       "affiliations": [
         "Straw Hat Pirates"
       ],
-      "haki": [
-        "Busoshoku Haki"
-      ],
-      "bounty": "฿383,000,000",
+      "bounty": "383,000,000",
+      "description": "The musician of the Straw Hat Pirates and former Rumbar Pirates captain, known for his skeleton form and soul powers",
       "image": "https://i.pinimg.com/736x/28/fe/5c/28fe5c5966a696717b8570736e742fef.jpg",
       "crew": "Straw Hat Pirates",
-      "status": "living",
-      "age": 90,
-      "signo": "aries"
+      "devilFruit": "Yomi Yomi no Mi",
+      "fightingStyle": {
+        "name": "Estilo de Uma Espada",
+        "type": "swordsman",
+        "attacks": [
+          "Soul Solid",
+          "Yomi Yomi no Mi",
+          "Soul King",
+          "Brook Slash"
+        ],
+        "weapons": [
+          "Soul Solid (Espada)"
+        ]
+      },
+      "haki": [
+        "Busoshoku Haki (Haki da Armadura)"
+      ],
+      "userId": "system",
+      "createdAt": "2025-01-01T00:00:00-03:00",
+      "updatedAt": "2025-01-01T00:00:00-03:00"
     },
     {
       "id": 35,
       "name": "Pedro",
       "nickname": "Pedro of the Treetops",
+      "age": 32,
+      "race": "human",
+      "signo": "gemini",
+      "status": "deceased",
       "occupation": [
         "Pirate",
         "Scout"
@@ -806,21 +1479,41 @@
         "Minks",
         "Straw Hat Grand Fleet"
       ],
-      "haki": [
-        "Kenbunshoku Haki",
-        "Busoshoku Haki"
-      ],
-      "bounty": "฿382,000,000",
+      "bounty": "382,000,000",
+      "description": "The former captain of the Nox Pirates and ally of the Straw Hat Pirates, known for his electro powers and sacrifice",
       "image": "https://comicvine.gamespot.com/a/uploads/scale_small/11117/111178336/7111956-8910410819-unkno.png",
       "crew": "Nox Pirates",
-      "status": "deceased",
-      "age": 32,
-      "signo": "gemini"
+      "devilFruit": null,
+      "fightingStyle": {
+        "name": "Estilo da Fruta do Diabo",
+        "type": "devil_fruit",
+        "attacks": [
+          "Electro",
+          "Mink Combat",
+          "Pedro Strike",
+          "Lightning"
+        ],
+        "weapons": [
+          "Electro",
+          "Mink Powers"
+        ]
+      },
+      "haki": [
+        "Kenbunshoku Haki (Haki da Observação)",
+        "Busoshoku Haki (Haki da Armadura)"
+      ],
+      "userId": "system",
+      "createdAt": "2025-01-01T00:00:00-03:00",
+      "updatedAt": "2025-01-01T00:00:00-03:00"
     },
     {
       "id": 36,
       "name": "Nami",
       "nickname": "Cat Burglar",
+      "age": 20,
+      "race": "human",
+      "signo": "cancer",
+      "status": "living",
       "occupation": [
         "Pirate",
         "Navigator"
@@ -828,113 +1521,208 @@
       "affiliations": [
         "Straw Hat Pirates"
       ],
-      "bounty": "฿366,000,000",
+      "bounty": "366,000,000",
+      "description": "The navigator of the Straw Hat Pirates and former thief, known for her weather control and navigation skills",
       "image": "https://i.pinimg.com/736x/ea/42/75/ea4275e16210a6f86ecdc940de678b5c.jpg",
       "crew": "Straw Hat Pirates",
-      "status": "living",
-      "age": 20,
-      "signo": "cancer"
+      "devilFruit": null,
+      "fightingStyle": {
+        "name": "Estilo do Clima",
+        "type": "weather",
+        "attacks": [
+          "Clima-Tact",
+          "Thunder",
+          "Tornado",
+          "Weather Control"
+        ],
+        "weapons": [
+          "Clima-Tact"
+        ]
+      },
+      "haki": [],
+      "userId": "system",
+      "createdAt": "2025-01-01T00:00:00-03:00",
+      "updatedAt": "2025-01-01T00:00:00-03:00"
     },
     {
       "id": 37,
       "name": "Scratchmen Apoo",
       "nickname": "Roar of the Sea",
+      "age": 31,
+      "race": "human",
+      "signo": "pisces",
+      "status": "living",
       "occupation": [
         "Pirate",
         "Musician"
       ],
-      "devil_fruit": "Oto Oto no Mi",
       "affiliations": [
         "On Air Pirates",
         "Beasts Pirates",
         "Super Rookie"
       ],
-      "haki": [
-        "Kenbunshoku Haki",
-        "Busoshoku Haki"
-      ],
-      "bounty": "฿350,000,000",
+      "bounty": "350,000,000",
+      "description": "The captain of the On Air Pirates and Super Rookie, known for his music powers and betrayal",
       "image": "https://comicvine.gamespot.com/a/uploads/scale_small/11117/111178336/7079988-1235599403-Scree.jpg",
       "crew": "On Air Pirates",
-      "status": "living",
-      "age": 31,
-      "signo": "pisces"
+      "devilFruit": "Oto Oto no Mi",
+      "fightingStyle": {
+        "name": "Estilo da Fruta do Diabo",
+        "type": "devil_fruit",
+        "attacks": [
+          "Oto Oto no Mi",
+          "Sound Attack",
+          "Apoo Strike",
+          "Music Power"
+        ],
+        "weapons": [
+          "Oto Oto no Mi Powers"
+        ]
+      },
+      "haki": [
+        "Kenbunshoku Haki (Haki da Observação)",
+        "Busoshoku Haki (Haki da Armadura)"
+      ],
+      "userId": "system",
+      "createdAt": "2025-01-01T00:00:00-03:00",
+      "updatedAt": "2025-01-01T00:00:00-03:00"
     },
     {
       "id": 38,
       "name": "Capone Bege",
       "nickname": "Gang",
+      "age": 42,
+      "race": "human",
+      "signo": "capricorn",
+      "status": "living",
       "occupation": [
         "Pirate",
         "Captain"
       ],
-      "devil_fruit": "Shiro Shiro no Mi",
       "affiliations": [
         "Fire Tank Pirates",
         "Super Rookie"
       ],
-      "haki": [
-        "Kenbunshoku Haki",
-        "Busoshoku Haki"
-      ],
-      "bounty": "฿350,000,000",
+      "bounty": "350,000,000",
+      "description": "The captain of the Fire Tank Pirates and Super Rookie, known for his castle powers and family",
       "image": "https://comicvine.gamespot.com/a/uploads/scale_small/11117/111178336/7080570-9922457536-Scree.jpg",
       "crew": "Fire Tank Pirates",
-      "status": "living",
-      "age": 42,
-      "signo": "capricorn"
+      "devilFruit": "Shiro Shiro no Mi",
+      "fightingStyle": {
+        "name": "Estilo da Fruta do Diabo",
+        "type": "devil_fruit",
+        "attacks": [
+          "Shiro Shiro no Mi",
+          "Castle",
+          "Bege Attack",
+          "Castle Power"
+        ],
+        "weapons": [
+          "Castle Form"
+        ]
+      },
+      "haki": [
+        "Kenbunshoku Haki (Haki da Observação)",
+        "Busoshoku Haki (Haki da Armadura)"
+      ],
+      "userId": "system",
+      "createdAt": "2025-01-01T00:00:00-03:00",
+      "updatedAt": "2025-01-01T00:00:00-03:00"
     },
     {
       "id": 39,
       "name": "Donquixote Doflamingo",
       "nickname": "Heavenly Yaksha",
+      "age": 41,
+      "race": "human",
+      "signo": "scorpio",
+      "status": "captured",
       "occupation": [
         "Pirate",
         "Captain",
         "Prisoner of Impel Down"
       ],
-      "devil_fruit": "Ito Ito no Mi",
       "affiliations": [
         "Seven Warlords of the Sea",
         "Underworld",
         "World Government"
       ],
-      "haki": [
-        "Kenbunshoku Haki",
-        "Busoshoku Haki",
-        "Haoshoku Haki"
-      ],
+      "bounty": "340,000,000",
+      "description": "The former Warlord and captain of the Donquixote Pirates, known for his string powers and underworld connections",
       "image": "https://comicvine.gamespot.com/a/uploads/scale_small/11117/111178336/7080204-8435747647-unkno.png",
-      "bounty": "฿340,000,000",
       "crew": "Donquixote Pirates",
-      "status": "living",
-      "age": 41,
-      "signo": "scorpio"
+      "devilFruit": "Ito Ito no Mi",
+      "fightingStyle": {
+        "name": "Estilo da Fruta do Diabo",
+        "type": "devil_fruit",
+        "attacks": [
+          "Ito Ito no Mi",
+          "Birdcage",
+          "Overheat",
+          "Parasite"
+        ],
+        "weapons": [
+          "Ito Ito no Mi Powers"
+        ]
+      },
+      "haki": [
+        "Kenbunshoku Haki (Haki da Observação)",
+        "Busoshoku Haki (Haki da Armadura)",
+        "Haoshoku Haki (Haki do Rei)"
+      ],
+      "userId": "system",
+      "createdAt": "2025-01-01T00:00:00-03:00",
+      "updatedAt": "2025-01-01T00:00:00-03:00"
     },
     {
       "id": 40,
       "name": "Basil Hawkins",
+      "nickname": "",
+      "age": 31,
+      "race": "human",
+      "signo": "virgo",
+      "status": "deceased",
       "occupation": [
         "Pirate",
         "Captain"
       ],
-      "devil_fruit": "Wara Wara no Mi",
       "affiliations": [
         "Super Rookie"
       ],
-      "haki": [
-        "Kenbunshoku Haki"
-      ],
-      "bounty": "฿320,000,000",
+      "bounty": "320,000,000",
+      "description": "The captain of the Hawkins Pirates and Super Rookie, known for his straw man powers and fortune telling",
       "image": "https://i.pinimg.com/736x/b5/b8/df/b5b8df97087c4bda776890b939a03cf8.jpg",
       "crew": "Hawkins Pirates",
-      "status": "living",
-      "age": 31,
-      "signo": "virgo"
+      "devilFruit": "Wara Wara no Mi",
+      "fightingStyle": {
+        "name": "Estilo da Fruta do Diabo",
+        "type": "devil_fruit",
+        "attacks": [
+          "Wara Wara no Mi",
+          "Straw Man",
+          "Hawkins Attack",
+          "Voodoo"
+        ],
+        "weapons": [
+          "Straw Man",
+          "Voodoo"
+        ]
+      },
+      "haki": [
+        "Kenbunshoku Haki (Haki da Observação)"
+      ],
+      "userId": "system",
+      "createdAt": "2025-01-01T00:00:00-03:00",
+      "updatedAt": "2025-01-01T00:00:00-03:00"
     },
     {
       "id": 41,
       "name": "Jewelry Bonney",
+      "nickname": "",
+      "age": 24,
+      "race": "human",
+      "signo": "virgo",
+      "status": "living",
       "occupation": [
         "Pirate",
         "Captain"
@@ -942,35 +1730,75 @@
       "affiliations": [
         "Super Rookie"
       ],
-      "bounty": "฿320,000,000",
+      "bounty": "320,000,000",
+      "description": "The captain of the Bonney Pirates and Super Rookie, known for her age manipulation powers and mysterious past",
       "image": "https://i.pinimg.com/736x/8d/ca/52/8dca5228a7bcee84ff062c6d90d8f3bb.jpg",
       "crew": "Bonney Pirates",
-      "status": "living",
-      "age": 24,
-      "signo": "virgo"
+      "devilFruit": "Toshi Toshi no Mi",
+      "fightingStyle": {
+        "name": "Estilo da Fruta do Diabo",
+        "type": "devil_fruit",
+        "attacks": [
+          "Toshi Toshi no Mi",
+          "Age Manipulation",
+          "Bonney Attack",
+          "Time Power"
+        ],
+        "weapons": [
+          "Toshi Toshi no Mi Powers"
+        ]
+      },
+      "haki": [],
+      "userId": "system",
+      "createdAt": "2025-01-01T00:00:00-03:00",
+      "updatedAt": "2025-01-01T00:00:00-03:00"
     },
     {
       "id": 42,
       "name": "Gecko Moria",
       "nickname": "Shadow King",
+      "age": 50,
+      "race": "human",
+      "signo": "virgo",
+      "status": "captured",
       "occupation": [
         "Pirate",
         "Former Warlord"
       ],
-      "devil_fruit": "Kage Kage no Mi",
       "affiliations": [
         "Thriller Bark Pirates"
       ],
-      "bounty": "฿320,000,000",
+      "bounty": "320,000,000",
+      "description": "The former Warlord and captain of the Thriller Bark Pirates, known for his shadow powers and zombie army",
       "image": "https://i.pinimg.com/736x/52/52/73/52527327cbb0900c2374e1e1f378e77a.jpg",
       "crew": "Thriller Bark Pirates",
-      "status": "living",
-      "age": 50,
-      "signo": "virgo"
+      "devilFruit": "Kage Kage no Mi",
+      "fightingStyle": {
+        "name": "Estilo da Fruta do Diabo",
+        "type": "devil_fruit",
+        "attacks": [
+          "Kage Kage no Mi",
+          "Shadow Asgard",
+          "Doppelman",
+          "Shadow Power"
+        ],
+        "weapons": [
+          "Kage Kage no Mi Powers"
+        ]
+      },
+      "haki": [],
+      "userId": "system",
+      "createdAt": "2025-01-01T00:00:00-03:00",
+      "updatedAt": "2025-01-01T00:00:00-03:00"
     },
     {
       "id": 43,
       "name": "Lindbergh",
+      "nickname": "",
+      "age": 37,
+      "race": "human",
+      "signo": "gemini",
+      "status": "living",
       "occupation": [
         "Revolutionary Army",
         "Shipwright"
@@ -978,90 +1806,191 @@
       "affiliations": [
         "Revolutionary Army"
       ],
-      "bounty": "฿316,000,000",
+      "bounty": "316,000,000",
+      "description": "The commander of the Revolutionary Army and inventor, known for his technological skills and freedom fighting",
       "image": "https://i.pinimg.com/736x/f8/d8/c3/f8d8c3a1b83d101666ad5f94311bace1.jpg",
       "crew": "Revolutionary Army",
-      "status": "living",
-      "age": 37,
-      "signo": "gemini"
+      "devilFruit": null,
+      "fightingStyle": {
+        "name": "Estilo Tecnológico",
+        "type": "technology",
+        "attacks": [
+          "Revolutionary",
+          "Lindbergh Attack",
+          "Freedom Strike",
+          "Revolution"
+        ],
+        "weapons": [
+          "Revolutionary Weapons"
+        ]
+      },
+      "haki": [],
+      "userId": "system",
+      "createdAt": "2025-01-01T00:00:00-03:00",
+      "updatedAt": "2025-01-01T00:00:00-03:00"
     },
     {
       "id": 44,
       "name": "Charlotte Oven",
+      "nickname": "",
+      "age": 48,
+      "race": "human",
+      "signo": "sagittarius",
+      "status": "living",
       "occupation": [
         "Pirate",
         "Sweet Commander"
       ],
-      "devil_fruit": "Netsu Netsu no Mi",
       "affiliations": [
         "Big Mom Pirates"
       ],
-      "bounty": "฿300,000,000",
+      "bounty": "300,000,000",
+      "description": "The Sweet Commander of the Big Mom Pirates and Linlin's son, known for his heat powers",
       "image": "https://i.pinimg.com/736x/98/80/84/98808475abbadb78d74296ee653cb7fe.jpg",
       "crew": "Big Mom Pirates",
-      "status": "living",
-      "age": 48,
-      "signo": "sagittarius"
+      "devilFruit": "Netsu Netsu no Mi",
+      "fightingStyle": {
+        "name": "Estilo da Fruta do Diabo",
+        "type": "devil_fruit",
+        "attacks": [
+          "Netsu Netsu no Mi",
+          "Heat",
+          "Oven Attack",
+          "Hot Power"
+        ],
+        "weapons": [
+          "Netsu Netsu no Mi Powers"
+        ]
+      },
+      "haki": [],
+      "userId": "system",
+      "createdAt": "2025-01-01T00:00:00-03:00",
+      "updatedAt": "2025-01-01T00:00:00-03:00"
     },
     {
       "id": 45,
       "name": "Charlotte Daifuku",
+      "nickname": "",
+      "age": 48,
+      "race": "human",
+      "signo": "sagittarius",
+      "status": "living",
       "occupation": [
         "Pirate",
         "Sweet Commander"
       ],
-      "devil_fruit": "Hoya Hoya no Mi",
       "affiliations": [
         "Big Mom Pirates"
       ],
-      "bounty": "฿300,000,000",
+      "bounty": "300,000,000",
+      "description": "The Sweet Commander of the Big Mom Pirates and Linlin's son, known for his genie powers",
       "image": "https://i.pinimg.com/736x/0b/a2/f7/0ba2f74e4cf08b9845aaa8c40a885b6a.jpg",
       "crew": "Big Mom Pirates",
-      "status": "living",
-      "age": 48,
-      "signo": "sagittarius"
+      "devilFruit": "Hoya Hoya no Mi",
+      "fightingStyle": {
+        "name": "Estilo da Fruta do Diabo",
+        "type": "devil_fruit",
+        "attacks": [
+          "Hoya Hoya no Mi",
+          "Genie",
+          "Daifuku Attack",
+          "Wish Power"
+        ],
+        "weapons": [
+          "Genie"
+        ]
+      },
+      "haki": [],
+      "userId": "system",
+      "createdAt": "2025-01-01T00:00:00-03:00",
+      "updatedAt": "2025-01-01T00:00:00-03:00"
     },
     {
       "id": 46,
       "name": "Caesar Clown",
+      "nickname": "",
+      "age": 40,
+      "race": "human",
+      "signo": "aries",
+      "status": "living",
       "occupation": [
         "Scientist",
         "Pirate"
       ],
-      "devil_fruit": "Gasu Gasu no Mi",
       "affiliations": [
         "Caesar Pirates",
         "Donquixote Pirates"
       ],
-      "bounty": "฿300,000,000",
+      "bounty": "300,000,000",
+      "description": "The former scientist and captain of the Caesar Pirates, known for his gas powers and chemical weapons",
       "image": "https://i.pinimg.com/736x/8e/dc/c1/8edcc1306607b260d3075fa3cf455d90.jpg",
       "crew": "Caesar Pirates",
-      "status": "living",
-      "age": 40,
-      "signo": "aries"
+      "devilFruit": "Gasu Gasu no Mi",
+      "fightingStyle": {
+        "name": "Estilo da Fruta do Diabo",
+        "type": "devil_fruit",
+        "attacks": [
+          "Gasu Gasu no Mi",
+          "Shinokuni",
+          "Caesar Attack",
+          "Gas Power"
+        ],
+        "weapons": [
+          "Gasu Gasu no Mi Powers"
+        ]
+      },
+      "haki": [],
+      "userId": "system",
+      "createdAt": "2025-01-01T00:00:00-03:00",
+      "updatedAt": "2025-01-01T00:00:00-03:00"
     },
     {
       "id": 47,
       "name": "Bartholomew Kuma",
+      "nickname": "",
+      "age": 47,
+      "race": "human",
+      "signo": "aquarius",
+      "status": "unknown",
       "occupation": [
         "Former Warlord",
         "Pacifista"
       ],
-      "devil_fruit": "Nikyu Nikyu no Mi",
       "affiliations": [
         "Revolutionary Army",
         "World Government"
       ],
-      "bounty": "฿296,000,000",
+      "bounty": "296,000,000",
+      "description": "The former Warlord and Pacifista, known for his paw powers and mysterious transformation",
       "image": "https://i.pinimg.com/736x/0b/e5/41/0be541a5ba8af72f09a4020f35e5a1ca.jpg",
       "crew": "Revolutionary Army",
-      "status": "living",
-      "age": 47,
-      "signo": "aquarius"
+      "devilFruit": "Nikyu Nikyu no Mi",
+      "fightingStyle": {
+        "name": "Estilo da Fruta do Diabo",
+        "type": "devil_fruit",
+        "attacks": [
+          "Nikyu Nikyu no Mi",
+          "Ursus Shock",
+          "Kuma Attack",
+          "Paw Power"
+        ],
+        "weapons": [
+          "Nikyu Nikyu no Mi Powers"
+        ]
+      },
+      "haki": [],
+      "userId": "system",
+      "createdAt": "2025-01-01T00:00:00-03:00",
+      "updatedAt": "2025-01-01T00:00:00-03:00"
     },
     {
       "id": 48,
       "name": "Morley",
+      "nickname": "",
+      "age": 160,
+      "race": "human",
+      "signo": "virgo",
+      "status": "living",
       "occupation": [
         "Revolutionary",
         "Giant Warrior"
@@ -1069,66 +1998,143 @@
       "affiliations": [
         "Revolutionary Army"
       ],
-      "bounty": "฿293,000,000",
+      "bounty": "293,000,000",
+      "description": "The commander of the Revolutionary Army and giant, known for his freedom fighting and giant powers",
       "image": "https://i.pinimg.com/736x/1e/d8/69/1ed8691c073c2927737c4563ca3e9a2a.jpg",
       "crew": "Revolutionary Army",
-      "status": "living",
-      "age": 160,
-      "signo": "virgo"
+      "devilFruit": null,
+      "fightingStyle": {
+        "name": "Estilo Revolucionário",
+        "type": "revolutionary",
+        "attacks": [
+          "Revolutionary",
+          "Giant",
+          "Morley Attack",
+          "Freedom"
+        ],
+        "weapons": [
+          "Giant Body"
+        ]
+      },
+      "haki": [],
+      "userId": "system",
+      "createdAt": "2025-01-01T00:00:00-03:00",
+      "updatedAt": "2025-01-01T00:00:00-03:00"
     },
     {
       "id": 49,
       "name": "Page One",
+      "nickname": "",
+      "age": 20,
+      "race": "human",
+      "signo": "aquarius",
+      "status": "living",
       "occupation": [
         "Pirate",
         "Headliner"
       ],
-      "devil_fruit": "Ryu Ryu no Mi, Model: Spinosaurus",
       "affiliations": [
         "Beasts Pirates"
       ],
-      "bounty": "฿290,000,000",
+      "bounty": "290,000,000",
+      "description": "The Headliner of the Beasts Pirates and Kaido's subordinate, known for his spinosaurus powers",
       "image": "https://i.pinimg.com/736x/68/cf/fb/68cffbf08a454c66a815162e0d1f0e84.jpg",
       "crew": "Beasts Pirates",
-      "status": "living",
-      "age": 20,
-      "signo": "aquarius"
+      "devilFruit": "Ryu Ryu no Mi, Model: Spinosaurus",
+      "fightingStyle": {
+        "name": "Estilo da Fruta do Diabo",
+        "type": "devil_fruit",
+        "attacks": [
+          "Ryu Ryu no Mi",
+          "Spinosaurus",
+          "Page One Attack",
+          "Dino Power"
+        ],
+        "weapons": [
+          "Spinosaurus Form"
+        ]
+      },
+      "haki": [],
+      "userId": "system",
+      "createdAt": "2025-01-01T00:00:00-03:00",
+      "updatedAt": "2025-01-01T00:00:00-03:00"
     },
     {
       "id": 50,
       "name": "X Drake",
+      "nickname": "",
+      "age": 33,
+      "race": "human",
+      "signo": "scorpio",
+      "status": "living",
       "occupation": [
         "Pirate",
         "Captain",
         "SWORD"
       ],
-      "devil_fruit": "Ryu Ryu no Mi, Model: Allosaurus",
       "affiliations": [
         "Beasts Pirates",
         "Marine"
       ],
-      "bounty": "฿222,000,000",
+      "bounty": "222,000,000",
+      "description": "The captain of the Drake Pirates and SWORD agent, known for his allosaurus powers and undercover work",
       "image": "https://i.pinimg.com/736x/76/82/eb/7682ebc2220b63f778b9a899a21efafc.jpg",
       "crew": "Drake Pirates",
-      "status": "living",
-      "age": 33,
-      "signo": "scorpio"
+      "devilFruit": "Ryu Ryu no Mi, Model: Allosaurus",
+      "fightingStyle": {
+        "name": "Estilo de Uma Espada",
+        "type": "swordsman",
+        "attacks": [
+          "Ryu Ryu no Mi",
+          "Allosaurus",
+          "Drake Attack",
+          "Dino Power"
+        ],
+        "weapons": [
+          "Allosaurus Form"
+        ]
+      },
+      "haki": [],
+      "userId": "system",
+      "createdAt": "2025-01-01T00:00:00-03:00",
+      "updatedAt": "2025-01-01T00:00:00-03:00"
     },
     {
       "id": 51,
       "name": "Sai",
+      "nickname": "",
+      "age": 27,
+      "race": "human",
+      "signo": "leo",
+      "status": "living",
       "occupation": [
         "Pirate"
       ],
       "affiliations": [
         "Straw Hat Grand Fleet"
       ],
-      "bounty": "฿210,000,000",
+      "bounty": "210,000,000",
+      "description": "The leader of the Happo Navy and grandson of Chinjao, known for his haki mastery and alliance with Luffy",
       "image": "https://i.pinimg.com/736x/a8/ad/ba/a8adba6d68dee1144f1046059a193849.jpg",
       "crew": "Happo Navy",
-      "status": "living",
-      "age": 27,
-      "signo": "leo"
+      "devilFruit": null,
+      "fightingStyle": {
+        "name": "Estilo de Artes Marciais",
+        "type": "martial_arts",
+        "attacks": [
+          "Hasshoken",
+          "Sai Attack",
+          "Happo Navy",
+          "Sai Strike"
+        ],
+        "weapons": [
+          "Hasshoken"
+        ]
+      },
+      "haki": [],
+      "userId": "system",
+      "createdAt": "2025-01-01T00:00:00-03:00",
+      "updatedAt": "2025-01-01T00:00:00-03:00"
     }
   ]
 }

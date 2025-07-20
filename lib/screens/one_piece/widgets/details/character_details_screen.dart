@@ -5,22 +5,26 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
-import 'package:opfan/core/models/character_model.dart';
+import 'package:opfan/core/models/one_piece/custom_character_model.dart';
+import 'package:opfan/core/utils/character_localization_mapper.dart';
 import 'package:opfan/l10n/app_localizations.dart';
 import 'package:opfan/screens/one_piece/widgets/details/fields/details_bounty.dart';
 import 'package:opfan/screens/one_piece/widgets/details/fields/details_image.dart';
 import 'package:opfan/screens/one_piece/widgets/details/fields/details_name.dart';
+import 'package:opfan/widgets/atoms/fighting_style_details.dart'
+    show FightingStyleDetails;
 import 'package:opfan/widgets/molecules/default_app_bar.dart';
 import 'package:opfan/widgets/organisms/bottom_navigation.dart';
 import 'package:opfan/utils/constants.dart';
 import 'package:opfan/utils/zodiac_icons.dart';
-import 'package:opfan/utils/character_display_utils.dart';
 
 class CharacterDetailsScreen extends StatelessWidget {
-  const CharacterDetailsScreen({Key? key, required this.character})
-      : super(key: key);
+  const CharacterDetailsScreen({
+    Key? key,
+    required this.character,
+  }) : super(key: key);
 
-  final CharacterModel character;
+  final CustomCharacterModel character;
 
   Widget _buildInfoTile({
     required Widget leading,
@@ -35,24 +39,28 @@ class CharacterDetailsScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildChipSection(
-      {required String label,
-      required List<String>? values,
-      IconData? icon,
-      required BuildContext context}) {
-    if (values == null || values.isEmpty) return const SizedBox.shrink();
+  Widget _buildChipSection({
+    required String label,
+    required List<String> values,
+    IconData? icon,
+    required BuildContext context,
+  }) {
+    if (values.isEmpty) return const SizedBox.shrink();
     
     final l10n = AppLocalizations.of(context)!;
 
-    // Check if this is a custom character and internationalize the values
     List<String> displayValues = values;
     if (character.isCustomCharacter) {
       if (label == l10n.affiliations) {
         displayValues =
-            CharacterDisplayUtils.getAffiliationsDisplay(values, l10n);
+            CharacterLocalizationMapper.mapAffiliationsToLocalized(
+            values, l10n);
       } else if (label == l10n.occupations) {
         displayValues =
-            CharacterDisplayUtils.getOccupationsDisplay(values, l10n);
+            CharacterLocalizationMapper.mapOccupationsToLocalized(values, l10n);
+      } else if (label == l10n.haki) {
+        displayValues =
+            CharacterLocalizationMapper.mapHakiListToLocalized(values, l10n);
       }
     }
     
@@ -131,12 +139,19 @@ class CharacterDetailsScreen extends StatelessWidget {
     };
   }
 
+  String? _getRaceDisplayValue(BuildContext context) {
+    if (character.race?.isNotEmpty == true) {
+      return CharacterLocalizationMapper.getRaceLabel(
+          character.race!, AppLocalizations.of(context)!);
+    }
+    return null;
+  }
+
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final l10n = AppLocalizations.of(context)!;
     final statusTheme = _getStatusTheme(character.status, l10n);
-
     return Scaffold(
       backgroundColor: theme.colorScheme.surface,
       appBar: DefaultAppBar(
@@ -200,7 +215,7 @@ class CharacterDetailsScreen extends StatelessWidget {
               context: context),
           _buildChipSection(
               label: l10n.haki,
-              values: character.haki,
+              values: character.haki ?? [],
               icon: Icons.flash_on,
               context: context),
           Card(
@@ -209,16 +224,9 @@ class CharacterDetailsScreen extends StatelessWidget {
             child: Column(
               children: [
                 _buildInfoTile(
-                  leading: const Icon(Icons.cake),
-                  label: l10n.age,
-                  value: character.calculatedAge?.toString(),
-                ),
-                _buildInfoTile(
-                  leading: const Icon(Icons.calendar_today),
-                  label: l10n.birthDate,
-                  value: character.birthDate != null
-                      ? '${character.birthDate!.day.toString().padLeft(2, '0')}/${character.birthDate!.month.toString().padLeft(2, '0')}/${character.birthDate!.year}'
-                      : null,
+                  leading: const Icon(Icons.people),
+                  label: l10n.race,
+                  value: _getRaceDisplayValue(context),
                 ),
                 _buildInfoTile(
                   leading: _buildZodiacIcon(character.signo),
@@ -229,6 +237,11 @@ class CharacterDetailsScreen extends StatelessWidget {
                       : null,
                 ),
                 _buildInfoTile(
+                  leading: const Icon(Icons.cake),
+                  label: l10n.age,
+                  value: character.calculatedAge?.toString(),
+                ),
+                _buildInfoTile(
                   leading: const Icon(Icons.sailing),
                   label: l10n.crew(0),
                   value: character.crew,
@@ -236,14 +249,24 @@ class CharacterDetailsScreen extends StatelessWidget {
                 _buildInfoTile(
                   leading: const Icon(Icons.info),
                   label: l10n.status,
-                  value: character.isCustomCharacter && character.status != null
-                      ? CharacterDisplayUtils.getStatusDisplay(
+                  value: character.status != null
+                      ? CharacterLocalizationMapper.mapStatusToLocalized(
                           character.status, l10n)
                       : character.status,
+                ),
+                _buildInfoTile(
+                  leading: const Icon(Icons.calendar_month_outlined),
+                  label: l10n.birthDate,
+                  value: character.birthDate != null
+                      ? '${character.birthDate!.day.toString().padLeft(2, '0')}/${character.birthDate!.month.toString().padLeft(2, '0')}/${character.birthDate!.year}'
+                      : null,
                 ),
               ],
             ),
           ),
+          if (character.fightingStyle != null) ...[
+            FightingStyleDetails(fightingStyle: character.fightingStyle),
+          ],
           if (character.description != null &&
               character.description!.isNotEmpty)
             Card(
@@ -264,21 +287,6 @@ class CharacterDetailsScreen extends StatelessWidget {
                     ),
                     const SizedBox(height: 8),
                     Text(character.description!),
-                  ],
-                ),
-              ),
-            ),
-          if (character.isCustomCharacter)
-            const Card(
-              margin: EdgeInsets.symmetric(
-                  horizontal: Constants.margin * 2, vertical: Constants.margin),
-              child: Padding(
-                padding: EdgeInsets.all(Constants.margin * 2),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text('Informações Customizadas',
-                        style: TextStyle(fontWeight: FontWeight.bold)),
                   ],
                 ),
               ),

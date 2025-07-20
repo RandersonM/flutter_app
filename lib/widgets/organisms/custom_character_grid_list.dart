@@ -3,7 +3,8 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:opfan/core/models/custom_character_model.dart';
+import 'package:opfan/l10n/app_localizations.dart';
+import 'package:opfan/core/models/one_piece/custom_character_model.dart';
 import 'package:opfan/screens/custom-character/blocs/custom_character_bloc.dart';
 import 'package:opfan/screens/custom-character/blocs/custom_character_event.dart';
 import 'package:opfan/screens/custom-character/blocs/custom_character_state.dart';
@@ -76,7 +77,7 @@ class _CustomCharacterGridListState extends State<CustomCharacterGridList> {
                       ),
                       const SizedBox(height: Constants.margin),
                       Text(
-                        'Erro ao carregar personagens',
+                        AppLocalizations.of(context)!.loadingError,
                         style: Theme.of(context).textTheme.titleMedium,
                         textAlign: TextAlign.center,
                       ),
@@ -91,7 +92,7 @@ class _CustomCharacterGridListState extends State<CustomCharacterGridList> {
                         onPressed: () {
                           context.read<CustomCharacterBloc>().add(const LoadCustomCharacters());
                         },
-                        child: const Text('Tentar novamente'),
+                        child: Text(AppLocalizations.of(context)!.tryAgain),
                       ),
                     ],
                   ),
@@ -111,13 +112,14 @@ class _CustomCharacterGridListState extends State<CustomCharacterGridList> {
                         ),
                         const SizedBox(height: Constants.margin),
                         Text(
-                          'Nenhum personagem customizado encontrado',
+                          AppLocalizations.of(context)!.noCustomCharactersFound,
                           style: Theme.of(context).textTheme.titleMedium,
                           textAlign: TextAlign.center,
                         ),
                         const SizedBox(height: Constants.margin),
                         Text(
-                          'Crie seu primeiro personagem customizado!',
+                          AppLocalizations.of(context)!
+                              .createFirstCustomCharacter,
                           style: Theme.of(context).textTheme.bodySmall,
                           textAlign: TextAlign.center,
                         ),
@@ -149,7 +151,7 @@ class _CustomCharacterGridListState extends State<CustomCharacterGridList> {
 
               return Center(
                 child: Text(
-                  'Carregando...',
+                  AppLocalizations.of(context)!.loading,
                   style: Theme.of(context).textTheme.titleMedium,
                 ),
               );
@@ -173,13 +175,13 @@ class _CustomCharacterGridListState extends State<CustomCharacterGridList> {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text('Filtrar por'),
+        title: Text(AppLocalizations.of(context)!.filterBy),
         content: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
             ListTile(
               leading: const Icon(Icons.local_fire_department),
-              title: const Text('Fruta do Diabo'),
+              title: Text(AppLocalizations.of(context)!.devilFruit),
               onTap: () {
                 Navigator.pop(context);
                 _showDevilFruitFilter();
@@ -187,7 +189,7 @@ class _CustomCharacterGridListState extends State<CustomCharacterGridList> {
             ),
             ListTile(
               leading: const Icon(Icons.group),
-              title: const Text('Equipe'),
+              title: Text(AppLocalizations.of(context)!.crews),
               onTap: () {
                 Navigator.pop(context);
                 _showCrewFilter();
@@ -198,7 +200,7 @@ class _CustomCharacterGridListState extends State<CustomCharacterGridList> {
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
-            child: const Text('Cancelar'),
+            child: Text(AppLocalizations.of(context)!.cancel),
           ),
         ],
       ),
@@ -209,14 +211,14 @@ class _CustomCharacterGridListState extends State<CustomCharacterGridList> {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text('Filtrar por Fruta do Diabo'),
+        title: Text(AppLocalizations.of(context)!.filterByDevilFruit),
         content: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
             TextField(
-              decoration: const InputDecoration(
-                labelText: 'Nome da fruta',
-                hintText: 'Ex: Gomu Gomu no Mi',
+              decoration: InputDecoration(
+                labelText: AppLocalizations.of(context)!.devilFruitName,
+                hintText: AppLocalizations.of(context)!.devilFruitNameHint,
               ),
               onSubmitted: (value) {
                 Navigator.pop(context);
@@ -232,14 +234,14 @@ class _CustomCharacterGridListState extends State<CustomCharacterGridList> {
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
-            child: const Text('Cancelar'),
+            child: Text(AppLocalizations.of(context)!.cancel),
           ),
           TextButton(
             onPressed: () {
               Navigator.pop(context);
               context.read<CustomCharacterBloc>().add(const LoadCustomCharacters());
             },
-            child: const Text('Limpar filtros'),
+            child: Text(AppLocalizations.of(context)!.clearFilters),
           ),
         ],
       ),
@@ -250,14 +252,14 @@ class _CustomCharacterGridListState extends State<CustomCharacterGridList> {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text('Filtrar por Equipe'),
+        title: Text(AppLocalizations.of(context)!.filterByCrew),
         content: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
             TextField(
-              decoration: const InputDecoration(
-                labelText: 'Nome da equipe',
-                hintText: 'Ex: Piratas do Chapéu de Palha',
+              decoration: InputDecoration(
+                labelText: AppLocalizations.of(context)!.crewNameFilter,
+                hintText: AppLocalizations.of(context)!.crewNameFilterHint,
               ),
               onSubmitted: (value) {
                 Navigator.pop(context);
@@ -273,14 +275,14 @@ class _CustomCharacterGridListState extends State<CustomCharacterGridList> {
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
-            child: const Text('Cancelar'),
+            child: Text(AppLocalizations.of(context)!.cancel),
           ),
           TextButton(
             onPressed: () {
               Navigator.pop(context);
               context.read<CustomCharacterBloc>().add(const LoadCustomCharacters());
             },
-            child: const Text('Limpar filtros'),
+            child: Text(AppLocalizations.of(context)!.clearFilters),
           ),
         ],
       ),
@@ -288,25 +290,30 @@ class _CustomCharacterGridListState extends State<CustomCharacterGridList> {
   }
 
   void _showDeleteConfirmation(CustomCharacterModel character) {
+    final l10n = AppLocalizations.of(context)!;
+    
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text('Confirmar exclusão'),
-        content: Text('Tem certeza que deseja excluir "${character.name}"?'),
+        title: Text(l10n.confirmDelete),
+        content: Text(
+          l10n.confirmDeleteCrew(character.name),
+        ),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
-            child: const Text('Cancelar'),
+            child: Text(l10n.cancel),
           ),
-          TextButton(
+          ElevatedButton(
             onPressed: () {
+              widget.onCharacterDelete?.call(character);
               Navigator.pop(context);
-              context.read<CustomCharacterBloc>().add(
-                DeleteCustomCharacter(character.id!),
-              );
             },
-            style: TextButton.styleFrom(foregroundColor: Colors.red),
-            child: const Text('Excluir'),
+            style: ElevatedButton.styleFrom(
+              backgroundColor: Colors.red,
+              foregroundColor: Colors.white,
+            ),
+            child: Text(l10n.delete),
           ),
         ],
       ),

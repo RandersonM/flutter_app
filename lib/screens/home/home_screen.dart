@@ -4,12 +4,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:opfan/core/models/character_model.dart';
+import 'package:opfan/core/models/one_piece/custom_character_model.dart';
 import 'package:opfan/core/services/service_locator.dart';
 import 'package:opfan/l10n/app_localizations.dart';
 import 'package:opfan/widgets/molecules/statistics_grid.dart';
 import 'package:opfan/widgets/organisms/bottom_navigation.dart';
-import 'package:opfan/screens/home/widgets/simple_video_banner.dart';
+import 'package:opfan/screens/home/widgets/dynamic_banner.dart';
 import 'package:opfan/screens/home/widgets/character_info_card.dart';
 import 'package:opfan/screens/home/widgets/home_app_bar.dart';
 import 'package:opfan/screens/home/blocs/index.dart';
@@ -52,13 +52,17 @@ class _HomeScreenState extends State<HomeScreen> {
                     spacing: Constants.margin,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      _buildDynamicBanner(state),
+                      DynamicBanner(
+                        state: state,
+                        height: videoBannerHeight,
+                      ),
                       const SizedBox.shrink(),
                       Text(
                         AppLocalizations.of(context)!.featuredCharacter,
                         style:
                             Theme.of(context).textTheme.headlineSmall?.copyWith(
                                   fontWeight: FontWeight.bold,
+                                  color: Theme.of(context).colorScheme.primary,
                                 ),
                       ),
                       _buildCharacterCard(context, state),
@@ -72,7 +76,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                   : () async {
                                       final selectedCharacter =
                                           await Navigator
-                                          .pushNamed<CharacterModel>(
+                                          .pushNamed<CustomCharacterModel>(
                                         context,
                                         AppRoutes.characterSelection,
                                       );
@@ -126,77 +130,6 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-
-
-  Widget _buildDynamicBanner(HomeState state) {
-    if (state is HomeLoaded) {
-      final character = state.featuredCharacter;
-      if (state.currentVideo != null) {
-        return SimpleVideoBanner(
-          bannerType: SimpleBannerType.youtube,
-          youTubeVideo: state.currentVideo,
-          height: videoBannerHeight,
-          title: character.name,
-          subtitle: state.currentVideo!.title,
-          onTap: () => _playVideo(state.currentVideo!),
-        );
-      }
-
-      if (state.isLoadingVideo) {
-        return Container(
-          height: videoBannerHeight,
-          decoration: BoxDecoration(
-            color: Colors.grey[900],
-            borderRadius: BorderRadius.circular(12),
-          ),
-          child: Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                const CircularProgressIndicator(color: Colors.white),
-                const SizedBox(height: 16),
-                Text(
-                  AppLocalizations.of(context)!.searchingVideo,
-                  style: const TextStyle(color: Colors.white),
-                ),
-              ],
-            ),
-          ),
-        );
-      }
-
-      return SimpleVideoBanner(
-        url: character.image,
-        fallbackUrl: 'assets/logo/splash_logo.png',
-        bannerType: SimpleBannerType.image,
-        height: 200,
-        title: character.name,
-        subtitle: AppLocalizations.of(context)!.featuredCharacter,
-      );
-    }
-
-    return Container(
-      height: 200,
-      decoration: BoxDecoration(
-        color: Colors.grey[300],
-        borderRadius: BorderRadius.circular(12),
-      ),
-      child: const Center(
-        child: CircularProgressIndicator(),
-      ),
-    );
-  }
-
-  void _playVideo(video) {
-    Navigator.pushNamed(
-      context,
-      AppRoutes.youtubePlayer,
-      arguments: video,
-    );
-  }
-
-
-
   Widget _buildCharacterCard(BuildContext context, HomeState state) {
     if (state is HomeLoading) {
       return const Card(
@@ -249,7 +182,7 @@ class _HomeScreenState extends State<HomeScreen> {
       final character = state.featuredCharacter;
       return CharacterInfoCard(
         characterName: character.name,
-        characterBounty: character.bounty,
+        characterBounty: '฿${Constants.formatBounty(character.bounty)}',
         characterImage: character.image,
         onTap: () => Navigator.pushNamed(
           context,
@@ -285,15 +218,19 @@ class _HomeScreenState extends State<HomeScreen> {
             label:
                 character.devilFruit != null && character.devilFruit!.isNotEmpty
                     ? AppLocalizations.of(context)!.devilFruit
-                    : AppLocalizations.of(context)!.status,
+                    : AppLocalizations.of(context)!.noDevilFruit,
             value:
                 character.devilFruit != null && character.devilFruit!.isNotEmpty
                     ? character.devilFruit!
-                    : character.status ?? 'Unknown',
+                    : '',
+            svgPath:
+                character.devilFruit != null && character.devilFruit!.isNotEmpty
+                    ? 'assets/svg/gomu-gomu.svg'
+                    : null,
             icon:
                 character.devilFruit != null && character.devilFruit!.isNotEmpty
-                    ? Icons.apple_outlined
-                    : Icons.flag,
+                    ? null
+                    : FontAwesomeIcons.personSwimming,
           ),
           StatisticData(
             label: AppLocalizations.of(context)!.signo,
