@@ -19,17 +19,57 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
-  late String _backgroundImage;
+  int _currentImageIndex = 0;
+  bool _isChanging = false;
   final List<String> _loginImages = [
     'assets/logo/login-image.jpg',
     'assets/logo/login-image-2.jpg',
-    'assets/logo/login-image3.jpeg',
+    'assets/logo/login-image-3.jpeg',
+    'assets/logo/login-image-4.webp',
+    'assets/logo/login-image-5.webp',
+    'assets/logo/login-image-6.webp',
+    'assets/logo/login-image-7.webp',
   ];
 
   @override
   void initState() {
     super.initState();
-    _backgroundImage = (_loginImages..shuffle()).first;
+    _currentImageIndex =
+        DateTime.now().millisecondsSinceEpoch % _loginImages.length;
+  }
+
+  void _nextImage() {
+    if (_isChanging) return;
+    _isChanging = true;
+    setState(() {
+      _currentImageIndex = (_currentImageIndex + 1) % _loginImages.length;
+    });
+    Future.delayed(const Duration(milliseconds: 300), () {
+      _isChanging = false;
+    });
+  }
+
+  void _previousImage() {
+    if (_isChanging) return;
+    _isChanging = true;
+    setState(() {
+      _currentImageIndex =
+          (_currentImageIndex - 1 + _loginImages.length) % _loginImages.length;
+    });
+    Future.delayed(const Duration(milliseconds: 300), () {
+      _isChanging = false;
+    });
+  }
+
+  void _goToImage(int index) {
+    if (_isChanging || index == _currentImageIndex) return;
+    _isChanging = true;
+    setState(() {
+      _currentImageIndex = index;
+    });
+    Future.delayed(const Duration(milliseconds: 300), () {
+      _isChanging = false;
+    });
   }
 
   @override
@@ -50,37 +90,50 @@ class _LoginScreenState extends State<LoginScreen> {
           }
         },
         child: Scaffold(
-          body: Stack(
-            fit: StackFit.expand,
-            children: [
-              Image.asset(
-                _backgroundImage,
-                fit: BoxFit.cover,
-              ),
-              Container(
-                color: Colors.black.withValues(alpha: 0.45),
-              ),
-              SafeArea(
-                child: Padding(
-                  padding: const EdgeInsets.all(Constants.margin),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      const Spacer(),
-                      _buildWelcomeText(),
-                      const SizedBox(height: Constants.margin),
-                      _buildSubtitleText(),
-                      const SizedBox(height: Constants.margin * 3),
-                      _buildLoginButton(),
-                      const SizedBox(height: Constants.margin * 2),
-                      _buildSkipButton(),
-                      const Spacer(),
-                      _buildFooter(),
-                    ],
+          body: GestureDetector(
+            onPanEnd: (details) {
+              if (details.velocity.pixelsPerSecond.dx > 500) {
+                _previousImage();
+              } else if (details.velocity.pixelsPerSecond.dx < -500) {
+                _nextImage();
+              }
+            },
+            child: Stack(
+              fit: StackFit.expand,
+              children: [
+                Container(
+                  decoration: BoxDecoration(
+                    image: DecorationImage(
+                      image: AssetImage(_loginImages[_currentImageIndex]),
+                      fit: BoxFit.cover,
+                    ),
                   ),
                 ),
-              ),
-            ],
+                Container(
+                  color: Colors.black.withValues(alpha: 0.45),
+                ),
+                SafeArea(
+                  child: Padding(
+                    padding: const EdgeInsets.all(Constants.margin),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        const Spacer(),
+                        _buildWelcomeText(),
+                        const SizedBox(height: Constants.margin),
+                        _buildSubtitleText(),
+                        const SizedBox(height: Constants.margin * 3),
+                        _buildLoginButton(),
+                        const SizedBox(height: Constants.margin * 2),
+                        _buildSkipButton(),
+                        const Spacer(),
+                        _buildFooter(),
+                      ],
+                    ),
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       ),
@@ -158,16 +211,9 @@ class _LoginScreenState extends State<LoginScreen> {
                           AlwaysStoppedAnimation<Color>(AppColors.purple[600]!),
                     ),
                   )
-                : Image.asset(
-                    'assets/icons/google_icon.png',
-                    height: 24,
-                    width: 24,
-                    errorBuilder: (context, error, stackTrace) {
-                      return const Icon(
-                        Icons.login,
-                        size: 24,
-                      );
-                    },
+                : const Icon(
+                    Icons.login,
+                    size: 24,
                   ),
             label: Text(
               isLoading ? AppLocalizations.of(context)!.signingIn : AppLocalizations.of(context)!.signInWithGoogle,
@@ -201,23 +247,19 @@ class _LoginScreenState extends State<LoginScreen> {
   Widget _buildFooter() {
     return Column(
       children: [
-        const Row(
+        Row(
           mainAxisAlignment: MainAxisAlignment.center,
           spacing: 8,
-          children: [
-            CircleIndicator(
-              isActive: true,
-              activeColor: Colors.white,
-            ),
-            CircleIndicator(
-              isActive: false,
-              inactiveColor: Colors.white,
-            ),
-            CircleIndicator(
-              isActive: false,
-              inactiveColor: Colors.white,
-            ),
-          ],
+          children: List.generate(_loginImages.length, (index) {
+            return GestureDetector(
+              onTap: () => _goToImage(index),
+              child: CircleIndicator(
+                isActive: index == _currentImageIndex,
+                activeColor: Theme.of(context).colorScheme.primary,
+                inactiveColor: Colors.white,
+              ),
+            );
+          }),
         ),
         const SizedBox(height: Constants.margin),
         Text(
