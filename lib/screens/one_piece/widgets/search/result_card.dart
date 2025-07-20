@@ -21,7 +21,7 @@ class _ResultCardState extends State<ResultCard> {
 
   @override
   Widget build(BuildContext context) => Card(
-        color: Theme.of(context).colorScheme.onSecondary,
+        color: Theme.of(context).colorScheme.primaryContainer,
         child: ListTile(
           onTap: () => Navigator.pushNamed(
             context,

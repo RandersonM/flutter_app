@@ -52,7 +52,7 @@ class AvatarDrawer extends StatelessWidget {
     return Scaffold(
       body: child,
       drawer: Drawer(
-        backgroundColor: Theme.of(context).colorScheme.onSecondary,
+        backgroundColor: Theme.of(context).colorScheme.primaryContainer,
         elevation: 0.0,
         child: drawerContent,
       ),

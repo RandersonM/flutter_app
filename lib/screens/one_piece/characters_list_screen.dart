@@ -32,7 +32,7 @@ class _CharactersListScreenState extends State<CharactersListScreen> {
         bottomNavigationBar:
             const BottomNavigation(BottomNavigationPages.onePiece),
         drawer: Drawer(
-          backgroundColor: Theme.of(context).colorScheme.onSecondary,
+          backgroundColor: Theme.of(context).colorScheme.primaryContainer,
           elevation: 0.0,
           child: const Search(),
         ),

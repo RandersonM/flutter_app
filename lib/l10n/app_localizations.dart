@@ -692,7 +692,7 @@ abstract class AppLocalizations {
   /// **'Devil Fruit'**
   String get devilFruit;
 
-  /// Label for devil fruit
+  /// Text shown when character has no devil fruit
   ///
   /// In en, this message translates to:
   /// **'No Devil Fruit'**
@@ -1681,6 +1681,96 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Profile photo tapped'**
   String get profilePhotoTapped;
+
+  /// Shows the zodiac Capricorn
+  ///
+  /// In en, this message translates to:
+  /// **'Capricorn'**
+  String get zodiacCapricorn;
+
+  /// Duels screen title
+  ///
+  /// In en, this message translates to:
+  /// **'Duels'**
+  String get duels;
+
+  /// Duels screen subtitle
+  ///
+  /// In en, this message translates to:
+  /// **'Character vs Character'**
+  String get duelsSubtitle;
+
+  /// Text shown between characters in duel arena
+  ///
+  /// In en, this message translates to:
+  /// **'VS'**
+  String get versus;
+
+  /// Text shown after winner name
+  ///
+  /// In en, this message translates to:
+  /// **'Wins!'**
+  String get winner;
+
+  /// Button text to start a duel
+  ///
+  /// In en, this message translates to:
+  /// **'Start Duel'**
+  String get startDuel;
+
+  /// Text shown when duel is happening
+  ///
+  /// In en, this message translates to:
+  /// **'Battle in Progress...'**
+  String get duelInProgress;
+
+  /// Title for stats comparison section
+  ///
+  /// In en, this message translates to:
+  /// **'Character Stats'**
+  String get characterStats;
+
+  /// Title for first character selector
+  ///
+  /// In en, this message translates to:
+  /// **'Select First Fighter'**
+  String get selectFirstFighter;
+
+  /// Title for second character selector
+  ///
+  /// In en, this message translates to:
+  /// **'Select Second Fighter'**
+  String get selectSecondFighter;
+
+  /// Placeholder text for character selection
+  ///
+  /// In en, this message translates to:
+  /// **'Select a Character'**
+  String get selectACharacter;
+
+  /// Button text to randomize character selection
+  ///
+  /// In en, this message translates to:
+  /// **'Randomize'**
+  String get randomizeCharacters;
+
+  /// Button text to reset duel
+  ///
+  /// In en, this message translates to:
+  /// **'Reset'**
+  String get resetDuel;
+
+  /// Haki type pluralization
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =0 {types} =1 {type} other {types}}'**
+  String hakiType(num count);
+
+  /// Button text to start a new duel
+  ///
+  /// In en, this message translates to:
+  /// **'New Duel'**
+  String get newDuel;
 }
 
 class _AppLocalizationsDelegate

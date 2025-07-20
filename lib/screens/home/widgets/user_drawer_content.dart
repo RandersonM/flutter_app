@@ -18,7 +18,7 @@ class UserDrawerContent extends StatelessWidget {
   Widget build(BuildContext context) {
     return FuturisticBackground(
       opacity: 0.15,
-      overlayColor: Colors.black,
+      customBackgroundColor: Theme.of(context).colorScheme.primaryContainer,
       child: SafeArea(
         child: SingleChildScrollView(
           child: Column(
@@ -80,12 +80,10 @@ class UserDrawerContent extends StatelessWidget {
               ),
               
               GomuGomuDivider(
-                color: Theme.of(context).colorScheme.secondary,
+                color: Theme.of(context).colorScheme.onPrimary,
                 height: 12,
                 thickness: 1.5,
-                waveHeight: 8,
-                waveLength: 18,
-                stripes: 4,
+                
               ),
               Padding(
                 padding: const EdgeInsets.symmetric(vertical: Constants.margin),
@@ -114,6 +112,17 @@ class UserDrawerContent extends StatelessWidget {
                     ),
                     _buildFuturisticListTile(
                       context,
+                      icon: FontAwesomeIcons.personDrowning,
+                      title: AppLocalizations.of(context)!.devilFruit,
+                      onTap: () {
+                        Navigator.pushNamed(
+                          context,
+                          AppRoutes.devilFruit,
+                        );
+                      },
+                    ),
+                    _buildFuturisticListTile(
+                      context,
                       icon: Icons.person,
                       title: AppLocalizations.of(context)!.profile,
                       onTap: () {
@@ -126,12 +135,9 @@ class UserDrawerContent extends StatelessWidget {
                       padding: const EdgeInsets.symmetric(
                           vertical: Constants.margin),
                       child: GomuGomuDivider(
-                        color: Theme.of(context).colorScheme.secondary,
+                        color: Theme.of(context).colorScheme.onPrimary, 
                         height: 12,
                         thickness: 1.5,
-                        waveHeight: 8,
-                        waveLength: 18,
-                        stripes: 4,
                       ),
                     ),
                     _buildFuturisticListTile(
@@ -162,7 +168,7 @@ class UserDrawerContent extends StatelessWidget {
     bool isDestructive = false,
   }) {
     final color =
-        isDestructive ? Theme.of(context).colorScheme.error : Colors.white;
+        isDestructive ? Theme.of(context).colorScheme.onError : Colors.white;
 
     return Container(
       margin: const EdgeInsets.symmetric(

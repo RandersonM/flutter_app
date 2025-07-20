@@ -871,4 +871,58 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get profilePhotoTapped => 'Profile photo tapped';
+
+  @override
+  String get zodiacCapricorn => 'Capricorn';
+
+  @override
+  String get duels => 'Duels';
+
+  @override
+  String get duelsSubtitle => 'Character vs Character';
+
+  @override
+  String get versus => 'VS';
+
+  @override
+  String get winner => 'Wins!';
+
+  @override
+  String get startDuel => 'Start Duel';
+
+  @override
+  String get duelInProgress => 'Battle in Progress...';
+
+  @override
+  String get characterStats => 'Character Stats';
+
+  @override
+  String get selectFirstFighter => 'Select First Fighter';
+
+  @override
+  String get selectSecondFighter => 'Select Second Fighter';
+
+  @override
+  String get selectACharacter => 'Select a Character';
+
+  @override
+  String get randomizeCharacters => 'Randomize';
+
+  @override
+  String get resetDuel => 'Reset';
+
+  @override
+  String hakiType(num count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'types',
+      one: 'type',
+      zero: 'types',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get newDuel => 'New Duel';
 }

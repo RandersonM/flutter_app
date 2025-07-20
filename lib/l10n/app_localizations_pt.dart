@@ -329,7 +329,7 @@ class AppLocalizationsPt extends AppLocalizations {
   String get devilFruit => 'Fruta do Diabo';
 
   @override
-  String get noDevilFruit => 'Sem Fruta do Diabo';
+  String get noDevilFruit => 'Sem Akuma no Mi';
 
   @override
   String crew(num count) {
@@ -873,4 +873,58 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get profilePhotoTapped => 'Foto do perfil tocada';
+
+  @override
+  String get zodiacCapricorn => 'Capricórnio';
+
+  @override
+  String get duels => 'Duelos';
+
+  @override
+  String get duelsSubtitle => 'Personagem vs Personagem';
+
+  @override
+  String get versus => 'VS';
+
+  @override
+  String get winner => 'Venceu!';
+
+  @override
+  String get startDuel => 'Iniciar Duelo';
+
+  @override
+  String get duelInProgress => 'Batalha em Progresso...';
+
+  @override
+  String get characterStats => 'Stats dos Personagens';
+
+  @override
+  String get selectFirstFighter => 'Selecione o Primeiro Lutador';
+
+  @override
+  String get selectSecondFighter => 'Selecione o Segundo Lutador';
+
+  @override
+  String get selectACharacter => 'Selecione um Personagem';
+
+  @override
+  String get randomizeCharacters => 'Aleatorizar';
+
+  @override
+  String get resetDuel => 'Resetar';
+
+  @override
+  String hakiType(num count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'tipos',
+      one: 'tipo',
+      zero: 'tipos',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get newDuel => 'Novo Duelo';
 }

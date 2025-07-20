@@ -71,7 +71,7 @@ class CrewTagsSection extends StatelessWidget {
         gradient: LinearGradient(
           colors: [
             theme.colorScheme.primary.withValues(alpha: 0.1),
-            theme.colorScheme.secondary.withValues(alpha: 0.1),
+            theme.colorScheme.primaryContainer.withValues(alpha: 0.1),
           ],
         ),
         borderRadius: BorderRadius.circular(20),

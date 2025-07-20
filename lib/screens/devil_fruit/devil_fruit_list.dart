@@ -13,7 +13,6 @@ import 'package:opfan/screens/devil_fruit/widgets/devil_fruit_search_header.dart
 import 'package:opfan/screens/devil_fruit/widgets/empty_devil_fruit_list.dart';
 import 'package:opfan/utils/constants.dart';
 import 'package:opfan/widgets/molecules/default_app_bar.dart';
-import 'package:opfan/widgets/organisms/bottom_navigation.dart';
 
 class DevilFruitListScreen extends StatefulWidget {
   const DevilFruitListScreen({super.key});
@@ -47,7 +46,7 @@ class _DevilFruitListScreenState extends State<DevilFruitListScreen> {
       child: Scaffold(
         appBar: DefaultAppBar(
           title: Text(
-            'Akuma no Mi',
+            AppLocalizations.of(context)!.devilFruit,
             style: Theme.of(context).textTheme.headlineSmall?.copyWith(
                   fontWeight: FontWeight.bold,
                 ),
@@ -83,9 +82,6 @@ class _DevilFruitListScreenState extends State<DevilFruitListScreen> {
 
             return const SizedBox.shrink();
           },
-        ),
-        bottomNavigationBar: const BottomNavigation(
-          BottomNavigationPages.devilFruit,
         ),
       ),
     );

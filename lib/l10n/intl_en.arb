@@ -1763,5 +1763,106 @@
     "description": "Snackbar message when profile photo is tapped",
     "type": "text",
     "placeholders": {}
+  },
+  "zodiacCapricorn": "Capricorn",
+  "@zodiacCapricorn": {
+    "description": "Shows the zodiac Capricorn",
+    "type": "text",
+    "placeholders": {}
+  },
+  "duels": "Duels",
+  "@duels": {
+    "description": "Duels screen title",
+    "type": "text",
+    "placeholders": {}
+  },
+  "duelsSubtitle": "Character vs Character",
+  "@duelsSubtitle": {
+    "description": "Duels screen subtitle",
+    "type": "text",
+    "placeholders": {}
+  },
+  "versus": "VS",
+  "@versus": {
+    "description": "Text shown between characters in duel arena",
+    "type": "text",
+    "placeholders": {}
+  },
+  "winner": "Wins!",
+  "@winner": {
+    "description": "Text shown after winner name",
+    "type": "text",
+    "placeholders": {}
+  },
+  "startDuel": "Start Duel",
+  "@startDuel": {
+    "description": "Button text to start a duel",
+    "type": "text",
+    "placeholders": {}
+  },
+  "duelInProgress": "Battle in Progress...",
+  "@duelInProgress": {
+    "description": "Text shown when duel is happening",
+    "type": "text",
+    "placeholders": {}
+  },
+  "characterStats": "Character Stats",
+  "@characterStats": {
+    "description": "Title for stats comparison section",
+    "type": "text",
+    "placeholders": {}
+  },
+  "selectFirstFighter": "Select First Fighter",
+  "@selectFirstFighter": {
+    "description": "Title for first character selector",
+    "type": "text",
+    "placeholders": {}
+  },
+  "selectSecondFighter": "Select Second Fighter",
+  "@selectSecondFighter": {
+    "description": "Title for second character selector",
+    "type": "text",
+    "placeholders": {}
+  },
+  "selectACharacter": "Select a Character",
+  "@selectACharacter": {
+    "description": "Placeholder text for character selection",
+    "type": "text",
+    "placeholders": {}
+  },
+  "randomizeCharacters": "Randomize",
+  "@randomizeCharacters": {
+    "description": "Button text to randomize character selection",
+    "type": "text",
+    "placeholders": {}
+  },
+  "resetDuel": "Reset",
+  "@resetDuel": {
+    "description": "Button text to reset duel",
+    "type": "text",
+    "placeholders": {}
+  },
+  "hakiType": "{count, plural, =0 {types} =1 {type} other {types}}",
+  "@hakiType": {
+    "description": "Haki type pluralization",
+    "type": "text",
+    "placeholders": {
+      "count": {
+        "type": "num",
+        "example": "1"
+      }
+    }
+  },
+  "noDevilFruit": "No Devil Fruit",
+  "@noDevilFruit": {
+    "description": "Text shown when character has no devil fruit",
+    "type": "text",
+    "placeholders": {}
+  },
+  "newDuel": "New Duel",
+  "@newDuel": {
+    "description": "Button text to start a new duel",
+    "type": "text",
+    "placeholders": {}
   }
 }

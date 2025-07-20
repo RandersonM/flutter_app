@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:opfan/core/models/one_piece/custom_character_model.dart';
 import 'package:opfan/core/services/firestore_service.dart';
 import 'package:opfan/core/repository/interfaces/custom_character_repository_interface.dart';
@@ -133,7 +134,8 @@ class CustomCharacterRepository implements ICustomCharacterRepository {
               await crewRepository.setViceCaptain(crew.id!, '');
             }
           } catch (e) {
-            print('Erro ao remover personagem da tripulação ${crew.id}: $e');
+            debugPrint(
+                'Erro ao remover personagem da tripulação ${crew.id}: $e');
           }
         }
       }

@@ -13,7 +13,7 @@ class SearchHeader extends StatelessWidget {
   @override
   Widget build(BuildContext context) => DrawerHeader(
       decoration: BoxDecoration(
-        color: Theme.of(context).colorScheme.onSecondary,
+        color: Theme.of(context).colorScheme.primaryContainer,
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,

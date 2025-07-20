@@ -119,7 +119,10 @@ class _CrewCardState extends State<CrewCard> {
                             tag,
                             style: const TextStyle(fontSize: 10),
                           ),
-                          backgroundColor: Theme.of(context).colorScheme.secondary.withValues(alpha: 0.2),
+                                  backgroundColor: Theme.of(context)
+                                      .colorScheme
+                                      .primaryContainer
+                                      .withValues(alpha: 0.2),
                           materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
                           visualDensity: VisualDensity.compact,
                         )).toList(),

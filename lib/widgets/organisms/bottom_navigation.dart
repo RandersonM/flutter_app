@@ -14,7 +14,7 @@ import 'package:opfan/utils/theme.dart';
 enum BottomNavigationPages {
   home,
   onePiece,
-  devilFruit,
+  attack,
 }
 
 class BottomNavigation extends StatefulWidget {
@@ -33,7 +33,7 @@ class BottomNavigationState extends State<BottomNavigation> {
   static const List<BottomNavigationPages> _pages = <BottomNavigationPages>[
     BottomNavigationPages.home,
     BottomNavigationPages.onePiece,
-    BottomNavigationPages.devilFruit,
+    BottomNavigationPages.attack,
   ];
 
   Future<void> _navigateToPage(BottomNavigationPages page) async {
@@ -56,11 +56,11 @@ class BottomNavigationState extends State<BottomNavigation> {
         );
         break;
 
-      case BottomNavigationPages.devilFruit:
+      case BottomNavigationPages.attack:
         await Navigator.pushNamedAndRemoveUntil(
           context,
-          AppRoutes.devilFruit,
-          ModalRoute.withName(AppRoutes.devilFruit),
+          AppRoutes.duels,
+          ModalRoute.withName(AppRoutes.duels),
         );
         break;
     }
@@ -86,9 +86,9 @@ class BottomNavigationState extends State<BottomNavigation> {
           localizations.onePiece,
           OnePieceIcons.jollyRoger
         ),
-      BottomNavigationPages.devilFruit => (
-          localizations.devilFruit,
-          Icons.apple 
+      BottomNavigationPages.attack => (
+          localizations.duels,
+          FontAwesomeIcons.explosion 
         ),
     };
 
@@ -121,17 +121,7 @@ class BottomNavigationState extends State<BottomNavigation> {
           top: Constants.margin,
           bottom: Constants.margin * 0.75,
         ),
-        child: icon == Icons.apple
-            ? SvgPicture.asset(
-                'assets/svg/gomu-gomu.svg',
-                width: IconSize.medium,
-                height: IconSize.medium,
-                colorFilter: ColorFilter.mode(
-                  Theme.of(context).colorScheme.primary,
-                  BlendMode.srcIn,
-                ),
-              )
-            : Icon(
+        child: Icon(
           icon,
           size: IconSize.medium,
         ),

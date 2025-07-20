@@ -60,7 +60,7 @@ class CrewHeader extends StatelessWidget {
               end: Alignment.bottomRight,
               colors: [
                 theme.colorScheme.primary.withValues(alpha: 0.1),
-                theme.colorScheme.secondary.withValues(alpha: 0.05),
+                theme.colorScheme.primaryContainer.withValues(alpha: 0.05),
               ],
             ),
             borderRadius: BorderRadius.circular(Constants.margin * 2),

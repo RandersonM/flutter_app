@@ -18,6 +18,7 @@ import 'package:opfan/screens/devil_fruit/devil_fruit_list.dart';
 import 'package:opfan/screens/auth/login_screen.dart';
 import 'package:opfan/screens/profile/profile_screen.dart';
 import 'package:opfan/screens/custom-character/create_custom_character_screen.dart';
+import 'package:opfan/screens/duels/duels_screen.dart';
 import 'package:opfan/screens/custom-character/custom_character_list_screen.dart';
 import 'package:opfan/screens/custom-character/edit_custom_character_screen.dart';
 import 'package:opfan/screens/crews/create_crew_screen.dart';
@@ -52,6 +53,7 @@ class AppRoutes {
   static const String editCrew = '/editCrew';
   static const String listCrews = '/listCrews';
   static const String crewDetails = '/crewDetails';
+  static const String duels = '/duels';
 
   // Define which routes require authentication
   static const Set<String> _privateRoutes = {
@@ -109,14 +111,17 @@ class AppRoutes {
       case onePiece:
         return MaterialPageRouteWithoutTransition<dynamic>(
             builder: (_) => const CharactersListScreen(), settings: settings);
-      case devilFruit:
+      case duels:
         return MaterialPageRouteWithoutTransition<dynamic>(
-            builder: (_) => const DevilFruitListScreen(), settings: settings);
+            builder: (_) => const DuelsScreen(), settings: settings);
       case youtubePlayer:
         final video = settings.arguments as YouTubeVideo;
         return MaterialPageRoute<dynamic>(
             builder: (_) => YouTubePlayerScreen(video: video),
             settings: settings);
+      case devilFruit:
+        return MaterialPageRoute<dynamic>(
+            builder: (_) => const DevilFruitListScreen(), settings: settings);
       case characterSelection:
         return MaterialPageRoute<CustomCharacterModel>(
             builder: (_) => const CharacterSelectionScreen(),

@@ -57,6 +57,44 @@ class AppColors {
     900: Color(0xFF2D102C),
   });
 
+  static const int _bluePrimaryValue = 0xFF1976D2;
+
+  static const MaterialColor blue = MaterialColor(
+    _bluePrimaryValue,
+    <int, Color>{
+      50: Color(0xFFE3F2FD),
+      100: Color(0xFFBBDEFB),
+      200: Color(0xFF90CAF9),
+      300: Color(0xFF64B5F6),
+      400: Color(0xFF42A5F5),
+      500: Color(_bluePrimaryValue), // Base
+      600: Color(0xFF1565C0),
+      700: Color(0xFF0D47A1),
+      800: Color(0xFF0B3C91),
+      900: Color(0xFF082D72),
+      // Variação azul-esverdeado tipo cyan/light blue
+      1000: Color(0xFF00B0FF),
+    },
+  );
+
+  static const int _brownPrimaryValue = 0xFF795548;
+
+  static const MaterialColor brown = MaterialColor(
+    _brownPrimaryValue,
+    <int, Color>{
+      50: Color(0xFFEFEBE9),
+      100: Color(0xFFD7CCC8),
+      200: Color(0xFFBCAAA4),
+      300: Color(0xFFA1887F),
+      400: Color(0xFF8D6E63),
+      500: Color(_brownPrimaryValue), // Base
+      600: Color(0xFF6D4C41),
+      700: Color(0xFF5D4037),
+      800: Color(0xFF4E342E),
+      900: Color(0xFF3E2723),
+    },
+  );
+
   static const int _gradientPurplePrimaryValue = 0xFFFF0099;
   static const MaterialColor gradientPurple =
       MaterialColor(_gradientPurplePrimaryValue, <int, Color>{
@@ -65,14 +103,36 @@ class AppColors {
     800: Color(0xFF493240)
   });
 
-  static const int _orangePrimaryValue = 0xFFFA6A00;
-  static const MaterialColor orange =
-      MaterialColor(_orangePrimaryValue, <int, Color>{
-    100: Color(0xFFFFF7F2),
-    500: Color(_orangePrimaryValue),
-    800: Color(0xFF8F3D00),
-  });
+//   static const int _orangePrimaryValue = 0xFFFA6A00;
+//   static const MaterialColor orange =
+//       MaterialColor(_orangePrimaryValue, <int, Color>{
+//     100: Color(0xFFFFF7F2),
+//     500: Color(_orangePrimaryValue),
+//     800: Color(0xFF8F3D00),
+//   });
+  static const int _orangePrimaryValue = 0xFFFF6D1B;
+
+  static const MaterialColor orange = MaterialColor(
+    _orangePrimaryValue,
+    <int, Color>{
+      50: Color(0xFFFFF3E5),
+      100: Color(0xFFFFE0CC),
+      200: Color(0xFFFFC2A3),
+      300: Color(0xFFFFA47A),
+      400: Color(0xFFFF8752),
+      500: Color(_orangePrimaryValue), // Base
+      600: Color(0xFFE65F18),
+      700: Color(0xFFCC5315),
+      800: Color(0xFFB34712),
+      900: Color(0xFF8F3D00),
+      // Variação amber-like
+      1000: Color(0xFFFFC107), // semelhante ao amber[500]
+    },
+  );
+
 }
+
+
 
 class _Typography {
   // Legacy names for compatibility
@@ -181,10 +241,15 @@ ThemeData appTheme = ThemeData(
   ).copyWith(
     primary: AppColors.purple[600]!,
     onPrimary: AppColors.purple[900],
-    secondary: AppColors.purple[300],
-    onSecondary: AppColors.purple[100],
+    onPrimaryContainer: AppColors.purple[300],
+    primaryContainer: AppColors.purple[100],
+    secondary: AppColors.brown[700]!,
+    onSecondary: AppColors.brown[900]!,
+    secondaryContainer: AppColors.orange[100],
+    tertiary: AppColors.orange[700]!,
+    onTertiary: AppColors.orange[1000]!,
     error: AppColors.red[500]!,
-    onError: AppColors.red[100],
+    onError: AppColors.red[800],
     surface: AppColors.grey[100],
     onSurface: AppColors.grey[900],
     surfaceContainerLow: AppColors.grey[100],
