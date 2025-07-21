@@ -4,9 +4,10 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:opfan/core/models/one_piece/custom_character_model.dart';
+import 'package:opfan/core/repository/featured_character_repository.dart';
 
 
-import 'package:opfan/core/services/characters_backend_service.dart';
+
 
 abstract class SearchState extends Equatable {
   const SearchState();
@@ -80,7 +81,7 @@ class SearchCubit extends Cubit<SearchState> {
     }
   }
 
-  final CharactersBackendService backend;
+  final FeaturedCharacterRepository backend;
   List<CustomCharacterModel> _queryResults = [];
   String _query = '';
   final List<String> _statusFilters = <String>[];
@@ -102,7 +103,8 @@ class SearchCubit extends Cubit<SearchState> {
     ));
 
     try {
-      List<CustomCharacterModel> partialResults = await backend.fetchAll();
+      List<CustomCharacterModel> partialResults =
+          await backend.getAllOnePieceCharacters();
 
       if (_query.isNotEmpty) {
         partialResults = _applySearch(partialResults);
@@ -130,17 +132,63 @@ class SearchCubit extends Cubit<SearchState> {
     List<CustomCharacterModel> result = [];
     if (_statusFilters.isNotEmpty) {
       for (CustomCharacterModel character in characters) {
-        character.affiliations.where((String affiliation) {
-          if (_statusFilters.contains(affiliation)) {
-            result.add(character);
-            return true;
-          } else {
-            return false;
+        bool matchesFilter = false;
+
+        for (String affiliation in character.affiliations) {
+          for (String filter in _statusFilters) {
+            if (_isStrawHatFilter(filter) && _isStrawHatCharacter(character)) {
+              matchesFilter = true;
+              break;
+            }
+            if (affiliation.trim() == filter.trim()) {
+              matchesFilter = true;
+              break;
+            }
           }
-        }).toList();
+          if (matchesFilter) break;
+        }
+
+        if (!matchesFilter &&
+            character.crew != null &&
+            character.crew!.isNotEmpty) {
+          for (String filter in _statusFilters) {
+            if (_isStrawHatFilter(filter) && _isStrawHatCharacter(character)) {
+              matchesFilter = true;
+              break;
+            }
+            if (character.crew!.trim() == filter.trim()) {
+              matchesFilter = true;
+              break;
+            }
+          }
+        }
+
+        if (matchesFilter) {
+          result.add(character);
+        }
       }
     }
     return result.isEmpty ? characters : result;
+  }
+
+  bool _isStrawHatFilter(String filter) {
+    return filter.toLowerCase().contains('chapéu de palha') ||
+        filter.toLowerCase().contains('straw hat');
+  }
+
+  bool _isStrawHatCharacter(CustomCharacterModel character) {
+    if (character.crew != null &&
+        character.crew!.toLowerCase().contains('straw hat pirates')) {
+      return true;
+    }
+    
+    for (String affiliation in character.affiliations) {
+      if (affiliation.toLowerCase().contains('straw hat pirates')) {
+        return true;
+      }
+    }
+    
+    return false;
   }
 
   Future<void> addStatusFilter(String status) async {
@@ -167,9 +215,15 @@ class SearchCubit extends Cubit<SearchState> {
       if (_matches(characterName)) return true;
       if (_matches(characterNickname ?? '')) return true;
 
-      return character.affiliations.any((String affiliation) {
+      if (character.affiliations.any((String affiliation) {
         return _matches(affiliation);
-      });
+      })) return true;
+
+      if (character.crew != null && character.crew!.isNotEmpty) {
+        if (_matches(character.crew!)) return true;
+      }
+
+      return false;
     }).toList();
   }
 

@@ -432,6 +432,13 @@ class AppLocalizationsPt extends AppLocalizations {
   String get skipForNow => 'Pular por agora';
 
   @override
+  String get loginBannerTitle => 'Faça login para acessar recursos exclusivos';
+
+  @override
+  String get loginBannerSubtitle =>
+      'Crie personagens, participe de duelos e muito mais';
+
+  @override
   String get loginWelcomeSubtitle =>
       'Explore o mundo de One Piece e descubra seus personagens favoritos';
 
@@ -759,6 +766,18 @@ class AppLocalizationsPt extends AppLocalizations {
   @override
   String get createFirstCustomCharacter =>
       'Crie seu primeiro personagem customizado!';
+
+  @override
+  String get onePieceCharacters => 'Personagens One Piece';
+
+  @override
+  String get customCharacters => 'Personagens Customizados';
+
+  @override
+  String get noOnePieceCharacters => 'Nenhum personagem One Piece disponível';
+
+  @override
+  String get noCustomCharacters => 'Nenhum personagem customizado disponível';
 
   @override
   String get dualWielder => 'Dual Wielder';

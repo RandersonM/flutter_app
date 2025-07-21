@@ -811,6 +811,18 @@
     "type": "text",
     "placeholders": {}
   },
+  "loginBannerTitle": "Sign in to access exclusive features",
+  "@loginBannerTitle": {
+    "description": "Login banner title for unauthenticated users",
+    "type": "text",
+    "placeholders": {}
+  },
+  "loginBannerSubtitle": "Create characters, participate in duels and much more",
+  "@loginBannerSubtitle": {
+    "description": "Login banner subtitle for unauthenticated users",
+    "type": "text",
+    "placeholders": {}
+  },
   "loginWelcomeSubtitle": "Explore the world of One Piece and discover your favorite characters",
   "@loginWelcomeSubtitle": {
     "description": "Subtitle shown on the login screen to invite users to explore One Piece characters.",
@@ -1527,6 +1539,30 @@
   "createFirstCustomCharacter": "Create your first custom character!",
   "@createFirstCustomCharacter": {
     "description": "Message encouraging user to create first custom character",
+    "type": "text",
+    "placeholders": {}
+  },
+  "onePieceCharacters": "One Piece Characters",
+  "@onePieceCharacters": {
+    "description": "Label for One Piece characters tab",
+    "type": "text",
+    "placeholders": {}
+  },
+  "customCharacters": "Custom Characters",
+  "@customCharacters": {
+    "description": "Label for custom characters tab",
+    "type": "text",
+    "placeholders": {}
+  },
+  "noOnePieceCharacters": "No One Piece characters available",
+  "@noOnePieceCharacters": {
+    "description": "Message when no One Piece characters are available",
+    "type": "text",
+    "placeholders": {}
+  },
+  "noCustomCharacters": "No custom characters available",
+  "@noCustomCharacters": {
+    "description": "Message when no custom characters are available",
     "type": "text",
     "placeholders": {}
   },

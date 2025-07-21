@@ -6,7 +6,7 @@ import 'package:opfan/core/auth/models/user_model.dart';
 import 'package:opfan/screens/one_piece/blocs/search_cubit.dart';
 import 'package:opfan/core/services/environment_service.dart';
 import 'package:opfan/core/services/service_locator.dart';
-import 'package:opfan/core/models/one_piece/featured_character.dart';
+import 'package:opfan/core/models/one_piece/today_character.dart';
 import 'l10n/app_localizations.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'firebase_options.dart';
@@ -24,7 +24,7 @@ void main() async {
   
   await Hive.initFlutter();
 
-  Hive.registerAdapter(FeaturedCharacterAdapter());
+  Hive.registerAdapter(TodayCharacterAdapter());
   Hive.registerAdapter(UserModelAdapter());
 
   try {

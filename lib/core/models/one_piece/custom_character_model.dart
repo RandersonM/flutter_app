@@ -50,20 +50,24 @@ class CustomCharacterModel {
     return CustomCharacterModel(
       id: documentId,
       userId: data['userId'] as String?,
-      name: data['name'] as String,
+      name: data['name'] as String? ?? 'Unknown Character',
       nickname: data['nickname'] as String?,
       devilFruit: data['devilFruit'] as String?,
       haki: data['haki'] != null 
           ? List<String>.from(data['haki'] as List)
           : null,
-      affiliations: List<String>.from(data['affiliations'] as List),
-      image: data['image'] as String,
-      occupation: List<String>.from(data['occupation'] as List),
+      affiliations: data['affiliations'] != null
+          ? List<String>.from(data['affiliations'] as List)
+          : ['Unknown'],
+      image: data['image'] as String? ?? '',
+      occupation: data['occupation'] != null
+          ? List<String>.from(data['occupation'] as List)
+          : ['Unknown'],
       fightingStyle: data['fightingStyle'] != null
           ? FightingStyleModel.fromMap(
               data['fightingStyle'] as Map<String, dynamic>)
           : null,
-      bounty: data['bounty'] as String,
+      bounty: data['bounty'] as String? ?? '0',
       signo: data['signo'] as String?,
       crew: data['crew'] as String?,
       status: data['status'] as String?,

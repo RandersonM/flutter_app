@@ -5,18 +5,22 @@ import 'dart:math';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:opfan/core/models/one_piece/custom_character_model.dart';
-import 'package:opfan/core/services/characters_backend_service.dart';
+import 'package:opfan/core/repository/featured_character_repository.dart';
+import 'package:opfan/core/repository/custom_character_repository.dart';
 import 'duels_event.dart';
 import 'duels_state.dart';
 
 class DuelsBloc extends Bloc<DuelsEvent, DuelsState> {
-  final CharactersBackendService _charactersService;
+  final FeaturedCharacterRepository _featuredCharacterRepository;
+  final CustomCharacterRepository _customCharacterRepository;
   final Random _random = Random();
 
   DuelsBloc({
-    required CharactersBackendService charactersService,
-  }) : _charactersService = charactersService,
-       super(const DuelsInitial()) {
+    required FeaturedCharacterRepository featuredCharacterRepository,
+    required CustomCharacterRepository customCharacterRepository,
+  })  : _featuredCharacterRepository = featuredCharacterRepository,
+        _customCharacterRepository = customCharacterRepository,
+        super(const DuelsInitial()) {
     on<LoadDuelsScreen>(_onLoadDuelsScreen);
     on<SelectFirstCharacter>(_onSelectFirstCharacter);
     on<SelectSecondCharacter>(_onSelectSecondCharacter);
@@ -33,11 +37,17 @@ class DuelsBloc extends Bloc<DuelsEvent, DuelsState> {
     try {
       emit(const DuelsLoading());
 
-      // Carregar personagens disponíveis
-      final characters = await _charactersService.fetch(100);
+    
+
+      final onePieceCharacters = await _featuredCharacterRepository
+          .getAllOnePieceCharacters(limit: 100);
+
+      final customCharacters =
+          await _customCharacterRepository.getAllCustomCharacters();
+      final allCharacters = [...customCharacters, ...onePieceCharacters];
 
       emit(DuelsReady(
-        availableCharacters: characters,
+        availableCharacters: allCharacters,
       ));
     } catch (e) {
       debugPrint('DuelsBloc: Error loading characters - $e');

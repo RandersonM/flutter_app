@@ -10,6 +10,12 @@ abstract class ICustomCharacterRepository {
     int? limit,
   });
   
+  Future<List<CustomCharacterModel>> getAllCustomCharacters({
+    String? orderBy,
+    bool descending = false,
+    int? limit,
+  });
+  
   Future<void> updateCustomCharacter(String documentId, CustomCharacterModel character);
   
   Future<void> deleteCustomCharacter(String documentId);

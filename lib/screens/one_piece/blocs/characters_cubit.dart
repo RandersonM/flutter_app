@@ -6,7 +6,7 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter/foundation.dart';
 
 import 'package:opfan/core/models/one_piece/custom_character_model.dart';
-import 'package:opfan/core/services/characters_backend_service.dart';
+import 'package:opfan/core/repository/featured_character_repository.dart';
 
 abstract class CharactersState extends Equatable {
   const CharactersState();
@@ -57,19 +57,15 @@ class CharactersError extends CharactersState {
 class CharactersCubit extends Cubit<CharactersState> {
   CharactersCubit(this.backend) : super(CharactersInitial());
 
-  final CharactersBackendService backend;
+  final FeaturedCharacterRepository backend;
   List<CustomCharacterModel> _characters = [];
-  int _pages = 0;
 
   List<CustomCharacterModel> get characters =>
       List<CustomCharacterModel>.from(_characters);
   bool get hasMoreData {
-    if (backend.totalCount == 0) {
-      return true;
-    }
-
-    final result = _characters.length < backend.totalCount;
-    return result;
+    // With CustomCharacterRepository, we load all characters at once
+    // so there's no more data after the first load
+    return _characters.isEmpty;
   }
 
   bool isLoading() {
@@ -90,8 +86,8 @@ class CharactersCubit extends Cubit<CharactersState> {
     ));
 
     try {
-      _pages += 10;
-      _characters = await backend.fetch(_pages);
+      // Get all One Piece characters from global collection
+      _characters = await backend.getAllOnePieceCharacters();
 
       await Future.delayed(const Duration(seconds: 1));
 
@@ -113,7 +109,6 @@ class CharactersCubit extends Cubit<CharactersState> {
 
   void reset() {
     _characters = [];
-    _pages = 0;
     emit(CharactersInitial());
   }
 }

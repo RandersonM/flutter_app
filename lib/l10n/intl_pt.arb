@@ -428,6 +428,18 @@
     "type": "text",
     "placeholders": {}
   },
+  "loginBannerTitle": "Faça login para acessar recursos exclusivos",
+  "@loginBannerTitle": {
+    "description": "Login banner title for unauthenticated users",
+    "type": "text",
+    "placeholders": {}
+  },
+  "loginBannerSubtitle": "Crie personagens, participe de duelos e muito mais",
+  "@loginBannerSubtitle": {
+    "description": "Login banner subtitle for unauthenticated users",
+    "type": "text",
+    "placeholders": {}
+  },
   "loginWelcomeSubtitle": "Explore o mundo de One Piece e descubra seus personagens favoritos",
   "@loginWelcomeSubtitle": {
     "description": "Subtítulo mostrado na tela de login convidando o usuário a explorar os personagens de One Piece.",
@@ -1467,6 +1479,30 @@
   "createFirstCustomCharacter": "Crie seu primeiro personagem customizado!",
   "@createFirstCustomCharacter": {
     "description": "Message encouraging user to create first custom character",
+    "type": "text",
+    "placeholders": {}
+  },
+  "onePieceCharacters": "Personagens One Piece",
+  "@onePieceCharacters": {
+    "description": "Label for One Piece characters tab",
+    "type": "text",
+    "placeholders": {}
+  },
+  "customCharacters": "Personagens Customizados",
+  "@customCharacters": {
+    "description": "Label for custom characters tab",
+    "type": "text",
+    "placeholders": {}
+  },
+  "noOnePieceCharacters": "Nenhum personagem One Piece disponível",
+  "@noOnePieceCharacters": {
+    "description": "Message when no One Piece characters are available",
+    "type": "text",
+    "placeholders": {}
+  },
+  "noCustomCharacters": "Nenhum personagem customizado disponível",
+  "@noCustomCharacters": {
+    "description": "Message when no custom characters are available",
     "type": "text",
     "placeholders": {}
   },

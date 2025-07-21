@@ -154,7 +154,10 @@ class _LoginScreenState extends State<LoginScreen> {
       }
     }
 
-    Navigator.of(context).pushReplacementNamed(AppRoutes.home);
+    Navigator.of(context).pushNamedAndRemoveUntil(
+      AppRoutes.home,
+      (route) => false,
+    );
   }
 
   Widget _buildWelcomeText() {
@@ -231,7 +234,10 @@ class _LoginScreenState extends State<LoginScreen> {
   Widget _buildSkipButton() {
     return TextButton(
       onPressed: () {
-        Navigator.of(context).pushReplacementNamed(AppRoutes.home);
+        Navigator.of(context).pushNamedAndRemoveUntil(
+          AppRoutes.home,
+          (route) => false,
+        );
       },
       child: Text(
         AppLocalizations.of(context)!.skipForNow,

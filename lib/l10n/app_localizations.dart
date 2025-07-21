@@ -878,6 +878,18 @@ abstract class AppLocalizations {
   /// **'Skip for now'**
   String get skipForNow;
 
+  /// Login banner title for unauthenticated users
+  ///
+  /// In en, this message translates to:
+  /// **'Sign in to access exclusive features'**
+  String get loginBannerTitle;
+
+  /// Login banner subtitle for unauthenticated users
+  ///
+  /// In en, this message translates to:
+  /// **'Create characters, participate in duels and much more'**
+  String get loginBannerSubtitle;
+
   /// Subtitle shown on the login screen to invite users to explore One Piece characters.
   ///
   /// In en, this message translates to:
@@ -1477,6 +1489,30 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Create your first custom character!'**
   String get createFirstCustomCharacter;
+
+  /// Label for One Piece characters tab
+  ///
+  /// In en, this message translates to:
+  /// **'One Piece Characters'**
+  String get onePieceCharacters;
+
+  /// Label for custom characters tab
+  ///
+  /// In en, this message translates to:
+  /// **'Custom Characters'**
+  String get customCharacters;
+
+  /// Message when no One Piece characters are available
+  ///
+  /// In en, this message translates to:
+  /// **'No One Piece characters available'**
+  String get noOnePieceCharacters;
+
+  /// Message when no custom characters are available
+  ///
+  /// In en, this message translates to:
+  /// **'No custom characters available'**
+  String get noCustomCharacters;
 
   /// Fighting type option for dual wielder
   ///

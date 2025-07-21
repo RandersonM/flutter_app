@@ -33,6 +33,12 @@ class CharacterLocalizationMapper {
       case 'vice-captain':
       case 'vice captain':
         return l10n.viceCaptain;
+      case 'helmsman':
+        return l10n.helmsman;
+      case 'boatswain':
+        return l10n.boatswain;
+      case 'combatent':
+        return l10n.fighter;
       default:
         return occupation;
     }
