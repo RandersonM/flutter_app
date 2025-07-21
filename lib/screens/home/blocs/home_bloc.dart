@@ -4,19 +4,20 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:opfan/core/services/youtube_service.dart';
-import 'package:opfan/core/services/featured_character_service.dart';
+import 'package:opfan/core/repository/featured_character_repository.dart';
 import 'home_event.dart';
 import 'home_state.dart';
 
+
 class HomeBloc extends Bloc<HomeEvent, HomeState> {
   final YouTubeService _youTubeService;
-  final FeaturedCharacterService _featuredCharacterService;
+  final FeaturedCharacterRepository _featuredCharacterRepository;
 
   HomeBloc({
     required YouTubeService youTubeService,
-    required FeaturedCharacterService featuredCharacterService,
+    required FeaturedCharacterRepository featuredCharacterRepository,
   })  : _youTubeService = youTubeService,
-        _featuredCharacterService = featuredCharacterService,
+        _featuredCharacterRepository = featuredCharacterRepository,
         super(const HomeInitial()) {
     on<LoadFeaturedCharacter>(_onLoadFeaturedCharacter);
     on<LoadRandomCharacter>(_onLoadRandomCharacter);
@@ -34,10 +35,9 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     try {
       emit(const HomeLoading());
 
-      await _featuredCharacterService.init();
-
       final character =
-          await _featuredCharacterService.getTodaysFeaturedCharacter();
+          await _featuredCharacterRepository.getTodaysFeaturedCharacter() ??
+              await _featuredCharacterRepository.getRandomCharacter();
 
       emit(HomeLoaded(
         featuredCharacter: character,
@@ -62,7 +62,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
         emit(const HomeLoading());
       }
 
-      final character = await _featuredCharacterService.getRandomCharacter();
+      final character = await _featuredCharacterRepository.getRandomCharacter();
 
       emit(HomeLoaded(
         featuredCharacter: character,
@@ -85,7 +85,8 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
       emit(const HomeLoading());
 
       final character =
-          await _featuredCharacterService.getTodaysFeaturedCharacter();
+          await _featuredCharacterRepository.getTodaysFeaturedCharacter() ??
+              await _featuredCharacterRepository.getRandomCharacter();
 
       emit(HomeLoaded(
         featuredCharacter: character,
@@ -140,7 +141,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     final currentState = state;
     if (currentState is! HomeLoaded) return;
 
-    await _featuredCharacterService.saveSelectedCharacter(event.character);
+    await _featuredCharacterRepository.saveSelectedCharacter(event.character);
 
     emit(currentState.copyWith(
       featuredCharacter: event.character,

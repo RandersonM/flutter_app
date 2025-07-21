@@ -377,7 +377,7 @@ abstract class AppLocalizations {
   /// Label for character age field
   ///
   /// In en, this message translates to:
-  /// **'Idade'**
+  /// **'Age'**
   String get age;
 
   /// Label for character birth date field
@@ -692,7 +692,7 @@ abstract class AppLocalizations {
   /// **'Devil Fruit'**
   String get devilFruit;
 
-  /// Label for devil fruit
+  /// Text shown when character has no devil fruit
   ///
   /// In en, this message translates to:
   /// **'No Devil Fruit'**
@@ -877,6 +877,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Skip for now'**
   String get skipForNow;
+
+  /// Login banner title for unauthenticated users
+  ///
+  /// In en, this message translates to:
+  /// **'Sign in to access exclusive features'**
+  String get loginBannerTitle;
+
+  /// Login banner subtitle for unauthenticated users
+  ///
+  /// In en, this message translates to:
+  /// **'Create characters, participate in duels and much more'**
+  String get loginBannerSubtitle;
 
   /// Subtitle shown on the login screen to invite users to explore One Piece characters.
   ///
@@ -1478,6 +1490,30 @@ abstract class AppLocalizations {
   /// **'Create your first custom character!'**
   String get createFirstCustomCharacter;
 
+  /// Label for One Piece characters tab
+  ///
+  /// In en, this message translates to:
+  /// **'One Piece Characters'**
+  String get onePieceCharacters;
+
+  /// Label for custom characters tab
+  ///
+  /// In en, this message translates to:
+  /// **'Custom Characters'**
+  String get customCharacters;
+
+  /// Message when no One Piece characters are available
+  ///
+  /// In en, this message translates to:
+  /// **'No One Piece characters available'**
+  String get noOnePieceCharacters;
+
+  /// Message when no custom characters are available
+  ///
+  /// In en, this message translates to:
+  /// **'No custom characters available'**
+  String get noCustomCharacters;
+
   /// Fighting type option for dual wielder
   ///
   /// In en, this message translates to:
@@ -1681,6 +1717,312 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Profile photo tapped'**
   String get profilePhotoTapped;
+
+  /// Shows the zodiac Capricorn
+  ///
+  /// In en, this message translates to:
+  /// **'Capricorn'**
+  String get zodiacCapricorn;
+
+  /// Duels screen title
+  ///
+  /// In en, this message translates to:
+  /// **'Duels'**
+  String get duels;
+
+  /// Duels screen subtitle
+  ///
+  /// In en, this message translates to:
+  /// **'Character vs Character'**
+  String get duelsSubtitle;
+
+  /// Text shown between characters in duel arena
+  ///
+  /// In en, this message translates to:
+  /// **'VS'**
+  String get versus;
+
+  /// Text shown after winner name
+  ///
+  /// In en, this message translates to:
+  /// **'Wins!'**
+  String get winner;
+
+  /// Button text to start a duel
+  ///
+  /// In en, this message translates to:
+  /// **'Start Duel'**
+  String get startDuel;
+
+  /// Text shown when duel is happening
+  ///
+  /// In en, this message translates to:
+  /// **'Battle in Progress...'**
+  String get duelInProgress;
+
+  /// Title for stats comparison section
+  ///
+  /// In en, this message translates to:
+  /// **'Character Stats'**
+  String get characterStats;
+
+  /// Title for first character selector
+  ///
+  /// In en, this message translates to:
+  /// **'Select First Fighter'**
+  String get selectFirstFighter;
+
+  /// Title for second character selector
+  ///
+  /// In en, this message translates to:
+  /// **'Select Second Fighter'**
+  String get selectSecondFighter;
+
+  /// Placeholder text for character selection
+  ///
+  /// In en, this message translates to:
+  /// **'Select a Character'**
+  String get selectACharacter;
+
+  /// Button text to randomize character selection
+  ///
+  /// In en, this message translates to:
+  /// **'Randomize'**
+  String get randomizeCharacters;
+
+  /// Button text to reset duel
+  ///
+  /// In en, this message translates to:
+  /// **'Reset'**
+  String get resetDuel;
+
+  /// Haki type pluralization
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =0 {types} =1 {type} other {types}}'**
+  String hakiType(num count);
+
+  /// Button text to start a new duel
+  ///
+  /// In en, this message translates to:
+  /// **'New Duel'**
+  String get newDuel;
+
+  /// Title for account settings section in profile
+  ///
+  /// In en, this message translates to:
+  /// **'Account Settings'**
+  String get accountSettings;
+
+  /// Menu item to edit profile
+  ///
+  /// In en, this message translates to:
+  /// **'Edit Profile'**
+  String get editProfile;
+
+  /// Subtitle for edit profile menu item
+  ///
+  /// In en, this message translates to:
+  /// **'Update your personal information'**
+  String get editProfileSubtitle;
+
+  /// Menu item for notifications settings
+  ///
+  /// In en, this message translates to:
+  /// **'Notifications'**
+  String get notifications;
+
+  /// Subtitle for notifications menu item
+  ///
+  /// In en, this message translates to:
+  /// **'Manage your notification preferences'**
+  String get notificationsSubtitle;
+
+  /// Title for app settings section in profile
+  ///
+  /// In en, this message translates to:
+  /// **'App Settings'**
+  String get appSettings;
+
+  /// Menu item for language settings
+  ///
+  /// In en, this message translates to:
+  /// **'Language'**
+  String get language;
+
+  /// Subtitle for language menu item
+  ///
+  /// In en, this message translates to:
+  /// **'Change app language'**
+  String get languageSubtitle;
+
+  /// Menu item for theme settings
+  ///
+  /// In en, this message translates to:
+  /// **'Theme'**
+  String get theme;
+
+  /// Text for dark theme option
+  ///
+  /// In en, this message translates to:
+  /// **'Dark theme'**
+  String get darkTheme;
+
+  /// Text for light theme option
+  ///
+  /// In en, this message translates to:
+  /// **'Light theme'**
+  String get lightTheme;
+
+  /// Snackbar message when dark theme is activated
+  ///
+  /// In en, this message translates to:
+  /// **'Dark theme activated'**
+  String get darkThemeActivated;
+
+  /// Snackbar message when light theme is activated
+  ///
+  /// In en, this message translates to:
+  /// **'Light theme activated'**
+  String get lightThemeActivated;
+
+  /// Title for support section in profile
+  ///
+  /// In en, this message translates to:
+  /// **'Support'**
+  String get support;
+
+  /// Menu item for help and support
+  ///
+  /// In en, this message translates to:
+  /// **'Help & Support'**
+  String get helpSupport;
+
+  /// Subtitle for help and support menu item
+  ///
+  /// In en, this message translates to:
+  /// **'Get help and contact support'**
+  String get helpSupportSubtitle;
+
+  /// Menu item for about section
+  ///
+  /// In en, this message translates to:
+  /// **'About'**
+  String get about;
+
+  /// Subtitle for about menu item
+  ///
+  /// In en, this message translates to:
+  /// **'App version and information'**
+  String get aboutSubtitle;
+
+  /// Validation message for minimum name length.
+  ///
+  /// In en, this message translates to:
+  /// **'Name must be at least 3 characters'**
+  String get nameMinLength;
+
+  /// Section title for tags.
+  ///
+  /// In en, this message translates to:
+  /// **'Tags'**
+  String get tags;
+
+  /// Message when no tags are present.
+  ///
+  /// In en, this message translates to:
+  /// **'No tags added'**
+  String get noTagsAdded;
+
+  /// Section title for pirate flag.
+  ///
+  /// In en, this message translates to:
+  /// **'Pirate Flag (Jolly Roger)'**
+  String get pirateFlagSectionTitle;
+
+  /// Title for pirate flag image.
+  ///
+  /// In en, this message translates to:
+  /// **'Crew Pirate Flag'**
+  String get pirateFlagTitle;
+
+  /// Label for AI prompt field.
+  ///
+  /// In en, this message translates to:
+  /// **'AI Prompt'**
+  String get aiPromptLabel;
+
+  /// Hint for pirate flag prompt.
+  ///
+  /// In en, this message translates to:
+  /// **'Ex: pirate flag with skull and crossed swords'**
+  String get pirateFlagPromptHint;
+
+  /// Button text to generate pirate flag.
+  ///
+  /// In en, this message translates to:
+  /// **'Generate Flag'**
+  String get generateFlag;
+
+  /// Section title for crew boat.
+  ///
+  /// In en, this message translates to:
+  /// **'Crew Boat'**
+  String get crewBoatSectionTitle;
+
+  /// Hint for boat name field.
+  ///
+  /// In en, this message translates to:
+  /// **'Ex: Going Merry'**
+  String get boatNameHint;
+
+  /// Button text to generate boat.
+  ///
+  /// In en, this message translates to:
+  /// **'Generate Boat'**
+  String get generateBoat;
+
+  /// Title for boat image.
+  ///
+  /// In en, this message translates to:
+  /// **'Crew Boat'**
+  String get boatTitle;
+
+  /// Info text about using AI prompts.
+  ///
+  /// In en, this message translates to:
+  /// **'Use descriptive prompts to generate unique images for your crew. Generated images will be saved automatically.'**
+  String get aiPromptInfo;
+
+  /// Section title for fighting style details card.
+  ///
+  /// In en, this message translates to:
+  /// **'Fighting Style'**
+  String get fightingStyleSectionTitle;
+
+  /// Label for the name of the fighting style.
+  ///
+  /// In en, this message translates to:
+  /// **'Style Name'**
+  String get fightingStyleNameLabel;
+
+  /// Label for the type of fighting style.
+  ///
+  /// In en, this message translates to:
+  /// **'Fighting Type'**
+  String get fightingStyleTypeLabel;
+
+  /// Label for the weapons used in the fighting style.
+  ///
+  /// In en, this message translates to:
+  /// **'Weapons'**
+  String get fightingStyleWeaponsLabel;
+
+  /// Label for the attacks of the fighting style.
+  ///
+  /// In en, this message translates to:
+  /// **'Attacks'**
+  String get fightingStyleAttacksLabel;
 }
 
 class _AppLocalizationsDelegate

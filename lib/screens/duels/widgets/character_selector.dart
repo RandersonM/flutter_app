@@ -31,31 +31,41 @@ class CharacterSelector extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     
-    return Container(
-      padding: const EdgeInsets.all(Constants.margin * 2),
-      decoration: BoxDecoration(
-        color: Colors.black.withValues(alpha: 0.3),
-        borderRadius: BorderRadius.circular(Constants.margin * 2),
-        border: Border.all(
-          color: Colors.white.withValues(alpha: 0.2),
-          width: 1,
+    return Center(
+      child: Container(
+        width: double.infinity,
+        constraints: const BoxConstraints(
+          minHeight: 200,
+          maxWidth: 350,
         ),
-      ),
-      child: Column(
-        spacing: Constants.margin,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          Text(
-            title,
-            style: theme.textTheme.titleLarge?.copyWith(
-              fontWeight: FontWeight.bold),
+        padding: const EdgeInsets.all(Constants.margin * 2),
+        decoration: BoxDecoration(
+          color: Colors.black.withValues(alpha: 0.3),
+          borderRadius: BorderRadius.circular(Constants.margin * 2),
+          border: Border.all(
+            color: Colors.white.withValues(alpha: 0.2),
+            width: 1,
           ),
-          
-          if (selectedCharacter != null)
-            _buildSelectedCharacter(context)
-          else
-            _buildCharacterSelection(context),
-        ],
+        ),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Text(
+              title,
+              style: theme.textTheme.titleLarge?.copyWith(
+                fontWeight: FontWeight.bold,
+              ),
+              textAlign: TextAlign.center,
+            ),
+            const SizedBox(height: Constants.margin),
+            
+            if (selectedCharacter != null)
+              _buildSelectedCharacter(context)
+            else
+              _buildCharacterSelection(context),
+          ],
+        ),
       ),
     );
   }
@@ -65,7 +75,8 @@ class CharacterSelector extends StatelessWidget {
     final theme = Theme.of(context);
     
     return Column(
-      spacing: Constants.margin,
+      mainAxisSize: MainAxisSize.min,
+      crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         Container(
           width: 120,
@@ -89,6 +100,8 @@ class CharacterSelector extends StatelessWidget {
           ),
         ),
         
+        const SizedBox(height: Constants.margin),
+        
         Text(
           selectedCharacter!.name,
           style: theme.textTheme.titleMedium?.copyWith(
@@ -98,6 +111,7 @@ class CharacterSelector extends StatelessWidget {
         ),
         
         if (selectedCharacter!.nickname != null) ...[
+          const SizedBox(height: Constants.margin * 0.5),
           Text(
             selectedCharacter!.nickname!,
             style: theme.textTheme.bodyMedium?.copyWith(
@@ -106,8 +120,9 @@ class CharacterSelector extends StatelessWidget {
             textAlign: TextAlign.center,
           ),
         ],
-         
+        
         if (selectedCharacter!.bounty.isNotEmpty) ...[
+          const SizedBox(height: Constants.margin),
           Container(
             padding: const EdgeInsets.symmetric(
               horizontal: Constants.margin,
@@ -124,43 +139,51 @@ class CharacterSelector extends StatelessWidget {
               ),
             ),
           ),
-          const SizedBox(height: Constants.margin),
         ],
+        
+        const SizedBox(height: Constants.margin),
         
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
-      
-            ElevatedButton.icon(
-              onPressed: () {
-                Navigator.pushNamed(
-                  context,
-                  AppRoutes.characterDetails,
-                  arguments: selectedCharacter,
-                );
-              },
-              icon: const Icon(Icons.info_outline, size: 16),
-              label: Text(l10n.statistics),
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.blue.withValues(alpha: 0.7),
-                foregroundColor: Colors.white,
-                padding: const EdgeInsets.symmetric(
-                  horizontal: Constants.margin,
-                  vertical: Constants.margin * 0.5,
+            Expanded(
+              child: ElevatedButton.icon(
+                onPressed: () {
+                  Navigator.pushNamed(
+                    context,
+                    AppRoutes.characterDetails,
+                    arguments: selectedCharacter,
+                  );
+                },
+                icon: const Icon(Icons.info_outline, size: 16),
+                label: Text(l10n.statistics),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.blue.withValues(alpha: 0.7),
+                  foregroundColor: Colors.white,
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: Constants.margin,
+                    vertical: Constants.margin * 0.5,
+                  ),
                 ),
               ),
             ),
             
-            ElevatedButton.icon(
-              onPressed: onClearSelection,
-              icon: const Icon(Icons.clear, size: 16),
-              label: Text(l10n.clear),
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Theme.of(context).colorScheme.error.withValues(alpha: 0.7),
-                foregroundColor: Colors.white,
-                padding: const EdgeInsets.symmetric(
-                  horizontal: Constants.margin,
-                  vertical: Constants.margin * 0.5,
+            const SizedBox(width: Constants.margin),
+            Expanded(
+              child: ElevatedButton.icon(
+                onPressed: onClearSelection,
+                icon: const Icon(Icons.clear, size: 16),
+                label: Text(l10n.clear),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Theme.of(context)
+                      .colorScheme
+                      .error
+                      .withValues(alpha: 0.7),
+                  foregroundColor: Colors.white,
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: Constants.margin,
+                    vertical: Constants.margin * 0.5,
+                  ),
                 ),
               ),
             ),
@@ -176,6 +199,7 @@ class CharacterSelector extends StatelessWidget {
     
     if (availableCharacters.isEmpty) {
       return Column(
+        mainAxisSize: MainAxisSize.min,
         children: [
           const Icon(
             Icons.person_off,
@@ -195,7 +219,8 @@ class CharacterSelector extends StatelessWidget {
     }
     
     return Column(
-      spacing: Constants.margin,
+      mainAxisSize: MainAxisSize.min,
+      crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         Container(
           width: 120,
@@ -213,22 +238,30 @@ class CharacterSelector extends StatelessWidget {
           ),
         ),
         
+        const SizedBox(height: Constants.margin),
+        
         Text(
           l10n.selectACharacter,
           style: theme.textTheme.bodyMedium?.copyWith(
           ),
+          textAlign: TextAlign.center,
         ),
         
-        ElevatedButton.icon(
-          onPressed: () => _showCharacterSelectionModal(context),
-          icon: const Icon(Icons.search, size: 18),
-          label: Text(l10n.selectCharacter),
-          style: ElevatedButton.styleFrom(
-            backgroundColor: Theme.of(context).colorScheme.primary.withValues(alpha: 0.7),
-            foregroundColor: Theme.of(context).colorScheme.surface,
-            padding: const EdgeInsets.symmetric(
-              horizontal: Constants.margin * 2,
-              vertical: Constants.margin,
+        const SizedBox(height: Constants.margin),
+        SizedBox(
+          width: double.infinity,
+          child: ElevatedButton.icon(
+            onPressed: () => _showCharacterSelectionModal(context),
+            icon: const Icon(Icons.search, size: 18),
+            label: Text(l10n.selectCharacter),
+            style: ElevatedButton.styleFrom(
+              backgroundColor:
+                  Theme.of(context).colorScheme.primary.withValues(alpha: 0.7),
+              foregroundColor: Theme.of(context).colorScheme.surface,
+              padding: const EdgeInsets.symmetric(
+                horizontal: Constants.margin * 2,
+                vertical: Constants.margin,
+              ),
             ),
           ),
         ),

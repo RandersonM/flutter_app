@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:opfan/screens/crews/blocs/index.dart';
+import 'package:opfan/utils/constants.dart';
 import 'package:opfan/utils/theme.dart';
-import 'package:opfan/utils/decorations/gradient.dart';
 import 'package:opfan/core/auth/blocs/index.dart';
 import 'package:opfan/core/services/crew_image_service.dart';
 import 'package:opfan/widgets/atoms/clickable_image.dart';
 import 'package:opfan/l10n/app_localizations.dart';
+import 'package:opfan/widgets/molecules/default_app_bar.dart';
 
 class CreateCrewScreen extends StatefulWidget {
   const CreateCrewScreen({super.key});
@@ -205,18 +206,17 @@ class _CreateCrewScreenState extends State<CreateCrewScreen> {
       child: Builder(
         builder: (context) {
           return Scaffold(
-            appBar: AppBar(
-              title: const Text('Criar Tripulação'),
-              backgroundColor: Colors.transparent,
-              elevation: 0,
+            appBar: const DefaultAppBar(
+              title: Text('Criar Tripulação'),
+              
             ),
             body: BlocListener<CreateCrewBloc, CreateCrewState>(
               listener: (context, state) {
                 if (state is CreateCrewSuccess) {
                   ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(
-                      content: Text('Tripulação criada com sucesso!'),
-                      backgroundColor: Colors.green,
+                    SnackBar(
+                      content: const Text('Tripulação criada com sucesso!'),
+                      backgroundColor: AppColors.green[500]!,
                     ),
                   );
                   Navigator.pop(context, {'action': 'created', 'crewId': state.crewId});
@@ -230,7 +230,9 @@ class _CreateCrewScreenState extends State<CreateCrewScreen> {
                 }
               },
               child: Container(
-                decoration: backgroundGradient(),
+                decoration: BoxDecoration(
+                  color: Theme.of(context).colorScheme.surfaceContainer,
+                ),
                 child: SafeArea(
                   child: SingleChildScrollView(
                     padding: const EdgeInsets.all(16.0),
@@ -242,25 +244,28 @@ class _CreateCrewScreenState extends State<CreateCrewScreen> {
                           Container(
                             height: 120,
                             decoration: BoxDecoration(
-                              color: AppColors.purple[200]!,
+                              color: Theme.of(context)
+                                  .colorScheme
+                                  .primaryContainer,
                               borderRadius: BorderRadius.circular(12),
                               border: Border.all(
                                 color: AppColors.purple[600]!,
                               ),
                             ),
                             child: Column(
+                              spacing: Constants.margin,
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                Icon(
+                                const Icon(
                                   Icons.sailing,
                                   size: 48,
-                                  color: Colors.white.withValues(alpha: 0.8),
                                 ),
-                                const SizedBox(height: 8),
                                 Text(
                                   'Nova Tripulação',
-                                  style: TextStyle(
-                                    color: Colors.white.withValues(alpha: 0.8),
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .titleMedium
+                                      ?.copyWith(
                                     fontSize: 16,
                                     fontWeight: FontWeight.w500,
                                   ),
@@ -281,7 +286,6 @@ class _CreateCrewScreenState extends State<CreateCrewScreen> {
                                 borderRadius: BorderRadius.circular(12),
                               ),
                               filled: true,
-                              fillColor: Colors.white.withValues(alpha: 0.1),
                             ),
                             style: TextStyle(color: AppColors.purple[600]!),
                             validator: (value) {
@@ -308,7 +312,6 @@ class _CreateCrewScreenState extends State<CreateCrewScreen> {
                                 borderRadius: BorderRadius.circular(12),
                               ),
                               filled: true,
-                              fillColor: Colors.white.withValues(alpha: 0.1),
                             ),
                             style: TextStyle(color: AppColors.purple[600]!),
                           ),
@@ -318,7 +321,9 @@ class _CreateCrewScreenState extends State<CreateCrewScreen> {
                           Container(
                             padding: const EdgeInsets.all(16),
                             decoration: BoxDecoration(
-                              color: AppColors.purple[200]!,
+                              color: Theme.of(context)
+                                  .colorScheme
+                                  .primaryContainer,
                               borderRadius: BorderRadius.circular(12),
                               border: Border.all(
                                 color: AppColors.purple[600]!,
@@ -330,10 +335,12 @@ class _CreateCrewScreenState extends State<CreateCrewScreen> {
                                 Row(
                                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                   children: [
-                                    const Text(
+                                    Text(
                                       'Tags',
-                                      style: TextStyle(
-                                        color: Colors.white,
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .titleMedium
+                                          ?.copyWith(
                                         fontSize: 16,
                                         fontWeight: FontWeight.w500,
                                       ),
@@ -342,18 +349,19 @@ class _CreateCrewScreenState extends State<CreateCrewScreen> {
                                       onPressed: _showAddTagDialog,
                                       icon: const Icon(
                                         Icons.add_circle_outline,
-                                        color: Colors.white,
                                       ),
                                     ),
                                   ],
                                 ),
                                 if (_tags.isEmpty)
-                                  const Padding(
-                                    padding: EdgeInsets.only(top: 8),
+                                  Padding(
+                                    padding: const EdgeInsets.only(top: 8),
                                     child: Text(
                                       'Nenhuma tag adicionada',
-                                      style: TextStyle(
-                                        color: Colors.white54,
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .bodyMedium
+                                          ?.copyWith(
                                         fontSize: 14,
                                       ),
                                     ),
@@ -365,11 +373,9 @@ class _CreateCrewScreenState extends State<CreateCrewScreen> {
                                     runSpacing: 8,
                                     children: _tags.map((tag) {
                                       return Chip(
-                                        label: Text(tag, style: const TextStyle(color: Colors.white)),
-                                        backgroundColor: AppColors.purple[500],
+                                        label: Text(tag),
                                         deleteIcon: const Icon(
                                           Icons.close,
-                                          color: Colors.white,
                                           size: 18,
                                         ),
                                         onDeleted: () => _removeTag(tag),
@@ -387,7 +393,9 @@ class _CreateCrewScreenState extends State<CreateCrewScreen> {
                           Container(
                             padding: const EdgeInsets.all(16),
                             decoration: BoxDecoration(
-                              color: AppColors.purple[200]!,
+                              color: Theme.of(context)
+                                  .colorScheme
+                                  .primaryContainer,
                               borderRadius: BorderRadius.circular(12),
                               border: Border.all(
                                 color: AppColors.purple[600]!,
@@ -400,13 +408,11 @@ class _CreateCrewScreenState extends State<CreateCrewScreen> {
                                   children: [
                                     Icon(
                                       Icons.flag,
-                                      color: Colors.white,
                                     ),
                                     SizedBox(width: 8),
                                     Text(
                                       'Bandeira Pirata (Jolly Roger)',
                                       style: TextStyle(
-                                        color: Colors.white,
                                         fontSize: 16,
                                         fontWeight: FontWeight.w500,
                                       ),
@@ -424,8 +430,6 @@ class _CreateCrewScreenState extends State<CreateCrewScreen> {
                                       borderRadius: BorderRadius.circular(8),
                                     ),
                                     filled: true,
-                                    fillColor:
-                                        Colors.white.withValues(alpha: 0.1),
                                   ),
                                   style:
                                       TextStyle(color: AppColors.purple[600]!),
@@ -494,26 +498,29 @@ class _CreateCrewScreenState extends State<CreateCrewScreen> {
                           Container(
                             padding: const EdgeInsets.all(16),
                             decoration: BoxDecoration(
-                              color: AppColors.purple[200]!,
+                              color: Theme.of(context)
+                                  .colorScheme
+                                  .primaryContainer,
                               borderRadius: BorderRadius.circular(12),
                               border: Border.all(
                                 color: AppColors.purple[600]!,
                               ),
                             ),
                             child: Column(
+                              spacing: Constants.margin,
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                const Row(
+                                Row(
                                   children: [
-                                    Icon(
+                                    const Icon(
                                       Icons.directions_boat,
-                                      color: Colors.white,
                                     ),
-                                    SizedBox(width: 8),
                                     Text(
                                       'Barco da Tripulação',
-                                      style: TextStyle(
-                                        color: Colors.white,
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .titleMedium
+                                          ?.copyWith(
                                         fontSize: 16,
                                         fontWeight: FontWeight.w500,
                                       ),
@@ -532,8 +539,6 @@ class _CreateCrewScreenState extends State<CreateCrewScreen> {
                                       borderRadius: BorderRadius.circular(12),
                                     ),
                                     filled: true,
-                                    fillColor:
-                                        Colors.white.withValues(alpha: 0.1),
                                   ),
                                   style:
                                       TextStyle(color: AppColors.purple[600]!),
@@ -549,8 +554,6 @@ class _CreateCrewScreenState extends State<CreateCrewScreen> {
                                       borderRadius: BorderRadius.circular(8),
                                     ),
                                     filled: true,
-                                    fillColor:
-                                        Colors.white.withValues(alpha: 0.1),
                                   ),
                                   style:
                                       TextStyle(color: AppColors.purple[600]!),

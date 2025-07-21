@@ -2,11 +2,10 @@ import 'package:get_it/get_it.dart';
 import 'package:opfan/core/calculator/calculator_provider.dart';
 import 'package:opfan/screens/one_piece/blocs/characters_cubit.dart';
 import 'package:opfan/screens/one_piece/blocs/search_cubit.dart';
-import 'package:opfan/core/services/characters_backend_service.dart';
 import 'package:opfan/core/services/devil_fruit_service.dart';
 import 'package:opfan/core/services/environment_service.dart';
 import 'package:opfan/core/services/youtube_service.dart';
-import 'package:opfan/core/services/featured_character_service.dart';
+import 'package:opfan/core/repository/featured_character_repository.dart';
 import 'package:opfan/core/services/auth_service.dart';
 import 'package:opfan/core/services/firestore_service.dart';
 import 'package:opfan/core/services/ai_image_service.dart';
@@ -23,9 +22,6 @@ final GetIt getIt = GetIt.instance;
 Future<void> configureDependencies() async {
   getIt.registerSingleton<EnvironmentService>(EnvironmentService.instance);
 
-  getIt.registerLazySingleton<CharactersBackendService>(
-    () => CharactersBackendService(),
-  );
 
   getIt.registerLazySingleton<DevilFruitService>(
     () => DevilFruitService(),
@@ -43,9 +39,8 @@ Future<void> configureDependencies() async {
     () => GeminiImageService(),
   );
 
-  getIt.registerLazySingleton<FeaturedCharacterService>(
-    () => FeaturedCharacterService(
-        charactersService: getIt<CharactersBackendService>()),
+  getIt.registerLazySingleton<FeaturedCharacterRepository>(
+    () => FeaturedCharacterRepository(),
   );
 
   getIt.registerLazySingleton<AuthService>(
@@ -76,17 +71,17 @@ Future<void> configureDependencies() async {
   );
 
   getIt.registerFactory<CharactersCubit>(
-    () => CharactersCubit(getIt<CharactersBackendService>()),
+    () => CharactersCubit(getIt<FeaturedCharacterRepository>()),
   );
 
   getIt.registerFactory<SearchCubit>(
-    () => SearchCubit(getIt<CharactersBackendService>()),
+    () => SearchCubit(getIt<FeaturedCharacterRepository>()),
   );
 
   getIt.registerFactory<HomeBloc>(
     () => HomeBloc(
       youTubeService: getIt<YouTubeService>(),
-      featuredCharacterService: getIt<FeaturedCharacterService>(),
+      featuredCharacterRepository: getIt<FeaturedCharacterRepository>(),
     ),
   );
 
@@ -116,7 +111,7 @@ Future<void> resetDependencies() async {
 
 bool isDependencyConfigured() {
   return getIt.isRegistered<EnvironmentService>() &&
-      getIt.isRegistered<CharactersBackendService>() &&
+      getIt.isRegistered<FeaturedCharacterRepository>() &&
       getIt.isRegistered<DevilFruitService>() &&
       getIt.isRegistered<YouTubeService>() &&
       getIt.isRegistered<AuthService>();
@@ -124,14 +119,13 @@ bool isDependencyConfigured() {
 
 extension ServiceLocatorExtensions on GetIt {
   EnvironmentService get environmentService => get<EnvironmentService>();
-  CharactersBackendService get charactersService =>
-      get<CharactersBackendService>();
+  FeaturedCharacterRepository get featuredCharacterRepository =>
+      get<FeaturedCharacterRepository>();
   DevilFruitService get devilFruitService => get<DevilFruitService>();
   YouTubeService get youTubeService => get<YouTubeService>();
   AiImageService get aiImageService => get<AiImageService>();
   GeminiImageService get geminiImageService => get<GeminiImageService>();
-  FeaturedCharacterService get featuredCharacterService =>
-      get<FeaturedCharacterService>();
+
   AuthService get authService => get<AuthService>();
   FirestoreService get firestoreService => get<FirestoreService>();
   CustomCharacterRepository get customCharacterRepository =>

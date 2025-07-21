@@ -285,7 +285,7 @@
     "type": "text",
     "placeholders": {}
   },
-  "age": "Idade",
+  "age": "Age",
   "@age": {
     "description": "Label for character age field",
     "type": "text",
@@ -808,6 +808,18 @@
   "skipForNow": "Skip for now",
   "@skipForNow": {
     "description": "Skip login button text",
+    "type": "text",
+    "placeholders": {}
+  },
+  "loginBannerTitle": "Sign in to access exclusive features",
+  "@loginBannerTitle": {
+    "description": "Login banner title for unauthenticated users",
+    "type": "text",
+    "placeholders": {}
+  },
+  "loginBannerSubtitle": "Create characters, participate in duels and much more",
+  "@loginBannerSubtitle": {
+    "description": "Login banner subtitle for unauthenticated users",
     "type": "text",
     "placeholders": {}
   },
@@ -1530,6 +1542,30 @@
     "type": "text",
     "placeholders": {}
   },
+  "onePieceCharacters": "One Piece Characters",
+  "@onePieceCharacters": {
+    "description": "Label for One Piece characters tab",
+    "type": "text",
+    "placeholders": {}
+  },
+  "customCharacters": "Custom Characters",
+  "@customCharacters": {
+    "description": "Label for custom characters tab",
+    "type": "text",
+    "placeholders": {}
+  },
+  "noOnePieceCharacters": "No One Piece characters available",
+  "@noOnePieceCharacters": {
+    "description": "Message when no One Piece characters are available",
+    "type": "text",
+    "placeholders": {}
+  },
+  "noCustomCharacters": "No custom characters available",
+  "@noCustomCharacters": {
+    "description": "Message when no custom characters are available",
+    "type": "text",
+    "placeholders": {}
+  },
   "dualWielder": "Dual Wielder",
   "@dualWielder": {
     "description": "Fighting type option for dual wielder",
@@ -1763,5 +1799,304 @@
     "description": "Snackbar message when profile photo is tapped",
     "type": "text",
     "placeholders": {}
+  },
+  "zodiacCapricorn": "Capricorn",
+  "@zodiacCapricorn": {
+    "description": "Shows the zodiac Capricorn",
+    "type": "text",
+    "placeholders": {}
+  },
+  "duels": "Duels",
+  "@duels": {
+    "description": "Duels screen title",
+    "type": "text",
+    "placeholders": {}
+  },
+  "duelsSubtitle": "Character vs Character",
+  "@duelsSubtitle": {
+    "description": "Duels screen subtitle",
+    "type": "text",
+    "placeholders": {}
+  },
+  "versus": "VS",
+  "@versus": {
+    "description": "Text shown between characters in duel arena",
+    "type": "text",
+    "placeholders": {}
+  },
+  "winner": "Wins!",
+  "@winner": {
+    "description": "Text shown after winner name",
+    "type": "text",
+    "placeholders": {}
+  },
+  "startDuel": "Start Duel",
+  "@startDuel": {
+    "description": "Button text to start a duel",
+    "type": "text",
+    "placeholders": {}
+  },
+  "duelInProgress": "Battle in Progress...",
+  "@duelInProgress": {
+    "description": "Text shown when duel is happening",
+    "type": "text",
+    "placeholders": {}
+  },
+  "characterStats": "Character Stats",
+  "@characterStats": {
+    "description": "Title for stats comparison section",
+    "type": "text",
+    "placeholders": {}
+  },
+  "selectFirstFighter": "Select First Fighter",
+  "@selectFirstFighter": {
+    "description": "Title for first character selector",
+    "type": "text",
+    "placeholders": {}
+  },
+  "selectSecondFighter": "Select Second Fighter",
+  "@selectSecondFighter": {
+    "description": "Title for second character selector",
+    "type": "text",
+    "placeholders": {}
+  },
+  "selectACharacter": "Select a Character",
+  "@selectACharacter": {
+    "description": "Placeholder text for character selection",
+    "type": "text",
+    "placeholders": {}
+  },
+  "randomizeCharacters": "Randomize",
+  "@randomizeCharacters": {
+    "description": "Button text to randomize character selection",
+    "type": "text",
+    "placeholders": {}
+  },
+  "resetDuel": "Reset",
+  "@resetDuel": {
+    "description": "Button text to reset duel",
+    "type": "text",
+    "placeholders": {}
+  },
+  "hakiType": "{count, plural, =0 {types} =1 {type} other {types}}",
+  "@hakiType": {
+    "description": "Haki type pluralization",
+    "type": "text",
+    "placeholders": {
+      "count": {
+        "type": "num",
+        "example": "1"
+      }
+    }
+  },
+  "noDevilFruit": "No Devil Fruit",
+  "@noDevilFruit": {
+    "description": "Text shown when character has no devil fruit",
+    "type": "text",
+    "placeholders": {}
+  },
+  "newDuel": "New Duel",
+  "@newDuel": {
+    "description": "Button text to start a new duel",
+    "type": "text",
+    "placeholders": {}
+  },
+  "accountSettings": "Account Settings",
+  "@accountSettings": {
+    "description": "Title for account settings section in profile",
+    "type": "text",
+    "placeholders": {}
+  },
+  "editProfile": "Edit Profile",
+  "@editProfile": {
+    "description": "Menu item to edit profile",
+    "type": "text",
+    "placeholders": {}
+  },
+  "editProfileSubtitle": "Update your personal information",
+  "@editProfileSubtitle": {
+    "description": "Subtitle for edit profile menu item",
+    "type": "text",
+    "placeholders": {}
+  },
+  "notifications": "Notifications",
+  "@notifications": {
+    "description": "Menu item for notifications settings",
+    "type": "text",
+    "placeholders": {}
+  },
+  "notificationsSubtitle": "Manage your notification preferences",
+  "@notificationsSubtitle": {
+    "description": "Subtitle for notifications menu item",
+    "type": "text",
+    "placeholders": {}
+  },
+  "appSettings": "App Settings",
+  "@appSettings": {
+    "description": "Title for app settings section in profile",
+    "type": "text",
+    "placeholders": {}
+  },
+  "language": "Language",
+  "@language": {
+    "description": "Menu item for language settings",
+    "type": "text",
+    "placeholders": {}
+  },
+  "languageSubtitle": "Change app language",
+  "@languageSubtitle": {
+    "description": "Subtitle for language menu item",
+    "type": "text",
+    "placeholders": {}
+  },
+  "theme": "Theme",
+  "@theme": {
+    "description": "Menu item for theme settings",
+    "type": "text",
+    "placeholders": {}
+  },
+  "darkTheme": "Dark theme",
+  "@darkTheme": {
+    "description": "Text for dark theme option",
+    "type": "text",
+    "placeholders": {}
+  },
+  "lightTheme": "Light theme",
+  "@lightTheme": {
+    "description": "Text for light theme option",
+    "type": "text",
+    "placeholders": {}
+  },
+  "darkThemeActivated": "Dark theme activated",
+  "@darkThemeActivated": {
+    "description": "Snackbar message when dark theme is activated",
+    "type": "text",
+    "placeholders": {}
+  },
+  "lightThemeActivated": "Light theme activated",
+  "@lightThemeActivated": {
+    "description": "Snackbar message when light theme is activated",
+    "type": "text",
+    "placeholders": {}
+  },
+  "support": "Support",
+  "@support": {
+    "description": "Title for support section in profile",
+    "type": "text",
+    "placeholders": {}
+  },
+  "helpSupport": "Help & Support",
+  "@helpSupport": {
+    "description": "Menu item for help and support",
+    "type": "text",
+    "placeholders": {}
+  },
+  "helpSupportSubtitle": "Get help and contact support",
+  "@helpSupportSubtitle": {
+    "description": "Subtitle for help and support menu item",
+    "type": "text",
+    "placeholders": {}
+  },
+  "about": "About",
+  "@about": {
+    "description": "Menu item for about section",
+    "type": "text",
+    "placeholders": {}
+  },
+  "aboutSubtitle": "App version and information",
+  "@aboutSubtitle": {
+    "description": "Subtitle for about menu item",
+    "type": "text",
+    "placeholders": {}
+  },
+  "nameMinLength": "Name must be at least 3 characters",
+  "@nameMinLength": {
+    "description": "Validation message for minimum name length.",
+    "type": "text"
+  },
+  "tags": "Tags",
+  "@tags": {
+    "description": "Section title for tags.",
+    "type": "text"
+  },
+  "noTagsAdded": "No tags added",
+  "@noTagsAdded": {
+    "description": "Message when no tags are present.",
+    "type": "text"
+  },
+  "pirateFlagSectionTitle": "Pirate Flag (Jolly Roger)",
+  "@pirateFlagSectionTitle": {
+    "description": "Section title for pirate flag.",
+    "type": "text"
+  },
+  "pirateFlagTitle": "Crew Pirate Flag",
+  "@pirateFlagTitle": {
+    "description": "Title for pirate flag image.",
+    "type": "text"
+  },
+  "aiPromptLabel": "AI Prompt",
+  "@aiPromptLabel": {
+    "description": "Label for AI prompt field.",
+    "type": "text"
+  },
+  "pirateFlagPromptHint": "Ex: pirate flag with skull and crossed swords",
+  "@pirateFlagPromptHint": {
+    "description": "Hint for pirate flag prompt.",
+    "type": "text"
+  },
+  "generateFlag": "Generate Flag",
+  "@generateFlag": {
+    "description": "Button text to generate pirate flag.",
+    "type": "text"
+  },
+  "crewBoatSectionTitle": "Crew Boat",
+  "@crewBoatSectionTitle": {
+    "description": "Section title for crew boat.",
+    "type": "text"
+  },
+  "boatNameHint": "Ex: Going Merry",
+  "@boatNameHint": {
+    "description": "Hint for boat name field.",
+    "type": "text"
+  },
+  "generateBoat": "Generate Boat",
+  "@generateBoat": {
+    "description": "Button text to generate boat.",
+    "type": "text"
+  },
+  "boatTitle": "Crew Boat",
+  "@boatTitle": {
+    "description": "Title for boat image.",
+    "type": "text"
+  },
+  "aiPromptInfo": "Use descriptive prompts to generate unique images for your crew. Generated images will be saved automatically.",
+  "@aiPromptInfo": {
+    "description": "Info text about using AI prompts.",
+    "type": "text"
+  },
+  "fightingStyleSectionTitle": "Fighting Style",
+  "@fightingStyleSectionTitle": {
+    "description": "Section title for fighting style details card.",
+    "type": "text"
+  },
+  "fightingStyleNameLabel": "Style Name",
+  "@fightingStyleNameLabel": {
+    "description": "Label for the name of the fighting style.",
+    "type": "text"
+  },
+  "fightingStyleTypeLabel": "Fighting Type",
+  "@fightingStyleTypeLabel": {
+    "description": "Label for the type of fighting style.",
+    "type": "text"
+  },
+  "fightingStyleWeaponsLabel": "Weapons",
+  "@fightingStyleWeaponsLabel": {
+    "description": "Label for the weapons used in the fighting style.",
+    "type": "text"
+  },
+  "fightingStyleAttacksLabel": "Attacks",
+  "@fightingStyleAttacksLabel": {
+    "description": "Label for the attacks of the fighting style.",
+    "type": "text"
   }
 }

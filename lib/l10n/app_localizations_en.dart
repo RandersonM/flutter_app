@@ -166,7 +166,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get nicknameHint => 'Ex: Luffy, Straw Hat';
 
   @override
-  String get age => 'Idade';
+  String get age => 'Age';
 
   @override
   String get birthDate => 'Birth Date';
@@ -429,6 +429,13 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get skipForNow => 'Skip for now';
+
+  @override
+  String get loginBannerTitle => 'Sign in to access exclusive features';
+
+  @override
+  String get loginBannerSubtitle =>
+      'Create characters, participate in duels and much more';
 
   @override
   String get loginWelcomeSubtitle =>
@@ -759,6 +766,18 @@ class AppLocalizationsEn extends AppLocalizations {
       'Create your first custom character!';
 
   @override
+  String get onePieceCharacters => 'One Piece Characters';
+
+  @override
+  String get customCharacters => 'Custom Characters';
+
+  @override
+  String get noOnePieceCharacters => 'No One Piece characters available';
+
+  @override
+  String get noCustomCharacters => 'No custom characters available';
+
+  @override
   String get dualWielder => 'Dual Wielder';
 
   @override
@@ -871,4 +890,168 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get profilePhotoTapped => 'Profile photo tapped';
+
+  @override
+  String get zodiacCapricorn => 'Capricorn';
+
+  @override
+  String get duels => 'Duels';
+
+  @override
+  String get duelsSubtitle => 'Character vs Character';
+
+  @override
+  String get versus => 'VS';
+
+  @override
+  String get winner => 'Wins!';
+
+  @override
+  String get startDuel => 'Start Duel';
+
+  @override
+  String get duelInProgress => 'Battle in Progress...';
+
+  @override
+  String get characterStats => 'Character Stats';
+
+  @override
+  String get selectFirstFighter => 'Select First Fighter';
+
+  @override
+  String get selectSecondFighter => 'Select Second Fighter';
+
+  @override
+  String get selectACharacter => 'Select a Character';
+
+  @override
+  String get randomizeCharacters => 'Randomize';
+
+  @override
+  String get resetDuel => 'Reset';
+
+  @override
+  String hakiType(num count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'types',
+      one: 'type',
+      zero: 'types',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get newDuel => 'New Duel';
+
+  @override
+  String get accountSettings => 'Account Settings';
+
+  @override
+  String get editProfile => 'Edit Profile';
+
+  @override
+  String get editProfileSubtitle => 'Update your personal information';
+
+  @override
+  String get notifications => 'Notifications';
+
+  @override
+  String get notificationsSubtitle => 'Manage your notification preferences';
+
+  @override
+  String get appSettings => 'App Settings';
+
+  @override
+  String get language => 'Language';
+
+  @override
+  String get languageSubtitle => 'Change app language';
+
+  @override
+  String get theme => 'Theme';
+
+  @override
+  String get darkTheme => 'Dark theme';
+
+  @override
+  String get lightTheme => 'Light theme';
+
+  @override
+  String get darkThemeActivated => 'Dark theme activated';
+
+  @override
+  String get lightThemeActivated => 'Light theme activated';
+
+  @override
+  String get support => 'Support';
+
+  @override
+  String get helpSupport => 'Help & Support';
+
+  @override
+  String get helpSupportSubtitle => 'Get help and contact support';
+
+  @override
+  String get about => 'About';
+
+  @override
+  String get aboutSubtitle => 'App version and information';
+
+  @override
+  String get nameMinLength => 'Name must be at least 3 characters';
+
+  @override
+  String get tags => 'Tags';
+
+  @override
+  String get noTagsAdded => 'No tags added';
+
+  @override
+  String get pirateFlagSectionTitle => 'Pirate Flag (Jolly Roger)';
+
+  @override
+  String get pirateFlagTitle => 'Crew Pirate Flag';
+
+  @override
+  String get aiPromptLabel => 'AI Prompt';
+
+  @override
+  String get pirateFlagPromptHint =>
+      'Ex: pirate flag with skull and crossed swords';
+
+  @override
+  String get generateFlag => 'Generate Flag';
+
+  @override
+  String get crewBoatSectionTitle => 'Crew Boat';
+
+  @override
+  String get boatNameHint => 'Ex: Going Merry';
+
+  @override
+  String get generateBoat => 'Generate Boat';
+
+  @override
+  String get boatTitle => 'Crew Boat';
+
+  @override
+  String get aiPromptInfo =>
+      'Use descriptive prompts to generate unique images for your crew. Generated images will be saved automatically.';
+
+  @override
+  String get fightingStyleSectionTitle => 'Fighting Style';
+
+  @override
+  String get fightingStyleNameLabel => 'Style Name';
+
+  @override
+  String get fightingStyleTypeLabel => 'Fighting Type';
+
+  @override
+  String get fightingStyleWeaponsLabel => 'Weapons';
+
+  @override
+  String get fightingStyleAttacksLabel => 'Attacks';
 }

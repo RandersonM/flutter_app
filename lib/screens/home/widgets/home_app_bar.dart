@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:opfan/l10n/app_localizations.dart';
-import 'package:opfan/widgets/molecules/clickable_avatar.dart';
 import 'package:opfan/utils/constants.dart';
 import 'package:opfan/core/auth/blocs/index.dart';
 import 'package:opfan/core/auth/models/user_model.dart';
@@ -18,10 +18,9 @@ class HomeAppBar extends StatelessWidget implements PreferredSizeWidget {
           if (state is AuthAuthenticated) {
             return Row(
               children: [
-                ClickableAvatar(
-                  imageUrl: state.user.photoUrl,
-                  radius: 20,
-                  onTap: () => _openUserDrawer(context, state.user),
+                IconButton(
+                  onPressed: () => _openUserDrawer(context, state.user),
+                  icon: const Icon(FontAwesomeIcons.bars),
                 ),
                 const SizedBox(width: Constants.margin),
                 Expanded(
@@ -91,9 +90,10 @@ class HomeAppBar extends StatelessWidget implements PreferredSizeWidget {
         maxChildSize: 0.9,
         builder: (context, scrollController) => Container(
           decoration: BoxDecoration(
-            color: Theme.of(context).colorScheme.onSecondary,
+            color: Theme.of(context).colorScheme.primaryContainer,
             borderRadius: const BorderRadius.vertical(top: Radius.circular(20)),
           ),
+          clipBehavior: Clip.antiAlias, 
           child: SingleChildScrollView(
             controller: scrollController,
             child: UserDrawerContent(user: user, authBloc: authBloc),

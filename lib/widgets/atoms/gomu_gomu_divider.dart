@@ -1,32 +1,36 @@
 import 'package:flutter/material.dart';
+import 'dart:math' as math;
 
 class GomuGomuDivider extends StatelessWidget {
   final double height;
   final Color? color;
   final double thickness;
-  final double waveHeight;
-  final double waveLength;
-  final int stripes;
+  final double spiralRadius;
+  final double spiralSpacing;
+  final int spiralCount;
+  final double spiralTurns;
 
   const GomuGomuDivider({
     Key? key,
-    this.height = 8.0,
-    this.color = Colors.orange,
-    this.thickness = 0.5,
-    this.waveHeight = 2.0,
-    this.waveLength = 15.0,
-    this.stripes = 3,
+    this.height = 40.0,
+    this.color = const Color(0xFFE91E63),
+    this.thickness = 2.0,
+    this.spiralRadius = 12.0,
+    this.spiralSpacing = 30.0,
+    this.spiralCount = 6,
+    this.spiralTurns = 2.5,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return CustomPaint(
       painter: GomuGomuDividerPainter(
-        color: color ?? Colors.orange,
+        color: color ?? const Color(0xFFE91E63),
         thickness: thickness,
-        waveHeight: waveHeight,
-        waveLength: waveLength,
-        stripes: stripes,
+        spiralRadius: spiralRadius,
+        spiralSpacing: spiralSpacing,
+        spiralCount: spiralCount,
+        spiralTurns: spiralTurns,
       ),
       child: SizedBox(
         height: height,
@@ -39,16 +43,18 @@ class GomuGomuDivider extends StatelessWidget {
 class GomuGomuDividerPainter extends CustomPainter {
   final Color color;
   final double thickness;
-  final double waveHeight;
-  final double waveLength;
-  final int stripes;
+  final double spiralRadius;
+  final double spiralSpacing;
+  final int spiralCount;
+  final double spiralTurns;
 
   GomuGomuDividerPainter({
     required this.color,
     required this.thickness,
-    required this.waveHeight,
-    required this.waveLength,
-    required this.stripes,
+    required this.spiralRadius,
+    required this.spiralSpacing,
+    required this.spiralCount,
+    required this.spiralTurns,
   });
 
   @override
@@ -59,42 +65,86 @@ class GomuGomuDividerPainter extends CustomPainter {
       ..strokeCap = StrokeCap.round
       ..style = PaintingStyle.stroke;
 
-    final centerY = size.height / 2;
-    final stripeHeight = size.height / stripes;
-    
-    for (int i = 0; i < stripes; i++) {
-      final stripeY = centerY - (stripes - 1) * stripeHeight / 2 + i * stripeHeight;
-      
-      final path = Path();
-      path.moveTo(0, stripeY);
-      
-      for (double x = 0; x <= size.width; x += waveLength) {
-        final nextX = x + waveLength;
-        final waveOffset = (i % 2 == 0 ? 1 : -1) * waveHeight;
-        final controlY = stripeY + (x % (waveLength * 2) < waveLength ? waveOffset : -waveOffset);
-        
-        if (nextX <= size.width) {
-          path.quadraticBezierTo(
-            x + waveLength / 2,
-            controlY,
-            nextX,
-            stripeY,
-          );
-        }
-      }
+    final glowPaint = Paint()
+      ..color = color.withValues(alpha: 0.3)
+      ..strokeWidth = thickness + 2
+      ..strokeCap = StrokeCap.round
+      ..style = PaintingStyle.stroke;
 
-      // Desenha a linha
-      canvas.drawPath(path, paint);
-      
-      // Adiciona um efeito de brilho
-      final glowPaint = Paint()
-        ..color = color.withValues(alpha: 0.1)
-        ..strokeWidth = thickness + 2
-        ..strokeCap = StrokeCap.round
-        ..style = PaintingStyle.stroke;
-      
-      canvas.drawPath(path, glowPaint);
+    final centerY = size.height / 2;
+    final availableWidth = size.width - (spiralRadius * 2);
+    final actualSpacing =
+        spiralCount > 1 ? availableWidth / (spiralCount - 1) : 0;
+    
+    
+    for (int i = 0; i < spiralCount; i++) {
+      final spiralCenterX = spiralRadius + (i * actualSpacing);
+
+      _drawSpiral(canvas, paint, glowPaint, spiralCenterX, centerY);
+
+      if (i < spiralCount - 1) {
+        final nextSpiralX = spiralRadius + ((i + 1) * actualSpacing);
+        _drawConnection(canvas, paint, glowPaint, spiralCenterX, centerY,
+            nextSpiralX, centerY);
+      }
     }
+  }
+
+  void _drawSpiral(Canvas canvas, Paint paint, Paint glowPaint, double centerX,
+      double centerY) {
+    final path = Path();
+    final points = <Offset>[];
+
+    final totalAngle = spiralTurns * 2 * math.pi;
+    final angleStep = totalAngle / 50; 
+    
+    for (int i = 0; i <= 50; i++) {
+      final angle = i * angleStep;
+      final radius = spiralRadius * (1 - (angle / totalAngle));
+      final x = centerX + radius * math.cos(angle);
+      final y = centerY + radius * math.sin(angle);
+      points.add(Offset(x, y));
+    }
+    
+    if (points.isNotEmpty) {
+      path.moveTo(points.first.dx, points.first.dy);
+      for (int i = 1; i < points.length; i++) {
+        path.lineTo(points[i].dx, points[i].dy);
+      }
+    }
+    
+    canvas.drawPath(path, glowPaint);
+    canvas.drawPath(path, paint);
+  }
+
+  void _drawConnection(Canvas canvas, Paint paint, Paint glowPaint,
+      double startX, double startY, double endX, double endY) {
+    final path = Path();
+
+    final startPoint = Offset(startX + spiralRadius, startY);
+    final endPoint = Offset(endX - spiralRadius, endY);
+
+    path.moveTo(startPoint.dx, startPoint.dy);
+
+    final distance = endPoint.dx - startPoint.dx;
+    const waveHeight = 8.0;
+    const waveCount = 2;
+
+    for (int i = 0; i <= 20; i++) {
+      final progress = i / 20.0;
+      final x = startPoint.dx + (distance * progress);
+      final wave = math.sin(progress * math.pi * waveCount) * waveHeight;
+      final y = startPoint.dy + wave;
+      
+      if (i == 0) {
+        path.moveTo(x, y);
+      } else {
+        path.lineTo(x, y);
+      }
+    }
+
+    canvas.drawPath(path, glowPaint);
+    canvas.drawPath(path, paint);
   }
 
   @override

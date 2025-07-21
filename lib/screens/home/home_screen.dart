@@ -44,83 +44,188 @@ class _HomeScreenState extends State<HomeScreen> {
         builder: (context, authState) {
           return Scaffold(
             appBar: const HomeAppBar(),
-            body: BlocBuilder<HomeBloc, HomeState>(
-              builder: (context, state) {
-                return SingleChildScrollView(
-                  padding: const EdgeInsets.all(Constants.margin),
-                  child: Column(
-                    spacing: Constants.margin,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      DynamicBanner(
-                        state: state,
-                        height: videoBannerHeight,
-                      ),
-                      const SizedBox.shrink(),
-                      Text(
-                        AppLocalizations.of(context)!.featuredCharacter,
-                        style:
-                            Theme.of(context).textTheme.headlineSmall?.copyWith(
-                                  fontWeight: FontWeight.bold,
-                                  color: Theme.of(context).colorScheme.primary,
-                                ),
-                      ),
-                      _buildCharacterCard(context, state),
-                      Row(
-                        spacing: Constants.margin,
-                        children: [
-                          Expanded(
-                            child: OutlinedButton.icon(
-                              onPressed: state is HomeLoading
-                                  ? null
-                                  : () async {
-                                      final selectedCharacter =
-                                          await Navigator
-                                          .pushNamed<CustomCharacterModel>(
-                                        context,
-                                        AppRoutes.characterSelection,
-                                      );
-
-                                      if (selectedCharacter != null &&
-                                          context.mounted) {
-                                        context.read<HomeBloc>().add(
-                                            SelectCharacter(selectedCharacter));
-                                      }
-                                    },
-                              icon: const Icon(Icons.person_search),
-                              label: Text(AppLocalizations.of(context)!
-                                  .selectCharacter),
-                            ),
-                          ),
-                          Expanded(
-                            child: ElevatedButton.icon(
-                              onPressed: state is HomeLoading
-                                  ? null
-                                  : () {
-                                      context
-                                          .read<HomeBloc>()
-                                          .add(const LoadRandomCharacter());
-                                    },
-                              icon: state is HomeLoading
-                                  ? const SizedBox(
-                                      width: 16,
-                                      height: 16,
-                                      child: CircularProgressIndicator(
-                                          strokeWidth: 2),
-                                    )
-                                  : const Icon(Icons.shuffle),
-                              label: Text(AppLocalizations.of(context)!
-                                  .randomCharacter),
-                            ),
-                          ),
+            body: Column(
+              children: [
+                if (authState is! AuthAuthenticated)
+                  Container(
+                    width: double.infinity,
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: Constants.margin,
+                      vertical: Constants.margin / 2,
+                    ),
+                    decoration: BoxDecoration(
+                      gradient: LinearGradient(
+                        colors: [
+                          Theme.of(context)
+                              .colorScheme
+                              .primary
+                              .withValues(alpha: 0.1),
+                          Theme.of(context)
+                              .colorScheme
+                              .primary
+                              .withValues(alpha: 0.05),
                         ],
+                        begin: Alignment.topLeft,
+                        end: Alignment.bottomRight,
                       ),
-                      const SizedBox(height: Constants.margin),
-                      _buildCharacterStatistics(context, state),
-                    ],
+                      border: Border(
+                        bottom: BorderSide(
+                          color: Theme.of(context)
+                              .colorScheme
+                              .primary
+                              .withValues(alpha: 0.2),
+                          width: 1,
+                        ),
+                      ),
+                    ),
+                    child: Material(
+                      color: Colors.transparent,
+                      child: InkWell(
+                        onTap: () {
+                          Navigator.pushNamedAndRemoveUntil(
+                              context, AppRoutes.login, (route) => false);
+                        },
+                        borderRadius: BorderRadius.circular(8),
+                        child: Padding(
+                          padding: const EdgeInsets.all(Constants.margin),
+                          child: Row(
+                            children: [
+                              Icon(
+                                Icons.login,
+                                color: Theme.of(context).colorScheme.primary,
+                                size: 20,
+                              ),
+                              const SizedBox(width: Constants.margin),
+                              Expanded(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      AppLocalizations.of(context)!
+                                          .loginBannerTitle,
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .bodyMedium
+                                          ?.copyWith(
+                                            fontWeight: FontWeight.w600,
+                                            color: Theme.of(context)
+                                                .colorScheme
+                                                .primary,
+                                          ),
+                                    ),
+                                    const SizedBox(height: 2),
+                                    Text(
+                                      AppLocalizations.of(context)!
+                                          .loginBannerSubtitle,
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .bodySmall
+                                          ?.copyWith(
+                                            color: Theme.of(context)
+                                                .colorScheme
+                                                .onSurface
+                                                .withValues(alpha: 0.7),
+                                          ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              Icon(
+                                Icons.arrow_forward_ios,
+                                color: Theme.of(context).colorScheme.primary,
+                                size: 16,
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
                   ),
-                );
-              },
+                // Conteúdo principal da tela
+                Expanded(
+                  child: BlocBuilder<HomeBloc, HomeState>(
+                    builder: (context, state) {
+                      return SingleChildScrollView(
+                        padding: const EdgeInsets.all(Constants.margin),
+                        child: Column(
+                          spacing: Constants.margin,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            DynamicBanner(
+                              state: state,
+                              height: videoBannerHeight,
+                            ),
+                            const SizedBox.shrink(),
+                            Text(
+                              AppLocalizations.of(context)!.featuredCharacter,
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .headlineSmall
+                                  ?.copyWith(
+                                    fontWeight: FontWeight.bold,
+                                    color:
+                                        Theme.of(context).colorScheme.primary,
+                                  ),
+                            ),
+                            _buildCharacterCard(context, state),
+                            Row(
+                              spacing: Constants.margin,
+                              children: [
+                                Expanded(
+                                  child: OutlinedButton.icon(
+                                    onPressed: state is HomeLoading
+                                        ? null
+                                        : () async {
+                                            final selectedCharacter =
+                                                await Navigator.pushNamed<
+                                                    CustomCharacterModel>(
+                                              context,
+                                              AppRoutes.characterSelection,
+                                            );
+
+                                            if (selectedCharacter != null &&
+                                                context.mounted) {
+                                              context.read<HomeBloc>().add(
+                                                  SelectCharacter(
+                                                      selectedCharacter));
+                                            }
+                                          },
+                                    icon: const Icon(Icons.person_search),
+                                    label: Text(AppLocalizations.of(context)!
+                                        .selectCharacter),
+                                  ),
+                                ),
+                                Expanded(
+                                  child: ElevatedButton.icon(
+                                    onPressed: state is HomeLoading
+                                        ? null
+                                        : () {
+                                            context.read<HomeBloc>().add(
+                                                const LoadRandomCharacter());
+                                          },
+                                    icon: state is HomeLoading
+                                        ? const SizedBox(
+                                            width: 16,
+                                            height: 16,
+                                            child: CircularProgressIndicator(
+                                                strokeWidth: 2),
+                                          )
+                                        : const Icon(Icons.shuffle),
+                                    label: Text(AppLocalizations.of(context)!
+                                        .randomCharacter),
+                                  ),
+                                ),
+                              ],
+                            ),
+                            const SizedBox(height: Constants.margin),
+                            _buildCharacterStatistics(context, state),
+                          ],
+                        ),
+                      );
+                    },
+                  ),
+                ),
+              ],
             ),
             bottomNavigationBar:
                 const BottomNavigation(BottomNavigationPages.home),

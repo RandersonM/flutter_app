@@ -17,7 +17,6 @@ class CrewBoatSection extends StatelessWidget {
     final l10n = AppLocalizations.of(context)!;
     final theme = Theme.of(context);
 
-    // Se não há imagem do barco, não exibe a seção
     if (crew.boatImageUrl == null || crew.boatImageUrl!.isEmpty) {
       return const SizedBox.shrink();
     }
@@ -26,12 +25,7 @@ class CrewBoatSection extends StatelessWidget {
       width: double.infinity,
       padding: const EdgeInsets.all(Constants.margin),
       decoration: BoxDecoration(
-        color: theme.colorScheme.surface,
         borderRadius: BorderRadius.circular(8),
-        border: Border.all(
-          color: theme.colorScheme.outline.withValues(alpha: 0.2),
-          width: 1,
-        ),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -46,9 +40,9 @@ class CrewBoatSection extends StatelessWidget {
               const SizedBox(width: 8),
               Text(
                 l10n.boat,
-                style: theme.textTheme.titleMedium?.copyWith(
+                style: theme.textTheme.titleLarge?.copyWith(
                   fontWeight: FontWeight.bold,
-                  color: theme.colorScheme.onSurface,
+                  color: theme.colorScheme.primary,
                 ),
               ),
             ],
@@ -72,7 +66,6 @@ class CrewBoatSection extends StatelessWidget {
             showTitleInDialog: true,
           ),
           
-          // Nome do barco (se existir)
           if (crew.boatName != null && crew.boatName!.isNotEmpty) ...[
             const SizedBox(height: Constants.margin),
             Container(
@@ -86,10 +79,9 @@ class CrewBoatSection extends StatelessWidget {
               ),
               child: Row(
                 children: [
-                  Icon(
+                  const Icon(
                     Icons.label,
                     size: 16,
-                    color: theme.colorScheme.onPrimaryContainer,
                   ),
                   const SizedBox(width: 8),
                   Expanded(
@@ -97,7 +89,6 @@ class CrewBoatSection extends StatelessWidget {
                       crew.boatName!,
                       style: theme.textTheme.bodyMedium?.copyWith(
                         fontWeight: FontWeight.w600,
-                        color: theme.colorScheme.onPrimaryContainer,
                       ),
                     ),
                   ),

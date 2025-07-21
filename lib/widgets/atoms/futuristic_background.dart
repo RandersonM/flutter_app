@@ -5,36 +5,59 @@ class FuturisticBackground extends StatelessWidget {
   final Widget child;
   final Color? overlayColor;
   final double opacity;
+  final bool useThemeColors;
+  final Color? customBackgroundColor;
 
   const FuturisticBackground({
     Key? key,
     required this.child,
     this.overlayColor,
     this.opacity = 0.1,
+    this.useThemeColors = false,
+    this.customBackgroundColor,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+
+    List<Color> gradientColors;
+    if (useThemeColors) {
+      gradientColors = [
+        colorScheme.primaryContainer,
+        colorScheme.primaryContainer.withValues(alpha: 0.8),
+        colorScheme.primaryContainer.withValues(alpha: 0.6),
+        colorScheme.primaryContainer.withValues(alpha: 0.4),
+      ];
+    } else {
+      gradientColors = [
+        Colors.purple.withValues(alpha: 0.8),
+        Colors.blue.withValues(alpha: 0.6),
+        Colors.orange.withValues(alpha: 0.4),
+        Colors.red.withValues(alpha: 0.6),
+      ];
+    }
+
     return Stack(
       children: [
-        // Background com gradiente futurista
         Container(
           decoration: BoxDecoration(
-            gradient: LinearGradient(
-              begin: Alignment.topLeft,
-              end: Alignment.bottomRight,
-              colors: [
-                Colors.purple.withValues(alpha: 0.8),
-                Colors.blue.withValues(alpha: 0.6),
-                Colors.orange.withValues(alpha: 0.4),
-                Colors.red.withValues(alpha: 0.6),
-              ],
-              stops: const [0.0, 0.3, 0.7, 1.0],
-            ),
+            color: customBackgroundColor != null
+                ? customBackgroundColor!.withValues(alpha: 0.9)
+                : (useThemeColors
+                    ? colorScheme.primaryContainer.withValues(alpha: 0.9)
+                    : null),
+            gradient: (customBackgroundColor != null || useThemeColors)
+                ? null
+                : LinearGradient(
+                    begin: Alignment.center,
+                    end: Alignment.bottomCenter,
+                    colors: gradientColors,
+                    stops: const [0.0, 0.3, 0.7, 1.0],
+                  ),
           ),
         ),
         
-        // Padrão de fundo com gomu-gomu
         Positioned.fill(
           child: Opacity(
             opacity: opacity,
@@ -42,14 +65,13 @@ class FuturisticBackground extends StatelessWidget {
               'assets/svg/gomu-gomu.svg',
               fit: BoxFit.cover,
               colorFilter: ColorFilter.mode(
-                Colors.white.withValues(alpha: 0.3),
+                Theme.of(context).colorScheme.primary.withValues(alpha: 0.8),
                 BlendMode.srcIn,
               ),
             ),
           ),
         ),
         
-        // Overlay adicional para melhorar legibilidade
         if (overlayColor != null)
           Container(
             decoration: BoxDecoration(
@@ -69,6 +91,8 @@ class AnimatedFuturisticBackground extends StatefulWidget {
   final Color? overlayColor;
   final double opacity;
   final Duration animationDuration;
+  final bool useThemeColors;
+  final Color? customBackgroundColor;
 
   const AnimatedFuturisticBackground({
     Key? key,
@@ -76,6 +100,8 @@ class AnimatedFuturisticBackground extends StatefulWidget {
     this.overlayColor,
     this.opacity = 0.1,
     this.animationDuration = const Duration(seconds: 3),
+    this.useThemeColors = false,
+    this.customBackgroundColor,
   }) : super(key: key);
 
   @override
@@ -114,24 +140,35 @@ class _AnimatedFuturisticBackgroundState extends State<AnimatedFuturisticBackgro
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+
+    List<Color> gradientColors;
+    gradientColors = [
+      colorScheme.surfaceContainer.withValues(alpha: 0.1),
+      colorScheme.surfaceContainer.withValues(alpha: 0.2),
+      colorScheme.primaryContainer.withValues(alpha: 1.0),
+      colorScheme.onTertiaryContainer.withValues(alpha: 0.8),
+      colorScheme.tertiary.withValues(alpha: 0.6),
+      colorScheme.onTertiary.withValues(alpha: 0.4),
+      colorScheme.surfaceContainer.withValues(alpha: 0.3),
+      colorScheme.surfaceContainer.withValues(alpha: 0.7),
+      colorScheme.surfaceContainer,
+    ];
+    
+
     return Stack(
       children: [
-        // Background com gradiente futurista animado
         AnimatedBuilder(
           animation: _animationController,
           builder: (context, child) {
             return Container(
               decoration: BoxDecoration(
-                gradient: LinearGradient(
-                  begin: Alignment.topLeft,
-                  end: Alignment.bottomRight,
-                  colors: [
-                    Colors.purple.withValues(alpha: 0.8),
-                    Colors.blue.withValues(alpha: 0.6),
-                    Colors.orange.withValues(alpha: 0.4),
-                    Colors.red.withValues(alpha: 0.6),
-                  ],
-                  stops: const [0.0, 0.3, 0.7, 1.0],
+                color: Colors.white,
+                gradient: RadialGradient(
+                  center: Alignment.center,
+                  radius: 0.9,
+                  colors: gradientColors,
+                  stops: const [0.0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.8, 1.0],
                   transform: GradientRotation(_rotationAnimation.value),
                 ),
               ),
@@ -139,20 +176,6 @@ class _AnimatedFuturisticBackgroundState extends State<AnimatedFuturisticBackgro
           },
         ),
         
-        // Padrão de fundo com gomu-gomu
-        Positioned.fill(
-          child: Opacity(
-            opacity: widget.opacity,
-            child: SvgPicture.asset(
-              'assets/svg/gomu-gomu.svg',
-              fit: BoxFit.cover,
-              colorFilter: ColorFilter.mode(
-                Colors.white.withValues(alpha: 0.3),
-                BlendMode.srcIn,
-              ),
-            ),
-          ),
-        ),
         
         // Overlay adicional para melhorar legibilidade
         if (widget.overlayColor != null)

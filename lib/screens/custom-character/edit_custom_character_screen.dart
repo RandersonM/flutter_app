@@ -71,13 +71,10 @@ class _EditCustomCharacterScreenState extends State<EditCustomCharacterScreen> {
     
     _selectedAffiliations = [];
     _selectedOccupations = [];
-    _selectedHaki.clear(); // Limpar a lista antes de adicionar
+    _selectedHaki.clear();
     
     if (character.haki != null) {
-      debugPrint('character.haki: ${character.haki}');
-      // Adicionar os dados de Haki sem mapeamento inicialmente
       _selectedHaki.addAll(character.haki!);
-      debugPrint('_selectedHaki before mapping: ${_selectedHaki}');
     }
     if (character.affiliations.isNotEmpty) {
       _selectedAffiliations = List.from(character.affiliations);
@@ -103,7 +100,6 @@ class _EditCustomCharacterScreenState extends State<EditCustomCharacterScreen> {
           _selectedHaki.add(localizedHaki);
         }
       }
-      debugPrint('_selectedHaki after mapping: ${_selectedHaki}');
       _hasMappedHaki = true;
       setState(() {});
     }
@@ -155,7 +151,6 @@ class _EditCustomCharacterScreenState extends State<EditCustomCharacterScreen> {
 
   @override
   Widget build(BuildContext context) {
-    // Mapear dados de Haki se necessário
     _mapHakiDataIfNeeded();
     
     return BlocProvider(

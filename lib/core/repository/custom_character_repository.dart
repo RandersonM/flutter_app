@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:opfan/core/models/one_piece/custom_character_model.dart';
 import 'package:opfan/core/services/firestore_service.dart';
 import 'package:opfan/core/repository/interfaces/custom_character_repository_interface.dart';
@@ -88,6 +89,52 @@ class CustomCharacterRepository implements ICustomCharacterRepository {
   }
 
   @override
+  Future<List<CustomCharacterModel>> getAllCustomCharacters({
+    String? orderBy,
+    bool descending = false,
+    int? limit,
+  }) async {
+    try {
+      final documents = await _firestoreService.getDocuments(
+        collection: _collection,
+        orderBy: orderBy,
+        descending: descending,
+        limit: limit,
+      );
+
+      var characters = documents
+          .map((doc) =>
+              CustomCharacterModel.fromFirestore(doc, doc['id'] as String))
+          .toList();
+
+      if (orderBy != null) {
+        characters.sort((a, b) {
+          int comparison = 0;
+          switch (orderBy) {
+            case 'createdAt':
+              comparison = (a.createdAt ?? DateTime.now())
+                  .compareTo(b.createdAt ?? DateTime.now());
+              break;
+            case 'name':
+              comparison = a.name.compareTo(b.name);
+              break;
+            case 'bounty':
+              comparison = a.bounty.compareTo(b.bounty);
+              break;
+            default:
+              comparison = 0;
+          }
+          return descending ? -comparison : comparison;
+        });
+      }
+
+      return characters;
+    } catch (e) {
+      throw Exception('Erro ao buscar todos os personagens customizados: $e');
+    }
+  }
+
+  @override
   Future<void> updateCustomCharacter(String documentId, CustomCharacterModel character) async {
     try {
       final data = character.toFirestoreWithEnglishKeys();
@@ -133,7 +180,8 @@ class CustomCharacterRepository implements ICustomCharacterRepository {
               await crewRepository.setViceCaptain(crew.id!, '');
             }
           } catch (e) {
-            print('Erro ao remover personagem da tripulação ${crew.id}: $e');
+            debugPrint(
+                'Erro ao remover personagem da tripulação ${crew.id}: $e');
           }
         }
       }
@@ -327,6 +375,17 @@ class CustomCharacterService {
     descending: descending,
     limit: limit,
   );
+
+  Future<List<CustomCharacterModel>> getAllCustomCharacters({
+    String? orderBy,
+    bool descending = false,
+    int? limit,
+  }) =>
+      _repository.getAllCustomCharacters(
+        orderBy: orderBy,
+        descending: descending,
+        limit: limit,
+      );
 
   Future<void> updateCustomCharacter(String documentId, CustomCharacterModel character) => 
       _repository.updateCustomCharacter(documentId, character);

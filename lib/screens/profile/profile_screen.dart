@@ -5,12 +5,57 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:opfan/core/auth/blocs/index.dart';
 import 'package:opfan/core/auth/models/user_model.dart';
+import 'package:opfan/core/services/theme_service.dart';
 import 'package:opfan/l10n/app_localizations.dart';
 import 'package:opfan/utils/constants.dart';
 import 'package:opfan/widgets/molecules/clickable_avatar.dart';
 
-class ProfileScreen extends StatelessWidget {
+class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
+
+  @override
+  State<ProfileScreen> createState() => _ProfileScreenState();
+}
+
+class _ProfileScreenState extends State<ProfileScreen> {
+  bool _isDarkMode = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadCurrentTheme();
+    ThemeService().addListener(_onThemeChanged);
+  }
+
+  @override
+  void dispose() {
+    ThemeService().removeListener(_onThemeChanged);
+    super.dispose();
+  }
+
+  void _loadCurrentTheme() {
+    setState(() {
+      _isDarkMode = ThemeService.isDarkMode;
+    });
+  }
+
+  void _onThemeChanged() {
+    _loadCurrentTheme();
+  }
+
+  Future<void> _toggleTheme() async {
+    await ThemeService.toggleTheme();
+
+    if (mounted) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(ThemeService.isDarkMode
+              ? AppLocalizations.of(context)!.darkThemeActivated
+              : AppLocalizations.of(context)!.lightThemeActivated),
+        ),
+      );
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -90,13 +135,13 @@ class ProfileScreen extends StatelessWidget {
           // Profile Sections
           _buildSection(
             context,
-            title: 'Account Settings',
+            title: AppLocalizations.of(context)!.accountSettings,
             items: [
               _buildProfileItem(
                 context,
                 icon: Icons.person,
-                title: 'Edit Profile',
-                subtitle: 'Update your personal information',
+                title: AppLocalizations.of(context)!.editProfile,
+                subtitle: AppLocalizations.of(context)!.editProfileSubtitle,
                 onTap: () {
                   // Navigate to edit profile
                   ScaffoldMessenger.of(context).showSnackBar(
@@ -109,8 +154,8 @@ class ProfileScreen extends StatelessWidget {
               _buildProfileItem(
                 context,
                 icon: Icons.notifications,
-                title: 'Notifications',
-                subtitle: 'Manage your notification preferences',
+                title: AppLocalizations.of(context)!.notifications,
+                subtitle: AppLocalizations.of(context)!.notificationsSubtitle,
                 onTap: () {
                   // Navigate to notifications settings
                   ScaffoldMessenger.of(context).showSnackBar(
@@ -127,13 +172,13 @@ class ProfileScreen extends StatelessWidget {
           
           _buildSection(
             context,
-            title: 'App Settings',
+            title: AppLocalizations.of(context)!.appSettings,
             items: [
               _buildProfileItem(
                 context,
                 icon: Icons.language,
-                title: 'Language',
-                subtitle: 'Change app language',
+                title: AppLocalizations.of(context)!.language,
+                subtitle: AppLocalizations.of(context)!.languageSubtitle,
                 onTap: () {
                   // Navigate to language settings
                   ScaffoldMessenger.of(context).showSnackBar(
@@ -143,20 +188,7 @@ class ProfileScreen extends StatelessWidget {
                   );
                 },
               ),
-              _buildProfileItem(
-                context,
-                icon: Icons.dark_mode,
-                title: 'Theme',
-                subtitle: 'Change app theme',
-                onTap: () {
-                  // Navigate to theme settings
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(
-                        content:
-                            Text(AppLocalizations.of(context)!.themeTapped)),
-                  );
-                },
-              ),
+              _buildThemeItem(context),
             ],
           ),
           
@@ -164,13 +196,13 @@ class ProfileScreen extends StatelessWidget {
           
           _buildSection(
             context,
-            title: 'Support',
+            title: AppLocalizations.of(context)!.support,
             items: [
               _buildProfileItem(
                 context,
                 icon: Icons.help,
-                title: 'Help & Support',
-                subtitle: 'Get help and contact support',
+                title: AppLocalizations.of(context)!.helpSupport,
+                subtitle: AppLocalizations.of(context)!.helpSupportSubtitle,
                 onTap: () {
                   // Navigate to help
                   ScaffoldMessenger.of(context).showSnackBar(
@@ -183,8 +215,8 @@ class ProfileScreen extends StatelessWidget {
               _buildProfileItem(
                 context,
                 icon: Icons.info,
-                title: 'About',
-                subtitle: 'App version and information',
+                title: AppLocalizations.of(context)!.about,
+                subtitle: AppLocalizations.of(context)!.aboutSubtitle,
                 onTap: () {
                   // Navigate to about
                   ScaffoldMessenger.of(context).showSnackBar(
@@ -198,6 +230,30 @@ class ProfileScreen extends StatelessWidget {
           ),
         ],
       ),
+    );
+  }
+
+  Widget _buildThemeItem(BuildContext context) {
+    return ListTile(
+      leading: Icon(
+        _isDarkMode ? Icons.dark_mode : Icons.light_mode,
+        color: Theme.of(context).colorScheme.primary,
+      ),
+      title: Text(
+        AppLocalizations.of(context)!.theme,
+        style: const TextStyle(fontWeight: FontWeight.w500),
+      ),
+      subtitle: Text(
+        _isDarkMode
+            ? AppLocalizations.of(context)!.darkTheme
+            : AppLocalizations.of(context)!.lightTheme,
+      ),
+      trailing: Switch(
+        value: _isDarkMode,
+        onChanged: (value) => _toggleTheme(),
+        activeColor: Theme.of(context).colorScheme.primary,
+      ),
+      onTap: _toggleTheme,
     );
   }
 

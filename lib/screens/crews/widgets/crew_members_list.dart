@@ -7,7 +7,6 @@ import 'package:opfan/core/utils/character_localization_mapper.dart';
 import 'package:opfan/utils/constants.dart';
 import 'package:opfan/utils/role_icon_mapper.dart';
 import 'package:opfan/l10n/app_localizations.dart';
-import 'package:opfan/utils/theme.dart';
 
 class CrewMembersList extends StatelessWidget {
   final CrewModel crew;
@@ -66,7 +65,6 @@ class CrewMembersList extends StatelessWidget {
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(16.0),
       ),
-      color: Colors.white,
       child: Padding(
         padding: const EdgeInsets.all(Constants.margin * 2),
         child: Column(
@@ -119,7 +117,6 @@ class CrewMembersList extends StatelessWidget {
       child: Container(
         padding: const EdgeInsets.all(Constants.margin * 1.5),
         decoration: BoxDecoration(
-          color: AppColors.grey[200],
           borderRadius: BorderRadius.circular(Constants.margin * 1.5),
           border: Border.all(
             color: Colors.white,

@@ -29,9 +29,10 @@ class DefaultAppBar extends StatelessWidget implements PreferredSizeWidget {
               begin: Alignment.topCenter,
               end: Alignment.bottomCenter,
               colors: <Color>[
-                Theme.of(context).colorScheme.secondary,
-                Theme.of(context).colorScheme.onSecondary,
+                Theme.of(context).colorScheme.onPrimaryContainer,
+                Theme.of(context).colorScheme.primaryContainer,
                 Theme.of(context).colorScheme.surface,
+                Theme.of(context).colorScheme.surfaceContainer,
               ]),
         )),
         leading: leading,

@@ -428,6 +428,18 @@
     "type": "text",
     "placeholders": {}
   },
+  "loginBannerTitle": "Faça login para acessar recursos exclusivos",
+  "@loginBannerTitle": {
+    "description": "Login banner title for unauthenticated users",
+    "type": "text",
+    "placeholders": {}
+  },
+  "loginBannerSubtitle": "Crie personagens, participe de duelos e muito mais",
+  "@loginBannerSubtitle": {
+    "description": "Login banner subtitle for unauthenticated users",
+    "type": "text",
+    "placeholders": {}
+  },
   "loginWelcomeSubtitle": "Explore o mundo de One Piece e descubra seus personagens favoritos",
   "@loginWelcomeSubtitle": {
     "description": "Subtítulo mostrado na tela de login convidando o usuário a explorar os personagens de One Piece.",
@@ -1470,6 +1482,30 @@
     "type": "text",
     "placeholders": {}
   },
+  "onePieceCharacters": "Personagens One Piece",
+  "@onePieceCharacters": {
+    "description": "Label for One Piece characters tab",
+    "type": "text",
+    "placeholders": {}
+  },
+  "customCharacters": "Personagens Customizados",
+  "@customCharacters": {
+    "description": "Label for custom characters tab",
+    "type": "text",
+    "placeholders": {}
+  },
+  "noOnePieceCharacters": "Nenhum personagem One Piece disponível",
+  "@noOnePieceCharacters": {
+    "description": "Message when no One Piece characters are available",
+    "type": "text",
+    "placeholders": {}
+  },
+  "noCustomCharacters": "Nenhum personagem customizado disponível",
+  "@noCustomCharacters": {
+    "description": "Message when no custom characters are available",
+    "type": "text",
+    "placeholders": {}
+  },
   "dualWielder": "Dual Wielder",
   "@dualWielder": {
     "description": "Fighting type option for dual wielder",
@@ -1703,5 +1739,304 @@
     "description": "Snackbar message when profile photo is tapped",
     "type": "text",
     "placeholders": {}
+  },
+  "zodiacCapricorn": "Capricórnio",
+  "@zodiacCapricorn": {
+    "description": "Shows the zodiac Capricorn",
+    "type": "text",
+    "placeholders": {}
+  },
+  "duels": "Duelos",
+  "@duels": {
+    "description": "Duels screen title",
+    "type": "text",
+    "placeholders": {}
+  },
+  "duelsSubtitle": "Personagem vs Personagem",
+  "@duelsSubtitle": {
+    "description": "Duels screen subtitle",
+    "type": "text",
+    "placeholders": {}
+  },
+  "versus": "VS",
+  "@versus": {
+    "description": "Text shown between characters in duel arena",
+    "type": "text",
+    "placeholders": {}
+  },
+  "winner": "Venceu!",
+  "@winner": {
+    "description": "Text shown after winner name",
+    "type": "text",
+    "placeholders": {}
+  },
+  "startDuel": "Iniciar Duelo",
+  "@startDuel": {
+    "description": "Button text to start a duel",
+    "type": "text",
+    "placeholders": {}
+  },
+  "duelInProgress": "Batalha em Progresso...",
+  "@duelInProgress": {
+    "description": "Text shown when duel is happening",
+    "type": "text",
+    "placeholders": {}
+  },
+  "characterStats": "Stats dos Personagens",
+  "@characterStats": {
+    "description": "Title for stats comparison section",
+    "type": "text",
+    "placeholders": {}
+  },
+  "selectFirstFighter": "Selecione o Primeiro Lutador",
+  "@selectFirstFighter": {
+    "description": "Title for first character selector",
+    "type": "text",
+    "placeholders": {}
+  },
+  "selectSecondFighter": "Selecione o Segundo Lutador",
+  "@selectSecondFighter": {
+    "description": "Title for second character selector",
+    "type": "text",
+    "placeholders": {}
+  },
+  "selectACharacter": "Selecione um Personagem",
+  "@selectACharacter": {
+    "description": "Placeholder text for character selection",
+    "type": "text",
+    "placeholders": {}
+  },
+  "randomizeCharacters": "Aleatorizar",
+  "@randomizeCharacters": {
+    "description": "Button text to randomize character selection",
+    "type": "text",
+    "placeholders": {}
+  },
+  "resetDuel": "Resetar",
+  "@resetDuel": {
+    "description": "Button text to reset duel",
+    "type": "text",
+    "placeholders": {}
+  },
+  "hakiType": "{count, plural, =0 {tipos} =1 {tipo} other {tipos}}",
+  "@hakiType": {
+    "description": "Haki type pluralization",
+    "type": "text",
+    "placeholders": {
+      "count": {
+        "type": "num",
+        "example": "1"
+      }
+    }
+  },
+  "noDevilFruit": "Sem Akuma no Mi",
+  "@noDevilFruit": {
+    "description": "Text shown when character has no devil fruit",
+    "type": "text",
+    "placeholders": {}
+  },
+  "newDuel": "Novo Duelo",
+  "@newDuel": {
+    "description": "Button text to start a new duel",
+    "type": "text",
+    "placeholders": {}
+  },
+  "accountSettings": "Configurações da Conta",
+  "@accountSettings": {
+    "description": "Title for account settings section in profile",
+    "type": "text",
+    "placeholders": {}
+  },
+  "editProfile": "Editar Perfil",
+  "@editProfile": {
+    "description": "Menu item to edit profile",
+    "type": "text",
+    "placeholders": {}
+  },
+  "editProfileSubtitle": "Atualize suas informações pessoais",
+  "@editProfileSubtitle": {
+    "description": "Subtitle for edit profile menu item",
+    "type": "text",
+    "placeholders": {}
+  },
+  "notifications": "Notificações",
+  "@notifications": {
+    "description": "Menu item for notifications settings",
+    "type": "text",
+    "placeholders": {}
+  },
+  "notificationsSubtitle": "Gerencie suas preferências de notificação",
+  "@notificationsSubtitle": {
+    "description": "Subtitle for notifications menu item",
+    "type": "text",
+    "placeholders": {}
+  },
+  "appSettings": "Configurações do App",
+  "@appSettings": {
+    "description": "Title for app settings section in profile",
+    "type": "text",
+    "placeholders": {}
+  },
+  "language": "Idioma",
+  "@language": {
+    "description": "Menu item for language settings",
+    "type": "text",
+    "placeholders": {}
+  },
+  "languageSubtitle": "Alterar idioma do app",
+  "@languageSubtitle": {
+    "description": "Subtitle for language menu item",
+    "type": "text",
+    "placeholders": {}
+  },
+  "theme": "Tema",
+  "@theme": {
+    "description": "Menu item for theme settings",
+    "type": "text",
+    "placeholders": {}
+  },
+  "darkTheme": "Tema escuro",
+  "@darkTheme": {
+    "description": "Text for dark theme option",
+    "type": "text",
+    "placeholders": {}
+  },
+  "lightTheme": "Tema claro",
+  "@lightTheme": {
+    "description": "Text for light theme option",
+    "type": "text",
+    "placeholders": {}
+  },
+  "darkThemeActivated": "Tema escuro ativado",
+  "@darkThemeActivated": {
+    "description": "Snackbar message when dark theme is activated",
+    "type": "text",
+    "placeholders": {}
+  },
+  "lightThemeActivated": "Tema claro ativado",
+  "@lightThemeActivated": {
+    "description": "Snackbar message when light theme is activated",
+    "type": "text",
+    "placeholders": {}
+  },
+  "support": "Suporte",
+  "@support": {
+    "description": "Title for support section in profile",
+    "type": "text",
+    "placeholders": {}
+  },
+  "helpSupport": "Ajuda e Suporte",
+  "@helpSupport": {
+    "description": "Menu item for help and support",
+    "type": "text",
+    "placeholders": {}
+  },
+  "helpSupportSubtitle": "Obtenha ajuda e entre em contato com o suporte",
+  "@helpSupportSubtitle": {
+    "description": "Subtitle for help and support menu item",
+    "type": "text",
+    "placeholders": {}
+  },
+  "about": "Sobre",
+  "@about": {
+    "description": "Menu item for about section",
+    "type": "text",
+    "placeholders": {}
+  },
+  "aboutSubtitle": "Versão do app e informações",
+  "@aboutSubtitle": {
+    "description": "Subtitle for about menu item",
+    "type": "text",
+    "placeholders": {}
+  },
+  "nameMinLength": "Nome deve ter pelo menos 3 caracteres",
+  "@nameMinLength": {
+    "description": "Mensagem de validação para tamanho mínimo do nome.",
+    "type": "text"
+  },
+  "tags": "Tags",
+  "@tags": {
+    "description": "Título da seção de tags.",
+    "type": "text"
+  },
+  "noTagsAdded": "Nenhuma tag adicionada",
+  "@noTagsAdded": {
+    "description": "Mensagem quando não há tags.",
+    "type": "text"
+  },
+  "pirateFlagSectionTitle": "Bandeira Pirata (Jolly Roger)",
+  "@pirateFlagSectionTitle": {
+    "description": "Título da seção de bandeira pirata.",
+    "type": "text"
+  },
+  "pirateFlagTitle": "Bandeira da Tripulação",
+  "@pirateFlagTitle": {
+    "description": "Título para imagem da bandeira pirata.",
+    "type": "text"
+  },
+  "aiPromptLabel": "Prompt para IA",
+  "@aiPromptLabel": {
+    "description": "Rótulo para campo de prompt de IA.",
+    "type": "text"
+  },
+  "pirateFlagPromptHint": "Ex: bandeira pirata com caveira e espadas cruzadas",
+  "@pirateFlagPromptHint": {
+    "description": "Hint para prompt de bandeira pirata.",
+    "type": "text"
+  },
+  "generateFlag": "Gerar Bandeira",
+  "@generateFlag": {
+    "description": "Texto do botão para gerar bandeira pirata.",
+    "type": "text"
+  },
+  "crewBoatSectionTitle": "Barco da Tripulação",
+  "@crewBoatSectionTitle": {
+    "description": "Título da seção de barco da tripulação.",
+    "type": "text"
+  },
+  "boatNameHint": "Ex: Going Merry",
+  "@boatNameHint": {
+    "description": "Hint para campo de nome do barco.",
+    "type": "text"
+  },
+  "generateBoat": "Gerar Barco",
+  "@generateBoat": {
+    "description": "Texto do botão para gerar barco.",
+    "type": "text"
+  },
+  "boatTitle": "Barco da Tripulação",
+  "@boatTitle": {
+    "description": "Título para imagem do barco.",
+    "type": "text"
+  },
+  "aiPromptInfo": "Use prompts descritivos para gerar imagens únicas da sua tripulação. As imagens geradas serão salvas automaticamente.",
+  "@aiPromptInfo": {
+    "description": "Texto informativo sobre uso de prompts de IA.",
+    "type": "text"
+  },
+  "fightingStyleSectionTitle": "Estilo de Luta",
+  "@fightingStyleSectionTitle": {
+    "description": "Título da seção para o card de detalhes do estilo de luta.",
+    "type": "text"
+  },
+  "fightingStyleNameLabel": "Nome do Estilo",
+  "@fightingStyleNameLabel": {
+    "description": "Rótulo para o nome do estilo de luta.",
+    "type": "text"
+  },
+  "fightingStyleTypeLabel": "Tipo de Luta",
+  "@fightingStyleTypeLabel": {
+    "description": "Rótulo para o tipo do estilo de luta.",
+    "type": "text"
+  },
+  "fightingStyleWeaponsLabel": "Armas",
+  "@fightingStyleWeaponsLabel": {
+    "description": "Rótulo para as armas usadas no estilo de luta.",
+    "type": "text"
+  },
+  "fightingStyleAttacksLabel": "Ataques",
+  "@fightingStyleAttacksLabel": {
+    "description": "Rótulo para os ataques do estilo de luta.",
+    "type": "text"
   }
 }

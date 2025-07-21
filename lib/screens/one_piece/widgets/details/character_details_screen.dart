@@ -27,6 +27,7 @@ class CharacterDetailsScreen extends StatelessWidget {
   final CustomCharacterModel character;
 
   Widget _buildInfoTile({
+    required BuildContext context,
     required Widget leading,
     required String label,
     required String? value,
@@ -34,7 +35,12 @@ class CharacterDetailsScreen extends StatelessWidget {
     if (value == null || value.isEmpty) return const SizedBox.shrink();
     return ListTile(
       leading: leading,
-      title: Text(label, style: const TextStyle(fontWeight: FontWeight.bold)),
+      title: Text(
+        label,
+        style: Theme.of(context).textTheme.titleMedium?.copyWith(
+              fontWeight: FontWeight.bold,
+            ),
+      ),
       subtitle: Text(value),
     );
   }
@@ -74,7 +80,12 @@ class CharacterDetailsScreen extends StatelessWidget {
             children: [
               if (icon != null) Icon(icon, size: 20),
               if (icon != null) const SizedBox(width: 6),
-              Text(label, style: const TextStyle(fontWeight: FontWeight.bold)),
+              Text(
+                label,
+                style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                      fontWeight: FontWeight.bold,
+                    ),
+              ),
             ],
           ),
           const SizedBox(height: 6),
@@ -224,11 +235,13 @@ class CharacterDetailsScreen extends StatelessWidget {
             child: Column(
               children: [
                 _buildInfoTile(
+                  context: context,
                   leading: const Icon(Icons.people),
                   label: l10n.race,
                   value: _getRaceDisplayValue(context),
                 ),
                 _buildInfoTile(
+                  context: context,
                   leading: _buildZodiacIcon(character.signo),
                   label: l10n.signo,
                   value: character.signo != null
@@ -237,16 +250,19 @@ class CharacterDetailsScreen extends StatelessWidget {
                       : null,
                 ),
                 _buildInfoTile(
+                  context: context,
                   leading: const Icon(Icons.cake),
                   label: l10n.age,
                   value: character.calculatedAge?.toString(),
                 ),
                 _buildInfoTile(
+                  context: context,
                   leading: const Icon(Icons.sailing),
                   label: l10n.crew(0),
                   value: character.crew,
                 ),
                 _buildInfoTile(
+                  context: context,
                   leading: const Icon(Icons.info),
                   label: l10n.status,
                   value: character.status != null
@@ -255,6 +271,7 @@ class CharacterDetailsScreen extends StatelessWidget {
                       : character.status,
                 ),
                 _buildInfoTile(
+                  context: context,
                   leading: const Icon(Icons.calendar_month_outlined),
                   label: l10n.birthDate,
                   value: character.birthDate != null
@@ -277,12 +294,17 @@ class CharacterDetailsScreen extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const Row(
+                    Row(
+                      spacing: Constants.margin,
                       children: [
-                        Icon(Icons.description, size: 20),
-                        SizedBox(width: 6),
-                        Text('Descrição',
-                            style: TextStyle(fontWeight: FontWeight.bold)),
+                        const Icon(Icons.description, size: 20),
+                        Text(
+                          l10n.description,
+                          style:
+                              Theme.of(context).textTheme.titleMedium?.copyWith(
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                        ),
                       ],
                     ),
                     const SizedBox(height: 8),

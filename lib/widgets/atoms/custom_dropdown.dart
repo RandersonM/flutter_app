@@ -54,7 +54,6 @@ class CustomDropdown<T> extends StatelessWidget {
             borderRadius: BorderRadius.circular(8),
           ),
           filled: true,
-          fillColor: enabled ? Colors.grey[50] : Colors.grey[200],
         ),
       ),
     );

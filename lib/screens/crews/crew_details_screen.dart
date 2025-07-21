@@ -93,20 +93,21 @@ class _CrewDetailsScreenState extends State<CrewDetailsScreen> {
         backgroundColor: theme.colorScheme.primary,
         foregroundColor: Colors.white,
         icon: const Icon(Icons.person_add),
-        label: const Text('Adicionar Membro'),
+              label: Text(l10n.addMember),
             )
           : null,
     );
   }
 
   void _onEditCrew() {
+    final l10n = AppLocalizations.of(context)!;
     final currentUser = FirebaseAuth.instance.currentUser;
     final canEdit = _crew.userId == currentUser?.uid;
 
     if (!canEdit) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Você não tem permissão para editar esta tripulação'),
+        SnackBar(
+          content: Text(l10n.noPermissionToEdit),
           backgroundColor: Colors.orange,
         ),
       );
@@ -117,13 +118,14 @@ class _CrewDetailsScreenState extends State<CrewDetailsScreen> {
   }
 
   void _onDeleteCrew() {
+    final l10n = AppLocalizations.of(context)!;
     final currentUser = FirebaseAuth.instance.currentUser;
     final canEdit = _crew.userId == currentUser?.uid;
 
     if (!canEdit) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Você não tem permissão para excluir esta tripulação'),
+        SnackBar(
+          content: Text(l10n.noPermissionToDelete),
           backgroundColor: Colors.orange,
         ),
       );
@@ -133,14 +135,12 @@ class _CrewDetailsScreenState extends State<CrewDetailsScreen> {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text('Confirmar exclusão'),
-        content: Text(
-          'Tem certeza que deseja excluir a tripulação "${_crew.name}"? Esta ação não pode ser desfeita.',
-        ),
+        title: Text(l10n.confirmDelete),
+        content: Text(l10n.confirmDeleteCrew(_crew.name)),
         actions: [
           TextButton(
             onPressed: () => Navigator.of(context).pop(),
-            child: const Text('Cancelar'),
+            child: Text(l10n.cancel),
           ),
           TextButton(
             onPressed: () {
@@ -150,7 +150,7 @@ class _CrewDetailsScreenState extends State<CrewDetailsScreen> {
             style: TextButton.styleFrom(
               foregroundColor: Colors.red,
             ),
-            child: const Text('Excluir'),
+            child: Text(l10n.delete),
           ),
         ],
       ),
@@ -158,6 +158,7 @@ class _CrewDetailsScreenState extends State<CrewDetailsScreen> {
   }
 
   void _confirmDeleteCrew() async {
+    final l10n = AppLocalizations.of(context)!;
     try {
       showDialog(
         context: context,
@@ -177,7 +178,7 @@ class _CrewDetailsScreenState extends State<CrewDetailsScreen> {
         if (mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
-              content: Text('Tripulação "${_crew.name}" excluída'),
+              content: Text(l10n.crewDeletedWithName(_crew.name)),
               backgroundColor: Colors.red,
             ),
           );
@@ -186,6 +187,7 @@ class _CrewDetailsScreenState extends State<CrewDetailsScreen> {
 
       Navigator.of(context).pop({'action': 'deleted', 'crewId': _crew.id});
     } catch (e) {
+      final l10n = AppLocalizations.of(context)!;
       if (!mounted) return;
       Navigator.of(context).pop(); 
       
@@ -193,7 +195,7 @@ class _CrewDetailsScreenState extends State<CrewDetailsScreen> {
         if (mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
-              content: Text('Erro ao excluir tripulação: $e'),
+              content: Text(l10n.crewDeletionError),
               backgroundColor: Colors.red,
             ),
           );
@@ -203,14 +205,14 @@ class _CrewDetailsScreenState extends State<CrewDetailsScreen> {
   }
 
   void _onAddMember() {
+    final l10n = AppLocalizations.of(context)!;
     final currentUser = FirebaseAuth.instance.currentUser;
     final canEdit = _crew.userId == currentUser?.uid;
 
     if (!canEdit) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text(
-              'Você não tem permissão para adicionar membros a esta tripulação'),
+        SnackBar(
+          content: Text(l10n.noPermissionToEdit),
           backgroundColor: Colors.orange,
         ),
       );
@@ -246,8 +248,8 @@ class _CrewDetailsScreenState extends State<CrewDetailsScreen> {
 
     if (availableRoles.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content:  Text('Todas as roles já estão preenchidas'),
+        SnackBar(
+          content: Text(l10n.allRolesFilled),
           backgroundColor: Colors.orange,
         ),
       );
@@ -261,7 +263,7 @@ class _CrewDetailsScreenState extends State<CrewDetailsScreen> {
       context: context,
       builder: (context) => StatefulBuilder(
         builder: (context, setState) => AlertDialog(
-          title: const Text('Adicionar Membro'),
+          title: Text(l10n.addMember),
           content: SizedBox(
             width: double.maxFinite,
             child: Column(
@@ -275,13 +277,13 @@ class _CrewDetailsScreenState extends State<CrewDetailsScreen> {
                     }
 
                     if (snapshot.hasError) {
-                      return Text('Erro:  [${snapshot.error}');
+                      return Text('${l10n.error}: [${snapshot.error}]');
                     }
 
                     final availableCharacters = snapshot.data ?? [];
                     
                     if (availableCharacters.isEmpty) {
-                      return const Text('Nenhum personagem disponível para adicionar');
+                      return Text(l10n.noCharactersAvailable);
                     }
 
                     return Padding(
@@ -309,12 +311,12 @@ class _CrewDetailsScreenState extends State<CrewDetailsScreen> {
                           }).toList();
                         },
                         decoration: InputDecoration(
-                          labelText: 'Personagem',
+                          labelText: l10n.tagName,
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(8),
                           ),
                           filled: true,
-                          fillColor: Colors.grey[50],
+
                         ),
                       ),
                     );
@@ -322,7 +324,7 @@ class _CrewDetailsScreenState extends State<CrewDetailsScreen> {
                 ),
                 const SizedBox(height: 16),
                 CustomDropdown<String>(
-                  label: 'Role',
+                  label: l10n.crewRole,
                   value: selectedRole,
                   items: availableRoles,
                   itemToString: (role) => role,
@@ -340,7 +342,7 @@ class _CrewDetailsScreenState extends State<CrewDetailsScreen> {
           actions: [
             TextButton(
               onPressed: () => Navigator.of(context).pop(),
-              child: const Text('Cancelar'),
+              child: Text(l10n.cancel),
             ),
             ElevatedButton(
               onPressed: selectedCharacter != null && selectedRole != null
@@ -350,7 +352,7 @@ class _CrewDetailsScreenState extends State<CrewDetailsScreen> {
                           selectedCharacter!, selectedRole!, l10n);
                     }
                   : null,
-              child: const Text('Adicionar'),
+              child: Text(l10n.add),
             ),
           ],
         ),
@@ -504,7 +506,8 @@ class _CrewDetailsScreenState extends State<CrewDetailsScreen> {
         if (mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
-              content: Text('${character.name} adicionado como $translatedRole'),
+              content:
+                  Text(l10n.memberAddedAsRole(character.name, translatedRole)),
               backgroundColor: Colors.green,
             ),
           );
@@ -516,7 +519,7 @@ class _CrewDetailsScreenState extends State<CrewDetailsScreen> {
         if (mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
-              content: Text('Erro ao adicionar membro: $e'),
+              content: Text('${l10n.error}: $e'),
               backgroundColor: Colors.red,
             ),
           );
@@ -555,6 +558,7 @@ class _CrewDetailsScreenState extends State<CrewDetailsScreen> {
   }
 
   void _onMemberTap(CrewMember member) async {
+    final l10n = AppLocalizations.of(context)!;
     try {
       showDialog(
         context: context,
@@ -579,7 +583,7 @@ class _CrewDetailsScreenState extends State<CrewDetailsScreen> {
           if (mounted) {
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
-                content: Text('Personagem "${member.name}" não encontrado'),
+                content: Text(l10n.characterNotFound),
                 backgroundColor: Colors.orange,
               ),
             );
@@ -594,7 +598,7 @@ class _CrewDetailsScreenState extends State<CrewDetailsScreen> {
         if (mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
-              content: Text('Erro ao carregar personagem: $e'),
+              content: Text(l10n.characterLoadError),
               backgroundColor: Colors.red,
             ),
           );

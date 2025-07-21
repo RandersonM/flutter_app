@@ -5,6 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:opfan/core/services/service_locator.dart';
+import 'package:opfan/core/repository/featured_character_repository.dart';
+import 'package:opfan/core/repository/custom_character_repository.dart';
 import 'package:opfan/l10n/app_localizations.dart';
 import 'package:opfan/screens/duels/blocs/index.dart';
 import 'package:opfan/screens/duels/widgets/character_selector.dart';
@@ -29,7 +31,8 @@ class _DuelsScreenState extends State<DuelsScreen> {
   void initState() {
     super.initState();
     _duelsBloc = DuelsBloc(
-      charactersService: getIt(),
+      featuredCharacterRepository: getIt<FeaturedCharacterRepository>(),
+      customCharacterRepository: getIt<CustomCharacterRepository>(),
     );
     _duelsBloc.add(const LoadDuelsScreen());
   }
@@ -170,12 +173,10 @@ class _DuelsScreenState extends State<DuelsScreen> {
         padding: const EdgeInsets.all(Constants.margin),
         child: Column(
           children: [
-            // Title and subtitle
             _buildHeader(),
             
             const SizedBox(height: Constants.margin * 2),
             
-            // Character selectors
             CharacterSelector(
               title: l10n.selectFirstFighter,
               selectedCharacter: state.firstCharacter,
@@ -220,7 +221,6 @@ class _DuelsScreenState extends State<DuelsScreen> {
               position: 2,
             ),
             
-            // Result display
             if (state.winner != null) ...[
               const SizedBox(height: Constants.margin * 2),
               DuelResult(
