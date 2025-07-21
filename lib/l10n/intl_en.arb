@@ -285,7 +285,7 @@
     "type": "text",
     "placeholders": {}
   },
-  "age": "Idade",
+  "age": "Age",
   "@age": {
     "description": "Label for character age field",
     "type": "text",
@@ -1900,5 +1900,203 @@
     "description": "Button text to start a new duel",
     "type": "text",
     "placeholders": {}
+  },
+  "accountSettings": "Account Settings",
+  "@accountSettings": {
+    "description": "Title for account settings section in profile",
+    "type": "text",
+    "placeholders": {}
+  },
+  "editProfile": "Edit Profile",
+  "@editProfile": {
+    "description": "Menu item to edit profile",
+    "type": "text",
+    "placeholders": {}
+  },
+  "editProfileSubtitle": "Update your personal information",
+  "@editProfileSubtitle": {
+    "description": "Subtitle for edit profile menu item",
+    "type": "text",
+    "placeholders": {}
+  },
+  "notifications": "Notifications",
+  "@notifications": {
+    "description": "Menu item for notifications settings",
+    "type": "text",
+    "placeholders": {}
+  },
+  "notificationsSubtitle": "Manage your notification preferences",
+  "@notificationsSubtitle": {
+    "description": "Subtitle for notifications menu item",
+    "type": "text",
+    "placeholders": {}
+  },
+  "appSettings": "App Settings",
+  "@appSettings": {
+    "description": "Title for app settings section in profile",
+    "type": "text",
+    "placeholders": {}
+  },
+  "language": "Language",
+  "@language": {
+    "description": "Menu item for language settings",
+    "type": "text",
+    "placeholders": {}
+  },
+  "languageSubtitle": "Change app language",
+  "@languageSubtitle": {
+    "description": "Subtitle for language menu item",
+    "type": "text",
+    "placeholders": {}
+  },
+  "theme": "Theme",
+  "@theme": {
+    "description": "Menu item for theme settings",
+    "type": "text",
+    "placeholders": {}
+  },
+  "darkTheme": "Dark theme",
+  "@darkTheme": {
+    "description": "Text for dark theme option",
+    "type": "text",
+    "placeholders": {}
+  },
+  "lightTheme": "Light theme",
+  "@lightTheme": {
+    "description": "Text for light theme option",
+    "type": "text",
+    "placeholders": {}
+  },
+  "darkThemeActivated": "Dark theme activated",
+  "@darkThemeActivated": {
+    "description": "Snackbar message when dark theme is activated",
+    "type": "text",
+    "placeholders": {}
+  },
+  "lightThemeActivated": "Light theme activated",
+  "@lightThemeActivated": {
+    "description": "Snackbar message when light theme is activated",
+    "type": "text",
+    "placeholders": {}
+  },
+  "support": "Support",
+  "@support": {
+    "description": "Title for support section in profile",
+    "type": "text",
+    "placeholders": {}
+  },
+  "helpSupport": "Help & Support",
+  "@helpSupport": {
+    "description": "Menu item for help and support",
+    "type": "text",
+    "placeholders": {}
+  },
+  "helpSupportSubtitle": "Get help and contact support",
+  "@helpSupportSubtitle": {
+    "description": "Subtitle for help and support menu item",
+    "type": "text",
+    "placeholders": {}
+  },
+  "about": "About",
+  "@about": {
+    "description": "Menu item for about section",
+    "type": "text",
+    "placeholders": {}
+  },
+  "aboutSubtitle": "App version and information",
+  "@aboutSubtitle": {
+    "description": "Subtitle for about menu item",
+    "type": "text",
+    "placeholders": {}
+  },
+  "nameMinLength": "Name must be at least 3 characters",
+  "@nameMinLength": {
+    "description": "Validation message for minimum name length.",
+    "type": "text"
+  },
+  "tags": "Tags",
+  "@tags": {
+    "description": "Section title for tags.",
+    "type": "text"
+  },
+  "noTagsAdded": "No tags added",
+  "@noTagsAdded": {
+    "description": "Message when no tags are present.",
+    "type": "text"
+  },
+  "pirateFlagSectionTitle": "Pirate Flag (Jolly Roger)",
+  "@pirateFlagSectionTitle": {
+    "description": "Section title for pirate flag.",
+    "type": "text"
+  },
+  "pirateFlagTitle": "Crew Pirate Flag",
+  "@pirateFlagTitle": {
+    "description": "Title for pirate flag image.",
+    "type": "text"
+  },
+  "aiPromptLabel": "AI Prompt",
+  "@aiPromptLabel": {
+    "description": "Label for AI prompt field.",
+    "type": "text"
+  },
+  "pirateFlagPromptHint": "Ex: pirate flag with skull and crossed swords",
+  "@pirateFlagPromptHint": {
+    "description": "Hint for pirate flag prompt.",
+    "type": "text"
+  },
+  "generateFlag": "Generate Flag",
+  "@generateFlag": {
+    "description": "Button text to generate pirate flag.",
+    "type": "text"
+  },
+  "crewBoatSectionTitle": "Crew Boat",
+  "@crewBoatSectionTitle": {
+    "description": "Section title for crew boat.",
+    "type": "text"
+  },
+  "boatNameHint": "Ex: Going Merry",
+  "@boatNameHint": {
+    "description": "Hint for boat name field.",
+    "type": "text"
+  },
+  "generateBoat": "Generate Boat",
+  "@generateBoat": {
+    "description": "Button text to generate boat.",
+    "type": "text"
+  },
+  "boatTitle": "Crew Boat",
+  "@boatTitle": {
+    "description": "Title for boat image.",
+    "type": "text"
+  },
+  "aiPromptInfo": "Use descriptive prompts to generate unique images for your crew. Generated images will be saved automatically.",
+  "@aiPromptInfo": {
+    "description": "Info text about using AI prompts.",
+    "type": "text"
+  },
+  "fightingStyleSectionTitle": "Fighting Style",
+  "@fightingStyleSectionTitle": {
+    "description": "Section title for fighting style details card.",
+    "type": "text"
+  },
+  "fightingStyleNameLabel": "Style Name",
+  "@fightingStyleNameLabel": {
+    "description": "Label for the name of the fighting style.",
+    "type": "text"
+  },
+  "fightingStyleTypeLabel": "Fighting Type",
+  "@fightingStyleTypeLabel": {
+    "description": "Label for the type of fighting style.",
+    "type": "text"
+  },
+  "fightingStyleWeaponsLabel": "Weapons",
+  "@fightingStyleWeaponsLabel": {
+    "description": "Label for the weapons used in the fighting style.",
+    "type": "text"
+  },
+  "fightingStyleAttacksLabel": "Attacks",
+  "@fightingStyleAttacksLabel": {
+    "description": "Label for the attacks of the fighting style.",
+    "type": "text"
   }
 }

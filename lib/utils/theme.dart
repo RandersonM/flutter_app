@@ -39,7 +39,10 @@ class AppColors {
   static const MaterialColor red = MaterialColor(_redPrimaryValue, <int, Color>{
     100: Color(0xFFFDEAEE),
     500: Color(_redPrimaryValue),
+    600: Color(0xFFC62828),
+    700: Color(0xFFB71C1C),
     800: Color(0xFFB00020),
+    900: Color(0xFF7F0000),
   });
 
   static const int _purplePrimaryValue = 0xFF800080;
@@ -103,13 +106,6 @@ class AppColors {
     800: Color(0xFF493240)
   });
 
-//   static const int _orangePrimaryValue = 0xFFFA6A00;
-//   static const MaterialColor orange =
-//       MaterialColor(_orangePrimaryValue, <int, Color>{
-//     100: Color(0xFFFFF7F2),
-//     500: Color(_orangePrimaryValue),
-//     800: Color(0xFF8F3D00),
-//   });
   static const int _orangePrimaryValue = 0xFFFF6D1B;
 
   static const MaterialColor orange = MaterialColor(
@@ -131,8 +127,6 @@ class AppColors {
   );
 
 }
-
-
 
 class _Typography {
   // Legacy names for compatibility
@@ -223,90 +217,79 @@ class _Typography {
   static const TextStyle bodySmall = caption;
 }
 
-ThemeData appTheme = ThemeData(
-  appBarTheme: AppBarTheme(
-    color: Colors.white,
-    centerTitle: true,
-    titleTextStyle:
-        _Typography.headlineSmall.merge(TextStyle(color: AppColors.grey[900])),
-    iconTheme: IconThemeData(color: AppColors.grey[700]),
-    actionsIconTheme: IconThemeData(color: AppColors.grey[700]),
-    toolbarTextStyle: _Typography.headlineSmall.merge(
-      TextStyle(color: AppColors.grey[900]),
+ThemeData getLightTheme() {
+  return ThemeData(
+    brightness: Brightness.light,
+    appBarTheme: AppBarTheme(
+      color: Colors.white,
+      centerTitle: true,
+      titleTextStyle: _Typography.headlineSmall
+          .merge(TextStyle(color: AppColors.grey[900])),
+      iconTheme: IconThemeData(color: AppColors.grey[700]),
+      actionsIconTheme: IconThemeData(color: AppColors.grey[700]),
+      toolbarTextStyle: _Typography.headlineSmall.merge(
+        TextStyle(color: AppColors.grey[900]),
+      ),
+      elevation: 0,
     ),
-    elevation: 0,
-  ),
-  colorScheme: ColorScheme.fromSwatch(
-    primarySwatch: AppColors.purple,
-  ).copyWith(
-    primary: AppColors.purple[600]!,
-    onPrimary: AppColors.purple[900],
-    onPrimaryContainer: AppColors.purple[300],
-    primaryContainer: AppColors.purple[100],
-    secondary: AppColors.brown[700]!,
-    onSecondary: AppColors.brown[900]!,
-    secondaryContainer: AppColors.orange[100],
-    tertiary: AppColors.orange[700]!,
-    onTertiary: AppColors.orange[1000]!,
-    error: AppColors.red[500]!,
-    onError: AppColors.red[800],
-    surface: AppColors.grey[100],
-    onSurface: AppColors.grey[900],
-    surfaceContainerLow: AppColors.grey[100],
-    surfaceContainerHigh: AppColors.grey[100],
-  ),
-  dividerColor: AppColors.grey[300],
-  textTheme: const TextTheme(
-      displayLarge: _Typography.headline1,
-      displayMedium: _Typography.headline2,
-      displaySmall: _Typography.headline3,
-      headlineLarge: _Typography.headlineLarge,
-      headlineMedium: _Typography.headline5,
-      headlineSmall: _Typography.headlineSmall,
-      titleMedium: _Typography.titleMedium,
-      titleSmall: _Typography.subtitle2,
-      bodyLarge: _Typography.bodyText1,
-      bodyMedium: _Typography.bodyMedium,
-      labelLarge: _Typography.labelLarge,
-      bodySmall: _Typography.bodySmall,
-      labelSmall: _Typography.overline),
-  fontFamily: 'Lato',
-  chipTheme: ChipThemeData(
-    backgroundColor: AppColors.grey[50],
-    labelStyle: _Typography.bodySmall.copyWith(color: AppColors.purple[500]),
-    side: BorderSide(color: AppColors.purple[500]!),
-  ),
-  cardTheme: CardThemeData(
-    shape: RoundedRectangleBorder(
-        side: const BorderSide(color: AppColors.purple),
-        borderRadius: BorderRadius.circular(Constants.margin * 2)),
-    margin: EdgeInsets.zero,
-    shadowColor: AppColors.purple[700],
-  ),
-  scaffoldBackgroundColor: Colors.white,
-  inputDecorationTheme: InputDecorationTheme(
-    border: OutlineInputBorder(
-      borderSide: BorderSide(color: AppColors.purple[200]!),
-      borderRadius: BorderRadius.circular(Constants.margin * 2),
+    colorScheme: ColorScheme.fromSwatch(
+      primarySwatch: AppColors.purple,
+      brightness: Brightness.light,
+    ).copyWith(
+      primary: AppColors.purple[600]!,
+      onPrimary: AppColors.purple[900],
+      onPrimaryContainer: AppColors.purple[300],
+      primaryContainer: AppColors.purple[100],
+      secondary: AppColors.brown[700]!,
+      onSecondary: AppColors.brown[900]!,
+      secondaryContainer: AppColors.orange[100],
+      tertiary: AppColors.orange[700]!,
+      tertiaryContainer: AppColors.orange[100],
+      onTertiaryContainer: AppColors.orange[300]!,
+      onTertiary: AppColors.orange[1000]!,
+      error: AppColors.red[500]!,
+      onError: AppColors.red[800],
+      surfaceContainer: Colors.white,
+      surface: AppColors.grey[100],
+      onSurface: AppColors.grey[900],
+      surfaceContainerLow: AppColors.purple[300],
+      surfaceContainerHigh: AppColors.grey[100],
     ),
-    disabledBorder: OutlineInputBorder(
-      borderSide: BorderSide(color: AppColors.grey[200]!),
-      borderRadius: BorderRadius.circular(Constants.margin * 2),
+    dividerColor: AppColors.grey[300],
+    textTheme: const TextTheme(
+        displayLarge: _Typography.headline1,
+        displayMedium: _Typography.headline2,
+        displaySmall: _Typography.headline3,
+        headlineLarge: _Typography.headlineLarge,
+        headlineMedium: _Typography.headline5,
+        headlineSmall: _Typography.headlineSmall,
+        titleMedium: _Typography.titleMedium,
+        titleSmall: _Typography.subtitle2,
+        bodyLarge: _Typography.bodyText1,
+        bodyMedium: _Typography.bodyMedium,
+        labelLarge: _Typography.labelLarge,
+        bodySmall: _Typography.bodySmall,
+        labelSmall: _Typography.overline),
+    fontFamily: 'Lato',
+    chipTheme: ChipThemeData(
+      backgroundColor: AppColors.grey[50],
+      labelStyle: _Typography.bodySmall.copyWith(color: AppColors.purple[500]),
+      side: BorderSide(color: AppColors.purple[500]!),
     ),
-    enabledBorder: OutlineInputBorder(
-      borderSide: BorderSide(color: AppColors.purple[200]!),
-      borderRadius: BorderRadius.circular(Constants.margin * 2),
+    cardTheme: CardThemeData(
+      shape: RoundedRectangleBorder(
+          side: const BorderSide(color: AppColors.purple),
+          borderRadius: BorderRadius.circular(Constants.margin * 2)),
+      margin: EdgeInsets.zero,
+      shadowColor: AppColors.purple[700],
+      color: Colors.white,
     ),
-    focusedBorder: OutlineInputBorder(
-      borderSide: BorderSide(color: AppColors.purple[500]!),
-      borderRadius: BorderRadius.circular(Constants.margin * 2),
-    ),
-  ),
-  dropdownMenuTheme: DropdownMenuThemeData(
-    menuStyle: MenuStyle(
-      backgroundColor: WidgetStateProperty.all(AppColors.grey[100]),
-    ),
+    scaffoldBackgroundColor: Colors.white,
     inputDecorationTheme: InputDecorationTheme(
+      border: OutlineInputBorder(
+        borderSide: BorderSide(color: AppColors.purple[200]!),
+        borderRadius: BorderRadius.circular(Constants.margin * 2),
+      ),
       disabledBorder: OutlineInputBorder(
         borderSide: BorderSide(color: AppColors.grey[200]!),
         borderRadius: BorderRadius.circular(Constants.margin * 2),
@@ -319,7 +302,140 @@ ThemeData appTheme = ThemeData(
         borderSide: BorderSide(color: AppColors.purple[500]!),
         borderRadius: BorderRadius.circular(Constants.margin * 2),
       ),
+      fillColor: Colors.white,
+      filled: true,
     ),
-  ),
-  
-);
+    dropdownMenuTheme: DropdownMenuThemeData(
+      menuStyle: MenuStyle(
+        backgroundColor: WidgetStateProperty.all(AppColors.grey[100]),
+      ),
+      inputDecorationTheme: InputDecorationTheme(
+        disabledBorder: OutlineInputBorder(
+          borderSide: BorderSide(color: AppColors.grey[200]!),
+          borderRadius: BorderRadius.circular(Constants.margin * 2),
+        ),
+        enabledBorder: OutlineInputBorder(
+          borderSide: BorderSide(color: AppColors.purple[200]!),
+          borderRadius: BorderRadius.circular(Constants.margin * 2),
+        ),
+        focusedBorder: OutlineInputBorder(
+          borderSide: BorderSide(color: AppColors.purple[500]!),
+          borderRadius: BorderRadius.circular(Constants.margin * 2),
+        ),
+        fillColor: Colors.white,
+        filled: true,
+      ),
+    ),
+  );
+}
+
+ThemeData getDarkTheme() {
+  return ThemeData(
+    brightness: Brightness.dark,
+    appBarTheme: AppBarTheme(
+      color: const Color(0xFF1A1A1A),
+      centerTitle: true,
+      titleTextStyle:
+          _Typography.headlineSmall.merge(const TextStyle(color: Colors.white)),
+      iconTheme: const IconThemeData(color: Colors.white70),
+      actionsIconTheme: const IconThemeData(color: Colors.white70),
+      toolbarTextStyle: _Typography.headlineSmall.merge(
+        const TextStyle(color: Colors.white70),
+      ),
+      elevation: 0,
+    ),
+    colorScheme: const ColorScheme.dark().copyWith(
+      primary: AppColors.purple[300]!, // purple[300]
+      onPrimary: Colors.black,
+      onPrimaryContainer: AppColors.purple[700]!,
+      primaryContainer: AppColors.purple[600]!,
+      secondary: AppColors.brown[300]!,
+      onSecondary: AppColors.grey[100]!,
+      secondaryContainer: AppColors.brown[900]!,
+      tertiary: AppColors.orange[300]!, // orange[300]
+      onTertiary: Colors.black,
+      tertiaryContainer: AppColors.brown[500],
+      onTertiaryContainer: AppColors.brown[300]!,
+      error: AppColors.red[900]!,
+      onError: AppColors.red[800]!,
+      surface: Colors.black,
+      surfaceContainer: Colors.black,
+      onSurface: Colors.white,
+      surfaceContainerLow: AppColors.grey[900]!,
+      surfaceContainerHigh: AppColors.grey[900]!,
+    ),
+    dividerColor: const Color(0xFF404040),
+    textTheme: const TextTheme(
+        displayLarge: _Typography.headline1,
+        displayMedium: _Typography.headline2,
+        displaySmall: _Typography.headline3,
+        headlineLarge: _Typography.headlineLarge,
+        headlineMedium: _Typography.headline5,
+        headlineSmall: _Typography.headlineSmall,
+        titleMedium: _Typography.titleMedium,
+        titleSmall: _Typography.subtitle2,
+        bodyLarge: _Typography.bodyText1,
+        bodyMedium: _Typography.bodyMedium,
+        labelLarge: _Typography.labelLarge,
+        bodySmall: _Typography.bodySmall,
+        labelSmall: _Typography.overline),
+    fontFamily: 'Lato',
+    chipTheme: const ChipThemeData(
+      backgroundColor: Color(0xFF2A2A2A),
+      labelStyle: TextStyle(color: Color(0xFFAD66A9)), // purple[300]
+      side: BorderSide(color: Color(0xFFAD66A9)), // purple[300]
+    ),
+    cardTheme: const CardThemeData(
+      shape: RoundedRectangleBorder(
+          side: BorderSide(color: Color(0xFFAD66A9)), // purple[300]
+          borderRadius: BorderRadius.all(Radius.circular(16))),
+      margin: EdgeInsets.zero,
+      shadowColor: Colors.black,
+      color: Color(0xFF2A2A2A),
+    ),
+    scaffoldBackgroundColor: const Color(0xFF121212),
+    inputDecorationTheme: const InputDecorationTheme(
+      border: OutlineInputBorder(
+        borderSide: BorderSide(color: Color(0xFF551054)), // purple[700]
+        borderRadius: BorderRadius.all(Radius.circular(16)),
+      ),
+      disabledBorder: OutlineInputBorder(
+        borderSide: BorderSide(color: Color(0xFF404040)),
+        borderRadius: BorderRadius.all(Radius.circular(16)),
+      ),
+      enabledBorder: OutlineInputBorder(
+        borderSide: BorderSide(color: Color(0xFF551054)), // purple[700]
+        borderRadius: BorderRadius.all(Radius.circular(16)),
+      ),
+      focusedBorder: OutlineInputBorder(
+        borderSide: BorderSide(color: Color(0xFFAD66A9)), // purple[300]
+        borderRadius: BorderRadius.all(Radius.circular(16)),
+      ),
+      fillColor: Color(0xFF2A2A2A),
+      filled: true,
+    ),
+    dropdownMenuTheme: DropdownMenuThemeData(
+      menuStyle: MenuStyle(
+        backgroundColor: WidgetStateProperty.all(const Color(0xFF2A2A2A)),
+      ),
+      inputDecorationTheme: const InputDecorationTheme(
+        disabledBorder: OutlineInputBorder(
+          borderSide: BorderSide(color: Color(0xFF404040)),
+          borderRadius: BorderRadius.all(Radius.circular(16)),
+        ),
+        enabledBorder: OutlineInputBorder(
+          borderSide: BorderSide(color: Color(0xFF551054)), // purple[700]
+          borderRadius: BorderRadius.all(Radius.circular(16)),
+        ),
+        focusedBorder: OutlineInputBorder(
+          borderSide: BorderSide(color: Color(0xFFAD66A9)), // purple[300]
+          borderRadius: BorderRadius.all(Radius.circular(16)),
+        ),
+        fillColor: Color(0xFF2A2A2A),
+        filled: true,
+      ),
+    ),
+  );
+}
+
+ThemeData appTheme = getLightTheme();

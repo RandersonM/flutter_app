@@ -49,7 +49,7 @@ class CustomChipSelector extends StatelessWidget {
                     onOptionDeselected(option);
                   }
                 },
-                selectedColor: Theme.of(context).primaryColor.withValues(alpha: 0.2),
+                selectedColor: Theme.of(context).colorScheme.primaryContainer,
                 checkmarkColor: Theme.of(context).primaryColor,
               );
             }).toList(),

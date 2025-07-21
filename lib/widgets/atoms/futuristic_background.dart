@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:opfan/utils/theme.dart';
 
 class FuturisticBackground extends StatelessWidget {
   final Widget child;
@@ -145,15 +144,15 @@ class _AnimatedFuturisticBackgroundState extends State<AnimatedFuturisticBackgro
 
     List<Color> gradientColors;
     gradientColors = [
-      Colors.white.withValues(alpha: 0.1),
-      Colors.white.withValues(alpha: 0.2),
+      colorScheme.surfaceContainer.withValues(alpha: 0.1),
+      colorScheme.surfaceContainer.withValues(alpha: 0.2),
       colorScheme.primaryContainer.withValues(alpha: 1.0),
-      AppColors.orange[300]!.withValues(alpha: 0.8),
+      colorScheme.onTertiaryContainer.withValues(alpha: 0.8),
       colorScheme.tertiary.withValues(alpha: 0.6),
       colorScheme.onTertiary.withValues(alpha: 0.4),
-      Colors.white.withValues(alpha: 0.3),
-      Colors.white.withValues(alpha: 0.7),
-      Colors.white,
+      colorScheme.surfaceContainer.withValues(alpha: 0.3),
+      colorScheme.surfaceContainer.withValues(alpha: 0.7),
+      colorScheme.surfaceContainer,
     ];
     
 

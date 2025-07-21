@@ -52,7 +52,6 @@ class CrewStatistics extends StatelessWidget {
       title: l10n.statistics,
       spacing: 12.0,
       padding: const EdgeInsets.all(32.0),
-      backgroundColor: Colors.white,
       borderRadius: 16.0,
       elevation: 2.0,
     );

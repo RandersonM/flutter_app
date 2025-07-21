@@ -946,4 +946,116 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get newDuel => 'Novo Duelo';
+
+  @override
+  String get accountSettings => 'Configurações da Conta';
+
+  @override
+  String get editProfile => 'Editar Perfil';
+
+  @override
+  String get editProfileSubtitle => 'Atualize suas informações pessoais';
+
+  @override
+  String get notifications => 'Notificações';
+
+  @override
+  String get notificationsSubtitle =>
+      'Gerencie suas preferências de notificação';
+
+  @override
+  String get appSettings => 'Configurações do App';
+
+  @override
+  String get language => 'Idioma';
+
+  @override
+  String get languageSubtitle => 'Alterar idioma do app';
+
+  @override
+  String get theme => 'Tema';
+
+  @override
+  String get darkTheme => 'Tema escuro';
+
+  @override
+  String get lightTheme => 'Tema claro';
+
+  @override
+  String get darkThemeActivated => 'Tema escuro ativado';
+
+  @override
+  String get lightThemeActivated => 'Tema claro ativado';
+
+  @override
+  String get support => 'Suporte';
+
+  @override
+  String get helpSupport => 'Ajuda e Suporte';
+
+  @override
+  String get helpSupportSubtitle =>
+      'Obtenha ajuda e entre em contato com o suporte';
+
+  @override
+  String get about => 'Sobre';
+
+  @override
+  String get aboutSubtitle => 'Versão do app e informações';
+
+  @override
+  String get nameMinLength => 'Nome deve ter pelo menos 3 caracteres';
+
+  @override
+  String get tags => 'Tags';
+
+  @override
+  String get noTagsAdded => 'Nenhuma tag adicionada';
+
+  @override
+  String get pirateFlagSectionTitle => 'Bandeira Pirata (Jolly Roger)';
+
+  @override
+  String get pirateFlagTitle => 'Bandeira da Tripulação';
+
+  @override
+  String get aiPromptLabel => 'Prompt para IA';
+
+  @override
+  String get pirateFlagPromptHint =>
+      'Ex: bandeira pirata com caveira e espadas cruzadas';
+
+  @override
+  String get generateFlag => 'Gerar Bandeira';
+
+  @override
+  String get crewBoatSectionTitle => 'Barco da Tripulação';
+
+  @override
+  String get boatNameHint => 'Ex: Going Merry';
+
+  @override
+  String get generateBoat => 'Gerar Barco';
+
+  @override
+  String get boatTitle => 'Barco da Tripulação';
+
+  @override
+  String get aiPromptInfo =>
+      'Use prompts descritivos para gerar imagens únicas da sua tripulação. As imagens geradas serão salvas automaticamente.';
+
+  @override
+  String get fightingStyleSectionTitle => 'Estilo de Luta';
+
+  @override
+  String get fightingStyleNameLabel => 'Nome do Estilo';
+
+  @override
+  String get fightingStyleTypeLabel => 'Tipo de Luta';
+
+  @override
+  String get fightingStyleWeaponsLabel => 'Armas';
+
+  @override
+  String get fightingStyleAttacksLabel => 'Ataques';
 }

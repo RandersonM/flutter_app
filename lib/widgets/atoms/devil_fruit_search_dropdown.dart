@@ -78,7 +78,6 @@ class _DevilFruitSearchDropdownState extends State<DevilFruitSearchDropdown> {
                 borderRadius: BorderRadius.circular(8),
               ),
               filled: true,
-              fillColor: widget.enabled ? Colors.grey[50] : Colors.grey[200],
               errorText: field.errorText,
             ),
             child: GestureDetector(

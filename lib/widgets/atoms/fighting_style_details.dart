@@ -37,7 +37,7 @@ class FightingStyleDetails extends StatelessWidget {
                 ),
                 const SizedBox(width: Constants.margin),
                 Text(
-                  'Estilo de Luta',
+                  l10n.fightingStyleSectionTitle,
                   style: Theme.of(context).textTheme.titleMedium?.copyWith(
                     fontWeight: FontWeight.bold,
                   ),
@@ -46,25 +46,28 @@ class FightingStyleDetails extends StatelessWidget {
             ),
             const SizedBox(height: Constants.margin * 2),
             
-            // Nome do estilo (se existir)
             if (fightingStyle!.name != null && fightingStyle!.name!.isNotEmpty) ...[
-              _buildDetailRow(context, 'Nome do Estilo', fightingStyle!.name!),
+              _buildDetailRow(
+                  context, l10n.fightingStyleNameLabel, fightingStyle!.name!),
               const SizedBox(height: Constants.margin),
             ],
             
-            // Tipo do estilo
-            _buildDetailRow(context, 'Tipo de Luta', CharacterLocalizationMapper.getFightingTypeLabel(fightingStyle!.type, l10n)),
+            _buildDetailRow(
+                context,
+                l10n.fightingStyleTypeLabel,
+                CharacterLocalizationMapper.getFightingTypeLabel(
+                    fightingStyle!.type, l10n)),
             
-            // Armas (se existirem)
             if (fightingStyle!.weapons != null && fightingStyle!.weapons!.isNotEmpty) ...[
               const SizedBox(height: Constants.margin),
-              _buildDetailRow(context, 'Armas', fightingStyle!.weapons!.join(', ')),
+              _buildDetailRow(context, l10n.fightingStyleWeaponsLabel,
+                  fightingStyle!.weapons!.join(', ')),
             ],
-            
-            // Ataques (se existirem)
+                 
             if (fightingStyle!.attacks != null && fightingStyle!.attacks!.isNotEmpty) ...[
               const SizedBox(height: Constants.margin),
-              _buildDetailRow(context, 'Ataques', fightingStyle!.attacks!.join(', ')),
+              _buildDetailRow(context, l10n.fightingStyleAttacksLabel,
+                  fightingStyle!.attacks!.join(', ')),
             ],
           ],
         ),

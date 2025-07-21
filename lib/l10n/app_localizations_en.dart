@@ -166,7 +166,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get nicknameHint => 'Ex: Luffy, Straw Hat';
 
   @override
-  String get age => 'Idade';
+  String get age => 'Age';
 
   @override
   String get birthDate => 'Birth Date';
@@ -944,4 +944,114 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get newDuel => 'New Duel';
+
+  @override
+  String get accountSettings => 'Account Settings';
+
+  @override
+  String get editProfile => 'Edit Profile';
+
+  @override
+  String get editProfileSubtitle => 'Update your personal information';
+
+  @override
+  String get notifications => 'Notifications';
+
+  @override
+  String get notificationsSubtitle => 'Manage your notification preferences';
+
+  @override
+  String get appSettings => 'App Settings';
+
+  @override
+  String get language => 'Language';
+
+  @override
+  String get languageSubtitle => 'Change app language';
+
+  @override
+  String get theme => 'Theme';
+
+  @override
+  String get darkTheme => 'Dark theme';
+
+  @override
+  String get lightTheme => 'Light theme';
+
+  @override
+  String get darkThemeActivated => 'Dark theme activated';
+
+  @override
+  String get lightThemeActivated => 'Light theme activated';
+
+  @override
+  String get support => 'Support';
+
+  @override
+  String get helpSupport => 'Help & Support';
+
+  @override
+  String get helpSupportSubtitle => 'Get help and contact support';
+
+  @override
+  String get about => 'About';
+
+  @override
+  String get aboutSubtitle => 'App version and information';
+
+  @override
+  String get nameMinLength => 'Name must be at least 3 characters';
+
+  @override
+  String get tags => 'Tags';
+
+  @override
+  String get noTagsAdded => 'No tags added';
+
+  @override
+  String get pirateFlagSectionTitle => 'Pirate Flag (Jolly Roger)';
+
+  @override
+  String get pirateFlagTitle => 'Crew Pirate Flag';
+
+  @override
+  String get aiPromptLabel => 'AI Prompt';
+
+  @override
+  String get pirateFlagPromptHint =>
+      'Ex: pirate flag with skull and crossed swords';
+
+  @override
+  String get generateFlag => 'Generate Flag';
+
+  @override
+  String get crewBoatSectionTitle => 'Crew Boat';
+
+  @override
+  String get boatNameHint => 'Ex: Going Merry';
+
+  @override
+  String get generateBoat => 'Generate Boat';
+
+  @override
+  String get boatTitle => 'Crew Boat';
+
+  @override
+  String get aiPromptInfo =>
+      'Use descriptive prompts to generate unique images for your crew. Generated images will be saved automatically.';
+
+  @override
+  String get fightingStyleSectionTitle => 'Fighting Style';
+
+  @override
+  String get fightingStyleNameLabel => 'Style Name';
+
+  @override
+  String get fightingStyleTypeLabel => 'Fighting Type';
+
+  @override
+  String get fightingStyleWeaponsLabel => 'Weapons';
+
+  @override
+  String get fightingStyleAttacksLabel => 'Attacks';
 }

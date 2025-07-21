@@ -39,7 +39,7 @@ class _CrewCardState extends State<CrewCard> {
         borderRadius: BorderRadius.circular(Constants.margin * 2),
       ),
       elevation: 4,
-      color: Colors.white,
+      color: Theme.of(context).colorScheme.surface,
       child: InkWell(
         onTap: widget.onTap,
         borderRadius: BorderRadius.circular(Constants.margin * 2),

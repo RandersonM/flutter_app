@@ -7,6 +7,8 @@ import 'package:opfan/screens/one_piece/blocs/search_cubit.dart';
 import 'package:opfan/core/services/environment_service.dart';
 import 'package:opfan/core/services/service_locator.dart';
 import 'package:opfan/core/models/one_piece/today_character.dart';
+import 'package:opfan/core/models/theme_model.dart';
+import 'package:opfan/core/services/theme_service.dart';
 import 'l10n/app_localizations.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'firebase_options.dart';
@@ -26,20 +28,16 @@ void main() async {
 
   Hive.registerAdapter(TodayCharacterAdapter());
   Hive.registerAdapter(UserModelAdapter());
+  Hive.registerAdapter(ThemeSettingsAdapter());
 
   try {
     await Future.wait([
-      () async {
-        await Firebase.initializeApp(
-          options: DefaultFirebaseOptions.currentPlatform,
-        );
-      }(),
-      () async {
-        await EnvironmentService.initialize();
-      }(),
-      () async {
-        await configureDependencies();
-      }(),
+      Firebase.initializeApp(
+        options: DefaultFirebaseOptions.currentPlatform,
+      ),
+      EnvironmentService.initialize(),
+      configureDependencies(),
+      ThemeService.initialize(),
     ]);
   } catch (e, stackTrace) {
     debugPrint('MAIN: Initialization error: $e');
@@ -54,10 +52,46 @@ void main() async {
   runApp(const MyApp());
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
   const MyApp({Key? key, this.locale}) : super(key: key);
 
   final Locale? locale;
+
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  ThemeMode _currentThemeMode = ThemeMode.light;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadThemeMode();
+    ThemeService().addListener(_onThemeChanged);
+  }
+
+  @override
+  void dispose() {
+    ThemeService().removeListener(_onThemeChanged);
+    super.dispose();
+  }
+
+  void _loadThemeMode() {
+    try {
+      final isDarkMode = ThemeService.isDarkMode;
+      setState(() {
+        _currentThemeMode = isDarkMode ? ThemeMode.dark : ThemeMode.light;
+      });
+    } catch (e) {
+      debugPrint('Error loading theme mode: $e');
+      // Keep default light theme
+    }
+  }
+
+  void _onThemeChanged() {
+    _loadThemeMode();
+  }
 
   @override
   Widget build(BuildContext context) => MultiBlocProvider(
@@ -79,13 +113,15 @@ class MyApp extends StatelessWidget {
           builder: (context, authState) {
             return MaterialApp(
               title: EnvironmentService.instance.appName,
-              locale: locale,
+              locale: widget.locale,
               localizationsDelegates: AppLocalizations.localizationsDelegates,
               supportedLocales: const <Locale>[
                 Locale('en', ''),
                 Locale('pt', ''),
               ],
-              theme: appTheme,
+              theme: getLightTheme(),
+              darkTheme: getDarkTheme(),
+              themeMode: _currentThemeMode,
               home: const AppWrapper(),
               onGenerateRoute: (settings) =>
                   AuthRouteMiddleware.onGenerateRoute(

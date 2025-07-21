@@ -57,7 +57,6 @@ class CrewSearchHeader extends StatelessWidget {
                   borderSide: BorderSide.none,
                 ),
                 filled: true,
-                fillColor: Colors.grey[100],
                 contentPadding: const EdgeInsets.symmetric(
                   horizontal: Constants.margin,
                   vertical: Constants.margin,

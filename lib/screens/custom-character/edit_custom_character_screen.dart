@@ -151,7 +151,6 @@ class _EditCustomCharacterScreenState extends State<EditCustomCharacterScreen> {
 
   @override
   Widget build(BuildContext context) {
-    // Mapear dados de Haki se necessário
     _mapHakiDataIfNeeded();
     
     return BlocProvider(

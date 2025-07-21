@@ -44,7 +44,6 @@ class CustomTextField extends StatelessWidget {
             borderRadius: BorderRadius.circular(8),
           ),
           filled: true,
-          fillColor: enabled ? Colors.grey[50] : Colors.grey[200],
         ),
       ),
     );
@@ -87,7 +86,6 @@ class DateTextField extends StatelessWidget {
             borderRadius: BorderRadius.circular(8),
           ),
           filled: true,
-          fillColor: enabled ? Colors.grey[50] : Colors.grey[200],
         ),
       ),
     );
@@ -131,7 +129,6 @@ class CurrencyTextField extends StatelessWidget {
             borderRadius: BorderRadius.circular(8),
           ),
           filled: true,
-          fillColor: enabled ? Colors.grey[50] : Colors.grey[200],
         ),
       ),
     );

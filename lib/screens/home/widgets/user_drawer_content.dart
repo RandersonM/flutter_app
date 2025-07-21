@@ -70,7 +70,7 @@ class UserDrawerContent extends StatelessWidget {
                       style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                             color: Theme.of(context)
                                 .colorScheme
-                                .primary
+                                .onSecondary
                                 .withValues(alpha: 0.8),
                           ),
                       textAlign: TextAlign.center,
@@ -168,7 +168,9 @@ class UserDrawerContent extends StatelessWidget {
     bool isDestructive = false,
   }) {
     final color =
-        isDestructive ? Theme.of(context).colorScheme.onError : Colors.white;
+        isDestructive
+        ? Theme.of(context).colorScheme.onError
+        : Theme.of(context).colorScheme.surfaceContainer;
 
     return Container(
       margin: const EdgeInsets.symmetric(

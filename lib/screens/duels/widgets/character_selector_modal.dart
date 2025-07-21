@@ -72,7 +72,7 @@ class CharacterSelectionModalState extends State<CharacterSelectionModal> {
     return Container(
       height: MediaQuery.of(context).size.height * 0.8,
       decoration: BoxDecoration(
-        color: Theme.of(context).colorScheme.onSurface,
+        color: Theme.of(context).colorScheme.surfaceContainerLow,
         borderRadius: const BorderRadius.vertical(
           top: Radius.circular(20),
         ),
@@ -96,7 +96,6 @@ class CharacterSelectionModalState extends State<CharacterSelectionModal> {
                 Text(
                   widget.title,
                   style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                        color: Colors.white,
                         fontWeight: FontWeight.bold,
                       ),
                 ),
@@ -105,13 +104,12 @@ class CharacterSelectionModalState extends State<CharacterSelectionModal> {
                 // Search field
                 TextField(
                   controller: _searchController,
-                  style: const TextStyle(color: Colors.white),
+                  style: Theme.of(context).textTheme.bodyMedium,
                   decoration: InputDecoration(
                     hintText: l10n.searchPlaceholder,
-                    hintStyle: const TextStyle(color: Colors.white54),
-                    prefixIcon: const Icon(Icons.search, color: Colors.white54),
+                    hintStyle: Theme.of(context).textTheme.bodyMedium,
+                    prefixIcon: const Icon(Icons.search),
                     filled: true,
-                    fillColor: Colors.white.withValues(alpha: 0.1),
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(12),
                       borderSide: BorderSide.none,
@@ -122,7 +120,6 @@ class CharacterSelectionModalState extends State<CharacterSelectionModal> {
             ),
           ),
 
-          // Character grid with sections
           Expanded(
             child: filteredCharacters.isEmpty
                 ? Center(
@@ -134,7 +131,6 @@ class CharacterSelectionModalState extends State<CharacterSelectionModal> {
                 : ListView(
                     padding: const EdgeInsets.symmetric(horizontal: 16),
                     children: [
-                      // Custom Characters Section
                       if (customCharacters.isNotEmpty) ...[
                         _buildSectionHeader(
                             l10n.customCharacters, Icons.person_add),
@@ -143,18 +139,16 @@ class CharacterSelectionModalState extends State<CharacterSelectionModal> {
                         const SizedBox(height: 16),
                       ],
 
-                      // Divider between sections
                       if (customCharacters.isNotEmpty &&
                           onePieceCharacters.isNotEmpty) ...[
                         Container(
                           height: 1,
-                          color: Colors.white.withValues(alpha: 0.2),
+                          color: Theme.of(context).colorScheme.onSecondary,
                           margin: const EdgeInsets.symmetric(vertical: 8),
                         ),
                         const SizedBox(height: 8),
                       ],
 
-                      // One Piece Characters Section
                       if (onePieceCharacters.isNotEmpty) ...[
                         _buildSectionHeader(
                             l10n.onePieceCharacters, Icons.star),
@@ -174,14 +168,12 @@ class CharacterSelectionModalState extends State<CharacterSelectionModal> {
       children: [
         Icon(
           icon,
-          color: Colors.white70,
           size: 20,
         ),
         const SizedBox(width: 8),
         Text(
           title,
-          style: const TextStyle(
-            color: Colors.white70,
+          style: Theme.of(context).textTheme.titleMedium?.copyWith(
             fontSize: 16,
             fontWeight: FontWeight.w600,
           ),
@@ -210,10 +202,10 @@ class CharacterSelectionModalState extends State<CharacterSelectionModal> {
           },
           child: Container(
             decoration: BoxDecoration(
-              color: Colors.white.withValues(alpha: 0.1),
+              color: Theme.of(context).colorScheme.primaryContainer,
               borderRadius: BorderRadius.circular(8),
               border: Border.all(
-                color: Colors.white.withValues(alpha: 0.2),
+                color: Theme.of(context).colorScheme.surfaceContainerLow,
               ),
             ),
             child: Column(
@@ -239,11 +231,10 @@ class CharacterSelectionModalState extends State<CharacterSelectionModal> {
                     padding: const EdgeInsets.all(4),
                     child: Text(
                       character.name,
-                      style: const TextStyle(
-                        color: Colors.white,
-                        fontSize: 12,
-                        fontWeight: FontWeight.w500,
-                      ),
+                      style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                            fontSize: 12,
+                            fontWeight: FontWeight.w500,
+                          ),
                       textAlign: TextAlign.center,
                       maxLines: 2,
                       overflow: TextOverflow.ellipsis,
