@@ -20,6 +20,7 @@ import 'package:opfan/core/auth/blocs/index.dart';
 import 'package:opfan/utils/app_routes.dart';
 
 import 'package:opfan/utils/theme.dart';
+import 'core/services/locale_service.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -29,6 +30,8 @@ void main() async {
   Hive.registerAdapter(TodayCharacterAdapter());
   Hive.registerAdapter(UserModelAdapter());
   Hive.registerAdapter(ThemeSettingsAdapter());
+
+  await LocaleService.loadLocale();
 
   try {
     await Future.wait([
@@ -53,9 +56,7 @@ void main() async {
 }
 
 class MyApp extends StatefulWidget {
-  const MyApp({Key? key, this.locale}) : super(key: key);
-
-  final Locale? locale;
+  const MyApp({Key? key}) : super(key: key);
 
   @override
   State<MyApp> createState() => _MyAppState();
@@ -69,11 +70,13 @@ class _MyAppState extends State<MyApp> {
     super.initState();
     _loadThemeMode();
     ThemeService().addListener(_onThemeChanged);
+    LocaleService().addListener(_onLocaleChanged);
   }
 
   @override
   void dispose() {
     ThemeService().removeListener(_onThemeChanged);
+    LocaleService().removeListener(_onLocaleChanged);
     super.dispose();
   }
 
@@ -91,6 +94,10 @@ class _MyAppState extends State<MyApp> {
 
   void _onThemeChanged() {
     _loadThemeMode();
+  }
+
+  void _onLocaleChanged() {
+    setState(() {});
   }
 
   @override
@@ -113,7 +120,7 @@ class _MyAppState extends State<MyApp> {
           builder: (context, authState) {
             return MaterialApp(
               title: EnvironmentService.instance.appName,
-              locale: widget.locale,
+              locale: LocaleService.locale,
               localizationsDelegates: AppLocalizations.localizationsDelegates,
               supportedLocales: const <Locale>[
                 Locale('en', ''),

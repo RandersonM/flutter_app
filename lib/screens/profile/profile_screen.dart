@@ -9,6 +9,7 @@ import 'package:opfan/core/services/theme_service.dart';
 import 'package:opfan/l10n/app_localizations.dart';
 import 'package:opfan/utils/constants.dart';
 import 'package:opfan/widgets/molecules/clickable_avatar.dart';
+import 'package:opfan/core/services/locale_service.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
@@ -179,13 +180,28 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 icon: Icons.language,
                 title: AppLocalizations.of(context)!.language,
                 subtitle: AppLocalizations.of(context)!.languageSubtitle,
-                onTap: () {
-                  // Navigate to language settings
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(
-                        content:
-                            Text(AppLocalizations.of(context)!.languageTapped)),
+                onTap: () async {
+                  final selected = await showDialog<Locale>(
+                    context: context,
+                    builder: (context) => SimpleDialog(
+                      title: Text(AppLocalizations.of(context)!.language),
+                      children: [
+                        SimpleDialogOption(
+                          child: const Text('English'),
+                          onPressed: () =>
+                              Navigator.pop(context, const Locale('en')),
+                        ),
+                        SimpleDialogOption(
+                          child: const Text('Português'),
+                          onPressed: () =>
+                              Navigator.pop(context, const Locale('pt')),
+                        ),
+                      ],
+                    ),
                   );
+                  if (selected != null) {
+                    await LocaleService.setLocale(selected);
+                  }
                 },
               ),
               _buildThemeItem(context),
