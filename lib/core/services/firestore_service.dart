@@ -11,6 +11,10 @@ class FirestoreService {
 
 
   String? get currentUserId => _auth.currentUser?.uid;
+  
+  bool get isUserAuthenticated => _auth.currentUser != null;
+
+  String? get currentUserEmail => _auth.currentUser?.email;
 
   Future<String> createDocument({
     required String collection,
@@ -58,6 +62,8 @@ class FirestoreService {
     int? limit,
   }) async {
     try {
+    
+      
       Query query = _firestore.collection(collection);
       
       if (orderBy != null) {
@@ -69,10 +75,16 @@ class FirestoreService {
       }
 
       final querySnapshot = await query.get();
-      return querySnapshot.docs
+      final result = querySnapshot.docs
           .map((doc) => {'id': doc.id, ...doc.data() as Map<String, dynamic>})
           .toList();
+      
+      return result;
     } catch (e) {
+      if (e.toString().contains('permission-denied')) {
+        print(
+            'FirestoreService: Error permission detected. Check the Firestore rules.');
+      }
       throw Exception('Erro ao buscar documentos: $e');
     }
   }
