@@ -188,6 +188,54 @@ abstract class AppLocalizations {
   /// **'One Piece'**
   String get onePiece;
 
+  /// Title for financial summary section
+  ///
+  /// In en, this message translates to:
+  /// **'Financial Summary'**
+  String get financialSummary;
+
+  /// Label for total income in financial summary
+  ///
+  /// In en, this message translates to:
+  /// **'Total Income'**
+  String get totalIncome;
+
+  /// Title for expenses breakdown section
+  ///
+  /// In en, this message translates to:
+  /// **'Expenses by Category'**
+  String get expensesByCategory;
+
+  /// Title for financial history chart
+  ///
+  /// In en, this message translates to:
+  /// **'Last 6 Months History'**
+  String get historyLast6Months;
+
+  /// Text shown when no financial history is available
+  ///
+  /// In en, this message translates to:
+  /// **'No history available'**
+  String get noHistoryAvailable;
+
+  /// Text shown while loading financial history
+  ///
+  /// In en, this message translates to:
+  /// **'Loading history...'**
+  String get loadingHistory;
+
+  /// Text shown when savings are good
+  ///
+  /// In en, this message translates to:
+  /// **'Nami approves!'**
+  String get namiApproves;
+
+  /// Text shown when savings are low
+  ///
+  /// In en, this message translates to:
+  /// **'Nami needs to review this'**
+  String get namiNeedsReview;
+
   /// Text shown on the result section on calculator screen
   ///
   /// In en, this message translates to:
@@ -650,7 +698,7 @@ abstract class AppLocalizations {
   /// **'Create Character'**
   String get createCharacter;
 
-  /// Button text to cancel action
+  /// Cancel button text.
   ///
   /// In en, this message translates to:
   /// **'Cancel'**
@@ -1628,7 +1676,7 @@ abstract class AppLocalizations {
   /// **'Tonatta'**
   String get tonatta;
 
-  /// Button text for add action
+  /// Add button text.
   ///
   /// In en, this message translates to:
   /// **'Add'**
@@ -2023,6 +2071,168 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Attacks'**
   String get fightingStyleAttacksLabel;
+
+  /// Title for Nami finances screen and bottom navigation.
+  ///
+  /// In en, this message translates to:
+  /// **'Finances'**
+  String get finances;
+
+  /// Label for monthly income field in finances screen.
+  ///
+  /// In en, this message translates to:
+  /// **'Monthly Income'**
+  String get monthlyIncome;
+
+  /// Hint for monthly income field.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter your monthly income'**
+  String get monthlyIncomeHint;
+
+  /// Section title for expenses in finances screen.
+  ///
+  /// In en, this message translates to:
+  /// **'Expenses'**
+  String get expenses;
+
+  /// Label for fixed expenses field.
+  ///
+  /// In en, this message translates to:
+  /// **'Fixed Expenses (Rent, Bills)'**
+  String get fixedExpenses;
+
+  /// Label for food expenses field.
+  ///
+  /// In en, this message translates to:
+  /// **'Food'**
+  String get foodExpenses;
+
+  /// Label for transport expenses field.
+  ///
+  /// In en, this message translates to:
+  /// **'Transport'**
+  String get transportExpenses;
+
+  /// Label for entertainment expenses field.
+  ///
+  /// In en, this message translates to:
+  /// **'Entertainment'**
+  String get entertainmentExpenses;
+
+  /// Label for other expenses field.
+  ///
+  /// In en, this message translates to:
+  /// **'Other Expenses'**
+  String get otherExpenses;
+
+  /// Section title for financial results.
+  ///
+  /// In en, this message translates to:
+  /// **'Results'**
+  String get results;
+
+  /// Label for total expenses result.
+  ///
+  /// In en, this message translates to:
+  /// **'Total Expenses'**
+  String get totalExpenses;
+
+  /// Label for available amount result.
+  ///
+  /// In en, this message translates to:
+  /// **'Available Amount'**
+  String get availableAmount;
+
+  /// Label for daily available amount result.
+  ///
+  /// In en, this message translates to:
+  /// **'Daily Available Amount'**
+  String get dailyAmount;
+
+  /// Currency symbol for the current locale.
+  ///
+  /// In en, this message translates to:
+  /// **'R\$'**
+  String get currency;
+
+  /// Suffix for daily amounts.
+  ///
+  /// In en, this message translates to:
+  /// **'/day'**
+  String get perDay;
+
+  /// Health expenses category.
+  ///
+  /// In en, this message translates to:
+  /// **'Health'**
+  String get health;
+
+  /// Instruction text for expense category selection dialog.
+  ///
+  /// In en, this message translates to:
+  /// **'Select expense category:'**
+  String get selectExpenseCategory;
+
+  /// Label for category dropdown in expense dialog.
+  ///
+  /// In en, this message translates to:
+  /// **'Category'**
+  String get category;
+
+  /// Remove button tooltip.
+  ///
+  /// In en, this message translates to:
+  /// **'Remove'**
+  String get remove;
+
+  /// Label for value input field.
+  ///
+  /// In en, this message translates to:
+  /// **'Value'**
+  String get value;
+
+  /// Button text to add new income item.
+  ///
+  /// In en, this message translates to:
+  /// **'Add Income'**
+  String get addIncome;
+
+  /// Button text to add new expense item.
+  ///
+  /// In en, this message translates to:
+  /// **'Add Expense'**
+  String get addExpense;
+
+  /// Title for savings section.
+  ///
+  /// In en, this message translates to:
+  /// **'Savings'**
+  String get savings;
+
+  /// Label for monthly savings field.
+  ///
+  /// In en, this message translates to:
+  /// **'Monthly Savings'**
+  String get monthlySavings;
+
+  /// Hint for monthly savings field.
+  ///
+  /// In en, this message translates to:
+  /// **'How much do you save per month?'**
+  String get savingsHint;
+
+  /// Label for savings percentage of income.
+  ///
+  /// In en, this message translates to:
+  /// **'of Income'**
+  String get savingsPercentage;
+
+  /// Label for accumulated value in one year.
+  ///
+  /// In en, this message translates to:
+  /// **'Accumulated in 1 Year'**
+  String get yearlySavings;
 }
 
 class _AppLocalizationsDelegate

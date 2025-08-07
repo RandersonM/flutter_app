@@ -72,6 +72,30 @@ class AppLocalizationsEn extends AppLocalizations {
   String get onePiece => 'One Piece';
 
   @override
+  String get financialSummary => 'Financial Summary';
+
+  @override
+  String get totalIncome => 'Total Income';
+
+  @override
+  String get expensesByCategory => 'Expenses by Category';
+
+  @override
+  String get historyLast6Months => 'Last 6 Months History';
+
+  @override
+  String get noHistoryAvailable => 'No history available';
+
+  @override
+  String get loadingHistory => 'Loading history...';
+
+  @override
+  String get namiApproves => 'Nami approves!';
+
+  @override
+  String get namiNeedsReview => 'Nami needs to review this';
+
+  @override
   String get result => 'Result';
 
   @override
@@ -1054,4 +1078,85 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get fightingStyleAttacksLabel => 'Attacks';
+
+  @override
+  String get finances => 'Finances';
+
+  @override
+  String get monthlyIncome => 'Monthly Income';
+
+  @override
+  String get monthlyIncomeHint => 'Enter your monthly income';
+
+  @override
+  String get expenses => 'Expenses';
+
+  @override
+  String get fixedExpenses => 'Fixed Expenses (Rent, Bills)';
+
+  @override
+  String get foodExpenses => 'Food';
+
+  @override
+  String get transportExpenses => 'Transport';
+
+  @override
+  String get entertainmentExpenses => 'Entertainment';
+
+  @override
+  String get otherExpenses => 'Other Expenses';
+
+  @override
+  String get results => 'Results';
+
+  @override
+  String get totalExpenses => 'Total Expenses';
+
+  @override
+  String get availableAmount => 'Available Amount';
+
+  @override
+  String get dailyAmount => 'Daily Available Amount';
+
+  @override
+  String get currency => 'R\$';
+
+  @override
+  String get perDay => '/day';
+
+  @override
+  String get health => 'Health';
+
+  @override
+  String get selectExpenseCategory => 'Select expense category:';
+
+  @override
+  String get category => 'Category';
+
+  @override
+  String get remove => 'Remove';
+
+  @override
+  String get value => 'Value';
+
+  @override
+  String get addIncome => 'Add Income';
+
+  @override
+  String get addExpense => 'Add Expense';
+
+  @override
+  String get savings => 'Savings';
+
+  @override
+  String get monthlySavings => 'Monthly Savings';
+
+  @override
+  String get savingsHint => 'How much do you save per month?';
+
+  @override
+  String get savingsPercentage => 'of Income';
+
+  @override
+  String get yearlySavings => 'Accumulated in 1 Year';
 }

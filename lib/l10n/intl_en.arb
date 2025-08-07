@@ -99,6 +99,54 @@
     "type": "text",
     "placeholders": {}
   },
+  "financialSummary": "Financial Summary",
+  "@financialSummary": {
+    "description": "Title for financial summary section",
+    "type": "text",
+    "placeholders": {}
+  },
+  "totalIncome": "Total Income",
+  "@totalIncome": {
+    "description": "Label for total income in financial summary",
+    "type": "text",
+    "placeholders": {}
+  },
+  "expensesByCategory": "Expenses by Category",
+  "@expensesByCategory": {
+    "description": "Title for expenses breakdown section",
+    "type": "text",
+    "placeholders": {}
+  },
+  "historyLast6Months": "Last 6 Months History",
+  "@historyLast6Months": {
+    "description": "Title for financial history chart",
+    "type": "text",
+    "placeholders": {}
+  },
+  "noHistoryAvailable": "No history available",
+  "@noHistoryAvailable": {
+    "description": "Text shown when no financial history is available",
+    "type": "text",
+    "placeholders": {}
+  },
+  "loadingHistory": "Loading history...",
+  "@loadingHistory": {
+    "description": "Text shown while loading financial history",
+    "type": "text",
+    "placeholders": {}
+  },
+  "namiApproves": "Nami approves!",
+  "@namiApproves": {
+    "description": "Text shown when savings are good",
+    "type": "text",
+    "placeholders": {}
+  },
+  "namiNeedsReview": "Nami needs to review this",
+  "@namiNeedsReview": {
+    "description": "Text shown when savings are low",
+    "type": "text",
+    "placeholders": {}
+  },
   "result": "Result",
   "@result": {
     "description": "Text shown on the result section on calculator screen",
@@ -2098,5 +2146,185 @@
   "@fightingStyleAttacksLabel": {
     "description": "Label for the attacks of the fighting style.",
     "type": "text"
+  },
+  "finances": "Finances",
+  "@finances": {
+    "description": "Title for Nami finances screen and bottom navigation.",
+    "type": "text",
+    "placeholders": {}
+  },
+  "monthlyIncome": "Monthly Income",
+  "@monthlyIncome": {
+    "description": "Label for monthly income field in finances screen.",
+    "type": "text",
+    "placeholders": {}
+  },
+  "monthlyIncomeHint": "Enter your monthly income",
+  "@monthlyIncomeHint": {
+    "description": "Hint for monthly income field.",
+    "type": "text",
+    "placeholders": {}
+  },
+  "expenses": "Expenses",
+  "@expenses": {
+    "description": "Section title for expenses in finances screen.",
+    "type": "text",
+    "placeholders": {}
+  },
+  "fixedExpenses": "Fixed Expenses (Rent, Bills)",
+  "@fixedExpenses": {
+    "description": "Label for fixed expenses field.",
+    "type": "text",
+    "placeholders": {}
+  },
+  "foodExpenses": "Food",
+  "@foodExpenses": {
+    "description": "Label for food expenses field.",
+    "type": "text",
+    "placeholders": {}
+  },
+  "transportExpenses": "Transport",
+  "@transportExpenses": {
+    "description": "Label for transport expenses field.",
+    "type": "text",
+    "placeholders": {}
+  },
+  "entertainmentExpenses": "Entertainment",
+  "@entertainmentExpenses": {
+    "description": "Label for entertainment expenses field.",
+    "type": "text",
+    "placeholders": {}
+  },
+  "otherExpenses": "Other Expenses",
+  "@otherExpenses": {
+    "description": "Label for other expenses field.",
+    "type": "text",
+    "placeholders": {}
+  },
+  "results": "Results",
+  "@results": {
+    "description": "Section title for financial results.",
+    "type": "text",
+    "placeholders": {}
+  },
+  "totalExpenses": "Total Expenses",
+  "@totalExpenses": {
+    "description": "Label for total expenses result.",
+    "type": "text",
+    "placeholders": {}
+  },
+  "availableAmount": "Available Amount",
+  "@availableAmount": {
+    "description": "Label for available amount result.",
+    "type": "text",
+    "placeholders": {}
+  },
+  "dailyAmount": "Daily Available Amount",
+  "@dailyAmount": {
+    "description": "Label for daily available amount result.",
+    "type": "text",
+    "placeholders": {}
+  },
+  "currency": "R$",
+  "@currency": {
+    "description": "Currency symbol for the current locale.",
+    "type": "text",
+    "placeholders": {}
+  },
+  "perDay": "/day",
+  "@perDay": {
+    "description": "Suffix for daily amounts.",
+    "type": "text",
+    "placeholders": {}
+  },
+  "health": "Health",
+  "@health": {
+    "description": "Health expenses category.",
+    "type": "text",
+    "placeholders": {}
+  },
+  "selectExpenseCategory": "Select expense category:",
+  "@selectExpenseCategory": {
+    "description": "Instruction text for expense category selection dialog.",
+    "type": "text",
+    "placeholders": {}
+  },
+  "category": "Category",
+  "@category": {
+    "description": "Label for category dropdown in expense dialog.",
+    "type": "text",
+    "placeholders": {}
+  },
+  "cancel": "Cancel",
+  "@cancel": {
+    "description": "Cancel button text.",
+    "type": "text",
+    "placeholders": {}
+  },
+  "add": "Add",
+  "@add": {
+    "description": "Add button text.",
+    "type": "text",
+    "placeholders": {}
+  },
+  "remove": "Remove",
+  "@remove": {
+    "description": "Remove button tooltip.",
+    "type": "text",
+    "placeholders": {}
+  },
+  "value": "Value",
+  "@value": {
+    "description": "Label for value input field.",
+    "type": "text",
+    "placeholders": {}
+  },
+  "addIncome": "Add Income",
+  "@addIncome": {
+    "description": "Button text to add new income item.",
+    "type": "text",
+    "placeholders": {}
+  },
+  "addExpense": "Add Expense",
+  "@addExpense": {
+    "description": "Button text to add new expense item.",
+    "type": "text",
+    "placeholders": {}
+  },
+  "savings": "Savings",
+  "@savings": {
+    "description": "Title for savings section.",
+    "type": "text",
+    "placeholders": {}
+  },
+  "monthlySavings": "Monthly Savings",
+  "@monthlySavings": {
+    "description": "Label for monthly savings field.",
+    "type": "text",
+    "placeholders": {}
+  },
+  "savingsHint": "How much do you save per month?",
+  "@savingsHint": {
+    "description": "Hint for monthly savings field.",
+    "type": "text",
+    "placeholders": {}
+  },
+  "savingsPercentage": "of Income",
+  "@savingsPercentage": {
+    "description": "Label for savings percentage of income.",
+    "type": "text",
+    "placeholders": {}
+  },
+  "yearlySavings": "Accumulated in 1 Year",
+  "@yearlySavings": {
+    "description": "Label for accumulated value in one year.",
+    "type": "text",
+    "placeholders": {}
+  },
+  "monthlySavings": "Monthly Savings",
+  "@monthlySavings": {
+    "description": "Label for monthly savings field.",
+    "type": "text",
+    "placeholders": {}
   }
 }

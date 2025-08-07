@@ -72,6 +72,30 @@ class AppLocalizationsPt extends AppLocalizations {
   String get onePiece => 'One Piece';
 
   @override
+  String get financialSummary => 'Resumo Financeiro';
+
+  @override
+  String get totalIncome => 'Renda Total';
+
+  @override
+  String get expensesByCategory => 'Despesas por Categoria';
+
+  @override
+  String get historyLast6Months => 'Histórico dos Últimos 6 Meses';
+
+  @override
+  String get noHistoryAvailable => 'Nenhum histórico disponível';
+
+  @override
+  String get loadingHistory => 'Carregando histórico...';
+
+  @override
+  String get namiApproves => 'Nami aprova!';
+
+  @override
+  String get namiNeedsReview => 'Nami precisa rever isso';
+
+  @override
   String get result => 'Resultado';
 
   @override
@@ -1058,4 +1082,85 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get fightingStyleAttacksLabel => 'Ataques';
+
+  @override
+  String get finances => 'Finanças';
+
+  @override
+  String get monthlyIncome => 'Renda Mensal';
+
+  @override
+  String get monthlyIncomeHint => 'Digite sua renda mensal';
+
+  @override
+  String get expenses => 'Gastos';
+
+  @override
+  String get fixedExpenses => 'Gastos Fixos (Aluguel, Contas)';
+
+  @override
+  String get foodExpenses => 'Alimentação';
+
+  @override
+  String get transportExpenses => 'Transporte';
+
+  @override
+  String get entertainmentExpenses => 'Entretenimento';
+
+  @override
+  String get otherExpenses => 'Outros Gastos';
+
+  @override
+  String get results => 'Resultados';
+
+  @override
+  String get totalExpenses => 'Total de Gastos';
+
+  @override
+  String get availableAmount => 'Valor Disponível';
+
+  @override
+  String get dailyAmount => 'Valor Diário Disponível';
+
+  @override
+  String get currency => 'R\$';
+
+  @override
+  String get perDay => '/dia';
+
+  @override
+  String get health => 'Saúde';
+
+  @override
+  String get selectExpenseCategory => 'Selecione a categoria do gasto:';
+
+  @override
+  String get category => 'Categoria';
+
+  @override
+  String get remove => 'Remover';
+
+  @override
+  String get value => 'Valor';
+
+  @override
+  String get addIncome => 'Adicionar Renda';
+
+  @override
+  String get addExpense => 'Adicionar Gasto';
+
+  @override
+  String get savings => 'Cofrinho';
+
+  @override
+  String get monthlySavings => 'Poupança Mensal';
+
+  @override
+  String get savingsHint => 'Quanto você guarda por mês?';
+
+  @override
+  String get savingsPercentage => 'da Renda';
+
+  @override
+  String get yearlySavings => 'Acumulado em 1 Ano';
 }
