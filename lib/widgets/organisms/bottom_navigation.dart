@@ -8,7 +8,6 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:opfan/l10n/app_localizations.dart';
 import 'package:opfan/utils/app_routes.dart';
 import 'package:opfan/utils/constants.dart' show Constants;
-import 'package:opfan/utils/icons/one_piece_icons.dart';
 import 'package:opfan/utils/theme.dart';
 
 enum BottomNavigationPages {

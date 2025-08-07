@@ -240,6 +240,4 @@ class CustomCharacterModel {
 
   int? get calculatedAge => age;
 
-  // Removendo o getter birthDate que estava calculando incorretamente
-  // Agora usamos o campo birthDate diretamente
 } 

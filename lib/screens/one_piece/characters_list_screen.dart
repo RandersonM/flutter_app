@@ -7,7 +7,6 @@ import '../../l10n/app_localizations.dart';
 import 'package:opfan/screens/one_piece/widgets/list/list_content.dart';
 import 'package:opfan/screens/one_piece/widgets/search/search.dart';
 import 'package:opfan/widgets/molecules/default_app_bar.dart';
-import 'package:opfan/widgets/organisms/bottom_navigation.dart';
 
 class CharactersListScreen extends StatefulWidget {
   const CharactersListScreen({Key? key}) : super(key: key);
@@ -21,17 +20,23 @@ class _CharactersListScreenState extends State<CharactersListScreen> {
   Widget build(BuildContext context) => Scaffold(
         appBar: DefaultAppBar(
           title: Text(AppLocalizations.of(context)!.onePiece),
-          leading: Builder(
+            leading: IconButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              icon: const Icon(Icons.arrow_back),
+            ),
+            actions: [
+              Builder(
             builder: (context) => IconButton(
               icon: const Icon(Icons.search_rounded),
               onPressed: () => Scaffold.of(context).openDrawer(),
             ),
-          ),
+              ),
+            ]
         ),
         body: const ListContent(),
-        bottomNavigationBar:
-            const BottomNavigation(BottomNavigationPages.onePiece),
-        drawer: Drawer(
+        drawer: Drawer( 
           backgroundColor: Theme.of(context).colorScheme.primaryContainer,
           elevation: 0.0,
           child: const Search(),

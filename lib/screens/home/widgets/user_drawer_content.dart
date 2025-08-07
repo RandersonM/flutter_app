@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:opfan/core/auth/models/user_model.dart';
+import 'package:opfan/utils/icons/one_piece_icons.dart';
 import 'package:opfan/widgets/atoms/circle_avatar.dart';
 import 'package:opfan/widgets/atoms/gomu_gomu_divider.dart';
 import 'package:opfan/widgets/atoms/futuristic_background.dart';
@@ -97,6 +98,17 @@ class UserDrawerContent extends StatelessWidget {
                       onTap: () {
                         Navigator.of(context)
                             .pushNamed(AppRoutes.customCharacterList);
+                      },
+                    ),
+                    _buildFuturisticListTile(
+                      context,
+                      icon: OnePieceIcons.jollyRoger,
+                      title: AppLocalizations.of(context)!.pirate,
+                      onTap: () {
+                        Navigator.pushNamed(
+                          context,
+                          AppRoutes.onePiece,
+                        );
                       },
                     ),
                     _buildFuturisticListTile(
