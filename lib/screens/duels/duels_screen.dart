@@ -15,7 +15,6 @@ import 'package:opfan/screens/duels/widgets/duel_result.dart';
 import 'package:opfan/utils/constants.dart';
 import 'package:opfan/widgets/atoms/futuristic_background.dart';
 import 'package:opfan/widgets/molecules/default_app_bar.dart';
-import 'package:opfan/widgets/organisms/bottom_navigation.dart';
 
 class DuelsScreen extends StatefulWidget {
   const DuelsScreen({super.key});
@@ -117,7 +116,6 @@ class _DuelsScreenState extends State<DuelsScreen> {
             },
           ),
         ),
-        bottomNavigationBar: const BottomNavigation(BottomNavigationPages.attack),
       ),
     );
   }

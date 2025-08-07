@@ -14,6 +14,7 @@ import 'package:opfan/screens/home/home_screen.dart';
 import 'package:opfan/screens/nami-finances/nami_finances_screen.dart';
 import 'package:opfan/screens/one_piece/characters_list_screen.dart';
 import 'package:opfan/screens/one_piece/widgets/details/character_details_screen.dart';
+import 'package:opfan/screens/workout/workout_screen.dart';
 import 'package:opfan/screens/youtube/youtube_player_screen.dart';
 import 'package:opfan/screens/devil_fruit/devil_fruit_list.dart';
 import 'package:opfan/screens/auth/login_screen.dart';
@@ -42,6 +43,7 @@ class AppRoutes {
   static const String youtubePlayer = '/youtubePlayer';
   static const String characterSelection = '/characterSelection';
   static const String characterDetails = '/characterDetails';
+  static const String workout = '/workout';
 
   // Private routes (require authentication)
   static const String profile = '/profile';
@@ -113,10 +115,10 @@ class AppRoutes {
             builder: (_) => const CalculatorScreen(), settings: settings);
       case finances:
         return MaterialPageRouteWithoutTransition<dynamic>(
-            builder: (_) => const NamiFinancesScreen(), settings: settings);
-      case duels:
+            builder: (_) => const NamiFinancesScreen(), settings: settings);            
+      case workout:
         return MaterialPageRouteWithoutTransition<dynamic>(
-            builder: (_) => const DuelsScreen(), settings: settings);
+            builder: (_) => const WorkoutScreen(), settings: settings);
       case youtubePlayer:
         final video = settings.arguments as YouTubeVideo;
         return MaterialPageRoute<dynamic>(
@@ -132,6 +134,9 @@ class AppRoutes {
       case onePiece:
         return MaterialPageRoute<dynamic>(
             builder: (_) => const CharactersListScreen(), settings: settings);
+      case duels:
+        return MaterialPageRoute<dynamic>(
+            builder: (_) => const DuelsScreen(), settings: settings);
       case characterDetails:
         final character = settings.arguments as CustomCharacterModel;
         return MaterialPageRoute<dynamic>(
