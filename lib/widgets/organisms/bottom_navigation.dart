@@ -13,7 +13,7 @@ import 'package:opfan/utils/theme.dart';
 
 enum BottomNavigationPages {
   home,
-  onePiece,
+  finances,
   attack,
 }
 
@@ -32,7 +32,7 @@ class BottomNavigation extends StatefulWidget {
 class BottomNavigationState extends State<BottomNavigation> {
   static const List<BottomNavigationPages> _pages = <BottomNavigationPages>[
     BottomNavigationPages.home,
-    BottomNavigationPages.onePiece,
+    BottomNavigationPages.finances,
     BottomNavigationPages.attack,
   ];
 
@@ -48,11 +48,11 @@ class BottomNavigationState extends State<BottomNavigation> {
         );
         break;
 
-      case BottomNavigationPages.onePiece:
+      case BottomNavigationPages.finances:
         await Navigator.pushNamedAndRemoveUntil(
           context,
-          AppRoutes.onePiece,
-          ModalRoute.withName(AppRoutes.onePiece),
+          AppRoutes.finances,
+          ModalRoute.withName(AppRoutes.finances),
         );
         break;
 
@@ -82,9 +82,9 @@ class BottomNavigationState extends State<BottomNavigation> {
           localizations.home,
           FontAwesomeIcons.water
         ),
-      BottomNavigationPages.onePiece => (
-          localizations.onePiece,
-          OnePieceIcons.jollyRoger
+      BottomNavigationPages.finances => (
+          localizations.finances,
+          FontAwesomeIcons.coins,
         ),
       BottomNavigationPages.attack => (
           localizations.duels,

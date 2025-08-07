@@ -11,6 +11,7 @@ import 'package:opfan/screens/calculator/calculator_screen.dart';
 import 'package:opfan/screens/crews/crew_details_screen.dart';
 import 'package:opfan/screens/fav_character_selection_screen/character_selection_screen.dart';
 import 'package:opfan/screens/home/home_screen.dart';
+import 'package:opfan/screens/nami-finances/nami_finances_screen.dart';
 import 'package:opfan/screens/one_piece/characters_list_screen.dart';
 import 'package:opfan/screens/one_piece/widgets/details/character_details_screen.dart';
 import 'package:opfan/screens/youtube/youtube_player_screen.dart';
@@ -34,7 +35,7 @@ class AppRoutes {
   // Main navigation routes (public)
   static const String home = '/home';
   static const String calculator = '/calculator';
-  static const String onePiece = '/onePiece';
+  static const String finances = '/finances';
   static const String devilFruit = '/devilFruit';
   
   // Additional screen routes (public)
@@ -54,6 +55,8 @@ class AppRoutes {
   static const String listCrews = '/listCrews';
   static const String crewDetails = '/crewDetails';
   static const String duels = '/duels';
+  static const String onePiece = '/onePiece';
+  
 
   // Define which routes require authentication
   static const Set<String> _privateRoutes = {
@@ -108,9 +111,9 @@ class AppRoutes {
       case calculator:
         return MaterialPageRouteWithoutTransition<dynamic>(
             builder: (_) => const CalculatorScreen(), settings: settings);
-      case onePiece:
+      case finances:
         return MaterialPageRouteWithoutTransition<dynamic>(
-            builder: (_) => const CharactersListScreen(), settings: settings);
+            builder: (_) => const NamiFinancesScreen(), settings: settings);
       case duels:
         return MaterialPageRouteWithoutTransition<dynamic>(
             builder: (_) => const DuelsScreen(), settings: settings);
@@ -126,6 +129,9 @@ class AppRoutes {
         return MaterialPageRoute<CustomCharacterModel>(
             builder: (_) => const CharacterSelectionScreen(),
             settings: settings);
+      case onePiece:
+        return MaterialPageRoute<dynamic>(
+            builder: (_) => const CharactersListScreen(), settings: settings);
       case characterDetails:
         final character = settings.arguments as CustomCharacterModel;
         return MaterialPageRoute<dynamic>(
