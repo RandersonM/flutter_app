@@ -740,11 +740,16 @@
     "type": "text",
     "placeholders": {}
   },
-  "pirate": "Pirata",
+  "pirate": "{count, plural, =0 {Pirata} =1 {Pirata} other {Piratas}}",
   "@pirate": {
-    "description": "Affiliation option for pirate",
+    "description": "Affiliation option for pirate with pluralization",
     "type": "text",
-    "placeholders": {}
+    "placeholders": {
+      "count": {
+        "type": "num",
+        "example": "1"
+      }
+    }
   },
   "pirateAlliance": "Aliança Pirata",
   "@pirateAlliance": {
@@ -2258,6 +2263,12 @@
   "monthlySavings": "Poupança Mensal",
   "@monthlySavings": {
     "description": "Rótulo para campo de poupança mensal.",
+    "type": "text",
+    "placeholders": {}
+  },
+  "workout": "Treino",
+  "@workout": {
+    "description": "Treino.",
     "type": "text",
     "placeholders": {}
   }

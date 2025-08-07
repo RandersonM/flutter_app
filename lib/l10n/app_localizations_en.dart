@@ -1159,4 +1159,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get yearlySavings => 'Accumulated in 1 Year';
+
+  @override
+  String get workout => 'Treino';
 }

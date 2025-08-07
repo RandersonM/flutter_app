@@ -483,11 +483,16 @@
     "type": "text",
     "placeholders": {}
   },
-  "pirate": "Pirate",
+  "pirate": "{count, plural, =0 {Pirate} =1 {Pirate} other {Pirates}}",
   "@pirate": {
-    "description": "Affiliation option for pirate",
+    "description": "Affiliation option for pirate with pluralization",
     "type": "text",
-    "placeholders": {}
+    "placeholders": {
+      "count": {
+        "type": "num",
+        "example": "1"
+      }
+    }
   },
   "pirateAlliance": "Pirate Alliance",
   "@pirateAlliance": {
@@ -2324,6 +2329,12 @@
   "monthlySavings": "Monthly Savings",
   "@monthlySavings": {
     "description": "Label for monthly savings field.",
+    "type": "text",
+    "placeholders": {}
+ },
+  "workout": "Treino",
+  "@workout": {
+    "description": "Treino.",
     "type": "text",
     "placeholders": {}
   }

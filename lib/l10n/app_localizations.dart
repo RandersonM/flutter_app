@@ -2233,6 +2233,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Accumulated in 1 Year'**
   String get yearlySavings;
+
+  /// Treino.
+  ///
+  /// In en, this message translates to:
+  /// **'Treino'**
+  String get workout;
 }
 
 class _AppLocalizationsDelegate
