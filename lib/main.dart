@@ -6,6 +6,7 @@ import 'package:opfan/core/auth/models/user_model.dart';
 import 'package:opfan/screens/one_piece/blocs/search_cubit.dart';
 import 'package:opfan/core/services/environment_service.dart';
 import 'package:opfan/core/services/service_locator.dart';
+import 'package:opfan/core/services/notification_service.dart';
 import 'package:opfan/core/models/one_piece/today_character.dart';
 import 'package:opfan/core/models/theme_model.dart';
 import 'package:opfan/core/services/theme_service.dart';
@@ -21,6 +22,7 @@ import 'package:opfan/utils/app_routes.dart';
 
 import 'package:opfan/utils/theme.dart';
 import 'core/services/locale_service.dart';
+import 'package:opfan/core/models/nami_finances_model.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -30,6 +32,11 @@ void main() async {
   Hive.registerAdapter(TodayCharacterAdapter());
   Hive.registerAdapter(UserModelAdapter());
   Hive.registerAdapter(ThemeSettingsAdapter());
+  
+  Hive.registerAdapter(NamiFinancesModelAdapter());
+  Hive.registerAdapter(MonthlyIncomeModelAdapter());
+  Hive.registerAdapter(ExpenseModelAdapter());
+  Hive.registerAdapter(ExpenseCategoryAdapter());
 
   await LocaleService.loadLocale();
 
@@ -42,6 +49,8 @@ void main() async {
       configureDependencies(),
       ThemeService.initialize(),
     ]);
+
+    await getIt<NotificationService>().initialize();
   } catch (e, stackTrace) {
     debugPrint('MAIN: Initialization error: $e');
     debugPrint('MAIN: Stack trace: $stackTrace');
@@ -88,7 +97,6 @@ class _MyAppState extends State<MyApp> {
       });
     } catch (e) {
       debugPrint('Error loading theme mode: $e');
-      // Keep default light theme
     }
   }
 
