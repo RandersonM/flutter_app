@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:opfan/utils/constants.dart';
 import 'package:opfan/utils/theme.dart';
 import 'package:opfan/core/models/nami_finances_model.dart';
-import 'package:opfan/screens/nami-finances/blocs/nami_finances_bloc.dart';
+import 'package:opfan/screens/nami-finances/blocs/index.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:opfan/core/services/service_locator.dart';
 import 'package:opfan/l10n/app_localizations.dart';

@@ -95,6 +95,8 @@ class DateTextField extends StatelessWidget {
 class CurrencyTextField extends StatelessWidget {
   final String label;
   final String? hint;
+  final String suffixText;
+  final String? prefixText;
   final TextEditingController controller;
   final String? Function(String?)? validator;
   final bool enabled;
@@ -106,6 +108,8 @@ class CurrencyTextField extends StatelessWidget {
     required this.controller,
     this.validator,
     this.enabled = true,
+    this.suffixText = 'Berries',
+    this.prefixText,
   }) : super(key: key);
 
   @override
@@ -119,12 +123,12 @@ class CurrencyTextField extends StatelessWidget {
         enabled: enabled,
         inputFormatters: [
           FilteringTextInputFormatter.digitsOnly,
-          _CurrencyInputFormatter(),
         ],
         decoration: InputDecoration(
           labelText: label,
           hintText: hint ?? '0',
-          suffixText: ' Berries',
+          prefixText: prefixText,
+          suffixText: prefixText != null ? null : suffixText,
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(8),
           ),
@@ -166,44 +170,3 @@ class _DateInputFormatter extends TextInputFormatter {
   }
 }
 
-class _CurrencyInputFormatter extends TextInputFormatter {
-  @override
-  TextEditingValue formatEditUpdate(
-    TextEditingValue oldValue,
-    TextEditingValue newValue,
-  ) {
-    if (newValue.text.isEmpty) {
-      return newValue;
-    }
-
-    final text = newValue.text.replaceAll(RegExp(r'[^\d]'), '');
-    
-    if (text.isEmpty) {
-      return const TextEditingValue(text: '');
-    }
-
-    final number = int.parse(text);
-    final formatted = _formatCurrency(number);
-
-    return TextEditingValue(
-      text: formatted,
-      selection: TextSelection.collapsed(offset: formatted.length),
-    );
-  }
-
-  String _formatCurrency(int value) {
-    if (value == 0) return '0';
-    
-    final parts = value.toString().split('');
-    final result = <String>[];
-    
-    for (int i = parts.length - 1; i >= 0; i--) {
-      if ((parts.length - 1 - i) % 3 == 0 && i != parts.length - 1) {
-        result.insert(0, ',');
-      }
-      result.insert(0, parts[i]);
-    }
-    
-    return result.join();
-  }
-} 

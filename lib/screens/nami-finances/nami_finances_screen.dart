@@ -5,7 +5,7 @@ import 'package:opfan/widgets/organisms/bottom_navigation.dart';
 import 'package:opfan/utils/constants.dart';
 import 'package:opfan/l10n/app_localizations.dart';
 import 'package:opfan/core/models/nami_finances_model.dart';
-import 'package:opfan/screens/nami-finances/blocs/nami_finances_bloc.dart';
+import 'package:opfan/screens/nami-finances/blocs/index.dart';
 import 'package:opfan/core/services/service_locator.dart';
 import 'widgets/nami_header.dart';
 import 'widgets/finances_setup_form.dart';
