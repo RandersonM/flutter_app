@@ -1161,5 +1161,11 @@ class AppLocalizationsEn extends AppLocalizations {
   String get yearlySavings => 'Accumulated in 1 Year';
 
   @override
+  String get accumulatedSavings => 'Accumulated';
+
+  @override
+  String get savingsPeriod => 'Savings Period';
+
+  @override
   String get workout => 'Treino';
 }

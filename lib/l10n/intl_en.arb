@@ -2326,12 +2326,18 @@
     "type": "text",
     "placeholders": {}
   },
-  "monthlySavings": "Monthly Savings",
-  "@monthlySavings": {
-    "description": "Label for monthly savings field.",
+  "accumulatedSavings": "Accumulated",
+  "@accumulatedSavings": {
+    "description": "Title for total accumulated savings.",
     "type": "text",
     "placeholders": {}
- },
+  },
+  "savingsPeriod": "Savings Period",
+  "@savingsPeriod": {
+    "description": "Title for savings period section.",
+    "type": "text",
+    "placeholders": {}
+  },
   "workout": "Treino",
   "@workout": {
     "description": "Treino.",

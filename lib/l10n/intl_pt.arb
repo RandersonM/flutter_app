@@ -2260,6 +2260,18 @@
     "type": "text",
     "placeholders": {}
   },
+  "accumulatedSavings": "Acumulado",
+  "@accumulatedSavings": {
+    "description": "Título para total de poupança acumulada.",
+    "type": "text",
+    "placeholders": {}
+  },
+  "savingsPeriod": "Período de Economia",
+  "@savingsPeriod": {
+    "description": "Título para seção de período de poupança.",
+    "type": "text",
+    "placeholders": {}
+  },
   "monthlySavings": "Poupança Mensal",
   "@monthlySavings": {
     "description": "Rótulo para campo de poupança mensal.",

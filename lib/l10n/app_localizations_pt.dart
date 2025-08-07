@@ -1165,5 +1165,11 @@ class AppLocalizationsPt extends AppLocalizations {
   String get yearlySavings => 'Acumulado em 1 Ano';
 
   @override
+  String get accumulatedSavings => 'Acumulado';
+
+  @override
+  String get savingsPeriod => 'Período de Economia';
+
+  @override
   String get workout => 'Treino';
 }

@@ -106,4 +106,87 @@ class NamiFinancesService {
   String _getMonthKey(DateTime month) {
     return '${month.year}-${month.month.toString().padLeft(2, '0')}';
   }
+
+  Future<double> getTotalSavings() async {
+    try {
+      final box = await _getBox;
+      final allFinances = box.values.toList();
+
+      double totalSavings = 0.0;
+      for (final finances in allFinances) {
+        totalSavings += finances.savings;
+      }
+
+      return totalSavings;
+    } catch (e) {
+      debugPrint('Erro ao calcular total de savings: $e');
+      return 0.0;
+    }
+  }
+
+  Future<Map<String, dynamic>> getAccumulatedSavingsInfo() async {
+    try {
+      final box = await _getBox;
+      final allFinances = box.values.toList();
+
+      if (allFinances.isEmpty) {
+        return {
+          'totalSavings': 0.0,
+          'months': 0,
+          'years': 0,
+          'periodText': '',
+        };
+      }
+
+      // Ordenar por data (mais antiga primeiro)
+      allFinances.sort((a, b) => a.month.compareTo(b.month));
+
+      double totalSavings = 0.0;
+      for (final finances in allFinances) {
+        totalSavings += finances.savings;
+      }
+
+      final firstMonth = allFinances.first.month;
+      final now = DateTime.now();
+
+      // Calcular diferença em meses
+      int months =
+          (now.year - firstMonth.year) * 12 + (now.month - firstMonth.month);
+      if (months < 0) months = 0;
+
+      int years = months ~/ 12;
+      int remainingMonths = months % 12;
+
+      String periodText = '';
+      if (years > 0) {
+        if (remainingMonths > 0) {
+          periodText =
+              '$years ano${years > 1 ? 's' : ''} e $remainingMonths mês${remainingMonths > 1 ? 'es' : ''}';
+        } else {
+          periodText = '$years ano${years > 1 ? 's' : ''}';
+        }
+      } else if (months > 0) {
+        periodText = '$months mês${months > 1 ? 'es' : ''}';
+      } else {
+        periodText = '1 mês';
+      }
+
+      return {
+        'totalSavings': totalSavings,
+        'months': months,
+        'years': years,
+        'periodText': periodText,
+        'formattedTotal':
+            'R\$ ${totalSavings.toStringAsFixed(2)} em $periodText',
+      };
+    } catch (e) {
+      debugPrint('Erro ao calcular informações de savings acumulados: $e');
+      return {
+        'totalSavings': 0.0,
+        'months': 0,
+        'years': 0,
+        'periodText': '',
+      };
+    }
+  }
 }

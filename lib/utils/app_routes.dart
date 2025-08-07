@@ -14,7 +14,7 @@ import 'package:opfan/screens/home/home_screen.dart';
 import 'package:opfan/screens/nami-finances/nami_finances_screen.dart';
 import 'package:opfan/screens/one_piece/characters_list_screen.dart';
 import 'package:opfan/screens/one_piece/widgets/details/character_details_screen.dart';
-import 'package:opfan/screens/workout/workout_screen.dart';
+import 'package:opfan/screens/zoro-workout/zoro_workout_screen.dart';
 import 'package:opfan/screens/youtube/youtube_player_screen.dart';
 import 'package:opfan/screens/devil_fruit/devil_fruit_list.dart';
 import 'package:opfan/screens/auth/login_screen.dart';

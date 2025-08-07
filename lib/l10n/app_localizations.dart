@@ -2234,6 +2234,18 @@ abstract class AppLocalizations {
   /// **'Accumulated in 1 Year'**
   String get yearlySavings;
 
+  /// Title for total accumulated savings.
+  ///
+  /// In en, this message translates to:
+  /// **'Accumulated'**
+  String get accumulatedSavings;
+
+  /// Title for savings period section.
+  ///
+  /// In en, this message translates to:
+  /// **'Savings Period'**
+  String get savingsPeriod;
+
   /// Treino.
   ///
   /// In en, this message translates to:
