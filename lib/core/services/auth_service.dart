@@ -6,6 +6,7 @@ import 'package:flutter/foundation.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:hive/hive.dart';
 import 'package:opfan/core/auth/models/user_model.dart';
+import 'package:opfan/core/services/notification_service.dart';
 
 enum AuthStatus { unknown, authenticated, unauthenticated }
 
@@ -84,7 +85,6 @@ class AuthService {
     }
   }
 
-  /// Renova o token do Firebase se necessário
   Future<bool> refreshToken() async {
     try {
       final firebaseUser = _firebaseAuth.currentUser;
@@ -146,6 +146,16 @@ class AuthService {
         );
 
         await _saveUser(userModel);
+        
+        try {
+          final notificationService = NotificationService();
+          if (notificationService.isInitialized) {
+            await notificationService.saveTokenToFirestore(user.uid);
+          }
+        } catch (e) {
+          debugPrint('AuthService: Erro ao salvar token FCM: $e');
+        }
+        
         debugPrint('AuthService: User signed in successfully and cached');
         return userModel;
       }
@@ -159,6 +169,15 @@ class AuthService {
 
   Future<void> signOut() async {
     try {
+      try {
+        final notificationService = NotificationService();
+        if (notificationService.isInitialized) {
+          await notificationService.clearToken();
+        }
+      } catch (e) {
+        debugPrint('AuthService: Erro ao limpar token FCM: $e');
+      }
+      
       await Future.wait([
         _firebaseAuth.signOut(),
         _googleSignIn.signOut(),
@@ -191,7 +210,6 @@ class AuthService {
           try {
             final googleUser = _googleSignIn.currentUser;
             if (googleUser == null) {
-              // Tenta restaurar a sessão do Google
               final restored = await restoreGoogleSession();
               if (!restored) {
                 debugPrint('AuthService: Google session expired, signing out');
@@ -201,8 +219,6 @@ class AuthService {
             }
           } catch (e) {
             debugPrint('AuthService: Error checking Google session - $e');
-            // Se houver erro na verificação do Google, mas o Firebase ainda é válido,
-            // mantemos a sessão do Firebase
           }
         }
 

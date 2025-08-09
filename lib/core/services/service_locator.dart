@@ -8,6 +8,7 @@ import 'package:opfan/core/services/youtube_service.dart';
 import 'package:opfan/core/repository/featured_character_repository.dart';
 import 'package:opfan/core/services/auth_service.dart';
 import 'package:opfan/core/services/firestore_service.dart';
+import 'package:opfan/core/services/notification_service.dart';
 import 'package:opfan/core/services/ai_image_service.dart';
 import 'package:opfan/core/services/gemini_image_service.dart';
 import 'package:opfan/core/repository/custom_character_repository.dart';
@@ -16,12 +17,17 @@ import 'package:opfan/screens/home/blocs/home_bloc.dart';
 import 'package:opfan/screens/devil_fruit/blocs/devil_fruit_bloc.dart';
 import 'package:opfan/core/auth/blocs/index.dart';
 import 'package:opfan/screens/crews/blocs/index.dart';
+import 'package:opfan/screens/nami-finances/blocs/nami_finances_bloc.dart';
+import 'package:opfan/core/services/nami_finances_service.dart';
 
 final GetIt getIt = GetIt.instance;
 
 Future<void> configureDependencies() async {
   getIt.registerSingleton<EnvironmentService>(EnvironmentService.instance);
 
+  getIt.registerLazySingleton<NotificationService>(
+    () => NotificationService(),
+  );
 
   getIt.registerLazySingleton<DevilFruitService>(
     () => DevilFruitService(),
@@ -103,6 +109,14 @@ Future<void> configureDependencies() async {
       return authBloc;
     },
   );
+
+  getIt.registerLazySingleton<NamiFinancesService>(
+    () => NamiFinancesService(),
+  );
+
+  getIt.registerFactory<NamiFinancesBloc>(
+    () => NamiFinancesBloc(getIt<NamiFinancesService>()),
+  );
 }
 
 Future<void> resetDependencies() async {
@@ -119,6 +133,7 @@ bool isDependencyConfigured() {
 
 extension ServiceLocatorExtensions on GetIt {
   EnvironmentService get environmentService => get<EnvironmentService>();
+  NotificationService get notificationService => get<NotificationService>();
   FeaturedCharacterRepository get featuredCharacterRepository =>
       get<FeaturedCharacterRepository>();
   DevilFruitService get devilFruitService => get<DevilFruitService>();

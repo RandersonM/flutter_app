@@ -217,7 +217,9 @@ class SearchCubit extends Cubit<SearchState> {
 
       if (character.affiliations.any((String affiliation) {
         return _matches(affiliation);
-      })) return true;
+      })) {
+        return true;
+      }
 
       if (character.crew != null && character.crew!.isNotEmpty) {
         if (_matches(character.crew!)) return true;

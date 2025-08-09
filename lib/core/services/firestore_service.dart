@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/material.dart';
 
 class FirestoreService {
   static final FirestoreService _instance = FirestoreService._internal();
@@ -82,7 +83,7 @@ class FirestoreService {
       return result;
     } catch (e) {
       if (e.toString().contains('permission-denied')) {
-        print(
+        debugPrint(
             'FirestoreService: Error permission detected. Check the Firestore rules.');
       }
       throw Exception('Erro ao buscar documentos: $e');

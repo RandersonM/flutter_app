@@ -87,6 +87,54 @@
     "type": "text",
     "placeholders": {}
   },
+  "financialSummary": "Resumo Financeiro",
+  "@financialSummary": {
+    "description": "Title for financial summary section",
+    "type": "text",
+    "placeholders": {}
+  },
+  "totalIncome": "Renda Total",
+  "@totalIncome": {
+    "description": "Label for total income in financial summary",
+    "type": "text",
+    "placeholders": {}
+  },
+  "expensesByCategory": "Despesas por Categoria",
+  "@expensesByCategory": {
+    "description": "Title for expenses breakdown section",
+    "type": "text",
+    "placeholders": {}
+  },
+  "historyLast6Months": "Histórico dos Últimos 6 Meses",
+  "@historyLast6Months": {
+    "description": "Title for financial history chart",
+    "type": "text",
+    "placeholders": {}
+  },
+  "noHistoryAvailable": "Nenhum histórico disponível",
+  "@noHistoryAvailable": {
+    "description": "Text shown when no financial history is available",
+    "type": "text",
+    "placeholders": {}
+  },
+  "loadingHistory": "Carregando histórico...",
+  "@loadingHistory": {
+    "description": "Text shown while loading financial history",
+    "type": "text",
+    "placeholders": {}
+  },
+  "namiApproves": "Nami aprova!",
+  "@namiApproves": {
+    "description": "Text shown when savings are good",
+    "type": "text",
+    "placeholders": {}
+  },
+  "namiNeedsReview": "Nami precisa rever isso",
+  "@namiNeedsReview": {
+    "description": "Text shown when savings are low",
+    "type": "text",
+    "placeholders": {}
+  },
   "result": "Resultado",
   "@result": {
     "description": "Text shown on the result section on calculator screen",
@@ -2038,5 +2086,179 @@
   "@fightingStyleAttacksLabel": {
     "description": "Rótulo para os ataques do estilo de luta.",
     "type": "text"
+  },
+  "finances": "Finanças",
+  "@finances": {
+    "description": "Título para tela de finanças da Nami e navegação inferior.",
+    "type": "text",
+    "placeholders": {}
+  },
+  "monthlyIncome": "Renda Mensal",
+  "@monthlyIncome": {
+    "description": "Rótulo para campo de renda mensal na tela de finanças.",
+    "type": "text",
+    "placeholders": {}
+  },
+  "monthlyIncomeHint": "Digite sua renda mensal",
+  "@monthlyIncomeHint": {
+    "description": "Hint para campo de renda mensal.",
+    "type": "text",
+    "placeholders": {}
+  },
+  "expenses": "Gastos",
+  "@expenses": {
+    "description": "Título da seção de gastos na tela de finanças.",
+    "type": "text",
+    "placeholders": {}
+  },
+  "fixedExpenses": "Gastos Fixos (Aluguel, Contas)",
+  "@fixedExpenses": {
+    "description": "Rótulo para campo de gastos fixos.",
+    "type": "text",
+    "placeholders": {}
+  },
+  "foodExpenses": "Alimentação",
+  "@foodExpenses": {
+    "description": "Rótulo para campo de gastos com alimentação.",
+    "type": "text",
+    "placeholders": {}
+  },
+  "transportExpenses": "Transporte",
+  "@transportExpenses": {
+    "description": "Rótulo para campo de gastos com transporte.",
+    "type": "text",
+    "placeholders": {}
+  },
+  "entertainmentExpenses": "Entretenimento",
+  "@entertainmentExpenses": {
+    "description": "Rótulo para campo de gastos com entretenimento.",
+    "type": "text",
+    "placeholders": {}
+  },
+  "otherExpenses": "Outros Gastos",
+  "@otherExpenses": {
+    "description": "Rótulo para campo de outros gastos.",
+    "type": "text",
+    "placeholders": {}
+  },
+  "results": "Resultados",
+  "@results": {
+    "description": "Título da seção de resultados financeiros.",
+    "type": "text",
+    "placeholders": {}
+  },
+  "totalExpenses": "Total de Gastos",
+  "@totalExpenses": {
+    "description": "Rótulo para resultado de total de gastos.",
+    "type": "text",
+    "placeholders": {}
+  },
+  "availableAmount": "Valor Disponível",
+  "@availableAmount": {
+    "description": "Rótulo para resultado de valor disponível.",
+    "type": "text",
+    "placeholders": {}
+  },
+  "dailyAmount": "Valor Diário Disponível",
+  "@dailyAmount": {
+    "description": "Rótulo para resultado de valor diário disponível.",
+    "type": "text",
+    "placeholders": {}
+  },
+  "currency": "R$",
+  "@currency": {
+    "description": "Símbolo da moeda para a localização atual.",
+    "type": "text",
+    "placeholders": {}
+  },
+  "perDay": "/dia",
+  "@perDay": {
+    "description": "Sufixo para valores diários.",
+    "type": "text",
+    "placeholders": {}
+  },
+  "health": "Saúde",
+  "@health": {
+    "description": "Categoria de gastos com saúde.",
+    "type": "text",
+    "placeholders": {}
+  },
+  "selectExpenseCategory": "Selecione a categoria do gasto:",
+  "@selectExpenseCategory": {
+    "description": "Texto de instrução para seleção de categoria de gasto no dialog.",
+    "type": "text",
+    "placeholders": {}
+  },
+  "category": "Categoria",
+  "@category": {
+    "description": "Rótulo para dropdown de categoria no dialog de gastos.",
+    "type": "text",
+    "placeholders": {}
+  },
+  "cancel": "Cancelar",
+  "@cancel": {
+    "description": "Texto do botão cancelar.",
+    "type": "text",
+    "placeholders": {}
+  },
+  "add": "Adicionar",
+  "@add": {
+    "description": "Texto do botão adicionar.",
+    "type": "text",
+    "placeholders": {}
+  },
+  "remove": "Remover",
+  "@remove": {
+    "description": "Tooltip do botão remover.",
+    "type": "text",
+    "placeholders": {}
+  },
+  "value": "Valor",
+  "@value": {
+    "description": "Rótulo para campo de entrada de valor.",
+    "type": "text",
+    "placeholders": {}
+  },
+  "addIncome": "Adicionar Renda",
+  "@addIncome": {
+    "description": "Texto do botão para adicionar novo item de renda.",
+    "type": "text",
+    "placeholders": {}
+  },
+  "addExpense": "Adicionar Gasto",
+  "@addExpense": {
+    "description": "Texto do botão para adicionar novo item de gasto.",
+    "type": "text",
+    "placeholders": {}
+  },
+  "savings": "Cofrinho",
+  "@savings": {
+    "description": "Título da seção de poupança/cofrinho.",
+    "type": "text",
+    "placeholders": {}
+  },
+  "savingsHint": "Quanto você guarda por mês?",
+  "@savingsHint": {
+    "description": "Dica para campo de poupança mensal.",
+    "type": "text",
+    "placeholders": {}
+  },
+  "savingsPercentage": "da Renda",
+  "@savingsPercentage": {
+    "description": "Rótulo para porcentagem da poupança em relação à renda.",
+    "type": "text",
+    "placeholders": {}
+  },
+  "yearlySavings": "Acumulado em 1 Ano",
+  "@yearlySavings": {
+    "description": "Rótulo para valor acumulado em um ano.",
+    "type": "text",
+    "placeholders": {}
+  },
+  "monthlySavings": "Poupança Mensal",
+  "@monthlySavings": {
+    "description": "Rótulo para campo de poupança mensal.",
+    "type": "text",
+    "placeholders": {}
   }
 }

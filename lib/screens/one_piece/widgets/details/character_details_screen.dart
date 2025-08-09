@@ -14,7 +14,6 @@ import 'package:opfan/screens/one_piece/widgets/details/fields/details_name.dart
 import 'package:opfan/widgets/atoms/fighting_style_details.dart'
     show FightingStyleDetails;
 import 'package:opfan/widgets/molecules/default_app_bar.dart';
-import 'package:opfan/widgets/organisms/bottom_navigation.dart';
 import 'package:opfan/utils/constants.dart';
 import 'package:opfan/utils/zodiac_icons.dart';
 
@@ -316,8 +315,6 @@ class CharacterDetailsScreen extends StatelessWidget {
           const SizedBox(height: 100),
         ],
       ),
-      bottomNavigationBar:
-          const BottomNavigation(BottomNavigationPages.onePiece),
     );
   }
 }
