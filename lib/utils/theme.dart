@@ -248,6 +248,7 @@ ThemeData getLightTheme() {
       onTertiaryContainer: AppColors.orange[300]!,
       onTertiary: AppColors.orange[1000]!,
       error: AppColors.red[500]!,
+      errorContainer: AppColors.red[100]!,
       onError: AppColors.red[800],
       surfaceContainer: Colors.white,
       surface: AppColors.grey[100],

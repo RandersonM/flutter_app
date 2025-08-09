@@ -2186,6 +2186,12 @@ abstract class AppLocalizations {
   /// **'Remove'**
   String get remove;
 
+  /// Rótulo para campo de entrada de valor.
+  ///
+  /// In en, this message translates to:
+  /// **'Salvar'**
+  String get save;
+
   /// Label for value input field.
   ///
   /// In en, this message translates to:
@@ -2246,11 +2252,545 @@ abstract class AppLocalizations {
   /// **'Savings Period'**
   String get savingsPeriod;
 
-  /// Treino.
+  /// Workout title screen.
   ///
   /// In en, this message translates to:
-  /// **'Treino'**
+  /// **'Workout'**
   String get workout;
+
+  /// No description provided for @workout_title_screen.
+  ///
+  /// In en, this message translates to:
+  /// **'Workout with Zoro'**
+  String get workout_title_screen;
+
+  /// Main title for health assessment screen.
+  ///
+  /// In en, this message translates to:
+  /// **'Complete Health Assessment'**
+  String get workout_health_assessment;
+
+  /// Explanatory subtitle for health assessment.
+  ///
+  /// In en, this message translates to:
+  /// **'Combines BMI, waist-to-height ratio and body fat percentage for a more accurate health assessment'**
+  String get workout_health_assessment_subtitle;
+
+  /// Title for results section.
+  ///
+  /// In en, this message translates to:
+  /// **'Assessment Results'**
+  String get workout_results;
+
+  /// Title for recommendations section.
+  ///
+  /// In en, this message translates to:
+  /// **'Personalized Recommendations'**
+  String get workout_recommendations;
+
+  /// Button text to calculate metrics.
+  ///
+  /// In en, this message translates to:
+  /// **'Calculate Health Metrics'**
+  String get workout_calculate_metrics;
+
+  /// Button text for new assessment.
+  ///
+  /// In en, this message translates to:
+  /// **'New Assessment'**
+  String get workout_new_assessment;
+
+  /// Gender field label.
+  ///
+  /// In en, this message translates to:
+  /// **'Gender'**
+  String get workout_gender;
+
+  /// Age field label.
+  ///
+  /// In en, this message translates to:
+  /// **'Age'**
+  String get workout_age;
+
+  /// Height field label.
+  ///
+  /// In en, this message translates to:
+  /// **'Height (cm)'**
+  String get workout_height;
+
+  /// Weight field label.
+  ///
+  /// In en, this message translates to:
+  /// **'Weight (kg)'**
+  String get workout_weight;
+
+  /// Waist field label.
+  ///
+  /// In en, this message translates to:
+  /// **'Waist Circumference (cm)'**
+  String get workout_waist;
+
+  /// Health score label.
+  ///
+  /// In en, this message translates to:
+  /// **'Health Score'**
+  String get workout_health_score;
+
+  /// BMI label.
+  ///
+  /// In en, this message translates to:
+  /// **'BMI'**
+  String get workout_bmi;
+
+  /// Waist-to-height ratio label.
+  ///
+  /// In en, this message translates to:
+  /// **'Waist-to-Height Ratio'**
+  String get workout_waist_to_height;
+
+  /// Body fat percentage label.
+  ///
+  /// In en, this message translates to:
+  /// **'Body Fat Percentage'**
+  String get workout_body_fat;
+
+  /// BMI formula description.
+  ///
+  /// In en, this message translates to:
+  /// **'Weight (kg) / Height (m)²'**
+  String get workout_formula_bmi;
+
+  /// Waist-to-height ratio formula description.
+  ///
+  /// In en, this message translates to:
+  /// **'Waist (cm) / Height (cm)'**
+  String get workout_formula_waist_to_height;
+
+  /// Body fat percentage formula description.
+  ///
+  /// In en, this message translates to:
+  /// **'Formula based on BMI, age and gender'**
+  String get workout_formula_body_fat;
+
+  /// Validation message for required gender.
+  ///
+  /// In en, this message translates to:
+  /// **'Please select gender'**
+  String get workout_validation_gender_required;
+
+  /// Validation message for required age.
+  ///
+  /// In en, this message translates to:
+  /// **'Please enter your age'**
+  String get workout_validation_age_required;
+
+  /// Validation message for invalid age.
+  ///
+  /// In en, this message translates to:
+  /// **'Please enter a valid number'**
+  String get workout_validation_age_invalid;
+
+  /// Validation message for required height.
+  ///
+  /// In en, this message translates to:
+  /// **'Please enter your height'**
+  String get workout_validation_height_required;
+
+  /// Validation message for invalid height.
+  ///
+  /// In en, this message translates to:
+  /// **'Please enter a valid number'**
+  String get workout_validation_height_invalid;
+
+  /// Validation message for required weight.
+  ///
+  /// In en, this message translates to:
+  /// **'Please enter your weight'**
+  String get workout_validation_weight_required;
+
+  /// Validation message for invalid weight.
+  ///
+  /// In en, this message translates to:
+  /// **'Please enter a valid number'**
+  String get workout_validation_weight_invalid;
+
+  /// Validation message for required waist.
+  ///
+  /// In en, this message translates to:
+  /// **'Please enter waist measurement'**
+  String get workout_validation_waist_required;
+
+  /// Validation message for invalid waist.
+  ///
+  /// In en, this message translates to:
+  /// **'Please enter a valid number'**
+  String get workout_validation_waist_invalid;
+
+  /// Male option in gender dropdown.
+  ///
+  /// In en, this message translates to:
+  /// **'Male'**
+  String get workout_gender_male;
+
+  /// Female option in gender dropdown.
+  ///
+  /// In en, this message translates to:
+  /// **'Female'**
+  String get workout_gender_female;
+
+  /// Excellent category for health metrics.
+  ///
+  /// In en, this message translates to:
+  /// **'Excellent'**
+  String get workout_category_excellent;
+
+  /// Good category for health metrics.
+  ///
+  /// In en, this message translates to:
+  /// **'Good'**
+  String get workout_category_good;
+
+  /// Regular category for health metrics.
+  ///
+  /// In en, this message translates to:
+  /// **'Regular'**
+  String get workout_category_regular;
+
+  /// Needs improvement category for health metrics.
+  ///
+  /// In en, this message translates to:
+  /// **'Needs improvement'**
+  String get workout_category_needs_improvement;
+
+  /// Underweight category for BMI.
+  ///
+  /// In en, this message translates to:
+  /// **'Underweight'**
+  String get workout_category_underweight;
+
+  /// Normal weight category for BMI.
+  ///
+  /// In en, this message translates to:
+  /// **'Normal weight'**
+  String get workout_category_normal;
+
+  /// Overweight category for BMI.
+  ///
+  /// In en, this message translates to:
+  /// **'Overweight'**
+  String get workout_category_overweight;
+
+  /// Obesity grade 1 category for BMI.
+  ///
+  /// In en, this message translates to:
+  /// **'Obesity grade 1'**
+  String get workout_category_obesity_1;
+
+  /// Obesity grade 2 category for BMI.
+  ///
+  /// In en, this message translates to:
+  /// **'Obesity grade 2'**
+  String get workout_category_obesity_2;
+
+  /// Obesity grade 3 category for BMI.
+  ///
+  /// In en, this message translates to:
+  /// **'Obesity grade 3'**
+  String get workout_category_obesity_3;
+
+  /// Attention category for waist-to-height ratio.
+  ///
+  /// In en, this message translates to:
+  /// **'Attention'**
+  String get workout_category_attention;
+
+  /// High risk category for waist-to-height ratio.
+  ///
+  /// In en, this message translates to:
+  /// **'High risk'**
+  String get workout_category_high_risk;
+
+  /// Very low category for body fat percentage.
+  ///
+  /// In en, this message translates to:
+  /// **'Very low'**
+  String get workout_category_very_low;
+
+  /// Athletic category for body fat percentage.
+  ///
+  /// In en, this message translates to:
+  /// **'Athletic'**
+  String get workout_category_athletic;
+
+  /// Acceptable category for body fat percentage.
+  ///
+  /// In en, this message translates to:
+  /// **'Acceptable'**
+  String get workout_category_acceptable;
+
+  /// High category for body fat percentage.
+  ///
+  /// In en, this message translates to:
+  /// **'High'**
+  String get workout_category_high;
+
+  /// Advanced strength exercise.
+  ///
+  /// In en, this message translates to:
+  /// **'Advanced strength training 4x per week'**
+  String get workout_exercise_advanced_strength;
+
+  /// HIIT cardio exercise.
+  ///
+  /// In en, this message translates to:
+  /// **'High intensity cardio (HIIT)'**
+  String get workout_exercise_hiit;
+
+  /// Competitive sports exercise.
+  ///
+  /// In en, this message translates to:
+  /// **'Competitive sports'**
+  String get workout_exercise_competitive_sports;
+
+  /// Complex functional training exercise.
+  ///
+  /// In en, this message translates to:
+  /// **'Complex functional training'**
+  String get workout_exercise_complex_functional;
+
+  /// Flexibility and mobility exercise.
+  ///
+  /// In en, this message translates to:
+  /// **'Flexibility and mobility'**
+  String get workout_exercise_flexibility;
+
+  /// Strength training exercise.
+  ///
+  /// In en, this message translates to:
+  /// **'Strength training 3x per week'**
+  String get workout_exercise_strength_training;
+
+  /// Moderate cardio exercise.
+  ///
+  /// In en, this message translates to:
+  /// **'Moderate cardio 30-45 min'**
+  String get workout_exercise_moderate_cardio;
+
+  /// Functional training exercise.
+  ///
+  /// In en, this message translates to:
+  /// **'Functional training'**
+  String get workout_exercise_functional;
+
+  /// Yoga or pilates exercise.
+  ///
+  /// In en, this message translates to:
+  /// **'Yoga or pilates'**
+  String get workout_exercise_yoga_pilates;
+
+  /// Recreational sports exercise.
+  ///
+  /// In en, this message translates to:
+  /// **'Recreational sports'**
+  String get workout_exercise_recreational_sports;
+
+  /// Walking exercise.
+  ///
+  /// In en, this message translates to:
+  /// **'Walking 30-45 minutes'**
+  String get workout_exercise_walking;
+
+  /// Basic strength exercise.
+  ///
+  /// In en, this message translates to:
+  /// **'Basic strength training 2x per week'**
+  String get workout_exercise_basic_strength;
+
+  /// Water aerobics exercise.
+  ///
+  /// In en, this message translates to:
+  /// **'Water aerobics'**
+  String get workout_exercise_water_aerobics;
+
+  /// Stretching exercise.
+  ///
+  /// In en, this message translates to:
+  /// **'Daily stretching'**
+  String get workout_exercise_stretching;
+
+  /// Breathing exercise.
+  ///
+  /// In en, this message translates to:
+  /// **'Breathing exercises'**
+  String get workout_exercise_breathing;
+
+  /// Light walking exercise.
+  ///
+  /// In en, this message translates to:
+  /// **'Light walking 20-30 minutes'**
+  String get workout_exercise_light_walking;
+
+  /// Light stretching exercise.
+  ///
+  /// In en, this message translates to:
+  /// **'Light stretching exercises'**
+  String get workout_exercise_light_stretching;
+
+  /// Soft water aerobics exercise.
+  ///
+  /// In en, this message translates to:
+  /// **'Soft water aerobics'**
+  String get workout_exercise_soft_water_aerobics;
+
+  /// Tai Chi or soft Yoga exercise.
+  ///
+  /// In en, this message translates to:
+  /// **'Tai Chi or soft Yoga'**
+  String get workout_exercise_tai_chi_yoga;
+
+  /// Consult professional exercise.
+  ///
+  /// In en, this message translates to:
+  /// **'Consult health professional'**
+  String get workout_exercise_consult_professional;
+
+  /// Cardiovascular focused exercise.
+  ///
+  /// In en, this message translates to:
+  /// **'Focus on cardiovascular exercises'**
+  String get workout_exercise_cardiovascular_focus;
+
+  /// Core training exercise.
+  ///
+  /// In en, this message translates to:
+  /// **'Specific core training'**
+  String get workout_exercise_core_training;
+
+  /// Diet control exercise.
+  ///
+  /// In en, this message translates to:
+  /// **'Diet control'**
+  String get workout_exercise_diet_control;
+
+  /// Low impact exercise.
+  ///
+  /// In en, this message translates to:
+  /// **'Low impact activities'**
+  String get workout_exercise_low_impact;
+
+  /// Professional supervision exercise.
+  ///
+  /// In en, this message translates to:
+  /// **'Professional supervision'**
+  String get workout_exercise_professional_supervision;
+
+  /// Gradual progression exercise.
+  ///
+  /// In en, this message translates to:
+  /// **'Gradual progression'**
+  String get workout_exercise_gradual_progression;
+
+  /// Savings period text for years and months.
+  ///
+  /// In en, this message translates to:
+  /// **'{years} year{years, plural, =1 {} other {s}} and {months} month{months, plural, =1 {} other {s}}'**
+  String savings_period_years_and_months(int years, int months);
+
+  /// Savings period text for years only.
+  ///
+  /// In en, this message translates to:
+  /// **'{years} year{years, plural, =1 {} other {s}}'**
+  String savings_period_years_only(int years);
+
+  /// Savings period text for months only.
+  ///
+  /// In en, this message translates to:
+  /// **'{months} month{months, plural, =1 {} other {s}}'**
+  String savings_period_months_only(int months);
+
+  /// Savings period text for one month.
+  ///
+  /// In en, this message translates to:
+  /// **'1 month'**
+  String get savings_period_one_month;
+
+  /// Formatted total savings with period.
+  ///
+  /// In en, this message translates to:
+  /// **'R\$ {amount} in {period}'**
+  String savings_formatted_total(String amount, String period);
+
+  /// Workout calendar title.
+  ///
+  /// In en, this message translates to:
+  /// **'Workout Calendar'**
+  String get workout_calendar_title;
+
+  /// Sunday in calendar.
+  ///
+  /// In en, this message translates to:
+  /// **'Sun'**
+  String get workout_calendar_sunday;
+
+  /// Monday in calendar.
+  ///
+  /// In en, this message translates to:
+  /// **'Mon'**
+  String get workout_calendar_monday;
+
+  /// Tuesday in calendar.
+  ///
+  /// In en, this message translates to:
+  /// **'Tue'**
+  String get workout_calendar_tuesday;
+
+  /// Wednesday in calendar.
+  ///
+  /// In en, this message translates to:
+  /// **'Wed'**
+  String get workout_calendar_wednesday;
+
+  /// Thursday in calendar.
+  ///
+  /// In en, this message translates to:
+  /// **'Thu'**
+  String get workout_calendar_thursday;
+
+  /// Friday in calendar.
+  ///
+  /// In en, this message translates to:
+  /// **'Fri'**
+  String get workout_calendar_friday;
+
+  /// Saturday in calendar.
+  ///
+  /// In en, this message translates to:
+  /// **'Sat'**
+  String get workout_calendar_saturday;
+
+  /// Label for workout days goal.
+  ///
+  /// In en, this message translates to:
+  /// **'Workout days goal per week'**
+  String get workout_workout_days_goal;
+
+  /// Validation for required workout days goal.
+  ///
+  /// In en, this message translates to:
+  /// **'Select your workout days goal'**
+  String get workout_validation_workout_days_required;
+
+  /// Singular of day.
+  ///
+  /// In en, this message translates to:
+  /// **'day'**
+  String get workout_day;
+
+  /// Plural of days.
+  ///
+  /// In en, this message translates to:
+  /// **'days'**
+  String get workout_days;
 }
 
 class _AppLocalizationsDelegate

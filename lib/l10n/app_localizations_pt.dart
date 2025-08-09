@@ -1141,6 +1141,9 @@ class AppLocalizationsPt extends AppLocalizations {
   String get remove => 'Remover';
 
   @override
+  String get save => 'Salvar';
+
+  @override
   String get value => 'Valor';
 
   @override
@@ -1171,5 +1174,314 @@ class AppLocalizationsPt extends AppLocalizations {
   String get savingsPeriod => 'Período de Economia';
 
   @override
-  String get workout => 'Treino';
+  String get workout => 'Treinos';
+
+  @override
+  String get workout_title_screen => 'Treinando com o Zoro';
+
+  @override
+  String get workout_health_assessment => 'Avaliação de Saúde Completa';
+
+  @override
+  String get workout_health_assessment_subtitle =>
+      'Combina IMC, relação cintura/altura e percentual de gordura para uma avaliação mais precisa da saúde';
+
+  @override
+  String get workout_results => 'Resultados da Avaliação';
+
+  @override
+  String get workout_recommendations => 'Recomendações Personalizadas';
+
+  @override
+  String get workout_calculate_metrics => 'Calcular Métricas de Saúde';
+
+  @override
+  String get workout_new_assessment => 'Nova Avaliação';
+
+  @override
+  String get workout_gender => 'Sexo';
+
+  @override
+  String get workout_age => 'Idade';
+
+  @override
+  String get workout_height => 'Altura (cm)';
+
+  @override
+  String get workout_weight => 'Peso (kg)';
+
+  @override
+  String get workout_waist => 'Circunferência da Cintura (cm)';
+
+  @override
+  String get workout_health_score => 'Pontuação de Saúde';
+
+  @override
+  String get workout_bmi => 'IMC';
+
+  @override
+  String get workout_waist_to_height => 'Relação Cintura/Altura';
+
+  @override
+  String get workout_body_fat => 'Percentual de Gordura';
+
+  @override
+  String get workout_formula_bmi => 'Peso (kg) / Altura (m)²';
+
+  @override
+  String get workout_formula_waist_to_height => 'Cintura (cm) / Altura (cm)';
+
+  @override
+  String get workout_formula_body_fat =>
+      'Fórmula baseada em IMC, idade e gênero';
+
+  @override
+  String get workout_validation_gender_required => 'Selecione o sexo';
+
+  @override
+  String get workout_validation_age_required => 'Digite sua idade';
+
+  @override
+  String get workout_validation_age_invalid => 'Digite um número válido';
+
+  @override
+  String get workout_validation_height_required => 'Digite sua altura';
+
+  @override
+  String get workout_validation_height_invalid => 'Digite um número válido';
+
+  @override
+  String get workout_validation_weight_required => 'Digite seu peso';
+
+  @override
+  String get workout_validation_weight_invalid => 'Digite um número válido';
+
+  @override
+  String get workout_validation_waist_required => 'Digite a medida da cintura';
+
+  @override
+  String get workout_validation_waist_invalid => 'Digite um número válido';
+
+  @override
+  String get workout_gender_male => 'Masculino';
+
+  @override
+  String get workout_gender_female => 'Feminino';
+
+  @override
+  String get workout_category_excellent => 'Excelente';
+
+  @override
+  String get workout_category_good => 'Bom';
+
+  @override
+  String get workout_category_regular => 'Regular';
+
+  @override
+  String get workout_category_needs_improvement => 'Precisa melhorar';
+
+  @override
+  String get workout_category_underweight => 'Abaixo do peso';
+
+  @override
+  String get workout_category_normal => 'Peso normal';
+
+  @override
+  String get workout_category_overweight => 'Sobrepeso';
+
+  @override
+  String get workout_category_obesity_1 => 'Obesidade grau 1';
+
+  @override
+  String get workout_category_obesity_2 => 'Obesidade grau 2';
+
+  @override
+  String get workout_category_obesity_3 => 'Obesidade grau 3';
+
+  @override
+  String get workout_category_attention => 'Atenção';
+
+  @override
+  String get workout_category_high_risk => 'Risco elevado';
+
+  @override
+  String get workout_category_very_low => 'Muito baixo';
+
+  @override
+  String get workout_category_athletic => 'Atlético';
+
+  @override
+  String get workout_category_acceptable => 'Aceitável';
+
+  @override
+  String get workout_category_high => 'Alto';
+
+  @override
+  String get workout_exercise_advanced_strength =>
+      'Treino de força avançado 4x por semana';
+
+  @override
+  String get workout_exercise_hiit => 'Cardio de alta intensidade (HIIT)';
+
+  @override
+  String get workout_exercise_competitive_sports => 'Esportes competitivos';
+
+  @override
+  String get workout_exercise_complex_functional => 'Treino funcional complexo';
+
+  @override
+  String get workout_exercise_flexibility => 'Flexibilidade e mobilidade';
+
+  @override
+  String get workout_exercise_strength_training =>
+      'Treino de força 3x por semana';
+
+  @override
+  String get workout_exercise_moderate_cardio => 'Cardio moderado 30-45 min';
+
+  @override
+  String get workout_exercise_functional => 'Treino funcional';
+
+  @override
+  String get workout_exercise_yoga_pilates => 'Yoga ou pilates';
+
+  @override
+  String get workout_exercise_recreational_sports => 'Esportes recreativos';
+
+  @override
+  String get workout_exercise_walking => 'Caminhada 30-45 minutos';
+
+  @override
+  String get workout_exercise_basic_strength =>
+      'Treino de força básico 2x por semana';
+
+  @override
+  String get workout_exercise_water_aerobics => 'Hidroginástica';
+
+  @override
+  String get workout_exercise_stretching => 'Alongamentos diários';
+
+  @override
+  String get workout_exercise_breathing => 'Exercícios de respiração';
+
+  @override
+  String get workout_exercise_light_walking => 'Caminhada leve 20-30 minutos';
+
+  @override
+  String get workout_exercise_light_stretching => 'Exercícios de alongamento';
+
+  @override
+  String get workout_exercise_soft_water_aerobics => 'Hidroginástica suave';
+
+  @override
+  String get workout_exercise_tai_chi_yoga => 'Tai Chi ou Yoga suave';
+
+  @override
+  String get workout_exercise_consult_professional =>
+      'Consultar profissional de saúde';
+
+  @override
+  String get workout_exercise_cardiovascular_focus =>
+      'Foco em exercícios cardiovasculares';
+
+  @override
+  String get workout_exercise_core_training => 'Treino de core específico';
+
+  @override
+  String get workout_exercise_diet_control => 'Controle da alimentação';
+
+  @override
+  String get workout_exercise_low_impact => 'Atividades de baixo impacto';
+
+  @override
+  String get workout_exercise_professional_supervision =>
+      'Supervisão profissional';
+
+  @override
+  String get workout_exercise_gradual_progression => 'Progressão gradual';
+
+  @override
+  String savings_period_years_and_months(int years, int months) {
+    String _temp0 = intl.Intl.pluralLogic(
+      years,
+      locale: localeName,
+      other: 's',
+      one: '',
+    );
+    String _temp1 = intl.Intl.pluralLogic(
+      months,
+      locale: localeName,
+      other: 'es',
+      one: '',
+    );
+    return '$years ano$_temp0 e $months mês$_temp1';
+  }
+
+  @override
+  String savings_period_years_only(int years) {
+    String _temp0 = intl.Intl.pluralLogic(
+      years,
+      locale: localeName,
+      other: 's',
+      one: '',
+    );
+    return '$years ano$_temp0';
+  }
+
+  @override
+  String savings_period_months_only(int months) {
+    String _temp0 = intl.Intl.pluralLogic(
+      months,
+      locale: localeName,
+      other: 'es',
+      one: '',
+    );
+    return '$months mês$_temp0';
+  }
+
+  @override
+  String get savings_period_one_month => '1 mês';
+
+  @override
+  String savings_formatted_total(String amount, String period) {
+    return 'R\$ $amount em $period';
+  }
+
+  @override
+  String get workout_calendar_title => 'Calendário de Exercícios';
+
+  @override
+  String get workout_calendar_sunday => 'Dom';
+
+  @override
+  String get workout_calendar_monday => 'Seg';
+
+  @override
+  String get workout_calendar_tuesday => 'Ter';
+
+  @override
+  String get workout_calendar_wednesday => 'Qua';
+
+  @override
+  String get workout_calendar_thursday => 'Qui';
+
+  @override
+  String get workout_calendar_friday => 'Sex';
+
+  @override
+  String get workout_calendar_saturday => 'Sáb';
+
+  @override
+  String get workout_workout_days_goal =>
+      'Meta de dias de exercício por semana';
+
+  @override
+  String get workout_validation_workout_days_required =>
+      'Selecione sua meta de dias de exercício';
+
+  @override
+  String get workout_day => 'dia';
+
+  @override
+  String get workout_days => 'dias';
 }
