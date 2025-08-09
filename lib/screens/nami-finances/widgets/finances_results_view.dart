@@ -27,17 +27,26 @@ class _FinancesResultsViewState extends State<FinancesResultsView> {
   @override
   void initState() {
     super.initState();
-    _loadAccumulatedInfo();
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    if (_accumulatedInfo == null) {
+      _loadAccumulatedInfo();
+    }
   }
 
   Future<void> _loadAccumulatedInfo() async {
     try {
       final service = NamiFinancesService();
-      final info = await service.getAccumulatedSavingsInfo();
+      final info = await service
+          .getAccumulatedSavingsInfoLocalized(AppLocalizations.of(context)!);
       setState(() {
         _accumulatedInfo = info;
       });
     } catch (e) {
+      debugPrint('Erro ao carregar informações acumuladas: $e');
       setState(() {});
     }
   }
@@ -275,12 +284,12 @@ class _FinancesResultsViewState extends State<FinancesResultsView> {
                 child: _buildSavingsItem(
                   _accumulatedInfo != null &&
                           _accumulatedInfo!['totalSavings'] > 0
-                      ? '${l10n.accumulatedSavings} em ${_accumulatedInfo!['periodText']}'
+                      ? '${l10n.accumulatedSavings} ${_accumulatedInfo!['periodText']}'
                       : l10n.yearlySavings,
                   _accumulatedInfo != null &&
                           _accumulatedInfo!['totalSavings'] > 0
-                      ? 'R\$ ${_accumulatedInfo!['totalSavings'].toStringAsFixed(2)}'
-                      : 'R\$ ${widget.finances.yearlySavings.toStringAsFixed(2)}',
+                      ? '${l10n.currency} ${_accumulatedInfo!['totalSavings'].toStringAsFixed(2)}'
+                      : '${l10n.currency} ${widget.finances.yearlySavings.toStringAsFixed(2)}',
                   Icons.trending_up,
                 ),
               ),

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:opfan/core/models/nami_finances_model.dart';
+import 'package:opfan/l10n/app_localizations.dart';
 
 class NamiFinancesService {
   static const String _boxName = 'nami_finances';
@@ -138,7 +139,6 @@ class NamiFinancesService {
         };
       }
 
-      // Ordenar por data (mais antiga primeiro)
       allFinances.sort((a, b) => a.month.compareTo(b.month));
 
       double totalSavings = 0.0;
@@ -149,7 +149,6 @@ class NamiFinancesService {
       final firstMonth = allFinances.first.month;
       final now = DateTime.now();
 
-      // Calcular diferença em meses
       int months =
           (now.year - firstMonth.year) * 12 + (now.month - firstMonth.month);
       if (months < 0) months = 0;
@@ -186,6 +185,77 @@ class NamiFinancesService {
         'months': 0,
         'years': 0,
         'periodText': '',
+      };
+    }
+  }
+
+  Future<Map<String, dynamic>> getAccumulatedSavingsInfoLocalized(
+      AppLocalizations l10n) async {
+    try {
+      final box = await _getBox;
+      final allFinances = box.values.toList();
+
+      if (allFinances.isEmpty) {
+        return {
+          'totalSavings': 0.0,
+          'months': 0,
+          'years': 0,
+          'periodText': '',
+          'formattedTotal': '',
+        };
+      }
+
+      allFinances.sort((a, b) => a.month.compareTo(b.month));
+
+      double totalSavings = 0.0;
+      for (final finances in allFinances) {
+        totalSavings += finances.savings;
+      }
+
+      final firstMonth = allFinances.first.month;
+      final now = DateTime.now();
+
+      int months =
+          (now.year - firstMonth.year) * 12 + (now.month - firstMonth.month);
+      if (months < 0) months = 0;
+
+      int years = months ~/ 12;
+      int remainingMonths = months % 12;
+
+      String periodText = '';
+      if (years > 0) {
+        if (remainingMonths > 0) {
+          periodText =
+              l10n.savings_period_years_and_months(years, remainingMonths);
+        } else {
+          periodText = l10n.savings_period_years_only(years);
+        }
+      } else if (months > 0) {
+        periodText = l10n.savings_period_months_only(months);
+      } else {
+        periodText = l10n.savings_period_one_month;
+      }
+
+      final formattedTotal = l10n.savings_formatted_total(
+        totalSavings.toStringAsFixed(2),
+        periodText,
+      );
+
+      return {
+        'totalSavings': totalSavings,
+        'months': months,
+        'years': years,
+        'periodText': periodText,
+        'formattedTotal': formattedTotal,
+      };
+    } catch (e) {
+      debugPrint('Erro ao calcular informações de savings acumulados: $e');
+      return {
+        'totalSavings': 0.0,
+        'months': 0,
+        'years': 0,
+        'periodText': '',
+        'formattedTotal': '',
       };
     }
   }

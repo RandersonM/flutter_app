@@ -382,7 +382,7 @@ class _FinancesSetupFormState extends State<FinancesSetupForm> {
       child: ElevatedButton.icon(
         onPressed: _isFormValid ? _saveFinances : null,
         icon: const Icon(Icons.save),
-        label: const Text('Salvar'),
+        label: Text(l10n.save),
         style: ElevatedButton.styleFrom(
           backgroundColor: AppColors.blue[500],
           foregroundColor: Colors.white,
