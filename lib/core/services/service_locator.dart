@@ -9,6 +9,7 @@ import 'package:opfan/core/repository/featured_character_repository.dart';
 import 'package:opfan/core/services/auth_service.dart';
 import 'package:opfan/core/services/firestore_service.dart';
 import 'package:opfan/core/services/notification_service.dart';
+import 'package:opfan/core/services/notification_manager_service.dart';
 import 'package:opfan/core/services/ai_image_service.dart';
 import 'package:opfan/core/services/gemini_image_service.dart';
 import 'package:opfan/core/repository/custom_character_repository.dart';
@@ -19,6 +20,7 @@ import 'package:opfan/core/auth/blocs/index.dart';
 import 'package:opfan/screens/crews/blocs/index.dart';
 import 'package:opfan/screens/nami-finances/blocs/nami_finances_bloc.dart';
 import 'package:opfan/core/services/nami_finances_service.dart';
+import 'package:opfan/screens/zoro-workout/blocs/index.dart';
 
 final GetIt getIt = GetIt.instance;
 
@@ -27,6 +29,10 @@ Future<void> configureDependencies() async {
 
   getIt.registerLazySingleton<NotificationService>(
     () => NotificationService(),
+  );
+
+  getIt.registerLazySingleton<NotificationManagerService>(
+    () => NotificationManagerService(),
   );
 
   getIt.registerLazySingleton<DevilFruitService>(
@@ -117,6 +123,10 @@ Future<void> configureDependencies() async {
   getIt.registerFactory<NamiFinancesBloc>(
     () => NamiFinancesBloc(getIt<NamiFinancesService>()),
   );
+
+  getIt.registerFactory<ZoroWorkoutBloc>(
+    () => ZoroWorkoutBloc(),
+  );
 }
 
 Future<void> resetDependencies() async {
@@ -159,6 +169,7 @@ extension ServiceLocatorExtensions on GetIt {
   DevilFruitBloc get devilFruitBloc => get<DevilFruitBloc>();
   ListCrewsBloc get listCrewsBloc => get<ListCrewsBloc>();
   AuthBloc get authBloc => get<AuthBloc>();
+  ZoroWorkoutBloc get zoroWorkoutBloc => get<ZoroWorkoutBloc>();
 }
 
 

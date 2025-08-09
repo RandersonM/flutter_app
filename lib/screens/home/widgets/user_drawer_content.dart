@@ -113,6 +113,17 @@ class UserDrawerContent extends StatelessWidget {
                     ),
                     _buildFuturisticListTile(
                       context,
+                      icon: FontAwesomeIcons.explosion,
+                      title: AppLocalizations.of(context)!.duels,
+                      onTap: () {
+                        Navigator.pushNamed(
+                          context,
+                          AppRoutes.duels,
+                        );
+                      },
+                    ),
+                    _buildFuturisticListTile(
+                      context,
                       icon: FontAwesomeIcons.ship,
                       title: AppLocalizations.of(context)!.crew(2),
                       onTap: () {

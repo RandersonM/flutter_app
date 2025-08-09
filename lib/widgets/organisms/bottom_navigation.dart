@@ -13,7 +13,7 @@ import 'package:opfan/utils/theme.dart';
 enum BottomNavigationPages {
   home,
   finances,
-  attack,
+  workout,
 }
 
 class BottomNavigation extends StatefulWidget {
@@ -32,7 +32,7 @@ class BottomNavigationState extends State<BottomNavigation> {
   static const List<BottomNavigationPages> _pages = <BottomNavigationPages>[
     BottomNavigationPages.home,
     BottomNavigationPages.finances,
-    BottomNavigationPages.attack,
+    BottomNavigationPages.workout,
   ];
 
   Future<void> _navigateToPage(BottomNavigationPages page) async {
@@ -55,11 +55,11 @@ class BottomNavigationState extends State<BottomNavigation> {
         );
         break;
 
-      case BottomNavigationPages.attack:
+      case BottomNavigationPages.workout:
         await Navigator.pushNamedAndRemoveUntil(
           context,
-          AppRoutes.duels,
-          ModalRoute.withName(AppRoutes.duels),
+          AppRoutes.workout,
+          ModalRoute.withName(AppRoutes.workout),
         );
         break;
     }
@@ -85,47 +85,78 @@ class BottomNavigationState extends State<BottomNavigation> {
           localizations.finances,
           FontAwesomeIcons.coins,
         ),
-      BottomNavigationPages.attack => (
-          localizations.duels,
-          FontAwesomeIcons.explosion 
+      BottomNavigationPages.workout => (
+          '  ${localizations.workout}',
+          FontAwesomeIcons.dumbbell 
         ),
     };
 
     return BottomNavigationBarItem(
-      icon: Padding(
-        padding: const EdgeInsets.only(
-          top: Constants.margin,
-          bottom: Constants.margin * 0.75,
+      icon: Container(
+        width: double.infinity,
+        padding: const EdgeInsets.symmetric(
+          vertical: Constants.margin,
         ),
-        child: icon == Icons.apple
-            ? SvgPicture.asset(
-                'assets/svg/gomu-gomu.svg',
-                width: IconSize.medium,
-                height: IconSize.medium,
-                colorFilter: ColorFilter.mode(
-                  Theme.of(context)
-                      .colorScheme
-                      .onSurface
-                      .withValues(alpha: 0.6),
-                  BlendMode.srcIn,
-                ),
-              )
-            : Icon(
-          icon,
-          size: IconSize.medium,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            icon == Icons.apple
+                ? SvgPicture.asset(
+                    'assets/svg/gomu-gomu.svg',
+                    width: IconSize.medium,
+                    height: IconSize.medium,
+                    colorFilter: ColorFilter.mode(
+                      Theme.of(context)
+                          .colorScheme
+                          .onSurface
+                          .withValues(alpha: 0.6),
+                      BlendMode.srcIn,
+                    ),
+                  )
+                : Icon(
+                    icon,
+                    size: IconSize.medium,
+                  ),
+            const SizedBox(height: 4),
+            Text(
+              label,
+              style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                    color: Theme.of(context)
+                        .colorScheme
+                        .onSurface
+                        .withValues(alpha: 0.6),
+                  ),
+              textAlign: TextAlign.center,
+            ),
+          ],
         ),
       ),
-      activeIcon: Padding(
-        padding: const EdgeInsets.only(
-          top: Constants.margin,
-          bottom: Constants.margin * 0.75,
+      activeIcon: Container(
+        width: double.infinity,
+        padding: const EdgeInsets.symmetric(
+          vertical: Constants.margin,
         ),
-        child: Icon(
-          icon,
-          size: IconSize.medium,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Icon(
+              icon,
+              size: IconSize.medium,
+            ),
+            const SizedBox(height: 4),
+            Text(
+              label,
+              style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                    fontWeight: FontWeight.bold,
+                  ),
+              textAlign: TextAlign.center,
+            ),
+          ],
         ),
       ),
-      label: label,
+      label: '', // Removendo o label padrão pois agora está customizado
     );
   }
 
@@ -160,20 +191,12 @@ class BottomNavigationState extends State<BottomNavigation> {
             backgroundColor: colorScheme.surface,
             selectedItemColor: colorScheme.primary,
             unselectedItemColor: colorScheme.onSurface.withValues(alpha: 0.6),
-            selectedLabelStyle: theme.textTheme.labelSmall?.copyWith(
-              fontWeight: FontWeight.w600,
-            ),
-            unselectedLabelStyle: theme.textTheme.labelSmall?.copyWith(
-              fontWeight: FontWeight.w400,
-            ),
             elevation: 0,
             items: _pages
                 .map((page) => _buildNavigationItem(context, page))
                 .toList(),
             currentIndex: _pages.indexOf(widget.currentPage),
             onTap: _onItemTapped,
-            selectedFontSize: 12.0,
-            unselectedFontSize: 11.0,
           ),
         ),
       ),

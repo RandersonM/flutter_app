@@ -740,11 +740,16 @@
     "type": "text",
     "placeholders": {}
   },
-  "pirate": "Pirata",
+  "pirate": "{count, plural, =0 {Pirata} =1 {Pirata} other {Piratas}}",
   "@pirate": {
-    "description": "Affiliation option for pirate",
+    "description": "Affiliation option for pirate with pluralization",
     "type": "text",
-    "placeholders": {}
+    "placeholders": {
+      "count": {
+        "type": "num",
+        "example": "1"
+      }
+    }
   },
   "pirateAlliance": "Aliança Pirata",
   "@pirateAlliance": {
@@ -2213,6 +2218,12 @@
     "type": "text",
     "placeholders": {}
   },
+  "save": "Salvar",
+  "@save": {
+    "description": "Rótulo para campo de entrada de valor.",
+    "type": "text",
+    "placeholders": {}
+  },
   "value": "Valor",
   "@value": {
     "description": "Rótulo para campo de entrada de valor.",
@@ -2255,9 +2266,589 @@
     "type": "text",
     "placeholders": {}
   },
+  "accumulatedSavings": "Acumulado",
+  "@accumulatedSavings": {
+    "description": "Título para total de poupança acumulada.",
+    "type": "text",
+    "placeholders": {}
+  },
+  "savingsPeriod": "Período de Economia",
+  "@savingsPeriod": {
+    "description": "Título para seção de período de poupança.",
+    "type": "text",
+    "placeholders": {}
+  },
   "monthlySavings": "Poupança Mensal",
   "@monthlySavings": {
     "description": "Rótulo para campo de poupança mensal.",
+    "type": "text",
+    "placeholders": {}
+  },
+  "workout": "Treinos",
+  "@workout": {
+    "description": "Treino.",
+    "type": "text",
+    "placeholders": {}
+  },
+  "workout_title_screen": "Treinando com o Zoro",
+  "@workout": {
+    "description": "Workout title screen.",
+    "type": "text",
+    "placeholders": {}
+  },
+  "workout_health_assessment": "Avaliação de Saúde Completa",
+  "@workout_health_assessment": {
+    "description": "Título principal da tela de avaliação de saúde.",
+    "type": "text",
+    "placeholders": {}
+  },
+  "workout_health_assessment_subtitle": "Combina IMC, relação cintura/altura e percentual de gordura para uma avaliação mais precisa da saúde",
+  "@workout_health_assessment_subtitle": {
+    "description": "Subtítulo explicativo da avaliação de saúde.",
+    "type": "text",
+    "placeholders": {}
+  },
+  "workout_results": "Resultados da Avaliação",
+  "@workout_results": {
+    "description": "Título da seção de resultados.",
+    "type": "text",
+    "placeholders": {}
+  },
+  "workout_recommendations": "Recomendações Personalizadas",
+  "@workout_recommendations": {
+    "description": "Título da seção de recomendações.",
+    "type": "text",
+    "placeholders": {}
+  },
+  "workout_calculate_metrics": "Calcular Métricas de Saúde",
+  "@workout_calculate_metrics": {
+    "description": "Texto do botão para calcular métricas.",
+    "type": "text",
+    "placeholders": {}
+  },
+  "workout_new_assessment": "Nova Avaliação",
+  "@workout_new_assessment": {
+    "description": "Texto do botão para nova avaliação.",
+    "type": "text",
+    "placeholders": {}
+  },
+  "workout_gender": "Sexo",
+  "@workout_gender": {
+    "description": "Label do campo de gênero.",
+    "type": "text",
+    "placeholders": {}
+  },
+  "workout_age": "Idade",
+  "@workout_age": {
+    "description": "Label do campo de idade.",
+    "type": "text",
+    "placeholders": {}
+  },
+  "workout_height": "Altura (cm)",
+  "@workout_height": {
+    "description": "Label do campo de altura.",
+    "type": "text",
+    "placeholders": {}
+  },
+  "workout_weight": "Peso (kg)",
+  "@workout_weight": {
+    "description": "Label do campo de peso.",
+    "type": "text",
+    "placeholders": {}
+  },
+  "workout_waist": "Circunferência da Cintura (cm)",
+  "@workout_waist": {
+    "description": "Label do campo de cintura.",
+    "type": "text",
+    "placeholders": {}
+  },
+  "workout_health_score": "Pontuação de Saúde",
+  "@workout_health_score": {
+    "description": "Label da pontuação de saúde.",
+    "type": "text",
+    "placeholders": {}
+  },
+  "workout_bmi": "IMC",
+  "@workout_bmi": {
+    "description": "Label do IMC.",
+    "type": "text",
+    "placeholders": {}
+  },
+  "workout_waist_to_height": "Relação Cintura/Altura",
+  "@workout_waist_to_height": {
+    "description": "Label da relação cintura/altura.",
+    "type": "text",
+    "placeholders": {}
+  },
+  "workout_body_fat": "Percentual de Gordura",
+  "@workout_body_fat": {
+    "description": "Label do percentual de gordura.",
+    "type": "text",
+    "placeholders": {}
+  },
+  "workout_formula_bmi": "Peso (kg) / Altura (m)²",
+  "@workout_formula_bmi": {
+    "description": "Descrição da fórmula do IMC.",
+    "type": "text",
+    "placeholders": {}
+  },
+  "workout_formula_waist_to_height": "Cintura (cm) / Altura (cm)",
+  "@workout_formula_waist_to_height": {
+    "description": "Descrição da fórmula da relação cintura/altura.",
+    "type": "text",
+    "placeholders": {}
+  },
+  "workout_formula_body_fat": "Fórmula baseada em IMC, idade e gênero",
+  "@workout_formula_body_fat": {
+    "description": "Descrição da fórmula do percentual de gordura.",
+    "type": "text",
+    "placeholders": {}
+  },
+  "workout_validation_gender_required": "Selecione o sexo",
+  "@workout_validation_gender_required": {
+    "description": "Mensagem de validação para gênero obrigatório.",
+    "type": "text",
+    "placeholders": {}
+  },
+  "workout_validation_age_required": "Digite sua idade",
+  "@workout_validation_age_required": {
+    "description": "Mensagem de validação para idade obrigatória.",
+    "type": "text",
+    "placeholders": {}
+  },
+  "workout_validation_age_invalid": "Digite um número válido",
+  "@workout_validation_age_invalid": {
+    "description": "Mensagem de validação para idade inválida.",
+    "type": "text",
+    "placeholders": {}
+  },
+  "workout_validation_height_required": "Digite sua altura",
+  "@workout_validation_height_required": {
+    "description": "Mensagem de validação para altura obrigatória.",
+    "type": "text",
+    "placeholders": {}
+  },
+  "workout_validation_height_invalid": "Digite um número válido",
+  "@workout_validation_height_invalid": {
+    "description": "Mensagem de validação para altura inválida.",
+    "type": "text",
+    "placeholders": {}
+  },
+  "workout_validation_weight_required": "Digite seu peso",
+  "@workout_validation_weight_required": {
+    "description": "Mensagem de validação para peso obrigatório.",
+    "type": "text",
+    "placeholders": {}
+  },
+  "workout_validation_weight_invalid": "Digite um número válido",
+  "@workout_validation_weight_invalid": {
+    "description": "Mensagem de validação para peso inválido.",
+    "type": "text",
+    "placeholders": {}
+  },
+  "workout_validation_waist_required": "Digite a medida da cintura",
+  "@workout_validation_waist_required": {
+    "description": "Mensagem de validação para cintura obrigatória.",
+    "type": "text",
+    "placeholders": {}
+  },
+  "workout_validation_waist_invalid": "Digite um número válido",
+  "@workout_validation_waist_invalid": {
+    "description": "Mensagem de validação para cintura inválida.",
+    "type": "text",
+    "placeholders": {}
+  },
+  "workout_gender_male": "Masculino",
+  "@workout_gender_male": {
+    "description": "Opção masculino no dropdown de gênero.",
+    "type": "text",
+    "placeholders": {}
+  },
+  "workout_gender_female": "Feminino",
+  "@workout_gender_female": {
+    "description": "Opção feminino no dropdown de gênero.",
+    "type": "text",
+    "placeholders": {}
+  },
+  "workout_category_excellent": "Excelente",
+  "@workout_category_excellent": {
+    "description": "Categoria excelente para métricas de saúde.",
+    "type": "text",
+    "placeholders": {}
+  },
+  "workout_category_good": "Bom",
+  "@workout_category_good": {
+    "description": "Categoria boa para métricas de saúde.",
+    "type": "text",
+    "placeholders": {}
+  },
+  "workout_category_regular": "Regular",
+  "@workout_category_regular": {
+    "description": "Categoria regular para métricas de saúde.",
+    "type": "text",
+    "placeholders": {}
+  },
+  "workout_category_needs_improvement": "Precisa melhorar",
+  "@workout_category_needs_improvement": {
+    "description": "Categoria que precisa melhorar para métricas de saúde.",
+    "type": "text",
+    "placeholders": {}
+  },
+  "workout_category_underweight": "Abaixo do peso",
+  "@workout_category_underweight": {
+    "description": "Categoria abaixo do peso para IMC.",
+    "type": "text",
+    "placeholders": {}
+  },
+  "workout_category_normal": "Peso normal",
+  "@workout_category_normal": {
+    "description": "Categoria peso normal para IMC.",
+    "type": "text",
+    "placeholders": {}
+  },
+  "workout_category_overweight": "Sobrepeso",
+  "@workout_category_overweight": {
+    "description": "Categoria sobrepeso para IMC.",
+    "type": "text",
+    "placeholders": {}
+  },
+  "workout_category_obesity_1": "Obesidade grau 1",
+  "@workout_category_obesity_1": {
+    "description": "Categoria obesidade grau 1 para IMC.",
+    "type": "text",
+    "placeholders": {}
+  },
+  "workout_category_obesity_2": "Obesidade grau 2",
+  "@workout_category_obesity_2": {
+    "description": "Categoria obesidade grau 2 para IMC.",
+    "type": "text",
+    "placeholders": {}
+  },
+  "workout_category_obesity_3": "Obesidade grau 3",
+  "@workout_category_obesity_3": {
+    "description": "Categoria obesidade grau 3 para IMC.",
+    "type": "text",
+    "placeholders": {}
+  },
+  "workout_category_attention": "Atenção",
+  "@workout_category_attention": {
+    "description": "Categoria atenção para relação cintura/altura.",
+    "type": "text",
+    "placeholders": {}
+  },
+  "workout_category_high_risk": "Risco elevado",
+  "@workout_category_high_risk": {
+    "description": "Categoria risco elevado para relação cintura/altura.",
+    "type": "text",
+    "placeholders": {}
+  },
+  "workout_category_very_low": "Muito baixo",
+  "@workout_category_very_low": {
+    "description": "Categoria muito baixo para percentual de gordura.",
+    "type": "text",
+    "placeholders": {}
+  },
+  "workout_category_athletic": "Atlético",
+  "@workout_category_athletic": {
+    "description": "Categoria atlético para percentual de gordura.",
+    "type": "text",
+    "placeholders": {}
+  },
+  "workout_category_acceptable": "Aceitável",
+  "@workout_category_acceptable": {
+    "description": "Categoria aceitável para percentual de gordura.",
+    "type": "text",
+    "placeholders": {}
+  },
+  "workout_category_high": "Alto",
+  "@workout_category_high": {
+    "description": "Categoria alto para percentual de gordura.",
+    "type": "text",
+    "placeholders": {}
+  },
+  "workout_exercise_advanced_strength": "Treino de força avançado 4x por semana",
+  "@workout_exercise_advanced_strength": {
+    "description": "Exercício de força avançado.",
+    "type": "text",
+    "placeholders": {}
+  },
+  "workout_exercise_hiit": "Cardio de alta intensidade (HIIT)",
+  "@workout_exercise_hiit": {
+    "description": "Exercício de cardio HIIT.",
+    "type": "text",
+    "placeholders": {}
+  },
+  "workout_exercise_competitive_sports": "Esportes competitivos",
+  "@workout_exercise_competitive_sports": {
+    "description": "Exercício de esportes competitivos.",
+    "type": "text",
+    "placeholders": {}
+  },
+  "workout_exercise_complex_functional": "Treino funcional complexo",
+  "@workout_exercise_complex_functional": {
+    "description": "Exercício de treino funcional complexo.",
+    "type": "text",
+    "placeholders": {}
+  },
+  "workout_exercise_flexibility": "Flexibilidade e mobilidade",
+  "@workout_exercise_flexibility": {
+    "description": "Exercício de flexibilidade e mobilidade.",
+    "type": "text",
+    "placeholders": {}
+  },
+  "workout_exercise_strength_training": "Treino de força 3x por semana",
+  "@workout_exercise_strength_training": {
+    "description": "Exercício de treino de força.",
+    "type": "text",
+    "placeholders": {}
+  },
+  "workout_exercise_moderate_cardio": "Cardio moderado 30-45 min",
+  "@workout_exercise_moderate_cardio": {
+    "description": "Exercício de cardio moderado.",
+    "type": "text",
+    "placeholders": {}
+  },
+  "workout_exercise_functional": "Treino funcional",
+  "@workout_exercise_functional": {
+    "description": "Exercício de treino funcional.",
+    "type": "text",
+    "placeholders": {}
+  },
+  "workout_exercise_yoga_pilates": "Yoga ou pilates",
+  "@workout_exercise_yoga_pilates": {
+    "description": "Exercício de yoga ou pilates.",
+    "type": "text",
+    "placeholders": {}
+  },
+  "workout_exercise_recreational_sports": "Esportes recreativos",
+  "@workout_exercise_recreational_sports": {
+    "description": "Exercício de esportes recreativos.",
+    "type": "text",
+    "placeholders": {}
+  },
+  "workout_exercise_walking": "Caminhada 30-45 minutos",
+  "@workout_exercise_walking": {
+    "description": "Exercício de caminhada.",
+    "type": "text",
+    "placeholders": {}
+  },
+  "workout_exercise_basic_strength": "Treino de força básico 2x por semana",
+  "@workout_exercise_basic_strength": {
+    "description": "Exercício de força básico.",
+    "type": "text",
+    "placeholders": {}
+  },
+  "workout_exercise_water_aerobics": "Hidroginástica",
+  "@workout_exercise_water_aerobics": {
+    "description": "Exercício de hidroginástica.",
+    "type": "text",
+    "placeholders": {}
+  },
+  "workout_exercise_stretching": "Alongamentos diários",
+  "@workout_exercise_stretching": {
+    "description": "Exercício de alongamentos.",
+    "type": "text",
+    "placeholders": {}
+  },
+  "workout_exercise_breathing": "Exercícios de respiração",
+  "@workout_exercise_breathing": {
+    "description": "Exercício de respiração.",
+    "type": "text",
+    "placeholders": {}
+  },
+  "workout_exercise_light_walking": "Caminhada leve 20-30 minutos",
+  "@workout_exercise_light_walking": {
+    "description": "Exercício de caminhada leve.",
+    "type": "text",
+    "placeholders": {}
+  },
+  "workout_exercise_light_stretching": "Exercícios de alongamento",
+  "@workout_exercise_light_stretching": {
+    "description": "Exercício de alongamento leve.",
+    "type": "text",
+    "placeholders": {}
+  },
+  "workout_exercise_soft_water_aerobics": "Hidroginástica suave",
+  "@workout_exercise_soft_water_aerobics": {
+    "description": "Exercício de hidroginástica suave.",
+    "type": "text",
+    "placeholders": {}
+  },
+  "workout_exercise_tai_chi_yoga": "Tai Chi ou Yoga suave",
+  "@workout_exercise_tai_chi_yoga": {
+    "description": "Exercício de Tai Chi ou Yoga suave.",
+    "type": "text",
+    "placeholders": {}
+  },
+  "workout_exercise_consult_professional": "Consultar profissional de saúde",
+  "@workout_exercise_consult_professional": {
+    "description": "Exercício de consultar profissional.",
+    "type": "text",
+    "placeholders": {}
+  },
+  "workout_exercise_cardiovascular_focus": "Foco em exercícios cardiovasculares",
+  "@workout_exercise_cardiovascular_focus": {
+    "description": "Exercício focado em cardiovascular.",
+    "type": "text",
+    "placeholders": {}
+  },
+  "workout_exercise_core_training": "Treino de core específico",
+  "@workout_exercise_core_training": {
+    "description": "Exercício de treino de core.",
+    "type": "text",
+    "placeholders": {}
+  },
+  "workout_exercise_diet_control": "Controle da alimentação",
+  "@workout_exercise_diet_control": {
+    "description": "Exercício de controle da alimentação.",
+    "type": "text",
+    "placeholders": {}
+  },
+  "workout_exercise_low_impact": "Atividades de baixo impacto",
+  "@workout_exercise_low_impact": {
+    "description": "Exercício de baixo impacto.",
+    "type": "text",
+    "placeholders": {}
+  },
+  "workout_exercise_professional_supervision": "Supervisão profissional",
+  "@workout_exercise_professional_supervision": {
+    "description": "Exercício com supervisão profissional.",
+    "type": "text",
+    "placeholders": {}
+  },
+  "workout_exercise_gradual_progression": "Progressão gradual",
+  "@workout_exercise_gradual_progression": {
+    "description": "Exercício de progressão gradual.",
+    "type": "text",
+    "placeholders": {}
+  },
+  "savings_period_years_and_months": "{years} ano{years, plural, =1 {} other {s}} e {months} mês{months, plural, =1 {} other {es}}",
+  "@savings_period_years_and_months": {
+    "description": "Texto do período de economia para anos e meses.",
+    "type": "text",
+    "placeholders": {
+      "years": {
+        "type": "int",
+        "example": "2"
+      },
+      "months": {
+        "type": "int",
+        "example": "3"
+      }
+    }
+  },
+  "savings_period_years_only": "{years} ano{years, plural, =1 {} other {s}}",
+  "@savings_period_years_only": {
+    "description": "Texto do período de economia apenas para anos.",
+    "type": "text",
+    "placeholders": {
+      "years": {
+        "type": "int",
+        "example": "2"
+      }
+    }
+  },
+  "savings_period_months_only": "{months} mês{months, plural, =1 {} other {es}}",
+  "@savings_period_months_only": {
+    "description": "Texto do período de economia apenas para meses.",
+    "type": "text",
+    "placeholders": {
+      "months": {
+        "type": "int",
+        "example": "3"
+      }
+    }
+  },
+  "savings_period_one_month": "1 mês",
+  "@savings_period_one_month": {
+    "description": "Texto do período de economia para um mês.",
+    "type": "text",
+    "placeholders": {}
+  },
+  "savings_formatted_total": "R$ {amount} em {period}",
+  "@savings_formatted_total": {
+    "description": "Total formatado de economia com período.",
+    "type": "text",
+    "placeholders": {
+      "amount": {
+        "type": "String",
+        "example": "1.234,56"
+      },
+      "period": {
+        "type": "String",
+        "example": "2 anos e 3 meses"
+      }
+    }
+  },
+  "workout_calendar_title": "Calendário de Exercícios",
+  "@workout_calendar_title": {
+    "description": "Título do calendário de exercícios.",
+    "type": "text",
+    "placeholders": {}
+  },
+  "workout_calendar_sunday": "Dom",
+  "@workout_calendar_sunday": {
+    "description": "Domingo no calendário.",
+    "type": "text",
+    "placeholders": {}
+  },
+  "workout_calendar_monday": "Seg",
+  "@workout_calendar_monday": {
+    "description": "Segunda-feira no calendário.",
+    "type": "text",
+    "placeholders": {}
+  },
+  "workout_calendar_tuesday": "Ter",
+  "@workout_calendar_tuesday": {
+    "description": "Terça-feira no calendário.",
+    "type": "text",
+    "placeholders": {}
+  },
+  "workout_calendar_wednesday": "Qua",
+  "@workout_calendar_wednesday": {
+    "description": "Quarta-feira no calendário.",
+    "type": "text",
+    "placeholders": {}
+  },
+  "workout_calendar_thursday": "Qui",
+  "@workout_calendar_thursday": {
+    "description": "Quinta-feira no calendário.",
+    "type": "text",
+    "placeholders": {}
+  },
+  "workout_calendar_friday": "Sex",
+  "@workout_calendar_friday": {
+    "description": "Sexta-feira no calendário.",
+    "type": "text",
+    "placeholders": {}
+  },
+  "workout_calendar_saturday": "Sáb",
+  "@workout_calendar_saturday": {
+    "description": "Sábado no calendário.",
+    "type": "text",
+    "placeholders": {}
+  },
+  "workout_workout_days_goal": "Meta de dias de exercício por semana",
+  "@workout_workout_days_goal": {
+    "description": "Label para meta de dias de exercício.",
+    "type": "text",
+    "placeholders": {}
+  },
+  "workout_validation_workout_days_required": "Selecione sua meta de dias de exercício",
+  "@workout_validation_workout_days_required": {
+    "description": "Validação para meta de dias de exercício obrigatória.",
+    "type": "text",
+    "placeholders": {}
+  },
+  "workout_day": "dia",
+  "@workout_day": {
+    "description": "Singular de dia.",
+    "type": "text",
+    "placeholders": {}
+  },
+  "workout_days": "dias",
+  "@workout_days": {
+    "description": "Plural de dias.",
     "type": "text",
     "placeholders": {}
   }

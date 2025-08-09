@@ -3,6 +3,7 @@ import 'package:opfan/l10n/app_localizations.dart';
 import 'package:opfan/utils/constants.dart';
 import 'package:opfan/utils/theme.dart';
 import 'package:opfan/core/models/nami_finances_model.dart';
+import 'package:opfan/core/services/nami_finances_service.dart';
 import 'package:opfan/widgets/atoms/gomu_gomu_divider.dart';
 import 'package:opfan/screens/nami-finances/widgets/finances_history_widget.dart';
 
@@ -21,6 +22,35 @@ class FinancesResultsView extends StatefulWidget {
 }
 
 class _FinancesResultsViewState extends State<FinancesResultsView> {
+  Map<String, dynamic>? _accumulatedInfo;
+
+  @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    if (_accumulatedInfo == null) {
+      _loadAccumulatedInfo();
+    }
+  }
+
+  Future<void> _loadAccumulatedInfo() async {
+    try {
+      final service = NamiFinancesService();
+      final info = await service
+          .getAccumulatedSavingsInfoLocalized(AppLocalizations.of(context)!);
+      setState(() {
+        _accumulatedInfo = info;
+      });
+    } catch (e) {
+      debugPrint('Erro ao carregar informações acumuladas: $e');
+      setState(() {});
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
@@ -107,12 +137,14 @@ class _FinancesResultsViewState extends State<FinancesResultsView> {
 
   Widget _buildSummaryItem(String label, double value, IconData icon) {
     return Container(
+      height: 120,
       padding: const EdgeInsets.all(Constants.margin),
       decoration: BoxDecoration(
         color: Colors.white.withValues(alpha: 0.3),
         borderRadius: BorderRadius.circular(Constants.margin),
       ),
       child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Icon(icon, color: Theme.of(context).colorScheme.onSurface, size: 24),
           const SizedBox(height: 8),
@@ -120,12 +152,18 @@ class _FinancesResultsViewState extends State<FinancesResultsView> {
             label,
             style: TextTheme.of(context).bodyMedium,
             textAlign: TextAlign.center,
+            maxLines: 2,
+            overflow: TextOverflow.ellipsis,
           ),
           const SizedBox(height: 4),
           Text(
             'R\$ ${value.toStringAsFixed(2)}',
-           style: TextTheme.of(context).bodyMedium,
+            style: TextTheme.of(context).bodyMedium?.copyWith(
+                  fontWeight: FontWeight.bold,
+                ),
             textAlign: TextAlign.center,
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
           ),
         ],
       ),
@@ -219,7 +257,7 @@ class _FinancesResultsViewState extends State<FinancesResultsView> {
               ),
             ],
           ),
-          const SizedBox(height: Constants.margin * 2),
+          const SizedBox(height: Constants.margin),
           Row(
             children: [
               Expanded(
@@ -244,20 +282,28 @@ class _FinancesResultsViewState extends State<FinancesResultsView> {
             children: [
               Expanded(
                 child: _buildSavingsItem(
-                  l10n.yearlySavings,
-                  'R\$ ${widget.finances.yearlySavings.toStringAsFixed(2)}',
+                  _accumulatedInfo != null &&
+                          _accumulatedInfo!['totalSavings'] > 0
+                      ? '${l10n.accumulatedSavings} ${_accumulatedInfo!['periodText']}'
+                      : l10n.yearlySavings,
+                  _accumulatedInfo != null &&
+                          _accumulatedInfo!['totalSavings'] > 0
+                      ? '${l10n.currency} ${_accumulatedInfo!['totalSavings'].toStringAsFixed(2)}'
+                      : '${l10n.currency} ${widget.finances.yearlySavings.toStringAsFixed(2)}',
                   Icons.trending_up,
                 ),
               ),
               const SizedBox(width: Constants.margin),
               Expanded(
                 child: Container(
+                  height: 120,
                   padding: const EdgeInsets.all(Constants.margin),
                   decoration: BoxDecoration(
                     color: Colors.white.withValues(alpha: 0.3),
                     borderRadius: BorderRadius.circular(Constants.margin),
                   ),
                   child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Image.asset(
                         widget.finances.savingsPercentage >= 10 
@@ -278,6 +324,8 @@ class _FinancesResultsViewState extends State<FinancesResultsView> {
                             : AppColors.red[500]!,
                         ),
                         textAlign: TextAlign.center,
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
                       ),
                     ],
                   ),
@@ -292,12 +340,14 @@ class _FinancesResultsViewState extends State<FinancesResultsView> {
 
   Widget _buildSavingsItem(String label, String value, IconData icon) {
     return Container(
+      height: 120,
       padding: const EdgeInsets.all(Constants.margin),
       decoration: BoxDecoration(
         color: Colors.white.withValues(alpha: 0.3),
         borderRadius: BorderRadius.circular(Constants.margin),
       ),
       child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Icon(icon, size: 24),
           const SizedBox(height: 8),
@@ -305,6 +355,8 @@ class _FinancesResultsViewState extends State<FinancesResultsView> {
             label,
             style: TextTheme.of(context).bodySmall,
             textAlign: TextAlign.center,
+            maxLines: 2,
+            overflow: TextOverflow.ellipsis,
           ),
           const SizedBox(height: 4),
           Text(
@@ -313,13 +365,13 @@ class _FinancesResultsViewState extends State<FinancesResultsView> {
               fontWeight: FontWeight.bold,
             ),
             textAlign: TextAlign.center,
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
           ),
         ],
       ),
     );
   }
-
-
 
   Widget _buildEditButton(AppLocalizations l10n) {
     return SizedBox(

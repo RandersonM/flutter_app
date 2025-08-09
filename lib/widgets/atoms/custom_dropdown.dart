@@ -27,6 +27,7 @@ class CustomDropdown<T> extends StatelessWidget {
       child: DropdownButtonFormField<T>(
         value: value,
         isExpanded: true,
+        borderRadius: BorderRadius.circular(16),
         items: items.map((T item) {
           return DropdownMenuItem<T>(
             value: item,
