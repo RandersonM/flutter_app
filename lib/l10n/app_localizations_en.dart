@@ -1480,4 +1480,288 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get workout_days => 'days';
+
+  @override
+  String get cooking => 'Cooking';
+
+  @override
+  String get plateGuideTitle => 'Healthy Plate Guide';
+
+  @override
+  String get plateGuideHeader =>
+      'Based on Brazilian Ministry of Health recommendations, this guide shows how to build a balanced plate with ideal proportions of each food group.';
+
+  @override
+  String get plateDivision => 'Plate Division';
+
+  @override
+  String get vegetablesTitle => 'Vegetables and Legumes';
+
+  @override
+  String get vegetablesSubtitle => '50% of plate';
+
+  @override
+  String get vegetablesDescription =>
+      'Regulatory foods rich in vitamins, minerals and fiber';
+
+  @override
+  String get vegetablesExamples =>
+      'Lettuce, watercress, arugula, spinach, broccoli, cauliflower, carrot, zucchini';
+
+  @override
+  String get proteinsTitle => 'Proteins';
+
+  @override
+  String get proteinsSubtitle => '25% of plate';
+
+  @override
+  String get proteinsDescription =>
+      'Building foods essential for muscles and tissues';
+
+  @override
+  String get proteinsExamples =>
+      'Chicken, fish, meat, eggs, beans, lentils, chickpeas';
+
+  @override
+  String get carbohydratesTitle => 'Carbohydrates';
+
+  @override
+  String get carbohydratesSubtitle => '25% of plate';
+
+  @override
+  String get carbohydratesDescription =>
+      'Energy foods that provide energy for the body';
+
+  @override
+  String get carbohydratesExamples =>
+      'Rice, potato, pasta, bread, sweet potato, cassava';
+
+  @override
+  String get sanjiTipsTitle => 'Sanji\'s Tips';
+
+  @override
+  String get sanjiTip1 => 'Prefer fresh or minimally processed foods';
+
+  @override
+  String get sanjiTip2 => 'Use salt, oils and sugars in moderation';
+
+  @override
+  String get sanjiTip3 => 'Vary the colors and types of vegetables and legumes';
+
+  @override
+  String get sanjiTip4 =>
+      'Choose healthier preparations (steam, sautéed, baked)';
+
+  @override
+  String get sanjiTip5 => 'Enjoy fruits as dessert and snacks';
+
+  @override
+  String get sanjiReference =>
+      'Consult the Food Guide for the Brazilian Population from the Ministry of Health for more detailed information.';
+
+  @override
+  String examples(String foodList) {
+    return 'Examples: $foodList';
+  }
+
+  @override
+  String get nutritionResultsTitle => 'Nutritional Results';
+
+  @override
+  String get bmrTitle => 'BMR (Basal Metabolic Rate)';
+
+  @override
+  String get bmrSubtitle => 'Calories your body burns at rest';
+
+  @override
+  String get tdeeTitle => 'TDEE (Total Daily Energy Expenditure)';
+
+  @override
+  String get tdeeSubtitle => 'Total calories you spend per day';
+
+  @override
+  String get caloriesPerGoal => 'Calories per Goal';
+
+  @override
+  String get maintainWeight => 'Maintain Weight';
+
+  @override
+  String get loseWeight => 'Lose Weight';
+
+  @override
+  String get gainMuscle => 'Gain Muscle';
+
+  @override
+  String get weightLoss => 'Weight Loss';
+
+  @override
+  String get maintenance => 'Maintenance';
+
+  @override
+  String get muscleGain => 'Muscle Gain';
+
+  @override
+  String get classifications => 'Classifications';
+
+  @override
+  String get bmi => 'BMI';
+
+  @override
+  String get waistToHeight => 'Waist/Height';
+
+  @override
+  String get sanjiTipTitle => 'Sanji\'s Tip';
+
+  @override
+  String get sanjiTipText =>
+      'Consult a nutritionist for a personalized meal plan based on these calculations!';
+
+  @override
+  String get plateGuideQuestion => 'How to build a healthy plate?';
+
+  @override
+  String get plateGuideSubtitle =>
+      'Learn the Ministry of Health recommendations for building a balanced plate';
+
+  @override
+  String get viewPlateGuide => 'View Plate Guide';
+
+  @override
+  String kcalPerDay(String calories) {
+    return '$calories kcal/day';
+  }
+
+  @override
+  String get financeWithNami => 'Economize com a Nami';
+
+  @override
+  String get cookingWithSanji => 'Cooking with Sanji';
+
+  @override
+  String get newCalculation => 'New Calculation';
+
+  @override
+  String get calculatingNutrition => 'Calculating nutrition...';
+
+  @override
+  String get sanjiQuote1 =>
+      '\"A true chef doesn\'t just cook, but nourishes the soul!\" - Sanji';
+
+  @override
+  String get sanjiQuote2 =>
+      '\"Food is the fuel that moves the body and spirit!\" - Sanji';
+
+  @override
+  String get sanjiQuote3 =>
+      '\"A balanced diet is fundamental to maintain energy and health!\" - Sanji';
+
+  @override
+  String get sanjiQuote4 =>
+      '\"Here you will find recipes that combine nutrition and flavor!\" - Sanji';
+
+  @override
+  String get sanjiQuote5 =>
+      '\"Inspired by the culinary philosophy of the best chef of the seas!\" - Sanji';
+
+  @override
+  String get personalData => 'Personal Data';
+
+  @override
+  String get gender => 'Gender';
+
+  @override
+  String get selectGender => 'Select gender';
+
+  @override
+  String get enterAge => 'Enter your age';
+
+  @override
+  String get enterValidNumber => 'Enter a valid number';
+
+  @override
+  String get weight => 'Weight (kg)';
+
+  @override
+  String get enterWeight => 'Enter your weight';
+
+  @override
+  String get height => 'Height (cm)';
+
+  @override
+  String get enterHeight => 'Enter your height';
+
+  @override
+  String get waistCircumference => 'Waist Circumference (cm)';
+
+  @override
+  String get enterWaist => 'Enter waist measurement';
+
+  @override
+  String get activityLevel => 'Activity Level';
+
+  @override
+  String get selectActivityLevel => 'Select your activity level';
+
+  @override
+  String get selectActivityLevelValidation => 'Select the activity level';
+
+  @override
+  String get goal => 'Goal';
+
+  @override
+  String get selectGoal => 'Select your goal';
+
+  @override
+  String get selectGoalValidation => 'Select your goal';
+
+  @override
+  String get calculateNutrition => 'Calculate Nutrition';
+
+  @override
+  String get couldNotOpenLink => 'Could not open link';
+
+  @override
+  String get sedentary => 'Sedentary';
+
+  @override
+  String get light => 'Light';
+
+  @override
+  String get moderate => 'Moderate';
+
+  @override
+  String get active => 'Active';
+
+  @override
+  String get veryActive => 'Very Active';
+
+  @override
+  String get underweight => 'Underweight';
+
+  @override
+  String get normalWeight => 'Normal Weight';
+
+  @override
+  String get overweight => 'Overweight';
+
+  @override
+  String get obesityGrade1 => 'Grade 1 Obesity';
+
+  @override
+  String get obesityGrade2 => 'Grade 2 Obesity';
+
+  @override
+  String get obesityGrade3 => 'Grade 3 Obesity';
+
+  @override
+  String get excellent => 'Excellent';
+
+  @override
+  String get good => 'Good';
+
+  @override
+  String get attention => 'Attention';
+
+  @override
+  String get highRisk => 'High Risk';
 }

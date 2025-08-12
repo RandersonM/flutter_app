@@ -1484,4 +1484,289 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get workout_days => 'dias';
+
+  @override
+  String get cooking => 'Culinária';
+
+  @override
+  String get plateGuideTitle => 'Guia do Prato Saudável';
+
+  @override
+  String get plateGuideHeader =>
+      'Baseado nas recomendações do Ministério da Saúde Brasileiro, este guia mostra como montar um prato equilibrado com as proporções ideais de cada grupo alimentar.';
+
+  @override
+  String get plateDivision => 'Divisão do Prato';
+
+  @override
+  String get vegetablesTitle => 'Hortaliças e Legumes';
+
+  @override
+  String get vegetablesSubtitle => '50% do prato';
+
+  @override
+  String get vegetablesDescription =>
+      'Alimentos reguladores ricos em vitaminas, minerais e fibras';
+
+  @override
+  String get vegetablesExamples =>
+      'Alface, agrião, rúcula, espinafre, brócolis, couve-flor, cenoura, abobrinha';
+
+  @override
+  String get proteinsTitle => 'Proteínas';
+
+  @override
+  String get proteinsSubtitle => '25% do prato';
+
+  @override
+  String get proteinsDescription =>
+      'Alimentos construtores essenciais para músculos e tecidos';
+
+  @override
+  String get proteinsExamples =>
+      'Frango, peixe, carne, ovos, feijão, lentilha, grão-de-bico';
+
+  @override
+  String get carbohydratesTitle => 'Carboidratos';
+
+  @override
+  String get carbohydratesSubtitle => '25% do prato';
+
+  @override
+  String get carbohydratesDescription =>
+      'Alimentos energéticos que fornecem energia para o corpo';
+
+  @override
+  String get carbohydratesExamples =>
+      'Arroz, batata, macarrão, pão, batata-doce, mandioca';
+
+  @override
+  String get sanjiTipsTitle => 'Dicas do Sanji';
+
+  @override
+  String get sanjiTip1 =>
+      'Prefira alimentos in natura ou minimamente processados';
+
+  @override
+  String get sanjiTip2 => 'Utilize sal, óleos e açúcares com moderação';
+
+  @override
+  String get sanjiTip3 => 'Varie as cores e tipos de hortaliças e legumes';
+
+  @override
+  String get sanjiTip4 =>
+      'Opte por preparações mais saudáveis (vapor, refogados, assados)';
+
+  @override
+  String get sanjiTip5 => 'Aproveite frutas como sobremesa e lanches';
+
+  @override
+  String get sanjiReference =>
+      'Consulte o Guia Alimentar para a População Brasileira do Ministério da Saúde para mais informações detalhadas.';
+
+  @override
+  String examples(String foodList) {
+    return 'Exemplos: $foodList';
+  }
+
+  @override
+  String get nutritionResultsTitle => 'Resultados Nutricionais';
+
+  @override
+  String get bmrTitle => 'BMR (Taxa Metabólica Basal)';
+
+  @override
+  String get bmrSubtitle => 'Calorias que seu corpo queima em repouso';
+
+  @override
+  String get tdeeTitle => 'TDEE (Gasto Energético Total)';
+
+  @override
+  String get tdeeSubtitle => 'Calorias totais que você gasta por dia';
+
+  @override
+  String get caloriesPerGoal => 'Calorias por Objetivo';
+
+  @override
+  String get maintainWeight => 'Manter Peso';
+
+  @override
+  String get loseWeight => 'Emagrecer';
+
+  @override
+  String get gainMuscle => 'Ganhar Massa';
+
+  @override
+  String get weightLoss => 'Emagrecer';
+
+  @override
+  String get maintenance => 'Manter Peso';
+
+  @override
+  String get muscleGain => 'Ganhar Massa';
+
+  @override
+  String get classifications => 'Classificações';
+
+  @override
+  String get bmi => 'IMC';
+
+  @override
+  String get waistToHeight => 'Cintura/Altura';
+
+  @override
+  String get sanjiTipTitle => 'Dica do Sanji';
+
+  @override
+  String get sanjiTipText =>
+      'Consulte um nutricionista para um plano alimentar personalizado baseado nestes cálculos!';
+
+  @override
+  String get plateGuideQuestion => 'Como montar um prato saudável?';
+
+  @override
+  String get plateGuideSubtitle =>
+      'Aprenda as recomendações do Ministério da Saúde para montar um prato equilibrado';
+
+  @override
+  String get viewPlateGuide => 'Ver Guia do Prato';
+
+  @override
+  String kcalPerDay(String calories) {
+    return '$calories kcal/dia';
+  }
+
+  @override
+  String get financeWithNami => 'Economize com a Nami';
+
+  @override
+  String get cookingWithSanji => 'Culinária com o Sanji';
+
+  @override
+  String get newCalculation => 'Novo Cálculo';
+
+  @override
+  String get calculatingNutrition => 'Calculando nutrição...';
+
+  @override
+  String get sanjiQuote1 =>
+      '\"Um verdadeiro chef não apenas cozinha, mas nutre a alma!\" - Sanji';
+
+  @override
+  String get sanjiQuote2 =>
+      '\"A comida é o combustível que move o corpo e o espírito!\" - Sanji';
+
+  @override
+  String get sanjiQuote3 =>
+      '\"Uma dieta balanceada é fundamental para manter a energia e saúde!\" - Sanji';
+
+  @override
+  String get sanjiQuote4 =>
+      '\"Aqui você encontrará receitas que combinam nutrição e sabor!\" - Sanji';
+
+  @override
+  String get sanjiQuote5 =>
+      '\"Inspirado na filosofia culinária do melhor chef dos mares!\" - Sanji';
+
+  @override
+  String get personalData => 'Dados Pessoais';
+
+  @override
+  String get gender => 'Gênero';
+
+  @override
+  String get selectGender => 'Selecione o gênero';
+
+  @override
+  String get enterAge => 'Digite sua idade';
+
+  @override
+  String get enterValidNumber => 'Digite um número válido';
+
+  @override
+  String get weight => 'Peso (kg)';
+
+  @override
+  String get enterWeight => 'Digite seu peso';
+
+  @override
+  String get height => 'Altura (cm)';
+
+  @override
+  String get enterHeight => 'Digite sua altura';
+
+  @override
+  String get waistCircumference => 'Circunferência da Cintura (cm)';
+
+  @override
+  String get enterWaist => 'Digite a medida da cintura';
+
+  @override
+  String get activityLevel => 'Nível de Atividade';
+
+  @override
+  String get selectActivityLevel => 'Selecione seu nível de atividade';
+
+  @override
+  String get selectActivityLevelValidation => 'Selecione o nível de atividade';
+
+  @override
+  String get goal => 'Objetivo';
+
+  @override
+  String get selectGoal => 'Selecione seu objetivo';
+
+  @override
+  String get selectGoalValidation => 'Selecione seu objetivo';
+
+  @override
+  String get calculateNutrition => 'Calcular Nutrição';
+
+  @override
+  String get couldNotOpenLink => 'Não foi possível abrir o link';
+
+  @override
+  String get sedentary => 'Sedentário';
+
+  @override
+  String get light => 'Leve';
+
+  @override
+  String get moderate => 'Moderado';
+
+  @override
+  String get active => 'Ativo';
+
+  @override
+  String get veryActive => 'Muito Ativo';
+
+  @override
+  String get underweight => 'Abaixo do Peso';
+
+  @override
+  String get normalWeight => 'Peso Normal';
+
+  @override
+  String get overweight => 'Sobrepeso';
+
+  @override
+  String get obesityGrade1 => 'Obesidade Grau 1';
+
+  @override
+  String get obesityGrade2 => 'Obesidade Grau 2';
+
+  @override
+  String get obesityGrade3 => 'Obesidade Grau 3';
+
+  @override
+  String get excellent => 'Excelente';
+
+  @override
+  String get good => 'Bom';
+
+  @override
+  String get attention => 'Atenção';
+
+  @override
+  String get highRisk => 'Risco Elevado';
 }

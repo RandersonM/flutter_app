@@ -2586,7 +2586,7 @@
   },
   "workout_category_obesity_3": "Obesity grade 3",
   "@workout_category_obesity_3": {
-    "description": "Obesity grade 3 category for BMI.",
+    "description": "BMI category for grade 3 obesity.",
     "type": "text",
     "placeholders": {}
   },
@@ -2909,6 +2909,550 @@
   "workout_days": "days",
   "@workout_days": {
     "description": "Plural of days.",
+    "type": "text",
+    "placeholders": {}
+  },
+  "cooking": "Cooking",
+  "@cooking": {
+    "description": "Cooking screen title for bottom navigation.",
+    "type": "text",
+    "placeholders": {}
+  },
+  "plateGuideTitle": "Healthy Plate Guide",
+  "@plateGuideTitle": {
+    "description": "Title for the plate guide screen.",
+    "type": "text",
+    "placeholders": {}
+  },
+  "plateGuideHeader": "Based on Brazilian Ministry of Health recommendations, this guide shows how to build a balanced plate with ideal proportions of each food group.",
+  "@plateGuideHeader": {
+    "description": "Header text explaining the plate guide.",
+    "type": "text",
+    "placeholders": {}
+  },
+  "plateDivision": "Plate Division",
+  "@plateDivision": {
+    "description": "Title for the pie chart section.",
+    "type": "text",
+    "placeholders": {}
+  },
+  "vegetablesTitle": "Vegetables and Legumes",
+  "@vegetablesTitle": {
+    "description": "Title for vegetables section.",
+    "type": "text",
+    "placeholders": {}
+  },
+  "vegetablesSubtitle": "50% of plate",
+  "@vegetablesSubtitle": {
+    "description": "Subtitle for vegetables section.",
+    "type": "text",
+    "placeholders": {}
+  },
+  "vegetablesDescription": "Regulatory foods rich in vitamins, minerals and fiber",
+  "@vegetablesDescription": {
+    "description": "Description for vegetables section.",
+    "type": "text",
+    "placeholders": {}
+  },
+  "vegetablesExamples": "Lettuce, watercress, arugula, spinach, broccoli, cauliflower, carrot, zucchini",
+  "@vegetablesExamples": {
+    "description": "Examples for vegetables section.",
+    "type": "text",
+    "placeholders": {}
+  },
+  "proteinsTitle": "Proteins",
+  "@proteinsTitle": {
+    "description": "Title for proteins section.",
+    "type": "text",
+    "placeholders": {}
+  },
+  "proteinsSubtitle": "25% of plate",
+  "@proteinsSubtitle": {
+    "description": "Subtitle for proteins section.",
+    "type": "text",
+    "placeholders": {}
+  },
+  "proteinsDescription": "Building foods essential for muscles and tissues",
+  "@proteinsDescription": {
+    "description": "Description for proteins section.",
+    "type": "text",
+    "placeholders": {}
+  },
+  "proteinsExamples": "Chicken, fish, meat, eggs, beans, lentils, chickpeas",
+  "@proteinsExamples": {
+    "description": "Examples for proteins section.",
+    "type": "text",
+    "placeholders": {}
+  },
+  "carbohydratesTitle": "Carbohydrates",
+  "@carbohydratesTitle": {
+    "description": "Title for carbohydrates section.",
+    "type": "text",
+    "placeholders": {}
+  },
+  "carbohydratesSubtitle": "25% of plate",
+  "@carbohydratesSubtitle": {
+    "description": "Subtitle for carbohydrates section.",
+    "type": "text",
+    "placeholders": {}
+  },
+  "carbohydratesDescription": "Energy foods that provide energy for the body",
+  "@carbohydratesDescription": {
+    "description": "Description for carbohydrates section.",
+    "type": "text",
+    "placeholders": {}
+  },
+  "carbohydratesExamples": "Rice, potato, pasta, bread, sweet potato, cassava",
+  "@carbohydratesExamples": {
+    "description": "Examples for carbohydrates section.",
+    "type": "text",
+    "placeholders": {}
+  },
+  "sanjiTipsTitle": "Sanji's Tips",
+  "@sanjiTipsTitle": {
+    "description": "Title for Sanji's tips section.",
+    "type": "text",
+    "placeholders": {}
+  },
+  "sanjiTip1": "Prefer fresh or minimally processed foods",
+  "@sanjiTip1": {
+    "description": "First tip from Sanji.",
+    "type": "text",
+    "placeholders": {}
+  },
+  "sanjiTip2": "Use salt, oils and sugars in moderation",
+  "@sanjiTip2": {
+    "description": "Second tip from Sanji.",
+    "type": "text",
+    "placeholders": {}
+  },
+  "sanjiTip3": "Vary the colors and types of vegetables and legumes",
+  "@sanjiTip3": {
+    "description": "Third tip from Sanji.",
+    "type": "text",
+    "placeholders": {}
+  },
+  "sanjiTip4": "Choose healthier preparations (steam, sautéed, baked)",
+  "@sanjiTip4": {
+    "description": "Fourth tip from Sanji.",
+    "type": "text",
+    "placeholders": {}
+  },
+  "sanjiTip5": "Enjoy fruits as dessert and snacks",
+  "@sanjiTip5": {
+    "description": "Fifth tip from Sanji.",
+    "type": "text",
+    "placeholders": {}
+  },
+  "sanjiReference": "Consult the Food Guide for the Brazilian Population from the Ministry of Health for more detailed information.",
+  "@sanjiReference": {
+    "description": "Reference text about the Brazilian food guide.",
+    "type": "text",
+    "placeholders": {}
+  },
+  "examples": "Examples: {foodList}",
+  "@examples": {
+    "description": "Examples text with food list.",
+    "type": "text",
+    "placeholders": {
+      "foodList": {
+        "type": "String",
+        "example": "Lettuce, spinach, broccoli"
+      }
+    }
+  },
+  "nutritionResultsTitle": "Nutritional Results",
+  "@nutritionResultsTitle": {
+    "description": "Title for nutrition results section.",
+    "type": "text",
+    "placeholders": {}
+  },
+  "bmrTitle": "BMR (Basal Metabolic Rate)",
+  "@bmrTitle": {
+    "description": "Title for BMR metric card.",
+    "type": "text",
+    "placeholders": {}
+  },
+  "bmrSubtitle": "Calories your body burns at rest",
+  "@bmrSubtitle": {
+    "description": "Subtitle for BMR metric card.",
+    "type": "text",
+    "placeholders": {}
+  },
+  "tdeeTitle": "TDEE (Total Daily Energy Expenditure)",
+  "@tdeeTitle": {
+    "description": "Title for TDEE metric card.",
+    "type": "text",
+    "placeholders": {}
+  },
+  "tdeeSubtitle": "Total calories you spend per day",
+  "@tdeeSubtitle": {
+    "description": "Subtitle for TDEE metric card.",
+    "type": "text",
+    "placeholders": {}
+  },
+  "caloriesPerGoal": "Calories per Goal",
+  "@caloriesPerGoal": {
+    "description": "Title for calories per goal section.",
+    "type": "text",
+    "placeholders": {}
+  },
+  "maintainWeight": "Maintain Weight",
+  "@maintainWeight": {
+    "description": "Maintain weight goal option.",
+    "type": "text",
+    "placeholders": {}
+  },
+  "loseWeight": "Lose Weight",
+  "@loseWeight": {
+    "description": "Lose weight goal option.",
+    "type": "text",
+    "placeholders": {}
+  },
+  "gainMuscle": "Gain Muscle",
+  "@gainMuscle": {
+    "description": "Muscle gain goal option.",
+    "type": "text",
+    "placeholders": {}
+  },
+  "weightLoss": "Weight Loss",
+  "@weightLoss": {
+    "description": "Weight loss goal option.",
+    "type": "text",
+    "placeholders": {}
+  },
+  "maintenance": "Maintenance",
+  "@maintenance": {
+    "description": "Maintenance goal option.",
+    "type": "text",
+    "placeholders": {}
+  },
+  "muscleGain": "Muscle Gain",
+  "@muscleGain": {
+    "description": "Muscle gain goal option.",
+    "type": "text",
+    "placeholders": {}
+  },
+  "classifications": "Classifications",
+  "@classifications": {
+    "description": "Title for classifications section.",
+    "type": "text",
+    "placeholders": {}
+  },
+  "bmi": "BMI",
+  "@bmi": {
+    "description": "BMI label.",
+    "type": "text",
+    "placeholders": {}
+  },
+  "waistToHeight": "Waist/Height",
+  "@waistToHeight": {
+    "description": "Waist to height ratio label.",
+    "type": "text",
+    "placeholders": {}
+  },
+  "sanjiTipTitle": "Sanji's Tip",
+  "@sanjiTipTitle": {
+    "description": "Title for Sanji's tip section.",
+    "type": "text",
+    "placeholders": {}
+  },
+  "sanjiTipText": "Consult a nutritionist for a personalized meal plan based on these calculations!",
+  "@sanjiTipText": {
+    "description": "Text for Sanji's tip.",
+    "type": "text",
+    "placeholders": {}
+  },
+  "plateGuideQuestion": "How to build a healthy plate?",
+  "@plateGuideQuestion": {
+    "description": "Question for plate guide section.",
+    "type": "text",
+    "placeholders": {}
+  },
+  "plateGuideSubtitle": "Learn the Ministry of Health recommendations for building a balanced plate",
+  "@plateGuideSubtitle": {
+    "description": "Subtitle for plate guide section.",
+    "type": "text",
+    "placeholders": {}
+  },
+  "viewPlateGuide": "View Plate Guide",
+  "@viewPlateGuide": {
+    "description": "Button text to view plate guide.",
+    "type": "text",
+    "placeholders": {}
+  },
+  "kcalPerDay": "{calories} kcal/day",
+  "@kcalPerDay": {
+    "description": "Calories per day format.",
+    "type": "text",
+    "placeholders": {
+      "calories": {
+        "type": "String",
+        "example": "2000"
+      }
+    }
+  },
+  "financeWithNami": "Economize com a Nami",
+  "@financeWithNami": {
+    "description": "Título da tela de finanças com a Nami.",
+    "type": "text",
+    "placeholders": {}
+  },
+  "cookingWithSanji": "Cooking with Sanji",
+  "@cookingWithSanji": {
+    "description": "Title for Sanji cooking screen.",
+    "type": "text",
+    "placeholders": {}
+  },
+  "newCalculation": "New Calculation",
+  "@newCalculation": {
+    "description": "Button text for new calculation.",
+    "type": "text",
+    "placeholders": {}
+  },
+  "calculatingNutrition": "Calculating nutrition...",
+  "@calculatingNutrition": {
+    "description": "Loading text when calculating nutrition.",
+    "type": "text",
+    "placeholders": {}
+  },
+  "sanjiQuote1": "\"A true chef doesn't just cook, but nourishes the soul!\" - Sanji",
+  "@sanjiQuote1": {
+    "description": "First Sanji quote for header.",
+    "type": "text",
+    "placeholders": {}
+  },
+  "sanjiQuote2": "\"Food is the fuel that moves the body and spirit!\" - Sanji",
+  "@sanjiQuote2": {
+    "description": "Second Sanji quote for header.",
+    "type": "text",
+    "placeholders": {}
+  },
+  "sanjiQuote3": "\"A balanced diet is fundamental to maintain energy and health!\" - Sanji",
+  "@sanjiQuote3": {
+    "description": "Third Sanji quote for header.",
+    "type": "text",
+    "placeholders": {}
+  },
+  "sanjiQuote4": "\"Here you will find recipes that combine nutrition and flavor!\" - Sanji",
+  "@sanjiQuote4": {
+    "description": "Fourth Sanji quote for header.",
+    "type": "text",
+    "placeholders": {}
+  },
+  "sanjiQuote5": "\"Inspired by the culinary philosophy of the best chef of the seas!\" - Sanji",
+  "@sanjiQuote5": {
+    "description": "Fifth Sanji quote for header.",
+    "type": "text",
+    "placeholders": {}
+  },
+  "personalData": "Personal Data",
+  "@personalData": {
+    "description": "Title for personal data section.",
+    "type": "text",
+    "placeholders": {}
+  },
+  "gender": "Gender",
+  "@gender": {
+    "description": "Label for gender field.",
+    "type": "text",
+    "placeholders": {}
+  },
+  "selectGender": "Select gender",
+  "@selectGender": {
+    "description": "Validation message for gender selection.",
+    "type": "text",
+    "placeholders": {}
+  },
+  "age": "Age",
+  "@age": {
+    "description": "Label for age field.",
+    "type": "text",
+    "placeholders": {}
+  },
+  "enterAge": "Enter your age",
+  "@enterAge": {
+    "description": "Validation message for age field.",
+    "type": "text",
+    "placeholders": {}
+  },
+  "enterValidNumber": "Enter a valid number",
+  "@enterValidNumber": {
+    "description": "Validation message for invalid number.",
+    "type": "text",
+    "placeholders": {}
+  },
+  "weight": "Weight (kg)",
+  "@weight": {
+    "description": "Label for weight field.",
+    "type": "text",
+    "placeholders": {}
+  },
+  "enterWeight": "Enter your weight",
+  "@enterWeight": {
+    "description": "Validation message for weight field.",
+    "type": "text",
+    "placeholders": {}
+  },
+  "height": "Height (cm)",
+  "@height": {
+    "description": "Label for height field.",
+    "type": "text",
+    "placeholders": {}
+  },
+  "enterHeight": "Enter your height",
+  "@enterHeight": {
+    "description": "Validation message for height field.",
+    "type": "text",
+    "placeholders": {}
+  },
+  "waistCircumference": "Waist Circumference (cm)",
+  "@waistCircumference": {
+    "description": "Label for waist circumference field.",
+    "type": "text",
+    "placeholders": {}
+  },
+  "enterWaist": "Enter waist measurement",
+  "@enterWaist": {
+    "description": "Validation message for waist field.",
+    "type": "text",
+    "placeholders": {}
+  },
+  "activityLevel": "Activity Level",
+  "@activityLevel": {
+    "description": "Title for activity level section.",
+    "type": "text",
+    "placeholders": {}
+  },
+  "selectActivityLevel": "Select your activity level",
+  "@selectActivityLevel": {
+    "description": "Label for activity level dropdown.",
+    "type": "text",
+    "placeholders": {}
+  },
+  "selectActivityLevelValidation": "Select the activity level",
+  "@selectActivityLevelValidation": {
+    "description": "Validation message for activity level selection.",
+    "type": "text",
+    "placeholders": {}
+  },
+  "goal": "Goal",
+  "@goal": {
+    "description": "Title for goal section.",
+    "type": "text",
+    "placeholders": {}
+  },
+  "selectGoal": "Select your goal",
+  "@selectGoal": {
+    "description": "Label for goal dropdown.",
+    "type": "text",
+    "placeholders": {}
+  },
+  "selectGoalValidation": "Select your goal",
+  "@selectGoalValidation": {
+    "description": "Validation message for goal selection.",
+    "type": "text",
+    "placeholders": {}
+  },
+  "calculateNutrition": "Calculate Nutrition",
+  "@calculateNutrition": {
+    "description": "Button text to calculate nutrition.",
+    "type": "text",
+    "placeholders": {}
+  },
+  "couldNotOpenLink": "Could not open link",
+  "@couldNotOpenLink": {
+    "description": "Error message when link cannot be opened.",
+    "type": "text",
+    "placeholders": {}
+  },
+  "sedentary": "Sedentary",
+  "@sedentary": {
+    "description": "Sedentary activity level option.",
+    "type": "text",
+    "placeholders": {}
+  },
+  "light": "Light",
+  "@light": {
+    "description": "Light activity level option.",
+    "type": "text",
+    "placeholders": {}
+  },
+  "moderate": "Moderate",
+  "@moderate": {
+    "description": "Moderate activity level option.",
+    "type": "text",
+    "placeholders": {}
+  },
+  "active": "Active",
+  "@active": {
+    "description": "Active activity level option.",
+    "type": "text",
+    "placeholders": {}
+  },
+  "veryActive": "Very Active",
+  "@veryActive": {
+    "description": "Very active activity level option.",
+    "type": "text",
+    "placeholders": {}
+  },
+  "underweight": "Underweight",
+  "@underweight": {
+    "description": "BMI category for underweight.",
+    "type": "text",
+    "placeholders": {}
+  },
+  "normalWeight": "Normal Weight",
+  "@normalWeight": {
+    "description": "BMI category for normal weight.",
+    "type": "text",
+    "placeholders": {}
+  },
+  "overweight": "Overweight",
+  "@overweight": {
+    "description": "BMI category for overweight.",
+    "type": "text",
+    "placeholders": {}
+  },
+  "obesityGrade1": "Grade 1 Obesity",
+  "@obesityGrade1": {
+    "description": "BMI category for grade 1 obesity.",
+    "type": "text",
+    "placeholders": {}
+  },
+  "obesityGrade2": "Grade 2 Obesity",
+  "@obesityGrade2": {
+    "description": "BMI category for grade 2 obesity.",
+    "type": "text",
+    "placeholders": {}
+  },
+  "obesityGrade3": "Grade 3 Obesity",
+  "@obesityGrade3": {
+    "description": "BMI category for grade 3 obesity.",
+    "type": "text",
+    "placeholders": {}
+  },
+  "excellent": "Excellent",
+  "@excellent": {
+    "description": "Waist-to-height ratio category for excellent.",
+    "type": "text",
+    "placeholders": {}
+  },
+  "good": "Good",
+  "@good": {
+    "description": "Waist-to-height ratio category for good.",
+    "type": "text",
+    "placeholders": {}
+  },
+  "attention": "Attention",
+  "@attention": {
+    "description": "Waist-to-height ratio category for attention.",
+    "type": "text",
+    "placeholders": {}
+  },
+  "highRisk": "High Risk",
+  "@highRisk": {
+    "description": "Waist-to-height ratio category for high risk.",
     "type": "text",
     "placeholders": {}
   }

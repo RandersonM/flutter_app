@@ -2851,5 +2851,555 @@
     "description": "Plural de dias.",
     "type": "text",
     "placeholders": {}
+  },
+  "cooking": "Culinária",
+  "@cooking": {
+    "description": "Título da tela de culinária para navegação inferior.",
+    "type": "text",
+    "placeholders": {}
+  },
+  "plateGuideTitle": "Guia do Prato Saudável",
+  "@plateGuideTitle": {
+    "description": "Título da tela do guia do prato.",
+    "type": "text",
+    "placeholders": {}
+  },
+  "plateGuideHeader": "Baseado nas recomendações do Ministério da Saúde Brasileiro, este guia mostra como montar um prato equilibrado com as proporções ideais de cada grupo alimentar.",
+  "@plateGuideHeader": {
+    "description": "Texto do cabeçalho explicando o guia do prato.",
+    "type": "text",
+    "placeholders": {}
+  },
+  "plateDivision": "Divisão do Prato",
+  "@plateDivision": {
+    "description": "Título da seção do gráfico de pizza.",
+    "type": "text",
+    "placeholders": {}
+  },
+  "vegetablesTitle": "Hortaliças e Legumes",
+  "@vegetablesTitle": {
+    "description": "Título da seção de hortaliças.",
+    "type": "text",
+    "placeholders": {}
+  },
+  "vegetablesSubtitle": "50% do prato",
+  "@vegetablesSubtitle": {
+    "description": "Subtítulo da seção de hortaliças.",
+    "type": "text",
+    "placeholders": {}
+  },
+  "vegetablesDescription": "Alimentos reguladores ricos em vitaminas, minerais e fibras",
+  "@vegetablesDescription": {
+    "description": "Descrição da seção de hortaliças.",
+    "type": "text",
+    "placeholders": {}
+  },
+  "vegetablesExamples": "Alface, agrião, rúcula, espinafre, brócolis, couve-flor, cenoura, abobrinha",
+  "@vegetablesExamples": {
+    "description": "Exemplos da seção de hortaliças.",
+    "type": "text",
+    "placeholders": {}
+  },
+  "proteinsTitle": "Proteínas",
+  "@proteinsTitle": {
+    "description": "Título da seção de proteínas.",
+    "type": "text",
+    "placeholders": {}
+  },
+  "proteinsSubtitle": "25% do prato",
+  "@proteinsSubtitle": {
+    "description": "Subtítulo da seção de proteínas.",
+    "type": "text",
+    "placeholders": {}
+  },
+  "proteinsDescription": "Alimentos construtores essenciais para músculos e tecidos",
+  "@proteinsDescription": {
+    "description": "Descrição da seção de proteínas.",
+    "type": "text",
+    "placeholders": {}
+  },
+  "proteinsExamples": "Frango, peixe, carne, ovos, feijão, lentilha, grão-de-bico",
+  "@proteinsExamples": {
+    "description": "Exemplos da seção de proteínas.",
+    "type": "text",
+    "placeholders": {}
+  },
+  "carbohydratesTitle": "Carboidratos",
+  "@carbohydratesTitle": {
+    "description": "Título da seção de carboidratos.",
+    "type": "text",
+    "placeholders": {}
+  },
+  "carbohydratesSubtitle": "25% do prato",
+  "@carbohydratesSubtitle": {
+    "description": "Subtítulo da seção de carboidratos.",
+    "type": "text",
+    "placeholders": {}
+  },
+  "carbohydratesDescription": "Alimentos energéticos que fornecem energia para o corpo",
+  "@carbohydratesDescription": {
+    "description": "Descrição da seção de carboidratos.",
+    "type": "text",
+    "placeholders": {}
+  },
+  "carbohydratesExamples": "Arroz, batata, macarrão, pão, batata-doce, mandioca",
+  "@carbohydratesExamples": {
+    "description": "Exemplos da seção de carboidratos.",
+    "type": "text",
+    "placeholders": {}
+  },
+  "sanjiTipsTitle": "Dicas do Sanji",
+  "@sanjiTipsTitle": {
+    "description": "Título da seção de dicas do Sanji.",
+    "type": "text",
+    "placeholders": {}
+  },
+  "sanjiTip1": "Prefira alimentos in natura ou minimamente processados",
+  "@sanjiTip1": {
+    "description": "Primeira dica do Sanji.",
+    "type": "text",
+    "placeholders": {}
+  },
+  "sanjiTip2": "Utilize sal, óleos e açúcares com moderação",
+  "@sanjiTip2": {
+    "description": "Segunda dica do Sanji.",
+    "type": "text",
+    "placeholders": {}
+  },
+  "sanjiTip3": "Varie as cores e tipos de hortaliças e legumes",
+  "@sanjiTip3": {
+    "description": "Terceira dica do Sanji.",
+    "type": "text",
+    "placeholders": {}
+  },
+  "sanjiTip4": "Opte por preparações mais saudáveis (vapor, refogados, assados)",
+  "@sanjiTip4": {
+    "description": "Quarta dica do Sanji.",
+    "type": "text",
+    "placeholders": {}
+  },
+  "sanjiTip5": "Aproveite frutas como sobremesa e lanches",
+  "@sanjiTip5": {
+    "description": "Quinta dica do Sanji.",
+    "type": "text",
+    "placeholders": {}
+  },
+  "sanjiReference": "Consulte o Guia Alimentar para a População Brasileira do Ministério da Saúde para mais informações detalhadas.",
+  "@sanjiReference": {
+    "description": "Texto de referência sobre o guia alimentar brasileiro.",
+    "type": "text",
+    "placeholders": {}
+  },
+  "examples": "Exemplos: {foodList}",
+  "@examples": {
+    "description": "Texto de exemplos com lista de alimentos.",
+    "type": "text",
+    "placeholders": {
+      "foodList": {
+        "type": "String",
+        "example": "Alface, espinafre, brócolis"
+      }
+    }
+  },
+  "nutritionResultsTitle": "Resultados Nutricionais",
+  "@nutritionResultsTitle": {
+    "description": "Título da seção de resultados nutricionais.",
+    "type": "text",
+    "placeholders": {}
+  },
+  "bmrTitle": "BMR (Taxa Metabólica Basal)",
+  "@bmrTitle": {
+    "description": "Título do card de métrica BMR.",
+    "type": "text",
+    "placeholders": {}
+  },
+  "bmrSubtitle": "Calorias que seu corpo queima em repouso",
+  "@bmrSubtitle": {
+    "description": "Subtítulo do card de métrica BMR.",
+    "type": "text",
+    "placeholders": {}
+  },
+  "tdeeTitle": "TDEE (Gasto Energético Total)",
+  "@tdeeTitle": {
+    "description": "Título do card de métrica TDEE.",
+    "type": "text",
+    "placeholders": {}
+  },
+  "tdeeSubtitle": "Calorias totais que você gasta por dia",
+  "@tdeeSubtitle": {
+    "description": "Subtítulo do card de métrica TDEE.",
+    "type": "text",
+    "placeholders": {}
+  },
+  "caloriesPerGoal": "Calorias por Objetivo",
+  "@caloriesPerGoal": {
+    "description": "Título da seção de calorias por objetivo.",
+    "type": "text",
+    "placeholders": {}
+  },
+  "maintainWeight": "Manter Peso",
+  "@maintainWeight": {
+    "description": "Opção de objetivo manter peso.",
+    "type": "text",
+    "placeholders": {}
+  },
+  "loseWeight": "Emagrecer",
+  "@loseWeight": {
+    "description": "Opção de objetivo emagrecer.",
+    "type": "text",
+    "placeholders": {}
+  },
+  "gainMuscle": "Ganhar Massa",
+  "@gainMuscle": {
+    "description": "Opção de objetivo ganhar massa.",
+    "type": "text",
+    "placeholders": {}
+  },
+  "weightLoss": "Emagrecer",
+  "@weightLoss": {
+    "description": "Opção de objetivo emagrecer.",
+    "type": "text",
+    "placeholders": {}
+  },
+  "maintenance": "Manter Peso",
+  "@maintenance": {
+    "description": "Opção de objetivo manter peso.",
+    "type": "text",
+    "placeholders": {}
+  },
+  "muscleGain": "Ganhar Massa",
+  "@muscleGain": {
+    "description": "Opção de objetivo ganhar massa.",
+    "type": "text",
+    "placeholders": {}
+  },
+  "sedentary": "Sedentário",
+  "@sedentary": {
+    "description": "Opção de nível de atividade sedentário.",
+    "type": "text",
+    "placeholders": {}
+  },
+  "light": "Leve",
+  "@light": {
+    "description": "Opção de nível de atividade leve.",
+    "type": "text",
+    "placeholders": {}
+  },
+  "moderate": "Moderado",
+  "@moderate": {
+    "description": "Opção de nível de atividade moderado.",
+    "type": "text",
+    "placeholders": {}
+  },
+  "active": "Ativo",
+  "@active": {
+    "description": "Opção de nível de atividade ativo.",
+    "type": "text",
+    "placeholders": {}
+  },
+  "veryActive": "Muito Ativo",
+  "@veryActive": {
+    "description": "Opção de nível de atividade muito ativo.",
+    "type": "text",
+    "placeholders": {}
+  },
+  "classifications": "Classificações",
+  "@classifications": {
+    "description": "Título da seção de classificações.",
+    "type": "text",
+    "placeholders": {}
+  },
+  "bmi": "IMC",
+  "@bmi": {
+    "description": "Label do IMC.",
+    "type": "text",
+    "placeholders": {}
+  },
+  "waistToHeight": "Cintura/Altura",
+  "@waistToHeight": {
+    "description": "Label da relação cintura/altura.",
+    "type": "text",
+    "placeholders": {}
+  },
+  "sanjiTipTitle": "Dica do Sanji",
+  "@sanjiTipTitle": {
+    "description": "Título da seção de dica do Sanji.",
+    "type": "text",
+    "placeholders": {}
+  },
+  "sanjiTipText": "Consulte um nutricionista para um plano alimentar personalizado baseado nestes cálculos!",
+  "@sanjiTipText": {
+    "description": "Texto da dica do Sanji.",
+    "type": "text",
+    "placeholders": {}
+  },
+  "plateGuideQuestion": "Como montar um prato saudável?",
+  "@plateGuideQuestion": {
+    "description": "Pergunta da seção do guia do prato.",
+    "type": "text",
+    "placeholders": {}
+  },
+  "plateGuideSubtitle": "Aprenda as recomendações do Ministério da Saúde para montar um prato equilibrado",
+  "@plateGuideSubtitle": {
+    "description": "Subtítulo da seção do guia do prato.",
+    "type": "text",
+    "placeholders": {}
+  },
+  "viewPlateGuide": "Ver Guia do Prato",
+  "@viewPlateGuide": {
+    "description": "Texto do botão para ver o guia do prato.",
+    "type": "text",
+    "placeholders": {}
+  },
+  "kcalPerDay": "{calories} kcal/dia",
+  "@kcalPerDay": {
+    "description": "Formato de calorias por dia.",
+    "type": "text",
+    "placeholders": {
+      "calories": {
+        "type": "String",
+        "example": "2000"
+      }
+    }
+  },
+  "financeWithNami": "Economize com a Nami",
+  "@financeWithNami": {
+    "description": "Título da tela de finanças com a Nami.",
+    "type": "text",
+    "placeholders": {}
+  },
+  "cookingWithSanji": "Culinária com o Sanji",
+  "@cookingWithSanji": {
+    "description": "Título da tela de culinária do Sanji.",
+    "type": "text",
+    "placeholders": {}
+  },
+  "newCalculation": "Novo Cálculo",
+  "@newCalculation": {
+    "description": "Texto do botão para novo cálculo.",
+    "type": "text",
+    "placeholders": {}
+  },
+  "calculatingNutrition": "Calculando nutrição...",
+  "@calculatingNutrition": {
+    "description": "Texto de carregamento ao calcular nutrição.",
+    "type": "text",
+    "placeholders": {}
+  },
+  "sanjiQuote1": "\"Um verdadeiro chef não apenas cozinha, mas nutre a alma!\" - Sanji",
+  "@sanjiQuote1": {
+    "description": "Primeira citação do Sanji para o cabeçalho.",
+    "type": "text",
+    "placeholders": {}
+  },
+  "sanjiQuote2": "\"A comida é o combustível que move o corpo e o espírito!\" - Sanji",
+  "@sanjiQuote2": {
+    "description": "Segunda citação do Sanji para o cabeçalho.",
+    "type": "text",
+    "placeholders": {}
+  },
+  "sanjiQuote3": "\"Uma dieta balanceada é fundamental para manter a energia e saúde!\" - Sanji",
+  "@sanjiQuote3": {
+    "description": "Terceira citação do Sanji para o cabeçalho.",
+    "type": "text",
+    "placeholders": {}
+  },
+  "sanjiQuote4": "\"Aqui você encontrará receitas que combinam nutrição e sabor!\" - Sanji",
+  "@sanjiQuote4": {
+    "description": "Quarta citação do Sanji para o cabeçalho.",
+    "type": "text",
+    "placeholders": {}
+  },
+  "sanjiQuote5": "\"Inspirado na filosofia culinária do melhor chef dos mares!\" - Sanji",
+  "@sanjiQuote5": {
+    "description": "Quinta citação do Sanji para o cabeçalho.",
+    "type": "text",
+    "placeholders": {}
+  },
+  "personalData": "Dados Pessoais",
+  "@personalData": {
+    "description": "Título da seção de dados pessoais.",
+    "type": "text",
+    "placeholders": {}
+  },
+  "gender": "Gênero",
+  "@gender": {
+    "description": "Label do campo de gênero.",
+    "type": "text",
+    "placeholders": {}
+  },
+  "selectGender": "Selecione o gênero",
+  "@selectGender": {
+    "description": "Mensagem de validação para seleção de gênero.",
+    "type": "text",
+    "placeholders": {}
+  },
+  "age": "Idade",
+  "@age": {
+    "description": "Label do campo de idade.",
+    "type": "text",
+    "placeholders": {}
+  },
+  "enterAge": "Digite sua idade",
+  "@enterAge": {
+    "description": "Mensagem de validação para campo de idade.",
+    "type": "text",
+    "placeholders": {}
+  },
+  "enterValidNumber": "Digite um número válido",
+  "@enterValidNumber": {
+    "description": "Mensagem de validação para número inválido.",
+    "type": "text",
+    "placeholders": {}
+  },
+  "weight": "Peso (kg)",
+  "@weight": {
+    "description": "Label do campo de peso.",
+    "type": "text",
+    "placeholders": {}
+  },
+  "enterWeight": "Digite seu peso",
+  "@enterWeight": {
+    "description": "Mensagem de validação para campo de peso.",
+    "type": "text",
+    "placeholders": {}
+  },
+  "height": "Altura (cm)",
+  "@height": {
+    "description": "Label do campo de altura.",
+    "type": "text",
+    "placeholders": {}
+  },
+  "enterHeight": "Digite sua altura",
+  "@enterHeight": {
+    "description": "Mensagem de validação para campo de altura.",
+    "type": "text",
+    "placeholders": {}
+  },
+  "waistCircumference": "Circunferência da Cintura (cm)",
+  "@waistCircumference": {
+    "description": "Label do campo de circunferência da cintura.",
+    "type": "text",
+    "placeholders": {}
+  },
+  "enterWaist": "Digite a medida da cintura",
+  "@enterWaist": {
+    "description": "Mensagem de validação para campo de cintura.",
+    "type": "text",
+    "placeholders": {}
+  },
+  "activityLevel": "Nível de Atividade",
+  "@activityLevel": {
+    "description": "Título da seção de nível de atividade.",
+    "type": "text",
+    "placeholders": {}
+  },
+  "selectActivityLevel": "Selecione seu nível de atividade",
+  "@selectActivityLevel": {
+    "description": "Label do dropdown de nível de atividade.",
+    "type": "text",
+    "placeholders": {}
+  },
+  "selectActivityLevelValidation": "Selecione o nível de atividade",
+  "@selectActivityLevelValidation": {
+    "description": "Mensagem de validação para seleção de nível de atividade.",
+    "type": "text",
+    "placeholders": {}
+  },
+  "goal": "Objetivo",
+  "@goal": {
+    "description": "Título da seção de objetivo.",
+    "type": "text",
+    "placeholders": {}
+  },
+  "selectGoal": "Selecione seu objetivo",
+  "@selectGoal": {
+    "description": "Label do dropdown de objetivo.",
+    "type": "text",
+    "placeholders": {}
+  },
+  "selectGoalValidation": "Selecione seu objetivo",
+  "@selectGoalValidation": {
+    "description": "Mensagem de validação para seleção de objetivo.",
+    "type": "text",
+    "placeholders": {}
+  },
+  "calculateNutrition": "Calcular Nutrição",
+  "@calculateNutrition": {
+    "description": "Texto do botão para calcular nutrição.",
+    "type": "text",
+    "placeholders": {}
+  },
+  "couldNotOpenLink": "Não foi possível abrir o link",
+  "@couldNotOpenLink": {
+    "description": "Mensagem de erro quando o link não pode ser aberto.",
+    "type": "text",
+    "placeholders": {}
+  },
+  "veryActive": "Muito Ativo",
+  "@veryActive": {
+    "description": "Opção de nível de atividade muito ativo.",
+    "type": "text",
+    "placeholders": {}
+  },
+  "underweight": "Abaixo do Peso",
+  "@underweight": {
+    "description": "Categoria de IMC para abaixo do peso.",
+    "type": "text",
+    "placeholders": {}
+  },
+  "normalWeight": "Peso Normal",
+  "@normalWeight": {
+    "description": "Categoria de IMC para peso normal.",
+    "type": "text",
+    "placeholders": {}
+  },
+  "overweight": "Sobrepeso",
+  "@overweight": {
+    "description": "Categoria de IMC para sobrepeso.",
+    "type": "text",
+    "placeholders": {}
+  },
+  "obesityGrade1": "Obesidade Grau 1",
+  "@obesityGrade1": {
+    "description": "Categoria de IMC para obesidade grau 1.",
+    "type": "text",
+    "placeholders": {}
+  },
+  "obesityGrade2": "Obesidade Grau 2",
+  "@obesityGrade2": {
+    "description": "Categoria de IMC para obesidade grau 2.",
+    "type": "text",
+    "placeholders": {}
+  },
+  "obesityGrade3": "Obesidade Grau 3",
+  "@obesityGrade3": {
+    "description": "Categoria de IMC para obesidade grau 3.",
+    "type": "text",
+    "placeholders": {}
+  },
+  "excellent": "Excelente",
+  "@excellent": {
+    "description": "Categoria de relação cintura/altura para excelente.",
+    "type": "text",
+    "placeholders": {}
+  },
+  "good": "Bom",
+  "@good": {
+    "description": "Categoria de relação cintura/altura para bom.",
+    "type": "text",
+    "placeholders": {}
+  },
+  "attention": "Atenção",
+  "@attention": {
+    "description": "Categoria de relação cintura/altura para atenção.",
+    "type": "text",
+    "placeholders": {}
+  },
+  "highRisk": "Risco Elevado",
+  "@highRisk": {
+    "description": "Categoria de relação cintura/altura para risco elevado.",
+    "type": "text",
+    "placeholders": {}
   }
 }
