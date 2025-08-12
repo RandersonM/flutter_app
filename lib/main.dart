@@ -7,6 +7,7 @@ import 'package:opfan/screens/one_piece/blocs/search_cubit.dart';
 import 'package:opfan/core/services/environment_service.dart';
 import 'package:opfan/core/services/service_locator.dart';
 import 'package:opfan/core/services/notification_service.dart';
+import 'package:opfan/core/services/navigation_service.dart';
 import 'package:opfan/core/models/one_piece/today_character.dart';
 import 'package:opfan/core/models/theme_model.dart';
 import 'package:opfan/core/services/theme_service.dart';
@@ -137,6 +138,7 @@ class _MyAppState extends State<MyApp> {
               theme: getLightTheme(),
               darkTheme: getDarkTheme(),
               themeMode: _currentThemeMode,
+              navigatorKey: NavigationService().navigatorKey,
               home: const AppWrapper(),
               onGenerateRoute: (settings) =>
                   AuthRouteMiddleware.onGenerateRoute(

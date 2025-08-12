@@ -315,9 +315,9 @@ class NutritionResults extends StatelessWidget {
   Color _getBMIColor(String category) {
     switch (category) {
       case 'underweight':
-        return AppColors.orange[500]!;
+        return AppColors.grey[500]!;
       case 'normalWeight':
-        return AppColors.green[500]!;
+        return AppColors.purple[500]!;
       case 'overweight':
         return AppColors.orange[600]!;
       case 'obesityGrade1':
@@ -332,7 +332,7 @@ class NutritionResults extends StatelessWidget {
   Color _getWaistToHeightColor(String category) {
     switch (category) {
       case 'excellent':
-        return AppColors.green[500]!;
+        return AppColors.purple[500]!;
       case 'good':
         return AppColors.blue[500]!;
       case 'attention':
