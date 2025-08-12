@@ -15,6 +15,8 @@ import 'package:opfan/screens/nami-finances/nami_finances_screen.dart';
 import 'package:opfan/screens/one_piece/characters_list_screen.dart';
 import 'package:opfan/screens/one_piece/widgets/details/character_details_screen.dart';
 import 'package:opfan/screens/zoro-workout/zoro_workout_screen.dart';
+import 'package:opfan/screens/sanji-cooking/sanji_cooking_screen.dart';
+import 'package:opfan/screens/sanji-cooking/widgets/plate_guide_screen.dart';
 import 'package:opfan/screens/youtube/youtube_player_screen.dart';
 import 'package:opfan/screens/devil_fruit/devil_fruit_list.dart';
 import 'package:opfan/screens/auth/login_screen.dart';
@@ -44,6 +46,8 @@ class AppRoutes {
   static const String characterSelection = '/characterSelection';
   static const String characterDetails = '/characterDetails';
   static const String workout = '/workout';
+  static const String cooking = '/cooking';
+  static const String plateGuide = '/plateGuide';
 
   // Private routes (require authentication)
   static const String profile = '/profile';
@@ -119,6 +123,12 @@ class AppRoutes {
       case workout:
         return MaterialPageRouteWithoutTransition<dynamic>(
             builder: (_) => const WorkoutScreen(), settings: settings);
+      case cooking:
+        return MaterialPageRouteWithoutTransition<dynamic>(
+            builder: (_) => const SanjiCookingScreen(), settings: settings);
+      case plateGuide:
+        return MaterialPageRoute<dynamic>(
+            builder: (_) => const PlateGuideScreen(), settings: settings);
       case youtubePlayer:
         final video = settings.arguments as YouTubeVideo;
         return MaterialPageRoute<dynamic>(
