@@ -1,93 +1,133 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'workout_assessment_model.g.dart';
 
 @JsonSerializable()
-class WorkoutAssessment {
+class WorkoutAssessmentModel {
+  @JsonKey(name: 'id')
   final String? id;
-  final String userId;
-  final String monthYear;
-  final DateTime createdAt;
-  final DateTime? lockedAt;
-  final Map<String, dynamic> healthResults;
-  final int workoutDaysGoal;
-  final List<int> workoutDays;
-  final bool isCurrentMonth;
 
-  const WorkoutAssessment({
+  @JsonKey(name: 'user_id')
+  final String userId;
+
+  @JsonKey(name: 'month_year')
+  final String monthYear;
+
+  @JsonKey(name: 'gender')
+  final String gender;
+
+  @JsonKey(name: 'age')
+  final int age;
+
+  @JsonKey(name: 'height')
+  final double height;
+
+  @JsonKey(name: 'weight')
+  final double weight;
+
+  @JsonKey(name: 'waist')
+  final double waist;
+
+  @JsonKey(name: 'bmi')
+  final double? bmi;
+
+  @JsonKey(name: 'waist_to_height_ratio')
+  final double? waistToHeightRatio;
+
+  @JsonKey(name: 'body_fat_percentage')
+  final double? bodyFatPercentage;
+
+  @JsonKey(name: 'health_score')
+  final double? healthScore;
+
+  @JsonKey(name: 'workout_days_goal')
+  final int? workoutDaysGoal;
+
+  @JsonKey(name: 'activity_level')
+  final String? activityLevel;
+
+  @JsonKey(name: 'goal')
+  final String? goal;
+
+  @JsonKey(name: 'workout_days')
+  final List<int>? workoutDays;
+
+  @JsonKey(name: 'created_at')
+  final DateTime createdAt;
+
+  @JsonKey(name: 'updated_at')
+  final DateTime updatedAt;
+
+  const WorkoutAssessmentModel({
     this.id,
     required this.userId,
     required this.monthYear,
+    required this.gender,
+    required this.age,
+    required this.height,
+    required this.weight,
+    required this.waist,
+    this.bmi,
+    this.waistToHeightRatio,
+    this.bodyFatPercentage,
+    this.healthScore,
+    this.workoutDaysGoal,
+    this.activityLevel,
+    this.goal,
+    this.workoutDays,
     required this.createdAt,
-    this.lockedAt,
-    required this.healthResults,
-    required this.workoutDaysGoal,
-    required this.workoutDays,
-    required this.isCurrentMonth,
+    required this.updatedAt,
   });
 
-  factory WorkoutAssessment.fromJson(Map<String, dynamic> json) =>
-      _$WorkoutAssessmentFromJson(json);
+  factory WorkoutAssessmentModel.fromJson(Map<String, dynamic> json) =>
+      _$WorkoutAssessmentModelFromJson(json);
 
-  Map<String, dynamic> toJson() => _$WorkoutAssessmentToJson(this);
+  Map<String, dynamic> toJson() => _$WorkoutAssessmentModelToJson(this);
 
-  factory WorkoutAssessment.fromFirestore(DocumentSnapshot doc) {
-    final data = doc.data() as Map<String, dynamic>;
-    final workoutDaysRaw = data['workoutDays'] ?? [];
-    final workoutDays = List<int>.from(workoutDaysRaw);
-    
-    return WorkoutAssessment(
-      id: doc.id,
-      userId: data['userId'] ?? '',
-      monthYear: data['monthYear'] ?? '',
-      createdAt: (data['createdAt'] as Timestamp).toDate(),
-      lockedAt: data['lockedAt'] != null 
-          ? (data['lockedAt'] as Timestamp).toDate() 
-          : null,
-      healthResults: Map<String, dynamic>.from(data['healthResults'] ?? {}),
-      workoutDaysGoal: data['workoutDaysGoal'] ?? 0,
-      workoutDays: workoutDays,
-      isCurrentMonth: data['isCurrentMonth'] ?? false,
-    );
-  }
-
-  Map<String, dynamic> toFirestore() {
-    return {
-      'userId': userId,
-      'monthYear': monthYear,
-      'createdAt': Timestamp.fromDate(createdAt),
-      'lockedAt': lockedAt != null ? Timestamp.fromDate(lockedAt!) : null,
-      'healthResults': healthResults,
-      'workoutDaysGoal': workoutDaysGoal,
-      'workoutDays': workoutDays,
-      'isCurrentMonth': isCurrentMonth,
-    };
-  }
-
-  WorkoutAssessment copyWith({
+  WorkoutAssessmentModel copyWith({
     String? id,
     String? userId,
     String? monthYear,
-    DateTime? createdAt,
-    DateTime? lockedAt,
-    Map<String, dynamic>? healthResults,
+    String? gender,
+    int? age,
+    double? height,
+    double? weight,
+    double? waist,
+    double? bmi,
+    double? waistToHeightRatio,
+    double? bodyFatPercentage,
+    double? healthScore,
     int? workoutDaysGoal,
+    String? activityLevel,
+    String? goal,
     List<int>? workoutDays,
-    bool? isCurrentMonth,
+    DateTime? createdAt,
+    DateTime? updatedAt,
   }) {
-    return WorkoutAssessment(
+    return WorkoutAssessmentModel(
       id: id ?? this.id,
       userId: userId ?? this.userId,
       monthYear: monthYear ?? this.monthYear,
-      createdAt: createdAt ?? this.createdAt,
-      lockedAt: lockedAt ?? this.lockedAt,
-      healthResults: healthResults ?? this.healthResults,
+      gender: gender ?? this.gender,
+      age: age ?? this.age,
+      height: height ?? this.height,
+      weight: weight ?? this.weight,
+      waist: waist ?? this.waist,
+      bmi: bmi ?? this.bmi,
+      waistToHeightRatio: waistToHeightRatio ?? this.waistToHeightRatio,
+      bodyFatPercentage: bodyFatPercentage ?? this.bodyFatPercentage,
+      healthScore: healthScore ?? this.healthScore,
       workoutDaysGoal: workoutDaysGoal ?? this.workoutDaysGoal,
+      activityLevel: activityLevel ?? this.activityLevel,
+      goal: goal ?? this.goal,
       workoutDays: workoutDays ?? this.workoutDays,
-      isCurrentMonth: isCurrentMonth ?? this.isCurrentMonth,
+      createdAt: createdAt ?? this.createdAt,
+      updatedAt: updatedAt ?? this.updatedAt,
     );
   }
 
-  bool get canEdit => isCurrentMonth && lockedAt == null;
+  @override
+  String toString() {
+    return 'WorkoutAssessmentModel(id: $id, userId: $userId, gender: $gender, age: $age, height: $height, weight: $weight, waist: $waist)';
+  }
 }

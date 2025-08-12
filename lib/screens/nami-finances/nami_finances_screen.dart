@@ -28,7 +28,7 @@ class _NamiFinancesScreenState extends State<NamiFinancesScreen> {
     return BlocProvider(
       create: (context) => getIt<NamiFinancesBloc>()..add(LoadCurrentMonthFinances()),
       child: Scaffold(
-        appBar: DefaultAppBar(title: Text(l10n.finances)),
+        appBar: DefaultAppBar(title: Text(l10n.financeWithNami)),
         body: Container(
           color: Theme.of(context).colorScheme.surface,
           child: Column(

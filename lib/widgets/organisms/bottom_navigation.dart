@@ -14,6 +14,7 @@ enum BottomNavigationPages {
   home,
   finances,
   workout,
+  cooking,
 }
 
 class BottomNavigation extends StatefulWidget {
@@ -33,6 +34,7 @@ class BottomNavigationState extends State<BottomNavigation> {
     BottomNavigationPages.home,
     BottomNavigationPages.finances,
     BottomNavigationPages.workout,
+    BottomNavigationPages.cooking,
   ];
 
   Future<void> _navigateToPage(BottomNavigationPages page) async {
@@ -62,6 +64,14 @@ class BottomNavigationState extends State<BottomNavigation> {
           ModalRoute.withName(AppRoutes.workout),
         );
         break;
+
+      case BottomNavigationPages.cooking:
+        await Navigator.pushNamedAndRemoveUntil(
+          context,
+          AppRoutes.cooking,
+          ModalRoute.withName(AppRoutes.cooking),
+        );
+        break;
     }
   }
 
@@ -88,6 +98,10 @@ class BottomNavigationState extends State<BottomNavigation> {
       BottomNavigationPages.workout => (
           '  ${localizations.workout}',
           FontAwesomeIcons.dumbbell 
+        ),
+      BottomNavigationPages.cooking => (
+          localizations.cooking,
+          FontAwesomeIcons.utensils,
         ),
     };
 
