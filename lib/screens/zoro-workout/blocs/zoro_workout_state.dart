@@ -17,8 +17,8 @@ class ZoroWorkoutLoading extends ZoroWorkoutState {
 }
 
 class ZoroWorkoutLoaded extends ZoroWorkoutState {
-  final WorkoutAssessment? currentAssessment;
-  final List<WorkoutAssessment> assessmentHistory;
+  final WorkoutAssessmentModel? currentAssessment;
+  final List<WorkoutAssessmentModel> assessmentHistory;
   final bool hasCurrentAssessment;
   final bool canEditCurrentAssessment;
   final double currentMonthProgress;
@@ -44,8 +44,8 @@ class ZoroWorkoutLoaded extends ZoroWorkoutState {
       ];
 
   ZoroWorkoutLoaded copyWith({
-    WorkoutAssessment? currentAssessment,
-    List<WorkoutAssessment>? assessmentHistory,
+    WorkoutAssessmentModel? currentAssessment,
+    List<WorkoutAssessmentModel>? assessmentHistory,
     bool? hasCurrentAssessment,
     bool? canEditCurrentAssessment,
     double? currentMonthProgress,

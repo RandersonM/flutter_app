@@ -17,15 +17,13 @@ class CheckAndCreateNewMonth extends ZoroWorkoutEvent {
 
 class SaveNewAssessment extends ZoroWorkoutEvent {
   final Map<String, dynamic> healthResults;
-  final int workoutDaysGoal;
 
   const SaveNewAssessment({
     required this.healthResults,
-    required this.workoutDaysGoal,
   });
 
   @override
-  List<Object?> get props => [healthResults, workoutDaysGoal];
+  List<Object?> get props => [healthResults];
 }
 
 class UpdateWorkoutDays extends ZoroWorkoutEvent {

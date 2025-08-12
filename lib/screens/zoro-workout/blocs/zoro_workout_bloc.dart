@@ -12,8 +12,6 @@ class ZoroWorkoutBloc extends Bloc<ZoroWorkoutEvent, ZoroWorkoutState> {
     on<CheckAndCreateNewMonth>(_onCheckAndCreateNewMonth);
     on<SaveNewAssessment>(_onSaveNewAssessment);
     on<UpdateWorkoutDays>(_onUpdateWorkoutDays);
-    on<UpdateHealthResults>(_onUpdateHealthResults);
-    on<UpdateWorkoutDaysGoal>(_onUpdateWorkoutDaysGoal);
     on<RefreshAssessment>(_onRefreshAssessment);
     on<ClearError>(_onClearError);
   }
@@ -25,14 +23,14 @@ class ZoroWorkoutBloc extends Bloc<ZoroWorkoutEvent, ZoroWorkoutState> {
     emit(const ZoroWorkoutLoading());
     
     try {
-      final currentAssessment = await _service.getCurrentMonthAssessment();
-      final assessmentHistory = await _service.getAssessmentHistory();
+      final currentAssessment = await _service.getCurrentUserAssessment();
+      final assessmentHistory = await _service.getUserAssessmentHistory();
       
       emit(ZoroWorkoutLoaded(
         currentAssessment: currentAssessment,
         assessmentHistory: assessmentHistory,
         hasCurrentAssessment: currentAssessment != null,
-        canEditCurrentAssessment: currentAssessment?.canEdit ?? false,
+        canEditCurrentAssessment: true,
         currentMonthProgress: _calculateProgress(currentAssessment),
         remainingDaysToGoal: _calculateRemainingDays(currentAssessment),
       ));
@@ -45,23 +43,10 @@ class ZoroWorkoutBloc extends Bloc<ZoroWorkoutEvent, ZoroWorkoutState> {
     CheckAndCreateNewMonth event,
     Emitter<ZoroWorkoutState> emit,
   ) async {
-    emit(const ZoroWorkoutLoading());
-    
-    try {
-      final currentAssessment = await _service.checkAndCreateNewMonth();
-      final assessmentHistory = await _service.getAssessmentHistory();
-      
-      emit(ZoroWorkoutLoaded(
-        currentAssessment: currentAssessment,
-        assessmentHistory: assessmentHistory,
-        hasCurrentAssessment: currentAssessment != null,
-        canEditCurrentAssessment: currentAssessment?.canEdit ?? false,
-        currentMonthProgress: _calculateProgress(currentAssessment),
-        remainingDaysToGoal: _calculateRemainingDays(currentAssessment),
-      ));
-    } catch (e) {
-      emit(ZoroWorkoutError(message: 'Erro ao verificar novo mês: $e'));
-    }
+    await _onInitializeWorkoutAssessment(
+      const InitializeWorkoutAssessment(),
+      emit,
+    );
   }
 
   Future<void> _onSaveNewAssessment(
@@ -69,134 +54,37 @@ class ZoroWorkoutBloc extends Bloc<ZoroWorkoutEvent, ZoroWorkoutState> {
     Emitter<ZoroWorkoutState> emit,
   ) async {
     try {
-      final currentAssessment = await _service.getCurrentMonthAssessment();
-      
-      if (currentAssessment != null) {
-        final updatedAssessment = currentAssessment.copyWith(
-          healthResults: event.healthResults,
-          workoutDaysGoal: event.workoutDaysGoal,
-        );
-        
-        await _service.saveAssessment(updatedAssessment);
-        
-        emit(ZoroWorkoutLoaded(
-          currentAssessment: updatedAssessment,
-          assessmentHistory: await _service.getAssessmentHistory(),
-          hasCurrentAssessment: true,
-          canEditCurrentAssessment: updatedAssessment.canEdit,
-          currentMonthProgress: _calculateProgress(updatedAssessment),
-          remainingDaysToGoal: _calculateRemainingDays(updatedAssessment),
-        ));
-      } else {
-        final now = DateTime.now();
-        final monthYear = '${now.year}-${now.month.toString().padLeft(2, '0')}';
-        
-        final newAssessment = WorkoutAssessment(
-          userId: '',
-          monthYear: monthYear,
-          createdAt: now,
-          healthResults: event.healthResults,
-          workoutDaysGoal: event.workoutDaysGoal,
-          workoutDays: [],
-          isCurrentMonth: true,
-        );
-        
-        await _service.saveAssessment(newAssessment);
-        
-        final savedAssessment = await _service.getCurrentMonthAssessment();
-        
-        emit(ZoroWorkoutLoaded(
-          currentAssessment: savedAssessment,
-          assessmentHistory: await _service.getAssessmentHistory(),
-          hasCurrentAssessment: savedAssessment != null,
-          canEditCurrentAssessment: savedAssessment?.canEdit ?? false,
-          currentMonthProgress: _calculateProgress(savedAssessment),
-          remainingDaysToGoal: _calculateRemainingDays(savedAssessment),
-        ));
-      }
+      await _service.saveWorkoutAssessment(
+        gender: event.healthResults['gender'] as String,
+        age: event.healthResults['age'] as int,
+        height: event.healthResults['height'] as double,
+        weight: event.healthResults['weight'] as double,
+        waist: event.healthResults['waist'] as double,
+        bmi: event.healthResults['bmi'] as double?,
+        waistToHeightRatio:
+            event.healthResults['waist_to_height_ratio'] as double?,
+        bodyFatPercentage:
+            event.healthResults['body_fat_percentage'] as double?,
+        healthScore: event.healthResults['health_score'] as double?,
+        workoutDaysGoal: event.healthResults['workout_days_goal'] as int?,
+        workoutDays: event.healthResults['workout_days'] as List<int>?,
+        activityLevel: event.healthResults['activity_level'] as String?,
+        goal: event.healthResults['goal'] as String?,
+      );
+
+      final currentAssessment = await _service.getCurrentUserAssessment();
+      final assessmentHistory = await _service.getUserAssessmentHistory();
+
+      emit(ZoroWorkoutLoaded(
+        currentAssessment: currentAssessment,
+        assessmentHistory: assessmentHistory,
+        hasCurrentAssessment: currentAssessment != null,
+        canEditCurrentAssessment: true,
+        currentMonthProgress: _calculateProgress(currentAssessment),
+        remainingDaysToGoal: _calculateRemainingDays(currentAssessment),
+      ));
     } catch (e) {
       emit(ZoroWorkoutError(message: 'Erro ao salvar avaliação: $e'));
-    }
-  }
-
-  Future<void> _onUpdateWorkoutDays(
-    UpdateWorkoutDays event,
-    Emitter<ZoroWorkoutState> emit,
-  ) async {
-    try {
-      final currentAssessment = await _service.getCurrentMonthAssessment();
-      if (currentAssessment == null || !currentAssessment.canEdit) {
-        emit(const ZoroWorkoutError(message: 'Não é possível editar este mês'));
-        return;
-      }
-
-      await _service.updateWorkoutDays(event.workoutDays);
-      final updatedAssessment = currentAssessment.copyWith(workoutDays: event.workoutDays);
-      
-      emit(ZoroWorkoutLoaded(
-        currentAssessment: updatedAssessment,
-        assessmentHistory: await _service.getAssessmentHistory(),
-        hasCurrentAssessment: true,
-        canEditCurrentAssessment: updatedAssessment.canEdit,
-        currentMonthProgress: _calculateProgress(updatedAssessment),
-        remainingDaysToGoal: _calculateRemainingDays(updatedAssessment),
-      ));
-    } catch (e) {
-      emit(ZoroWorkoutError(message: 'Erro ao atualizar dias de exercício: $e'));
-    }
-  }
-
-  Future<void> _onUpdateHealthResults(
-    UpdateHealthResults event,
-    Emitter<ZoroWorkoutState> emit,
-  ) async {
-    try {
-      final currentAssessment = await _service.getCurrentMonthAssessment();
-      if (currentAssessment == null || !currentAssessment.canEdit) {
-        emit(const ZoroWorkoutError(message: 'Não é possível editar este mês'));
-        return;
-      }
-
-      await _service.updateHealthResults(event.healthResults);
-      final updatedAssessment = currentAssessment.copyWith(healthResults: event.healthResults);
-      
-      emit(ZoroWorkoutLoaded(
-        currentAssessment: updatedAssessment,
-        assessmentHistory: await _service.getAssessmentHistory(),
-        hasCurrentAssessment: true,
-        canEditCurrentAssessment: updatedAssessment.canEdit,
-        currentMonthProgress: _calculateProgress(updatedAssessment),
-        remainingDaysToGoal: _calculateRemainingDays(updatedAssessment),
-      ));
-    } catch (e) {
-      emit(ZoroWorkoutError(message: 'Erro ao atualizar resultados de saúde: $e'));
-    }
-  }
-
-  Future<void> _onUpdateWorkoutDaysGoal(
-    UpdateWorkoutDaysGoal event,
-    Emitter<ZoroWorkoutState> emit,
-  ) async {
-    try {
-      final currentAssessment = await _service.getCurrentMonthAssessment();
-      if (currentAssessment == null || !currentAssessment.canEdit) {
-        emit(const ZoroWorkoutError(message: 'Não é possível editar este mês'));
-        return;
-      }
-
-      await _service.updateWorkoutDaysGoal(event.workoutDaysGoal);
-      final updatedAssessment = currentAssessment.copyWith(workoutDaysGoal: event.workoutDaysGoal);
-      
-      emit(ZoroWorkoutLoaded(
-        currentAssessment: updatedAssessment,
-        assessmentHistory: await _service.getAssessmentHistory(),
-        hasCurrentAssessment: true,
-        canEditCurrentAssessment: updatedAssessment.canEdit,
-        currentMonthProgress: _calculateProgress(updatedAssessment),
-        remainingDaysToGoal: _calculateRemainingDays(updatedAssessment),
-      ));
-    } catch (e) {
-      emit(ZoroWorkoutError(message: 'Erro ao atualizar meta de dias: $e'));
     }
   }
 
@@ -205,47 +93,69 @@ class ZoroWorkoutBloc extends Bloc<ZoroWorkoutEvent, ZoroWorkoutState> {
     Emitter<ZoroWorkoutState> emit,
   ) async {
     try {
-      final currentAssessment = await _service.getCurrentMonthAssessment();
-      final assessmentHistory = await _service.getAssessmentHistory();
-      
+      final currentAssessment = await _service.getCurrentUserAssessment();
+      final assessmentHistory = await _service.getUserAssessmentHistory();
+
       emit(ZoroWorkoutLoaded(
         currentAssessment: currentAssessment,
         assessmentHistory: assessmentHistory,
         hasCurrentAssessment: currentAssessment != null,
-        canEditCurrentAssessment: currentAssessment?.canEdit ?? false,
+        canEditCurrentAssessment: true,
         currentMonthProgress: _calculateProgress(currentAssessment),
         remainingDaysToGoal: _calculateRemainingDays(currentAssessment),
       ));
     } catch (e) {
-      emit(ZoroWorkoutError(message: 'Erro ao recarregar dados: $e'));
+      emit(ZoroWorkoutError(message: 'Erro ao atualizar: $e'));
     }
   }
+
+  Future<void> _onUpdateWorkoutDays(
+    UpdateWorkoutDays event,
+    Emitter<ZoroWorkoutState> emit,
+  ) async {
+    try {
+      final currentAssessment = await _service.getCurrentUserAssessment();
+      if (currentAssessment == null) {
+        emit(const ZoroWorkoutError(
+            message: 'None assessment found for the current month'));
+        return;
+      }
+
+      await _service.updateWorkoutDays(event.workoutDays);
+      
+      final updatedAssessment = await _service.getCurrentUserAssessment();
+      
+      emit(ZoroWorkoutLoaded(
+        currentAssessment: updatedAssessment,
+        assessmentHistory: await _service.getUserAssessmentHistory(),
+        hasCurrentAssessment: true,
+        canEditCurrentAssessment: true,
+        currentMonthProgress: _calculateProgress(updatedAssessment),
+        remainingDaysToGoal: _calculateRemainingDays(updatedAssessment),
+      ));
+    } catch (e) {
+      emit(ZoroWorkoutError(message: 'Error updating workout days: $e'));
+    }
+  }
+
+
 
   void _onClearError(
     ClearError event,
     Emitter<ZoroWorkoutState> emit,
   ) {
-    if (state is ZoroWorkoutLoaded) {
-      emit(state);
-    }
+    emit(const ZoroWorkoutInitial());
   }
 
-  double _calculateProgress(WorkoutAssessment? assessment) {
-    if (assessment == null) return 0.0;
+  double _calculateProgress(WorkoutAssessmentModel? assessment) {
+    if (assessment == null || assessment.workoutDaysGoal == null) return 0.0;
     
-    final goal = assessment.workoutDaysGoal;
-    final completed = assessment.workoutDays.length;
-    
-    if (goal == 0) return 0.0;
-    return (completed / goal).clamp(0.0, 1.0);
+    return 0.0; 
   }
 
-  int _calculateRemainingDays(WorkoutAssessment? assessment) {
-    if (assessment == null) return 0;
+  int _calculateRemainingDays(WorkoutAssessmentModel? assessment) {
+    if (assessment == null || assessment.workoutDaysGoal == null) return 0;
     
-    final goal = assessment.workoutDaysGoal;
-    final completed = assessment.workoutDays.length;
-    
-    return (goal - completed).clamp(0, goal);
+    return 0; 
   }
 }
