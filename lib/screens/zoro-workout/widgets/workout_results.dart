@@ -1,13 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:opfan/l10n/app_localizations.dart';
+import 'package:opfan/utils/constants.dart';
 import 'package:opfan/utils/theme.dart';
 import 'package:opfan/utils/gender_mapper.dart';
+import 'package:opfan/widgets/atoms/gomu_gomu_divider.dart';
 import '../workout_constants.dart';
 import 'workout_calendar.dart';
 
 class WorkoutResults extends StatelessWidget {
   final Map<String, dynamic> healthResults;
-  final List<String> recommendedExercises;
+  final List<Map<String, dynamic>> recommendedExercises;
   final VoidCallback onBackToSetup;
 
   const WorkoutResults({
@@ -19,38 +21,87 @@ class WorkoutResults extends StatelessWidget {
 
   Widget _buildMetricRow(BuildContext context, String label, String value, String category) {
     Color categoryColor = AppColors.green[300]!;
-    if (category.contains('Regular') || category.contains('Atenção')) {
-      categoryColor = Theme.of(context).colorScheme.tertiary;
-    } else if (category.contains('Alto') ||
-        category.contains('Risco') ||
-        category.contains('Precisa')) {
-      categoryColor = Theme.of(context).colorScheme.error;
-    }
+    IconData categoryIcon = Icons.check_circle;
 
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 8),
+    if (category
+            .contains(AppLocalizations.of(context)!.workout_category_regular) ||
+        category
+            .contains(AppLocalizations.of(context)!.workout_category_high) ||
+        category.contains(
+            AppLocalizations.of(context)!.workout_category_attention)) {
+      categoryColor = AppColors.yellow[500]!;
+      categoryIcon = Icons.warning;
+    } else if (category.contains(
+            AppLocalizations.of(context)!.workout_category_high_risk) ||
+        category.contains(
+            AppLocalizations.of(context)!.workout_category_needs_improvement)) {
+      categoryColor = Theme.of(context).colorScheme.errorContainer;
+      categoryIcon = Icons.error;
+    }
+    
+    return Container(
+      margin: const EdgeInsets.only(bottom: 12),
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: Theme.of(context).colorScheme.surface,
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(
+          color: categoryColor.withValues(alpha: 0.3),
+          width: 1,
+        ),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withValues(alpha: 0.05),
+            blurRadius: 8,
+            offset: const Offset(0, 2),
+          ),
+        ],
+      ),
       child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Expanded(
-            child: Text(
-              label,
-              style: Theme.of(context).textTheme.bodyMedium,
-            ),
-          ),
-          Text(
-            value,
-            style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                  fontWeight: FontWeight.bold,
-                ),
-          ),
-          const SizedBox(width: 10),
           Container(
-            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+            padding: const EdgeInsets.all(8),
             decoration: BoxDecoration(
               color: categoryColor.withValues(alpha: 0.1),
-              borderRadius: BorderRadius.circular(12),
-              border: Border.all(color: categoryColor),
+              borderRadius: BorderRadius.circular(8),
+            ),
+            child: Icon(
+              categoryIcon,
+              color: categoryColor,
+              size: 20,
+            ),
+          ),
+          const SizedBox(width: 12),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  label,
+                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                        fontWeight: FontWeight.w600,
+                      ),
+                ),
+                const SizedBox(height: 4),
+                Text(
+                  value,
+                  style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                        fontWeight: FontWeight.bold,
+                        color: Theme.of(context).colorScheme.primary,
+                      ),
+                ),
+              ],
+            ),
+          ),
+          Container(
+            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+            decoration: BoxDecoration(
+              color: categoryColor.withValues(alpha: 0.15),
+              borderRadius: BorderRadius.circular(20),
+              border: Border.all(
+                color: categoryColor.withValues(alpha: 0.3),
+                width: 1,
+              ),
             ),
             child: Text(
               category,
@@ -82,26 +133,25 @@ class WorkoutResults extends StatelessWidget {
               padding: const EdgeInsets.only(bottom: 8),
               child: Row(
                 children: [
-                  Icon(Icons.fitness_center, color: Colors.green.shade600),
+                  Icon(
+                    exercise['icon'] as IconData,
+                    color: Colors.green.shade600,
+                  ),
                   const SizedBox(width: 10),
                   Expanded(
                     child: Text(
-                      exercise,
+                      exercise['name'] as String,
                       style: Theme.of(context).textTheme.bodyLarge,
                     ),
                   ),
                 ],
               ),
             ))),
-        const SizedBox(height: 30),
-      
-        Container(
+        const SizedBox(height: Constants.margin * 2),
+        GomuGomuDivider(color: Theme.of(context).colorScheme.primary),
+        const SizedBox(height: Constants.margin * 2),
+        SizedBox(
           width: double.infinity,
-          padding: const EdgeInsets.all(20),
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(10),
-            border: Border.all(color: Theme.of(context).colorScheme.primary),
-          ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [

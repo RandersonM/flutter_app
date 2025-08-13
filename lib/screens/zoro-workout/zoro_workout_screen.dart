@@ -18,7 +18,7 @@ class WorkoutScreen extends StatefulWidget {
 
 class _WorkoutScreenState extends State<WorkoutScreen> {
   Map<String, dynamic>? _healthResults;
-  List<String> _recommendedExercises = [];
+  List<Map<String, dynamic>> _recommendedExercises = [];
   bool _showResults = false;
   bool _isLoading = true;
   Map<String, dynamic>? _existingData;
@@ -105,8 +105,9 @@ class _WorkoutScreenState extends State<WorkoutScreen> {
     }
   }
 
-  List<String> _getRecommendedExercises(Map<String, dynamic> results) {
-    List<String> exercises = [];
+  List<Map<String, dynamic>> _getRecommendedExercises(
+      Map<String, dynamic> results) {
+    List<Map<String, dynamic>> exercises = [];
 
     final healthScore = results['health_score'] as double? ?? 0.0;
     final bmi = results['bmi'] as double? ?? 0.0;
@@ -126,51 +127,141 @@ class _WorkoutScreenState extends State<WorkoutScreen> {
   
     if (healthScore >= excellentThreshold) {
       exercises = [
-        AppLocalizations.of(context)!.workout_exercise_advanced_strength,
-        AppLocalizations.of(context)!.workout_exercise_hiit,
-        AppLocalizations.of(context)!.workout_exercise_competitive_sports,
-        AppLocalizations.of(context)!.workout_exercise_complex_functional,
-        AppLocalizations.of(context)!.workout_exercise_flexibility,
+        {
+          'name':
+              AppLocalizations.of(context)!.workout_exercise_advanced_strength,
+          'icon': Icons.fitness_center,
+        },
+        {
+          'name': AppLocalizations.of(context)!.workout_exercise_hiit,
+          'icon': Icons.speed,
+        },
+        {
+          'name':
+              AppLocalizations.of(context)!.workout_exercise_competitive_sports,
+          'icon': Icons.sports_soccer,
+        },
+        {
+          'name':
+              AppLocalizations.of(context)!.workout_exercise_complex_functional,
+          'icon': Icons.accessibility_new,
+        },
+        {
+          'name': AppLocalizations.of(context)!.workout_exercise_flexibility,
+          'icon': Icons.self_improvement,
+        },
       ];
     } else if (healthScore >= goodThreshold) {
       exercises = [
-        AppLocalizations.of(context)!.workout_exercise_strength_training,
-        AppLocalizations.of(context)!.workout_exercise_moderate_cardio,
-        AppLocalizations.of(context)!.workout_exercise_functional,
-        AppLocalizations.of(context)!.workout_exercise_yoga_pilates,
-        AppLocalizations.of(context)!.workout_exercise_recreational_sports,
+        {
+          'name':
+              AppLocalizations.of(context)!.workout_exercise_strength_training,
+          'icon': Icons.fitness_center,
+        },
+        {
+          'name':
+              AppLocalizations.of(context)!.workout_exercise_moderate_cardio,
+          'icon': Icons.directions_run,
+        },
+        {
+          'name': AppLocalizations.of(context)!.workout_exercise_functional,
+          'icon': Icons.accessibility_new,
+        },
+        {
+          'name': AppLocalizations.of(context)!.workout_exercise_yoga_pilates,
+          'icon': Icons.self_improvement,
+        },
+        {
+          'name': AppLocalizations.of(context)!
+              .workout_exercise_recreational_sports,
+          'icon': Icons.sports_basketball,
+        },
       ];
     } else if (healthScore >= regularThreshold) {
       exercises = [
-        AppLocalizations.of(context)!.workout_exercise_walking,
-        AppLocalizations.of(context)!.workout_exercise_basic_strength,
-        AppLocalizations.of(context)!.workout_exercise_water_aerobics,
-        AppLocalizations.of(context)!.workout_exercise_stretching,
-        AppLocalizations.of(context)!.workout_exercise_breathing,
+        {
+          'name': AppLocalizations.of(context)!.workout_exercise_walking,
+          'icon': Icons.directions_walk,
+        },
+        {
+          'name': AppLocalizations.of(context)!.workout_exercise_basic_strength,
+          'icon': Icons.fitness_center,
+        },
+        {
+          'name': AppLocalizations.of(context)!.workout_exercise_water_aerobics,
+          'icon': Icons.pool,
+        },
+        {
+          'name': AppLocalizations.of(context)!.workout_exercise_stretching,
+          'icon': Icons.accessibility_new,
+        },
+        {
+          'name': AppLocalizations.of(context)!.workout_exercise_breathing,
+          'icon': Icons.air,
+        },
       ];
     } else {
       exercises = [
-        AppLocalizations.of(context)!.workout_exercise_light_walking,
-        AppLocalizations.of(context)!.workout_exercise_light_stretching,
-        AppLocalizations.of(context)!.workout_exercise_soft_water_aerobics,
-        AppLocalizations.of(context)!.workout_exercise_tai_chi_yoga,
-        AppLocalizations.of(context)!.workout_exercise_consult_professional,
+        {
+          'name': AppLocalizations.of(context)!.workout_exercise_light_walking,
+          'icon': Icons.directions_walk,
+        },
+        {
+          'name':
+              AppLocalizations.of(context)!.workout_exercise_light_stretching,
+          'icon': Icons.accessibility_new,
+        },
+        {
+          'name': AppLocalizations.of(context)!
+              .workout_exercise_soft_water_aerobics,
+          'icon': Icons.pool,
+        },
+        {
+          'name': AppLocalizations.of(context)!.workout_exercise_tai_chi_yoga,
+          'icon': Icons.self_improvement,
+        },
+        {
+          'name': AppLocalizations.of(context)!
+              .workout_exercise_consult_professional,
+          'icon': Icons.medical_services,
+        },
       ];
     }
 
     if (waistToHeightRatio > goodWaistThreshold) {
       exercises.addAll([
-        AppLocalizations.of(context)!.workout_exercise_cardiovascular_focus,
-        AppLocalizations.of(context)!.workout_exercise_core_training,
-        AppLocalizations.of(context)!.workout_exercise_diet_control,
+        {
+          'name': AppLocalizations.of(context)!
+              .workout_exercise_cardiovascular_focus,
+          'icon': Icons.favorite,
+        },
+        {
+          'name': AppLocalizations.of(context)!.workout_exercise_core_training,
+          'icon': Icons.center_focus_strong,
+        },
+        {
+          'name': AppLocalizations.of(context)!.workout_exercise_diet_control,
+          'icon': Icons.restaurant_menu,
+        },
       ]);
     }
 
     if (bmi > overweightBmiThreshold) {
       exercises.addAll([
-        AppLocalizations.of(context)!.workout_exercise_low_impact,
-        AppLocalizations.of(context)!.workout_exercise_professional_supervision,
-        AppLocalizations.of(context)!.workout_exercise_gradual_progression,
+        {
+          'name': AppLocalizations.of(context)!.workout_exercise_low_impact,
+          'icon': Icons.trending_down,
+        },
+        {
+          'name': AppLocalizations.of(context)!
+              .workout_exercise_professional_supervision,
+          'icon': Icons.supervisor_account,
+        },
+        {
+          'name': AppLocalizations.of(context)!
+              .workout_exercise_gradual_progression,
+          'icon': Icons.trending_up,
+        },
       ]);
     }
 

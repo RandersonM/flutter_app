@@ -1,10 +1,11 @@
 import 'dart:convert';
 import 'dart:io';
 import 'package:firebase_messaging/firebase_messaging.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter/material.dart';
 import 'package:opfan/core/services/firestore_service.dart';
+import 'package:opfan/core/services/navigation_service.dart';
+import 'package:opfan/utils/app_routes.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class NotificationService {
@@ -175,7 +176,78 @@ class NotificationService {
   }
 
   void _handleNotificationNavigation(Map<String, dynamic> data) {
-    debugPrint('NotificationService: Navegação baseada em dados: $data');
+    final type = data['type'] as String?;
+    final id = data['id'] as String?;
+    final route = data['route'] as String?;
+
+    Future.delayed(const Duration(milliseconds: 500), () {
+      _navigateBasedOnNotificationType(type, id, route, data);
+    });
+  }
+
+  void _navigateBasedOnNotificationType(
+      String? type, String? id, String? route, Map<String, dynamic> data) {
+    final navigationService = NavigationService();
+
+    switch (type?.toLowerCase()) {
+      case 'character':
+        if (id != null) {
+          navigationService
+              .navigateTo(AppRoutes.characterDetails, arguments: {'id': id});
+        }
+        break;
+
+      case 'crew':
+        if (id != null) {
+          navigationService
+              .navigateTo(AppRoutes.crewDetails, arguments: {'id': id});
+        }
+        break;
+
+      case 'finances':
+        navigationService.navigateTo(AppRoutes.finances);
+        break;
+
+      case 'workout':
+        navigationService.navigateTo(AppRoutes.workout);
+        break;
+
+      case 'cooking':
+        navigationService.navigateTo(AppRoutes.cooking);
+        break;
+
+      case 'calculator':
+        navigationService.navigateTo(AppRoutes.calculator);
+        break;
+
+      case 'devil_fruit':
+        navigationService.navigateTo(AppRoutes.devilFruit);
+        break;
+
+      case 'duels':
+        navigationService.navigateTo(AppRoutes.duels);
+        break;
+
+      case 'one_piece':
+        navigationService.navigateTo(AppRoutes.onePiece);
+        break;
+
+      case 'custom':
+        if (route != null &&
+            AppRoutes.getRoute(RouteSettings(name: route)) != null) {
+          navigationService.navigateTo(AppRoutes.home, arguments: data);
+        }
+        break;
+
+      default:
+        if (route != null &&
+            AppRoutes.getRoute(RouteSettings(name: route)) != null) {
+          navigationService.navigateTo(route, arguments: data);
+        } else {
+          navigationService.navigateTo(AppRoutes.home);
+        }
+        break;
+    }
   }
 
   Future<void> subscribeToTopic(String topic) async {
