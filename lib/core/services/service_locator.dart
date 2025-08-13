@@ -21,6 +21,7 @@ import 'package:opfan/screens/crews/blocs/index.dart';
 import 'package:opfan/screens/nami-finances/blocs/nami_finances_bloc.dart';
 import 'package:opfan/core/services/nami_finances_service.dart';
 import 'package:opfan/screens/zoro-workout/blocs/index.dart';
+import 'package:opfan/screens/sanji-cooking/blocs/index.dart';
 
 final GetIt getIt = GetIt.instance;
 
@@ -127,6 +128,10 @@ Future<void> configureDependencies() async {
   getIt.registerFactory<ZoroWorkoutBloc>(
     () => ZoroWorkoutBloc(),
   );
+
+  getIt.registerFactory<SanjiCookingBloc>(
+    () => SanjiCookingBloc(),
+  );
 }
 
 Future<void> resetDependencies() async {
@@ -170,6 +175,7 @@ extension ServiceLocatorExtensions on GetIt {
   ListCrewsBloc get listCrewsBloc => get<ListCrewsBloc>();
   AuthBloc get authBloc => get<AuthBloc>();
   ZoroWorkoutBloc get zoroWorkoutBloc => get<ZoroWorkoutBloc>();
+  SanjiCookingBloc get sanjiCookingBloc => get<SanjiCookingBloc>();
 }
 
 

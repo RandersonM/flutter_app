@@ -3,14 +3,17 @@ import 'package:opfan/widgets/atoms/custom_dropdown.dart';
 import 'package:opfan/widgets/atoms/custom_text_field.dart';
 import 'package:opfan/l10n/app_localizations.dart';
 import 'package:opfan/core/services/service_locator.dart';
+import 'package:opfan/utils/gender_mapper.dart';
 import '../blocs/index.dart';
 
 class WorkoutSetup extends StatefulWidget {
   final Function(Map<String, dynamic>) onCalculate;
+  final Map<String, dynamic>? existingData;
 
   const WorkoutSetup({
     super.key,
     required this.onCalculate,
+    this.existingData,
   });
 
   @override
@@ -25,6 +28,71 @@ class _WorkoutSetupState extends State<WorkoutSetup> {
   final _ageController = TextEditingController();
   String? _selectedGender;
   int? _selectedWorkoutDays;
+  late ZoroWorkoutBloc _bloc;
+  List<int> _workoutDays = [];
+
+  @override
+  void initState() {
+    super.initState();
+    _bloc = getIt.zoroWorkoutBloc;
+    _bloc.stream.listen((state) {
+      if (state is ZoroWorkoutError) {
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(state.message),
+              backgroundColor: Colors.red,
+            ),
+          );
+        }
+      }
+    });
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    _fillWithExistingData();
+  }
+
+  @override
+  void didUpdateWidget(WorkoutSetup oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.existingData != widget.existingData) {
+      _fillWithExistingData();
+    }
+  }
+
+  void _fillWithExistingData() {
+    if (widget.existingData != null) {
+      final data = widget.existingData!;
+
+      if (data['age'] != null) {
+        _ageController.text = data['age'].toString();
+      }
+      if (data['weight'] != null) {
+        _weightController.text = data['weight'].toString();
+      }
+      if (data['height'] != null) {
+        _heightController.text = data['height'].toString();
+      }
+      if (data['waist'] != null) {
+        _waistController.text = data['waist'].toString();
+      }
+      if (data['gender'] != null) {
+        _selectedGender = GenderMapper.getLocalizedValue(
+          data['gender'],
+          AppLocalizations.of(context)!,
+        );
+      }
+      if (data['workoutDaysGoal'] != null) {
+        _selectedWorkoutDays = data['workoutDaysGoal'];
+      }
+      if (data['workoutDays'] != null) {
+        _workoutDays = data['workoutDays'];
+      }
+    }
+  }
 
   @override
   void dispose() {
@@ -50,17 +118,22 @@ class _WorkoutSetupState extends State<WorkoutSetup> {
           _calculateHealthScore(bmi, waistToHeightRatio, bodyFatPercentage);
 
       final results = {
+        'gender': GenderMapper.getInternalValue(
+            _selectedGender!, AppLocalizations.of(context)!),
+        'age': age,
+        'height': height,
+        'weight': weight,
+        'waist': waist,
         'bmi': bmi,
-        'waistToHeightRatio': waistToHeightRatio,
-        'bodyFatPercentage': bodyFatPercentage,
-        'healthScore': healthScore,
-        'workoutDaysGoal': _selectedWorkoutDays,
+        'waist_to_height_ratio': waistToHeightRatio,
+        'body_fat_percentage': bodyFatPercentage,
+        'health_score': healthScore,
+        'workout_days_goal': _selectedWorkoutDays,
+        'workout_days': _workoutDays,
       };
 
-      final bloc = getIt.zoroWorkoutBloc;
-      bloc.add(SaveNewAssessment(
+      _bloc.add(SaveNewAssessment(
         healthResults: results,
-        workoutDaysGoal: _selectedWorkoutDays ?? 0,
       ));
 
       widget.onCalculate(results);
@@ -70,8 +143,10 @@ class _WorkoutSetupState extends State<WorkoutSetup> {
   double _calculateBodyFatPercentage(
       double weight, double height, int age, String gender) {
     final bmi = weight / ((height / 100) * (height / 100));
+    final internalGender =
+        GenderMapper.getInternalValue(gender, AppLocalizations.of(context)!);
 
-    if (gender == 'Masculino') {
+    if (internalGender == GenderMapper.male) {
       return (1.2 * bmi) + (0.23 * age) - 16.2;
     } else {
       return (1.2 * bmi) + (0.23 * age) - 5.4;
@@ -166,10 +241,8 @@ class _WorkoutSetupState extends State<WorkoutSetup> {
           CustomDropdown<String>(
             value: _selectedGender,
             label: AppLocalizations.of(context)!.workout_gender,
-            items: [
-              AppLocalizations.of(context)!.workout_gender_male,
-              AppLocalizations.of(context)!.workout_gender_female,
-            ],
+            items:
+                GenderMapper.getLocalizedOptions(AppLocalizations.of(context)!),
             onChanged: (value) {
               setState(() {
                 _selectedGender = value;

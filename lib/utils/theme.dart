@@ -106,6 +106,21 @@ class AppColors {
     800: Color(0xFF493240)
   });
 
+  static const int _yellowPrimaryValue = 0xFFFFD700;
+  static const MaterialColor yellow = MaterialColor(
+    _yellowPrimaryValue,
+    <int, Color>{
+      100: Color(0xFFFFF3E5),
+      200: Color(0xFFFFE0CC),
+      300: Color(0xFFFFC2A3),
+      400: Color(0xFFFFA47A),
+      500: Color(_yellowPrimaryValue),
+      600: Color(0xFFE65F18),
+      700: Color(0xFFCC5315),
+      800: Color(0xFF654900),
+    },
+  );
+
   static const int _orangePrimaryValue = 0xFFFF6D1B;
 
   static const MaterialColor orange = MaterialColor(
@@ -327,6 +342,15 @@ ThemeData getLightTheme() {
         filled: true,
       ),
     ),
+    outlinedButtonTheme: OutlinedButtonThemeData(
+      style: OutlinedButton.styleFrom(
+        foregroundColor: AppColors.purple[600],
+        side: BorderSide(color: AppColors.purple[600]!),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(Constants.margin * 2),
+        ),
+      ),
+    ),
   );
 }
 
@@ -434,6 +458,15 @@ ThemeData getDarkTheme() {
         ),
         fillColor: Color(0xFF2A2A2A),
         filled: true,
+      ),
+    ),
+    outlinedButtonTheme: OutlinedButtonThemeData(
+      style: OutlinedButton.styleFrom(
+        foregroundColor: AppColors.purple[300],
+        side: BorderSide(color: AppColors.purple[300]!),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(16),
+        ),
       ),
     ),
   );

@@ -422,7 +422,7 @@ abstract class AppLocalizations {
   /// **'Ex: Luffy, Straw Hat'**
   String get nicknameHint;
 
-  /// Label for character age field
+  /// Label for age field.
   ///
   /// In en, this message translates to:
   /// **'Age'**
@@ -2492,7 +2492,7 @@ abstract class AppLocalizations {
   /// **'Obesity grade 2'**
   String get workout_category_obesity_2;
 
-  /// Obesity grade 3 category for BMI.
+  /// BMI category for grade 3 obesity.
   ///
   /// In en, this message translates to:
   /// **'Obesity grade 3'**
@@ -2791,6 +2791,534 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'days'**
   String get workout_days;
+
+  /// Cooking screen title for bottom navigation.
+  ///
+  /// In en, this message translates to:
+  /// **'Cooking'**
+  String get cooking;
+
+  /// Title for the plate guide screen.
+  ///
+  /// In en, this message translates to:
+  /// **'Healthy Plate Guide'**
+  String get plateGuideTitle;
+
+  /// Header text explaining the plate guide.
+  ///
+  /// In en, this message translates to:
+  /// **'Based on Brazilian Ministry of Health recommendations, this guide shows how to build a balanced plate with ideal proportions of each food group.'**
+  String get plateGuideHeader;
+
+  /// Title for the pie chart section.
+  ///
+  /// In en, this message translates to:
+  /// **'Plate Division'**
+  String get plateDivision;
+
+  /// Title for vegetables section.
+  ///
+  /// In en, this message translates to:
+  /// **'Vegetables and Legumes'**
+  String get vegetablesTitle;
+
+  /// Subtitle for vegetables section.
+  ///
+  /// In en, this message translates to:
+  /// **'50% of plate'**
+  String get vegetablesSubtitle;
+
+  /// Description for vegetables section.
+  ///
+  /// In en, this message translates to:
+  /// **'Regulatory foods rich in vitamins, minerals and fiber'**
+  String get vegetablesDescription;
+
+  /// Examples for vegetables section.
+  ///
+  /// In en, this message translates to:
+  /// **'Lettuce, watercress, arugula, spinach, broccoli, cauliflower, carrot, zucchini'**
+  String get vegetablesExamples;
+
+  /// Title for proteins section.
+  ///
+  /// In en, this message translates to:
+  /// **'Proteins'**
+  String get proteinsTitle;
+
+  /// Subtitle for proteins section.
+  ///
+  /// In en, this message translates to:
+  /// **'25% of plate'**
+  String get proteinsSubtitle;
+
+  /// Description for proteins section.
+  ///
+  /// In en, this message translates to:
+  /// **'Building foods essential for muscles and tissues'**
+  String get proteinsDescription;
+
+  /// Examples for proteins section.
+  ///
+  /// In en, this message translates to:
+  /// **'Chicken, fish, meat, eggs, beans, lentils, chickpeas'**
+  String get proteinsExamples;
+
+  /// Title for carbohydrates section.
+  ///
+  /// In en, this message translates to:
+  /// **'Carbohydrates'**
+  String get carbohydratesTitle;
+
+  /// Subtitle for carbohydrates section.
+  ///
+  /// In en, this message translates to:
+  /// **'25% of plate'**
+  String get carbohydratesSubtitle;
+
+  /// Description for carbohydrates section.
+  ///
+  /// In en, this message translates to:
+  /// **'Energy foods that provide energy for the body'**
+  String get carbohydratesDescription;
+
+  /// Examples for carbohydrates section.
+  ///
+  /// In en, this message translates to:
+  /// **'Rice, potato, pasta, bread, sweet potato, cassava'**
+  String get carbohydratesExamples;
+
+  /// Title for Sanji's tips section.
+  ///
+  /// In en, this message translates to:
+  /// **'Sanji\'s Tips'**
+  String get sanjiTipsTitle;
+
+  /// First tip from Sanji.
+  ///
+  /// In en, this message translates to:
+  /// **'Prefer fresh or minimally processed foods'**
+  String get sanjiTip1;
+
+  /// Second tip from Sanji.
+  ///
+  /// In en, this message translates to:
+  /// **'Use salt, oils and sugars in moderation'**
+  String get sanjiTip2;
+
+  /// Third tip from Sanji.
+  ///
+  /// In en, this message translates to:
+  /// **'Vary the colors and types of vegetables and legumes'**
+  String get sanjiTip3;
+
+  /// Fourth tip from Sanji.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose healthier preparations (steam, sautéed, baked)'**
+  String get sanjiTip4;
+
+  /// Fifth tip from Sanji.
+  ///
+  /// In en, this message translates to:
+  /// **'Enjoy fruits as dessert and snacks'**
+  String get sanjiTip5;
+
+  /// Reference text about the Brazilian food guide.
+  ///
+  /// In en, this message translates to:
+  /// **'Consult the Food Guide for the Brazilian Population from the Ministry of Health for more detailed information.'**
+  String get sanjiReference;
+
+  /// Examples text with food list.
+  ///
+  /// In en, this message translates to:
+  /// **'Examples: {foodList}'**
+  String examples(String foodList);
+
+  /// Title for nutrition results section.
+  ///
+  /// In en, this message translates to:
+  /// **'Nutritional Results'**
+  String get nutritionResultsTitle;
+
+  /// Title for BMR metric card.
+  ///
+  /// In en, this message translates to:
+  /// **'BMR (Basal Metabolic Rate)'**
+  String get bmrTitle;
+
+  /// Subtitle for BMR metric card.
+  ///
+  /// In en, this message translates to:
+  /// **'Calories your body burns at rest'**
+  String get bmrSubtitle;
+
+  /// Title for TDEE metric card.
+  ///
+  /// In en, this message translates to:
+  /// **'TDEE (Total Daily Energy Expenditure)'**
+  String get tdeeTitle;
+
+  /// Subtitle for TDEE metric card.
+  ///
+  /// In en, this message translates to:
+  /// **'Total calories you spend per day'**
+  String get tdeeSubtitle;
+
+  /// Title for calories per goal section.
+  ///
+  /// In en, this message translates to:
+  /// **'Calories per Goal'**
+  String get caloriesPerGoal;
+
+  /// Maintain weight goal option.
+  ///
+  /// In en, this message translates to:
+  /// **'Maintain Weight'**
+  String get maintainWeight;
+
+  /// Lose weight goal option.
+  ///
+  /// In en, this message translates to:
+  /// **'Lose Weight'**
+  String get loseWeight;
+
+  /// Muscle gain goal option.
+  ///
+  /// In en, this message translates to:
+  /// **'Gain Muscle'**
+  String get gainMuscle;
+
+  /// Weight loss goal option.
+  ///
+  /// In en, this message translates to:
+  /// **'Weight Loss'**
+  String get weightLoss;
+
+  /// Maintenance goal option.
+  ///
+  /// In en, this message translates to:
+  /// **'Maintenance'**
+  String get maintenance;
+
+  /// Muscle gain goal option.
+  ///
+  /// In en, this message translates to:
+  /// **'Muscle Gain'**
+  String get muscleGain;
+
+  /// Title for classifications section.
+  ///
+  /// In en, this message translates to:
+  /// **'Classifications'**
+  String get classifications;
+
+  /// BMI label.
+  ///
+  /// In en, this message translates to:
+  /// **'BMI'**
+  String get bmi;
+
+  /// Waist to height ratio label.
+  ///
+  /// In en, this message translates to:
+  /// **'Waist/Height'**
+  String get waistToHeight;
+
+  /// Title for Sanji's tip section.
+  ///
+  /// In en, this message translates to:
+  /// **'Sanji\'s Tip'**
+  String get sanjiTipTitle;
+
+  /// Text for Sanji's tip.
+  ///
+  /// In en, this message translates to:
+  /// **'Consult a nutritionist for a personalized meal plan based on these calculations!'**
+  String get sanjiTipText;
+
+  /// Question for plate guide section.
+  ///
+  /// In en, this message translates to:
+  /// **'How to build a healthy plate?'**
+  String get plateGuideQuestion;
+
+  /// Subtitle for plate guide section.
+  ///
+  /// In en, this message translates to:
+  /// **'Learn the Ministry of Health recommendations for building a balanced plate'**
+  String get plateGuideSubtitle;
+
+  /// Button text to view plate guide.
+  ///
+  /// In en, this message translates to:
+  /// **'View Plate Guide'**
+  String get viewPlateGuide;
+
+  /// Calories per day format.
+  ///
+  /// In en, this message translates to:
+  /// **'{calories} kcal/day'**
+  String kcalPerDay(String calories);
+
+  /// Título da tela de finanças com a Nami.
+  ///
+  /// In en, this message translates to:
+  /// **'Economize com a Nami'**
+  String get financeWithNami;
+
+  /// Title for Sanji cooking screen.
+  ///
+  /// In en, this message translates to:
+  /// **'Cooking with Sanji'**
+  String get cookingWithSanji;
+
+  /// Button text for new calculation.
+  ///
+  /// In en, this message translates to:
+  /// **'New Calculation'**
+  String get newCalculation;
+
+  /// Loading text when calculating nutrition.
+  ///
+  /// In en, this message translates to:
+  /// **'Calculating nutrition...'**
+  String get calculatingNutrition;
+
+  /// First Sanji quote for header.
+  ///
+  /// In en, this message translates to:
+  /// **'\"A true chef doesn\'t just cook, but nourishes the soul!\" - Sanji'**
+  String get sanjiQuote1;
+
+  /// Second Sanji quote for header.
+  ///
+  /// In en, this message translates to:
+  /// **'\"Food is the fuel that moves the body and spirit!\" - Sanji'**
+  String get sanjiQuote2;
+
+  /// Third Sanji quote for header.
+  ///
+  /// In en, this message translates to:
+  /// **'\"A balanced diet is fundamental to maintain energy and health!\" - Sanji'**
+  String get sanjiQuote3;
+
+  /// Fourth Sanji quote for header.
+  ///
+  /// In en, this message translates to:
+  /// **'\"Here you will find recipes that combine nutrition and flavor!\" - Sanji'**
+  String get sanjiQuote4;
+
+  /// Fifth Sanji quote for header.
+  ///
+  /// In en, this message translates to:
+  /// **'\"Inspired by the culinary philosophy of the best chef of the seas!\" - Sanji'**
+  String get sanjiQuote5;
+
+  /// Title for personal data section.
+  ///
+  /// In en, this message translates to:
+  /// **'Personal Data'**
+  String get personalData;
+
+  /// Label for gender field.
+  ///
+  /// In en, this message translates to:
+  /// **'Gender'**
+  String get gender;
+
+  /// Validation message for gender selection.
+  ///
+  /// In en, this message translates to:
+  /// **'Select gender'**
+  String get selectGender;
+
+  /// Validation message for age field.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter your age'**
+  String get enterAge;
+
+  /// Validation message for invalid number.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter a valid number'**
+  String get enterValidNumber;
+
+  /// Label for weight field.
+  ///
+  /// In en, this message translates to:
+  /// **'Weight (kg)'**
+  String get weight;
+
+  /// Validation message for weight field.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter your weight'**
+  String get enterWeight;
+
+  /// Label for height field.
+  ///
+  /// In en, this message translates to:
+  /// **'Height (cm)'**
+  String get height;
+
+  /// Validation message for height field.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter your height'**
+  String get enterHeight;
+
+  /// Label for waist circumference field.
+  ///
+  /// In en, this message translates to:
+  /// **'Waist Circumference (cm)'**
+  String get waistCircumference;
+
+  /// Validation message for waist field.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter waist measurement'**
+  String get enterWaist;
+
+  /// Title for activity level section.
+  ///
+  /// In en, this message translates to:
+  /// **'Activity Level'**
+  String get activityLevel;
+
+  /// Label for activity level dropdown.
+  ///
+  /// In en, this message translates to:
+  /// **'Select your activity level'**
+  String get selectActivityLevel;
+
+  /// Validation message for activity level selection.
+  ///
+  /// In en, this message translates to:
+  /// **'Select the activity level'**
+  String get selectActivityLevelValidation;
+
+  /// Title for goal section.
+  ///
+  /// In en, this message translates to:
+  /// **'Goal'**
+  String get goal;
+
+  /// Label for goal dropdown.
+  ///
+  /// In en, this message translates to:
+  /// **'Select your goal'**
+  String get selectGoal;
+
+  /// Validation message for goal selection.
+  ///
+  /// In en, this message translates to:
+  /// **'Select your goal'**
+  String get selectGoalValidation;
+
+  /// Button text to calculate nutrition.
+  ///
+  /// In en, this message translates to:
+  /// **'Calculate Nutrition'**
+  String get calculateNutrition;
+
+  /// Error message when link cannot be opened.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not open link'**
+  String get couldNotOpenLink;
+
+  /// Sedentary activity level option.
+  ///
+  /// In en, this message translates to:
+  /// **'Sedentary'**
+  String get sedentary;
+
+  /// Light activity level option.
+  ///
+  /// In en, this message translates to:
+  /// **'Light'**
+  String get light;
+
+  /// Moderate activity level option.
+  ///
+  /// In en, this message translates to:
+  /// **'Moderate'**
+  String get moderate;
+
+  /// Active activity level option.
+  ///
+  /// In en, this message translates to:
+  /// **'Active'**
+  String get active;
+
+  /// Very active activity level option.
+  ///
+  /// In en, this message translates to:
+  /// **'Very Active'**
+  String get veryActive;
+
+  /// BMI category for underweight.
+  ///
+  /// In en, this message translates to:
+  /// **'Underweight'**
+  String get underweight;
+
+  /// BMI category for normal weight.
+  ///
+  /// In en, this message translates to:
+  /// **'Normal Weight'**
+  String get normalWeight;
+
+  /// BMI category for overweight.
+  ///
+  /// In en, this message translates to:
+  /// **'Overweight'**
+  String get overweight;
+
+  /// BMI category for grade 1 obesity.
+  ///
+  /// In en, this message translates to:
+  /// **'Grade 1 Obesity'**
+  String get obesityGrade1;
+
+  /// BMI category for grade 2 obesity.
+  ///
+  /// In en, this message translates to:
+  /// **'Grade 2 Obesity'**
+  String get obesityGrade2;
+
+  /// BMI category for grade 3 obesity.
+  ///
+  /// In en, this message translates to:
+  /// **'Grade 3 Obesity'**
+  String get obesityGrade3;
+
+  /// Waist-to-height ratio category for excellent.
+  ///
+  /// In en, this message translates to:
+  /// **'Excellent'**
+  String get excellent;
+
+  /// Waist-to-height ratio category for good.
+  ///
+  /// In en, this message translates to:
+  /// **'Good'**
+  String get good;
+
+  /// Waist-to-height ratio category for attention.
+  ///
+  /// In en, this message translates to:
+  /// **'Attention'**
+  String get attention;
+
+  /// Waist-to-height ratio category for high risk.
+  ///
+  /// In en, this message translates to:
+  /// **'High Risk'**
+  String get highRisk;
 }
 
 class _AppLocalizationsDelegate

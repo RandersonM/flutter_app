@@ -30,21 +30,24 @@ class _WorkoutCalendarState extends State<WorkoutCalendar> {
     if (currentState is ZoroWorkoutLoaded) {
       _loadAssessmentData(currentState);
     } else {
-      _bloc.add(const CheckAndCreateNewMonth());
+      _bloc.add(const InitializeWorkoutAssessment());
     }
   }
 
   void _loadAssessmentData(ZoroWorkoutLoaded state) {
     setState(() {
       _monthlyWorkoutDays.clear();
-      for (final assessment in state.assessmentHistory) {
-        final monthKey = assessment.monthYear;
-        _monthlyWorkoutDays[monthKey] = assessment.workoutDays;
-      }
       
-      if (state.currentAssessment != null) {
-        final currentMonthKey = state.currentAssessment!.monthYear;
-        _monthlyWorkoutDays[currentMonthKey] = state.currentAssessment!.workoutDays;
+      if (state.currentAssessment?.workoutDays != null) {
+        final monthKey = state.currentAssessment!.monthYear;
+        _monthlyWorkoutDays[monthKey] = state.currentAssessment!.workoutDays!;
+      }
+
+      for (final assessment in state.assessmentHistory) {
+        if (assessment.workoutDays != null) {
+          final monthKey = assessment.monthYear;
+          _monthlyWorkoutDays[monthKey] = assessment.workoutDays!;
+        }
       }
       
       _updateCurrentMonthDays();
@@ -55,6 +58,16 @@ class _WorkoutCalendarState extends State<WorkoutCalendar> {
     _bloc.stream.listen((state) {
       if (state is ZoroWorkoutLoaded) {
         _loadAssessmentData(state);
+      } else if (state is ZoroWorkoutError) {
+        _updateCurrentMonthDays();
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(state.message),
+              backgroundColor: Colors.red,
+            ),
+          );
+        }
       }
     });
   }
@@ -99,7 +112,8 @@ class _WorkoutCalendarState extends State<WorkoutCalendar> {
       
       calendarDays.add(
         GestureDetector(
-          onTap: isEditable ? () {
+          onTap: isEditable
+              ? () {
             setState(() {
               if (isWorkoutDay) {
                 _workoutDays.remove(day);
@@ -214,7 +228,7 @@ class _WorkoutCalendarState extends State<WorkoutCalendar> {
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(10),
-        border: Border.all(color: Theme.of(context).colorScheme.primary.withValues(alpha: 0.3)),
+        border: Border.all(color: Theme.of(context).colorScheme.primary),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,

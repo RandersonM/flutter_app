@@ -21,7 +21,8 @@ class _WorkoutScreenState extends State<WorkoutScreen> {
   List<String> _recommendedExercises = [];
   bool _showResults = false;
   bool _isLoading = true;
-  WorkoutAssessment? _currentAssessment;
+  Map<String, dynamic>? _existingData;
+  WorkoutAssessmentModel? _currentAssessment;
 
   @override
   void initState() {
@@ -41,12 +42,12 @@ class _WorkoutScreenState extends State<WorkoutScreen> {
         setState(() {
           _isLoading = false;
           _currentAssessment = state.currentAssessment;
-          if (state.hasCurrentAssessment) {
+          if (state.hasCurrentAssessment && state.currentAssessment != null) {
             final assessment = state.currentAssessment!;
-            if (assessment.healthResults.isNotEmpty) {
-              _healthResults = assessment.healthResults;
+            if (assessment.workoutDaysGoal != null) {
+              _healthResults = assessment.toJson();
               _recommendedExercises =
-                  _getRecommendedExercises(assessment.healthResults);
+                  _getRecommendedExercises(assessment.toJson());
               _showResults = true;
             }
           }
@@ -58,7 +59,7 @@ class _WorkoutScreenState extends State<WorkoutScreen> {
       }
     });
     
-    bloc.add(const CheckAndCreateNewMonth());
+    bloc.add(const InitializeWorkoutAssessment());
   }
 
   void _onCalculate(Map<String, dynamic> results) {
@@ -79,20 +80,51 @@ class _WorkoutScreenState extends State<WorkoutScreen> {
   }
 
   void _onBackToSetup() {
-    setState(() {
-      _healthResults = null;
-      _recommendedExercises = [];
-      _showResults = false;
-    });
+    if (_currentAssessment != null) {
+      setState(() {
+        _healthResults = null;
+        _recommendedExercises = [];
+        _showResults = false;
+        _existingData = {
+          'age': _currentAssessment!.age,
+          'gender': _currentAssessment!.gender,
+          'weight': _currentAssessment!.weight,
+          'height': _currentAssessment!.height,
+          'waist': _currentAssessment!.waist,
+          'workoutDaysGoal': _currentAssessment!.workoutDaysGoal,
+          'workoutDays': _currentAssessment!.workoutDays,
+        };
+      });
+    } else {
+      setState(() {
+        _healthResults = null;
+        _recommendedExercises = [];
+        _showResults = false;
+        _existingData = null;
+      });
+    }
   }
 
   List<String> _getRecommendedExercises(Map<String, dynamic> results) {
     List<String> exercises = [];
-    final healthScore = results['healthScore'] as double;
-    final bmi = results['bmi'] as double;
-    final waistToHeightRatio = results['waistToHeightRatio'] as double;
+
+    final healthScore = results['health_score'] as double? ?? 0.0;
+    final bmi = results['bmi'] as double? ?? 0.0;
+    final waistToHeightRatio =
+        results['waist_to_height_ratio'] as double? ?? 0.0;
+
+    final excellentThreshold =
+        WorkoutConstants.healthScoreThresholds['excellent'] ?? 90.0;
+    final goodThreshold =
+        WorkoutConstants.healthScoreThresholds['good'] ?? 70.0;
+    final regularThreshold =
+        WorkoutConstants.healthScoreThresholds['regular'] ?? 50.0;
+    final goodWaistThreshold =
+        WorkoutConstants.waistToHeightThresholds['good'] ?? 0.5;
+    final overweightBmiThreshold =
+        WorkoutConstants.bmiThresholds['overweight'] ?? 25.0;
   
-    if (healthScore >= WorkoutConstants.healthScoreThresholds['excellent']!) {
+    if (healthScore >= excellentThreshold) {
       exercises = [
         AppLocalizations.of(context)!.workout_exercise_advanced_strength,
         AppLocalizations.of(context)!.workout_exercise_hiit,
@@ -100,7 +132,7 @@ class _WorkoutScreenState extends State<WorkoutScreen> {
         AppLocalizations.of(context)!.workout_exercise_complex_functional,
         AppLocalizations.of(context)!.workout_exercise_flexibility,
       ];
-    } else if (healthScore >= WorkoutConstants.healthScoreThresholds['good']!) {
+    } else if (healthScore >= goodThreshold) {
       exercises = [
         AppLocalizations.of(context)!.workout_exercise_strength_training,
         AppLocalizations.of(context)!.workout_exercise_moderate_cardio,
@@ -108,8 +140,7 @@ class _WorkoutScreenState extends State<WorkoutScreen> {
         AppLocalizations.of(context)!.workout_exercise_yoga_pilates,
         AppLocalizations.of(context)!.workout_exercise_recreational_sports,
       ];
-    } else if (healthScore >=
-        WorkoutConstants.healthScoreThresholds['regular']!) {
+    } else if (healthScore >= regularThreshold) {
       exercises = [
         AppLocalizations.of(context)!.workout_exercise_walking,
         AppLocalizations.of(context)!.workout_exercise_basic_strength,
@@ -127,8 +158,7 @@ class _WorkoutScreenState extends State<WorkoutScreen> {
       ];
     }
 
-    if (waistToHeightRatio >
-        WorkoutConstants.waistToHeightThresholds['good']!) {
+    if (waistToHeightRatio > goodWaistThreshold) {
       exercises.addAll([
         AppLocalizations.of(context)!.workout_exercise_cardiovascular_focus,
         AppLocalizations.of(context)!.workout_exercise_core_training,
@@ -136,7 +166,7 @@ class _WorkoutScreenState extends State<WorkoutScreen> {
       ]);
     }
 
-    if (bmi > WorkoutConstants.bmiThresholds['overweight']!) {
+    if (bmi > overweightBmiThreshold) {
       exercises.addAll([
         AppLocalizations.of(context)!.workout_exercise_low_impact,
         AppLocalizations.of(context)!.workout_exercise_professional_supervision,
@@ -182,6 +212,7 @@ class _WorkoutScreenState extends State<WorkoutScreen> {
               else
                 WorkoutSetup(
                   onCalculate: _onCalculate,
+                  existingData: _existingData,
                 ),
             ],
           ),

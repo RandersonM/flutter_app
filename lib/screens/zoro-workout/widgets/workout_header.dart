@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:opfan/core/models/workout_assessment_model.dart';
 
 class WorkoutHeader extends StatelessWidget {
-  final WorkoutAssessment? currentAssessment;
+  final WorkoutAssessmentModel? currentAssessment;
   
   const WorkoutHeader({
     super.key,
@@ -66,9 +66,10 @@ class WorkoutHeader extends StatelessWidget {
   }
 
   bool _shouldShowDefeatedImage() {
-    print('currentAssessment: ${currentAssessment?.workoutDays}');
-    print('currentAssessment Days Goal: ${currentAssessment?.workoutDaysGoal}');
-    if (currentAssessment == null) return false;
+    if (currentAssessment == null ||
+        currentAssessment!.workoutDaysGoal == null) {
+      return false;
+    }
     
     final now = DateTime.now();
     final startOfWeek = now.subtract(Duration(days: now.weekday - 1));
@@ -80,12 +81,13 @@ class WorkoutHeader extends StatelessWidget {
       for (int i = 0; i < 7; i++) {
         final weekDay = startOfWeek.add(Duration(days: i));
         if (weekDay.isBefore(now.add(const Duration(days: 1))) &&
-            currentAssessment!.workoutDays.contains(weekDay.day)) {
+            currentAssessment!.workoutDays != null &&
+            currentAssessment!.workoutDays!.contains(weekDay.day)) {
           workoutDaysThisWeek++;
         }
       }
     }
     
-    return workoutDaysThisWeek < currentAssessment!.workoutDaysGoal;
+    return workoutDaysThisWeek < currentAssessment!.workoutDaysGoal!;
   }
 }
