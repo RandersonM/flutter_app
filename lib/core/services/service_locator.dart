@@ -9,7 +9,6 @@ import 'package:opfan/core/repository/featured_character_repository.dart';
 import 'package:opfan/core/services/auth_service.dart';
 import 'package:opfan/core/services/firestore_service.dart';
 import 'package:opfan/core/services/notification_service.dart';
-import 'package:opfan/core/services/notification_manager_service.dart';
 import 'package:opfan/core/services/ai_image_service.dart';
 import 'package:opfan/core/services/gemini_image_service.dart';
 import 'package:opfan/core/repository/custom_character_repository.dart';
@@ -30,10 +29,6 @@ Future<void> configureDependencies() async {
 
   getIt.registerLazySingleton<NotificationService>(
     () => NotificationService(),
-  );
-
-  getIt.registerLazySingleton<NotificationManagerService>(
-    () => NotificationManagerService(),
   );
 
   getIt.registerLazySingleton<DevilFruitService>(

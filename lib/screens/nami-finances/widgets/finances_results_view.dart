@@ -320,7 +320,7 @@ class _FinancesResultsViewState extends State<FinancesResultsView> {
                         style: TextTheme.of(context).bodySmall?.copyWith(
                           fontWeight: FontWeight.bold,
                           color: widget.finances.savingsPercentage >= 10 
-                            ? AppColors.green[500]!
+                                  ? AppColors.yellow[500]!
                             : AppColors.red[500]!,
                         ),
                         textAlign: TextAlign.center,

@@ -122,32 +122,35 @@ class NutritionResults extends StatelessWidget {
         Container(
           padding: const EdgeInsets.all(16),
           decoration: BoxDecoration(
-            color: AppColors.yellow[900],
             borderRadius: BorderRadius.circular(8),
-            border: Border.all(color: AppColors.yellow[300]!),
+            border: Border.all(color: Theme.of(context).colorScheme.primary),
           ),
           child: Column(
             children: [
-              Icon(
-                Icons.lightbulb_outline,
-                color: AppColors.yellow[500],
-                size: 24,
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                mainAxisSize: MainAxisSize.max,
+                children: [
+                  Icon(
+                    Icons.lightbulb_outline,
+                    color: AppColors.yellow[500],
+                    size: 24,
+                  ),
+                  const SizedBox(width: Constants.margin / 2),
+                  Text(
+                    AppLocalizations.of(context)!.sanjiTipTitle,
+                    style: Theme.of(context).textTheme.titleSmall?.copyWith(
+                          fontWeight: FontWeight.bold,
+                          color: AppColors.yellow[500],
+                        ),
+                  ),
+                ],
               ),
-              const SizedBox(height: 8),
-              Text(
-                AppLocalizations.of(context)!.sanjiTipTitle,
-                style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                      fontWeight: FontWeight.bold,
-                      color: AppColors.yellow[500],
-                    ),
-              ),
-              const SizedBox(height: 4),
+              const SizedBox(height: Constants.margin),
               Text(
                 AppLocalizations.of(context)!.sanjiTipText,
                 textAlign: TextAlign.center,
                 style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                     fontWeight: FontWeight.bold,
-                      color: AppColors.yellow[500],
                     ),
                     
               ),
@@ -384,7 +387,7 @@ class NutritionResults extends StatelessWidget {
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: AppColors.yellow[300]!),
+        border: Border.all(color: Theme.of(context).colorScheme.primary),
       ),
       child: Column(
         children: [
@@ -410,9 +413,8 @@ class NutritionResults extends StatelessWidget {
           const SizedBox(height: 8),
           Text(
             AppLocalizations.of(context)!.plateGuideSubtitle,
-            style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                  color: AppColors.yellow[700],
-                ),
+            style: Theme.of(context).textTheme.bodySmall,
+            textAlign: TextAlign.center,
           ),
           const SizedBox(height: 16),
           SizedBox(
@@ -424,9 +426,6 @@ class NutritionResults extends StatelessWidget {
               icon: const Icon(Icons.visibility),
               label: Text(AppLocalizations.of(context)!.viewPlateGuide),
               style: OutlinedButton.styleFrom(
-                foregroundColor: Theme.of(context).brightness == Brightness.dark 
-                    ? AppColors.yellow[500] 
-                    : null,
                 padding: const EdgeInsets.symmetric(vertical: 12),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(8),
