@@ -52,6 +52,7 @@ class AppColors {
     100: Color(0xFFD8B1D4),
     200: Color(0xFFC38BBF),
     300: Color(0xFFAD66A9),
+    350: Color(0xFF7D5BA6),
     400: Color(0xFF973E95),
     500: Color(_purplePrimaryValue),
     600: Color(0xFF6A0C6A),
@@ -270,6 +271,7 @@ ThemeData getLightTheme() {
       onSurface: AppColors.grey[900],
       surfaceContainerLow: AppColors.purple[300],
       surfaceContainerHigh: AppColors.grey[100],
+      onSecondaryContainer: AppColors.purple[900],
     ),
     dividerColor: AppColors.grey[300],
     textTheme: const TextTheme(
@@ -388,6 +390,7 @@ ThemeData getDarkTheme() {
       onSurface: Colors.white,
       surfaceContainerLow: AppColors.grey[900]!,
       surfaceContainerHigh: AppColors.grey[900]!,
+      onSecondaryContainer: AppColors.purple[100],
     ),
     dividerColor: const Color(0xFF404040),
     textTheme: const TextTheme(

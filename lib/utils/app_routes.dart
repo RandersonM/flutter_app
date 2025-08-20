@@ -14,6 +14,7 @@ import 'package:opfan/screens/home/home_screen.dart';
 import 'package:opfan/screens/nami-finances/nami_finances_screen.dart';
 import 'package:opfan/screens/one_piece/characters_list_screen.dart';
 import 'package:opfan/screens/one_piece/widgets/details/character_details_screen.dart';
+import 'package:opfan/screens/robin-knowledge/robin_knowledge_screen.dart';
 import 'package:opfan/screens/zoro-workout/zoro_workout_screen.dart';
 import 'package:opfan/screens/sanji-cooking/sanji_cooking_screen.dart';
 import 'package:opfan/screens/sanji-cooking/widgets/plate_guide_screen.dart';
@@ -40,6 +41,7 @@ class AppRoutes {
   static const String calculator = '/calculator';
   static const String finances = '/finances';
   static const String devilFruit = '/devilFruit';
+  static const String knowledge = '/knowledge';
   
   // Additional screen routes (public)
   static const String youtubePlayer = '/youtubePlayer';
@@ -117,6 +119,9 @@ class AppRoutes {
       case calculator:
         return MaterialPageRouteWithoutTransition<dynamic>(
             builder: (_) => const CalculatorScreen(), settings: settings);
+      case knowledge:
+        return MaterialPageRouteWithoutTransition<dynamic>(
+            builder: (_) => const RobinKnowledgeScreen(), settings: settings);
       case finances:
         return MaterialPageRouteWithoutTransition<dynamic>(
             builder: (_) => const NamiFinancesScreen(), settings: settings);            
