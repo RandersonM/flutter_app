@@ -2,12 +2,12 @@
 // Copyright © 2022.
 
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 import 'package:opfan/l10n/app_localizations.dart';
 import 'package:opfan/utils/app_routes.dart';
 import 'package:opfan/utils/constants.dart' show Constants;
+import 'package:opfan/utils/icons/one_piece_icons.dart';
 import 'package:opfan/utils/theme.dart';
 
 enum BottomNavigationPages {
@@ -15,6 +15,7 @@ enum BottomNavigationPages {
   finances,
   workout,
   cooking,
+  knowledge,
 }
 
 class BottomNavigation extends StatefulWidget {
@@ -31,10 +32,11 @@ class BottomNavigation extends StatefulWidget {
 
 class BottomNavigationState extends State<BottomNavigation> {
   static const List<BottomNavigationPages> _pages = <BottomNavigationPages>[
-    BottomNavigationPages.home,
     BottomNavigationPages.finances,
     BottomNavigationPages.workout,
+    BottomNavigationPages.home,
     BottomNavigationPages.cooking,
+    BottomNavigationPages.knowledge,
   ];
 
   Future<void> _navigateToPage(BottomNavigationPages page) async {
@@ -72,6 +74,13 @@ class BottomNavigationState extends State<BottomNavigation> {
           ModalRoute.withName(AppRoutes.cooking),
         );
         break;
+      case BottomNavigationPages.knowledge:
+        await Navigator.pushNamedAndRemoveUntil(
+          context,
+          AppRoutes.knowledge,
+          ModalRoute.withName(AppRoutes.knowledge),
+        );
+        break;
     }
   }
 
@@ -87,51 +96,103 @@ class BottomNavigationState extends State<BottomNavigation> {
     final localizations = AppLocalizations.of(context)!;
     
     final (String label, IconData icon) = switch (page) {
-      BottomNavigationPages.home => (
-          localizations.home,
-          FontAwesomeIcons.water
-        ),
       BottomNavigationPages.finances => (
           localizations.finances,
           FontAwesomeIcons.coins,
         ),
       BottomNavigationPages.workout => (
-          '  ${localizations.workout}',
+          localizations.workout,
           FontAwesomeIcons.dumbbell 
+        ),
+      BottomNavigationPages.home => (
+          localizations.home,
+          OnePieceIcons.jollyRoger,
         ),
       BottomNavigationPages.cooking => (
           localizations.cooking,
           FontAwesomeIcons.utensils,
         ),
+      BottomNavigationPages.knowledge => (
+          localizations.planner,
+          FontAwesomeIcons.book,
+        ),
     };
 
-    return BottomNavigationBarItem(
-      icon: Container(
-        width: double.infinity,
-        padding: const EdgeInsets.symmetric(
-          vertical: Constants.margin,
+    // Special design for home button (middle)
+    if (page == BottomNavigationPages.home) {
+      return BottomNavigationBarItem(
+        icon: Container(
+          width: double.infinity,
+          padding: const EdgeInsets.all(Constants.margin),
+          decoration: BoxDecoration(
+            shape: BoxShape.circle,
+            color: Theme.of(context).colorScheme.tertiaryContainer,
+          ),
+          child: Column(
+            spacing: Constants.margin / 2,
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Icon(
+                icon,
+                size: IconSize.medium,
+                color: Theme.of(context).colorScheme.onPrimary,
+              ),
+              Text(
+                label,
+                style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                      fontWeight: FontWeight.bold,
+                      color: Theme.of(context).colorScheme.onPrimary,
+                    ),
+                textAlign: TextAlign.center,
+              ),
+            ],
+          ),
         ),
+        activeIcon: Container(
+          width: double.infinity,
+          padding: const EdgeInsets.all(Constants.margin),
+          decoration: BoxDecoration(
+            shape: BoxShape.circle,
+            color: Theme.of(context).colorScheme.primary,
+          ),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Icon(
+                icon,
+                size: IconSize.medium,
+                color: Theme.of(context).colorScheme.onPrimary,
+              ),
+              const SizedBox(height: 2),
+              Text(
+                label,
+                style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                      fontWeight: FontWeight.bold,
+                      color: Theme.of(context).colorScheme.onPrimary,
+                    ),
+                textAlign: TextAlign.center,
+              ),
+            ],
+          ),
+        ),
+        label: '',
+      );
+    }
+
+    // Regular design for other buttons
+    return BottomNavigationBarItem(
+      icon: SizedBox(
+        width: double.infinity,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            icon == Icons.apple
-                ? SvgPicture.asset(
-                    'assets/svg/gomu-gomu.svg',
-                    width: IconSize.medium,
-                    height: IconSize.medium,
-                    colorFilter: ColorFilter.mode(
-                      Theme.of(context)
-                          .colorScheme
-                          .onSurface
-                          .withValues(alpha: 0.6),
-                      BlendMode.srcIn,
-                    ),
-                  )
-                : Icon(
-                    icon,
-                    size: IconSize.medium,
-                  ),
+            Icon(
+              icon,
+              size: IconSize.medium,
+            ),
             const SizedBox(height: 4),
             Text(
               label,
@@ -170,7 +231,7 @@ class BottomNavigationState extends State<BottomNavigation> {
           ],
         ),
       ),
-      label: '', // Removendo o label padrão pois agora está customizado
+      label: '',
     );
   }
 
@@ -179,10 +240,8 @@ class BottomNavigationState extends State<BottomNavigation> {
     final theme = Theme.of(context);
     final colorScheme = theme.colorScheme;
 
-    return Transform.translate(
-      offset: const Offset(0, Constants.margin),
+    return SafeArea(
       child: Container(
-        padding: const EdgeInsets.only(bottom: Constants.margin),
         decoration: BoxDecoration(
           borderRadius: const BorderRadius.vertical(
             top: Radius.circular(20.0),
