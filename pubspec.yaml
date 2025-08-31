@@ -51,6 +51,7 @@ dependencies:
   uuid: ^4.5.1
   fl_chart: ^1.0.0
   url_launcher: ^6.2.5
+  stylish_bottom_bar: ^1.1.1
 
 dev_dependencies:
   test: ^1.24.6

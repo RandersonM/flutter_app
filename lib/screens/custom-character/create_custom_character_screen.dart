@@ -93,12 +93,6 @@ class _CreateCustomCharacterScreenState extends State<CreateCustomCharacterScree
             appBar: DefaultAppBar(
               title: Text(
                   AppLocalizations.of(context)!.createCustomCharacterTitle),
-              leading: IconButton(
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
-                icon: const Icon(Icons.arrow_back),
-              ),
             ),
             body: BlocListener<CustomCharacterBloc, CustomCharacterState>(
               listenWhen: (previous, current) {

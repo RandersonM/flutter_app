@@ -3455,5 +3455,312 @@
     "description": "Waist-to-height ratio category for high risk.",
     "type": "text",
     "placeholders": {}
+  },
+  "planner": "Planner",
+  "@planner": {
+    "description": "Planner",
+    "type": "text",
+    "placeholders": {}
+  },
+  "knowledgeTitleScreen": "Knowledge with Robin",
+  "@knowledgeTitleScreen": {
+    "description": "Knowledge with Robin title screen",
+    "type": "text",
+    "placeholders": {}
+  },
+  "timelineOfObjectives": "Timeline of Objectives",
+  "@timelineOfObjectives": {
+    "description": "Title for timeline of objectives section",
+    "type": "text",
+    "placeholders": {}
+  },
+  "seeAll": "See All",
+  "@seeAll": {
+    "description": "Button text to see all objectives",
+    "type": "text",
+    "placeholders": {}
+  },
+  "noObjectivesCreated": "No objectives created",
+  "@noObjectivesCreated": {
+    "description": "Message when no objectives are created",
+    "type": "text",
+    "placeholders": {}
+  },
+  "startCreatingFirstObjective": "Start creating your first objective",
+  "@startCreatingFirstObjective": {
+    "description": "Message to encourage creating first objective",
+    "type": "text",
+    "placeholders": {}
+  },
+  "recentObjectives": "Recent Objectives",
+  "@recentObjectives": {
+    "description": "Title for recent objectives section",
+    "type": "text",
+    "placeholders": {}
+  },
+  "total": "total",
+  "@total": {
+    "description": "Label for total count",
+    "type": "text",
+    "placeholders": {}
+  },
+  "errorLoadingObjectives": "Error loading objectives",
+  "@errorLoadingObjectives": {
+    "description": "Error message when loading objectives fails",
+    "type": "text",
+    "placeholders": {}
+  },
+  "organizeStudyGoals": "Organize your study goals",
+  "@organizeStudyGoals": {
+    "description": "Description for timeline section",
+    "type": "text",
+    "placeholders": {}
+  },
+  "progress": "Progress",
+  "@progress": {
+    "description": "Label for progress section",
+    "type": "text",
+    "placeholders": {}
+  },
+  "details": "Details",
+  "@details": {
+    "description": "Title for details section",
+    "type": "text",
+    "placeholders": {}
+  },
+  "creationDate": "Creation Date",
+  "@creationDate": {
+    "description": "Label for creation date",
+    "type": "text",
+    "placeholders": {}
+  },
+  "deadline": "Deadline",
+  "@deadline": {
+    "description": "Label for deadline",
+    "type": "text",
+    "placeholders": {}
+  },
+  "category": "Category",
+  "@category": {
+    "description": "Label for category",
+    "type": "text",
+    "placeholders": {}
+  },
+  "notes": "Notes",
+  "@notes": {
+    "description": "Title for notes section",
+    "type": "text",
+    "placeholders": {}
+  },
+  "tags": "Tags",
+  "@tags": {
+    "description": "Title for tags section",
+    "type": "text",
+    "placeholders": {}
+  },
+  "completed": "Completed",
+  "@completed": {
+    "description": "Status for completed objective",
+    "type": "text",
+    "placeholders": {}
+  },
+  "inProgress": "In Progress",
+  "@inProgress": {
+    "description": "Status for objective in progress",
+    "type": "text",
+    "placeholders": {}
+  },
+  "overdue": "Overdue",
+  "@overdue": {
+    "description": "Status for overdue objective",
+    "type": "text",
+    "placeholders": {}
+  },
+  "notStarted": "Not Started",
+  "@notStarted": {
+    "description": "Status for objective not started",
+    "type": "text",
+    "placeholders": {}
+  },
+  "study": "Study",
+  "@study": {
+    "description": "Category name for study",
+    "type": "text",
+    "placeholders": {}
+  },
+  "work": "Work",
+  "@work": {
+    "description": "Category name for work",
+    "type": "text",
+    "placeholders": {}
+  },
+  "personal": "Personal",
+  "@personal": {
+    "description": "Category name for personal",
+    "type": "text",
+    "placeholders": {}
+  },
+  "health": "Health",
+  "@health": {
+    "description": "Category name for health",
+    "type": "text",
+    "placeholders": {}
+  },
+  "finance": "Finance",
+  "@finance": {
+    "description": "Category name for finance",
+    "type": "text",
+    "placeholders": {}
+  },
+  "other": "Other",
+  "@other": {
+    "description": "Category name for other",
+    "type": "text",
+    "placeholders": {}
+  },
+  "dueToday": "Due today",
+  "@dueToday": {
+    "description": "Text for deadline due today",
+    "type": "text",
+    "placeholders": {}
+  },
+  "dueInDays": "Due in {days} days",
+  "@dueInDays": {
+    "description": "Text for deadline due in X days",
+    "type": "text",
+    "placeholders": {
+      "days": {
+        "type": "int",
+        "example": "5"
+      }
+    }
+  },
+  "overdueDays": "Overdue by {days} days",
+  "@overdueDays": {
+    "description": "Text for overdue deadline",
+    "type": "text",
+    "placeholders": {
+      "days": {
+        "type": "int",
+        "example": "3"
+      }
+    }
+  },
+  "dueDaysAgo": "Due {days} days ago",
+  "@dueDaysAgo": {
+    "description": "Text for deadline that passed",
+    "type": "text",
+    "placeholders": {
+      "days": {
+        "type": "int",
+        "example": "2"
+      }
+    }
+  },
+  "delete": "Delete",
+  "@delete": {
+    "description": "Action to delete something",
+    "type": "text",
+    "placeholders": {}
+  },
+  "deleteObjective": "Delete Objective",
+  "@deleteObjective": {
+    "description": "Title for delete objective dialog",
+    "type": "text",
+    "placeholders": {}
+  },
+  "deleteObjectiveConfirmation": "Are you sure you want to delete \"{title}\"?",
+  "@deleteObjectiveConfirmation": {
+    "description": "Confirmation message for deleting objective",
+    "type": "text",
+    "placeholders": {
+      "title": {
+        "type": "String",
+        "example": "Study Flutter"
+      }
+    }
+  },
+  "cancel": "Cancel",
+  "@cancel": {
+    "description": "Cancel button text",
+    "type": "text",
+    "placeholders": {}
+  },
+  "completed": "Completed",
+  "@completed": {
+    "description": "Label for completed objectives",
+    "type": "text",
+    "placeholders": {}
+  },
+  "all": "All",
+  "@all": {
+    "description": "Filter option for all items",
+    "type": "text",
+    "placeholders": {}
+  },
+  "newGoal": "New Goal",
+  "@newGoal": {
+    "description": "Title for new goal dialog",
+    "type": "text",
+    "placeholders": {}
+  },
+  "title": "Title",
+  "@title": {
+    "description": "Label for title field",
+    "type": "text",
+    "placeholders": {}
+  },
+  "titleRequired": "Title is required",
+  "@titleRequired": {
+    "description": "Validation message for required title",
+    "type": "text",
+    "placeholders": {}
+  },
+  "enterGoalTitle": "Enter the goal title",
+  "@enterGoalTitle": {
+    "description": "Hint for goal title field",
+    "type": "text",
+    "placeholders": {}
+  },
+  "description": "Description",
+  "@description": {
+    "description": "Label for description field",
+    "type": "text",
+    "placeholders": {}
+  },
+  "enterGoalDescription": "Enter a description for the goal",
+  "@enterGoalDescription": {
+    "description": "Hint for goal description field",
+    "type": "text",
+    "placeholders": {}
+  },
+  "initialProgress": "Initial Progress: {progress}%",
+  "@initialProgress": {
+    "description": "Label for initial progress slider",
+    "type": "text",
+    "placeholders": {
+      "progress": {
+        "type": "int",
+        "example": "25"
+      }
+    }
+  },
+  "enterTagsCommaSeparated": "Enter tags separated by comma",
+  "@enterTagsCommaSeparated": {
+    "description": "Hint for tags field",
+    "type": "text",
+    "placeholders": {}
+  },
+  "enterAdditionalNotes": "Enter additional notes",
+  "@enterAdditionalNotes": {
+    "description": "Hint for notes field",
+    "type": "text",
+    "placeholders": {}
+  },
+  "save": "Save",
+  "@save": {
+    "description": "Save button text",
+    "type": "text",
+    "placeholders": {}
   }
 }

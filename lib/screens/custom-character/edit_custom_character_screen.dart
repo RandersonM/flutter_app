@@ -164,12 +164,6 @@ class _EditCustomCharacterScreenState extends State<EditCustomCharacterScreen> {
             appBar: DefaultAppBar(
               title: Text(
                   AppLocalizations.of(context)!.editCustomCharacterTitle),
-              leading: IconButton(
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
-                icon: const Icon(Icons.arrow_back),
-              ),
             ),
             body: BlocListener<CustomCharacterBloc, CustomCharacterState>(
               listenWhen: (previous, current) {

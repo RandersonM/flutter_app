@@ -159,7 +159,7 @@ class AppLocalizationsPt extends AppLocalizations {
   String get edit => 'Editar';
 
   @override
-  String get delete => 'Deletar';
+  String get delete => 'Excluir';
 
   @override
   String get noImage => 'Sem Imagem';
@@ -1640,7 +1640,7 @@ class AppLocalizationsPt extends AppLocalizations {
   String get financeWithNami => 'Economize com a Nami';
 
   @override
-  String get cookingWithSanji => 'Culinária com o Sanji';
+  String get cookingWithSanji => 'Cozinhe com o Sanji';
 
   @override
   String get newCalculation => 'Novo Cálculo';
@@ -1769,4 +1769,129 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get highRisk => 'Risco Elevado';
+
+  @override
+  String get planner => 'Planos';
+
+  @override
+  String get knowledgeTitleScreen => 'Planeje com a Robin';
+
+  @override
+  String get timelineOfObjectives => 'Timeline de Objetivos';
+
+  @override
+  String get seeAll => 'Ver Todos';
+
+  @override
+  String get noObjectivesCreated => 'Nenhum objetivo criado';
+
+  @override
+  String get startCreatingFirstObjective =>
+      'Comece criando seu primeiro objetivo';
+
+  @override
+  String get recentObjectives => 'Objetivos Recentes';
+
+  @override
+  String get total => 'total';
+
+  @override
+  String get errorLoadingObjectives => 'Erro ao carregar objetivos';
+
+  @override
+  String get organizeStudyGoals => 'Organize suas metas de estudo';
+
+  @override
+  String get progress => 'Progresso';
+
+  @override
+  String get details => 'Detalhes';
+
+  @override
+  String get creationDate => 'Data de Criação';
+
+  @override
+  String get deadline => 'Prazo';
+
+  @override
+  String get notes => 'Anotações';
+
+  @override
+  String get completed => 'Concluídos';
+
+  @override
+  String get inProgress => 'Em Progresso';
+
+  @override
+  String get overdue => 'Atrasado';
+
+  @override
+  String get notStarted => 'Não Iniciado';
+
+  @override
+  String get study => 'Estudo';
+
+  @override
+  String get work => 'Trabalho';
+
+  @override
+  String get personal => 'Pessoal';
+
+  @override
+  String get finance => 'Finanças';
+
+  @override
+  String get dueToday => 'Vence hoje';
+
+  @override
+  String dueInDays(int days) {
+    return 'Vence em $days dias';
+  }
+
+  @override
+  String overdueDays(int days) {
+    return 'Atrasado há $days dias';
+  }
+
+  @override
+  String dueDaysAgo(int days) {
+    return 'Venceu há $days dias';
+  }
+
+  @override
+  String get deleteObjective => 'Excluir Objetivo';
+
+  @override
+  String deleteObjectiveConfirmation(String title) {
+    return 'Tem certeza que deseja excluir \"$title\"?';
+  }
+
+  @override
+  String get all => 'Todos';
+
+  @override
+  String get newGoal => 'Nova Meta';
+
+  @override
+  String get title => 'Título';
+
+  @override
+  String get titleRequired => 'O título é obrigatório';
+
+  @override
+  String get enterGoalTitle => 'Digite o título do objetivo';
+
+  @override
+  String get enterGoalDescription => 'Digite uma descrição para o objetivo';
+
+  @override
+  String initialProgress(int progress) {
+    return 'Progresso Inicial: $progress%';
+  }
+
+  @override
+  String get enterTagsCommaSeparated => 'Digite as tags separadas por vírgula';
+
+  @override
+  String get enterAdditionalNotes => 'Digite anotações adicionais';
 }

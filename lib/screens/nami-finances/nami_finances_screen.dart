@@ -28,10 +28,13 @@ class _NamiFinancesScreenState extends State<NamiFinancesScreen> {
     return BlocProvider(
       create: (context) => getIt<NamiFinancesBloc>()..add(LoadCurrentMonthFinances()),
       child: Scaffold(
+        bottomNavigationBar:
+            const BottomNavigation(BottomNavigationPages.finances),
         appBar: DefaultAppBar(title: Text(l10n.financeWithNami)),
         body: Container(
           color: Theme.of(context).colorScheme.surface,
           child: Column(
+            spacing: Constants.margin * 2,
             children: [
               Expanded(
                 child: SingleChildScrollView(
@@ -75,7 +78,6 @@ class _NamiFinancesScreenState extends State<NamiFinancesScreen> {
                   ),
                 ),
               ),
-              const BottomNavigation(BottomNavigationPages.finances),
             ],
           ),
         ),

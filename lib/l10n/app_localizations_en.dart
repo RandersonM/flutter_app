@@ -1137,7 +1137,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get remove => 'Remove';
 
   @override
-  String get save => 'Salvar';
+  String get save => 'Save';
 
   @override
   String get value => 'Value';
@@ -1764,4 +1764,129 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get highRisk => 'High Risk';
+
+  @override
+  String get planner => 'Planner';
+
+  @override
+  String get knowledgeTitleScreen => 'Knowledge with Robin';
+
+  @override
+  String get timelineOfObjectives => 'Timeline of Objectives';
+
+  @override
+  String get seeAll => 'See All';
+
+  @override
+  String get noObjectivesCreated => 'No objectives created';
+
+  @override
+  String get startCreatingFirstObjective =>
+      'Start creating your first objective';
+
+  @override
+  String get recentObjectives => 'Recent Objectives';
+
+  @override
+  String get total => 'total';
+
+  @override
+  String get errorLoadingObjectives => 'Error loading objectives';
+
+  @override
+  String get organizeStudyGoals => 'Organize your study goals';
+
+  @override
+  String get progress => 'Progress';
+
+  @override
+  String get details => 'Details';
+
+  @override
+  String get creationDate => 'Creation Date';
+
+  @override
+  String get deadline => 'Deadline';
+
+  @override
+  String get notes => 'Notes';
+
+  @override
+  String get completed => 'Completed';
+
+  @override
+  String get inProgress => 'In Progress';
+
+  @override
+  String get overdue => 'Overdue';
+
+  @override
+  String get notStarted => 'Not Started';
+
+  @override
+  String get study => 'Study';
+
+  @override
+  String get work => 'Work';
+
+  @override
+  String get personal => 'Personal';
+
+  @override
+  String get finance => 'Finance';
+
+  @override
+  String get dueToday => 'Due today';
+
+  @override
+  String dueInDays(int days) {
+    return 'Due in $days days';
+  }
+
+  @override
+  String overdueDays(int days) {
+    return 'Overdue by $days days';
+  }
+
+  @override
+  String dueDaysAgo(int days) {
+    return 'Due $days days ago';
+  }
+
+  @override
+  String get deleteObjective => 'Delete Objective';
+
+  @override
+  String deleteObjectiveConfirmation(String title) {
+    return 'Are you sure you want to delete \"$title\"?';
+  }
+
+  @override
+  String get all => 'All';
+
+  @override
+  String get newGoal => 'New Goal';
+
+  @override
+  String get title => 'Title';
+
+  @override
+  String get titleRequired => 'Title is required';
+
+  @override
+  String get enterGoalTitle => 'Enter the goal title';
+
+  @override
+  String get enterGoalDescription => 'Enter a description for the goal';
+
+  @override
+  String initialProgress(int progress) {
+    return 'Initial Progress: $progress%';
+  }
+
+  @override
+  String get enterTagsCommaSeparated => 'Enter tags separated by comma';
+
+  @override
+  String get enterAdditionalNotes => 'Enter additional notes';
 }

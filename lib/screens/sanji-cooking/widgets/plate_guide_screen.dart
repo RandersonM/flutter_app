@@ -52,10 +52,6 @@ class _PlateGuideScreenState extends State<PlateGuideScreen> {
     return Scaffold(
       appBar: DefaultAppBar(
         title: Text(AppLocalizations.of(context)!.plateGuideTitle),
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back),
-          onPressed: () => Navigator.of(context).pop(),
-        ),
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16),

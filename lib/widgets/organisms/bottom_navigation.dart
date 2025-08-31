@@ -2,19 +2,19 @@
 // Copyright © 2022.
 
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-
+import 'package:stylish_bottom_bar/stylish_bottom_bar.dart';
 import 'package:opfan/l10n/app_localizations.dart';
 import 'package:opfan/utils/app_routes.dart';
 import 'package:opfan/utils/constants.dart' show Constants;
-import 'package:opfan/utils/theme.dart';
+import 'package:opfan/utils/icons/one_piece_icons.dart';
 
 enum BottomNavigationPages {
   home,
   finances,
   workout,
   cooking,
+  knowledge,
 }
 
 class BottomNavigation extends StatefulWidget {
@@ -31,10 +31,11 @@ class BottomNavigation extends StatefulWidget {
 
 class BottomNavigationState extends State<BottomNavigation> {
   static const List<BottomNavigationPages> _pages = <BottomNavigationPages>[
-    BottomNavigationPages.home,
     BottomNavigationPages.finances,
     BottomNavigationPages.workout,
+    BottomNavigationPages.home,
     BottomNavigationPages.cooking,
+    BottomNavigationPages.knowledge,
   ];
 
   Future<void> _navigateToPage(BottomNavigationPages page) async {
@@ -72,6 +73,13 @@ class BottomNavigationState extends State<BottomNavigation> {
           ModalRoute.withName(AppRoutes.cooking),
         );
         break;
+      case BottomNavigationPages.knowledge:
+        await Navigator.pushNamedAndRemoveUntil(
+          context,
+          AppRoutes.knowledge,
+          ModalRoute.withName(AppRoutes.knowledge),
+        );
+        break;
     }
   }
 
@@ -80,97 +88,52 @@ class BottomNavigationState extends State<BottomNavigation> {
     await _navigateToPage(page);
   }
 
-  BottomNavigationBarItem _buildNavigationItem(
+  BottomBarItem _buildNavigationItem(
     BuildContext context,
     BottomNavigationPages page,
+    bool isActive,
   ) {
     final localizations = AppLocalizations.of(context)!;
     
     final (String label, IconData icon) = switch (page) {
-      BottomNavigationPages.home => (
-          localizations.home,
-          FontAwesomeIcons.water
-        ),
       BottomNavigationPages.finances => (
           localizations.finances,
           FontAwesomeIcons.coins,
         ),
       BottomNavigationPages.workout => (
-          '  ${localizations.workout}',
+          localizations.workout,
           FontAwesomeIcons.dumbbell 
+        ),
+      BottomNavigationPages.home => (
+          localizations.home,
+          OnePieceIcons.jollyRoger,
         ),
       BottomNavigationPages.cooking => (
           localizations.cooking,
           FontAwesomeIcons.utensils,
         ),
+      BottomNavigationPages.knowledge => (
+          localizations.planner,
+          FontAwesomeIcons.book,
+        ),
     };
 
-    return BottomNavigationBarItem(
-      icon: Container(
-        width: double.infinity,
-        padding: const EdgeInsets.symmetric(
-          vertical: Constants.margin,
-        ),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            icon == Icons.apple
-                ? SvgPicture.asset(
-                    'assets/svg/gomu-gomu.svg',
-                    width: IconSize.medium,
-                    height: IconSize.medium,
-                    colorFilter: ColorFilter.mode(
-                      Theme.of(context)
-                          .colorScheme
-                          .onSurface
-                          .withValues(alpha: 0.6),
-                      BlendMode.srcIn,
-                    ),
-                  )
-                : Icon(
-                    icon,
-                    size: IconSize.medium,
-                  ),
-            const SizedBox(height: 4),
-            Text(
-              label,
-              style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                    color: Theme.of(context)
-                        .colorScheme
-                        .onSurface
-                        .withValues(alpha: 0.6),
-                  ),
-              textAlign: TextAlign.center,
-            ),
-          ],
-        ),
+    return BottomBarItem(
+      icon: Icon(
+        icon,
+        color: Theme.of(context).colorScheme.onSecondaryContainer,
       ),
-      activeIcon: Container(
-        width: double.infinity,
-        padding: const EdgeInsets.symmetric(
-          vertical: Constants.margin,
-        ),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Icon(
-              icon,
-              size: IconSize.medium,
-            ),
-            const SizedBox(height: 4),
-            Text(
-              label,
-              style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                    fontWeight: FontWeight.bold,
-                  ),
-              textAlign: TextAlign.center,
-            ),
-          ],
-        ),
+      selectedIcon: Icon(
+        icon,
+        color: Theme.of(context).colorScheme.primary,
       ),
-      label: '', // Removendo o label padrão pois agora está customizado
+      title: Text(label,
+          style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+              fontWeight: FontWeight.bold,
+              color: isActive
+                  ? Theme.of(context).colorScheme.primary
+                  : Theme.of(context).colorScheme.onSecondaryContainer)),
+      backgroundColor: Theme.of(context).colorScheme.primary,
     );
   }
 
@@ -179,40 +142,28 @@ class BottomNavigationState extends State<BottomNavigation> {
     final theme = Theme.of(context);
     final colorScheme = theme.colorScheme;
 
-    return Transform.translate(
-      offset: const Offset(0, Constants.margin),
-      child: Container(
-        padding: const EdgeInsets.only(bottom: Constants.margin),
-        decoration: BoxDecoration(
-          borderRadius: const BorderRadius.vertical(
-            top: Radius.circular(20.0),
-          ),
-          boxShadow: [
-            BoxShadow(
-              color: theme.shadowColor.withValues(alpha: 0.1),
-              blurRadius: 4.0,
-              offset: const Offset(0, -2),
-              spreadRadius: 0,
-            ),
-          ],
+    return SafeArea(
+      child: StylishBottomBar(
+        option: AnimatedBarOptions(
+          iconSize: Constants.iconSize,
+          barAnimation: BarAnimation.transform3D,
+          iconStyle: IconStyle.animated,
+          opacity: 0.3,
         ),
-        child: ClipRRect(
-          borderRadius: const BorderRadius.vertical(
-            top: Radius.circular(20.0),
-          ),
-          child: BottomNavigationBar(
-            type: BottomNavigationBarType.fixed,
-            backgroundColor: colorScheme.surface,
-            selectedItemColor: colorScheme.primary,
-            unselectedItemColor: colorScheme.onSurface.withValues(alpha: 0.6),
-            elevation: 0,
-            items: _pages
-                .map((page) => _buildNavigationItem(context, page))
-                .toList(),
-            currentIndex: _pages.indexOf(widget.currentPage),
-            onTap: _onItemTapped,
-          ),
-        ),
+        fabLocation: StylishBarFabLocation.center,
+        backgroundColor: colorScheme.surface.withValues(alpha: 0.9),
+        notchStyle: NotchStyle.circle,
+        elevation: 2,
+        currentIndex: _pages.indexOf(widget.currentPage),
+        hasNotch: true,
+        items: _pages
+            .map((page) => _buildNavigationItem(
+                  context,
+                  page,
+                  page == widget.currentPage,
+                ))
+            .toList(),
+        onTap: (index) => _onItemTapped(index),
       ),
     );
   }

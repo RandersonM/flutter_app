@@ -362,7 +362,7 @@ abstract class AppLocalizations {
   /// **'Edit'**
   String get edit;
 
-  /// Button text to delete an item
+  /// Action to delete something
   ///
   /// In en, this message translates to:
   /// **'Delete'**
@@ -698,7 +698,7 @@ abstract class AppLocalizations {
   /// **'Create Character'**
   String get createCharacter;
 
-  /// Cancel button text.
+  /// Cancel button text
   ///
   /// In en, this message translates to:
   /// **'Cancel'**
@@ -1598,7 +1598,7 @@ abstract class AppLocalizations {
   /// **'Staff'**
   String get staff;
 
-  /// Fighting type option for other
+  /// Category name for other
   ///
   /// In en, this message translates to:
   /// **'Other'**
@@ -1970,7 +1970,7 @@ abstract class AppLocalizations {
   /// **'Name must be at least 3 characters'**
   String get nameMinLength;
 
-  /// Section title for tags.
+  /// Title for tags section
   ///
   /// In en, this message translates to:
   /// **'Tags'**
@@ -2162,7 +2162,7 @@ abstract class AppLocalizations {
   /// **'/day'**
   String get perDay;
 
-  /// Health expenses category.
+  /// Category name for health
   ///
   /// In en, this message translates to:
   /// **'Health'**
@@ -2174,7 +2174,7 @@ abstract class AppLocalizations {
   /// **'Select expense category:'**
   String get selectExpenseCategory;
 
-  /// Label for category dropdown in expense dialog.
+  /// Label for category
   ///
   /// In en, this message translates to:
   /// **'Category'**
@@ -2186,10 +2186,10 @@ abstract class AppLocalizations {
   /// **'Remove'**
   String get remove;
 
-  /// Rótulo para campo de entrada de valor.
+  /// Save button text
   ///
   /// In en, this message translates to:
-  /// **'Salvar'**
+  /// **'Save'**
   String get save;
 
   /// Label for value input field.
@@ -3319,6 +3319,234 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'High Risk'**
   String get highRisk;
+
+  /// Planner
+  ///
+  /// In en, this message translates to:
+  /// **'Planner'**
+  String get planner;
+
+  /// Knowledge with Robin title screen
+  ///
+  /// In en, this message translates to:
+  /// **'Knowledge with Robin'**
+  String get knowledgeTitleScreen;
+
+  /// Title for timeline of objectives section
+  ///
+  /// In en, this message translates to:
+  /// **'Timeline of Objectives'**
+  String get timelineOfObjectives;
+
+  /// Button text to see all objectives
+  ///
+  /// In en, this message translates to:
+  /// **'See All'**
+  String get seeAll;
+
+  /// Message when no objectives are created
+  ///
+  /// In en, this message translates to:
+  /// **'No objectives created'**
+  String get noObjectivesCreated;
+
+  /// Message to encourage creating first objective
+  ///
+  /// In en, this message translates to:
+  /// **'Start creating your first objective'**
+  String get startCreatingFirstObjective;
+
+  /// Title for recent objectives section
+  ///
+  /// In en, this message translates to:
+  /// **'Recent Objectives'**
+  String get recentObjectives;
+
+  /// Label for total count
+  ///
+  /// In en, this message translates to:
+  /// **'total'**
+  String get total;
+
+  /// Error message when loading objectives fails
+  ///
+  /// In en, this message translates to:
+  /// **'Error loading objectives'**
+  String get errorLoadingObjectives;
+
+  /// Description for timeline section
+  ///
+  /// In en, this message translates to:
+  /// **'Organize your study goals'**
+  String get organizeStudyGoals;
+
+  /// Label for progress section
+  ///
+  /// In en, this message translates to:
+  /// **'Progress'**
+  String get progress;
+
+  /// Title for details section
+  ///
+  /// In en, this message translates to:
+  /// **'Details'**
+  String get details;
+
+  /// Label for creation date
+  ///
+  /// In en, this message translates to:
+  /// **'Creation Date'**
+  String get creationDate;
+
+  /// Label for deadline
+  ///
+  /// In en, this message translates to:
+  /// **'Deadline'**
+  String get deadline;
+
+  /// Title for notes section
+  ///
+  /// In en, this message translates to:
+  /// **'Notes'**
+  String get notes;
+
+  /// Label for completed objectives
+  ///
+  /// In en, this message translates to:
+  /// **'Completed'**
+  String get completed;
+
+  /// Status for objective in progress
+  ///
+  /// In en, this message translates to:
+  /// **'In Progress'**
+  String get inProgress;
+
+  /// Status for overdue objective
+  ///
+  /// In en, this message translates to:
+  /// **'Overdue'**
+  String get overdue;
+
+  /// Status for objective not started
+  ///
+  /// In en, this message translates to:
+  /// **'Not Started'**
+  String get notStarted;
+
+  /// Category name for study
+  ///
+  /// In en, this message translates to:
+  /// **'Study'**
+  String get study;
+
+  /// Category name for work
+  ///
+  /// In en, this message translates to:
+  /// **'Work'**
+  String get work;
+
+  /// Category name for personal
+  ///
+  /// In en, this message translates to:
+  /// **'Personal'**
+  String get personal;
+
+  /// Category name for finance
+  ///
+  /// In en, this message translates to:
+  /// **'Finance'**
+  String get finance;
+
+  /// Text for deadline due today
+  ///
+  /// In en, this message translates to:
+  /// **'Due today'**
+  String get dueToday;
+
+  /// Text for deadline due in X days
+  ///
+  /// In en, this message translates to:
+  /// **'Due in {days} days'**
+  String dueInDays(int days);
+
+  /// Text for overdue deadline
+  ///
+  /// In en, this message translates to:
+  /// **'Overdue by {days} days'**
+  String overdueDays(int days);
+
+  /// Text for deadline that passed
+  ///
+  /// In en, this message translates to:
+  /// **'Due {days} days ago'**
+  String dueDaysAgo(int days);
+
+  /// Title for delete objective dialog
+  ///
+  /// In en, this message translates to:
+  /// **'Delete Objective'**
+  String get deleteObjective;
+
+  /// Confirmation message for deleting objective
+  ///
+  /// In en, this message translates to:
+  /// **'Are you sure you want to delete \"{title}\"?'**
+  String deleteObjectiveConfirmation(String title);
+
+  /// Filter option for all items
+  ///
+  /// In en, this message translates to:
+  /// **'All'**
+  String get all;
+
+  /// Title for new goal dialog
+  ///
+  /// In en, this message translates to:
+  /// **'New Goal'**
+  String get newGoal;
+
+  /// Label for title field
+  ///
+  /// In en, this message translates to:
+  /// **'Title'**
+  String get title;
+
+  /// Validation message for required title
+  ///
+  /// In en, this message translates to:
+  /// **'Title is required'**
+  String get titleRequired;
+
+  /// Hint for goal title field
+  ///
+  /// In en, this message translates to:
+  /// **'Enter the goal title'**
+  String get enterGoalTitle;
+
+  /// Hint for goal description field
+  ///
+  /// In en, this message translates to:
+  /// **'Enter a description for the goal'**
+  String get enterGoalDescription;
+
+  /// Label for initial progress slider
+  ///
+  /// In en, this message translates to:
+  /// **'Initial Progress: {progress}%'**
+  String initialProgress(int progress);
+
+  /// Hint for tags field
+  ///
+  /// In en, this message translates to:
+  /// **'Enter tags separated by comma'**
+  String get enterTagsCommaSeparated;
+
+  /// Hint for notes field
+  ///
+  /// In en, this message translates to:
+  /// **'Enter additional notes'**
+  String get enterAdditionalNotes;
 }
 
 class _AppLocalizationsDelegate

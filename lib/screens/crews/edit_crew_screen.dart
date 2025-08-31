@@ -233,12 +233,6 @@ class _EditCrewScreenState extends State<EditCrewScreen> {
             backgroundColor: theme.colorScheme.surfaceContainer,
             appBar: DefaultAppBar(
               title: Text(AppLocalizations.of(context)!.editCrewTitle),
-              leading: IconButton(
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
-                icon: const Icon(Icons.arrow_back),
-              ),
             ),
             body: BlocListener<EditCrewBloc, EditCrewState>(
               listenWhen: (previous, current) {

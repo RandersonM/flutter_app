@@ -9,7 +9,6 @@ import 'package:opfan/core/repository/featured_character_repository.dart';
 import 'package:opfan/core/services/auth_service.dart';
 import 'package:opfan/core/services/firestore_service.dart';
 import 'package:opfan/core/services/notification_service.dart';
-import 'package:opfan/core/services/ai_image_service.dart';
 import 'package:opfan/core/services/gemini_image_service.dart';
 import 'package:opfan/core/repository/custom_character_repository.dart';
 import 'package:opfan/core/repository/crew_repository.dart';
@@ -19,8 +18,11 @@ import 'package:opfan/core/auth/blocs/index.dart';
 import 'package:opfan/screens/crews/blocs/index.dart';
 import 'package:opfan/screens/nami-finances/blocs/nami_finances_bloc.dart';
 import 'package:opfan/core/services/nami_finances_service.dart';
+import 'package:opfan/screens/robin-knowledge/blocs/robin_knowledge_bloc.dart';
 import 'package:opfan/screens/zoro-workout/blocs/index.dart';
 import 'package:opfan/screens/sanji-cooking/blocs/index.dart';
+import 'package:opfan/core/repository/planner_repository.dart';
+
 
 final GetIt getIt = GetIt.instance;
 
@@ -37,10 +39,6 @@ Future<void> configureDependencies() async {
 
   getIt.registerLazySingleton<YouTubeService>(
     () => YouTubeService(),
-  );
-
-  getIt.registerLazySingleton<AiImageService>(
-    () => AiImageService(),
   );
 
   getIt.registerLazySingleton<GeminiImageService>(
@@ -72,6 +70,10 @@ Future<void> configureDependencies() async {
 
   getIt.registerLazySingleton<CrewRepository>(
     () => CrewRepository(),
+  );
+
+  getIt.registerLazySingleton<PlannerRepository>(
+    () => PlannerRepository(firestoreService: getIt<FirestoreService>()),
   );
 
   getIt.registerFactory<CalculatorProvider>(
@@ -127,6 +129,10 @@ Future<void> configureDependencies() async {
   getIt.registerFactory<SanjiCookingBloc>(
     () => SanjiCookingBloc(),
   );
+
+  getIt.registerLazySingleton<RobinKnowledgeBloc>(
+    () => RobinKnowledgeBloc(plannerRepository: getIt<PlannerRepository>()),
+  );
 }
 
 Future<void> resetDependencies() async {
@@ -148,7 +154,6 @@ extension ServiceLocatorExtensions on GetIt {
       get<FeaturedCharacterRepository>();
   DevilFruitService get devilFruitService => get<DevilFruitService>();
   YouTubeService get youTubeService => get<YouTubeService>();
-  AiImageService get aiImageService => get<AiImageService>();
   GeminiImageService get geminiImageService => get<GeminiImageService>();
 
   AuthService get authService => get<AuthService>();
@@ -160,6 +165,7 @@ extension ServiceLocatorExtensions on GetIt {
       get<CustomCharacterService>();
 
   CrewRepository get crewRepository => get<CrewRepository>();
+  PlannerRepository get plannerRepository => get<PlannerRepository>();
 
   CalculatorProvider get calculatorProvider => get<CalculatorProvider>();
 
@@ -171,6 +177,7 @@ extension ServiceLocatorExtensions on GetIt {
   AuthBloc get authBloc => get<AuthBloc>();
   ZoroWorkoutBloc get zoroWorkoutBloc => get<ZoroWorkoutBloc>();
   SanjiCookingBloc get sanjiCookingBloc => get<SanjiCookingBloc>();
+  RobinKnowledgeBloc get robinKnowledgeBloc => get<RobinKnowledgeBloc>();
 }
 
 

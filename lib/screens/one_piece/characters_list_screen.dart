@@ -24,7 +24,7 @@ class _CharactersListScreenState extends State<CharactersListScreen> {
               onPressed: () {
                 Navigator.of(context).pop();
               },
-              icon: const Icon(Icons.arrow_back),
+              icon: const Icon(Icons.chevron_left, size: 34),
             ),
             actions: [
               Builder(
