@@ -3,12 +3,11 @@
 
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-
+import 'package:stylish_bottom_bar/stylish_bottom_bar.dart';
 import 'package:opfan/l10n/app_localizations.dart';
 import 'package:opfan/utils/app_routes.dart';
 import 'package:opfan/utils/constants.dart' show Constants;
 import 'package:opfan/utils/icons/one_piece_icons.dart';
-import 'package:opfan/utils/theme.dart';
 
 enum BottomNavigationPages {
   home,
@@ -89,9 +88,10 @@ class BottomNavigationState extends State<BottomNavigation> {
     await _navigateToPage(page);
   }
 
-  BottomNavigationBarItem _buildNavigationItem(
+  BottomBarItem _buildNavigationItem(
     BuildContext context,
     BottomNavigationPages page,
+    bool isActive,
   ) {
     final localizations = AppLocalizations.of(context)!;
     
@@ -118,120 +118,22 @@ class BottomNavigationState extends State<BottomNavigation> {
         ),
     };
 
-    // Special design for home button (middle)
-    if (page == BottomNavigationPages.home) {
-      return BottomNavigationBarItem(
-        icon: Container(
-          width: double.infinity,
-          padding: const EdgeInsets.all(Constants.margin),
-          decoration: BoxDecoration(
-            shape: BoxShape.circle,
-            color: Theme.of(context).colorScheme.tertiaryContainer,
-          ),
-          child: Column(
-            spacing: Constants.margin / 2,
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Icon(
-                icon,
-                size: IconSize.medium,
-                color: Theme.of(context).colorScheme.onPrimary,
-              ),
-              Text(
-                label,
-                style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                      fontWeight: FontWeight.bold,
-                      color: Theme.of(context).colorScheme.onPrimary,
-                    ),
-                textAlign: TextAlign.center,
-              ),
-            ],
-          ),
-        ),
-        activeIcon: Container(
-          width: double.infinity,
-          padding: const EdgeInsets.all(Constants.margin),
-          decoration: BoxDecoration(
-            shape: BoxShape.circle,
-            color: Theme.of(context).colorScheme.primary,
-          ),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Icon(
-                icon,
-                size: IconSize.medium,
-                color: Theme.of(context).colorScheme.onPrimary,
-              ),
-              const SizedBox(height: 2),
-              Text(
-                label,
-                style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                      fontWeight: FontWeight.bold,
-                      color: Theme.of(context).colorScheme.onPrimary,
-                    ),
-                textAlign: TextAlign.center,
-              ),
-            ],
-          ),
-        ),
-        label: '',
-      );
-    }
-
-    // Regular design for other buttons
-    return BottomNavigationBarItem(
-      icon: SizedBox(
-        width: double.infinity,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Icon(
-              icon,
-              size: IconSize.medium,
-            ),
-            const SizedBox(height: 4),
-            Text(
-              label,
-              style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                    color: Theme.of(context)
-                        .colorScheme
-                        .onSurface
-                        .withValues(alpha: 0.6),
-                  ),
-              textAlign: TextAlign.center,
-            ),
-          ],
-        ),
+    return BottomBarItem(
+      icon: Icon(
+        icon,
+        color: Theme.of(context).colorScheme.onSecondaryContainer,
       ),
-      activeIcon: Container(
-        width: double.infinity,
-        padding: const EdgeInsets.symmetric(
-          vertical: Constants.margin,
-        ),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Icon(
-              icon,
-              size: IconSize.medium,
-            ),
-            const SizedBox(height: 4),
-            Text(
-              label,
-              style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                    fontWeight: FontWeight.bold,
-                  ),
-              textAlign: TextAlign.center,
-            ),
-          ],
-        ),
+      selectedIcon: Icon(
+        icon,
+        color: Theme.of(context).colorScheme.primary,
       ),
-      label: '',
+      title: Text(label,
+          style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+              fontWeight: FontWeight.bold,
+              color: isActive
+                  ? Theme.of(context).colorScheme.primary
+                  : Theme.of(context).colorScheme.onSecondaryContainer)),
+      backgroundColor: Theme.of(context).colorScheme.primary,
     );
   }
 
@@ -241,37 +143,27 @@ class BottomNavigationState extends State<BottomNavigation> {
     final colorScheme = theme.colorScheme;
 
     return SafeArea(
-      child: Container(
-        decoration: BoxDecoration(
-          borderRadius: const BorderRadius.vertical(
-            top: Radius.circular(20.0),
-          ),
-          boxShadow: [
-            BoxShadow(
-              color: theme.shadowColor.withValues(alpha: 0.1),
-              blurRadius: 4.0,
-              offset: const Offset(0, -2),
-              spreadRadius: 0,
-            ),
-          ],
+      child: StylishBottomBar(
+        option: AnimatedBarOptions(
+          iconSize: Constants.iconSize,
+          barAnimation: BarAnimation.transform3D,
+          iconStyle: IconStyle.animated,
+          opacity: 0.3,
         ),
-        child: ClipRRect(
-          borderRadius: const BorderRadius.vertical(
-            top: Radius.circular(20.0),
-          ),
-          child: BottomNavigationBar(
-            type: BottomNavigationBarType.fixed,
-            backgroundColor: colorScheme.surface,
-            selectedItemColor: colorScheme.primary,
-            unselectedItemColor: colorScheme.onSurface.withValues(alpha: 0.6),
-            elevation: 0,
-            items: _pages
-                .map((page) => _buildNavigationItem(context, page))
-                .toList(),
-            currentIndex: _pages.indexOf(widget.currentPage),
-            onTap: _onItemTapped,
-          ),
-        ),
+        fabLocation: StylishBarFabLocation.center,
+        backgroundColor: colorScheme.surface.withValues(alpha: 0.9),
+        notchStyle: NotchStyle.circle,
+        elevation: 2,
+        currentIndex: _pages.indexOf(widget.currentPage),
+        hasNotch: true,
+        items: _pages
+            .map((page) => _buildNavigationItem(
+                  context,
+                  page,
+                  page == widget.currentPage,
+                ))
+            .toList(),
+        onTap: (index) => _onItemTapped(index),
       ),
     );
   }
