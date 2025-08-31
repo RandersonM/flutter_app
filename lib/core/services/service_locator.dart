@@ -9,9 +9,10 @@ import 'package:opfan/core/repository/featured_character_repository.dart';
 import 'package:opfan/core/services/auth_service.dart';
 import 'package:opfan/core/services/firestore_service.dart';
 import 'package:opfan/core/services/notification_service.dart';
-import 'package:opfan/core/services/gemini_image_service.dart';
+import 'package:opfan/core/services/gemini_service.dart';
 import 'package:opfan/core/repository/custom_character_repository.dart';
 import 'package:opfan/core/repository/crew_repository.dart';
+import 'package:opfan/core/repository/cooking_repository.dart';
 import 'package:opfan/screens/home/blocs/home_bloc.dart';
 import 'package:opfan/screens/devil_fruit/blocs/devil_fruit_bloc.dart';
 import 'package:opfan/core/auth/blocs/index.dart';
@@ -41,8 +42,12 @@ Future<void> configureDependencies() async {
     () => YouTubeService(),
   );
 
-  getIt.registerLazySingleton<GeminiImageService>(
-    () => GeminiImageService(),
+  getIt.registerLazySingleton<GeminiService>(
+    () => GeminiService(),
+  );
+
+  getIt.registerLazySingleton<CookingRepository>(
+    () => CookingRepository(),
   );
 
   getIt.registerLazySingleton<FeaturedCharacterRepository>(
@@ -154,7 +159,8 @@ extension ServiceLocatorExtensions on GetIt {
       get<FeaturedCharacterRepository>();
   DevilFruitService get devilFruitService => get<DevilFruitService>();
   YouTubeService get youTubeService => get<YouTubeService>();
-  GeminiImageService get geminiImageService => get<GeminiImageService>();
+  GeminiService get geminiService => get<GeminiService>();
+  CookingRepository get cookingRepository => get<CookingRepository>();
 
   AuthService get authService => get<AuthService>();
   FirestoreService get firestoreService => get<FirestoreService>();
