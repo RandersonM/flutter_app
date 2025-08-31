@@ -305,6 +305,7 @@ class _WorkoutScreenState extends State<WorkoutScreen> {
                   onCalculate: _onCalculate,
                   existingData: _existingData,
                 ),
+              const SizedBox(height: Constants.margin * 2),
             ],
           ),
         ),

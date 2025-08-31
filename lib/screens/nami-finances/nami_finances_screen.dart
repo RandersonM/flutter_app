@@ -34,6 +34,7 @@ class _NamiFinancesScreenState extends State<NamiFinancesScreen> {
         body: Container(
           color: Theme.of(context).colorScheme.surface,
           child: Column(
+            spacing: Constants.margin * 2,
             children: [
               Expanded(
                 child: SingleChildScrollView(

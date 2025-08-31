@@ -4,6 +4,7 @@
 class Constants {
   // Default margin: 8.0
   static const double margin = 8.0;
+  static const double iconSize = 24.0;
 
   // Array of button
   static final List<String> calculatorButtons = [
