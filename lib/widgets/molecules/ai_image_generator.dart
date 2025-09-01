@@ -35,7 +35,7 @@ class AiImageGenerator extends StatefulWidget {
 
 class _AiImageGeneratorState extends State<AiImageGenerator> {
   final _promptController = TextEditingController();
-  final _geminiImageService = getIt.geminiImageService;
+  final _geminiImageService = getIt.geminiService;
   
   String? _generatedImageUrl;
   bool _isGenerating = false;
