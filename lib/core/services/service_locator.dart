@@ -13,6 +13,7 @@ import 'package:opfan/core/services/gemini_service.dart';
 import 'package:opfan/core/repository/custom_character_repository.dart';
 import 'package:opfan/core/repository/crew_repository.dart';
 import 'package:opfan/core/repository/cooking_repository.dart';
+import 'package:opfan/core/repository/interfaces/cooking_repository_interface.dart';
 import 'package:opfan/screens/home/blocs/home_bloc.dart';
 import 'package:opfan/screens/devil_fruit/blocs/devil_fruit_bloc.dart';
 import 'package:opfan/core/auth/blocs/index.dart';
@@ -46,7 +47,7 @@ Future<void> configureDependencies() async {
     () => GeminiService(),
   );
 
-  getIt.registerLazySingleton<CookingRepository>(
+  getIt.registerLazySingleton<ICookingRepository>(
     () => CookingRepository(),
   );
 
@@ -160,7 +161,7 @@ extension ServiceLocatorExtensions on GetIt {
   DevilFruitService get devilFruitService => get<DevilFruitService>();
   YouTubeService get youTubeService => get<YouTubeService>();
   GeminiService get geminiService => get<GeminiService>();
-  CookingRepository get cookingRepository => get<CookingRepository>();
+  ICookingRepository get cookingRepository => get<ICookingRepository>();
 
   AuthService get authService => get<AuthService>();
   FirestoreService get firestoreService => get<FirestoreService>();
