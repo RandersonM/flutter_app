@@ -1,12 +1,15 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import '../../../core/services/nutrition_calculation_service.dart';
-import '../../../core/services/workout_assessment_service.dart';
+import 'package:opfan/core/repository/interfaces/cooking_repository_interface.dart';
+import 'package:opfan/core/services/nutrition_calculation_service.dart';
+import 'package:opfan/core/services/service_locator.dart';
+import 'package:opfan/core/services/workout_assessment_service.dart';
 import 'sanji_cooking_event.dart';
 import 'sanji_cooking_state.dart';
 
 class SanjiCookingBloc extends Bloc<SanjiCookingEvent, SanjiCookingState> {
   final WorkoutAssessmentService _workoutService = WorkoutAssessmentService();
+  final ICookingRepository _cookingRepository = getIt<ICookingRepository>();
 
   SanjiCookingBloc() : super(const SanjiCookingInitial()) {
     on<InitializeSanjiCooking>(_onInitializeSanjiCooking);
@@ -14,6 +17,11 @@ class SanjiCookingBloc extends Bloc<SanjiCookingEvent, SanjiCookingState> {
     on<SaveNutritionData>(_onSaveNutritionData);
     on<NewCalculation>(_onNewCalculation);
     on<ClearError>(_onClearError);
+    on<GenerateCookingTips>(_onGenerateCookingTips);
+    on<ClearCookingTips>(_onClearCookingTips);
+    on<AddIngredient>(_onAddIngredient);
+    on<RemoveIngredient>(_onRemoveIngredient);
+    on<GeneratePersonalizedMeal>(_onGeneratePersonalizedMeal);
   }
 
   Future<void> _onInitializeSanjiCooking(
@@ -168,5 +176,151 @@ class SanjiCookingBloc extends Bloc<SanjiCookingEvent, SanjiCookingState> {
     Emitter<SanjiCookingState> emit,
   ) {
     emit(const SanjiCookingInitial());
+  }
+
+  Future<void> _onGenerateCookingTips(
+    GenerateCookingTips event,
+    Emitter<SanjiCookingState> emit,
+  ) async {
+    if (event.ingredients.isEmpty) {
+      emit(SanjiCookingTipsLoaded(
+        ingredients: event.ingredients,
+        cookingMethod: event.cookingMethod,
+        difficulty: event.difficulty,
+        errorMessage: 'Adicione pelo menos um ingrediente',
+      ));
+      return;
+    }
+
+    emit(SanjiCookingTipsLoaded(
+      ingredients: event.ingredients,
+      cookingMethod: event.cookingMethod,
+      difficulty: event.difficulty,
+      isLoading: true,
+    ));
+
+    try {
+      final response = await _cookingRepository.generateCookingTips(
+        ingredient: event.ingredients.join(', '),
+        cookingMethod: event.cookingMethod,
+        difficulty: event.difficulty,
+      );
+
+      emit(SanjiCookingTipsLoaded(
+        ingredients: event.ingredients,
+        cookingMethod: event.cookingMethod,
+        difficulty: event.difficulty,
+        cookingTips: response,
+        isLoading: false,
+      ));
+    } catch (e) {
+      emit(SanjiCookingTipsLoaded(
+        ingredients: event.ingredients,
+        cookingMethod: event.cookingMethod,
+        difficulty: event.difficulty,
+        errorMessage: 'Erro ao gerar dicas: $e',
+        isLoading: false,
+      ));
+    }
+  }
+
+  void _onClearCookingTips(
+    ClearCookingTips event,
+    Emitter<SanjiCookingState> emit,
+  ) {
+    emit(const SanjiCookingTipsLoaded(ingredients: []));
+  }
+
+  void _onAddIngredient(
+    AddIngredient event,
+    Emitter<SanjiCookingState> emit,
+  ) {
+    final currentState = state;
+    if (currentState is SanjiCookingTipsLoaded) {
+      final ingredients = List<String>.from(currentState.ingredients);
+      if (!ingredients.contains(event.ingredient)) {
+        ingredients.add(event.ingredient);
+        emit(currentState.copyWith(ingredients: ingredients));
+      }
+    } else {
+      emit(SanjiCookingTipsLoaded(ingredients: [event.ingredient]));
+    }
+  }
+
+  void _onRemoveIngredient(
+    RemoveIngredient event,
+    Emitter<SanjiCookingState> emit,
+  ) {
+    final currentState = state;
+    if (currentState is SanjiCookingTipsLoaded) {
+      final ingredients = List<String>.from(currentState.ingredients);
+      ingredients.remove(event.ingredient);
+      emit(currentState.copyWith(ingredients: ingredients));
+    }
+  }
+
+  Future<void> _onGeneratePersonalizedMeal(
+    GeneratePersonalizedMeal event,
+    Emitter<SanjiCookingState> emit,
+  ) async {
+    if (event.ingredients.isEmpty) {
+      emit(SanjiCookingPersonalizedMealLoaded(
+        ingredients: event.ingredients,
+        mealType: event.mealType,
+        targetCalories: event.targetCalories,
+        goal: event.goal,
+        dietaryRestrictions: event.dietaryRestrictions,
+        errorMessage: 'Por favor, adicione pelo menos um ingrediente.',
+      ));
+      return;
+    }
+
+    emit(SanjiCookingPersonalizedMealLoaded(
+      ingredients: event.ingredients,
+      mealType: event.mealType,
+      targetCalories: event.targetCalories,
+      goal: event.goal,
+      dietaryRestrictions: event.dietaryRestrictions,
+      isLoading: true,
+    ));
+
+    try {
+      final meal = await _cookingRepository.generatePersonalizedMeal(
+        ingredients: event.ingredients,
+        mealType: event.mealType,
+        targetCalories: event.targetCalories,
+        goal: event.goal,
+        dietaryRestrictions: event.dietaryRestrictions,
+      );
+
+      if (meal != null) {
+        emit(SanjiCookingPersonalizedMealLoaded(
+          ingredients: event.ingredients,
+          mealType: event.mealType,
+          targetCalories: event.targetCalories,
+          goal: event.goal,
+          dietaryRestrictions: event.dietaryRestrictions,
+          personalizedMeal: meal,
+        ));
+      } else {
+        emit(SanjiCookingPersonalizedMealLoaded(
+          ingredients: event.ingredients,
+          mealType: event.mealType,
+          targetCalories: event.targetCalories,
+          goal: event.goal,
+          dietaryRestrictions: event.dietaryRestrictions,
+          errorMessage: 'Não foi possível gerar a refeição. Tente novamente.',
+        ));
+      }
+    } catch (e) {
+      emit(SanjiCookingPersonalizedMealLoaded(
+        ingredients: event.ingredients,
+        mealType: event.mealType,
+        targetCalories: event.targetCalories,
+        goal: event.goal,
+        dietaryRestrictions: event.dietaryRestrictions,
+        errorMessage: 'Erro ao gerar refeição: $e',
+      ));
+    }
   }
 }
