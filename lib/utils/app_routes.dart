@@ -15,6 +15,7 @@ import 'package:opfan/screens/nami-finances/nami_finances_screen.dart';
 import 'package:opfan/screens/one_piece/characters_list_screen.dart';
 import 'package:opfan/screens/one_piece/widgets/details/character_details_screen.dart';
 import 'package:opfan/screens/robin-knowledge/robin_knowledge_screen.dart';
+import 'package:opfan/screens/sanji-cooking/cooking_tips_screen.dart';
 import 'package:opfan/screens/zoro-workout/zoro_workout_screen.dart';
 import 'package:opfan/screens/sanji-cooking/sanji_cooking_screen.dart';
 import 'package:opfan/screens/sanji-cooking/widgets/plate_guide_screen.dart';
@@ -64,6 +65,7 @@ class AppRoutes {
   static const String crewDetails = '/crewDetails';
   static const String duels = '/duels';
   static const String onePiece = '/onePiece';
+  static const String cookingTips = '/cookingTips';
   
 
   // Define which routes require authentication
@@ -131,6 +133,14 @@ class AppRoutes {
       case cooking:
         return MaterialPageRouteWithoutTransition<dynamic>(
             builder: (_) => const SanjiCookingScreen(), settings: settings);
+      case cookingTips:
+        final args = settings.arguments as Map<String, dynamic>?;
+        return MaterialPageRoute<dynamic>(
+            builder: (_) => CookingTipsScreen(
+                  targetCalories: args?['targetCalories'] as double?,
+                  goal: args?['goal'] as String?,
+                ),
+            settings: settings);
       case plateGuide:
         return MaterialPageRoute<dynamic>(
             builder: (_) => const PlateGuideScreen(), settings: settings);

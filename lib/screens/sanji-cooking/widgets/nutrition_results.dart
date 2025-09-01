@@ -119,42 +119,79 @@ class NutritionResults extends StatelessWidget {
         ),
         const SizedBox(height: Constants.margin * 2),
         
-        Container(
-          padding: const EdgeInsets.all(16),
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(8),
-            border: Border.all(color: Theme.of(context).colorScheme.primary),
-          ),
-          child: Column(
-            children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                mainAxisSize: MainAxisSize.max,
-                children: [
-                  Icon(
-                    Icons.lightbulb_outline,
-                    color: AppColors.yellow[500],
-                    size: 24,
+        SizedBox(
+          width: double.infinity,
+          child: ElevatedButton(
+            onPressed: () {
+              Navigator.of(context).pushNamed(
+                AppRoutes.cookingTips,
+                arguments: {
+                  'targetCalories': _getTargetCalories(),
+                  'goal': results.goal,
+                },
+              );
+            },
+            style: ElevatedButton.styleFrom(
+              backgroundColor: AppColors.yellow[500]?.withValues(alpha: 0.1),
+              foregroundColor: AppColors.yellow[500],
+              elevation: 2,
+              padding: const EdgeInsets.all(20),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(12),
+                side: BorderSide(
+                  color: AppColors.yellow[500]!,
+                  width: 2,
+                ),
+              ),
+            ),
+            child: Column(
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  mainAxisSize: MainAxisSize.max,
+                  children: [
+                    Icon(
+                      Icons.restaurant_menu,
+                      color: AppColors.yellow[500],
+                      size: 28,
+                    ),
+                    const SizedBox(width: Constants.margin / 2),
+                    Text(
+                      AppLocalizations.of(context)!.sanjiTipTitle,
+                      style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                            fontWeight: FontWeight.bold,
+                            color: AppColors.yellow[500],
+                          ),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: Constants.margin),
+                Text(
+                  AppLocalizations.of(context)!.sanjiTipText,
+                  textAlign: TextAlign.center,
+                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                        color: AppColors.yellow[500]?.withValues(alpha: 0.8),
+                      ),
+                ),
+                const SizedBox(height: Constants.margin / 2),
+                Container(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                  decoration: BoxDecoration(
+                    color: AppColors.yellow[500]?.withValues(alpha: 0.2),
+                    borderRadius: BorderRadius.circular(20),
                   ),
-                  const SizedBox(width: Constants.margin / 2),
-                  Text(
-                    AppLocalizations.of(context)!.sanjiTipTitle,
-                    style: Theme.of(context).textTheme.titleSmall?.copyWith(
+                  child: Text(
+                    'TAP TO COOK',
+                    style: Theme.of(context).textTheme.labelSmall?.copyWith(
                           fontWeight: FontWeight.bold,
                           color: AppColors.yellow[500],
+                          letterSpacing: 1.2,
                         ),
                   ),
-                ],
-              ),
-              const SizedBox(height: Constants.margin),
-              Text(
-                AppLocalizations.of(context)!.sanjiTipText,
-                textAlign: TextAlign.center,
-                style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                    ),
-                    
-              ),
-            ],
+                ),
+              ],
+            ),
           ),
         ),
         const SizedBox(height: 24),
@@ -378,6 +415,19 @@ class NutritionResults extends StatelessWidget {
         return AppLocalizations.of(context)!.highRisk;
       default:
         return category;
+    }
+  }
+
+  double _getTargetCalories() {
+    switch (results.goal) {
+      case 'maintenance':
+        return results.maintenanceCalories;
+      case 'weight_loss':
+        return results.weightLossCalories;
+      case 'muscle_gain':
+        return results.muscleGainCalories;
+      default:
+        return results.maintenanceCalories;
     }
   }
 
