@@ -3029,13 +3029,13 @@ abstract class AppLocalizations {
   /// Title for Sanji's tip section.
   ///
   /// In en, this message translates to:
-  /// **'Sanji\'s Tip'**
+  /// **'Receita Personalizada'**
   String get sanjiTipTitle;
 
   /// Text for Sanji's tip.
   ///
   /// In en, this message translates to:
-  /// **'Consult a nutritionist for a personalized meal plan based on these calculations!'**
+  /// **'Clique para receber uma receita personalizada baseada nos seus dados nutricionais!'**
   String get sanjiTipText;
 
   /// Question for plate guide section.

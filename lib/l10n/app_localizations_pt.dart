@@ -1615,11 +1615,11 @@ class AppLocalizationsPt extends AppLocalizations {
   String get waistToHeight => 'Cintura/Altura';
 
   @override
-  String get sanjiTipTitle => 'Dica do Sanji';
+  String get sanjiTipTitle => 'Receita Personalizadas';
 
   @override
   String get sanjiTipText =>
-      'Consulte um nutricionista para um plano alimentar personalizado baseado nestes cálculos!';
+      'Clique para receber uma receita personalizada baseada nos seus dados nutricionais!';
 
   @override
   String get plateGuideQuestion => 'Como montar um prato saudável?';

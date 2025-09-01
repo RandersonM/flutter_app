@@ -3121,13 +3121,13 @@
     "type": "text",
     "placeholders": {}
   },
-  "sanjiTipTitle": "Dica do Sanji",
+  "sanjiTipTitle": "Receita Personalizadas",
   "@sanjiTipTitle": {
     "description": "Título da seção de dica do Sanji.",
     "type": "text",
     "placeholders": {}
   },
-  "sanjiTipText": "Consulte um nutricionista para um plano alimentar personalizado baseado nestes cálculos!",
+  "sanjiTipText": "Clique para receber uma receita personalizada baseada nos seus dados nutricionais!",
   "@sanjiTipText": {
     "description": "Texto da dica do Sanji.",
     "type": "text",

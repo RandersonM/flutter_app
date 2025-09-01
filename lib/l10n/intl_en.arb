@@ -3151,13 +3151,13 @@
     "type": "text",
     "placeholders": {}
   },
-  "sanjiTipTitle": "Sanji's Tip",
+  "sanjiTipTitle": "Receita Personalizada",
   "@sanjiTipTitle": {
     "description": "Title for Sanji's tip section.",
     "type": "text",
     "placeholders": {}
   },
-  "sanjiTipText": "Consult a nutritionist for a personalized meal plan based on these calculations!",
+  "sanjiTipText": "Clique para receber uma receita personalizada baseada nos seus dados nutricionais!",
   "@sanjiTipText": {
     "description": "Text for Sanji's tip.",
     "type": "text",
