@@ -1,7 +1,7 @@
 import 'package:opfan/core/services/gemini_service.dart';
 import 'package:opfan/app/di/injection.dart';
 import 'package:opfan/core/services/locale_service.dart';
-import 'package:opfan/core/repository/interfaces/cooking_repository_interface.dart';
+import 'package:opfan/features/sanji_cooking/data/repository/cooking_repository_interface.dart';
 
 class CookingRepository implements ICookingRepository {
   final GeminiService _geminiService = getIt<GeminiService>();

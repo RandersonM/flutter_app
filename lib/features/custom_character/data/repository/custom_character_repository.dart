@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:opfan/core/models/one_piece/custom_character_model.dart';
 import 'package:opfan/core/services/firestore_service.dart';
-import 'package:opfan/core/repository/interfaces/custom_character_repository_interface.dart';
-import 'package:opfan/core/repository/crew_repository.dart';
+import 'package:opfan/features/custom_character/data/repository/custom_character_repository_interface.dart';
+import 'package:opfan/features/crews/data/repository/crew_repository_interface.dart';
 
 class CustomCharacterRepository implements ICustomCharacterRepository {
-  static final CustomCharacterRepository _instance = CustomCharacterRepository._internal();
-  factory CustomCharacterRepository() => _instance;
-  CustomCharacterRepository._internal();
+  final ICrewRepository _crewRepository;
+
+  CustomCharacterRepository(this._crewRepository);
 
   final FirestoreService _firestoreService = FirestoreService();
   static const String _collection = 'custom_characters';
@@ -156,9 +156,8 @@ class CustomCharacterRepository implements ICustomCharacterRepository {
         throw Exception('Personagem não encontrado');
       }
 
-      final crewRepository = CrewRepository();
       final crewsWithCharacter =
-          await crewRepository.getCrewsByMember(documentId);
+          await _crewRepository.getCrewsByMember(documentId);
 
       for (final crew in crewsWithCharacter) {
         if (crew.id != null) {
@@ -169,15 +168,15 @@ class CustomCharacterRepository implements ICustomCharacterRepository {
                   throw Exception('Membro não encontrado na tripulação'),
             );
 
-            await crewRepository.removeMemberFromCrew(crew.id!, documentId);
+            await _crewRepository.removeMemberFromCrew(crew.id!, documentId);
 
             if (member.role?.toLowerCase() == 'captain' &&
                 crew.captain == member.name) {
-              await crewRepository.setCaptain(crew.id!, '');
+              await _crewRepository.setCaptain(crew.id!, '');
             } else if ((member.role?.toLowerCase() == 'vice-captain' ||
                     member.role?.toLowerCase() == 'vicecaptain') &&
                 crew.viceCaptain == member.name) {
-              await crewRepository.setViceCaptain(crew.id!, '');
+              await _crewRepository.setViceCaptain(crew.id!, '');
             }
           } catch (e) {
             debugPrint(
@@ -350,96 +349,3 @@ class CustomCharacterRepository implements ICustomCharacterRepository {
   }
 }
 
-/// Legacy service class for backward compatibility
-/// @deprecated Use CustomCharacterRepository instead
-class CustomCharacterService {
-  static final CustomCharacterService _instance = CustomCharacterService._internal();
-  factory CustomCharacterService() => _instance;
-  CustomCharacterService._internal();
-
-  final CustomCharacterRepository _repository = CustomCharacterRepository();
-
-  // Delegate all methods to the repository
-  Future<String> createCustomCharacter(CustomCharacterModel character) => 
-      _repository.createCustomCharacter(character);
-
-  Future<CustomCharacterModel?> getCustomCharacter(String documentId) => 
-      _repository.getCustomCharacter(documentId);
-
-  Future<List<CustomCharacterModel>> getUserCustomCharacters({
-    String? orderBy,
-    bool descending = false,
-    int? limit,
-  }) => _repository.getUserCustomCharacters(
-    orderBy: orderBy,
-    descending: descending,
-    limit: limit,
-  );
-
-  Future<List<CustomCharacterModel>> getAllCustomCharacters({
-    String? orderBy,
-    bool descending = false,
-    int? limit,
-  }) =>
-      _repository.getAllCustomCharacters(
-        orderBy: orderBy,
-        descending: descending,
-        limit: limit,
-      );
-
-  Future<void> updateCustomCharacter(String documentId, CustomCharacterModel character) => 
-      _repository.updateCustomCharacter(documentId, character);
-
-  Future<void> deleteCustomCharacter(String documentId) => 
-      _repository.deleteCustomCharacter(documentId);
-
-  Future<List<CustomCharacterModel>> searchCustomCharacters({
-    required String field,
-    required dynamic value,
-    String? orderBy,
-    bool descending = false,
-    int? limit,
-  }) => _repository.searchCustomCharacters(
-    field: field,
-    value: value,
-    orderBy: orderBy,
-    descending: descending,
-    limit: limit,
-  );
-
-  Stream<List<CustomCharacterModel>> streamUserCustomCharacters({
-    String? orderBy,
-    bool descending = false,
-    int? limit,
-  }) => _repository.streamUserCustomCharacters(
-    orderBy: orderBy,
-    descending: descending,
-    limit: limit,
-  );
-
-  Future<List<CustomCharacterModel>> searchCustomCharactersByName(String name) => 
-      _repository.searchCustomCharactersByName(name);
-
-  Future<List<CustomCharacterModel>> getCustomCharactersByDevilFruit(String devilFruit) => 
-      _repository.getCustomCharactersByDevilFruit(devilFruit);
-
-  Future<List<CustomCharacterModel>> getCustomCharactersByCrew(String crew) => 
-      _repository.getCustomCharactersByCrew(crew);
-
-  Future<List<CustomCharacterModel>> getCustomCharactersByStatus(String status) => 
-      _repository.getCustomCharactersByStatus(status);
-
-  Future<List<CustomCharacterModel>> getCustomCharactersBySigno(String signo) => 
-      _repository.getCustomCharactersBySigno(signo);
-
-  Future<List<CustomCharacterModel>> getCustomCharactersWithHaki() => 
-      _repository.getCustomCharactersWithHaki();
-
-  Future<List<CustomCharacterModel>> getCustomCharactersByBountyRange({
-    required String minBounty,
-    required String maxBounty,
-  }) => _repository.getCustomCharactersByBountyRange(
-    minBounty: minBounty,
-    maxBounty: maxBounty,
-  );
-} 

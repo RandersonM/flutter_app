@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:opfan/core/models/goal_model.dart';
-import 'package:opfan/core/repository/interfaces/planner_repository_interface.dart';
+import 'package:opfan/features/robin_knowledge/data/repository/planner_repository_interface.dart';
 import 'package:opfan/core/services/firestore_service.dart';
 
 class PlannerRepository implements PlannerRepositoryInterface {

@@ -1,13 +1,14 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:opfan/core/repository/crew_repository.dart';
+import 'package:opfan/features/crews/data/repository/crew_repository_interface.dart';
+import 'package:opfan/app/di/injection.dart';
 import 'list_crews_event.dart';
 import 'list_crews_state.dart';
 
 class ListCrewsBloc extends Bloc<ListCrewsEvent, ListCrewsState> {
-  final CrewRepository _crewRepository;
+  final ICrewRepository _crewRepository;
 
-  ListCrewsBloc({CrewRepository? crewRepository})
-      : _crewRepository = crewRepository ?? CrewRepository(),
+  ListCrewsBloc({ICrewRepository? crewRepository})
+      : _crewRepository = crewRepository ?? getIt<ICrewRepository>(),
         super(ListCrewsInitial()) {
     on<LoadCrews>(_onLoadCrews);
     on<LoadUserCrews>(_onLoadUserCrews);

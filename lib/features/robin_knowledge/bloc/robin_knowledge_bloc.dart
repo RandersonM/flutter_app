@@ -1,7 +1,7 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:opfan/core/models/goal_model.dart';
-import 'package:opfan/core/repository/interfaces/planner_repository_interface.dart';
+import 'package:opfan/features/robin_knowledge/data/repository/planner_repository_interface.dart';
 
 part 'robin_knowledge_event.dart';
 part 'robin_knowledge_state.dart';

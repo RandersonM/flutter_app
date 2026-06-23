@@ -1,14 +1,15 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:opfan/core/repository/crew_repository.dart';
+import 'package:opfan/features/crews/data/repository/crew_repository_interface.dart';
+import 'package:opfan/app/di/injection.dart';
 import 'package:opfan/features/crews/bloc/edit_crew_event.dart';
 import 'package:opfan/features/crews/bloc/edit_crew_state.dart';
 
 class EditCrewBloc extends Bloc<EditCrewEvent, EditCrewState> {
-  final CrewRepository _crewRepository;
+  final ICrewRepository _crewRepository;
 
   EditCrewBloc({
-    CrewRepository? crewRepository,
-  })  : _crewRepository = crewRepository ?? CrewRepository(),
+    ICrewRepository? crewRepository,
+  })  : _crewRepository = crewRepository ?? getIt<ICrewRepository>(),
         super(EditCrewInitial()) {
     on<EditCrewSubmitted>(_onEditCrewSubmitted);
     on<EditCrewReset>(_onEditCrewReset);

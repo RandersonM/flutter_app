@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:opfan/core/models/one_piece/crew_model.dart';
 import 'package:opfan/core/services/firestore_service.dart';
-import 'package:opfan/core/repository/interfaces/crew_repository_interface.dart';
+import 'package:opfan/features/crews/data/repository/crew_repository_interface.dart';
 
 class CrewRepository implements ICrewRepository {
-  static final CrewRepository _instance = CrewRepository._internal();
-  factory CrewRepository() => _instance;
-  CrewRepository._internal();
+  CrewRepository();
 
   final FirestoreService _firestoreService = FirestoreService();
   static const String _collection = 'crews';
@@ -497,117 +495,4 @@ class CrewRepository implements ICrewRepository {
   }
 }
 
-/// Legacy service class for backward compatibility
-/// @deprecated Use CrewRepository instead
-class CrewService {
-  static final CrewService _instance = CrewService._internal();
-  factory CrewService() => _instance;
-  CrewService._internal();
 
-  final CrewRepository _repository = CrewRepository();
-
-  // Delegate all methods to the repository
-  Future<String> createCrew(CrewModel crew) => 
-      _repository.createCrew(crew);
-
-  Future<CrewModel?> getCrew(String documentId) => 
-      _repository.getCrew(documentId);
-
-  Future<List<CrewModel>> getUserCrews({
-    String? orderBy,
-    bool descending = false,
-    int? limit,
-  }) => _repository.getUserCrews(
-    orderBy: orderBy,
-    descending: descending,
-    limit: limit,
-  );
-
-  Future<List<CrewModel>> getAllCrews({
-    String? orderBy,
-    bool descending = false,
-    int? limit,
-  }) =>
-      _repository.getAllCrews(
-        orderBy: orderBy,
-        descending: descending,
-        limit: limit,
-      );
-
-  Future<void> updateCrew(String documentId, CrewModel crew) => 
-      _repository.updateCrew(documentId, crew);
-
-  Future<void> deleteCrew(String documentId) => 
-      _repository.deleteCrew(documentId);
-
-  Future<List<CrewModel>> searchCrews({
-    required String field,
-    required dynamic value,
-    String? orderBy,
-    bool descending = false,
-    int? limit,
-  }) => _repository.searchCrews(
-    field: field,
-    value: value,
-    orderBy: orderBy,
-    descending: descending,
-    limit: limit,
-  );
-
-  Stream<List<CrewModel>> streamUserCrews({
-    String? orderBy,
-    bool descending = false,
-    int? limit,
-  }) => _repository.streamUserCrews(
-    orderBy: orderBy,
-    descending: descending,
-    limit: limit,
-  );
-
-  Future<List<CrewModel>> searchCrewsByName(String name) => 
-      _repository.searchCrewsByName(name);
-
-  Future<List<CrewModel>> getCrewsByCaptain(String captainName) => 
-      _repository.getCrewsByCaptain(captainName);
-
-  Future<List<CrewModel>> getCrewsByViceCaptain(String viceCaptainName) => 
-      _repository.getCrewsByViceCaptain(viceCaptainName);
-
-  Future<List<CrewModel>> getCrewsByTag(String tag) => 
-      _repository.getCrewsByTag(tag);
-
-  Future<List<CrewModel>> getCrewsWithMembers() => 
-      _repository.getCrewsWithMembers();
-
-  Future<List<CrewModel>> getCrewsByMemberCount({
-    required int minMembers,
-    required int maxMembers,
-  }) => _repository.getCrewsByMemberCount(
-    minMembers: minMembers,
-    maxMembers: maxMembers,
-  );
-
-  Future<List<CrewModel>> getCrewsByMember(String characterId) =>
-      _repository.getCrewsByMember(characterId);
-
-  Future<void> addMemberToCrew(String crewId, CrewMember member) => 
-      _repository.addMemberToCrew(crewId, member);
-
-  Future<void> removeMemberFromCrew(String crewId, String characterId) => 
-      _repository.removeMemberFromCrew(crewId, characterId);
-
-  Future<void> updateCrewMember(String crewId, String characterId, CrewMember updatedMember) => 
-      _repository.updateCrewMember(crewId, characterId, updatedMember);
-
-  Future<void> setCaptain(String crewId, String captainName) => 
-      _repository.setCaptain(crewId, captainName);
-
-  Future<void> setViceCaptain(String crewId, String viceCaptainName) => 
-      _repository.setViceCaptain(crewId, viceCaptainName);
-
-  Future<void> addRoleToCrew(String crewId, String role) => 
-      _repository.addRoleToCrew(crewId, role);
-
-  Future<void> removeRoleFromCrew(String crewId, String role) => 
-      _repository.removeRoleFromCrew(crewId, role);
-}

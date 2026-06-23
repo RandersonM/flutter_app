@@ -4,18 +4,18 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:opfan/core/services/youtube_service.dart';
-import 'package:opfan/core/repository/featured_character_repository.dart';
+import 'package:opfan/features/home/data/repository/featured_character_repository_interface.dart';
 import 'home_event.dart';
 import 'home_state.dart';
 
 
 class HomeBloc extends Bloc<HomeEvent, HomeState> {
   final YouTubeService _youTubeService;
-  final FeaturedCharacterRepository _featuredCharacterRepository;
+  final IFeaturedCharacterRepository _featuredCharacterRepository;
 
   HomeBloc({
     required YouTubeService youTubeService,
-    required FeaturedCharacterRepository featuredCharacterRepository,
+    required IFeaturedCharacterRepository featuredCharacterRepository,
   })  : _youTubeService = youTubeService,
         _featuredCharacterRepository = featuredCharacterRepository,
         super(const HomeInitial()) {

@@ -4,8 +4,9 @@
 import 'package:flutter/material.dart';
 import 'package:opfan/core/models/one_piece/crew_model.dart';
 import 'package:opfan/core/models/one_piece/custom_character_model.dart';
-import 'package:opfan/core/repository/custom_character_repository.dart';
-import 'package:opfan/core/repository/crew_repository.dart';
+import 'package:opfan/features/custom_character/data/repository/custom_character_repository_interface.dart';
+import 'package:opfan/features/crews/data/repository/crew_repository_interface.dart';
+import 'package:opfan/app/di/injection.dart';
 import 'package:opfan/shared/utils/app_routes.dart';
 import 'package:opfan/shared/utils/constants.dart';
 import 'package:opfan/l10n/app_localizations.dart';
@@ -168,7 +169,7 @@ class _CrewDetailsScreenState extends State<CrewDetailsScreen> {
         ),
       );
 
-      final crewRepository = CrewRepository();
+      final crewRepository = getIt<ICrewRepository>();
       await crewRepository.deleteCrew(_crew.id!);
 
       if (!mounted) return;
@@ -362,13 +363,13 @@ class _CrewDetailsScreenState extends State<CrewDetailsScreen> {
 
   Future<List<CustomCharacterModel>> _getAvailableCharacters() async {
     try {
-      final allCharacters = await CustomCharacterRepository().getUserCustomCharacters();
+      final allCharacters = await getIt<ICustomCharacterRepository>().getUserCustomCharacters();
       
       if (allCharacters.isEmpty) {
         return [];
       }
 
-      final allCrews = await CrewRepository().getUserCrews();
+      final allCrews = await getIt<ICrewRepository>().getUserCrews();
       
       final usedCharacterIds = <String>{};
       
@@ -488,11 +489,11 @@ class _CrewDetailsScreenState extends State<CrewDetailsScreen> {
         rolesFilled: updatedRolesFilled,
       );
 
-      final crewRepository = CrewRepository();
+      final crewRepository = getIt<ICrewRepository>();
       await crewRepository.updateCrew(_crew.id!, updatedCrew);
 
       final updatedCharacter = character.copyWith(crew: _crew.name);
-      final customCharacterRepository = CustomCharacterRepository();
+      final customCharacterRepository = getIt<ICustomCharacterRepository>();
       await customCharacterRepository.updateCustomCharacter(character.id!, updatedCharacter);
 
       if (mounted) {
@@ -568,7 +569,7 @@ class _CrewDetailsScreenState extends State<CrewDetailsScreen> {
         ),
       );
 
-      final customCharacterRepository = CustomCharacterRepository();
+      final customCharacterRepository = getIt<ICustomCharacterRepository>();
       final character = await customCharacterRepository.getCustomCharacter(member.characterId);
 
       if (!mounted) return;

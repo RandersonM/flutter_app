@@ -5,8 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:opfan/app/di/injection.dart';
-import 'package:opfan/core/repository/featured_character_repository.dart';
-import 'package:opfan/core/repository/custom_character_repository.dart';
+import 'package:opfan/features/home/data/repository/featured_character_repository_interface.dart';
+import 'package:opfan/features/custom_character/data/repository/custom_character_repository_interface.dart';
 import 'package:opfan/l10n/app_localizations.dart';
 import 'package:opfan/features/duels/bloc/index.dart';
 import 'package:opfan/features/duels/presentation/widgets/character_selector.dart';
@@ -30,8 +30,8 @@ class _DuelsScreenState extends State<DuelsScreen> {
   void initState() {
     super.initState();
     _duelsBloc = DuelsBloc(
-      featuredCharacterRepository: getIt<FeaturedCharacterRepository>(),
-      customCharacterRepository: getIt<CustomCharacterRepository>(),
+      featuredCharacterRepository: getIt<IFeaturedCharacterRepository>(),
+      customCharacterRepository: getIt<ICustomCharacterRepository>(),
     );
     _duelsBloc.add(const LoadDuelsScreen());
   }

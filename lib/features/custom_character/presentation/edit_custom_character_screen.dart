@@ -6,6 +6,9 @@ import 'package:opfan/core/models/one_piece/devil_fruit.dart';
 import 'package:opfan/core/models/one_piece/crew_model.dart';
 import 'package:opfan/core/models/one_piece/fighting_style_model.dart';
 import 'package:opfan/app/di/injection.dart';
+import 'package:opfan/features/custom_character/data/repository/custom_character_repository_interface.dart';
+import 'package:opfan/features/crews/data/repository/crew_repository_interface.dart';
+import 'package:opfan/core/services/devil_fruit_service.dart';
 import 'package:opfan/l10n/app_localizations.dart';
 import 'package:opfan/features/custom_character/bloc/index.dart';
 import 'package:opfan/shared/widgets/molecules/default_app_bar.dart';
@@ -107,7 +110,7 @@ class _EditCustomCharacterScreenState extends State<EditCustomCharacterScreen> {
 
   Future<void> _loadDevilFruits() async {
     try {
-      final devilFruitService = getIt.devilFruitService;
+      final devilFruitService = getIt<DevilFruitService>();
       final fruits = await devilFruitService.fetchAll();
       setState(() {
         _devilFruits = fruits;
@@ -130,7 +133,7 @@ class _EditCustomCharacterScreenState extends State<EditCustomCharacterScreen> {
 
   Future<void> _loadCrews() async {
     try {
-      final crewRepository = getIt.crewRepository;
+      final crewRepository = getIt<ICrewRepository>();
       final crews = await crewRepository.getUserCrews();
       setState(() {
         _availableCrews = crews;
@@ -155,8 +158,8 @@ class _EditCustomCharacterScreenState extends State<EditCustomCharacterScreen> {
     
     return BlocProvider(
       create: (context) => CustomCharacterBloc(
-        customCharacterService: getIt.customCharacterService,
-        crewRepository: getIt.crewRepository,
+        customCharacterService: getIt<ICustomCharacterRepository>(),
+        crewRepository: getIt<ICrewRepository>(),
       ),
       child: Builder(
         builder: (context) {

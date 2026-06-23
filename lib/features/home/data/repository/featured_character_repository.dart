@@ -4,12 +4,10 @@ import 'package:hive/hive.dart';
 import 'package:opfan/core/models/one_piece/today_character.dart';
 import 'package:opfan/core/models/one_piece/custom_character_model.dart';
 import 'package:opfan/core/services/firestore_service.dart';
-import 'package:opfan/core/repository/interfaces/featured_character_repository_interface.dart';
+import 'package:opfan/features/home/data/repository/featured_character_repository_interface.dart';
 
 class FeaturedCharacterRepository implements IFeaturedCharacterRepository {
-  static final FeaturedCharacterRepository _instance = FeaturedCharacterRepository._internal();
-  factory FeaturedCharacterRepository() => _instance;
-  FeaturedCharacterRepository._internal();
+  FeaturedCharacterRepository();
 
   final FirestoreService _firestoreService = FirestoreService();
   
@@ -224,6 +222,7 @@ class FeaturedCharacterRepository implements IFeaturedCharacterRepository {
     };
   }
 
+  @override
   Future<List<CustomCharacterModel>> getAllOnePieceCharacters({int? limit}) async {
     try {
       final documents = await _firestoreService.getDocuments(
@@ -241,6 +240,7 @@ class FeaturedCharacterRepository implements IFeaturedCharacterRepository {
     }
   }
 
+  @override
   Future<List<CustomCharacterModel>> searchOnePieceCharacters(String query) async {
     try {
       final allCharacters = await getAllOnePieceCharacters();

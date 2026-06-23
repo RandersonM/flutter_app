@@ -41,4 +41,7 @@ abstract class IFeaturedCharacterRepository {
   
   
   Map<String, dynamic> getServiceStatus();
+
+  Future<List<CustomCharacterModel>> getAllOnePieceCharacters({int? limit});
+  Future<List<CustomCharacterModel>> searchOnePieceCharacters(String query);
 } 

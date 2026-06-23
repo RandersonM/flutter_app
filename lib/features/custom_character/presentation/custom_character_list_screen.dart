@@ -3,6 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:opfan/l10n/app_localizations.dart';
 import 'package:opfan/core/models/one_piece/custom_character_model.dart';
 import 'package:opfan/app/di/injection.dart';
+import 'package:opfan/features/custom_character/data/repository/custom_character_repository_interface.dart';
+import 'package:opfan/features/crews/data/repository/crew_repository_interface.dart';
 import 'package:opfan/features/custom_character/bloc/custom_character_bloc.dart';
 import 'package:opfan/features/custom_character/bloc/custom_character_event.dart';
 import 'package:opfan/shared/utils/app_routes.dart';
@@ -17,8 +19,8 @@ class CustomCharacterListScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) => CustomCharacterBloc(
-        customCharacterService: getIt.customCharacterService,
-        crewRepository: getIt.crewRepository,
+        customCharacterService: getIt<ICustomCharacterRepository>(),
+        crewRepository: getIt<ICrewRepository>(),
       ),
       child: const _CustomCharacterListScreenContent(),
     );

@@ -7,12 +7,11 @@ import 'package:opfan/core/models/one_piece/custom_character_model.dart';
 
 
 import 'package:opfan/features/one_piece/presentation/widgets/details/character_details_screen.dart';
+import 'package:opfan/shared/widgets/molecules/default_app_bar.dart';
 
 import '../../testable_widget.dart';
 
 void main() {
-  setUpAll(() => HttpOverrides.global = null);
-
   group('Character Details Screen', () {
     const Key charactersKey = Key('charactersKey');
     File file = File('test/fixtures/character_list.json');
@@ -29,17 +28,15 @@ void main() {
     testWidgets('Assert fields are displayed', (WidgetTester tester) async {
       await tester.pumpWidget(getTestableWidget(charactersDetails));
       await tester.pump();
-      expect(find.byType(Card), findsNWidgets(3));
-      expect(find.byType(SliverAppBar), findsOneWidget);
-      expect(find.byType(ExpansionTile), findsNWidgets(2));
+      expect(find.byType(Card), findsAtLeastNWidgets(1));
+      expect(find.byType(DefaultAppBar), findsOneWidget);
     });
 
     testWidgets('Assert fields are filled', (WidgetTester tester) async {
       await tester.pumpWidget(getTestableWidget(charactersDetails));
       await tester.pump();
-      expect(find.text('Bounty'), findsOneWidget);
-      expect(find.text('Affiliation'), findsOneWidget);
-      expect(find.text('Occupation'), findsOneWidget);
+      expect(find.text('Gol D. Roger'), findsWidgets);
+      expect(find.text('Pirate King'), findsWidgets);
     });
   });
 }

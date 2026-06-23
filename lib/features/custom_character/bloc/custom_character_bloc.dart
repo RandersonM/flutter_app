@@ -1,18 +1,18 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:opfan/core/repository/custom_character_repository.dart';
-import 'package:opfan/core/repository/crew_repository.dart';
+import 'package:opfan/features/custom_character/data/repository/custom_character_repository_interface.dart';
+import 'package:opfan/features/crews/data/repository/crew_repository_interface.dart';
 import 'package:opfan/core/models/one_piece/crew_model.dart';
 import 'custom_character_event.dart';
 import 'custom_character_state.dart';
 
 class CustomCharacterBloc extends Bloc<CustomCharacterEvent, CustomCharacterState> {
-  final CustomCharacterService _customCharacterService;
-  final CrewRepository _crewRepository;
+  final ICustomCharacterRepository _customCharacterService;
+  final ICrewRepository _crewRepository;
 
   CustomCharacterBloc({
-    required CustomCharacterService customCharacterService,
-    required CrewRepository crewRepository,
+    required ICustomCharacterRepository customCharacterService,
+    required ICrewRepository crewRepository,
   })  : _customCharacterService = customCharacterService,
         _crewRepository = crewRepository,
         super(CustomCharacterInitial()) {

@@ -5,19 +5,19 @@ import 'dart:math';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:opfan/core/models/one_piece/custom_character_model.dart';
-import 'package:opfan/core/repository/featured_character_repository.dart';
-import 'package:opfan/core/repository/custom_character_repository.dart';
+import 'package:opfan/features/home/data/repository/featured_character_repository_interface.dart';
+import 'package:opfan/features/custom_character/data/repository/custom_character_repository_interface.dart';
 import 'duels_event.dart';
 import 'duels_state.dart';
 
 class DuelsBloc extends Bloc<DuelsEvent, DuelsState> {
-  final FeaturedCharacterRepository _featuredCharacterRepository;
-  final CustomCharacterRepository _customCharacterRepository;
+  final IFeaturedCharacterRepository _featuredCharacterRepository;
+  final ICustomCharacterRepository _customCharacterRepository;
   final Random _random = Random();
 
   DuelsBloc({
-    required FeaturedCharacterRepository featuredCharacterRepository,
-    required CustomCharacterRepository customCharacterRepository,
+    required IFeaturedCharacterRepository featuredCharacterRepository,
+    required ICustomCharacterRepository customCharacterRepository,
   })  : _featuredCharacterRepository = featuredCharacterRepository,
         _customCharacterRepository = customCharacterRepository,
         super(const DuelsInitial()) {

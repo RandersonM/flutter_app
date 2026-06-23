@@ -1,8 +1,8 @@
 import 'package:get_it/get_it.dart';
-import 'package:opfan/core/calculator/calculator_cubit.dart';
-import 'package:opfan/core/repository/featured_character_repository.dart';
-import 'package:opfan/core/repository/crew_repository.dart';
-import 'package:opfan/core/repository/planner_repository.dart';
+import 'package:opfan/features/calculator/bloc/calculator_cubit.dart';
+import 'package:opfan/features/home/data/repository/featured_character_repository_interface.dart';
+import 'package:opfan/features/crews/data/repository/crew_repository_interface.dart';
+import 'package:opfan/features/robin_knowledge/data/repository/planner_repository_interface.dart';
 import 'package:opfan/core/services/devil_fruit_service.dart';
 import 'package:opfan/core/services/youtube_service.dart';
 import 'package:opfan/core/services/nami_finances_service.dart';
@@ -20,16 +20,16 @@ void registerFeaturesModule(GetIt getIt) {
   getIt.registerFactory<CalculatorCubit>(() => CalculatorCubit());
 
   getIt.registerFactory<CharactersCubit>(
-    () => CharactersCubit(getIt<FeaturedCharacterRepository>()),
+    () => CharactersCubit(getIt<IFeaturedCharacterRepository>()),
   );
   getIt.registerFactory<SearchCubit>(
-    () => SearchCubit(getIt<FeaturedCharacterRepository>()),
+    () => SearchCubit(getIt<IFeaturedCharacterRepository>()),
   );
 
   getIt.registerFactory<HomeBloc>(
     () => HomeBloc(
       youTubeService: getIt<YouTubeService>(),
-      featuredCharacterRepository: getIt<FeaturedCharacterRepository>(),
+      featuredCharacterRepository: getIt<IFeaturedCharacterRepository>(),
     ),
   );
 
@@ -38,7 +38,7 @@ void registerFeaturesModule(GetIt getIt) {
   );
 
   getIt.registerFactory<ListCrewsBloc>(
-    () => ListCrewsBloc(crewRepository: getIt<CrewRepository>()),
+    () => ListCrewsBloc(crewRepository: getIt<ICrewRepository>()),
   );
 
   getIt.registerFactory<NamiFinancesBloc>(
@@ -49,6 +49,18 @@ void registerFeaturesModule(GetIt getIt) {
   getIt.registerFactory<SanjiCookingBloc>(() => SanjiCookingBloc());
 
   getIt.registerLazySingleton<RobinKnowledgeBloc>(
-    () => RobinKnowledgeBloc(plannerRepository: getIt<PlannerRepository>()),
+    () => RobinKnowledgeBloc(plannerRepository: getIt<PlannerRepositoryInterface>()),
   );
+}
+
+extension FeaturesModuleExtensions on GetIt {
+  CalculatorCubit get calculatorCubit => get<CalculatorCubit>();
+  CharactersCubit get charactersCubit => get<CharactersCubit>();
+  SearchCubit get searchCubit => get<SearchCubit>();
+  HomeBloc get homeBloc => get<HomeBloc>();
+  DevilFruitBloc get devilFruitBloc => get<DevilFruitBloc>();
+  ListCrewsBloc get listCrewsBloc => get<ListCrewsBloc>();
+  ZoroWorkoutBloc get zoroWorkoutBloc => get<ZoroWorkoutBloc>();
+  SanjiCookingBloc get sanjiCookingBloc => get<SanjiCookingBloc>();
+  RobinKnowledgeBloc get robinKnowledgeBloc => get<RobinKnowledgeBloc>();
 }

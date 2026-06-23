@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:math_expressions/math_expressions.dart';
-import 'package:opfan/core/calculator/calculator_state.dart';
+import 'package:opfan/features/calculator/bloc/calculator_state.dart';
 
 class CalculatorCubit extends Cubit<CalculatorState> {
   CalculatorCubit() : super(CalculatorState.initial());

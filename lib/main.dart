@@ -1,16 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:hive_flutter/hive_flutter.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:opfan/core/auth/models/user_model.dart';
 import 'package:opfan/features/one_piece/bloc/search_cubit.dart';
 import 'package:opfan/core/services/environment_service.dart';
 import 'package:opfan/app/di/injection.dart';
 import 'package:opfan/core/services/notification_service.dart';
 import 'package:opfan/core/services/navigation_service.dart';
-import 'package:opfan/core/models/one_piece/today_character.dart';
-import 'package:opfan/core/models/theme_model.dart';
 import 'package:opfan/core/services/theme_service.dart';
+import 'package:opfan/core/services/storage_service.dart';
 import 'package:opfan/core/theme/cubit/theme_cubit.dart';
 import 'package:opfan/core/theme/cubit/theme_state.dart';
 import 'package:opfan/core/locale/cubit/locale_cubit.dart';
@@ -27,21 +24,16 @@ import 'package:opfan/shared/utils/app_routes.dart';
 
 import 'package:opfan/shared/utils/theme.dart';
 import 'core/services/locale_service.dart';
-import 'package:opfan/core/models/nami_finances_model.dart';
+import 'package:opfan/app/app_bloc_observer.dart';
+import 'package:opfan/shared/widgets/global_error_boundary.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   
-  await Hive.initFlutter();
-
-  Hive.registerAdapter(TodayCharacterAdapter());
-  Hive.registerAdapter(UserModelAdapter());
-  Hive.registerAdapter(ThemeSettingsAdapter());
+  Bloc.observer = AppBlocObserver();
   
-  Hive.registerAdapter(NamiFinancesModelAdapter());
-  Hive.registerAdapter(MonthlyIncomeModelAdapter());
-  Hive.registerAdapter(ExpenseModelAdapter());
-  Hive.registerAdapter(ExpenseCategoryAdapter());
+  await setupDependencies();
+  await getIt<IStorageService>().initialize();
 
   await LocaleService.loadLocale();
 
@@ -51,7 +43,6 @@ void main() async {
         options: DefaultFirebaseOptions.currentPlatform,
       ),
       EnvironmentService.initialize(),
-      setupDependencies(),
       ThemeService.initialize(),
     ]);
 
@@ -66,7 +57,7 @@ void main() async {
     statusBarColor: Colors.white24,
   ));
 
-  runApp(const MyApp());
+  runApp(const GlobalErrorBoundary(child: MyApp()));
 }
 
 class MyApp extends StatelessWidget {

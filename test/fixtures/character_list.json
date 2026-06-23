@@ -1,0 +1,44 @@
+{
+  "total_count": 1,
+  "characters": [
+    {
+      "name": "Gol D. Roger",
+      "nickname": "Pirate King",
+      "age": 53,
+      "race": "human",
+      "signo": "capricorn",
+      "status": "deceased",
+      "occupation": [
+        "Captain"
+      ],
+      "affiliations": [
+        "Pirate"
+      ],
+      "bounty": "5564800000",
+      "description": "The legendary Pirate King who conquered the Grand Line and found the One Piece, inspiring the Great Pirate Era",
+      "image": "https://i.pinimg.com/originals/b6/c4/bb/b6c4bb59c6601353f69b31cd63395654.jpg",
+      "crew": "Roger Pirates",
+      "devilFruit": null,
+      "fightingStyle": {
+        "name": "Estilo de Uma Espada",
+        "type": "swordsman",
+        "attacks": [
+          "Divine Departure",
+          "Roger's Slash",
+          "King's Strike",
+          "Conqueror's Blade"
+        ],
+        "weapons": [
+          "Ace (Espada)",
+          "Roger's Saber"
+        ]
+      },
+      "haki": [
+        "Haoshoku Haki (Haki do Rei)",
+        "Busoshoku Haki (Haki da Armadura)",
+        "Kenbunshoku Haki (Haki da Observação)"
+      ],
+      "birthDate": "1977-12-31"
+    }
+  ]
+}

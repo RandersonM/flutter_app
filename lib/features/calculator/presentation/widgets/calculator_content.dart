@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import 'package:opfan/core/calculator/calculator_cubit.dart';
-import 'package:opfan/core/calculator/calculator_state.dart';
+import 'package:opfan/features/calculator/bloc/calculator_cubit.dart';
+import 'package:opfan/features/calculator/bloc/calculator_state.dart';
 import 'package:opfan/features/calculator/presentation/widgets/calculator_button.dart';
 import 'package:opfan/features/calculator/presentation/widgets/calculator_header.dart';
 import 'package:opfan/shared/utils/constants.dart';

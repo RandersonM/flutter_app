@@ -3,7 +3,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:opfan/core/calculator/calculator_cubit.dart';
+import 'package:opfan/features/calculator/bloc/calculator_cubit.dart';
 import 'package:opfan/app/di/injection.dart';
 import 'package:opfan/l10n/app_localizations.dart';
 import 'package:opfan/features/calculator/presentation/widgets/calculator_content.dart';

@@ -6,7 +6,7 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter/foundation.dart';
 
 import 'package:opfan/core/models/one_piece/custom_character_model.dart';
-import 'package:opfan/core/repository/featured_character_repository.dart';
+import 'package:opfan/features/home/data/repository/featured_character_repository_interface.dart';
 
 abstract class CharactersState extends Equatable {
   const CharactersState();
@@ -57,7 +57,7 @@ class CharactersError extends CharactersState {
 class CharactersCubit extends Cubit<CharactersState> {
   CharactersCubit(this.backend) : super(CharactersInitial());
 
-  final FeaturedCharacterRepository backend;
+  final IFeaturedCharacterRepository backend;
   List<CustomCharacterModel> _characters = [];
 
   List<CustomCharacterModel> get characters =>

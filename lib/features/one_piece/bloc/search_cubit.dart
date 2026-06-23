@@ -4,7 +4,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:opfan/core/models/one_piece/custom_character_model.dart';
-import 'package:opfan/core/repository/featured_character_repository.dart';
+import 'package:opfan/features/home/data/repository/featured_character_repository_interface.dart';
 
 
 
@@ -81,7 +81,7 @@ class SearchCubit extends Cubit<SearchState> {
     }
   }
 
-  final FeaturedCharacterRepository backend;
+  final IFeaturedCharacterRepository backend;
   List<CustomCharacterModel> _queryResults = [];
   String _query = '';
   final List<String> _statusFilters = <String>[];
