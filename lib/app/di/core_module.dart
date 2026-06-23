@@ -4,6 +4,7 @@ import 'package:opfan/core/services/notification_service.dart';
 import 'package:opfan/core/services/devil_fruit_service.dart';
 import 'package:opfan/core/services/youtube_service.dart';
 import 'package:opfan/core/services/gemini_service.dart';
+import 'package:opfan/core/services/character_image_service.dart';
 import 'package:opfan/core/services/auth_service.dart';
 import 'package:opfan/core/services/firestore_service.dart';
 import 'package:opfan/core/services/nami_finances_service.dart';
@@ -29,6 +30,7 @@ void registerCoreModule(GetIt getIt) {
   getIt.registerLazySingleton<DevilFruitService>(() => DevilFruitService());
   getIt.registerLazySingleton<YouTubeService>(() => YouTubeService());
   getIt.registerLazySingleton<GeminiService>(() => GeminiService());
+  getIt.registerLazySingleton<CharacterImageService>(() => CharacterImageService());
 
   getIt.registerLazySingleton<ICookingRepository>(() => CookingRepository());
   getIt.registerLazySingleton<IFeaturedCharacterRepository>(
@@ -62,6 +64,7 @@ extension CoreModuleExtensions on GetIt {
   DevilFruitService get devilFruitService => get<DevilFruitService>();
   YouTubeService get youTubeService => get<YouTubeService>();
   GeminiService get geminiService => get<GeminiService>();
+  CharacterImageService get characterImageService => get<CharacterImageService>();
   ICookingRepository get cookingRepository => get<ICookingRepository>();
   AuthService get authService => get<AuthService>();
   FirestoreService get firestoreService => get<FirestoreService>();

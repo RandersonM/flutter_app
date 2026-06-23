@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:opfan/core/models/one_piece/custom_character_model.dart';
 import 'package:opfan/shared/utils/constants.dart';
 import 'package:opfan/l10n/app_localizations.dart';
+import 'package:opfan/shared/widgets/atoms/universal_image.dart';
 
 class CustomCharacterCard extends StatelessWidget {
   final CustomCharacterModel character;
@@ -47,8 +48,8 @@ class CustomCharacterCard extends StatelessWidget {
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(Constants.margin * 2),
                     child: character.image.isNotEmpty
-                        ? Image.network(
-                            character.image,
+                        ? UniversalImage(
+                            imageUrl: character.image,
                             fit: BoxFit.cover,
                             loadingBuilder: (context, child, loadingProgress) {
                               if (loadingProgress == null) return child;

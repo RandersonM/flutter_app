@@ -9,6 +9,7 @@ import 'package:opfan/features/one_piece/bloc/search_cubit.dart';
 import 'package:opfan/app/di/injection.dart';
 import 'package:opfan/l10n/app_localizations.dart';
 import 'package:opfan/shared/utils/constants.dart';
+import 'package:opfan/shared/widgets/atoms/universal_image.dart';
 
 class CharacterSelectionGrid extends StatefulWidget {
   const CharacterSelectionGrid({
@@ -183,8 +184,8 @@ class _CharacterSelectionGridState extends State<CharacterSelectionGrid> {
                 ),
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(Constants.margin * 2),
-                  child: Image.network(
-                    character.image,
+                  child: UniversalImage(
+                    imageUrl: character.image,
                     fit: BoxFit.cover,
                     loadingBuilder: (context, child, loadingProgress) {
                       if (loadingProgress == null) return child;

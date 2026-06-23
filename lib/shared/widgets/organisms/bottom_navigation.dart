@@ -3,11 +3,15 @@
 
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:stylish_bottom_bar/stylish_bottom_bar.dart';
 import 'package:opfan/l10n/app_localizations.dart';
 import 'package:opfan/shared/utils/app_routes.dart';
-import 'package:opfan/shared/utils/constants.dart' show Constants;
+import 'package:opfan/shared/utils/constants.dart';
 import 'package:opfan/shared/utils/icons/one_piece_icons.dart';
+
+// Fixed dark plum color — identical for light and dark mode.
+const Color _kNavBarBackground = Color(0xFF2D1648);
+// Active capsule — solid violet.
+const Color _kActiveCapsule = Color(0xFF7C3AED);
 
 enum BottomNavigationPages {
   home,
@@ -88,13 +92,15 @@ class BottomNavigationState extends State<BottomNavigation> {
     await _navigateToPage(page);
   }
 
-  BottomBarItem _buildNavigationItem(
+  Widget _buildNavigationItem(
     BuildContext context,
     BottomNavigationPages page,
     bool isActive,
+    int index,
   ) {
     final localizations = AppLocalizations.of(context)!;
-    
+    final theme = Theme.of(context);
+
     final (String label, IconData icon) = switch (page) {
       BottomNavigationPages.finances => (
           localizations.finances,
@@ -102,7 +108,7 @@ class BottomNavigationState extends State<BottomNavigation> {
         ),
       BottomNavigationPages.workout => (
           localizations.workout,
-          FontAwesomeIcons.dumbbell 
+          FontAwesomeIcons.dumbbell,
         ),
       BottomNavigationPages.home => (
           localizations.home,
@@ -118,52 +124,98 @@ class BottomNavigationState extends State<BottomNavigation> {
         ),
     };
 
-    return BottomBarItem(
-      icon: Icon(
-        icon,
-        color: Theme.of(context).colorScheme.onSecondaryContainer,
+    return Expanded(
+      child: GestureDetector(
+        behavior: HitTestBehavior.opaque,
+        onTap: () => _onItemTapped(index),
+        child: Center(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              AnimatedContainer(
+                duration: const Duration(milliseconds: 250),
+                curve: Curves.easeInOut,
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 20.0,
+                  vertical: 7.0,
+                ),
+                decoration: BoxDecoration(
+                  color: isActive ? _kActiveCapsule : Colors.transparent,
+                  borderRadius: BorderRadius.circular(22),
+                ),
+                child: Icon(
+                  icon,
+                  size: 20,
+                  color: Colors.white.withValues(
+                    alpha: isActive ? 1.0 : 0.55,
+                  ),
+                ),
+              ),
+              const SizedBox(height: 5),
+              Text(
+                label,
+                style: theme.textTheme.bodySmall?.copyWith(
+                  color: isActive
+                      ? Colors.white
+                      : Colors.white.withValues(alpha: 0.55),
+                  fontWeight: isActive ? FontWeight.w700 : FontWeight.w400,
+                  fontSize: 11,
+                  letterSpacing: isActive ? 0.2 : 0,
+                ),
+              ),
+            ],
+          ),
+        ),
       ),
-      selectedIcon: Icon(
-        icon,
-        color: Theme.of(context).colorScheme.primary,
-      ),
-      title: Text(label,
-          style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-              fontWeight: FontWeight.bold,
-              color: isActive
-                  ? Theme.of(context).colorScheme.primary
-                  : Theme.of(context).colorScheme.onSecondaryContainer)),
-      backgroundColor: Theme.of(context).colorScheme.primary,
     );
   }
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    final colorScheme = theme.colorScheme;
+    // Respect the device's bottom safe area (home indicator, etc.)
+    // without adding any extra external padding so the bar is truly
+    // docked to the screen edge.
+    final bottomInset = MediaQuery.of(context).padding.bottom;
 
-    return SafeArea(
-      child: StylishBottomBar(
-        option: AnimatedBarOptions(
-          iconSize: Constants.iconSize,
-          barAnimation: BarAnimation.transform3D,
-          iconStyle: IconStyle.animated,
-          opacity: 0.3,
+    return Container(
+      decoration: const BoxDecoration(
+        color: _kNavBarBackground,
+        // Only top corners are rounded — the bar is flush with the screen bottom.
+        borderRadius: BorderRadius.only(
+          topLeft: Radius.circular(Constants.size16),
+          topRight: Radius.circular(Constants.size16),
         ),
-        fabLocation: StylishBarFabLocation.center,
-        backgroundColor: colorScheme.surface.withValues(alpha: 0.9),
-        notchStyle: NotchStyle.circle,
-        elevation: 2,
-        currentIndex: _pages.indexOf(widget.currentPage),
-        hasNotch: true,
-        items: _pages
-            .map((page) => _buildNavigationItem(
+        boxShadow: [
+          BoxShadow(
+            color: Color(0x55000000),
+            blurRadius: 20,
+            offset: Offset(0, -4),
+          ),
+        ],
+      ),
+      padding: const EdgeInsets.symmetric(horizontal: 8.0),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          // Fixed-height content area — icons stay vertically centered here.
+          SizedBox(
+            height: 64,
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: List.generate(
+                _pages.length,
+                (index) => _buildNavigationItem(
                   context,
-                  page,
-                  page == widget.currentPage,
-                ))
-            .toList(),
-        onTap: (index) => _onItemTapped(index),
+                  _pages[index],
+                  _pages[index] == widget.currentPage,
+                  index,
+                ),
+              ),
+            ),
+          ),
+          // Safe-area spacer — keeps bar flush at the bottom edge.
+          SizedBox(height: bottomInset > 0 ? bottomInset : 8.0),
+        ],
       ),
     );
   }

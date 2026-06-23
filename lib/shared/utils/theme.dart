@@ -45,20 +45,20 @@ class AppColors {
     900: Color(0xFF7F0000),
   });
 
-  static const int _purplePrimaryValue = 0xFF800080;
+  static const int _purplePrimaryValue = 0xFF7C3AED;
   static const MaterialColor purple =
       MaterialColor(_purplePrimaryValue, <int, Color>{
-    50: Color(0xFFECD8E9),
-    100: Color(0xFFD8B1D4),
-    200: Color(0xFFC38BBF),
-    300: Color(0xFFAD66A9),
-    350: Color(0xFF7D5BA6),
-    400: Color(0xFF973E95),
+    50: Color(0xFFF5F3FF),
+    100: Color(0xFFEDE9FE),
+    200: Color(0xFFDDD6FE),
+    300: Color(0xFFC4B5FD),
+    350: Color(0xFFA78BFA),
+    400: Color(0xFFA78BFA),
     500: Color(_purplePrimaryValue),
-    600: Color(0xFF6A0C6A),
-    700: Color(0xFF551054),
-    800: Color(0xFF411140),
-    900: Color(0xFF2D102C),
+    600: Color(0xFF7C3AED),
+    700: Color(0xFF6D28D9),
+    800: Color(0xFF5B21B6),
+    900: Color(0xFF4C1D95),
   });
 
   static const int _bluePrimaryValue = 0xFF1976D2;
@@ -253,27 +253,27 @@ ThemeData getLightTheme() {
       brightness: Brightness.light,
     ).copyWith(
       primary: AppColors.purple[600]!,
-      onPrimary: AppColors.purple[900],
-      onPrimaryContainer: AppColors.purple[300],
-      primaryContainer: AppColors.purple[100],
-      secondary: AppColors.brown[700]!,
-      onSecondary: AppColors.brown[900]!,
-      secondaryContainer: AppColors.orange[100],
+      onPrimary: Colors.white,
+      onPrimaryContainer: AppColors.purple[900]!,
+      primaryContainer: AppColors.purple[100]!,
+      secondary: AppColors.purple[700]!,
+      onSecondary: Colors.white,
+      secondaryContainer: AppColors.purple[50]!,
+      onSecondaryContainer: AppColors.purple[900]!,
       tertiary: AppColors.orange[700]!,
-      tertiaryContainer: AppColors.orange[100],
+      tertiaryContainer: AppColors.orange[100]!,
       onTertiaryContainer: AppColors.orange[300]!,
       onTertiary: AppColors.orange[1000]!,
       error: AppColors.red[500]!,
       errorContainer: AppColors.red[100]!,
-      onError: AppColors.red[800],
+      onError: Colors.white,
       surfaceContainer: Colors.white,
-      surface: AppColors.grey[100],
-      onSurface: AppColors.grey[900],
-      surfaceContainerLow: AppColors.purple[300],
-      surfaceContainerHigh: AppColors.grey[100],
-      onSecondaryContainer: AppColors.purple[900],
+      surface: const Color(0xFFF3F4F6),
+      onSurface: const Color(0xFF1F2937),
+      surfaceContainerLow: AppColors.purple[50]!,
+      surfaceContainerHigh: const Color(0xFFF9FAFB),
     ),
-    dividerColor: AppColors.grey[300],
+    dividerColor: AppColors.grey[200],
     textTheme: const TextTheme(
         displayLarge: _Typography.headline1,
         displayMedium: _Typography.headline2,
@@ -291,18 +291,18 @@ ThemeData getLightTheme() {
     fontFamily: 'Lato',
     chipTheme: ChipThemeData(
       backgroundColor: AppColors.grey[50],
-      labelStyle: _Typography.bodySmall.copyWith(color: AppColors.purple[500]),
-      side: BorderSide(color: AppColors.purple[500]!),
+      labelStyle: _Typography.bodySmall.copyWith(color: AppColors.purple[600]),
+      side: BorderSide(color: AppColors.purple[200]!),
     ),
     cardTheme: CardThemeData(
       shape: RoundedRectangleBorder(
-          side: const BorderSide(color: AppColors.purple),
+          side: BorderSide(color: AppColors.purple[100]!, width: 1),
           borderRadius: BorderRadius.circular(Constants.margin * 2)),
       margin: EdgeInsets.zero,
-      shadowColor: AppColors.purple[700],
+      shadowColor: AppColors.purple[900]!.withValues(alpha: 0.04),
       color: Colors.white,
     ),
-    scaffoldBackgroundColor: Colors.white,
+    scaffoldBackgroundColor: const Color(0xFFF8F9FA),
     inputDecorationTheme: InputDecorationTheme(
       border: OutlineInputBorder(
         borderSide: BorderSide(color: AppColors.purple[200]!),
@@ -359,40 +359,37 @@ ThemeData getLightTheme() {
 ThemeData getDarkTheme() {
   return ThemeData(
     brightness: Brightness.dark,
-    appBarTheme: AppBarTheme(
-      color: const Color(0xFF1A1A1A),
+    appBarTheme: const AppBarTheme(
+      color: Color(0xFF151419),
       centerTitle: true,
-      titleTextStyle:
-          _Typography.headlineSmall.merge(const TextStyle(color: Colors.white)),
-      iconTheme: const IconThemeData(color: Colors.white70),
-      actionsIconTheme: const IconThemeData(color: Colors.white70),
-      toolbarTextStyle: _Typography.headlineSmall.merge(
-        const TextStyle(color: Colors.white70),
-      ),
+      titleTextStyle: _Typography.headlineSmall,
+      iconTheme: IconThemeData(color: Colors.white70),
+      actionsIconTheme: IconThemeData(color: Colors.white70),
+      toolbarTextStyle: _Typography.headlineSmall,
       elevation: 0,
     ),
     colorScheme: const ColorScheme.dark().copyWith(
-      primary: AppColors.purple[300]!, // purple[300]
-      onPrimary: Colors.black,
-      onPrimaryContainer: AppColors.purple[700]!,
-      primaryContainer: AppColors.purple[600]!,
-      secondary: AppColors.brown[300]!,
-      onSecondary: AppColors.grey[100]!,
-      secondaryContainer: AppColors.brown[900]!,
-      tertiary: AppColors.orange[300]!, // orange[300]
+      primary: AppColors.purple[300]!,
+      onPrimary: const Color(0xFF1E1B4B),
+      onPrimaryContainer: AppColors.purple[100]!,
+      primaryContainer: AppColors.purple[800]!,
+      secondary: AppColors.purple[400]!,
+      onSecondary: const Color(0xFF1E1B4B),
+      secondaryContainer: AppColors.purple[900]!,
+      tertiary: AppColors.orange[300]!,
       onTertiary: Colors.black,
       tertiaryContainer: AppColors.brown[500],
       onTertiaryContainer: AppColors.brown[300]!,
-      error: AppColors.red[900]!,
-      onError: AppColors.red[800]!,
-      surface: Colors.black,
-      surfaceContainer: Colors.black,
-      onSurface: Colors.white,
-      surfaceContainerLow: AppColors.grey[900]!,
-      surfaceContainerHigh: AppColors.grey[900]!,
+      error: AppColors.red[700]!,
+      onError: Colors.white,
+      surface: const Color(0xFF151419),
+      surfaceContainer: const Color(0xFF1E1D24),
+      onSurface: const Color(0xFFF3F4F6),
+      surfaceContainerLow: const Color(0xFF151419),
+      surfaceContainerHigh: const Color(0xFF2E2D38),
       onSecondaryContainer: AppColors.purple[100],
     ),
-    dividerColor: const Color(0xFF404040),
+    dividerColor: const Color(0xFF2E2D38),
     textTheme: const TextTheme(
         displayLarge: _Typography.headline1,
         displayMedium: _Typography.headline2,
@@ -408,58 +405,58 @@ ThemeData getDarkTheme() {
         bodySmall: _Typography.bodySmall,
         labelSmall: _Typography.overline),
     fontFamily: 'Lato',
-    chipTheme: const ChipThemeData(
-      backgroundColor: Color(0xFF2A2A2A),
-      labelStyle: TextStyle(color: Color(0xFFAD66A9)), // purple[300]
-      side: BorderSide(color: Color(0xFFAD66A9)), // purple[300]
+    chipTheme: ChipThemeData(
+      backgroundColor: const Color(0xFF1E1D24),
+      labelStyle: TextStyle(color: AppColors.purple[300]),
+      side: BorderSide(color: AppColors.purple[300]!.withValues(alpha: 0.5)),
     ),
-    cardTheme: const CardThemeData(
+    cardTheme: CardThemeData(
       shape: RoundedRectangleBorder(
-          side: BorderSide(color: Color(0xFFAD66A9)), // purple[300]
-          borderRadius: BorderRadius.all(Radius.circular(16))),
+          side: BorderSide(color: AppColors.purple[900]!.withValues(alpha: 0.3), width: 1),
+          borderRadius: const BorderRadius.all(Radius.circular(16))),
       margin: EdgeInsets.zero,
-      shadowColor: Colors.black,
-      color: Color(0xFF2A2A2A),
+      shadowColor: Colors.black.withValues(alpha: 0.5),
+      color: const Color(0xFF1E1D24),
     ),
-    scaffoldBackgroundColor: const Color(0xFF121212),
-    inputDecorationTheme: const InputDecorationTheme(
+    scaffoldBackgroundColor: const Color(0xFF0F0E13),
+    inputDecorationTheme: InputDecorationTheme(
       border: OutlineInputBorder(
-        borderSide: BorderSide(color: Color(0xFF551054)), // purple[700]
-        borderRadius: BorderRadius.all(Radius.circular(16)),
+        borderSide: BorderSide(color: AppColors.purple[900]!.withValues(alpha: 0.5)),
+        borderRadius: const BorderRadius.all(Radius.circular(16)),
       ),
-      disabledBorder: OutlineInputBorder(
-        borderSide: BorderSide(color: Color(0xFF404040)),
+      disabledBorder: const OutlineInputBorder(
+        borderSide: BorderSide(color: Color(0xFF2E2D38)),
         borderRadius: BorderRadius.all(Radius.circular(16)),
       ),
       enabledBorder: OutlineInputBorder(
-        borderSide: BorderSide(color: Color(0xFF551054)), // purple[700]
-        borderRadius: BorderRadius.all(Radius.circular(16)),
+        borderSide: BorderSide(color: AppColors.purple[900]!.withValues(alpha: 0.5)),
+        borderRadius: const BorderRadius.all(Radius.circular(16)),
       ),
       focusedBorder: OutlineInputBorder(
-        borderSide: BorderSide(color: Color(0xFFAD66A9)), // purple[300]
-        borderRadius: BorderRadius.all(Radius.circular(16)),
+        borderSide: BorderSide(color: AppColors.purple[300]!),
+        borderRadius: const BorderRadius.all(Radius.circular(16)),
       ),
-      fillColor: Color(0xFF2A2A2A),
+      fillColor: const Color(0xFF1E1D24),
       filled: true,
     ),
     dropdownMenuTheme: DropdownMenuThemeData(
       menuStyle: MenuStyle(
-        backgroundColor: WidgetStateProperty.all(const Color(0xFF2A2A2A)),
+        backgroundColor: WidgetStateProperty.all(const Color(0xFF1E1D24)),
       ),
-      inputDecorationTheme: const InputDecorationTheme(
-        disabledBorder: OutlineInputBorder(
-          borderSide: BorderSide(color: Color(0xFF404040)),
+      inputDecorationTheme: InputDecorationTheme(
+        disabledBorder: const OutlineInputBorder(
+          borderSide: BorderSide(color: Color(0xFF2E2D38)),
           borderRadius: BorderRadius.all(Radius.circular(16)),
         ),
         enabledBorder: OutlineInputBorder(
-          borderSide: BorderSide(color: Color(0xFF551054)), // purple[700]
-          borderRadius: BorderRadius.all(Radius.circular(16)),
+          borderSide: BorderSide(color: AppColors.purple[900]!.withValues(alpha: 0.5)),
+          borderRadius: const BorderRadius.all(Radius.circular(16)),
         ),
         focusedBorder: OutlineInputBorder(
-          borderSide: BorderSide(color: Color(0xFFAD66A9)), // purple[300]
-          borderRadius: BorderRadius.all(Radius.circular(16)),
+          borderSide: BorderSide(color: AppColors.purple[300]!),
+          borderRadius: const BorderRadius.all(Radius.circular(16)),
         ),
-        fillColor: Color(0xFF2A2A2A),
+        fillColor: const Color(0xFF1E1D24),
         filled: true,
       ),
     ),

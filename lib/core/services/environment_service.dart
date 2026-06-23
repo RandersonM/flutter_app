@@ -25,16 +25,7 @@ class EnvironmentService {
   String get devilFruitApiUrl => _getString(
       'DEVIL_FRUIT_API_URL', 'https://api.api-onepiece.com/v2/fruits/en');
 
-  String get huggingFaceBaseUrl => _getString(
-      'HUGGING_FACE_BASE_URL', 'https://api-inference.huggingface.co');
 
-  String get huggingFaceApiKey =>
-      _getString('HUGGING_FACE_API_KEY', 'dev_mode');
-
-  String get stabilityApiKey => _getString('STABILITY_API_KEY', 'dev_mode');
-
-  String get stabilityBaseUrl => _getString(
-      'STABILITY_BASE_URL', 'https://api.stability.ai/v1/generation');
 
   String get geminiApiKey => _getString('GEMINI_API_KEY', 'dev_mode');
 
@@ -111,7 +102,6 @@ class EnvironmentService {
       'app_version': appVersion,
       'debug_mode': debugMode,
       'youtube_api_configured': youtubeApiKey.isNotEmpty,
-      'huggingface_api_configured': huggingFaceApiKey.isNotEmpty,
       'gemini_api_configured':
           geminiApiKey.isNotEmpty && geminiApiKey != 'dev_mode',
       'onepiece_api_url': onepieceApiUrl,

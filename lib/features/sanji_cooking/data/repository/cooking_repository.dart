@@ -13,6 +13,12 @@ class CookingRepository implements ICookingRepository {
 
   bool get _isPortuguese => _currentLanguage == 'pt';
 
+  String get _sanjiSystemInstruction {
+    return _isPortuguese
+        ? "Você é o Sanji, o lendário cozinheiro dos Piratas do Chapéu de Palha de One Piece. Você é apaixonado por culinária, odeia desperdiçar comida e sempre oferece conselhos e técnicas gastronômicas profissionais. Fale com a paixão e o estilo característico de Sanji (confiante, focado em ingredientes frescos, respeitoso e levemente dramático sobre comida), mas sempre com informações culinárias reais e precisas."
+        : "You are Sanji, the legendary chef of the Straw Hat Pirates from One Piece. You are passionate about cooking, despise wasting food, and always offer professional culinary advice and techniques. Speak with Sanji's characteristic passion and style (confident, ingredient-focused, respectful and slightly dramatic about food), but always provide real, accurate culinary information.";
+  }
+
   @override
   Future<String?> generateCookingTips({
     required String ingredient,
@@ -45,6 +51,7 @@ Please provide:
 
     return await _geminiService.generateText(
       prompt: prompt,
+      systemInstruction: _sanjiSystemInstruction,
       context: _isPortuguese
           ? 'Dicas de culinária e conselhos para ingredientes'
           : 'Cooking tips and advice for ingredients',
@@ -96,6 +103,7 @@ Please provide:
 
     return await _geminiService.generateText(
       prompt: prompt,
+      systemInstruction: _sanjiSystemInstruction,
       context: _isPortuguese
           ? 'Sugestões de receitas baseadas em ingredientes disponíveis'
           : 'Recipe suggestions based on available ingredients',
@@ -143,6 +151,7 @@ Please include:
 
     return await _geminiService.generateText(
       prompt: prompt,
+      systemInstruction: _sanjiSystemInstruction,
       context: _isPortuguese
           ? 'Informações nutricionais e benefícios para a saúde'
           : 'Nutritional information and health benefits',
@@ -189,6 +198,7 @@ Please provide:
 
     return await _geminiService.generateText(
       prompt: prompt,
+      systemInstruction: _sanjiSystemInstruction,
       context: _isPortuguese
           ? 'Explicação de técnicas e métodos de cozimento'
           : 'Cooking techniques and methods explanation',
@@ -238,6 +248,7 @@ Please provide:
 
     return await _geminiService.generateText(
       prompt: prompt,
+      systemInstruction: _sanjiSystemInstruction,
       context: _isPortuguese
           ? 'Estratégias de planejamento e preparação de refeições'
           : 'Meal planning and preparation strategies',
@@ -285,6 +296,7 @@ Please provide:
 
     return await _geminiService.generateText(
       prompt: prompt,
+      systemInstruction: _sanjiSystemInstruction,
       context: _isPortuguese
           ? 'Sugestões de combinações de alimentos e sabores'
           : 'Food pairing and flavor combination suggestions',
@@ -331,6 +343,7 @@ Please provide:
 
     return await _geminiService.generateText(
       prompt: prompt,
+      systemInstruction: _sanjiSystemInstruction,
       context: _isPortuguese
           ? 'Solução de problemas de culinária e soluções'
           : 'Cooking problem troubleshooting and solutions',
@@ -396,6 +409,7 @@ Please provide:
 
     return await _geminiService.generateText(
       prompt: prompt,
+      systemInstruction: _sanjiSystemInstruction,
       context: _isPortuguese
           ? 'Receita personalizada baseada em dados nutricionais'
           : 'Personalized recipe based on nutritional data',

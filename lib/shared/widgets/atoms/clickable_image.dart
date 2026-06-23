@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:opfan/shared/widgets/atoms/universal_image.dart';
 
 class ClickableImage extends StatelessWidget {
   final String imageUrl;
@@ -37,8 +38,8 @@ class ClickableImage extends StatelessWidget {
       ),
       child: ClipRRect(
         borderRadius: borderRadius ?? BorderRadius.zero,
-        child: Image.network(
-          imageUrl,
+        child: UniversalImage(
+          imageUrl: imageUrl,
           fit: fit,
           loadingBuilder: (context, child, loadingProgress) {
             if (loadingProgress == null) return child;
@@ -130,8 +131,8 @@ class ClickableImage extends StatelessWidget {
                     child: InteractiveViewer(
                       child: ClipRRect(
                         borderRadius: BorderRadius.circular(16),
-                        child: Image.network(
-                          imageUrl,
+                        child: UniversalImage(
+                          imageUrl: imageUrl,
                           fit: BoxFit.contain,
                           loadingBuilder: (context, child, loadingProgress) {
                             if (loadingProgress == null) return child;

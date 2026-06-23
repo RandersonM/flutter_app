@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:opfan/core/models/one_piece/crew_model.dart';
 import 'package:opfan/shared/utils/constants.dart';
 import 'package:opfan/l10n/app_localizations.dart';
+import 'package:opfan/shared/widgets/atoms/universal_image.dart';
 
 class CrewCard extends StatefulWidget {
   final CrewModel crew;
@@ -161,8 +162,8 @@ class _CrewCardState extends State<CrewCard> {
 
   Widget _buildCrewImage() {
     if (widget.crew.jollyRogerUrl != null && widget.crew.jollyRogerUrl!.isNotEmpty) {
-      return Image.network(
-        widget.crew.jollyRogerUrl!,
+      return UniversalImage(
+        imageUrl: widget.crew.jollyRogerUrl!,
         fit: BoxFit.fill,
         loadingBuilder: (context, child, loadingProgress) {
           if (loadingProgress == null) return child;
@@ -180,8 +181,8 @@ class _CrewCardState extends State<CrewCard> {
         },
       );
     } else if (widget.crew.boatImageUrl != null && widget.crew.boatImageUrl!.isNotEmpty) {
-      return Image.network(
-        widget.crew.boatImageUrl!,
+      return UniversalImage(
+        imageUrl: widget.crew.boatImageUrl!,
         fit: BoxFit.cover,
         loadingBuilder: (context, child, loadingProgress) {
           if (loadingProgress == null) return child;

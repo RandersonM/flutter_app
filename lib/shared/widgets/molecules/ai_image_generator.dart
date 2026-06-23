@@ -35,7 +35,7 @@ class AiImageGenerator extends StatefulWidget {
 
 class _AiImageGeneratorState extends State<AiImageGenerator> {
   final _promptController = TextEditingController();
-  final _geminiImageService = getIt.geminiService;
+  final _characterImageService = getIt.characterImageService;
   
   String? _generatedImageUrl;
   bool _isGenerating = false;
@@ -239,7 +239,7 @@ class _AiImageGeneratorState extends State<AiImageGenerator> {
             '$prompt [regeneration_${_regenerationCount}_${timestamp}_$randomSuffix]';
       }
 
-      final imageUrl = await _geminiImageService.generateCharacterImage(
+      final imageUrl = await _characterImageService.generateCharacterImage(
         characterName: widget.characterName ?? '',
         prompt: prompt,
         race: widget.race,
@@ -247,6 +247,8 @@ class _AiImageGeneratorState extends State<AiImageGenerator> {
         status: widget.status,
         occupations: widget.occupations,
       );
+
+      if (!mounted) return;
 
       if (imageUrl != null) {
         setState(() {
@@ -260,6 +262,7 @@ class _AiImageGeneratorState extends State<AiImageGenerator> {
         });
       }
     } catch (e) {
+      if (!mounted) return;
       setState(() {
         _errorMessage = AppLocalizations.of(context)!.imageGenerationError;
         _isGenerating = false;

@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:opfan/l10n/app_localizations.dart';
 import 'package:opfan/shared/utils/constants.dart';
-import 'package:opfan/shared/utils/theme.dart';
+
+// Amber accent — only 2% usage as per design spec
+const Color _kAmber = Color(0xFFFACC15);
+// Violet glow for quote section shadow
+const Color _kVioletGlow = Color(0xFF7C3AED);
 
 class CookingHeader extends StatefulWidget {
   const CookingHeader({
@@ -72,28 +76,35 @@ class _CookingHeaderState extends State<CookingHeader> with TickerProviderStateM
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+
     return Column(
       children: [
-        Container(
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(10),
-          ),
+        // GIF hero — no border radius change, keep full bleed
+        SizedBox(
           width: double.infinity,
           height: 250,
-          clipBehavior: Clip.antiAlias,
           child: Image.asset(
             'assets/logo/sanji-cooking.gif',
             fit: BoxFit.fill,
           ),
         ),
         const SizedBox(height: 12),
+
+        // Quote section — subtle violet glow shadow, no colored border (COOK-02)
         Container(
-          padding: const EdgeInsets.all(16),
+          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
           decoration: BoxDecoration(
-            color: Theme.of(context).colorScheme.onPrimary,
-            border: Border.symmetric(
-              horizontal: BorderSide(color: Theme.of(context).colorScheme.primary),
-            ),
+            color: isDark
+                ? const Color(0xFF16161C) // Surface dark
+                : const Color(0xFFFFFFFF), // Surface light
+            boxShadow: [
+              BoxShadow(
+                color: _kVioletGlow.withValues(alpha: 0.12),
+                blurRadius: 20,
+                offset: const Offset(0, -2),
+              ),
+            ],
           ),
           child: Column(
             spacing: Constants.margin,
@@ -104,19 +115,16 @@ class _CookingHeaderState extends State<CookingHeader> with TickerProviderStateM
                   controller: _pageController,
                   itemCount: _buildSanjiQuotes(context).length,
                   itemBuilder: (context, index) {
-                    return Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 8),
-                      child: Center(
-                        child: Text(
-                          _buildSanjiQuotes(context)[index],
-                          textAlign: TextAlign.center,
-                          style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                                fontWeight: FontWeight.bold,
-                                color: AppColors.yellow[500],
-                                height: 1.4,
-                                fontStyle: FontStyle.italic,
-                              ),
-                        ),
+                    return Center(
+                      child: Text(
+                        _buildSanjiQuotes(context)[index],
+                        textAlign: TextAlign.center,
+                        style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                              fontWeight: FontWeight.bold,
+                              color: _kAmber,
+                              height: 1.4,
+                              fontStyle: FontStyle.italic,
+                            ),
                       ),
                     );
                   },

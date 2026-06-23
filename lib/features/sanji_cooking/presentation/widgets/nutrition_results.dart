@@ -3,9 +3,20 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:opfan/core/models/nutrition_calculation_model.dart';
 import 'package:opfan/l10n/app_localizations.dart';
 import 'package:opfan/shared/utils/constants.dart';
-import 'package:opfan/shared/utils/theme.dart';
 import 'package:opfan/shared/utils/app_routes.dart';
-import 'package:opfan/shared/widgets/atoms/gomu_gomu_divider.dart';
+
+// ─── Design tokens ────────────────────────────────────────────────────────────
+// 90% neutral + 8% violet + 2% amber
+const Color _kViolet = Color(0xFF7C3AED);
+const Color _kAmber = Color(0xFFFACC15);
+const Color _kCardDark = Color(0xFF1D1D24);
+const Color _kMuted = Color(0xFFA1A1AA);
+
+// Alert colors — only used for health classification chips
+const Color _kAlertRed = Color(0xFFEF4444);
+const Color _kAlertOrange = Color(0xFFF97316);
+
+// ──────────────────────────────────────────────────────────────────────────────
 
 class NutritionResults extends StatelessWidget {
   final NutritionCalculationModel results;
@@ -17,6 +28,10 @@ class NutritionResults extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final cardColor = isDark ? _kCardDark : const Color(0xFFFCFCFD);
+    final textPrimary = isDark ? Colors.white : const Color(0xFF09090B);
+
     return Column(
       spacing: Constants.margin,
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -25,225 +40,137 @@ class NutritionResults extends StatelessWidget {
           AppLocalizations.of(context)!.nutritionResultsTitle,
           style: Theme.of(context).textTheme.titleLarge?.copyWith(
                 fontWeight: FontWeight.bold,
+                color: textPrimary,
               ),
         ),
         const SizedBox(height: 8),
-        
+
+        // T7 — Metric cards: neutral; TDEE value = amber
         _buildMetricCard(
           context,
           AppLocalizations.of(context)!.bmrTitle,
           AppLocalizations.of(context)!.kcalPerDay(results.bmr.toStringAsFixed(0)),
           AppLocalizations.of(context)!.bmrSubtitle,
-          null,
+          valueColor: null,
+          cardColor: cardColor,
+          textPrimary: textPrimary,
         ),
-        
-        
         _buildMetricCard(
           context,
           AppLocalizations.of(context)!.tdeeTitle,
           AppLocalizations.of(context)!.kcalPerDay(results.tdee.toStringAsFixed(0)),
           AppLocalizations.of(context)!.tdeeSubtitle,
-          AppColors.yellow[500]!,
+          valueColor: _kAmber,
+          cardColor: cardColor,
+          textPrimary: textPrimary,
         ),
-        
-        GomuGomuDivider(
-          color: Theme.of(context).colorScheme.primary,
-        ),
-        
+
+        const SizedBox(height: 8),
+
         Text(
           AppLocalizations.of(context)!.caloriesPerGoal,
           style: Theme.of(context).textTheme.titleMedium?.copyWith(
                 fontWeight: FontWeight.bold,
+                color: textPrimary,
               ),
         ),
-        const SizedBox(height: 12),
-        
+        const SizedBox(height: 4),
+
+        // T3 — Calorie cards: selected goal = violet, others = neutral card
         _buildCalorieCard(
           context,
           AppLocalizations.of(context)!.maintainWeight,
           AppLocalizations.of(context)!.kcalPerDay(results.maintenanceCalories.toStringAsFixed(0)),
+          cardColor: cardColor,
         ),
-        
-        const SizedBox(height: 8),
-        
         _buildCalorieCard(
           context,
           AppLocalizations.of(context)!.loseWeight,
           AppLocalizations.of(context)!.kcalPerDay(results.weightLossCalories.toStringAsFixed(0)),
+          cardColor: cardColor,
         ),
-        
-        const SizedBox(height: 8),
-        
         _buildCalorieCard(
           context,
           AppLocalizations.of(context)!.gainMuscle,
           AppLocalizations.of(context)!.kcalPerDay(results.muscleGainCalories.toStringAsFixed(0)),
+          cardColor: cardColor,
         ),
-        
-        const SizedBox(height: 16),
-        
+
+        const SizedBox(height: 8),
+
         Text(
           AppLocalizations.of(context)!.classifications,
           style: Theme.of(context).textTheme.titleMedium?.copyWith(
                 fontWeight: FontWeight.bold,
+                color: textPrimary,
               ),
         ),
-        const SizedBox(height: 12),
-        
-        Row(
-          children: [
-            Expanded(
-              child: _buildClassificationCard(
-                context,
-                AppLocalizations.of(context)!.bmi,
-                _getLocalizedBMICategory(results.bmiCategory, context),
-                _getBMIColor(results.bmiCategory),
-              ),
-            ),
-            const SizedBox(width: 12),
-            Expanded(
-              child: _buildClassificationCard(
-                context,
-                AppLocalizations.of(context)!.waistToHeight,
-                _getLocalizedWaistToHeightCategory(results.waistToHeightCategory, context),
-                _getWaistToHeightColor(results.waistToHeightCategory),
-              ),
-            ),
-          ],
-        ),
-        
+        const SizedBox(height: 4),
 
-        const SizedBox(height: Constants.margin),
-        GomuGomuDivider(
-          color: Theme.of(context).colorScheme.primary,
-        ),
-        const SizedBox(height: Constants.margin * 2),
-        
-        SizedBox(
-          width: double.infinity,
-          child: ElevatedButton(
-            onPressed: () {
-              Navigator.of(context).pushNamed(
-                AppRoutes.cookingTips,
-                arguments: {
-                  'targetCalories': _getTargetCalories(),
-                  'goal': results.goal,
-                },
-              );
-            },
-            style: ElevatedButton.styleFrom(
-              backgroundColor: AppColors.yellow[500]?.withValues(alpha: 0.1),
-              foregroundColor: AppColors.yellow[500],
-              elevation: 2,
-              padding: const EdgeInsets.all(20),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(12),
-                side: BorderSide(
-                  color: AppColors.yellow[500]!,
-                  width: 2,
-                ),
-              ),
-            ),
-            child: Column(
-              children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  mainAxisSize: MainAxisSize.max,
-                  children: [
-                    Icon(
-                      Icons.restaurant_menu,
-                      color: AppColors.yellow[500],
-                      size: 28,
-                    ),
-                    const SizedBox(width: Constants.margin / 2),
-                    Text(
-                      AppLocalizations.of(context)!.sanjiTipTitle,
-                      style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                            fontWeight: FontWeight.bold,
-                            color: AppColors.yellow[500],
-                          ),
-                    ),
-                  ],
-                ),
-                const SizedBox(height: Constants.margin),
-                Text(
-                  AppLocalizations.of(context)!.sanjiTipText,
-                  textAlign: TextAlign.center,
-                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                        color: AppColors.yellow[500]?.withValues(alpha: 0.8),
-                      ),
-                ),
-                const SizedBox(height: Constants.margin / 2),
-                Container(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-                  decoration: BoxDecoration(
-                    color: AppColors.yellow[500]?.withValues(alpha: 0.2),
-                    borderRadius: BorderRadius.circular(20),
-                  ),
-                  child: Text(
-                    'TAP TO COOK',
-                    style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                          fontWeight: FontWeight.bold,
-                          color: AppColors.yellow[500],
-                          letterSpacing: 1.2,
-                        ),
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ),
+        // T4 — Classification chips in a neutral card
+        _buildClassificationRow(context,
+            cardColor: cardColor, textPrimary: textPrimary),
+
         const SizedBox(height: 24),
-        _buildPlateGuideButton(context),
+
+        // T5 — Receita Personalizada card
+        _buildRecipeCard(context, cardColor: cardColor),
+
+        const SizedBox(height: 16),
+
+        // T6 — Plate Guide card
+        _buildPlateGuideButton(context, cardColor: cardColor),
       ],
     );
   }
 
+  // ─── T7: Metric card — neutral design ────────────────────────────────────
   Widget _buildMetricCard(
     BuildContext context,
     String title,
     String value,
-    String subtitle,
-    Color? color,
-  ) {
+    String subtitle, {
+    required Color? valueColor,
+    required Color cardColor,
+    required Color textPrimary,
+  }) {
     return Container(
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(Constants.margin),
+        color: cardColor,
+        borderRadius: BorderRadius.circular(20),
       ),
-      child: Column(
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Flexible(
-                child: Text(
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
                   title,
-                  overflow: TextOverflow.ellipsis,
                   style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                        fontWeight: FontWeight.bold,
-                        color: color,
+                        fontWeight: FontWeight.w600,
+                        color: textPrimary,
                       ),
                 ),
-              ),
-              const SizedBox(width: Constants.margin),
-              Text(
-                value,
-                style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                      fontWeight: FontWeight.bold,
-                      color: color,
-                    ),
-              ),
-            ],
+                const SizedBox(height: 2),
+                Text(
+                  subtitle,
+                  style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                        color: _kMuted,
+                      ),
+                ),
+              ],
+            ),
           ),
-          
-          const SizedBox(height: 4),
+          const SizedBox(width: 12),
           Text(
-            subtitle,
-            style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                  color: color?.withValues(alpha: 0.7),
+            value,
+            style: Theme.of(context).textTheme.titleSmall?.copyWith(
+                  fontWeight: FontWeight.bold,
+                  color: valueColor ?? textPrimary,
                 ),
           ),
         ],
@@ -251,34 +178,35 @@ class NutritionResults extends StatelessWidget {
     );
   }
 
+  // ─── T3: Calorie card — neutral / selected-violet ─────────────────────────
   Widget _buildCalorieCard(
     BuildContext context,
     String title,
-    String calories,
-  ) { 
-    final isUserGoal = _isUserGoal(context, title);
-    final color = isUserGoal ? AppColors.yellow[500]! : Theme.of(context).colorScheme.onTertiaryContainer;
-    
+    String calories, {
+    required Color cardColor,
+  }) {
+    final isSelected = _isUserGoal(context, title);
+    final bg = isSelected ? _kViolet : cardColor;
+    final textColor = isSelected ? Colors.white : _kMuted;
+    final caloriesColor = isSelected ? Colors.white : Colors.white70;
+
     return Container(
-      padding: const EdgeInsets.all(12),
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
       decoration: BoxDecoration(
-        color: color.withValues(alpha: 0.1),
-        borderRadius: BorderRadius.circular(Constants.margin),
-        border: Border.all(color: color.withValues(alpha: 0.3)),
+        color: bg,
+        borderRadius: BorderRadius.circular(20),
       ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Row(
             children: [
-              if (isUserGoal) ...[
-                
+              if (isSelected) ...[
                 Transform.rotate(
                   angle: -30 * 3.14159 / 180,
                   child: SvgPicture.asset(
                     'assets/svg/sanji-jolly-roger.svg',
-                    width: 24,
-                    height: 24,
+                      width: 20, height: 20
                   ),
                 ),
                 const SizedBox(width: 8),
@@ -286,8 +214,8 @@ class NutritionResults extends StatelessWidget {
               Text(
                 title,
                 style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                      fontWeight: FontWeight.w500,
-                      color: color,
+                      fontWeight: FontWeight.w600,
+                      color: textColor,
                     ),
               ),
             ],
@@ -296,13 +224,233 @@ class NutritionResults extends StatelessWidget {
             calories,
             style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                   fontWeight: FontWeight.bold,
-                  color: color,
+                  color: caloriesColor,
                 ),
           ),
         ],
       ),
     );
   }
+
+  // ─── T4: Classification row — chip style ─────────────────────────────────
+  Widget _buildClassificationRow(
+    BuildContext context, {
+    required Color cardColor,
+    required Color textPrimary,
+  }) {
+    return Row(
+      children: [
+        Expanded(
+          child: _buildClassificationChip(
+            context,
+            label: AppLocalizations.of(context)!.bmi,
+            value: _getLocalizedBMICategory(results.bmiCategory, context),
+            dotColor: _getBMIColor(results.bmiCategory),
+            cardColor: cardColor,
+            textPrimary: textPrimary,
+          ),
+        ),
+        const SizedBox(width: 12),
+        Expanded(
+          child: _buildClassificationChip(
+            context,
+            label: AppLocalizations.of(context)!.waistToHeight,
+            value: _getLocalizedWaistToHeightCategory(
+                results.waistToHeightCategory, context),
+            dotColor: _getWaistToHeightColor(results.waistToHeightCategory),
+            cardColor: cardColor,
+            textPrimary: textPrimary,
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildClassificationChip(
+    BuildContext context, {
+    required String label,
+    required String value,
+    required Color dotColor,
+    required Color cardColor,
+    required Color textPrimary,
+  }) {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 14),
+      decoration: BoxDecoration(
+        color: cardColor,
+        borderRadius: BorderRadius.circular(20),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            label,
+            style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                  color: _kMuted,
+                  fontWeight: FontWeight.w500,
+                ),
+          ),
+          const SizedBox(height: 8),
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Container(
+                width: 8,
+                height: 8,
+                decoration: BoxDecoration(
+                  color: dotColor,
+                  shape: BoxShape.circle,
+                ),
+              ),
+              const SizedBox(width: 6),
+              Expanded(
+                child: Text(
+                  value,
+                  style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                        fontWeight: FontWeight.bold,
+                        color: textPrimary,
+                      ),
+                ),
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+
+  // ─── T5: Receita Personalizada card ──────────────────────────────────────
+  Widget _buildRecipeCard(BuildContext context, {required Color cardColor}) {
+    return Container(
+      width: double.infinity,
+      padding: const EdgeInsets.all(20),
+      decoration: BoxDecoration(
+        color: cardColor,
+        borderRadius: BorderRadius.circular(20),
+        border: Border.all(color: _kAmber.withValues(alpha: 0.6), width: 1.5),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              const Icon(Icons.restaurant_menu, color: _kAmber, size: 22),
+              const SizedBox(width: 10),
+              Text(
+                AppLocalizations.of(context)!.sanjiTipTitle,
+                style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                      fontWeight: FontWeight.bold,
+                      color: _kAmber,
+                    ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 10),
+          Text(
+            AppLocalizations.of(context)!.sanjiTipText,
+            style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                  color: Colors.white.withValues(alpha: 0.85),
+                  height: 1.5,
+                ),
+          ),
+          const SizedBox(height: 16),
+          SizedBox(
+            width: double.infinity,
+            child: ElevatedButton(
+              onPressed: () {
+                Navigator.of(context).pushNamed(
+                  AppRoutes.cookingTips,
+                  arguments: {
+                    'targetCalories': _getTargetCalories(),
+                    'goal': results.goal,
+                  },
+                );
+              },
+              style: ElevatedButton.styleFrom(
+                backgroundColor: _kViolet,
+                foregroundColor: Colors.white,
+                elevation: 0,
+                padding: const EdgeInsets.symmetric(vertical: 14),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(14),
+                ),
+              ),
+              child: Text(
+                AppLocalizations.of(context)!.sanjiTipTitle,
+                style: Theme.of(context).textTheme.labelLarge?.copyWith(
+                      color: Colors.white,
+                      fontWeight: FontWeight.w600,
+                    ),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  // ─── T6: Plate Guide card ─────────────────────────────────────────────────
+  Widget _buildPlateGuideButton(BuildContext context,
+      {required Color cardColor}) {
+    return Container(
+      width: double.infinity,
+      padding: const EdgeInsets.all(20),
+      decoration: BoxDecoration(
+        color: cardColor,
+        borderRadius: BorderRadius.circular(20),
+        border: Border.all(color: _kViolet.withValues(alpha: 0.5), width: 1.5),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              const Icon(Icons.restaurant_menu, color: _kViolet, size: 22),
+              const SizedBox(width: 10),
+              Expanded(
+                child: Text(
+                  AppLocalizations.of(context)!.plateGuideQuestion,
+                  style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                        fontWeight: FontWeight.bold,
+                        color: _kViolet,
+                      ),
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 8),
+          Text(
+            AppLocalizations.of(context)!.plateGuideSubtitle,
+            style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                  color: _kMuted,
+                ),
+          ),
+          const SizedBox(height: 16),
+          SizedBox(
+            width: double.infinity,
+            child: ElevatedButton.icon(
+              onPressed: () {
+                Navigator.of(context).pushNamed(AppRoutes.plateGuide);
+              },
+              icon: const Icon(Icons.visibility, size: 18),
+              label: Text(AppLocalizations.of(context)!.viewPlateGuide),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: _kViolet,
+                foregroundColor: Colors.white,
+                elevation: 0,
+                padding: const EdgeInsets.symmetric(vertical: 12),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(14),
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  // ─── Helpers ─────────────────────────────────────────────────────────────
 
   bool _isUserGoal(BuildContext context, String title) {
     final l10n = AppLocalizations.of(context)!;
@@ -311,76 +459,38 @@ class NutritionResults extends StatelessWidget {
       l10n.loseWeight: 'weight_loss',
       l10n.gainMuscle: 'muscle_gain',
     };
-    
-    final mappedGoal = goalMapping[title];
-    return mappedGoal == results.goal;
-  }
-
-  Widget _buildClassificationCard(
-    BuildContext context,
-    String title,
-    String classification,
-    Color color,
-  ) {
-    return Container(
-      padding: const EdgeInsets.all(12),
-      decoration: BoxDecoration(
-        color: color.withValues(alpha: 0.1),
-        borderRadius: BorderRadius.circular(Constants.margin),
-        border: Border.all(color: color.withValues(alpha: 0.3)),
-      ),
-      child: Column(
-        children: [
-          Text(
-            title,
-            style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                  fontWeight: FontWeight.w500,
-                  color: color,
-                ),
-          ),
-          const SizedBox(height: 4),
-          Text(
-            classification,
-            style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                  fontWeight: FontWeight.bold,
-                  color: color,
-                ),
-            textAlign: TextAlign.center,
-          ),
-        ],
-      ),
-    );
+    return goalMapping[title] == results.goal;
   }
 
   Color _getBMIColor(String category) {
     switch (category) {
       case 'underweight':
-        return AppColors.grey[500]!;
+        return _kMuted;
       case 'normalWeight':
-        return AppColors.purple[500]!;
+        return _kViolet;
       case 'overweight':
-        return AppColors.orange[600]!;
+        return _kAlertOrange;
       case 'obesityGrade1':
       case 'obesityGrade2':
       case 'obesityGrade3':
-        return AppColors.red[500]!;
+        return _kAlertRed;
       default:
-        return AppColors.grey[500]!;
+        return _kMuted;
     }
   }
 
   Color _getWaistToHeightColor(String category) {
     switch (category) {
       case 'excellent':
-        return AppColors.purple[500]!;
+        return _kViolet;
       case 'good':
-        return AppColors.blue[500]!;
+        return _kViolet;
       case 'attention':
-        return AppColors.yellow[600]!;
+        return _kAlertOrange;
       case 'highRisk':
-        return AppColors.red[500]!;
+        return _kAlertRed;
       default:
-        return AppColors.grey[500]!;
+        return _kMuted;
     }
   }
 
@@ -429,62 +539,5 @@ class NutritionResults extends StatelessWidget {
       default:
         return results.maintenanceCalories;
     }
-  }
-
-  Widget _buildPlateGuideButton(BuildContext context) {
-    return Container(
-      width: double.infinity,
-      padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: Theme.of(context).colorScheme.primary),
-      ),
-      child: Column(
-        children: [
-          Row(
-            children: [
-              Icon(
-                Icons.restaurant_menu,
-                color: AppColors.yellow[500],
-                size: 24,
-              ),
-              const SizedBox(width: 8),
-              Expanded(
-                child: Text(
-                  AppLocalizations.of(context)!.plateGuideQuestion,
-                  style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                        fontWeight: FontWeight.bold,
-                        color: AppColors.yellow[500],
-                      ),
-                ),
-              ),
-            ],
-          ),
-          const SizedBox(height: 8),
-          Text(
-            AppLocalizations.of(context)!.plateGuideSubtitle,
-            style: Theme.of(context).textTheme.bodySmall,
-            textAlign: TextAlign.center,
-          ),
-          const SizedBox(height: 16),
-          SizedBox(
-            width: double.infinity,
-            child: ElevatedButton.icon(
-              onPressed: () {
-                Navigator.of(context).pushNamed(AppRoutes.plateGuide);
-              },
-              icon: const Icon(Icons.visibility),
-              label: Text(AppLocalizations.of(context)!.viewPlateGuide),
-              style: OutlinedButton.styleFrom(
-                padding: const EdgeInsets.symmetric(vertical: 12),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(8),
-                ),
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
   }
 }

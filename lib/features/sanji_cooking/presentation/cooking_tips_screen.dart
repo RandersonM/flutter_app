@@ -25,6 +25,7 @@ class _CookingTipsScreenState extends State<CookingTipsScreen> {
   final TextEditingController _ingredientController = TextEditingController();
   String? _mealType;
   String? _dietaryRestrictions;
+  late SanjiCookingBloc _bloc;
 
   final List<String> _mealTypes = [
     'Café da manhã',
@@ -45,6 +46,12 @@ class _CookingTipsScreenState extends State<CookingTipsScreen> {
     'Baixo carboidrato',
     'Alto teor proteico',
   ];
+
+  @override
+  void initState() {
+    super.initState();
+    _bloc = getIt<SanjiCookingBloc>();
+  }
 
   @override
   void dispose() {
@@ -111,8 +118,8 @@ class _CookingTipsScreenState extends State<CookingTipsScreen> {
     final colorScheme = theme.colorScheme;
     final localizations = AppLocalizations.of(context)!;
 
-    return BlocProvider(
-      create: (context) => getIt<SanjiCookingBloc>(),
+    return BlocProvider.value(
+      value: _bloc,
       child: BlocBuilder<SanjiCookingBloc, SanjiCookingState>(
         builder: (context, state) {
           return Scaffold(
@@ -413,11 +420,8 @@ class _CookingTipsScreenState extends State<CookingTipsScreen> {
                                   color: colorScheme.outline.withValues(alpha: 0.2),
                                 ),
                               ),
-                              child: SizedBox(
-                                height: MediaQuery.of(context).size.height * 0.6,
-                                child: MarkdownWidget(
-                                  data: state.personalizedMeal!,
-                                ),
+                              child: MarkdownBlock(
+                                data: state.personalizedMeal!,
                               ),
                             ),
                           ],

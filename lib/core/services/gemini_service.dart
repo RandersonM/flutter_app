@@ -7,6 +7,11 @@ import 'package:opfan/core/services/environment_service.dart';
 class GeminiService {
   final EnvironmentService _env = EnvironmentService.instance;
   
+  static const String _baseUrl =
+      'https://generativelanguage.googleapis.com/v1beta';
+  static const String _textModel = 'gemini-2.0-flash-lite';
+  static const String _imageModel = 'gemini-2.5-flash-image';
+
   final Map<String, String> _imageCache = {};
   final List<DateTime> _requestTimestamps = [];
   static const int _maxRequestsPerHour = 15;
@@ -73,9 +78,10 @@ class GeminiService {
     }
   }
 
-  // Text Generation Methods
+  // Generic Text Generation Method
   Future<String?> generateText({
     required String prompt,
+    String? systemInstruction,
     String? context,
     Map<String, dynamic>? parameters,
   }) async {
@@ -85,46 +91,56 @@ class GeminiService {
     }
 
     if (_isQuotaExceeded()) {
-      debugPrint('Gemini Service: Quota exceeded');
-      return _getFallbackText(prompt, context);
+      debugPrint('Gemini Service: Quota exceeded (cached), skipping request');
+      return null;
     }
 
     if (!_canMakeRequest()) {
       debugPrint('Gemini Service: Rate limit exceeded');
-      return _getFallbackText(prompt, context);
+      return null;
     }
 
     try {
       final enhancedPrompt = _buildTextPrompt(prompt, context, parameters);
-      debugPrint('Gemini Service: Generating text with prompt: $enhancedPrompt');
+      debugPrint('Gemini Service: Generating text...');
 
       _recordRequest();
 
-      final response = await _generateTextWithGemini(enhancedPrompt);
-      
+      final response = await _generateTextWithGemini(
+        prompt: enhancedPrompt,
+        systemInstruction: systemInstruction,
+      );
+
       if (response != null && response.isNotEmpty) {
         debugPrint('Gemini Service: Text generation successful');
         return response;
       }
-      
-      debugPrint('Gemini Service: Invalid response from Gemini AI');
-      return _getFallbackText(prompt, context);
-      
-    } catch (e) {
-      debugPrint('Gemini Service: Error in text generation - $e');
-      
-      if (e.toString().contains('quota') || e.toString().contains('rate limit')) {
-        _handleQuotaExceeded();
-      }
 
-      return _getFallbackText(prompt, context);
+      debugPrint('Gemini Service: Invalid response from Gemini AI');
+      return null;
+
+    } catch (e) {
+      final msg = e.toString();
+      if (msg.contains('RESOURCE_EXHAUSTED') ||
+          msg.contains('quota') ||
+          msg.contains('rate limit') ||
+          msg.contains('429')) {
+        debugPrint('Gemini Service: Quota/rate-limit exceeded — activating cooldown');
+        _handleQuotaExceeded();
+        return null;
+      }
+      debugPrint('Gemini Service: Error in text generation - $e');
+      return null;
     }
   }
 
-  Future<String?> _generateTextWithGemini(String prompt) async {
+  Future<String?> _generateTextWithGemini({
+    required String prompt,
+    String? systemInstruction,
+  }) async {
     try {
       final apiKey = _env.geminiApiKey;
-      final url = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=$apiKey';
+      const url = '$_baseUrl/models/$_textModel:generateContent';
 
       final body = {
         "contents": [
@@ -140,9 +156,17 @@ class GeminiService {
           "temperature": 0.7,
           "topK": 40,
           "topP": 0.95,
-          "maxOutputTokens": 2048,
+          "maxOutputTokens": 8192,
         }
       };
+
+      if (systemInstruction != null && systemInstruction.isNotEmpty) {
+        body["systemInstruction"] = {
+          "parts": [
+            {"text": systemInstruction}
+          ]
+        };
+      }
 
       debugPrint('Gemini Service: Sending text request to Gemini API');
 
@@ -153,22 +177,36 @@ class GeminiService {
           headers: {
             'Content-Type': 'application/json',
             'User-Agent': 'Dart/3.0',
+            'x-goog-api-key': apiKey,
           },
           receiveTimeout: const Duration(seconds: 60),
           sendTimeout: const Duration(seconds: 30),
         ),
       );
 
+      // Handle quota / rate-limit (429) explicitly
+      if (response.statusCode == 429) {
+        final retryMsg = response.data?['error']?['message'] ?? 'Rate limit exceeded';
+        debugPrint('Gemini Service: 429 RESOURCE_EXHAUSTED — $retryMsg');
+        throw Exception('RESOURCE_EXHAUSTED: $retryMsg');
+      }
+
       if (response.statusCode == 200 && response.data != null) {
         final candidates = response.data['candidates'] as List?;
         if (candidates != null && candidates.isNotEmpty) {
           final parts = candidates[0]['content']['parts'] as List?;
           if (parts != null && parts.isNotEmpty) {
-            return parts[0]['text'] as String?;
+            // Concatenate ALL text parts — Gemini may split long responses
+            final fullText = parts
+                .where((p) => p['text'] != null)
+                .map((p) => p['text'] as String)
+                .join();
+            if (fullText.isNotEmpty) return fullText;
           }
         }
       }
-      
+
+      debugPrint('Gemini Service: Response body: ${response.data}');
       return null;
     } on DioException catch (e) {
       debugPrint('Gemini Service: DioException in text generation - ${e.message}');
@@ -180,27 +218,13 @@ class GeminiService {
   }
 
   String _buildTextPrompt(String prompt, String? context, Map<String, dynamic>? parameters) {
-    final List<String> promptParts = [];
-    
+    // Return the prompt as-is — callers (repositories) are responsible for
+    // crafting detailed prompts; generic suffixes like "keep it concise" would
+    // contradict prompts that explicitly request long, structured responses.
     if (context != null && context.isNotEmpty) {
-      promptParts.add('Context: $context');
+      return 'Context: $context\n\n$prompt';
     }
-    
-    promptParts.add(prompt);
-    
-    if (parameters != null) {
-      final paramStrings = parameters.entries
-          .map((e) => '${e.key}: ${e.value}')
-          .join(', ');
-      promptParts.add('Parameters: $paramStrings');
-    }
-    
-    promptParts.addAll([
-      'Please provide a helpful and accurate response.',
-      'Keep the response concise and well-structured.',
-    ]);
-
-    return promptParts.join('\n\n');
+    return prompt;
   }
 
   String _getFallbackText(String prompt, String? context) {
@@ -216,86 +240,64 @@ class GeminiService {
     return fallbackResponses[random.nextInt(fallbackResponses.length)];
   }
 
-  // Image Generation Methods (existing functionality)
-  Future<String?> generateCharacterImage({
-    required String characterName,
+  // Generic Image Generation Method
+  Future<String?> generateImage({
     required String prompt,
-    required String race,
-    String? devilFruit,
-    List<String>? haki,
-    String? status,
-    List<String>? occupations,
+    bool forceRefresh = false,
   }) async {
-    final isForcedRegeneration = prompt.contains('[regeneration_');
-    
-    final cacheKey = _getCacheKey(characterName, prompt);
-    if (!isForcedRegeneration && _imageCache.containsKey(cacheKey)) {
+    final cacheKey = prompt.hashCode.toString();
+    if (!forceRefresh && _imageCache.containsKey(cacheKey)) {
       return _imageCache[cacheKey];
     }
 
-    if (_env.geminiApiKey == 'dev_mode' || 
-        _env.geminiApiKey.isEmpty) {
-      debugPrint('Gemini Service: Development mode or invalid API key, using fallback');
-      return await _getEnhancedFallbackImage(characterName, prompt, devilFruit, haki, status, occupations);
+    if (_env.geminiApiKey == 'dev_mode' || _env.geminiApiKey.isEmpty) {
+      debugPrint('Gemini Service: Development mode or invalid API key');
+      return null;
     }
 
     if (_isQuotaExceeded()) {
-      debugPrint('Gemini Service: Quota exceeded, using fallback');
-      return await _getEnhancedFallbackImage(characterName, prompt, devilFruit, haki, status, occupations);
+      debugPrint('Gemini Service: Quota exceeded');
+      return null;
     }
 
     if (!_canMakeRequest()) {
-      debugPrint('Gemini Service: Rate limit exceeded, using fallback');
-      return await _getEnhancedFallbackImage(characterName, prompt, devilFruit, haki, status, occupations);
+      debugPrint('Gemini Service: Rate limit exceeded');
+      return null;
     }
 
     try {
-      final cleanPrompt = isForcedRegeneration
-          ? prompt
-              .replaceAll(RegExp(r'\[regeneration_\d+_\d+_\d+\]'), '')
-              .trim()
-          : prompt;
-          
-      final enhancedPrompt = _buildEnhancedPrompt(
-        prompt: cleanPrompt,
-        race: race,
-        haki: haki,
-        status: status,
-        occupations: occupations,
-      );
-
-      debugPrint('Gemini Service: Generating image with prompt: $enhancedPrompt');
+      debugPrint('Gemini Service: Generating image with prompt: $prompt');
 
       _recordRequest();
 
-      final imageUrl = await _generateImageWithGemini(enhancedPrompt);
+      final imageUrl = await _generateImageWithGemini(prompt);
       
       if (imageUrl != null && imageUrl.isNotEmpty) {
-        if (!isForcedRegeneration) {
+        if (!forceRefresh) {
           _imageCache[cacheKey] = imageUrl;
         }
-        debugPrint('Gemini Service: Success with Gemini AI');
+        debugPrint('Gemini Service: Image generation successful');
         return imageUrl;
       }
       
       debugPrint('Gemini Service: Invalid response from Gemini AI');
-      return await _getEnhancedFallbackImage(characterName, prompt, devilFruit, haki, status, occupations);
+      return null;
       
     } catch (e) {
-      debugPrint('Gemini Service: Error - $e');
+      debugPrint('Gemini Service: Error in image generation - $e');
       
       if (e.toString().contains('quota') || e.toString().contains('rate limit')) {
         _handleQuotaExceeded();
       }
 
-      return await _getEnhancedFallbackImage(characterName, prompt, devilFruit, haki, status, occupations);
+      return null;
     }
   }
 
   Future<String?> _generateImageWithGemini(String prompt) async {
     try {
       final apiKey = _env.geminiApiKey;
-      final url = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash-preview-image-generation:generateContent?key=$apiKey';
+      const url = '$_baseUrl/models/$_imageModel:generateContent';
 
       final body = {
         "contents": [
@@ -308,7 +310,7 @@ class GeminiService {
           }
         ],
         "generationConfig": {
-          "responseModalities": ["TEXT", "IMAGE"]
+          "responseModalities": ["IMAGE"]
         }
       };
 
@@ -321,6 +323,7 @@ class GeminiService {
           headers: {
             'Content-Type': 'application/json',
             'User-Agent': 'Dart/3.0',
+            'x-goog-api-key': apiKey,
           },
           receiveTimeout: const Duration(seconds: 120),
           sendTimeout: const Duration(seconds: 60),
@@ -333,18 +336,28 @@ class GeminiService {
           final parts = candidates[0]['content']['parts'] as List?;
           if (parts != null) {
             for (final part in parts) {
-              if (part['inlineData'] != null && part['inlineData']['mimeType'] == 'image/png') {
-                final base64Image = part['inlineData']['data'];
-                final imageData = base64Decode(base64Image);
-                final imageUrl = await _uploadImageToServer(imageData);
-                debugPrint('Gemini Service: Gemini REST image generated and uploaded to Imgur');
-                return imageUrl;
+              if (part['inlineData'] != null &&
+                  part['inlineData']['mimeType'] == 'image/png') {
+                final base64Image = part['inlineData']['data'] as String?;
+                if (base64Image != null && base64Image.isNotEmpty) {
+                  final imageData = base64Decode(base64Image);
+                  final imageUrl = await _uploadImageToServer(imageData);
+                  debugPrint(
+                      'Gemini Service: Gemini REST image generated and uploaded to Imgur');
+                  return imageUrl;
+                }
               }
             }
           }
         }
       }
       
+      debugPrint(
+          'Gemini Service: No image returned from Gemini REST API (Status ${response.statusCode})');
+      if (response.data != null && response.data['error'] != null) {
+        debugPrint(
+            'Gemini Service: Error Details: ${response.data['error']['message']}');
+      }
       return null;
     } on DioException catch (e) {
       debugPrint('Gemini Service: DioException in Gemini REST image generation - ${e.message}');
@@ -383,185 +396,7 @@ class GeminiService {
     return 'data:image/png;base64,${base64Encode(imageData)}';
   }
 
-  String _buildEnhancedPrompt({
-    required String race,
-    required String prompt,
-    List<String>? haki,
-    String? status,
-    List<String>? occupations,
-  }) {
-    final basePrompt = prompt.isNotEmpty ? prompt : 'One Piece character';
-    
-    final List<String> promptParts = [
-      basePrompt,
-      'race: $race',
-    ];
-
-    if (status != null && status.isNotEmpty) {
-      promptParts.add('status: $status');
-    }
-
-    if (occupations != null && occupations.isNotEmpty) {
-      final occupationTypes = occupations.join(', ');
-      promptParts.add('occupations: $occupationTypes');
-    }
-
-    promptParts.addAll([
-      'anime style',
-      'One Piece universe',
-      'detailed character design',
-      'high quality',
-      'professional illustration',
-      'vibrant colors',
-    ]);
-
-    return promptParts.join(', ');
-  }
-
-  Future<String> _getEnhancedFallbackImage(
-    String characterName,
-    String prompt,
-    String? devilFruit,
-    List<String>? haki,
-    String? status,
-    List<String>? occupations,
-  ) async {
-    await Future.delayed(const Duration(milliseconds: 800));
-    
-    final random = Random();
-    
-    final isForcedRegeneration = prompt.contains('[regeneration_');
-
-    int variationOffset = 0;
-    if (isForcedRegeneration) {
-      final regenerationMatch =
-          RegExp(r'\[regeneration_(\d+)_(\d+)_(\d+)\]').firstMatch(prompt);
-      if (regenerationMatch != null) {
-        final count = int.parse(regenerationMatch.group(1)!);
-        final timestamp = int.parse(regenerationMatch.group(2)!);
-        final randomSuffix = int.parse(regenerationMatch.group(3)!);
-
-        variationOffset = (count + timestamp + randomSuffix) % 1000;
-      }
-    }
-    
-    final colors = [
-      ['FF6B6B', 'FFFFFF'], // Vermelho - Piratas
-      ['4ECDC4', 'FFFFFF'], // Turquesa - Marinha
-      ['45B7D1', 'FFFFFF'], // Azul - Água
-      ['96CEB4', 'FFFFFF'], // Verde - Natureza
-      ['FFEAA7', '2D3436'], // Amarelo - Ouro
-      ['DDA0DD', 'FFFFFF'], // Roxo - Mistério
-      ['FFB347', 'FFFFFF'], // Laranja - Fogo
-      ['FF69B4', 'FFFFFF'], // Rosa - Feminino
-      ['20B2AA', 'FFFFFF'], // Verde-azulado - Marinha
-      ['FF4500', 'FFFFFF'], // Laranja-avermelhado - Agressivo
-    ];
-    
-    int colorIndex = 0;
-    final promptLower = prompt.toLowerCase();
-    
-    if (promptLower.contains('pirata') || promptLower.contains('pirate')) {
-      colorIndex = 0; 
-    } else if (promptLower.contains('marinha') || promptLower.contains('marine')) {
-      colorIndex = 1; 
-    } else if (promptLower.contains('água') || promptLower.contains('water')) {
-      colorIndex = 2; 
-    } else if (promptLower.contains('natureza') || promptLower.contains('nature')) {
-      colorIndex = 3; 
-    } else if (promptLower.contains('ouro') || promptLower.contains('gold')) {
-      colorIndex = 4; 
-    } else {
-      colorIndex = random.nextInt(colors.length);
-    }
-    
-    if (isForcedRegeneration) {
-      colorIndex = (colorIndex + variationOffset) % colors.length;
-    }
-    
-    final colorPair = colors[colorIndex];
-    final bgColor = colorPair[0];
-    final textColor = colorPair[1];
-    
-    final elements = [
-      'PIRATA', 
-      'CAPITAO', 
-      'ESPADA', 
-      'PODER', 
-      'MAR', 
-      'ILHA', 
-      'TESOURO', 
-      'COROA', 
-      'NAVIO', 
-      'BANDEIRA', 
-      'LUTA', 
-      'AVENTURA', 
-    ];
-    
-    List<String> selectedElements = [];
-    
-    if (promptLower.contains('pirata') || promptLower.contains('pirate')) {
-      selectedElements.addAll(['PIRATA', 'MAR', 'ESPADA']);
-    } else if (promptLower.contains('capitão') || promptLower.contains('captain')) {
-      selectedElements.addAll(['COROA', 'CAPITAO', 'PODER']);
-    } else if (promptLower.contains('espada') || promptLower.contains('sword')) {
-      selectedElements.addAll(['ESPADA', 'PIRATA', 'LUTA']);
-    } else if (promptLower.contains('poder') || promptLower.contains('power')) {
-      selectedElements.addAll(['PODER', 'TESOURO', 'COROA']);
-    } else {
-      selectedElements = elements;
-    }
-    
-    if (devilFruit != null && devilFruit.isNotEmpty) {
-      selectedElements.add('PODER');
-    }
-    if (haki != null && haki.isNotEmpty) {
-      selectedElements.add('LUTA');
-    }
-    if (status == 'dead') {
-      selectedElements.add('PIRATA');
-    }
-    
-    selectedElements.shuffle();
-    final finalElements = selectedElements.take(2 + random.nextInt(2)).toList();
-    
-    if (isForcedRegeneration) {
-      final tempElements = List<String>.from(finalElements);
-      for (int i = 0; i < tempElements.length; i++) {
-        final newIndex = (i + variationOffset) % tempElements.length;
-        finalElements[i] = tempElements[newIndex];
-      }
-    }
-    
-    final displayName = characterName.isNotEmpty ? characterName : 'Personagem';
-    final elementText = finalElements.join(' ');
-    
-    String extraInfo = '';
-    if (devilFruit != null && devilFruit.isNotEmpty) {
-      extraInfo += ' | $devilFruit';
-    }
-    if (haki != null && haki.isNotEmpty) {
-      extraInfo += ' | ${haki.join(', ')}';
-    }
-    
-    final fullText = '$elementText $displayName$extraInfo $elementText';
-    
-    final cacheBuster = isForcedRegeneration
-        ? '&v=${DateTime.now().millisecondsSinceEpoch}'
-        : '';
-
-    final encodedText = Uri.encodeComponent(fullText);
-    final imageUrl = 'https://dummyimage.com/512x768/$bgColor/$textColor&text=$encodedText$cacheBuster';
-    
-    debugPrint('Gemini Service: Generated fallback image URL');
-    return imageUrl;
-  }
-
   // Utility Methods
-  String _getCacheKey(String characterName, String prompt) {
-    return '${characterName}_${prompt.hashCode}';
-  }
-
   bool _isQuotaExceeded() {
     if (!_quotaExceeded || _quotaExceededTime == null) {
       return false;

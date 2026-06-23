@@ -58,10 +58,8 @@ class ExpenseItemWidget extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(Constants.margin),
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(Constants.margin * 2),
-        border: Border.all(
-          color: _getCategoryColor(expenseItem.category).withValues(alpha: 0.8),
-        ),
+        color: Colors.white.withValues(alpha: 0.05),
+        borderRadius: BorderRadius.circular(16),
       ),
       child: Column(
         children: [
@@ -86,7 +84,7 @@ class ExpenseItemWidget extends StatelessWidget {
               ),
               IconButton(
                 onPressed: onRemove,
-                icon: const Icon(Icons.remove_circle, color: Colors.red),
+                icon: const Icon(Icons.remove_circle_outline_rounded, color: Colors.red),
                 tooltip: l10n.remove,
               ),
             ],

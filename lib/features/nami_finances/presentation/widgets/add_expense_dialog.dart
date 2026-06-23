@@ -67,9 +67,14 @@ class _AddExpenseDialogState extends State<AddExpenseDialog> {
     final l10n = AppLocalizations.of(context)!;
     
     return AlertDialog(
+      backgroundColor: const Color(0xFF16161C),
+      surfaceTintColor: Colors.transparent,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(24),
+      ),
       title: Row(
         children: [
-          Icon(Icons.add_circle, color: AppColors.red[500]),
+          Icon(Icons.add_circle_outline_rounded, color: AppColors.red[500]),
           const SizedBox(width: 8),
           Text(l10n.addExpense),
         ],
@@ -129,13 +134,19 @@ class _AddExpenseDialogState extends State<AddExpenseDialog> {
       actions: [
         TextButton(
           onPressed: () => Navigator.of(context).pop(),
+          style: TextButton.styleFrom(
+            foregroundColor: Colors.white54,
+          ),
           child: Text(l10n.cancel),
         ),
-        ElevatedButton(
+        FilledButton(
           onPressed: _addExpense,
-          style: ElevatedButton.styleFrom(
+          style: FilledButton.styleFrom(
             backgroundColor: AppColors.red[500],
             foregroundColor: Colors.white,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(12),
+            ),
           ),
           child: Text(l10n.add),
         ),

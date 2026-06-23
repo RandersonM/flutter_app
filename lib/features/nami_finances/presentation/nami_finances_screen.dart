@@ -7,9 +7,9 @@ import 'package:opfan/l10n/app_localizations.dart';
 import 'package:opfan/core/models/nami_finances_model.dart';
 import 'package:opfan/features/nami_finances/bloc/index.dart';
 import 'package:opfan/app/di/injection.dart';
-import 'widgets/nami_header.dart';
 import 'widgets/finances_setup_form.dart';
-import 'widgets/finances_results_view.dart';
+import 'widgets/finances_dashboard_view.dart';
+import 'widgets/finances_empty_state.dart';
 
 class NamiFinancesScreen extends StatefulWidget {
   const NamiFinancesScreen({super.key});
@@ -21,88 +21,111 @@ class NamiFinancesScreen extends StatefulWidget {
 class _NamiFinancesScreenState extends State<NamiFinancesScreen> {
   NamiFinancesModel? _editingFinances;
 
+  /// True when the user explicitly wants to enter new data (no existing record).
+  bool _showSetupForm = false;
+
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
-    
+
     return BlocProvider(
-      create: (context) => getIt<NamiFinancesBloc>()..add(LoadCurrentMonthFinances()),
+      create: (context) =>
+          getIt<NamiFinancesBloc>()..add(LoadCurrentMonthFinances()),
       child: Scaffold(
         bottomNavigationBar:
             const BottomNavigation(BottomNavigationPages.finances),
         appBar: DefaultAppBar(title: Text(l10n.financeWithNami)),
         body: Container(
           color: Theme.of(context).colorScheme.surface,
-          child: Column(
-            spacing: Constants.margin * 2,
-            children: [
-              Expanded(
-                child: SingleChildScrollView(
-                  padding: const EdgeInsets.all(Constants.margin),
-                  child: Column(
-                    children: [
-                      const NamiHeader(),
-                      const SizedBox(height: Constants.margin * 2),
-                      BlocBuilder<NamiFinancesBloc, NamiFinancesState>(
-                        builder: (context, state) {
-                          if (state is NamiFinancesLoading) {
-                            return const Center(
-                              child: CircularProgressIndicator(),
-                            );
-                          }
-                          
-                          if (state is NamiFinancesLoaded) {
-                            if (state.hasData && state.finances != null && _editingFinances == null) {
-                              return FinancesResultsView(
-                                finances: state.finances!,
-                                onEdit: () => _onEditFinances(context, state.finances!),
-                              );
-                            } else {
-                              return FinancesSetupForm(
-                                onSave: (incomes, expenses, savings) => _onSaveFinances(context, incomes, expenses, savings),
-                                existingFinances: _editingFinances,
-                              );
-                            }
-                          }
-                          
-                          if (state is NamiFinancesError) {
-                            return Center(
-                              child: Text('Erro: ${state.message}'),
-                            );
-                          }
-                          
-                          return const SizedBox.shrink();
-                        },
-                      ),
-                    ],
+          child: BlocBuilder<NamiFinancesBloc, NamiFinancesState>(
+            builder: (context, state) {
+              if (state is NamiFinancesLoading) {
+                return const Center(child: CircularProgressIndicator());
+              }
+
+              if (state is NamiFinancesLoaded) {
+                // Edit mode: editing an existing record
+                if (_editingFinances != null) {
+                  return SingleChildScrollView(
+                    padding: const EdgeInsets.all(Constants.margin),
+                    child: FinancesSetupForm(
+                      onSave: (incomes, expenses, savings) =>
+                          _onSaveFinances(context, incomes, expenses, savings),
+                      existingFinances: _editingFinances,
+                    ),
+                  );
+                }
+
+                // Setup mode: no record yet, user tapped "Configurar"
+                if (_showSetupForm) {
+                  return SingleChildScrollView(
+                    padding: const EdgeInsets.all(Constants.margin),
+                    child: FinancesSetupForm(
+                      onSave: (incomes, expenses, savings) =>
+                          _onSaveFinances(context, incomes, expenses, savings),
+                      existingFinances: null,
+                    ),
+                  );
+                }
+
+                // Dashboard mode: data exists for the month
+                if (state.hasData && state.finances != null) {
+                  return SingleChildScrollView(
+                    padding: const EdgeInsets.all(Constants.margin),
+                    child: FinancesDashboardView(
+                      finances: state.finances!,
+                      onEdit: () =>
+                          _onEditFinances(context, state.finances!),
+                    ),
+                  );
+                }
+
+                // Empty state: first time / no data
+                return SingleChildScrollView(
+                  padding: const EdgeInsets.symmetric(
+                    vertical: Constants.margin * 4,
+                    horizontal: Constants.margin,
                   ),
-                ),
-              ),
-            ],
+                  child: FinancesEmptyState(
+                    onSetup: () => setState(() => _showSetupForm = true),
+                  ),
+                );
+              }
+
+              if (state is NamiFinancesError) {
+                return Center(child: Text('Erro: ${state.message}'));
+              }
+
+              return const SizedBox.shrink();
+            },
           ),
         ),
       ),
     );
   }
 
-  void _onSaveFinances(BuildContext context, List<MonthlyIncomeModel> incomes, List<ExpenseModel> expenses, double savings) {
-    final currentMonth = DateTime.now();
+  void _onSaveFinances(
+    BuildContext context,
+    List<MonthlyIncomeModel> incomes,
+    List<ExpenseModel> expenses,
+    double savings,
+  ) {
     context.read<NamiFinancesBloc>().add(SaveFinances(
-      incomes: incomes,
-      expenses: expenses,
-      savings: savings,
-      month: currentMonth,
-    ));
-    
+          incomes: incomes,
+          expenses: expenses,
+          savings: savings,
+          month: DateTime.now(),
+        ));
     setState(() {
       _editingFinances = null;
+      _showSetupForm = false;
     });
   }
 
   void _onEditFinances(BuildContext context, NamiFinancesModel finances) {
-    debugPrint('onEditFinances');
     setState(() {
       _editingFinances = finances;
+      _showSetupForm = false;
     });
   }
 }

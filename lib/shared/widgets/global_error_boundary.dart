@@ -18,9 +18,13 @@ class _GlobalErrorBoundaryState extends State<GlobalErrorBoundary> {
     super.initState();
     ErrorWidget.builder = (FlutterErrorDetails details) {
       if (mounted) {
-        setState(() {
-          _hasError = true;
-          _errorDetails = details;
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          if (mounted && !_hasError) {
+            setState(() {
+              _hasError = true;
+              _errorDetails = details;
+            });
+          }
         });
       }
       // Return empty size during exception layout cycle

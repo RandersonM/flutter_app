@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:opfan/l10n/app_localizations.dart';
 import 'package:opfan/shared/utils/constants.dart';
-import 'package:opfan/shared/utils/theme.dart';
 import 'package:opfan/shared/widgets/atoms/finance_currency_text_field.dart';
 import 'package:opfan/features/nami_finances/presentation/widgets/add_expense_dialog.dart' as dialog;
 import 'package:opfan/features/nami_finances/presentation/widgets/expense_item_widget.dart';
 import 'package:opfan/core/models/nami_finances_model.dart';
 import 'package:uuid/uuid.dart';
+const _purple = Color(0xFF8B5CF6);
+const _cardBg = Color(0xFF16161C);
+const _errorRed = Color(0xFFEF4444);
+const _successGreen = Color(0xFF22C55E);
 
 class FinancesSetupForm extends StatefulWidget {
   final Function(List<MonthlyIncomeModel>, List<ExpenseModel>, double) onSave;
@@ -256,18 +259,22 @@ class _FinancesSetupFormState extends State<FinancesSetupForm> {
   Widget _buildIncomeSection(AppLocalizations l10n) {
     return _buildSection(
       title: l10n.monthlyIncome,
-      icon: Icons.account_balance_wallet,
-      color: AppColors.green[500]!,
+      icon: Icons.account_balance_wallet_rounded,
+      color: _successGreen,
       children: [
         SizedBox(
           width: double.infinity,
-          child: ElevatedButton.icon(
+          child: OutlinedButton.icon(
             onPressed: _addIncomeItem,
-            icon: const Icon(Icons.add),
+            icon: const Icon(Icons.add_rounded, size: 16),
             label: Text(l10n.addIncome),
-            style: ElevatedButton.styleFrom(
-              backgroundColor: AppColors.green[500],
-              foregroundColor: Colors.white,
+            style: OutlinedButton.styleFrom(
+              foregroundColor: _successGreen,
+              side: const BorderSide(color: _successGreen, width: 1),
+              padding: const EdgeInsets.symmetric(vertical: 12),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(12),
+              ),
             ),
           ),
         ),
@@ -301,7 +308,7 @@ class _FinancesSetupFormState extends State<FinancesSetupForm> {
                   const SizedBox(width: Constants.margin),
                   IconButton(
                     onPressed: () => _removeIncomeItem(index),
-                    icon: const Icon(Icons.remove_circle, color: Colors.red),
+                    icon: const Icon(Icons.remove_circle_outline_rounded, color: _errorRed),
                     tooltip: l10n.remove,
                   ),
                 ],
@@ -317,8 +324,8 @@ class _FinancesSetupFormState extends State<FinancesSetupForm> {
   Widget _buildSavingsSection(AppLocalizations l10n) {
     return _buildSection(
       title: l10n.savings,
-      icon: Icons.savings,
-      color: AppColors.purple[500]!,
+      icon: Icons.savings_rounded,
+      color: _purple,
       children: [
         FinanceCurrencyTextField(
           label: l10n.savings,
@@ -341,18 +348,22 @@ class _FinancesSetupFormState extends State<FinancesSetupForm> {
   Widget _buildExpensesSection(AppLocalizations l10n) {
     return _buildSection(
       title: l10n.expenses,
-      icon: Icons.payments,
-      color: AppColors.red[500]!,
+      icon: Icons.payments_rounded,
+      color: _errorRed,
       children: [
                 SizedBox(
           width: double.infinity,
-          child: ElevatedButton.icon(
+          child: OutlinedButton.icon(
             onPressed: _showAddExpenseDialog,
-            icon: const Icon(Icons.add),
+            icon: const Icon(Icons.add_rounded, size: 16),
             label: Text(l10n.addExpense),
-            style: ElevatedButton.styleFrom(
-              backgroundColor: AppColors.red[500],
-              foregroundColor: Colors.white,
+            style: OutlinedButton.styleFrom(
+              foregroundColor: _errorRed,
+              side: const BorderSide(color: _errorRed, width: 1),
+              padding: const EdgeInsets.symmetric(vertical: 12),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(12),
+              ),
             ),
           ),
         ),
@@ -379,14 +390,17 @@ class _FinancesSetupFormState extends State<FinancesSetupForm> {
   Widget _buildSaveButton(AppLocalizations l10n) {
     return SizedBox(
       width: double.infinity,
-      child: ElevatedButton.icon(
+      child: FilledButton.icon(
         onPressed: _isFormValid ? _saveFinances : null,
-        icon: const Icon(Icons.save),
+        icon: const Icon(Icons.save_rounded, size: 18),
         label: Text(l10n.save),
-        style: ElevatedButton.styleFrom(
-          backgroundColor: AppColors.blue[500],
+        style: FilledButton.styleFrom(
+          backgroundColor: _purple,
           foregroundColor: Colors.white,
           padding: const EdgeInsets.symmetric(vertical: 16),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(16),
+          ),
         ),
       ),
     );
@@ -399,32 +413,36 @@ class _FinancesSetupFormState extends State<FinancesSetupForm> {
     required List<Widget> children,
   }) {
     return Container(
-      padding: const EdgeInsets.all(Constants.margin),
+      width: double.infinity,
+      padding: const EdgeInsets.all(Constants.margin * 1.5),
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(Constants.margin * 2),
-        border: Border.all(
-          color: color.withValues(alpha: 0.3),
-          width: 2,
-        ),
+        color: _cardBg,
+        borderRadius: BorderRadius.circular(24),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Row(
             children: [
-              Icon(icon, color: color, size: 24),
+              Container(
+                padding: const EdgeInsets.all(8),
+                decoration: BoxDecoration(
+                  color: color.withValues(alpha: 0.15),
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                child: Icon(icon, color: color, size: 18),
+              ),
               const SizedBox(width: Constants.margin),
               Text(
                 title,
-                style: TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.bold,
-                  color: color,
-                ),
+                style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                      color: Colors.white,
+                      fontWeight: FontWeight.w600,
+                    ),
               ),
             ],
           ),
-          const SizedBox(height: Constants.margin),
+          const SizedBox(height: Constants.margin * 2),
           ...children,
         ],
       ),
