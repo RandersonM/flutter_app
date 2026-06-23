@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
-import 'package:opfan/screens/calculator/calculator_screen.dart';
-import 'package:opfan/screens/calculator/widgets/calculator_button.dart';
-import 'package:opfan/screens/calculator/widgets/calculator_header.dart';
-import 'package:opfan/widgets/molecules/default_app_bar.dart'
+import 'package:opfan/features/calculator/presentation/calculator_screen.dart';
+import 'package:opfan/features/calculator/presentation/widgets/calculator_button.dart';
+import 'package:opfan/features/calculator/presentation/widgets/calculator_header.dart';
+import 'package:opfan/shared/widgets/molecules/default_app_bar.dart'
     show DefaultAppBar;
 
 

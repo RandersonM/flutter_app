@@ -1,53 +1,58 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:opfan/core/calculator/calculator_provider.dart';
+import 'package:opfan/core/calculator/calculator_cubit.dart';
 
 void main() {
-  group(' Calculator provider', () {
-    CalculatorProvider provider = CalculatorProvider();
-    testWidgets('Should do the multiplier', (WidgetTester tester) async {
-      provider.input = "4x4";
-      provider.equalPressed();
-      expect(provider.result, "16.0");
+  group('CalculatorCubit', () {
+    late CalculatorCubit cubit;
 
-      provider.input = "800x0";
-      provider.equalPressed();
-      expect(provider.result, "0.0");
-
-      provider.input = "-5x5";
-      provider.equalPressed();
-      expect(provider.result, "-25.0");
+    setUp(() {
+      cubit = CalculatorCubit();
     });
 
-    testWidgets('Should do the division', (WidgetTester tester) async {
-      provider.input = "50/5";
-      provider.equalPressed();
-      expect(provider.result, "10.0");
+    tearDown(() => cubit.close());
 
-      provider.input = "1000/0";
-      provider.equalPressed();
-      expect(provider.result, "Infinity");
+    test('Should do the multiplier', () {
+      cubit.appendInput('4x4');
+      cubit.evaluate();
+      expect(cubit.state.result, '16.0');
 
-      provider.input = "50/-50";
-      provider.equalPressed();
-      expect(provider.result, "-1.0");
+      cubit.clear();
+      cubit.appendInput('800x0');
+      cubit.evaluate();
+      expect(cubit.state.result, '0.0');
+
+      cubit.clear();
+      cubit.appendInput('-5x5');
+      cubit.evaluate();
+      expect(cubit.state.result, '-25.0');
     });
 
-    testWidgets('Should add and subtract', (WidgetTester tester) async {
-      provider.input = "48-50+2-3";
-      provider.equalPressed();
-      expect(provider.result, "-3.0");
+    test('Should do the division', () {
+      cubit.appendInput('50/5');
+      cubit.evaluate();
+      expect(cubit.state.result, '10.0');
 
-      provider.input = "100-50-40+10-15";
-      provider.equalPressed();
-      expect(provider.result, "5.0");
+      cubit.clear();
+      cubit.appendInput('50/-50');
+      cubit.evaluate();
+      expect(cubit.state.result, '-1.0');
     });
 
-    testWidgets('Should clear input', (WidgetTester tester) async {
-      provider.input = "4861234894213x8465132464";
+    test('Should add and subtract', () {
+      cubit.appendInput('48-50+2-3');
+      cubit.evaluate();
+      expect(cubit.state.result, '-3.0');
 
-      provider.clean();
+      cubit.clear();
+      cubit.appendInput('100-50-40+10-15');
+      cubit.evaluate();
+      expect(cubit.state.result, '5.0');
+    });
 
-      expect(provider.input, "");
+    test('Should clear input', () {
+      cubit.appendInput('4861234894213x8465132464');
+      cubit.clear();
+      expect(cubit.state.input, '');
     });
   });
 }

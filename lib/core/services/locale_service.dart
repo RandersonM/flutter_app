@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 
-class LocaleService extends ChangeNotifier {
+class LocaleService {
   static const _boxName = 'settings';
   static const _localeKey = 'app_locale';
   static Locale? _locale;
@@ -16,14 +16,9 @@ class LocaleService extends ChangeNotifier {
 
   static Locale? get locale => _locale;
 
-  static Future<void> setLocale(Locale locale) async {
+  static Future<void> persistLocale(Locale locale) async {
     final box = await Hive.openBox(_boxName);
     await box.put(_localeKey, locale.languageCode);
     _locale = locale;
-    _instance.notifyListeners();
   }
-
-  static final LocaleService _instance = LocaleService._internal();
-  factory LocaleService() => _instance;
-  LocaleService._internal();
 } 

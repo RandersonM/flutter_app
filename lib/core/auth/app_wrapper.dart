@@ -4,11 +4,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:opfan/core/auth/blocs/index.dart';
-import 'package:opfan/core/services/service_locator.dart';
+import 'package:opfan/app/di/injection.dart';
 import 'package:opfan/l10n/app_localizations.dart';
-import 'package:opfan/screens/auth/login_screen.dart';
-import 'package:opfan/screens/home/home_screen.dart';
-import 'package:opfan/screens/splash/splash_screen.dart';
+import 'package:opfan/features/auth/presentation/login_screen.dart';
+import 'package:opfan/features/home/presentation/home_screen.dart';
+import 'package:opfan/features/splash/presentation/splash_screen.dart';
 
 class AppWrapper extends StatefulWidget {
   const AppWrapper({super.key});

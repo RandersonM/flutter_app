@@ -5,7 +5,7 @@ import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter/material.dart';
 import 'package:opfan/core/services/firestore_service.dart';
 import 'package:opfan/core/services/navigation_service.dart';
-import 'package:opfan/utils/app_routes.dart';
+import 'package:opfan/shared/utils/app_routes.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class NotificationService {

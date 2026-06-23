@@ -1,5 +1,5 @@
 import 'package:opfan/core/services/gemini_service.dart';
-import 'package:opfan/core/services/service_locator.dart';
+import 'package:opfan/app/di/injection.dart';
 import 'package:opfan/core/services/locale_service.dart';
 import 'package:opfan/core/repository/interfaces/cooking_repository_interface.dart';
 

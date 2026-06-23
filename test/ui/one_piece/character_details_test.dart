@@ -6,7 +6,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:opfan/core/models/one_piece/custom_character_model.dart';
 
 
-import 'package:opfan/screens/one_piece/widgets/details/character_details_screen.dart';
+import 'package:opfan/features/one_piece/presentation/widgets/details/character_details_screen.dart';
 
 import '../../testable_widget.dart';
 
