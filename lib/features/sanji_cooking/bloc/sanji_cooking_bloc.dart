@@ -4,6 +4,8 @@ import 'package:opfan/features/sanji_cooking/data/repository/cooking_repository_
 import 'package:opfan/core/services/nutrition_calculation_service.dart';
 import 'package:opfan/app/di/injection.dart';
 import 'package:opfan/core/services/workout_assessment_service.dart';
+import 'package:opfan/core/services/auth_service.dart';
+import 'package:opfan/core/auth/blocs/index.dart';
 import 'sanji_cooking_event.dart';
 import 'sanji_cooking_state.dart';
 
@@ -31,52 +33,36 @@ class SanjiCookingBloc extends Bloc<SanjiCookingEvent, SanjiCookingState> {
     emit(const SanjiCookingLoading());
     
     try {
-      final currentAssessment = await _workoutService.getCurrentUserAssessment();
+      final user = getIt<AuthService>().currentUser;
       
-      if (currentAssessment != null) {
-        final hasRequiredData = currentAssessment.gender.isNotEmpty &&
-            currentAssessment.age > 0 &&
-            currentAssessment.height > 0 &&
-            currentAssessment.weight > 0 &&
-            currentAssessment.activityLevel != null &&
-            currentAssessment.goal != null &&
-            currentAssessment.waist > 0;
+      if (user != null && user.isProfileComplete) {
+        final nutritionResults = NutritionCalculationService.calculateNutrition(
+          age: user.age!,
+          gender: user.gender!,
+          weight: user.weightKg!,
+          height: user.heightCm!,
+          waist: user.waistCm ?? 0.0,
+          activityLevel: user.activityLevel!,
+          goal: user.goal!,
+        );
         
-        if (hasRequiredData) {
-          final nutritionResults = NutritionCalculationService.calculateNutrition(
-            age: currentAssessment.age,
-            gender: currentAssessment.gender,
-            weight: currentAssessment.weight,
-            height: currentAssessment.height,
-            waist: currentAssessment.waist,
-            activityLevel: currentAssessment.activityLevel!,
-            goal: currentAssessment.goal!,
-          );
-          
-          emit(SanjiCookingLoaded(
-            nutritionResults: nutritionResults,
-            hasExistingData: true,
-            showForm: false,
-          ));
-        } else {
-          // Preparar dados existentes para o formulário
-          final existingData = {
-            'age': currentAssessment.age,
-            'gender': currentAssessment.gender,
-            'weight': currentAssessment.weight,
-            'height': currentAssessment.height,
-            'waist': currentAssessment.waist,
-            'activityLevel': currentAssessment.activityLevel,
-            'goal': currentAssessment.goal,
-          };
-          
-          emit(SanjiCookingFormWithData(existingData: existingData));
-        }
-      } else {
-        emit(const SanjiCookingLoaded(
-          hasExistingData: false,
-          showForm: true,
+        emit(SanjiCookingLoaded(
+          nutritionResults: nutritionResults,
+          hasExistingData: true,
+          showForm: false,
         ));
+      } else {
+        final existingData = user != null ? {
+          'age': user.age,
+          'gender': user.gender,
+          'weight': user.weightKg,
+          'height': user.heightCm,
+          'waist': user.waistCm,
+          'activityLevel': user.activityLevel,
+          'goal': user.goal,
+        } : <String, dynamic>{};
+        
+        emit(SanjiCookingFormWithData(existingData: existingData));
       }
     } catch (e) {
       emit(SanjiCookingError(message: 'Erro ao inicializar: $e'));
@@ -100,6 +86,21 @@ class SanjiCookingBloc extends Bloc<SanjiCookingEvent, SanjiCookingState> {
         goal: event.nutritionData['goal'],
       );
       
+      // Auto-save global profile when calculating
+      final user = getIt<AuthService>().currentUser;
+      if (user != null) {
+        final updatedUser = user.copyWith(
+          gender: event.nutritionData['gender'],
+          age: event.nutritionData['age'],
+          heightCm: event.nutritionData['height'],
+          weightKg: event.nutritionData['weight'],
+          waistCm: event.nutritionData['waist'],
+          activityLevel: event.nutritionData['activityLevel'],
+          goal: event.nutritionData['goal'],
+        );
+        getIt<AuthBloc>().add(AuthProfileBodyUpdated(updatedUser: updatedUser));
+      }
+      
       emit(SanjiCookingLoaded(
         nutritionResults: nutritionResults,
         hasExistingData: false,
@@ -116,7 +117,20 @@ class SanjiCookingBloc extends Bloc<SanjiCookingEvent, SanjiCookingState> {
   ) async {
     try {
       debugPrint('SanjiCookingBloc: Starting _onSaveNutritionData');
-      debugPrint('SanjiCookingBloc: nutritionData: ${event.nutritionData}');
+      
+      final user = getIt<AuthService>().currentUser;
+      if (user != null) {
+        final updatedUser = user.copyWith(
+          gender: event.nutritionData['gender'],
+          age: event.nutritionData['age'],
+          heightCm: event.nutritionData['height'],
+          weightKg: event.nutritionData['weight'],
+          waistCm: event.nutritionData['waist'],
+          activityLevel: event.nutritionData['activityLevel'],
+          goal: event.nutritionData['goal'],
+        );
+        getIt<AuthBloc>().add(AuthProfileBodyUpdated(updatedUser: updatedUser));
+      }
       
       await _workoutService.updateNutritionData(
         gender: event.nutritionData['gender'],
@@ -146,17 +160,17 @@ class SanjiCookingBloc extends Bloc<SanjiCookingEvent, SanjiCookingState> {
     Emitter<SanjiCookingState> emit,
   ) async {
     try {
-      final currentAssessment = await _workoutService.getCurrentUserAssessment();
+      final user = getIt<AuthService>().currentUser;
       
-      if (currentAssessment != null) {
+      if (user != null && user.isProfileComplete) {
         final existingData = {
-          'age': currentAssessment.age,
-          'gender': currentAssessment.gender,
-          'weight': currentAssessment.weight,
-          'height': currentAssessment.height,
-          'waist': currentAssessment.waist,
-          'activityLevel': currentAssessment.activityLevel,
-          'goal': currentAssessment.goal,
+          'age': user.age,
+          'gender': user.gender,
+          'weight': user.weightKg,
+          'height': user.heightCm,
+          'waist': user.waistCm,
+          'activityLevel': user.activityLevel,
+          'goal': user.goal,
         };
         
         emit(SanjiCookingFormWithData(existingData: existingData));

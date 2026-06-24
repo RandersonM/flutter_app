@@ -1,207 +1,75 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:opfan/core/models/workout_assessment_model.dart';
+import 'package:opfan/core/models/workout_plan_model.dart';
 import 'package:opfan/l10n/app_localizations.dart';
 import 'package:opfan/shared/utils/constants.dart';
-import 'package:opfan/shared/utils/theme.dart';
 import 'package:opfan/shared/utils/gender_mapper.dart';
-import 'package:opfan/shared/widgets/atoms/gomu_gomu_divider.dart';
+import 'package:opfan/shared/utils/workout_plan_resolver.dart';
+import '../all_recommendations_screen.dart';
+import '../../bloc/zoro_workout_bloc.dart';
 import '../workout_constants.dart';
+import '../workout_plan_editor_screen.dart';
 import 'workout_calendar.dart';
 
 class WorkoutResults extends StatelessWidget {
   final Map<String, dynamic> healthResults;
   final List<Map<String, dynamic>> recommendedExercises;
   final VoidCallback onBackToSetup;
+  final WorkoutAssessmentModel? currentAssessment;
 
   const WorkoutResults({
     super.key,
     required this.healthResults,
     required this.recommendedExercises,
     required this.onBackToSetup,
+    this.currentAssessment,
   });
-
-  Widget _buildMetricRow(BuildContext context, String label, String value, String category) {
-    Color categoryColor = AppColors.green[300]!;
-    IconData categoryIcon = Icons.check_circle;
-
-    if (category
-            .contains(AppLocalizations.of(context)!.workout_category_regular) ||
-        category
-            .contains(AppLocalizations.of(context)!.workout_category_high) ||
-        category.contains(
-            AppLocalizations.of(context)!.workout_category_attention)) {
-      categoryColor = AppColors.yellow[500]!;
-      categoryIcon = Icons.warning;
-    } else if (category.contains(
-            AppLocalizations.of(context)!.workout_category_high_risk) ||
-        category.contains(
-            AppLocalizations.of(context)!.workout_category_needs_improvement)) {
-      categoryColor = Theme.of(context).colorScheme.errorContainer;
-      categoryIcon = Icons.error;
-    }
-    
-    return Container(
-      margin: const EdgeInsets.only(bottom: 12),
-      padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        color: Theme.of(context).colorScheme.surface,
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(
-          color: categoryColor.withValues(alpha: 0.3),
-          width: 1,
-        ),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withValues(alpha: 0.05),
-            blurRadius: 8,
-            offset: const Offset(0, 2),
-          ),
-        ],
-      ),
-      child: Row(
-        children: [
-          Container(
-            padding: const EdgeInsets.all(8),
-            decoration: BoxDecoration(
-              color: categoryColor.withValues(alpha: 0.1),
-              borderRadius: BorderRadius.circular(8),
-            ),
-            child: Icon(
-              categoryIcon,
-              color: categoryColor,
-              size: 20,
-            ),
-          ),
-          const SizedBox(width: 12),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  label,
-                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                        fontWeight: FontWeight.w600,
-                      ),
-                ),
-                const SizedBox(height: 4),
-                Text(
-                  value,
-                  style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                        fontWeight: FontWeight.bold,
-                        color: Theme.of(context).colorScheme.primary,
-                      ),
-                ),
-              ],
-            ),
-          ),
-          Container(
-            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-            decoration: BoxDecoration(
-              color: categoryColor.withValues(alpha: 0.15),
-              borderRadius: BorderRadius.circular(20),
-              border: Border.all(
-                color: categoryColor.withValues(alpha: 0.3),
-                width: 1,
-              ),
-            ),
-            child: Text(
-              category,
-              style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                    color: categoryColor,
-                    fontWeight: FontWeight.bold,
-                  ),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
 
   @override
   Widget build(BuildContext context) {
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const WorkoutCalendar(),
-        const SizedBox(height: 20),
+        _buildProgressAndStreak(context),
+        const SizedBox(height: Constants.margin),
+        _buildNextWorkout(context),
+        const SizedBox(height: Constants.margin * 2),
         Text(
-          AppLocalizations.of(context)!.workout_recommendations,
+          'Assessment Results',
           style: Theme.of(context).textTheme.titleLarge?.copyWith(
                 fontWeight: FontWeight.bold,
               ),
         ),
-        const SizedBox(height: 10),
-        ...(recommendedExercises.map((exercise) => Padding(
-              padding: const EdgeInsets.only(bottom: 8),
-              child: Row(
-                children: [
-                  Icon(
-                    exercise['icon'] as IconData,
-                    color: Colors.green.shade600,
-                  ),
-                  const SizedBox(width: 10),
-                  Expanded(
-                    child: Text(
-                      exercise['name'] as String,
-                      style: Theme.of(context).textTheme.bodyLarge,
-                    ),
-                  ),
-                ],
-              ),
-            ))),
+        const SizedBox(height: 12),
+        _buildCompactMetrics(context),
         const SizedBox(height: Constants.margin * 2),
-        GomuGomuDivider(color: Theme.of(context).colorScheme.primary),
-        const SizedBox(height: Constants.margin * 2),
-        SizedBox(
-          width: double.infinity,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                AppLocalizations.of(context)!.workout_results,
-                style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                      fontWeight: FontWeight.bold,
-                    ),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text(
+              'Top Recommendations',
+              style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                    fontWeight: FontWeight.bold,
+                  ),
+            ),
+            TextButton(
+              onPressed: () => Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (_) => AllRecommendationsScreen(
+                    exercises: recommendedExercises,
+                  ),
+                ),
               ),
-              const SizedBox(height: 15),
-              _buildMetricRow(
-                  context,
-                  AppLocalizations.of(context)!.workout_health_score,
-                  '${(healthResults['health_score'] as double? ?? 0.0).toStringAsFixed(0)}/100',
-                  _getHealthCategory(context,
-                      healthResults['health_score'] as double? ?? 0.0)),
-              _buildMetricRow(
-                  context,
-                  AppLocalizations.of(context)!.workout_bmi,
-                  (healthResults['bmi'] as double? ?? 0.0).toStringAsFixed(1),
-                  _getBMICategory(
-                      context, healthResults['bmi'] as double? ?? 0.0)),
-              _buildMetricRow(
-                  context,
-                  AppLocalizations.of(context)!.workout_waist_to_height,
-                  '${((healthResults['waist_to_height_ratio'] as double? ?? 0.0) * 100).toStringAsFixed(1)}%',
-                  _getWaistToHeightCategory(
-                      context,
-                      healthResults['waist_to_height_ratio'] as double? ??
-                          0.0)),
-              _buildMetricRow(
-                  context,
-                  AppLocalizations.of(context)!.workout_body_fat,
-                  '${(healthResults['body_fat_percentage'] as double? ?? 0.0).toStringAsFixed(1)}%',
-                  _getBodyFatCategory(
-                      context,
-                      healthResults['body_fat_percentage'] as double? ?? 0.0,
-                      healthResults['gender'] as String? ??
-                          AppLocalizations.of(context)!.workout_gender_male)),
-              if (healthResults['workout_days_goal'] != null)
-                _buildMetricRow(
-                    context,
-                    AppLocalizations.of(context)!.workout_workout_days_goal,
-                    '${healthResults['workout_days_goal']} ${healthResults['workout_days_goal'] == 1 ? AppLocalizations.of(context)!.workout_day : AppLocalizations.of(context)!.workout_days}',
-                    'Meta definida'),
-            ],
-          ),
+              child: const Text('See all'),
+            ),
+          ],
         ),
-
-        
+        const SizedBox(height: 8),
+        _buildRecommendationsRow(context),
+        const SizedBox(height: Constants.margin * 2),
+        const WorkoutCalendar(),
         const SizedBox(height: 30),
         SizedBox(
           width: double.infinity,
@@ -217,83 +85,754 @@ class WorkoutResults extends StatelessWidget {
     );
   }
 
-String _getBMICategory(BuildContext context, double bmi) {
+  // ---------- Streak: soma todos os dias do mês atual no calendário ----------
+  int _getMonthlyStreak() {
+    final days = (healthResults['workout_days'] as List<dynamic>?)
+            ?.whereType<int>()
+            .toList() ??
+        [];
+    return days.length;
+  }
+
+  Widget _buildProgressAndStreak(BuildContext context) {
+    final goal = (healthResults['workout_days_goal'] as num?)?.toInt() ?? 0;
+    final days = (healthResults['workout_days'] as List<dynamic>?)
+            ?.whereType<int>()
+            .toList() ??
+        [];
+
+    final now = DateTime.now();
+    final startOfWeek = now.subtract(Duration(days: now.weekday - 1));
+    int weekWorkouts = 0;
+    for (int i = 0; i < 7; i++) {
+      final weekDay = startOfWeek.add(Duration(days: i));
+      if (weekDay.isBefore(now.add(const Duration(days: 1))) &&
+          days.contains(weekDay.day)) {
+        weekWorkouts++;
+      }
+    }
+
+    final monthStreak = _getMonthlyStreak();
+    final progress = goal > 0 ? (weekWorkouts / goal).clamp(0.0, 1.0) : 0.0;
+
+    return IntrinsicHeight(
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+        Expanded(
+          flex: 2,
+          child: Container(
+            padding: const EdgeInsets.all(16),
+            decoration: BoxDecoration(
+              color: Theme.of(context).colorScheme.surface,
+              borderRadius: BorderRadius.circular(16),
+              border: Border.all(
+                color: Theme.of(context)
+                    .colorScheme
+                    .primary
+                    .withValues(alpha: 0.3),
+              ),
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  'Week Progress',
+                  style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                        fontWeight: FontWeight.bold,
+                      ),
+                ),
+                const SizedBox(height: 12),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      '$weekWorkouts / $goal workouts',
+                      style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                            color: Theme.of(context)
+                                .colorScheme
+                                .onSurface
+                                .withValues(alpha: 0.7),
+                          ),
+                    ),
+                    Text(
+                      '${(progress * 100).toInt()}%',
+                      style: Theme.of(context).textTheme.titleSmall?.copyWith(
+                            fontWeight: FontWeight.bold,
+                            color: Theme.of(context)
+                                .colorScheme
+                                .primary
+                                .withValues(alpha: 0.8),
+                          ),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 8),
+                LinearProgressIndicator(
+                  value: progress,
+                  minHeight: 8,
+                  backgroundColor:
+                      Theme.of(context).colorScheme.surfaceContainerHighest,
+                  valueColor: AlwaysStoppedAnimation<Color>(
+                      Theme.of(context).colorScheme.primary),
+                  borderRadius: BorderRadius.circular(4),
+                ),
+              ],
+            ),
+          ),
+        ),
+        const SizedBox(width: 12),
+        Expanded(
+          flex: 1,
+          child: Container(
+            padding: const EdgeInsets.all(16),
+            decoration: BoxDecoration(
+              color: Theme.of(context).colorScheme.surface,
+              borderRadius: BorderRadius.circular(16),
+              border: Border.all(color: Colors.orange.withValues(alpha: 0.3)),
+            ),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  'Streak',
+                  style: Theme.of(context).textTheme.titleSmall?.copyWith(
+                        fontWeight: FontWeight.bold,
+                      ),
+                ),
+                const SizedBox(height: 4),
+                Text(
+                  'este mês',
+                  style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                        color: Theme.of(context)
+                            .colorScheme
+                            .onSurface
+                            .withValues(alpha: 0.5),
+                      ),
+                ),
+                const SizedBox(height: 8),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const Text('🔥', style: TextStyle(fontSize: 18)),
+                    const SizedBox(width: 4),
+                    Text(
+                      '$monthStreak',
+                      style: Theme.of(context).textTheme.headlineSmall?.copyWith(
+                            fontWeight: FontWeight.bold,
+                            color: Colors.orange,
+                          ),
+                    ),
+                  ],
+                ),
+                Text(
+                  'dias',
+                  style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                        color: Colors.orange.withValues(alpha: 0.8),
+                        fontWeight: FontWeight.w600,
+                      ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ],
+    ),
+    );
+  }
+
+  // ---------- Next Workout abre modal ----------
+  Widget _buildNextWorkout(BuildContext context) {
+    final split = WorkoutPlanResolver.resolveTodaySplit(currentAssessment);
+    final hasPlan = currentAssessment?.workoutPlan?.isNotEmpty ?? false;
+    final isDone = WorkoutPlanResolver.isTodayWorkoutDone(currentAssessment);
+    final primary = Theme.of(context).colorScheme.primary;
+
+    if (!hasPlan) {
+      return GestureDetector(
+        onTap: () {
+          final bloc = context.read<ZoroWorkoutBloc>();
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (_) => BlocProvider.value(
+                value: bloc,
+                child: const WorkoutPlanEditorScreen(),
+              ),
+            ),
+          );
+        },
+        child: Container(
+          padding: const EdgeInsets.all(16),
+          decoration: BoxDecoration(
+            color: primary.withValues(alpha: 0.06),
+            borderRadius: BorderRadius.circular(16),
+            border: Border.all(color: primary.withValues(alpha: 0.3)),
+          ),
+          child: Row(
+            children: [
+              Container(
+                padding: const EdgeInsets.all(12),
+                decoration: BoxDecoration(
+                    color: primary.withValues(alpha: 0.12),
+                    borderRadius: BorderRadius.circular(12)),
+                child: Icon(Icons.add, color: primary),
+              ),
+              const SizedBox(width: 16),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text('Criar Plano de Treino',
+                        style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                            fontWeight: FontWeight.bold, color: primary)),
+                    const SizedBox(height: 2),
+                    Text('Toque para criar seu plano personalizado',
+                        style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                            color: Theme.of(context)
+                                .colorScheme
+                                .onSurface
+                                .withValues(alpha: 0.6))),
+                  ],
+                ),
+              ),
+              Icon(Icons.chevron_right, color: primary.withValues(alpha: 0.5)),
+            ],
+          ),
+        ),
+      );
+    }
+
+    final exercises = split?.exercises ?? [];
+    final splitName = split?.name ?? 'Treino';
+    final preview = exercises.take(3).map((e) => e.name).join(', ');
+
+    return GestureDetector(
+      onTap: () => _showNextWorkoutModal(context, split),
+      child: Container(
+        padding: const EdgeInsets.all(16),
+        decoration: BoxDecoration(
+          color: Theme.of(context).colorScheme.surface,
+          borderRadius: BorderRadius.circular(16),
+          border: Border.all(
+              color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.1)),
+        ),
+        child: Row(
+          children: [
+            Container(
+              padding: const EdgeInsets.all(12),
+              decoration: BoxDecoration(
+                color: isDone
+                    ? Colors.green.withValues(alpha: 0.12)
+                    : primary.withValues(alpha: 0.1),
+                borderRadius: BorderRadius.circular(12),
+              ),
+              child: Icon(
+                isDone ? Icons.check_circle_outline : Icons.fitness_center,
+                color: isDone ? Colors.green.shade400 : primary.withValues(alpha: 0.8),
+              ),
+            ),
+            const SizedBox(width: 16),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(isDone ? 'Treino de Hoje (Concluído)' : 'Treino de Hoje',
+                      style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                          color: Theme.of(context)
+                              .colorScheme
+                              .onSurface
+                              .withValues(alpha: 0.7))),
+                  const SizedBox(height: 2),
+                  Text(splitName,
+                      style: Theme.of(context)
+                          .textTheme
+                          .titleMedium
+                          ?.copyWith(fontWeight: FontWeight.bold)),
+                  const SizedBox(height: 4),
+                  Text('${exercises.length} exercícios • $preview',
+                      style: Theme.of(context).textTheme.bodySmall,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis),
+                ],
+              ),
+            ),
+            Icon(Icons.chevron_right,
+                color:
+                    Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.5)),
+          ],
+        ),
+      ),
+    );
+  }
+
+  void _showNextWorkoutModal(BuildContext context, WorkoutSplitModel? split) {
+    final isDone = WorkoutPlanResolver.isTodayWorkoutDone(currentAssessment);
+    final bloc = context.read<ZoroWorkoutBloc>();
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      backgroundColor: Colors.transparent,
+      builder: (ctx) => BlocProvider.value(
+        value: bloc,
+        child: _NextWorkoutModal(
+          primaryColor: Theme.of(context).colorScheme.primary,
+          split: split,
+          isDone: isDone,
+          currentAssessment: currentAssessment,
+        ),
+      ),
+    );
+  }
+
+  // ---------- Métricas compactas com parse seguro ----------
+  double _parseDouble(dynamic value) {
+    if (value == null) return 0.0;
+    if (value is num) return value.toDouble();
+    if (value is String) return double.tryParse(value) ?? 0.0;
+    return 0.0;
+  }
+
+  Widget _buildCompactMetrics(BuildContext context) {
+    final healthScore = _parseDouble(healthResults['health_score']);
+    final bmi = _parseDouble(healthResults['bmi']);
+    final bodyFat = _parseDouble(healthResults['body_fat_percentage']);
+    final gender = healthResults['gender']?.toString() ?? 'male';
+
+    return Column(
+      children: [
+        _buildMetricBar(
+          context,
+          'Health Score',
+          '${healthScore.toStringAsFixed(0)} / 100',
+          _getHealthCategory(context, healthScore),
+          healthScore / 100,
+          Colors.green.shade400,
+        ),
+        _buildMetricBar(
+          context,
+          'BMI',
+          bmi.toStringAsFixed(1),
+          _getBMICategory(context, bmi),
+          (bmi - 15) / 25,
+          Colors.orange.shade400,
+        ),
+        _buildMetricBar(
+          context,
+          'Body Fat',
+          '${bodyFat.toStringAsFixed(1)}%',
+          _getBodyFatCategory(context, bodyFat, gender),
+          bodyFat / 40,
+          Theme.of(context).colorScheme.error,
+        ),
+      ],
+    );
+  }
+
+  Widget _buildMetricBar(BuildContext context, String label, String value,
+      String status, double progress, Color activeColor) {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 16),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                label,
+                style: Theme.of(context)
+                    .textTheme
+                    .titleSmall
+                    ?.copyWith(fontWeight: FontWeight.bold),
+              ),
+              Text(
+                value,
+                style: Theme.of(context)
+                    .textTheme
+                    .titleSmall
+                    ?.copyWith(fontWeight: FontWeight.bold),
+              ),
+            ],
+          ),
+          const SizedBox(height: 6),
+          LinearProgressIndicator(
+            value: progress.clamp(0.0, 1.0),
+            minHeight: 6,
+            backgroundColor:
+                Theme.of(context).colorScheme.surfaceContainerHighest,
+            valueColor: AlwaysStoppedAnimation<Color>(activeColor),
+            borderRadius: BorderRadius.circular(3),
+          ),
+          const SizedBox(height: 4),
+          Text(
+            status,
+            style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                  color: Theme.of(context)
+                      .colorScheme
+                      .onSurface
+                      .withValues(alpha: 0.6),
+                ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  // ---------- Recomendações horizontais com navegação ----------
+  Widget _buildRecommendationsRow(BuildContext context) {
+    return SizedBox(
+      height: 140,
+      child: ListView.separated(
+        scrollDirection: Axis.horizontal,
+        itemCount:
+            recommendedExercises.length > 3 ? 3 : recommendedExercises.length,
+        separatorBuilder: (context, index) => const SizedBox(width: 12),
+        itemBuilder: (context, index) {
+          final exercise = recommendedExercises[index];
+          return GestureDetector(
+            onTap: () => Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (_) => AllRecommendationsScreen(
+                  exercises: recommendedExercises,
+                ),
+              ),
+            ),
+            child: Container(
+              width: 140,
+              padding: const EdgeInsets.all(16),
+              decoration: BoxDecoration(
+                color: Theme.of(context).colorScheme.surface,
+                borderRadius: BorderRadius.circular(16),
+                border: Border.all(
+                  color: Theme.of(context)
+                      .colorScheme
+                      .onSurface
+                      .withValues(alpha: 0.1),
+                ),
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Container(
+                    padding: const EdgeInsets.all(8),
+                    decoration: BoxDecoration(
+                      color: Theme.of(context)
+                          .colorScheme
+                          .primary
+                          .withValues(alpha: 0.1),
+                      shape: BoxShape.circle,
+                    ),
+                    child: Icon(
+                      exercise['icon'] as IconData? ?? Icons.fitness_center,
+                      color: Theme.of(context)
+                          .colorScheme
+                          .primary
+                          .withValues(alpha: 0.8),
+                      size: 24,
+                    ),
+                  ),
+                  const SizedBox(height: 12),
+                  Text(
+                    exercise['name'] as String? ?? '',
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                    style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                          fontWeight: FontWeight.w600,
+                        ),
+                  ),
+                ],
+              ),
+            ),
+          );
+        },
+      ),
+    );
+  }
+
+  // ---------- Categorias ----------
+  String _getBMICategory(BuildContext context, double bmi) {
     const thresholds = WorkoutConstants.bmiThresholds;
     final loc = AppLocalizations.of(context)!;
-
-    if (bmi < thresholds['underweight']!) {
-      return loc.workout_category_underweight;
-    }
+    if (bmi < thresholds['underweight']!) return loc.workout_category_underweight;
     if (bmi < thresholds['normal']!) return loc.workout_category_normal;
     if (bmi < thresholds['overweight']!) return loc.workout_category_overweight;
     if (bmi < thresholds['obesity_1']!) return loc.workout_category_obesity_1;
     if (bmi < thresholds['obesity_2']!) return loc.workout_category_obesity_2;
-
     return loc.workout_category_obesity_3;
   }
 
-  String _getWaistToHeightCategory(BuildContext context, double ratio) {
-    const thresholds = WorkoutConstants.waistToHeightThresholds;
-    final loc = AppLocalizations.of(context)!;
-
-    if (ratio < thresholds['excellent']!) {
-      return loc.workout_category_excellent;
-    }
-    if (ratio < thresholds['good']!) return loc.workout_category_good;
-    if (ratio < thresholds['attention']!) return loc.workout_category_attention;
-
-    return loc.workout_category_high_risk;
-  }
-
-  String _getBodyFatCategory(BuildContext context, double percentage, String gender) {
+  String _getBodyFatCategory(
+      BuildContext context, double percentage, String gender) {
     const maleThresholds = WorkoutConstants.bodyFatThresholdsMale;
     const femaleThresholds = WorkoutConstants.bodyFatThresholdsFemale;
     final loc = AppLocalizations.of(context)!;
     final internalGender = GenderMapper.getInternalValue(gender, loc);
 
-    if (internalGender == GenderMapper.male) {
-      if (percentage < maleThresholds['very_low']!) {
-        return loc.workout_category_very_low;
-      }
-      if (percentage < maleThresholds['athletic']!) {
-        return loc.workout_category_athletic;
-      }
-      if (percentage < maleThresholds['good']!) {
-        return loc.workout_category_good;
-      }
-      if (percentage < maleThresholds['acceptable']!) {
-        return loc.workout_category_acceptable;
-      }
-
-      return loc.workout_category_high;
-    } else {
-      if (percentage < femaleThresholds['very_low']!) {
-        return loc.workout_category_very_low;
-      }
-      if (percentage < femaleThresholds['athletic']!) {
-        return loc.workout_category_athletic;
-      }
-      if (percentage < femaleThresholds['good']!) {
-        return loc.workout_category_good;
-      }
-      if (percentage < femaleThresholds['acceptable']!) {
-        return loc.workout_category_acceptable;
-      }
-
-      return loc.workout_category_high;
-    }
+    final thresholds =
+        internalGender == GenderMapper.male ? maleThresholds : femaleThresholds;
+    if (percentage < thresholds['very_low']!) return loc.workout_category_very_low;
+    if (percentage < thresholds['athletic']!) return loc.workout_category_athletic;
+    if (percentage < thresholds['good']!) return loc.workout_category_good;
+    if (percentage < thresholds['acceptable']!) return loc.workout_category_acceptable;
+    return loc.workout_category_high;
   }
 
   String _getHealthCategory(BuildContext context, double score) {
     const thresholds = WorkoutConstants.healthScoreThresholds;
     final loc = AppLocalizations.of(context)!;
-
-    if (score >= thresholds['excellent']!) {
-      return loc.workout_category_excellent;
-    }
+    if (score >= thresholds['excellent']!) return loc.workout_category_excellent;
     if (score >= thresholds['good']!) return loc.workout_category_good;
     if (score >= thresholds['regular']!) return loc.workout_category_regular;
-
     return loc.workout_category_needs_improvement;
   }
 }
+
+// ============================================================
+// Modal do Próximo Treino
+// ============================================================
+class _NextWorkoutModal extends StatelessWidget {
+  final Color primaryColor;
+  final WorkoutSplitModel? split;
+  final bool isDone;
+  final WorkoutAssessmentModel? currentAssessment;
+
+  const _NextWorkoutModal({
+    required this.primaryColor,
+    this.split,
+    this.isDone = false,
+    this.currentAssessment,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final exercises = split?.exercises ?? [];
+    final splitName = split?.name ?? 'Treino';
+
+    return DraggableScrollableSheet(
+      initialChildSize: 0.75,
+      minChildSize: 0.5,
+      maxChildSize: 0.92,
+      builder: (ctx, scrollController) {
+        return Container(
+          decoration: BoxDecoration(
+            color: Theme.of(context).colorScheme.surface,
+            borderRadius: const BorderRadius.vertical(top: Radius.circular(24)),
+          ),
+          child: Column(
+            children: [
+              // Handle bar
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 12),
+                child: Container(
+                  width: 40, height: 4,
+                  decoration: BoxDecoration(
+                    color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.2),
+                    borderRadius: BorderRadius.circular(2),
+                  ),
+                ),
+              ),
+              // Header
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 20),
+                child: Row(
+                  children: [
+                    Container(
+                      padding: const EdgeInsets.all(10),
+                      decoration: BoxDecoration(
+                        color: isDone
+                            ? Colors.green.withValues(alpha: 0.12)
+                            : primaryColor.withValues(alpha: 0.12),
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      child: Icon(
+                        isDone ? Icons.check_circle_outline : Icons.fitness_center,
+                        color: isDone ? Colors.green.shade400 : primaryColor,
+                        size: 22,
+                      ),
+                    ),
+                    const SizedBox(width: 14),
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(splitName,
+                              style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                                  fontWeight: FontWeight.bold)),
+                          Text('${exercises.length} exercícios',
+                              style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                                  color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.6))),
+                        ],
+                      ),
+                    ),
+                    // Badge status
+                    Container(
+                      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                      decoration: BoxDecoration(
+                        color: isDone
+                            ? Colors.green.withValues(alpha: 0.12)
+                            : primaryColor.withValues(alpha: 0.12),
+                        borderRadius: BorderRadius.circular(20),
+                      ),
+                      child: Text(isDone ? '✅ Concluído' : 'Hoje',
+                          style: TextStyle(
+                            color: isDone ? Colors.green.shade400 : primaryColor,
+                            fontWeight: FontWeight.bold, fontSize: 12,
+                          )),
+                    ),
+                  ],
+                ),
+              ),
+              const SizedBox(height: 8),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 20),
+                child: Row(
+                  children: [
+                    _InfoChip(icon: Icons.loop, label: '${exercises.length} exercícios', primaryColor: primaryColor),
+                    const SizedBox(width: 8),
+                    _InfoChip(
+                        icon: isDone ? Icons.check : Icons.radio_button_unchecked,
+                        label: isDone ? 'Feito hoje' : 'Pendente',
+                        primaryColor: isDone ? Colors.green.shade400 : primaryColor),
+                  ],
+                ),
+              ),
+              const SizedBox(height: 16),
+              Divider(height: 1, color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.08)),
+              const SizedBox(height: 8),
+              // Lista de exercícios com status
+              Expanded(
+                child: exercises.isEmpty
+                    ? Center(
+                        child: Text('Nenhum exercício neste split.',
+                            style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                                color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.5))),
+                      )
+                    : ListView.separated(
+                        controller: scrollController,
+                        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
+                        itemCount: exercises.length,
+                        separatorBuilder: (_, __) => const SizedBox(height: 10),
+                        itemBuilder: (ctx, i) {
+                          final ex = exercises[i];
+                          return Row(
+                            children: [
+                              // Indicador ✅ / ⬜
+                              Icon(
+                                isDone ? Icons.check_circle : Icons.radio_button_unchecked,
+                                color: isDone ? Colors.green.shade400 : Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.3),
+                                size: 20,
+                              ),
+                              const SizedBox(width: 10),
+                              Container(
+                                width: 28, height: 28,
+                                alignment: Alignment.center,
+                                decoration: BoxDecoration(
+                                  color: primaryColor.withValues(alpha: 0.08),
+                                  borderRadius: BorderRadius.circular(6),
+                                ),
+                                child: Text('${i + 1}',
+                                    style: TextStyle(color: primaryColor, fontWeight: FontWeight.bold, fontSize: 12)),
+                              ),
+                              const SizedBox(width: 10),
+                              Expanded(
+                                child: Text(ex.name,
+                                    style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                                        fontWeight: FontWeight.w500,
+                                        decoration: isDone ? TextDecoration.lineThrough : null,
+                                        color: isDone
+                                            ? Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.5)
+                                            : null)),
+                              ),
+                              Container(
+                                padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                                decoration: BoxDecoration(
+                                  color: Theme.of(context).colorScheme.surfaceContainerHighest,
+                                  borderRadius: BorderRadius.circular(8),
+                                ),
+                                child: Text(ex.volume,
+                                    style: Theme.of(context).textTheme.bodySmall?.copyWith(fontWeight: FontWeight.bold)),
+                              ),
+                            ],
+                          );
+                        },
+                      ),
+              ),
+              // Botões rodapé
+              Padding(
+                padding: const EdgeInsets.fromLTRB(20, 8, 20, 24),
+                child: Row(
+                  children: [
+                    Expanded(
+                      child: OutlinedButton.icon(
+                        onPressed: () {
+                          final bloc = context.read<ZoroWorkoutBloc>();
+                          Navigator.pop(context);
+                          Navigator.push(context, MaterialPageRoute(
+                            builder: (_) => BlocProvider.value(
+                              value: bloc,
+                              child: WorkoutPlanEditorScreen(existingPlan: currentAssessment?.workoutPlan),
+                            ),
+                          ));
+                        },
+                        icon: const Icon(Icons.edit_outlined, size: 16),
+                        label: const Text('Editar Plano'),
+                        style: OutlinedButton.styleFrom(padding: const EdgeInsets.symmetric(vertical: 14)),
+                      ),
+                    ),
+                    const SizedBox(width: 12),
+                    Expanded(
+                      flex: 2,
+                      child: ElevatedButton(
+                        onPressed: () => Navigator.pop(context),
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: primaryColor,
+                          foregroundColor: Colors.white,
+                          padding: const EdgeInsets.symmetric(vertical: 14),
+                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
+                        ),
+                        child: Text(isDone ? 'Ver Progresso' : 'Iniciar Treino',
+                            style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 15)),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  }
+}
+
+class _InfoChip extends StatelessWidget {
+  final IconData icon;
+  final String label;
+  final Color primaryColor;
+
+  const _InfoChip({required this.icon, required this.label, required this.primaryColor});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+      decoration: BoxDecoration(
+        color: Theme.of(context).colorScheme.surfaceContainerHighest,
+        borderRadius: BorderRadius.circular(20),
+      ),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Icon(icon, size: 13, color: primaryColor),
+          const SizedBox(width: 4),
+          Text(label, style: Theme.of(context).textTheme.bodySmall?.copyWith(fontWeight: FontWeight.w600)),
+        ],
+      ),
+    );
+  }
+}
+
+

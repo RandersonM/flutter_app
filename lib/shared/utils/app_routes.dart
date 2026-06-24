@@ -22,10 +22,12 @@ import 'package:opfan/features/duels/duels_routes.dart';
 import 'package:opfan/features/profile/profile_routes.dart';
 import 'package:opfan/features/custom_character/custom_character_routes.dart';
 import 'package:opfan/features/crews/crews_routes.dart';
+import 'package:opfan/features/onboarding/onboarding_routes.dart';
 
 class AppRoutes {
   // Auth routes
   static const String login = AuthRoutes.login;
+  static const String onboarding = OnboardingRoutes.onboarding;
   
   // Main navigation routes (public)
   static const String home = HomeRoutes.home;
@@ -74,6 +76,7 @@ class AppRoutes {
     ProfileRoutes(),
     CustomCharacterRoutes(),
     CrewsRoutes(),
+    OnboardingRoutes(),
   ];
 
   /// Check if a route requires authentication

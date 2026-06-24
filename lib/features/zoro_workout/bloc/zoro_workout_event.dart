@@ -1,4 +1,5 @@
 import 'package:equatable/equatable.dart';
+import 'package:opfan/core/models/workout_plan_model.dart';
 
 abstract class ZoroWorkoutEvent extends Equatable {
   const ZoroWorkoutEvent();
@@ -59,4 +60,13 @@ class RefreshAssessment extends ZoroWorkoutEvent {
 
 class ClearError extends ZoroWorkoutEvent {
   const ClearError();
+}
+
+class SaveWorkoutPlan extends ZoroWorkoutEvent {
+  final WorkoutPlanModel workoutPlan;
+
+  const SaveWorkoutPlan({required this.workoutPlan});
+
+  @override
+  List<Object?> get props => [workoutPlan];
 }

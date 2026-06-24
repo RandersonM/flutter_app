@@ -7,6 +7,8 @@ import 'package:google_sign_in/google_sign_in.dart';
 import 'package:hive/hive.dart';
 import 'package:opfan/core/auth/models/user_model.dart';
 import 'package:opfan/core/services/notification_service.dart';
+import 'package:opfan/core/user_profile/repository/user_profile_repository_interface.dart';
+import 'package:opfan/core/user_profile/repository/user_profile_repository.dart';
 
 enum AuthStatus { unknown, authenticated, unauthenticated }
 
@@ -16,13 +18,16 @@ class AuthService {
 
   final FirebaseAuth _firebaseAuth;
   final GoogleSignIn _googleSignIn;
+  final IUserProfileRepository _userProfileRepository;
   late Box<UserModel> _box;
 
   AuthService({
     FirebaseAuth? firebaseAuth,
     GoogleSignIn? googleSignIn,
+    IUserProfileRepository? userProfileRepository,
   })  : _firebaseAuth = firebaseAuth ?? FirebaseAuth.instance,
-        _googleSignIn = googleSignIn ?? GoogleSignIn();
+        _googleSignIn = googleSignIn ?? GoogleSignIn(),
+        _userProfileRepository = userProfileRepository ?? UserProfileRepository();
 
   Future<void> init() async {
     try {
@@ -145,7 +150,24 @@ class AuthService {
           lastSignIn: user.metadata.lastSignInTime ?? DateTime.now(),
         );
 
-        await _saveUser(userModel);
+        final firestoreProfile = await _userProfileRepository.fetchProfile(user.uid);
+        final finalUser = firestoreProfile != null
+            ? userModel.copyWith(
+                gender: firestoreProfile.gender,
+                age: firestoreProfile.age,
+                heightCm: firestoreProfile.heightCm,
+                weightKg: firestoreProfile.weightKg,
+                activityLevel: firestoreProfile.activityLevel,
+                goal: firestoreProfile.goal,
+                waistCm: firestoreProfile.waistCm,
+                chestCm: firestoreProfile.chestCm,
+                armCm: firestoreProfile.armCm,
+                hipCm: firestoreProfile.hipCm,
+                thighCm: firestoreProfile.thighCm,
+              )
+            : userModel;
+
+        await _saveUser(finalUser);
         
         try {
           final notificationService = NotificationService();
@@ -157,7 +179,7 @@ class AuthService {
         }
         
         debugPrint('AuthService: User signed in successfully and cached');
-        return userModel;
+        return finalUser;
       }
 
       return null;
@@ -223,28 +245,44 @@ class AuthService {
         }
 
         final cachedUser = currentUser;
+        UserModel baseUser;
 
         if (cachedUser != null && cachedUser.uid == firebaseUser.uid) {
-          final updatedUser = cachedUser.copyWith(
+          baseUser = cachedUser.copyWith(
             lastSignIn: DateTime.now(),
           );
-          await _saveUser(updatedUser);
-          return updatedUser;
+        } else {
+          baseUser = UserModel(
+            uid: firebaseUser.uid,
+            email: firebaseUser.email ?? '',
+            displayName: firebaseUser.displayName ?? '',
+            photoUrl: firebaseUser.photoURL,
+            emailVerified: firebaseUser.emailVerified,
+            providerId: firebaseUser.providerData.first.providerId,
+            createdAt: firebaseUser.metadata.creationTime ?? DateTime.now(),
+            lastSignIn: firebaseUser.metadata.lastSignInTime ?? DateTime.now(),
+          );
         }
 
-        final userModel = UserModel(
-          uid: firebaseUser.uid,
-          email: firebaseUser.email ?? '',
-          displayName: firebaseUser.displayName ?? '',
-          photoUrl: firebaseUser.photoURL,
-          emailVerified: firebaseUser.emailVerified,
-          providerId: firebaseUser.providerData.first.providerId,
-          createdAt: firebaseUser.metadata.creationTime ?? DateTime.now(),
-          lastSignIn: firebaseUser.metadata.lastSignInTime ?? DateTime.now(),
-        );
+        final firestoreProfile = await _userProfileRepository.fetchProfile(firebaseUser.uid);
+        final finalUser = firestoreProfile != null
+            ? baseUser.copyWith(
+                gender: firestoreProfile.gender,
+                age: firestoreProfile.age,
+                heightCm: firestoreProfile.heightCm,
+                weightKg: firestoreProfile.weightKg,
+                activityLevel: firestoreProfile.activityLevel,
+                goal: firestoreProfile.goal,
+                waistCm: firestoreProfile.waistCm,
+                chestCm: firestoreProfile.chestCm,
+                armCm: firestoreProfile.armCm,
+                hipCm: firestoreProfile.hipCm,
+                thighCm: firestoreProfile.thighCm,
+              )
+            : baseUser;
 
-        await _saveUser(userModel);
-        return userModel;
+        await _saveUser(finalUser);
+        return finalUser;
       }
 
       await _clearUser();
@@ -259,6 +297,7 @@ class AuthService {
     try {
       final User? user = _firebaseAuth.currentUser;
       if (user != null) {
+        await _userProfileRepository.deleteProfile(user.uid);
         await user.delete();
         await _googleSignIn.signOut();
         await _clearUser();
@@ -295,6 +334,15 @@ class AuthService {
     }
 
     return null;
+  }
+
+  Future<bool> hasCompleteProfile(String uid) {
+    return _userProfileRepository.hasCompleteProfile(uid);
+  }
+
+  Future<void> updateBodyProfile(UserModel updatedProfile) async {
+    await _userProfileRepository.saveProfile(updatedProfile);
+    await _saveUser(updatedProfile);
   }
 
   Future<void> _saveUser(UserModel user) async {

@@ -9,6 +9,8 @@ import 'package:opfan/features/sanji_cooking/presentation/widgets/nutrition_resu
 import 'package:opfan/shared/utils/constants.dart';
 import 'package:opfan/shared/widgets/molecules/default_app_bar.dart';
 import 'package:opfan/shared/widgets/organisms/bottom_navigation.dart';
+import 'package:opfan/shared/utils/app_routes.dart';
+import 'package:opfan/core/services/auth_service.dart';
 
 class SanjiCookingScreen extends StatefulWidget {
   const SanjiCookingScreen({super.key});
@@ -32,7 +34,13 @@ class _SanjiCookingScreenState extends State<SanjiCookingScreen> {
   }
 
   void _onNewCalculation() {
-    _bloc.add(const NewCalculation());
+    final user = getIt<AuthService>().currentUser;
+    Navigator.of(context).pushNamed(
+      AppRoutes.onboarding,
+      arguments: user,
+    ).then((_) {
+      _bloc.add(const InitializeSanjiCooking());
+    });
   }
 
   @override
@@ -80,7 +88,7 @@ class _SanjiCookingScreenState extends State<SanjiCookingScreen> {
                                 style: OutlinedButton.styleFrom(
                                   padding: const EdgeInsets.symmetric(vertical: 16),
                                 ),
-                                child: Text(AppLocalizations.of(context)!.newCalculation),
+                                child: const Text('Atualizar Composição Corporal'),
                               ),
                             ),
                           ],

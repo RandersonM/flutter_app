@@ -1,8 +1,9 @@
 import 'package:json_annotation/json_annotation.dart';
+import 'workout_plan_model.dart';
 
 part 'workout_assessment_model.g.dart';
 
-@JsonSerializable()
+@JsonSerializable(explicitToJson: true)
 class WorkoutAssessmentModel {
   @JsonKey(name: 'id')
   final String? id;
@@ -52,6 +53,9 @@ class WorkoutAssessmentModel {
   @JsonKey(name: 'workout_days')
   final List<int>? workoutDays;
 
+  @JsonKey(name: 'workout_plan')
+  final WorkoutPlanModel? workoutPlan;
+
   @JsonKey(name: 'created_at')
   final DateTime createdAt;
 
@@ -75,6 +79,7 @@ class WorkoutAssessmentModel {
     this.activityLevel,
     this.goal,
     this.workoutDays,
+    this.workoutPlan,
     required this.createdAt,
     required this.updatedAt,
   });
@@ -101,6 +106,7 @@ class WorkoutAssessmentModel {
     String? activityLevel,
     String? goal,
     List<int>? workoutDays,
+    WorkoutPlanModel? workoutPlan,
     DateTime? createdAt,
     DateTime? updatedAt,
   }) {
@@ -121,6 +127,7 @@ class WorkoutAssessmentModel {
       activityLevel: activityLevel ?? this.activityLevel,
       goal: goal ?? this.goal,
       workoutDays: workoutDays ?? this.workoutDays,
+      workoutPlan: workoutPlan ?? this.workoutPlan,
       createdAt: createdAt ?? this.createdAt,
       updatedAt: updatedAt ?? this.updatedAt,
     );

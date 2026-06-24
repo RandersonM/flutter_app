@@ -7,6 +7,8 @@ import 'package:opfan/core/services/gemini_service.dart';
 import 'package:opfan/core/services/character_image_service.dart';
 import 'package:opfan/core/services/auth_service.dart';
 import 'package:opfan/core/services/firestore_service.dart';
+import 'package:opfan/core/user_profile/repository/user_profile_repository.dart';
+import 'package:opfan/core/user_profile/repository/user_profile_repository_interface.dart';
 import 'package:opfan/core/services/nami_finances_service.dart';
 import 'package:opfan/features/home/data/repository/featured_character_repository.dart';
 import 'package:opfan/features/home/data/repository/featured_character_repository_interface.dart';
@@ -37,7 +39,13 @@ void registerCoreModule(GetIt getIt) {
     () => FeaturedCharacterRepository(),
   );
 
-  getIt.registerLazySingleton<AuthService>(() => AuthService());
+  getIt.registerLazySingleton<IUserProfileRepository>(
+    () => UserProfileRepository(),
+  );
+
+  getIt.registerLazySingleton<AuthService>(
+    () => AuthService(userProfileRepository: getIt<IUserProfileRepository>()),
+  );
   getIt.registerLazySingleton<FirestoreService>(() => FirestoreService());
 
   getIt.registerLazySingleton<ICrewRepository>(() => CrewRepository());
@@ -66,6 +74,7 @@ extension CoreModuleExtensions on GetIt {
   GeminiService get geminiService => get<GeminiService>();
   CharacterImageService get characterImageService => get<CharacterImageService>();
   ICookingRepository get cookingRepository => get<ICookingRepository>();
+  IUserProfileRepository get userProfileRepository => get<IUserProfileRepository>();
   AuthService get authService => get<AuthService>();
   FirestoreService get firestoreService => get<FirestoreService>();
   ICustomCharacterRepository get customCharacterRepository => get<ICustomCharacterRepository>();

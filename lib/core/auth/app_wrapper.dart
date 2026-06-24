@@ -9,6 +9,7 @@ import 'package:opfan/l10n/app_localizations.dart';
 import 'package:opfan/features/auth/presentation/login_screen.dart';
 import 'package:opfan/features/home/presentation/home_screen.dart';
 import 'package:opfan/features/splash/presentation/splash_screen.dart';
+import 'package:opfan/features/onboarding/presentation/onboarding_screen.dart';
 
 class AppWrapper extends StatefulWidget {
   const AppWrapper({super.key});
@@ -39,6 +40,10 @@ class _AppWrapperState extends State<AppWrapper> {
 
           if (state is AuthAuthenticated) {
             return const HomeScreen();
+          }
+
+          if (state is AuthNeedsOnboarding) {
+            return const OnboardingScreen();
           }
 
           if (state is AuthUnauthenticated) {

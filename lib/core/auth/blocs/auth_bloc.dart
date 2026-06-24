@@ -23,6 +23,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     on<AuthSignOutRequested>(_onAuthSignOutRequested);
     on<AuthStatusChanged>(_onAuthStatusChanged);
     on<AuthUpdateProfile>(_onAuthUpdateProfile);
+    on<AuthProfileBodyUpdated>(_onAuthProfileBodyUpdated);
     on<AuthDeleteAccount>(_onAuthDeleteAccount);
     on<AuthCheckStatus>(_onAuthCheckStatus);
     on<AuthClearCache>(_onAuthClearCache);
@@ -43,7 +44,14 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         final user = await _authService.checkAuthStatus();
         if (user != null) {
           final processedUser = _processUserWithMiddleware(user);
-          emit(AuthAuthenticated(user: processedUser));
+          final hasCompleteProfile =
+              await _authService.hasCompleteProfile(user.uid);
+
+          if (hasCompleteProfile) {
+            emit(AuthAuthenticated(user: processedUser));
+          } else {
+            emit(AuthNeedsOnboarding(user: processedUser));
+          }
         } else {
           emit(const AuthUnauthenticated());
         }
@@ -146,6 +154,23 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     }
   }
 
+  Future<void> _onAuthProfileBodyUpdated(
+    AuthProfileBodyUpdated event,
+    Emitter<AuthState> emit,
+  ) async {
+    try {
+      emit(AuthProfileUpdating(user: event.updatedUser));
+
+      await _authService.updateBodyProfile(event.updatedUser);
+
+      emit(AuthProfileUpdated(user: event.updatedUser));
+      emit(AuthAuthenticated(user: event.updatedUser));
+    } catch (e) {
+      debugPrint('AuthBloc: Error updating body profile - $e');
+      emit(AuthError(message: 'Body profile update error: $e'));
+    }
+  }
+
   Future<void> _onAuthDeleteAccount(
     AuthDeleteAccount event,
     Emitter<AuthState> emit,
@@ -174,7 +199,14 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         final user = await _authService.checkAuthStatus();
         if (user != null) {
           final processedUser = _processUserWithMiddleware(user);
-          emit(AuthAuthenticated(user: processedUser));
+          final hasCompleteProfile =
+              await _authService.hasCompleteProfile(user.uid);
+
+          if (hasCompleteProfile) {
+            emit(AuthAuthenticated(user: processedUser));
+          } else {
+            emit(AuthNeedsOnboarding(user: processedUser));
+          }
         } else {
           emit(const AuthUnauthenticated());
         }

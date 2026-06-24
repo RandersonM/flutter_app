@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:opfan/l10n/app_localizations.dart';
 import 'package:opfan/shared/utils/constants.dart';
 import 'package:opfan/shared/widgets/molecules/default_app_bar.dart';
@@ -6,6 +7,8 @@ import 'package:opfan/shared/widgets/organisms/bottom_navigation.dart';
 import 'package:opfan/features/zoro_workout/presentation/widgets/index.dart';
 import 'package:opfan/app/di/injection.dart';
 import 'package:opfan/core/models/workout_assessment_model.dart';
+import 'package:opfan/core/services/auth_service.dart';
+import 'package:opfan/core/auth/blocs/index.dart';
 import '../bloc/index.dart';
 import 'workout_constants.dart';
 
@@ -23,17 +26,35 @@ class _WorkoutScreenState extends State<WorkoutScreen> {
   bool _isLoading = true;
   Map<String, dynamic>? _existingData;
   WorkoutAssessmentModel? _currentAssessment;
+  late final ZoroWorkoutBloc _bloc;
 
   @override
   void initState() {
     super.initState();
+    _bloc = getIt.zoroWorkoutBloc;
     _initializeAssessment();
   }
 
+  @override
+  void dispose() {
+    _bloc.close();
+    super.dispose();
+  }
+
   Future<void> _initializeAssessment() async {
-    final bloc = getIt.zoroWorkoutBloc;
+    final user = getIt<AuthService>().currentUser;
     
-    bloc.stream.listen((state) {
+    if (user != null) {
+      _existingData = {
+        'age': user.age,
+        'gender': user.gender,
+        'weight': user.weightKg,
+        'height': user.heightCm,
+        'waist': user.waistCm,
+      };
+    }
+    
+    _bloc.stream.listen((state) {
       if (state is ZoroWorkoutLoading) {
         setState(() {
           _isLoading = true;
@@ -59,13 +80,28 @@ class _WorkoutScreenState extends State<WorkoutScreen> {
       }
     });
     
-    bloc.add(const InitializeWorkoutAssessment());
+    _bloc.add(const InitializeWorkoutAssessment());
   }
 
   void _onCalculate(Map<String, dynamic> results) {
     setState(() {
       _isLoading = true;
     });
+
+    // Auto-save global profile when calculating
+    final user = getIt<AuthService>().currentUser;
+    if (user != null) {
+      final updatedUser = user.copyWith(
+        gender: results['gender'] as String?,
+        age: results['age'] as int?,
+        heightCm: results['height'] as double?,
+        weightKg: results['weight'] as double?,
+        waistCm: results['waist'] as double?,
+        activityLevel: results['activity_level'] as String? ?? user.activityLevel,
+        goal: results['goal'] as String? ?? user.goal,
+      );
+      getIt<AuthBloc>().add(AuthProfileBodyUpdated(updatedUser: updatedUser));
+    }
 
     Future.delayed(const Duration(milliseconds: 800), () {
       if (mounted) {
@@ -275,11 +311,13 @@ class _WorkoutScreenState extends State<WorkoutScreen> {
         title: Text(AppLocalizations.of(context)!.workout_title_screen),
       ),
       bottomNavigationBar: const BottomNavigation(BottomNavigationPages.workout),
-      body: Container(
-        color: Theme.of(context).colorScheme.surface,
-        child: SingleChildScrollView(
-          padding: const EdgeInsets.symmetric(horizontal: Constants.margin),
-          child: Column(
+      body: BlocProvider.value(
+        value: _bloc,
+        child: Container(
+          color: Theme.of(context).colorScheme.surface,
+          child: SingleChildScrollView(
+            padding: const EdgeInsets.symmetric(horizontal: Constants.margin),
+            child: Column(
             children: [
               WorkoutHeader(currentAssessment: _currentAssessment),
               const SizedBox(height: 20),
@@ -299,6 +337,7 @@ class _WorkoutScreenState extends State<WorkoutScreen> {
                   healthResults: _healthResults!,
                   recommendedExercises: _recommendedExercises,
                   onBackToSetup: _onBackToSetup,
+                  currentAssessment: _currentAssessment,
                 )
               else
                 WorkoutSetup(
@@ -308,6 +347,7 @@ class _WorkoutScreenState extends State<WorkoutScreen> {
               const SizedBox(height: Constants.margin * 2),
             ],
           ),
+        ),
         ),
       ),
     );

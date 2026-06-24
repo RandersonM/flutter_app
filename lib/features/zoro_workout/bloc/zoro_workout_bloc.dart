@@ -1,6 +1,9 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../core/models/workout_assessment_model.dart';
 import '../../../core/services/workout_assessment_service.dart';
+import '../../../core/services/auth_service.dart';
+import '../../../app/di/injection.dart';
+import '../../../core/auth/blocs/index.dart';
 import 'zoro_workout_event.dart';
 import 'zoro_workout_state.dart';
 
@@ -14,6 +17,7 @@ class ZoroWorkoutBloc extends Bloc<ZoroWorkoutEvent, ZoroWorkoutState> {
     on<UpdateWorkoutDays>(_onUpdateWorkoutDays);
     on<RefreshAssessment>(_onRefreshAssessment);
     on<ClearError>(_onClearError);
+    on<SaveWorkoutPlan>(_onSaveWorkoutPlan);
   }
 
   Future<void> _onInitializeWorkoutAssessment(
@@ -54,6 +58,20 @@ class ZoroWorkoutBloc extends Bloc<ZoroWorkoutEvent, ZoroWorkoutState> {
     Emitter<ZoroWorkoutState> emit,
   ) async {
     try {
+      final user = getIt<AuthService>().currentUser;
+      if (user != null) {
+        final updatedUser = user.copyWith(
+          gender: event.healthResults['gender'] as String?,
+          age: event.healthResults['age'] as int?,
+          heightCm: event.healthResults['height'] as double?,
+          weightKg: event.healthResults['weight'] as double?,
+          waistCm: event.healthResults['waist'] as double?,
+          activityLevel: event.healthResults['activity_level'] as String? ?? user.activityLevel,
+          goal: event.healthResults['goal'] as String? ?? user.goal,
+        );
+        getIt<AuthBloc>().add(AuthProfileBodyUpdated(updatedUser: updatedUser));
+      }
+
       await _service.saveWorkoutAssessment(
         gender: event.healthResults['gender'] as String,
         age: event.healthResults['age'] as int,
@@ -68,8 +86,8 @@ class ZoroWorkoutBloc extends Bloc<ZoroWorkoutEvent, ZoroWorkoutState> {
         healthScore: event.healthResults['health_score'] as double?,
         workoutDaysGoal: event.healthResults['workout_days_goal'] as int?,
         workoutDays: event.healthResults['workout_days'] as List<int>?,
-        activityLevel: event.healthResults['activity_level'] as String?,
-        goal: event.healthResults['goal'] as String?,
+        activityLevel: event.healthResults['activity_level'] as String? ?? user?.activityLevel,
+        goal: event.healthResults['goal'] as String? ?? user?.goal,
       );
 
       final currentAssessment = await _service.getCurrentUserAssessment();
@@ -139,6 +157,29 @@ class ZoroWorkoutBloc extends Bloc<ZoroWorkoutEvent, ZoroWorkoutState> {
   }
 
 
+
+  Future<void> _onSaveWorkoutPlan(
+    SaveWorkoutPlan event,
+    Emitter<ZoroWorkoutState> emit,
+  ) async {
+    try {
+      await _service.updateWorkoutPlan(event.workoutPlan);
+
+      final currentAssessment = await _service.getCurrentUserAssessment();
+      final assessmentHistory = await _service.getUserAssessmentHistory();
+
+      emit(ZoroWorkoutLoaded(
+        currentAssessment: currentAssessment,
+        assessmentHistory: assessmentHistory,
+        hasCurrentAssessment: currentAssessment != null,
+        canEditCurrentAssessment: true,
+        currentMonthProgress: _calculateProgress(currentAssessment),
+        remainingDaysToGoal: _calculateRemainingDays(currentAssessment),
+      ));
+    } catch (e) {
+      emit(ZoroWorkoutError(message: 'Erro ao salvar plano de treino: $e'));
+    }
+  }
 
   void _onClearError(
     ClearError event,

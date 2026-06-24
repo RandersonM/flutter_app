@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:opfan/core/models/workout_assessment_model.dart';
+import 'package:opfan/core/models/workout_plan_model.dart';
 
 class WorkoutAssessmentService {
   static final WorkoutAssessmentService _instance =
@@ -381,6 +382,42 @@ class WorkoutAssessmentService {
       rethrow;
     }
   }
+
+  /// Saves/replaces the workout_plan field in the current month's assessment.
+  Future<void> updateWorkoutPlan(WorkoutPlanModel plan) async {
+    try {
+      final userId = _auth.currentUser?.uid;
+      if (userId == null) throw Exception('Usuário não autenticado');
+
+      final currentMonthYear = _currentMonthYear;
+      final doc = await _firestore
+          .collection('workout_assessments')
+          .where('user_id', isEqualTo: userId)
+          .where('month_year', isEqualTo: currentMonthYear)
+          .limit(1)
+          .get();
+
+      if (doc.docs.isEmpty) {
+        throw Exception('Nenhuma avaliação encontrada para o mês atual');
+      }
+
+      final docId = doc.docs.first.id;
+      await _firestore
+          .collection('workout_assessments')
+          .doc(docId)
+          .update({
+        'workout_plan': plan.toJson(),
+        'updated_at': Timestamp.fromDate(DateTime.now()),
+      });
+
+      debugPrint('WorkoutAssessmentService: workout_plan salvo com sucesso');
+    } catch (e) {
+      debugPrint(
+          'WorkoutAssessmentService: Erro ao salvar workout_plan: $e');
+      rethrow;
+    }
+  }
+
 
   Future<WorkoutAssessmentModel> updateNutritionData({
     required String gender,

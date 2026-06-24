@@ -10,6 +10,7 @@ import 'package:opfan/core/theme/cubit/theme_state.dart';
 import 'package:opfan/core/locale/cubit/locale_cubit.dart';
 import 'package:opfan/l10n/app_localizations.dart';
 import 'package:opfan/shared/utils/constants.dart';
+import 'package:opfan/shared/utils/app_routes.dart';
 import 'package:opfan/shared/widgets/molecules/clickable_avatar.dart';
 
 class ProfileScreen extends StatefulWidget {
@@ -104,6 +105,28 @@ class _ProfileScreenState extends State<ProfileScreen> {
           
           const SizedBox(height: Constants.margin * 2),
           
+          if (user.isProfileComplete) ...[
+            _buildSection(
+              context,
+              title: 'Composição Corporal',
+              items: [
+                _buildProfileItem(
+                  context,
+                  icon: Icons.fitness_center,
+                  title: 'Dados Corporais',
+                  subtitle: '${user.weightKg} kg • ${user.heightCm} cm • IMC: ${(user.weightKg! / ((user.heightCm! / 100) * (user.heightCm! / 100))).toStringAsFixed(1)}',
+                  onTap: () {
+                    Navigator.of(context).pushNamed(
+                      AppRoutes.onboarding,
+                      arguments: user,
+                    );
+                  },
+                ),
+              ],
+            ),
+            const SizedBox(height: Constants.margin),
+          ],
+
           // Profile Sections
           _buildSection(
             context,

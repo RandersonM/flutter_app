@@ -3,7 +3,7 @@ import 'package:opfan/core/models/workout_assessment_model.dart';
 
 class WorkoutHeader extends StatelessWidget {
   final WorkoutAssessmentModel? currentAssessment;
-  
+
   const WorkoutHeader({
     super.key,
     this.currentAssessment,
@@ -11,83 +11,238 @@ class WorkoutHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final shouldShowDefeatedImage = _shouldShowDefeatedImage();
-    
+    // Estado sem avaliação — GIF simples
+    if (currentAssessment == null ||
+        currentAssessment!.workoutDaysGoal == null) {
+      return _buildGifOnly(context, defeated: false);
+    }
+
+    final stats = _getWorkoutStats();
+    final isDefeated = stats['workouts'] < stats['goal'];
+
     return Column(
       children: [
-        Container(
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(10),
-          ),
-          width: double.infinity,
-          height: 250,
-          clipBehavior: Clip.antiAlias,
-          child: Image.asset(
-            shouldShowDefeatedImage 
-              ? 'assets/logo/zoro-defetead.gif'
-              : 'assets/logo/zoro-workout.gif',
-            fit: BoxFit.fill,
-          ),
-        ),
-        if (shouldShowDefeatedImage) ...[
-          const SizedBox(height: 12),
-          Container(
-            padding: const EdgeInsets.all(16),
-            decoration: BoxDecoration(
-              color: Theme.of(context).colorScheme.errorContainer,
-              borderRadius: BorderRadius.circular(8),
-              border: Border.all(color: Theme.of(context).colorScheme.error),
-            ),
-            child: Column(
-              children: [
-                Text(
-                  'Zoro está derrotado...',
-                  style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                    fontWeight: FontWeight.bold,
-                    color: Theme.of(context).colorScheme.error,
-                  ),
-                ),
-                const SizedBox(height: 8),
-                Text(
-                  'Mas lembre-se: "Eu nunca vou perder novamente. Tem alguma coisa que eu quero proteger!" - Roronoa Zoro\n\n'
-                  'Com treino e determinação, você pode superar qualquer obstáculo e se tornar a melhor versão de você mesmo!',
-                  textAlign: TextAlign.center,
-                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                    color: Theme.of(context).colorScheme.error,
-                    height: 1.4,
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ],
+        _buildGifWithBadge(context, isDefeated: isDefeated),
+        const SizedBox(height: 16),
+        _buildStatusCard(context, isDefeated: isDefeated, stats: stats),
       ],
     );
   }
 
-  bool _shouldShowDefeatedImage() {
-    if (currentAssessment == null ||
-        currentAssessment!.workoutDaysGoal == null) {
-      return false;
-    }
-    
+  // ---------- GIF sem avaliação ----------
+  Widget _buildGifOnly(BuildContext context, {required bool defeated}) {
+    return ClipRRect(
+      borderRadius: BorderRadius.circular(20),
+      child: SizedBox(
+        width: double.infinity,
+        height: 180,
+        child: Image.asset(
+          'assets/logo/zoro-workout.gif',
+          fit: BoxFit.cover,
+        ),
+      ),
+    );
+  }
+
+  // ---------- GIF com badge de status sobreposto ----------
+  Widget _buildGifWithBadge(BuildContext context, {required bool isDefeated}) {
+    final statusColor = isDefeated
+        ? Theme.of(context).colorScheme.error
+        : Colors.green.shade500;
+    final statusLabel = isDefeated ? 'Derrotado' : 'Na Meta!';
+
+    return Stack(
+      children: [
+        ClipRRect(
+          borderRadius: BorderRadius.circular(20),
+          child: SizedBox(
+            width: double.infinity,
+            height: 220,
+            child: Image.asset(
+              isDefeated
+                  ? 'assets/logo/zoro-defetead.gif'
+                  : 'assets/logo/zoro-workout.gif',
+              fit: BoxFit.cover,
+            ),
+          ),
+        ),
+        // Gradiente inferior para dar profundidade
+        Positioned(
+          bottom: 0,
+          left: 0,
+          right: 0,
+          child: Container(
+            height: 80,
+            decoration: BoxDecoration(
+              borderRadius: const BorderRadius.vertical(
+                bottom: Radius.circular(20),
+              ),
+              gradient: LinearGradient(
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
+                colors: [
+                  Colors.transparent,
+                  Colors.black.withValues(alpha: 0.7),
+                ],
+              ),
+            ),
+          ),
+        ),
+        // Badge de status no canto superior direito
+        Positioned(
+          top: 12,
+          right: 12,
+          child: Container(
+            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+            decoration: BoxDecoration(
+              color: statusColor.withValues(alpha: 0.9),
+              borderRadius: BorderRadius.circular(20),
+              boxShadow: [
+                BoxShadow(
+                  color: statusColor.withValues(alpha: 0.4),
+                  blurRadius: 8,
+                  offset: const Offset(0, 2),
+                ),
+              ],
+            ),
+            child: Text(
+              statusLabel,
+              style: const TextStyle(
+                color: Colors.white,
+                fontWeight: FontWeight.bold,
+                fontSize: 13,
+              ),
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  // ---------- Card de status redesenhado ----------
+  Widget _buildStatusCard(
+    BuildContext context, {
+    required bool isDefeated,
+    required Map<String, dynamic> stats,
+  }) {
+    final int workouts = stats['workouts'] as int;
+    final int goal = stats['goal'] as int;
+    final int remaining = goal - workouts;
+
+    final cardColor = isDefeated
+        ? Theme.of(context).colorScheme.onErrorContainer.withValues(alpha: 0.6)
+        : Colors.green.shade900.withValues(alpha: 0.25);
+
+    final borderColor = isDefeated
+        ? Theme.of(context).colorScheme.error.withValues(alpha: 0.4)
+        : Colors.green.shade600.withValues(alpha: 0.5);
+
+    final accentColor = isDefeated
+        ? Theme.of(context).colorScheme.error
+        : Colors.green.shade400;
+
+    final quoteText = isDefeated
+        ? '"Eu nunca vou perder novamente."'
+        : '"Não importa o que aconteça, eu nunca vou perder novamente."';
+
+    final titleText =
+        isDefeated ? 'Zoro está derrotado...' : 'Zoro está orgulhoso!';
+
+    return Container(
+      padding: const EdgeInsets.all(20),
+      decoration: BoxDecoration(
+        color: cardColor,
+        borderRadius: BorderRadius.circular(20),
+        border: Border.all(color: borderColor),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            titleText,
+                  style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                    fontWeight: FontWeight.bold,
+                  color: accentColor,
+                ),
+          ),
+
+          const SizedBox(height: 10),
+          // Citação em itálico
+          Text(
+            quoteText,
+            style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                  color: accentColor,
+                  fontStyle: FontStyle.italic,
+                ),
+          ),
+          const SizedBox(height: 16),
+          // Progresso mini (mini barra) + stat rápido
+          Row(
+            children: [
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      isDefeated
+                          ? 'Faltam $remaining treino${remaining == 1 ? '' : 's'} esta semana'
+                          : 'Meta semanal concluída! 🎯',
+                      style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                            fontWeight: FontWeight.w600,
+                          ),
+                    ),
+                    const SizedBox(height: 6),
+                    LinearProgressIndicator(
+                      value: goal > 0 ? (workouts / goal).clamp(0.0, 1.0) : 0.0,
+                      minHeight: 6,
+                      borderRadius: BorderRadius.circular(3),
+                      backgroundColor:
+                          Theme.of(context).colorScheme.surfaceContainerHighest,
+                      valueColor: AlwaysStoppedAnimation<Color>(accentColor),
+                    ),
+                    const SizedBox(height: 4),
+                    Text(
+                      '$workouts / $goal dias',
+                      style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                            color: Theme.of(context)
+                                .colorScheme
+                                .onSurface
+                                .withValues(alpha: 0.6),
+                          ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+
+  // ---------- Cálculo de dias da semana ----------
+  Map<String, dynamic> _getWorkoutStats() {
+    final int goal = currentAssessment!.workoutDaysGoal ?? 0;
+    final List<int> workoutDays = currentAssessment!.workoutDays ?? [];
+
     final now = DateTime.now();
     final startOfWeek = now.subtract(Duration(days: now.weekday - 1));
-    int workoutDaysThisWeek = 0;
-    
-    if (now.month == currentAssessment!.createdAt.month && 
+    int workoutsThisWeek = 0;
+
+    if (now.month == currentAssessment!.createdAt.month &&
         now.year == currentAssessment!.createdAt.year) {
-      
       for (int i = 0; i < 7; i++) {
         final weekDay = startOfWeek.add(Duration(days: i));
         if (weekDay.isBefore(now.add(const Duration(days: 1))) &&
-            currentAssessment!.workoutDays != null &&
-            currentAssessment!.workoutDays!.contains(weekDay.day)) {
-          workoutDaysThisWeek++;
+            workoutDays.contains(weekDay.day)) {
+          workoutsThisWeek++;
         }
       }
     }
-    
-    return workoutDaysThisWeek < currentAssessment!.workoutDaysGoal!;
+
+    return {
+      'workouts': workoutsThisWeek,
+      'goal': goal,
+    };
   }
 }
