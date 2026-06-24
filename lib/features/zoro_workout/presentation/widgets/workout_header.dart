@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:opfan/core/models/workout_assessment_model.dart';
-
+import 'package:opfan/l10n/app_localizations.dart';
 class WorkoutHeader extends StatelessWidget {
   final WorkoutAssessmentModel? currentAssessment;
 
@@ -49,7 +49,7 @@ class WorkoutHeader extends StatelessWidget {
     final statusColor = isDefeated
         ? Theme.of(context).colorScheme.error
         : Colors.green.shade500;
-    final statusLabel = isDefeated ? 'Derrotado' : 'Na Meta!';
+    final statusLabel = isDefeated ? AppLocalizations.of(context)!.workoutStatusDefeated : AppLocalizations.of(context)!.workoutStatusOnTarget;
 
     return Stack(
       children: [
@@ -142,11 +142,11 @@ class WorkoutHeader extends StatelessWidget {
         : Colors.green.shade400;
 
     final quoteText = isDefeated
-        ? '"Eu nunca vou perder novamente."'
-        : '"Não importa o que aconteça, eu nunca vou perder novamente."';
+        ? AppLocalizations.of(context)!.zoroQuoteDefeated
+        : AppLocalizations.of(context)!.zoroQuoteProud;
 
     final titleText =
-        isDefeated ? 'Zoro está derrotado...' : 'Zoro está orgulhoso!';
+        isDefeated ? AppLocalizations.of(context)!.zoroStatusDefeated : AppLocalizations.of(context)!.zoroStatusProud;
 
     return Container(
       padding: const EdgeInsets.all(20),
@@ -176,7 +176,6 @@ class WorkoutHeader extends StatelessWidget {
                 ),
           ),
           const SizedBox(height: 16),
-          // Progresso mini (mini barra) + stat rápido
           Row(
             children: [
               Expanded(
@@ -185,8 +184,8 @@ class WorkoutHeader extends StatelessWidget {
                   children: [
                     Text(
                       isDefeated
-                          ? 'Faltam $remaining treino${remaining == 1 ? '' : 's'} esta semana'
-                          : 'Meta semanal concluída! 🎯',
+                          ? AppLocalizations.of(context)!.workoutsRemaining(remaining)
+                          : AppLocalizations.of(context)!.weeklyGoalCompleted,
                       style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                             fontWeight: FontWeight.w600,
                           ),
@@ -202,7 +201,7 @@ class WorkoutHeader extends StatelessWidget {
                     ),
                     const SizedBox(height: 4),
                     Text(
-                      '$workouts / $goal dias',
+                      AppLocalizations.of(context)!.workoutDaysCount(workouts, goal),
                       style: Theme.of(context).textTheme.bodySmall?.copyWith(
                             color: Theme.of(context)
                                 .colorScheme

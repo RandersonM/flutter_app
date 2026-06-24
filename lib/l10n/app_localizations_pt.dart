@@ -78,7 +78,7 @@ class AppLocalizationsPt extends AppLocalizations {
   String get totalIncome => 'Renda Total';
 
   @override
-  String get expensesByCategory => 'Despesas por Categoria';
+  String get expensesByCategory => 'Gastos por categoria';
 
   @override
   String get historyLast6Months => 'Histórico dos Últimos 6 Meses';
@@ -1162,10 +1162,10 @@ class AppLocalizationsPt extends AppLocalizations {
   String get savingsHint => 'Quanto você guarda por mês?';
 
   @override
-  String get savingsPercentage => 'da Renda';
+  String get savingsPercentage => 'Percentual de Economia';
 
   @override
-  String get yearlySavings => 'Acumulado em 1 Ano';
+  String get yearlySavings => 'Economias Anuais';
 
   @override
   String get accumulatedSavings => 'Acumulado';
@@ -1780,7 +1780,7 @@ class AppLocalizationsPt extends AppLocalizations {
   String get timelineOfObjectives => 'Timeline de Objetivos';
 
   @override
-  String get seeAll => 'Ver Todos';
+  String get seeAll => 'Ver todos';
 
   @override
   String get noObjectivesCreated => 'Nenhum objetivo criado';
@@ -1894,4 +1894,609 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get enterAdditionalNotes => 'Digite anotações adicionais';
+
+  @override
+  String get onboardingBiologicalSex =>
+      'Por favor, selecione seu sexo biológico.';
+
+  @override
+  String get onboardingFillAllFields =>
+      'Por favor, preencha todos os campos obrigatórios.';
+
+  @override
+  String get male => 'Masculino';
+
+  @override
+  String get female => 'Feminino';
+
+  @override
+  String get recommendations => 'Recomendações';
+
+  @override
+  String get editPlan => 'Editar Plano';
+
+  @override
+  String get workoutPlanSaved => 'Plano de treino salvo com sucesso!';
+
+  @override
+  String get addSplit => 'Adicionar Split';
+
+  @override
+  String get splitNameHint => 'Nome do split (ex: Treino A)';
+
+  @override
+  String get exerciseHint => 'Exercício';
+
+  @override
+  String get setsRepsHint => '3x15';
+
+  @override
+  String get noAssessmentFound =>
+      'Nenhuma avaliação encontrada para o mês atual';
+
+  @override
+  String get addAction => 'Adicionar';
+
+  @override
+  String get selectRace => 'Selecione a Raça';
+
+  @override
+  String get styleName => 'Nome do Estilo';
+
+  @override
+  String get fightingType => 'Tipo de Luta';
+
+  @override
+  String get addWeapon => 'Adicionar Arma';
+
+  @override
+  String get addAttack => 'Adicionar Ataque';
+
+  @override
+  String get threeSwordsStyleHint => 'Ex: Estilo das Três Espadas';
+
+  @override
+  String get englishLang => 'English';
+
+  @override
+  String get portugueseLang => 'Português';
+
+  @override
+  String get bodyComposition => 'Composição Corporal';
+
+  @override
+  String get bodyData => 'Dados Corporais';
+
+  @override
+  String get createFirstGoal => 'Criar Primeiro Objetivo';
+
+  @override
+  String get cancelAction => 'Cancelar';
+
+  @override
+  String get saveAction => 'Salvar';
+
+  @override
+  String get clearAction => 'Limpar';
+
+  @override
+  String get updateBodyComposition => 'Atualizar Composição Corporal';
+
+  @override
+  String get tryAgainAction => 'Tentar novamente';
+
+  @override
+  String get foodExampleHint => 'Ex: frango, arroz, cebola...';
+
+  @override
+  String get mealType => 'Tipo de Refeição';
+
+  @override
+  String get dietaryRestrictions => 'Restrições Alimentares';
+
+  @override
+  String get noIncomeRegistered => 'Nenhuma receita registrada';
+
+  @override
+  String get setupFinances => 'Configurar finanças';
+
+  @override
+  String get viewDetails => 'Ver Detalhes';
+
+  @override
+  String get editData => 'Editar dados';
+
+  @override
+  String get monthBalance => 'Balanço do Mês';
+
+  @override
+  String get incomes => 'Receitas';
+
+  @override
+  String get reserves => 'Reserva';
+
+  @override
+  String get categories => 'Categorias';
+
+  @override
+  String get promptPirateFlag =>
+      'Digite um prompt para gerar a bandeira pirata';
+
+  @override
+  String get flagGeneratedSuccess => 'Bandeira pirata gerada com sucesso!';
+
+  @override
+  String get promptShip => 'Digite um prompt para gerar o barco';
+
+  @override
+  String get shipGeneratedSuccess => 'Barco gerado com sucesso!';
+
+  @override
+  String get createCrewTitle => 'Criar Tripulação';
+
+  @override
+  String get crewCreatedSuccess => 'Tripulação criada com sucesso!';
+
+  @override
+  String get crewTagsHint => 'Ex: Piratas, Aventureiros, etc.';
+
+  @override
+  String get crewNameRequired => 'Nome da Tripulação *';
+
+  @override
+  String get crewDescriptionHint => 'Conte um pouco sobre sua tripulação...';
+
+  @override
+  String get shipNameLabel => 'Nome do Barco';
+
+  @override
+  String get pirateFlagLabel => 'Bandeira Pirata';
+
+  @override
+  String get crewShipLabel => 'Barco da Tripulação';
+
+  @override
+  String get tagNameLabel => 'Nome da tag';
+
+  @override
+  String get customCrewHint => 'Ex: Mugiwaras Custom';
+
+  @override
+  String get merryShipHint => 'Ex: Going Merry';
+
+  @override
+  String get goHomeAction => 'Voltar ao Início';
+
+  @override
+  String get aiGeneratedImage => 'Imagem Gerada por IA';
+
+  @override
+  String get monthlyReportFinances => '💰 Relatório Mensal - Nami Finances';
+
+  @override
+  String get zoroWorkoutNotif => '⚔️ Treino do Zoro';
+
+  @override
+  String get sanjiTipNotif => '👨‍🍳 Dica do Sanji';
+
+  @override
+  String get featuredCharacterNotif => '🏴‍☠️ Personagem em Destaque';
+
+  @override
+  String get financialTipNotif => '💰 Dica Financeira';
+
+  @override
+  String get characterDuelNotif => '🎯 Duelo de Personagens';
+
+  @override
+  String get checkingAuthStatus => 'Verificando status de autenticação...';
+
+  @override
+  String get signingInAuth => 'Entrando...';
+
+  @override
+  String get signingOutAuth => 'Saindo...';
+
+  @override
+  String get createWorkoutPlan => 'Criar Plano de Treino';
+
+  @override
+  String get createCustomPlanTap => 'Toque para criar seu plano personalizado';
+
+  @override
+  String get defaultWorkoutName => 'Treino';
+
+  @override
+  String get todayWorkoutCompleted => 'Treino de Hoje (Concluído)';
+
+  @override
+  String get todayWorkout => 'Treino de Hoje';
+
+  @override
+  String exerciseCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count exercícios',
+      one: '1 exercício',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get completedWithCheck => '✅ Concluído';
+
+  @override
+  String get today => 'Hoje';
+
+  @override
+  String get noExercisesInSplit => 'Nenhum exercício neste split.';
+
+  @override
+  String get viewProgress => 'Ver Progresso';
+
+  @override
+  String get startWorkout => 'Iniciar Treino';
+
+  @override
+  String get increaseProgressTitle => 'Aumentar Progresso';
+
+  @override
+  String get decreaseProgressTitle => 'Diminuir Progresso';
+
+  @override
+  String objectiveLabel(String title) {
+    return 'Objetivo: $title';
+  }
+
+  @override
+  String get currentProgressLabel => 'Progresso atual: ';
+
+  @override
+  String get newProgressLabel => 'Novo progresso: ';
+
+  @override
+  String get planUpdatesLabel => 'Atualizações sobre o plano:';
+
+  @override
+  String get progressIncreaseHint =>
+      'O que você fez para progredir? (ex: estudou 2 horas, completou exercícios...)';
+
+  @override
+  String get progressDecreaseHint =>
+      'Por que o progresso diminuiu? (ex: atraso, dificuldade encontrada...)';
+
+  @override
+  String get describeWhatHappened => 'Por favor, descreva o que aconteceu';
+
+  @override
+  String get increaseAction => 'Aumentar';
+
+  @override
+  String get decreaseAction => 'Diminuir';
+
+  @override
+  String get emptyTimelineSubtitle =>
+      'Comece criando seu primeiro objetivo para organizar suas metas de estudo e acompanhar seu progresso.';
+
+  @override
+  String get biologicalSexLabel => 'Sexo Biológico';
+
+  @override
+  String get objectiveTitle => 'Objetivo';
+
+  @override
+  String get activityLevelLabel => 'Nível de Atividade Física';
+
+  @override
+  String get circumferencesLabel => 'Circunferências';
+
+  @override
+  String get optionalLabel => 'Opcional';
+
+  @override
+  String get ageLabel => 'Idade';
+
+  @override
+  String get heightLabel => 'Altura';
+
+  @override
+  String get currentWeightLabel => 'Peso Atual';
+
+  @override
+  String get waistLabel => 'Cintura';
+
+  @override
+  String get chestLabel => 'Peito';
+
+  @override
+  String get armLabel => 'Braço';
+
+  @override
+  String get hipLabel => 'Quadril';
+
+  @override
+  String get thighLabel => 'Coxa';
+
+  @override
+  String get monthOverview => 'Visão geral do mês';
+
+  @override
+  String get balanceChart => 'Gráfico de balanço';
+
+  @override
+  String get incomesLabel => 'Receitas';
+
+  @override
+  String get expensesLabel => 'Despesas';
+
+  @override
+  String get reservesLabel => 'Reserva';
+
+  @override
+  String get totalReceived => 'Total recebido';
+
+  @override
+  String get totalSpent => 'Total gasto';
+
+  @override
+  String get noIncomesRegistered => 'Nenhuma receita registrada';
+
+  @override
+  String errorPrefix(String error) {
+    return 'Erro: $error';
+  }
+
+  @override
+  String errorGeneratingFlag(String error) {
+    return 'Erro ao gerar bandeira: $error';
+  }
+
+  @override
+  String errorGeneratingShip(String error) {
+    return 'Erro ao gerar barco: $error';
+  }
+
+  @override
+  String crewDeletedMessage(String name) {
+    return 'Tripulação \"$name\" excluída';
+  }
+
+  @override
+  String get averageBountyLabel => 'Bounty Média';
+
+  @override
+  String get rolesLabel => 'Funções';
+
+  @override
+  String get updateBodyCompositionLabel => 'Atualizar Composição Corporal';
+
+  @override
+  String linkLabel(String url) {
+    return 'Link: $url';
+  }
+
+  @override
+  String get saveLabel => 'Salvar';
+
+  @override
+  String get ageValidator => 'Insira sua idade';
+
+  @override
+  String get heightValidator => 'Insira sua altura';
+
+  @override
+  String get weightValidator => 'Insira seu peso';
+
+  @override
+  String get goalsAndMeasuresTitle => 'Metas & Medidas';
+
+  @override
+  String get goalsAndMeasuresSubtitle =>
+      'Defina seu objetivo e adicione medidas para rastrear seu progresso com Sanji & Zoro.';
+
+  @override
+  String get goalLoseWeight => 'Emagrecer';
+
+  @override
+  String get goalMaintain => 'Manter Peso';
+
+  @override
+  String get goalGainMuscle => 'Ganhar Massa';
+
+  @override
+  String get activitySedentary => 'Sedentário';
+
+  @override
+  String get activityLight => 'Leve';
+
+  @override
+  String get activityModerate => 'Moderado';
+
+  @override
+  String get activityIntense => 'Intenso';
+
+  @override
+  String get activityVeryIntense => 'Muito Intenso';
+
+  @override
+  String get expensesDetails => 'Detalhes dos Gastos';
+
+  @override
+  String get totalExpensesLabel => 'Total dos Gastos:';
+
+  @override
+  String get copyAction => 'Copiar';
+
+  @override
+  String get cookingTipsHint => 'Ex: frango, arroz, cebola...';
+
+  @override
+  String get todayCompleted => 'Hoje (concluído)';
+
+  @override
+  String get assessmentResultsTitle => 'Resultados da Avaliação';
+
+  @override
+  String get topRecommendationsTitle => 'Principais Recomendações';
+
+  @override
+  String get weekProgressTitle => 'Progresso da Semana';
+
+  @override
+  String get streakTitle => 'Ofensiva';
+
+  @override
+  String get thisMonthSuffix => 'este mês';
+
+  @override
+  String get daysSuffix => 'dias';
+
+  @override
+  String get doneTodayLabel => 'Feito hoje';
+
+  @override
+  String get pendingLabel => 'Pendente';
+
+  @override
+  String get onlyCurrentMonthEditAllowed =>
+      'Só é possível editar finanças do mês atual';
+
+  @override
+  String get saveWithNami => 'Economize com a Nami';
+
+  @override
+  String get configureYourFinances =>
+      'Configure suas finanças do mês e acompanhe\nseu progresso em tempo real.';
+
+  @override
+  String get incomeLabel => 'Renda';
+
+  @override
+  String get noExpensesRegistered => 'Nenhum gasto cadastrado';
+
+  @override
+  String get categoryFixed => 'Fixo';
+
+  @override
+  String get categoryFood => 'Alimentação';
+
+  @override
+  String get categoryTransport => 'Transporte';
+
+  @override
+  String get categoryEntertainment => 'Lazer';
+
+  @override
+  String get categoryHealth => 'Saúde';
+
+  @override
+  String get categoryOther => 'Outros';
+
+  @override
+  String get availableLabel => 'Disponível';
+
+  @override
+  String get savingsLabel => 'Economias';
+
+  @override
+  String get incomeDetailsTitle => 'Detalhes da Renda';
+
+  @override
+  String get savingsDetailsTitle => 'Detalhes das Economias';
+
+  @override
+  String get monthSavings => 'Economias do Mês';
+
+  @override
+  String get financialMetricsTitle => 'Métricas Financeiras';
+
+  @override
+  String get dailyAvailableAmount => 'Valor Diário Disponível';
+
+  @override
+  String get janAbbr => 'Jan';
+
+  @override
+  String get febAbbr => 'Fev';
+
+  @override
+  String get marAbbr => 'Mar';
+
+  @override
+  String get aprAbbr => 'Abr';
+
+  @override
+  String get mayAbbr => 'Mai';
+
+  @override
+  String get junAbbr => 'Jun';
+
+  @override
+  String get julAbbr => 'Jul';
+
+  @override
+  String get augAbbr => 'Ago';
+
+  @override
+  String get sepAbbr => 'Set';
+
+  @override
+  String get octAbbr => 'Out';
+
+  @override
+  String get novAbbr => 'Nov';
+
+  @override
+  String get decAbbr => 'Dez';
+
+  @override
+  String get availableBalance => 'Saldo Disponível';
+
+  @override
+  String get currentMonthLabel => 'Mês Atual';
+
+  @override
+  String get yesLabel => 'Sim';
+
+  @override
+  String get noLabel => 'Não';
+
+  @override
+  String get workoutStatusDefeated => 'Derrotado';
+
+  @override
+  String get workoutStatusOnTarget => 'Na Meta!';
+
+  @override
+  String get zoroQuoteDefeated => '\"Eu nunca vou perder novamente.\"';
+
+  @override
+  String get zoroQuoteProud =>
+      '\"Não importa o que aconteça, eu nunca vou perder novamente.\"';
+
+  @override
+  String get zoroStatusDefeated => 'Zoro está derrotado...';
+
+  @override
+  String get zoroStatusProud => 'Zoro está orgulhoso!';
+
+  @override
+  String workoutsRemaining(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Faltam $count treinos esta semana',
+      one: 'Falta 1 treino esta semana',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get weeklyGoalCompleted => 'Meta semanal concluída! 🎯';
+
+  @override
+  String workoutDaysCount(int done, int total) {
+    return '$done / $total dias';
+  }
 }

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:opfan/l10n/app_localizations.dart';
 
 class AllRecommendationsScreen extends StatelessWidget {
   final List<Map<String, dynamic>> exercises;
@@ -9,7 +10,7 @@ class AllRecommendationsScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Recomendações'),
+        title: Text(AppLocalizations.of(context)!.recommendations),
         centerTitle: true,
       ),
       body: ListView.separated(

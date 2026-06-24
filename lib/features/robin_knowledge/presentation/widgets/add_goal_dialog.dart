@@ -239,12 +239,12 @@ class _AddGoalDialogState extends State<AddGoalDialog> {
             style: OutlinedButton.styleFrom(
               foregroundColor: Theme.of(context).colorScheme.onSurface,
             ),
-            child: const Text('Cancelar'),
+            child: Text(AppLocalizations.of(context)!.cancelAction),
           ),
           const SizedBox(width: 8),
           ElevatedButton(
             onPressed: _saveGoal,
-            child: const Text('Salvar'),
+            child: Text(AppLocalizations.of(context)!.saveAction),
           ),
         ],
       ),

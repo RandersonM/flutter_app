@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:opfan/core/models/workout_assessment_model.dart';
 import 'package:opfan/core/models/workout_plan_model.dart';
+import 'package:opfan/l10n/app_localizations.dart';
 
 /// Resolves which workout split to show for today based on a rotation
 /// algorithm:  split_index = (total workouts done so far) % splits.length
@@ -56,10 +57,10 @@ class WorkoutPlanResolver {
   }
 
   /// Returns a human-readable label for when the split is scheduled.
-  static String resolveScheduleLabel(WorkoutAssessmentModel? assessment) {
+  static String resolveScheduleLabel(WorkoutAssessmentModel? assessment, AppLocalizations loc) {
     if (assessment == null) return '';
     final done = isTodayWorkoutDone(assessment);
-    return done ? 'Hoje (concluído)' : 'Hoje';
+    return done ? loc.todayCompleted : loc.today;
   }
 
   static void debugLog(WorkoutAssessmentModel? assessment) {

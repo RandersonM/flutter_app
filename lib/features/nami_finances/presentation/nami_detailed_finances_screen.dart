@@ -185,7 +185,7 @@ class _NamiDetailedFinancesScreenState extends State<NamiDetailedFinancesScreen>
             children: [
               Expanded(
                 child: _buildOverviewItem(
-                  'Economias',
+                  AppLocalizations.of(context)!.savingsLabel,
                   finances.savings,
                   Icons.savings,
                   AppColors.blue[500]!,
@@ -193,7 +193,7 @@ class _NamiDetailedFinancesScreenState extends State<NamiDetailedFinancesScreen>
               ),
               Expanded(
                 child: _buildOverviewItem(
-                  'Disponível',
+                  AppLocalizations.of(context)!.availableLabel,
                   finances.availableAmount,
                   Icons.account_balance,
                   AppColors.orange[500]!,
@@ -251,7 +251,7 @@ class _NamiDetailedFinancesScreenState extends State<NamiDetailedFinancesScreen>
                 Icon(Icons.account_balance_wallet, color: AppColors.green[500]!),
                 const SizedBox(width: Constants.margin),
                 Text(
-                  'Detalhes da Renda',
+                  AppLocalizations.of(context)!.incomeDetailsTitle,
                   style: TextTheme.of(context).titleMedium?.copyWith(
                     fontWeight: FontWeight.bold,
                   ),
@@ -262,9 +262,9 @@ class _NamiDetailedFinancesScreenState extends State<NamiDetailedFinancesScreen>
             if (finances.monthlyIncomes.isNotEmpty)
               ...finances.monthlyIncomes.map((income) => _buildIncomeItem(income)).toList()
             else
-              const Padding(
-                padding: EdgeInsets.all(Constants.margin),
-                child: Text('Nenhuma receita registrada'),
+              Padding(
+                padding: const EdgeInsets.all(Constants.margin),
+                child: Text(AppLocalizations.of(context)!.noIncomesRegistered),
               ),
             const SizedBox(height: Constants.margin),
             Container(
@@ -338,7 +338,7 @@ class _NamiDetailedFinancesScreenState extends State<NamiDetailedFinancesScreen>
                 Icon(Icons.shopping_cart, color: Theme.of(context).colorScheme.error),
                 const SizedBox(width: Constants.margin),
                 Text(
-                  'Detalhes dos Gastos',
+                  AppLocalizations.of(context)!.expensesDetails,
                   style: TextTheme.of(context).titleMedium?.copyWith(
                     fontWeight: FontWeight.bold,
                   ),
@@ -371,7 +371,7 @@ class _NamiDetailedFinancesScreenState extends State<NamiDetailedFinancesScreen>
                         ),
                         const SizedBox(width: Constants.margin),
                         Text(
-                          'Total dos Gastos:',
+                          AppLocalizations.of(context)!.totalExpensesLabel,
                           style: TextTheme.of(context).titleMedium?.copyWith(
                             fontWeight: FontWeight.bold,
                             color: Theme.of(context).colorScheme.error,
@@ -410,7 +410,7 @@ class _NamiDetailedFinancesScreenState extends State<NamiDetailedFinancesScreen>
                     ),
                     const SizedBox(width: Constants.margin),
                     Text(
-                      'Nenhuma despesa registrada',
+                      AppLocalizations.of(context)!.noExpensesRegistered,
                       style: TextTheme.of(context).bodyMedium?.copyWith(
                         color: AppColors.grey[600] ?? Colors.grey[600]!,
                       ),
@@ -552,7 +552,7 @@ class _NamiDetailedFinancesScreenState extends State<NamiDetailedFinancesScreen>
                 Icon(Icons.savings, color: AppColors.blue[500]!),
                 const SizedBox(width: Constants.margin),
                 Text(
-                  'Detalhes das Economias',
+                  AppLocalizations.of(context)!.savingsDetailsTitle,
                   style: TextTheme.of(context).titleMedium?.copyWith(
                     fontWeight: FontWeight.bold,
                   ),
@@ -561,9 +561,9 @@ class _NamiDetailedFinancesScreenState extends State<NamiDetailedFinancesScreen>
             ),
             const SizedBox(height: Constants.margin),
             const SizedBox(height: Constants.margin),
-            _buildSavingsMetric('Economias do Mês', finances.savings, AppColors.blue[500]!),
-            _buildSavingsMetric('Percentual de Economia', finances.savingsPercentage, AppColors.green[500]!),
-            _buildSavingsMetric('Economias Anuais', finances.yearlySavings, Theme.of(context).colorScheme.primary),
+            _buildSavingsMetric(AppLocalizations.of(context)!.monthSavings, finances.savings, AppColors.blue[500]!),
+            _buildSavingsMetric(AppLocalizations.of(context)!.savingsPercentage, finances.savingsPercentage, AppColors.green[500]!),
+            _buildSavingsMetric(AppLocalizations.of(context)!.yearlySavings, finances.yearlySavings, Theme.of(context).colorScheme.primary),
           ],
         ),
       ),
@@ -581,7 +581,7 @@ class _NamiDetailedFinancesScreenState extends State<NamiDetailedFinancesScreen>
             style: TextTheme.of(context).bodyMedium,
           ),
           Text(
-            label.contains('Percentual') 
+            label == AppLocalizations.of(context)!.savingsPercentage 
                 ? '${value.toStringAsFixed(1)}%'
                 : 'R\$ ${value.toStringAsFixed(2)}',
             style: TextTheme.of(context).bodyMedium?.copyWith(
@@ -607,7 +607,7 @@ class _NamiDetailedFinancesScreenState extends State<NamiDetailedFinancesScreen>
                 Icon(Icons.analytics, color: AppColors.orange[500]!),
                 const SizedBox(width: Constants.margin),
                 Text(
-                  'Métricas Financeiras',
+                  AppLocalizations.of(context)!.financialMetricsTitle,
                   style: TextTheme.of(context).titleMedium?.copyWith(
                     fontWeight: FontWeight.bold,
                   ),
@@ -616,9 +616,9 @@ class _NamiDetailedFinancesScreenState extends State<NamiDetailedFinancesScreen>
             ),
             const SizedBox(height: Constants.margin),
             const SizedBox(height: Constants.margin),
-            _buildMetricItem('Valor Diário Disponível', finances.dailyAmount, Icons.today),
-            _buildMetricItem('Saldo Disponível', finances.availableAmount, Icons.account_balance),
-            _buildMetricItem('Mês Atual', finances.isCurrentMonth ? 'Sim' : 'Não', Icons.calendar_month),
+            _buildMetricItem(AppLocalizations.of(context)!.dailyAvailableAmount, finances.dailyAmount, Icons.today),
+            _buildMetricItem(AppLocalizations.of(context)!.availableBalance, finances.availableAmount, Icons.account_balance),
+            _buildMetricItem(AppLocalizations.of(context)!.currentMonthLabel, finances.isCurrentMonth ? AppLocalizations.of(context)!.yesLabel : AppLocalizations.of(context)!.noLabel, Icons.calendar_month),
           ],
         ),
       ),
@@ -673,7 +673,7 @@ class _NamiDetailedFinancesScreenState extends State<NamiDetailedFinancesScreen>
           const SizedBox(height: Constants.margin * 2),
           ElevatedButton(
             onPressed: () => context.read<NamiFinancesBloc>().add(LoadFinances(_selectedMonth)),
-            child: const Text('Tentar Novamente'),
+            child: Text(AppLocalizations.of(context)!.tryAgain),
           ),
         ],
       ),
@@ -708,7 +708,7 @@ class _NamiDetailedFinancesScreenState extends State<NamiDetailedFinancesScreen>
           const SizedBox(height: Constants.margin * 2),
           ElevatedButton(
             onPressed: () => context.read<NamiFinancesBloc>().add(LoadFinances(_selectedMonth)),
-            child: const Text('Tentar Novamente'),
+            child: Text(AppLocalizations.of(context)!.tryAgain),
           ),
         ],
       ),

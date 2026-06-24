@@ -36,7 +36,7 @@ class WorkoutResults extends StatelessWidget {
         _buildNextWorkout(context),
         const SizedBox(height: Constants.margin * 2),
         Text(
-          'Assessment Results',
+          AppLocalizations.of(context)!.assessmentResultsTitle,
           style: Theme.of(context).textTheme.titleLarge?.copyWith(
                 fontWeight: FontWeight.bold,
               ),
@@ -48,7 +48,7 @@ class WorkoutResults extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Text(
-              'Top Recommendations',
+              AppLocalizations.of(context)!.topRecommendationsTitle,
               style: Theme.of(context).textTheme.titleLarge?.copyWith(
                     fontWeight: FontWeight.bold,
                   ),
@@ -62,7 +62,7 @@ class WorkoutResults extends StatelessWidget {
                   ),
                 ),
               ),
-              child: const Text('See all'),
+              child: Text(AppLocalizations.of(context)!.seeAll),
             ),
           ],
         ),
@@ -137,7 +137,7 @@ class WorkoutResults extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  'Week Progress',
+                  AppLocalizations.of(context)!.weekProgressTitle,
                   style: Theme.of(context).textTheme.titleMedium?.copyWith(
                         fontWeight: FontWeight.bold,
                       ),
@@ -195,14 +195,14 @@ class WorkoutResults extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Text(
-                  'Streak',
+                  AppLocalizations.of(context)!.streakTitle,
                   style: Theme.of(context).textTheme.titleSmall?.copyWith(
                         fontWeight: FontWeight.bold,
                       ),
                 ),
                 const SizedBox(height: 4),
                 Text(
-                  'este mês',
+                  AppLocalizations.of(context)!.thisMonthSuffix,
                   style: Theme.of(context).textTheme.bodySmall?.copyWith(
                         color: Theme.of(context)
                             .colorScheme
@@ -226,7 +226,7 @@ class WorkoutResults extends StatelessWidget {
                   ],
                 ),
                 Text(
-                  'dias',
+                  AppLocalizations.of(context)!.daysSuffix,
                   style: Theme.of(context).textTheme.bodySmall?.copyWith(
                         color: Colors.orange.withValues(alpha: 0.8),
                         fontWeight: FontWeight.w600,
@@ -283,11 +283,11 @@ class WorkoutResults extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text('Criar Plano de Treino',
+                    Text(AppLocalizations.of(context)!.createWorkoutPlan,
                         style: Theme.of(context).textTheme.titleMedium?.copyWith(
                             fontWeight: FontWeight.bold, color: primary)),
                     const SizedBox(height: 2),
-                    Text('Toque para criar seu plano personalizado',
+                    Text(AppLocalizations.of(context)!.createCustomPlanTap,
                         style: Theme.of(context).textTheme.bodySmall?.copyWith(
                             color: Theme.of(context)
                                 .colorScheme
@@ -304,7 +304,7 @@ class WorkoutResults extends StatelessWidget {
     }
 
     final exercises = split?.exercises ?? [];
-    final splitName = split?.name ?? 'Treino';
+    final splitName = split?.name ?? AppLocalizations.of(context)!.defaultWorkoutName;
     final preview = exercises.take(3).map((e) => e.name).join(', ');
 
     return GestureDetector(
@@ -337,7 +337,7 @@ class WorkoutResults extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(isDone ? 'Treino de Hoje (Concluído)' : 'Treino de Hoje',
+                  Text(isDone ? AppLocalizations.of(context)!.todayWorkoutCompleted : AppLocalizations.of(context)!.todayWorkout,
                       style: Theme.of(context).textTheme.bodySmall?.copyWith(
                           color: Theme.of(context)
                               .colorScheme
@@ -350,7 +350,7 @@ class WorkoutResults extends StatelessWidget {
                           .titleMedium
                           ?.copyWith(fontWeight: FontWeight.bold)),
                   const SizedBox(height: 4),
-                  Text('${exercises.length} exercícios • $preview',
+                  Text('${AppLocalizations.of(context)!.exerciseCount(exercises.length)} • $preview',
                       style: Theme.of(context).textTheme.bodySmall,
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis),
@@ -403,7 +403,7 @@ class WorkoutResults extends StatelessWidget {
       children: [
         _buildMetricBar(
           context,
-          'Health Score',
+          AppLocalizations.of(context)!.workout_health_score,
           '${healthScore.toStringAsFixed(0)} / 100',
           _getHealthCategory(context, healthScore),
           healthScore / 100,
@@ -411,7 +411,7 @@ class WorkoutResults extends StatelessWidget {
         ),
         _buildMetricBar(
           context,
-          'BMI',
+          AppLocalizations.of(context)!.workout_bmi,
           bmi.toStringAsFixed(1),
           _getBMICategory(context, bmi),
           (bmi - 15) / 25,
@@ -419,7 +419,7 @@ class WorkoutResults extends StatelessWidget {
         ),
         _buildMetricBar(
           context,
-          'Body Fat',
+          AppLocalizations.of(context)!.workout_body_fat,
           '${bodyFat.toStringAsFixed(1)}%',
           _getBodyFatCategory(context, bodyFat, gender),
           bodyFat / 40,
@@ -609,7 +609,7 @@ class _NextWorkoutModal extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final exercises = split?.exercises ?? [];
-    final splitName = split?.name ?? 'Treino';
+    final splitName = split?.name ?? AppLocalizations.of(context)!.defaultWorkoutName;
 
     return DraggableScrollableSheet(
       initialChildSize: 0.75,
@@ -661,7 +661,7 @@ class _NextWorkoutModal extends StatelessWidget {
                           Text(splitName,
                               style: Theme.of(context).textTheme.titleLarge?.copyWith(
                                   fontWeight: FontWeight.bold)),
-                          Text('${exercises.length} exercícios',
+                          Text(AppLocalizations.of(context)!.exerciseCount(exercises.length),
                               style: Theme.of(context).textTheme.bodySmall?.copyWith(
                                   color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.6))),
                         ],
@@ -676,7 +676,7 @@ class _NextWorkoutModal extends StatelessWidget {
                             : primaryColor.withValues(alpha: 0.12),
                         borderRadius: BorderRadius.circular(20),
                       ),
-                      child: Text(isDone ? '✅ Concluído' : 'Hoje',
+                      child: Text(isDone ? AppLocalizations.of(context)!.completedWithCheck : AppLocalizations.of(context)!.today,
                           style: TextStyle(
                             color: isDone ? Colors.green.shade400 : primaryColor,
                             fontWeight: FontWeight.bold, fontSize: 12,
@@ -690,11 +690,11 @@ class _NextWorkoutModal extends StatelessWidget {
                 padding: const EdgeInsets.symmetric(horizontal: 20),
                 child: Row(
                   children: [
-                    _InfoChip(icon: Icons.loop, label: '${exercises.length} exercícios', primaryColor: primaryColor),
+                    _InfoChip(icon: Icons.loop, label: AppLocalizations.of(context)!.exerciseCount(exercises.length), primaryColor: primaryColor),
                     const SizedBox(width: 8),
                     _InfoChip(
                         icon: isDone ? Icons.check : Icons.radio_button_unchecked,
-                        label: isDone ? 'Feito hoje' : 'Pendente',
+                        label: isDone ? AppLocalizations.of(context)!.doneTodayLabel : AppLocalizations.of(context)!.pendingLabel,
                         primaryColor: isDone ? Colors.green.shade400 : primaryColor),
                   ],
                 ),
@@ -706,7 +706,7 @@ class _NextWorkoutModal extends StatelessWidget {
               Expanded(
                 child: exercises.isEmpty
                     ? Center(
-                        child: Text('Nenhum exercício neste split.',
+                        child: Text(AppLocalizations.of(context)!.noExercisesInSplit,
                             style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                                 color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.5))),
                       )
@@ -766,6 +766,7 @@ class _NextWorkoutModal extends StatelessWidget {
                 child: Row(
                   children: [
                     Expanded(
+                      flex: 1,
                       child: OutlinedButton.icon(
                         onPressed: () {
                           final bloc = context.read<ZoroWorkoutBloc>();
@@ -778,13 +779,13 @@ class _NextWorkoutModal extends StatelessWidget {
                           ));
                         },
                         icon: const Icon(Icons.edit_outlined, size: 16),
-                        label: const Text('Editar Plano'),
-                        style: OutlinedButton.styleFrom(padding: const EdgeInsets.symmetric(vertical: 14)),
+                        label: Text(AppLocalizations.of(context)!.editPlan),
+                        style: OutlinedButton.styleFrom(padding: const EdgeInsets.symmetric(vertical: 14, horizontal: 2)),
                       ),
                     ),
                     const SizedBox(width: 12),
                     Expanded(
-                      flex: 2,
+                      flex: 1,
                       child: ElevatedButton(
                         onPressed: () => Navigator.pop(context),
                         style: ElevatedButton.styleFrom(
@@ -793,7 +794,7 @@ class _NextWorkoutModal extends StatelessWidget {
                           padding: const EdgeInsets.symmetric(vertical: 14),
                           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
                         ),
-                        child: Text(isDone ? 'Ver Progresso' : 'Iniciar Treino',
+                        child: Text(isDone ? AppLocalizations.of(context)!.viewProgress : AppLocalizations.of(context)!.startWorkout,
                             style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 15)),
                       ),
                     ),

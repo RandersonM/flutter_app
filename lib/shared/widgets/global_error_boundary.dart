@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:opfan/l10n/app_localizations.dart';
 import 'package:opfan/shared/utils/app_routes.dart';
 
 class GlobalErrorBoundary extends StatefulWidget {
@@ -127,7 +128,7 @@ class _GlobalErrorBoundaryState extends State<GlobalErrorBoundary> {
                           });
                         },
                         icon: const Icon(Icons.refresh),
-                        label: const Text('Try Again'),
+                        label: Text(AppLocalizations.of(context)!.tryAgain),
                       ),
                       const SizedBox(height: 16),
                       ElevatedButton.icon(
@@ -147,7 +148,7 @@ class _GlobalErrorBoundaryState extends State<GlobalErrorBoundary> {
                           Navigator.pushNamedAndRemoveUntil(context, AppRoutes.home, (route) => false);
                         },
                         icon: const Icon(Icons.home),
-                        label: const Text('Go Home'),
+                        label: Text(AppLocalizations.of(context)!.goHomeAction),
                       ),
                     ],
                   ),

@@ -86,7 +86,7 @@ class _HeroBalanceCard extends StatelessWidget {
       child: Column(
         children: [
           Text(
-            'Economize com a Nami',
+            AppLocalizations.of(context)!.saveWithNami,
             style: Theme.of(context).textTheme.bodySmall?.copyWith(
                   color: Colors.white70,
                   letterSpacing: 0.5,
@@ -115,14 +115,14 @@ class _HeroBalanceCard extends StatelessWidget {
               _BalancePill(
                 icon: Icons.arrow_upward_rounded,
                 color: _successGreen,
-                label: 'Receitas',
+                label: AppLocalizations.of(context)!.incomesLabel,
                 value: finances.totalIncome,
               ),
               const SizedBox(width: Constants.margin * 2),
               _BalancePill(
                 icon: Icons.arrow_downward_rounded,
                 color: _errorRed,
-                label: 'Gastos',
+                label: AppLocalizations.of(context)!.expensesLabel,
                 value: finances.totalExpenses,
               ),
             ],
@@ -214,10 +214,10 @@ class _MonthlyBalanceDonutState extends State<_MonthlyBalanceDonut> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const _CardHeader(
+          _CardHeader(
             icon: Icons.donut_large_rounded,
             iconColor: _purple,
-            title: 'Balanço do Mês',
+            title: AppLocalizations.of(context)!.monthBalance,
           ),
           const SizedBox(height: Constants.margin * 2),
           SizedBox(
@@ -245,19 +245,19 @@ class _MonthlyBalanceDonutState extends State<_MonthlyBalanceDonut> {
                       centerSpaceRadius: 50,
                       sections: [
                         _buildSection(
-                          title: 'Receitas',
+                          title: AppLocalizations.of(context)!.incomesLabel,
                           value: incomePct,
                           color: _purple,
                           index: 0,
                         ),
                         _buildSection(
-                          title: 'Gastos',
+                          title: AppLocalizations.of(context)!.expensesLabel,
                           value: expensesPct,
                           color: _errorRed,
                           index: 1,
                         ),
                         _buildSection(
-                          title: 'Reserva',
+                          title: AppLocalizations.of(context)!.reservesLabel,
                           value: savingsPct,
                           color: _gold,
                           index: 2,
@@ -273,19 +273,19 @@ class _MonthlyBalanceDonutState extends State<_MonthlyBalanceDonut> {
                   children: [
                     _DonutLegend(
                       color: _purple,
-                      label: 'Receitas',
+                      label: AppLocalizations.of(context)!.incomesLabel,
                       value: 'R\$ ${income.toStringAsFixed(0)}',
                     ),
                     const SizedBox(height: 12),
                     _DonutLegend(
                       color: _errorRed,
-                      label: 'Gastos',
+                      label: AppLocalizations.of(context)!.expensesLabel,
                       value: 'R\$ ${expenses.toStringAsFixed(0)}',
                     ),
                     const SizedBox(height: 12),
                     _DonutLegend(
                       color: _gold,
-                      label: 'Reserva',
+                      label: AppLocalizations.of(context)!.reservesLabel,
                       value: 'R\$ ${savings.toStringAsFixed(0)}',
                     ),
                   ],
@@ -378,26 +378,26 @@ class _IncomesCard extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const _CardHeader(
+          _CardHeader(
             icon: Icons.account_balance_wallet_rounded,
             iconColor: _successGreen,
-            title: 'Receitas',
+            title: AppLocalizations.of(context)!.incomes,
           ),
           const SizedBox(height: Constants.margin),
           ...finances.monthlyIncomes.map(
             (income) => _FinanceLineItem(
               label: income.description.isNotEmpty
                   ? income.description
-                  : 'Renda',
+                  : AppLocalizations.of(context)!.incomeLabel,
               value: income.amount,
               valueColor: _successGreen,
             ),
           ),
           if (finances.monthlyIncomes.isEmpty)
-            const _EmptyListHint(text: 'Nenhuma renda cadastrada'),
+            _EmptyListHint(text: AppLocalizations.of(context)!.noIncomesRegistered),
           const SizedBox(height: Constants.margin),
           _TotalRow(
-            label: 'Total recebido',
+            label: AppLocalizations.of(context)!.totalReceived,
             value: finances.totalIncome,
             color: _successGreen,
           ),
@@ -420,26 +420,26 @@ class _ExpensesCard extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const _CardHeader(
+          _CardHeader(
             icon: Icons.payments_rounded,
             iconColor: _errorRed,
-            title: 'Gastos',
+            title: AppLocalizations.of(context)!.expenses,
           ),
           const SizedBox(height: Constants.margin),
           ...finances.expenses.map(
             (expense) => _FinanceLineItem(
               label: expense.description.isNotEmpty
                   ? expense.description
-                  : _categoryLabel(expense.category),
+                  : _categoryLabel(expense.category, context),
               value: expense.amount,
               valueColor: _errorRed,
             ),
           ),
           if (finances.expenses.isEmpty)
-            const _EmptyListHint(text: 'Nenhum gasto cadastrado'),
+            _EmptyListHint(text: AppLocalizations.of(context)!.noExpensesRegistered),
           const SizedBox(height: Constants.margin),
           _TotalRow(
-            label: 'Total gasto',
+            label: AppLocalizations.of(context)!.totalSpent,
             value: finances.totalExpenses,
             color: _errorRed,
           ),
@@ -448,20 +448,20 @@ class _ExpensesCard extends StatelessWidget {
     );
   }
 
-  String _categoryLabel(ExpenseCategory category) {
+  String _categoryLabel(ExpenseCategory category, BuildContext context) {
     switch (category) {
       case ExpenseCategory.fixed:
-        return 'Fixo';
+        return AppLocalizations.of(context)!.categoryFixed;
       case ExpenseCategory.food:
-        return 'Alimentação';
+        return AppLocalizations.of(context)!.categoryFood;
       case ExpenseCategory.transport:
-        return 'Transporte';
+        return AppLocalizations.of(context)!.categoryTransport;
       case ExpenseCategory.entertainment:
-        return 'Lazer';
+        return AppLocalizations.of(context)!.categoryEntertainment;
       case ExpenseCategory.health:
-        return 'Saúde';
+        return AppLocalizations.of(context)!.categoryHealth;
       case ExpenseCategory.other:
-        return 'Outros';
+        return AppLocalizations.of(context)!.categoryOther;
     }
   }
 }
@@ -483,10 +483,10 @@ class _SavingsGoalCard extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const _CardHeader(
+          _CardHeader(
             icon: Icons.savings_rounded,
             iconColor: _purple,
-            title: 'Reserva',
+            title: AppLocalizations.of(context)!.reserves,
           ),
           const SizedBox(height: Constants.margin),
           Text(
@@ -554,14 +554,22 @@ class _SpendingCategoriesCard extends StatelessWidget {
     ExpenseCategory.other: '📦',
   };
 
-  static const _categoryName = {
-    ExpenseCategory.fixed: 'Fixo',
-    ExpenseCategory.food: 'Alimentação',
-    ExpenseCategory.transport: 'Transporte',
-    ExpenseCategory.entertainment: 'Lazer',
-    ExpenseCategory.health: 'Saúde',
-    ExpenseCategory.other: 'Outros',
-  };
+  String _getCategoryName(ExpenseCategory category, BuildContext context) {
+    switch (category) {
+      case ExpenseCategory.fixed:
+        return AppLocalizations.of(context)!.categoryFixed;
+      case ExpenseCategory.food:
+        return AppLocalizations.of(context)!.categoryFood;
+      case ExpenseCategory.transport:
+        return AppLocalizations.of(context)!.categoryTransport;
+      case ExpenseCategory.entertainment:
+        return AppLocalizations.of(context)!.categoryEntertainment;
+      case ExpenseCategory.health:
+        return AppLocalizations.of(context)!.categoryHealth;
+      case ExpenseCategory.other:
+        return AppLocalizations.of(context)!.categoryOther;
+    }
+  }
 
   static const _categoryColor = {
     ExpenseCategory.fixed: Color(0xFFFC8181),
@@ -585,10 +593,10 @@ class _SpendingCategoriesCard extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const _CardHeader(
+          _CardHeader(
             icon: Icons.pie_chart_rounded,
             iconColor: _gold,
-            title: 'Categorias',
+            title: AppLocalizations.of(context)!.categories,
           ),
           const SizedBox(height: Constants.margin),
           ...categories.map((entry) {
@@ -597,7 +605,7 @@ class _SpendingCategoriesCard extends StatelessWidget {
               padding: const EdgeInsets.only(bottom: 12),
               child: _CategoryBar(
                 emoji: _categoryEmoji[entry.key] ?? '📦',
-                name: _categoryName[entry.key] ?? 'Outros',
+                name: _getCategoryName(entry.key, context),
                 color: _categoryColor[entry.key] ?? Colors.grey,
                 percentage: pct,
                 amount: entry.value,
@@ -694,7 +702,7 @@ class _DashboardActions extends StatelessWidget {
           child: OutlinedButton.icon(
             onPressed: onEdit,
             icon: const Icon(Icons.edit_rounded, size: 16),
-            label: const Text('Editar dados'),
+            label: Text(AppLocalizations.of(context)!.editData),
             style: OutlinedButton.styleFrom(
               foregroundColor: _purple,
               side: const BorderSide(color: _purple, width: 1),

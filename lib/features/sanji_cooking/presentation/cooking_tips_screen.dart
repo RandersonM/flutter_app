@@ -189,7 +189,7 @@ class _CookingTipsScreenState extends State<CookingTipsScreen> {
                                 child: TextField(
                                   controller: _ingredientController,
                                   decoration: InputDecoration(
-                                    hintText: 'Ex: frango, arroz, cebola...',
+                                    hintText: AppLocalizations.of(context)!.cookingTipsHint,
                                     border: OutlineInputBorder(
                                       borderRadius: BorderRadius.circular(8),
                                     ),
@@ -207,7 +207,7 @@ class _CookingTipsScreenState extends State<CookingTipsScreen> {
                                 style: ElevatedButton.styleFrom(
                                   padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
                                 ),
-                                child: const Text('Adicionar'),
+                                child: Text(localizations.addAction),
                               ),
                             ],
                           ),
@@ -268,7 +268,7 @@ class _CookingTipsScreenState extends State<CookingTipsScreen> {
                             DropdownButtonFormField<String>(
                               value: _mealType,
                               decoration: InputDecoration(
-                                labelText: 'Tipo de Refeição',
+                                labelText: localizations.mealType,
                                 border: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(8),
                                 ),
@@ -291,7 +291,7 @@ class _CookingTipsScreenState extends State<CookingTipsScreen> {
                             DropdownButtonFormField<String>(
                               value: _dietaryRestrictions,
                               decoration: InputDecoration(
-                                labelText: 'Restrições Alimentares',
+                                labelText: localizations.dietaryRestrictions,
                                 border: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(8),
                                 ),
@@ -346,7 +346,7 @@ class _CookingTipsScreenState extends State<CookingTipsScreen> {
                       OutlinedButton.icon(
                         onPressed: () => _clearAll(context),
                         icon: const Icon(Icons.clear),
-                        label: const Text('Limpar'),
+                        label: Text(localizations.clearAction),
                         style: OutlinedButton.styleFrom(
                           padding: const EdgeInsets.all(16),
                         ),

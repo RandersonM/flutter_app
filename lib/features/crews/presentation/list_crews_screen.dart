@@ -171,7 +171,7 @@ class _ListCrewsScreenContentState extends State<_ListCrewsScreenContent>
     
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
-        content: Text('Tripulação "${crew.name}" excluída'),
+        content: Text(AppLocalizations.of(context)!.crewDeletedMessage(crew.name)),
         backgroundColor: Colors.red,
         duration: const Duration(seconds: 2),
       ),

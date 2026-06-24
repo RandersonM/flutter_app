@@ -327,7 +327,7 @@ class _PlateGuideScreenState extends State<PlateGuideScreen> {
                 if (mounted) {
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(
-                      content: Text('Error: ${e.toString()}'),
+                      content: Text(AppLocalizations.of(context)!.errorPrefix(e.toString())),
                       backgroundColor: Colors.red,
                     ),
                   );

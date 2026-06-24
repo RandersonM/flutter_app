@@ -119,10 +119,10 @@ class _CharacterFightingStyleSectionState extends State<CharacterFightingStyleSe
             // Nome do estilo (opcional)
             TextFormField(
               controller: _nameController,
-              decoration: const InputDecoration(
-                labelText: 'Nome do Estilo',
-                hintText: 'Ex: Estilo das Três Espadas',
-                border: OutlineInputBorder(),
+              decoration: InputDecoration(
+                labelText: l10n.styleName,
+                hintText: l10n.threeSwordsStyleHint,
+                border: const OutlineInputBorder(),
               ),
               onChanged: (_) => _updateFightingStyle(),
             ),
@@ -131,9 +131,9 @@ class _CharacterFightingStyleSectionState extends State<CharacterFightingStyleSe
             // Tipo do estilo (obrigatório)
             DropdownButtonFormField<String>(
               value: _selectedType,
-              decoration: const InputDecoration(
-                labelText: 'Tipo de Luta',
-                border: OutlineInputBorder(),
+              decoration: InputDecoration(
+                labelText: l10n.fightingType,
+                border: const OutlineInputBorder(),
               ),
               items: CharacterLocalizationMapper.getFightingTypes().map((type) {
                 return DropdownMenuItem(
@@ -171,9 +171,9 @@ class _CharacterFightingStyleSectionState extends State<CharacterFightingStyleSe
                 Expanded(
                   child: TextFormField(
                     controller: _weaponController,
-                    decoration: const InputDecoration(
-                      labelText: 'Adicionar Arma',
-                      border: OutlineInputBorder(),
+                    decoration: InputDecoration(
+                      labelText: l10n.addWeapon,
+                      border: const OutlineInputBorder(),
                     ),
                     onFieldSubmitted: (_) => _addWeapon(),
                   ),
@@ -216,9 +216,9 @@ class _CharacterFightingStyleSectionState extends State<CharacterFightingStyleSe
                 Expanded(
                   child: TextFormField(
                     controller: _attackController,
-                    decoration: const InputDecoration(
-                      labelText: 'Adicionar Ataque',
-                      border: OutlineInputBorder(),
+                    decoration: InputDecoration(
+                      labelText: l10n.addAttack,
+                      border: const OutlineInputBorder(),
                     ),
                     onFieldSubmitted: (_) => _addAttack(),
                   ),
@@ -226,7 +226,7 @@ class _CharacterFightingStyleSectionState extends State<CharacterFightingStyleSe
                 const SizedBox(width: Constants.margin),
                 ElevatedButton(
                   onPressed: _addAttack,
-                  child: const Text('Adicionar'),
+                  child: Text(l10n.addAction),
                 ),
               ],
             ),

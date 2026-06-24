@@ -108,12 +108,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
           if (user.isProfileComplete) ...[
             _buildSection(
               context,
-              title: 'Composição Corporal',
+              title: AppLocalizations.of(context)!.bodyComposition,
               items: [
                 _buildProfileItem(
                   context,
                   icon: Icons.fitness_center,
-                  title: 'Dados Corporais',
+                  title: AppLocalizations.of(context)!.bodyData,
                   subtitle: '${user.weightKg} kg • ${user.heightCm} cm • IMC: ${(user.weightKg! / ((user.heightCm! / 100) * (user.heightCm! / 100))).toStringAsFixed(1)}',
                   onTap: () {
                     Navigator.of(context).pushNamed(
@@ -182,12 +182,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       title: Text(AppLocalizations.of(context)!.language),
                       children: [
                         SimpleDialogOption(
-                          child: const Text('English'),
+                          child: Text(AppLocalizations.of(context)!.englishLang),
                           onPressed: () =>
                               Navigator.pop(context, const Locale('en')),
                         ),
                         SimpleDialogOption(
-                          child: const Text('Português'),
+                          child: Text(AppLocalizations.of(context)!.portugueseLang),
                           onPressed: () =>
                               Navigator.pop(context, const Locale('pt')),
                         ),

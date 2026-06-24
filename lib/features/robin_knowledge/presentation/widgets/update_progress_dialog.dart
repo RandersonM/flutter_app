@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:opfan/core/models/goal_model.dart';
 import 'package:opfan/shared/utils/theme.dart';
+import 'package:opfan/l10n/app_localizations.dart';
 
 class UpdateProgressDialog extends StatefulWidget {
   final GoalModel goal;
@@ -28,15 +29,16 @@ class _UpdateProgressDialogState extends State<UpdateProgressDialog> {
 
   @override
   Widget build(BuildContext context) {
-    final newProgress = (widget.goal.progress + widget.increment).clamp(0.0, 100.0);
+    final newProgress =
+        (widget.goal.progress + widget.increment).clamp(0.0, 100.0);
     final isIncrement = widget.increment > 0;
 
     return AlertDialog(
       title: Text(
-        isIncrement ? 'Aumentar Progresso' : 'Diminuir Progresso',
+        isIncrement ? AppLocalizations.of(context)!.increaseProgressTitle : AppLocalizations.of(context)!.decreaseProgressTitle,
         style: Theme.of(context).textTheme.titleLarge?.copyWith(
-          fontWeight: FontWeight.bold,
-        ),
+              fontWeight: FontWeight.bold,
+            ),
       ),
       content: Form(
         key: _formKey,
@@ -45,24 +47,24 @@ class _UpdateProgressDialogState extends State<UpdateProgressDialog> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              'Objetivo: ${widget.goal.title}',
+              AppLocalizations.of(context)!.objectiveLabel(widget.goal.title),
               style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                fontWeight: FontWeight.w500,
-              ),
+                    fontWeight: FontWeight.w500,
+                  ),
             ),
             const SizedBox(height: 16),
             Row(
               children: [
                 Text(
-                  'Progresso atual: ',
+                  AppLocalizations.of(context)!.currentProgressLabel,
                   style: Theme.of(context).textTheme.bodyMedium,
                 ),
                 Text(
                   '${widget.goal.progress.toStringAsFixed(1)}%',
                   style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                    fontWeight: FontWeight.bold,
-                    color: AppColors.purple[350],
-                  ),
+                        fontWeight: FontWeight.bold,
+                        color: AppColors.purple[350],
+                      ),
                 ),
               ],
             ),
@@ -70,15 +72,15 @@ class _UpdateProgressDialogState extends State<UpdateProgressDialog> {
             Row(
               children: [
                 Text(
-                  'Novo progresso: ',
+                  AppLocalizations.of(context)!.newProgressLabel,
                   style: Theme.of(context).textTheme.bodyMedium,
                 ),
                 Text(
                   '${newProgress.toStringAsFixed(1)}%',
                   style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                    fontWeight: FontWeight.bold,
-                    color: isIncrement ? Colors.green : Colors.orange,
-                  ),
+                        fontWeight: FontWeight.bold,
+                        color: isIncrement ? Colors.green : Colors.orange,
+                      ),
                 ),
                 const SizedBox(width: 8),
                 Icon(
@@ -90,19 +92,19 @@ class _UpdateProgressDialogState extends State<UpdateProgressDialog> {
             ),
             const SizedBox(height: 16),
             Text(
-              'Atualizações sobre o plano:',
+              AppLocalizations.of(context)!.planUpdatesLabel,
               style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                fontWeight: FontWeight.w500,
-              ),
+                    fontWeight: FontWeight.w500,
+                  ),
             ),
             const SizedBox(height: 8),
             TextFormField(
               controller: _notesController,
               maxLines: 3,
               decoration: InputDecoration(
-                hintText: isIncrement 
-                  ? 'O que você fez para progredir? (ex: estudou 2 horas, completou exercícios...)'
-                  : 'Por que o progresso diminuiu? (ex: atraso, dificuldade encontrada...)',
+                hintText: isIncrement
+                    ? AppLocalizations.of(context)!.progressIncreaseHint
+                    : AppLocalizations.of(context)!.progressDecreaseHint,
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(12),
                 ),
@@ -113,7 +115,7 @@ class _UpdateProgressDialogState extends State<UpdateProgressDialog> {
               ),
               validator: (value) {
                 if (value == null || value.trim().isEmpty) {
-                  return 'Por favor, descreva o que aconteceu';
+                  return AppLocalizations.of(context)!.describeWhatHappened;
                 }
                 return null;
               },
@@ -124,7 +126,7 @@ class _UpdateProgressDialogState extends State<UpdateProgressDialog> {
       actions: [
         TextButton(
           onPressed: () => Navigator.of(context).pop(),
-          child: const Text('Cancelar'),
+          child: Text(AppLocalizations.of(context)!.cancelAction),
         ),
         ElevatedButton(
           onPressed: () {
@@ -139,7 +141,7 @@ class _UpdateProgressDialogState extends State<UpdateProgressDialog> {
             backgroundColor: AppColors.purple[350],
             foregroundColor: Colors.white,
           ),
-          child: Text(isIncrement ? 'Aumentar' : 'Diminuir'),
+          child: Text(isIncrement ? AppLocalizations.of(context)!.increaseAction : AppLocalizations.of(context)!.decreaseAction),
         ),
       ],
     );

@@ -42,9 +42,9 @@ class CharacterRaceSection extends StatelessWidget {
             
             DropdownButtonFormField<String>(
               value: selectedRace,
-              decoration: const InputDecoration(
-                labelText: 'Selecione a Raça',
-                border: OutlineInputBorder(),
+              decoration: InputDecoration(
+                labelText: l10n.selectRace,
+                border: const OutlineInputBorder(),
               ),
               items: CharacterLocalizationMapper.getRaces().map((race) {
                 return DropdownMenuItem(

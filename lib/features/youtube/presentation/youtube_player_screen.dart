@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:opfan/l10n/app_localizations.dart';
 import 'package:opfan/core/models/youtube_video_model.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 
@@ -64,9 +65,9 @@ class _YouTubePlayerScreenState extends State<YouTubePlayerScreen> {
             onPressed: () {
               ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(
-                  content: Text('Link: ${widget.video.youTubeUrl}'),
+                  content: Text(AppLocalizations.of(context)!.linkLabel(widget.video.youTubeUrl)),
                   action: SnackBarAction(
-                    label: 'Copiar',
+                    label: AppLocalizations.of(context)!.copyAction,
                     onPressed: () {
                       // Implementar cópia para clipboard
                     },

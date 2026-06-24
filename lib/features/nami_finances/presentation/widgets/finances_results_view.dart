@@ -383,7 +383,7 @@ class _FinancesResultsViewState extends State<FinancesResultsView> {
           child: OutlinedButton.icon(
             onPressed: () => _navigateToDetailedView(context),
             icon: const Icon(Icons.analytics),
-            label: const Text('Ver Detalhes'),
+            label: Text(AppLocalizations.of(context)!.viewDetails),
             style: OutlinedButton.styleFrom(
               side: BorderSide(color: Theme.of(context).colorScheme.surface),
               padding: const EdgeInsets.symmetric(vertical: 16),

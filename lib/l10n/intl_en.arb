@@ -1,4 +1,4 @@
-{  
+{
   "affiliation": "{count, plural, =0 {Affiliation} =1 {Affiliation} other {Affiliations}}",
   "@affiliation": {
     "description": "Text show at bounty section on character detail screen with pluralization",
@@ -9,7 +9,7 @@
         "example": "1"
       }
     }
-  },  
+  },
   "beastsPirates": "Beasts Pirates",
   "@beastsPirates": {
     "description": "Filter label on search section one piece",
@@ -75,7 +75,7 @@
     "description": "Text shown at search screen when there were no research done yet at search bar after one or filters have been applied",
     "type": "text",
     "placeholders": {}
-  }, 
+  },
   "noResultsFound": "No results found for",
   "@noResultsFound": {
     "description": "Text shown at search screen when there were no results found at search bar after one or more filters have been applied",
@@ -111,7 +111,7 @@
     "type": "text",
     "placeholders": {}
   },
-  "expensesByCategory": "Expenses by Category",
+  "expensesByCategory": "Expenses by category",
   "@expensesByCategory": {
     "description": "Title for expenses breakdown section",
     "type": "text",
@@ -270,7 +270,7 @@
   },
   "delete": "Delete",
   "@delete": {
-    "description": "Button text to delete an item",
+    "description": "Action to delete something",
     "type": "text",
     "placeholders": {}
   },
@@ -335,7 +335,7 @@
   },
   "age": "Age",
   "@age": {
-    "description": "Label for character age field",
+    "description": "Label for age field.",
     "type": "text",
     "placeholders": {}
   },
@@ -443,7 +443,7 @@
   },
   "unknown": "Unknown",
   "@unknown": {
-    "description": "Status option for unknown status",
+    "description": "Unknown value",
     "type": "text",
     "placeholders": {}
   },
@@ -483,16 +483,11 @@
     "type": "text",
     "placeholders": {}
   },
-  "pirate": "{count, plural, =0 {Pirate} =1 {Pirate} other {Pirates}}",
+  "pirate": "Pirate",
   "@pirate": {
-    "description": "Affiliation option for pirate with pluralization",
+    "description": "Occupation option for pirate",
     "type": "text",
-    "placeholders": {
-      "count": {
-        "type": "num",
-        "example": "1"
-      }
-    }
+    "placeholders": {}
   },
   "pirateAlliance": "Pirate Alliance",
   "@pirateAlliance": {
@@ -508,19 +503,13 @@
   },
   "captain": "Captain",
   "@captain": {
-    "description": "Occupation option for captain",
+    "description": "Crew role - captain",
     "type": "text",
     "placeholders": {}
   },
-  "viceCaptain": "Vice-Captain",
+  "viceCaptain": "Vice Captain",
   "@viceCaptain": {
-    "description": "Occupation option for vice-captain",
-    "type": "text",
-    "placeholders": {}
-  },
-  "pirate": "Pirate",
-  "@pirate": {
-    "description": "Occupation option for pirate",
+    "description": "Crew role - vice captain",
     "type": "text",
     "placeholders": {}
   },
@@ -550,19 +539,19 @@
   },
   "doctor": "Doctor",
   "@doctor": {
-    "description": "Occupation option for doctor",
+    "description": "Crew role - doctor",
     "type": "text",
     "placeholders": {}
   },
   "navigator": "Navigator",
   "@navigator": {
-    "description": "Occupation option for navigator",
+    "description": "Crew role - navigator",
     "type": "text",
     "placeholders": {}
   },
   "cook": "Cook",
   "@cook": {
-    "description": "Occupation option for cook",
+    "description": "Crew role - cook",
     "type": "text",
     "placeholders": {}
   },
@@ -580,25 +569,25 @@
   },
   "carpenter": "Carpenter",
   "@carpenter": {
-    "description": "Occupation option for carpenter",
+    "description": "Crew role - carpenter",
     "type": "text",
     "placeholders": {}
   },
   "archaeologist": "Archaeologist",
   "@archaeologist": {
-    "description": "Occupation option for archaeologist",
+    "description": "Crew role - archaeologist",
     "type": "text",
     "placeholders": {}
   },
   "sharpshooter": "Sharpshooter",
   "@sharpshooter": {
-    "description": "Occupation option for sharpshooter",
+    "description": "Crew role - sharpshooter",
     "type": "text",
     "placeholders": {}
   },
   "description": "Description",
   "@description": {
-    "description": "Section title for character description",
+    "description": "Label for description field",
     "type": "text",
     "placeholders": {}
   },
@@ -622,7 +611,7 @@
   },
   "cancel": "Cancel",
   "@cancel": {
-    "description": "Button text to cancel action",
+    "description": "Cancel button text",
     "type": "text",
     "placeholders": {}
   },
@@ -663,26 +652,21 @@
   },
   "devilFruit": "Devil Fruit",
   "@devilFruit": {
-    "description": "Label for devil fruit",
+    "description": "Label for devil fruit filter",
     "type": "text",
     "placeholders": {}
   },
   "noDevilFruit": "No Devil Fruit",
   "@noDevilFruit": {
-    "description": "Label for devil fruit",
+    "description": "Text shown when character has no devil fruit",
     "type": "text",
     "placeholders": {}
   },
   "crew": "{count, plural, =0 {Crew} =1 {Crew} other {Crews}}",
   "@crew": {
-    "description": "Label for crew with pluralization",
+    "description": "Label for crew filter",
     "type": "text",
-    "placeholders": {
-      "count": {
-        "type": "num",
-        "example": "1"
-      }
-    }
+    "placeholders": {}
   },
   "ariesSign": "Aries",
   "@ariesSign": {
@@ -756,12 +740,6 @@
     "type": "text",
     "placeholders": {}
   },
-  "unknown": "Unknown",
-  "@unknown": {
-    "description": "Unknown value",
-    "type": "text",
-    "placeholders": {}
-  },
   "welcome": "Welcome,",
   "@welcome": {
     "description": "Welcome greeting",
@@ -822,9 +800,9 @@
     "type": "text",
     "placeholders": {}
   },
-  "clearFilters": "Clear Filters",
+  "clearFilters": "Clear filters",
   "@clearFilters": {
-    "description": "Clear filters button text",
+    "description": "Button text to clear all filters",
     "type": "text",
     "placeholders": {}
   },
@@ -918,21 +896,15 @@
     "type": "text",
     "placeholders": {}
   },
-  "description": "Description",
-  "@description": {
-    "description": "Description label",
-    "type": "text",
-    "placeholders": {}
-  },
   "createCustomCharacter": "Create character",
   "@createCustomCharacter": {
     "description": "Description label",
     "type": "text",
     "placeholders": {}
   },
-  "createCrew": "Create new crew",
+  "createCrew": "Create Crew",
   "@createCrew": {
-    "description": "Tooltip for create new crew",
+    "description": "Title for create crew screen",
     "type": "text",
     "placeholders": {}
   },
@@ -966,57 +938,9 @@
     "type": "text",
     "placeholders": {}
   },
-  "captain": "Captain",
-  "@captain": {
-    "description": "Crew role - captain",
-    "type": "text",
-    "placeholders": {}
-  },
-  "viceCaptain": "Vice Captain",
-  "@viceCaptain": {
-    "description": "Crew role - vice captain",
-    "type": "text",
-    "placeholders": {}
-  },
-  "navigator": "Navigator",
-  "@navigator": {
-    "description": "Crew role - navigator",
-    "type": "text",
-    "placeholders": {}
-  },
-  "cook": "Cook",
-  "@cook": {
-    "description": "Crew role - cook",
-    "type": "text",
-    "placeholders": {}
-  },
-  "doctor": "Doctor",
-  "@doctor": {
-    "description": "Crew role - doctor",
-    "type": "text",
-    "placeholders": {}
-  },
   "musician": "Musician",
   "@musician": {
     "description": "Crew role - musician",
-    "type": "text",
-    "placeholders": {}
-  },
-  "carpenter": "Carpenter",
-  "@carpenter": {
-    "description": "Crew role - carpenter",
-    "type": "text",
-    "placeholders": {}
-  },
-  "sharpshooter": "Sharpshooter",
-  "@sharpshooter": {
-    "description": "Crew role - sharpshooter",
-    "type": "text",
-    "placeholders": {}
-  },
-  "archaeologist": "Archaeologist",
-  "@archaeologist": {
-    "description": "Crew role - archaeologist",
     "type": "text",
     "placeholders": {}
   },
@@ -1232,16 +1156,11 @@
     "type": "text",
     "placeholders": {}
   },
-  "crewUpdateError": "Error updating crew: {message}",
+  "crewUpdateError": "Error updating crew",
   "@crewUpdateError": {
     "description": "Error message when crew update fails",
     "type": "text",
-    "placeholders": {
-      "message": {
-        "type": "String",
-        "example": "Network error"
-      }
-    }
+    "placeholders": {}
   },
   "@imageLoadError": {
     "description": "Error message when image fails to load",
@@ -1308,18 +1227,7 @@
     "type": "text",
     "placeholders": {}
   },
-  "devilFruit": "Devil Fruit",
-  "@devilFruit": {
-    "description": "Label for devil fruit filter",
-    "type": "text",
-    "placeholders": {}
-  },
   "crewTeam": "Crew",
-  "@crew": {
-    "description": "Label for crew filter",
-    "type": "text",
-    "placeholders": {}
-  },
   "filterByDevilFruit": "Filter by Devil Fruit",
   "@filterByDevilFruit": {
     "description": "Title for devil fruit filter dialog",
@@ -1332,21 +1240,9 @@
     "type": "text",
     "placeholders": {}
   },
-  "clearFilters": "Clear filters",
-  "@clearFilters": {
-    "description": "Button text to clear all filters",
-    "type": "text",
-    "placeholders": {}
-  },
   "addTag": "Add Tag",
   "@addTag": {
     "description": "Title for add tag dialog",
-    "type": "text",
-    "placeholders": {}
-  },
-  "createCrew": "Create Crew",
-  "@createCrew": {
-    "description": "Title for create crew screen",
     "type": "text",
     "placeholders": {}
   },
@@ -1548,12 +1444,6 @@
     "type": "text",
     "placeholders": {}
   },
-  "crewUpdateError": "Error updating crew",
-  "@crewUpdateError": {
-    "description": "Error message when crew update fails",
-    "type": "text",
-    "placeholders": {}
-  },
   "loginError": "Login error",
   "@loginError": {
     "description": "Error message for login",
@@ -1657,7 +1547,7 @@
   },
   "other": "Other",
   "@other": {
-    "description": "Fighting type option for other",
+    "description": "Category name for other",
     "type": "text",
     "placeholders": {}
   },
@@ -1735,7 +1625,7 @@
   },
   "add": "Add",
   "@add": {
-    "description": "Button text for add action",
+    "description": "Add button text.",
     "type": "text",
     "placeholders": {}
   },
@@ -1841,12 +1731,6 @@
       }
     }
   },
-  "description": "Description",
-  "@description": {
-    "description": "Label for description field",
-    "type": "text",
-    "placeholders": {}
-  },
   "profilePhotoTapped": "Profile photo tapped",
   "@profilePhotoTapped": {
     "description": "Snackbar message when profile photo is tapped",
@@ -1941,12 +1825,6 @@
         "example": "1"
       }
     }
-  },
-  "noDevilFruit": "No Devil Fruit",
-  "@noDevilFruit": {
-    "description": "Text shown when character has no devil fruit",
-    "type": "text",
-    "placeholders": {}
   },
   "newDuel": "New Duel",
   "@newDuel": {
@@ -2069,8 +1947,9 @@
   },
   "tags": "Tags",
   "@tags": {
-    "description": "Section title for tags.",
-    "type": "text"
+    "description": "Title for tags section",
+    "type": "text",
+    "placeholders": {}
   },
   "noTagsAdded": "No tags added",
   "@noTagsAdded": {
@@ -2089,8 +1968,9 @@
   },
   "aiPromptLabel": "AI Prompt",
   "@aiPromptLabel": {
-    "description": "Label for AI prompt field.",
-    "type": "text"
+    "description": "Label for AI prompt input",
+    "type": "text",
+    "placeholders": {}
   },
   "pirateFlagPromptHint": "Ex: pirate flag with skull and crossed swords",
   "@pirateFlagPromptHint": {
@@ -2172,7 +2052,7 @@
   },
   "expenses": "Expenses",
   "@expenses": {
-    "description": "Section title for expenses in finances screen.",
+    "description": "Title for expenses",
     "type": "text",
     "placeholders": {}
   },
@@ -2244,7 +2124,7 @@
   },
   "health": "Health",
   "@health": {
-    "description": "Health expenses category.",
+    "description": "Category name for health",
     "type": "text",
     "placeholders": {}
   },
@@ -2256,19 +2136,7 @@
   },
   "category": "Category",
   "@category": {
-    "description": "Label for category dropdown in expense dialog.",
-    "type": "text",
-    "placeholders": {}
-  },
-  "cancel": "Cancel",
-  "@cancel": {
-    "description": "Cancel button text.",
-    "type": "text",
-    "placeholders": {}
-  },
-  "add": "Add",
-  "@add": {
-    "description": "Add button text.",
+    "description": "Label for category",
     "type": "text",
     "placeholders": {}
   },
@@ -2278,9 +2146,9 @@
     "type": "text",
     "placeholders": {}
   },
-  "save": "Salvar",
+  "save": "Save",
   "@save": {
-    "description": "Rótulo para campo de entrada de valor.",
+    "description": "Save button text",
     "type": "text",
     "placeholders": {}
   },
@@ -2320,13 +2188,13 @@
     "type": "text",
     "placeholders": {}
   },
-  "savingsPercentage": "of Income",
+  "savingsPercentage": "Savings Percentage",
   "@savingsPercentage": {
     "description": "Label for savings percentage of income.",
     "type": "text",
     "placeholders": {}
   },
-  "yearlySavings": "Accumulated in 1 Year",
+  "yearlySavings": "Yearly Savings",
   "@yearlySavings": {
     "description": "Label for accumulated value in one year.",
     "type": "text",
@@ -2346,16 +2214,11 @@
   },
   "workout": "Workout",
   "@workout": {
-    "description": "Workout.",
-    "type": "text",
-    "placeholders": {}
-  },
-  "workout_title_screen": "Workout with Zoro",
-  "@workout": {
     "description": "Workout title screen.",
     "type": "text",
     "placeholders": {}
   },
+  "workout_title_screen": "Workout with Zoro",
   "workout_health_assessment": "Complete Health Assessment",
   "@workout_health_assessment": {
     "description": "Main title for health assessment screen.",
@@ -3264,12 +3127,6 @@
     "type": "text",
     "placeholders": {}
   },
-  "age": "Age",
-  "@age": {
-    "description": "Label for age field.",
-    "type": "text",
-    "placeholders": {}
-  },
   "enterAge": "Enter your age",
   "@enterAge": {
     "description": "Validation message for age field.",
@@ -3474,9 +3331,9 @@
     "type": "text",
     "placeholders": {}
   },
-  "seeAll": "See All",
+  "seeAll": "See all",
   "@seeAll": {
-    "description": "Button text to see all objectives",
+    "description": "See all button text",
     "type": "text",
     "placeholders": {}
   },
@@ -3540,27 +3397,15 @@
     "type": "text",
     "placeholders": {}
   },
-  "category": "Category",
-  "@category": {
-    "description": "Label for category",
-    "type": "text",
-    "placeholders": {}
-  },
   "notes": "Notes",
   "@notes": {
     "description": "Title for notes section",
     "type": "text",
     "placeholders": {}
   },
-  "tags": "Tags",
-  "@tags": {
-    "description": "Title for tags section",
-    "type": "text",
-    "placeholders": {}
-  },
   "completed": "Completed",
   "@completed": {
-    "description": "Status for completed objective",
+    "description": "Label for completed objectives",
     "type": "text",
     "placeholders": {}
   },
@@ -3600,21 +3445,9 @@
     "type": "text",
     "placeholders": {}
   },
-  "health": "Health",
-  "@health": {
-    "description": "Category name for health",
-    "type": "text",
-    "placeholders": {}
-  },
   "finance": "Finance",
   "@finance": {
     "description": "Category name for finance",
-    "type": "text",
-    "placeholders": {}
-  },
-  "other": "Other",
-  "@other": {
-    "description": "Category name for other",
     "type": "text",
     "placeholders": {}
   },
@@ -3657,12 +3490,6 @@
       }
     }
   },
-  "delete": "Delete",
-  "@delete": {
-    "description": "Action to delete something",
-    "type": "text",
-    "placeholders": {}
-  },
   "deleteObjective": "Delete Objective",
   "@deleteObjective": {
     "description": "Title for delete objective dialog",
@@ -3679,18 +3506,6 @@
         "example": "Study Flutter"
       }
     }
-  },
-  "cancel": "Cancel",
-  "@cancel": {
-    "description": "Cancel button text",
-    "type": "text",
-    "placeholders": {}
-  },
-  "completed": "Completed",
-  "@completed": {
-    "description": "Label for completed objectives",
-    "type": "text",
-    "placeholders": {}
   },
   "all": "All",
   "@all": {
@@ -3719,12 +3534,6 @@
   "enterGoalTitle": "Enter the goal title",
   "@enterGoalTitle": {
     "description": "Hint for goal title field",
-    "type": "text",
-    "placeholders": {}
-  },
-  "description": "Description",
-  "@description": {
-    "description": "Label for description field",
     "type": "text",
     "placeholders": {}
   },
@@ -3757,10 +3566,588 @@
     "type": "text",
     "placeholders": {}
   },
-  "save": "Save",
-  "@save": {
+  "onboardingBiologicalSex": "Please select your biological sex.",
+  "@onboardingBiologicalSex": {
+    "description": "Validation message for biological sex",
+    "type": "text",
+    "placeholders": {}
+  },
+  "onboardingFillAllFields": "Please fill in all required fields.",
+  "@onboardingFillAllFields": {
+    "description": "Validation message for required fields",
+    "type": "text",
+    "placeholders": {}
+  },
+  "male": "Male",
+  "@male": {
+    "description": "Biological sex male",
+    "type": "text",
+    "placeholders": {}
+  },
+  "female": "Female",
+  "@female": {
+    "description": "Biological sex female",
+    "type": "text",
+    "placeholders": {}
+  },
+  "recommendations": "Recommendations",
+  "@recommendations": {
+    "description": "Title for recommendations",
+    "type": "text",
+    "placeholders": {}
+  },
+  "editPlan": "Edit Plan",
+  "@editPlan": {
+    "description": "Edit plan button text",
+    "type": "text",
+    "placeholders": {}
+  },
+  "workoutPlanSaved": "Workout plan saved successfully!",
+  "@workoutPlanSaved": {
+    "description": "Success message for workout plan",
+    "type": "text",
+    "placeholders": {}
+  },
+  "addSplit": "Add Split",
+  "@addSplit": {
+    "description": "Add split button text",
+    "type": "text",
+    "placeholders": {}
+  },
+  "splitNameHint": "Split name (e.g., Workout A)",
+  "@splitNameHint": {
+    "description": "Hint for split name",
+    "type": "text",
+    "placeholders": {}
+  },
+  "exerciseHint": "Exercise",
+  "@exerciseHint": {
+    "description": "Hint for exercise",
+    "type": "text",
+    "placeholders": {}
+  },
+  "setsRepsHint": "3x15",
+  "@setsRepsHint": {
+    "description": "Hint for sets and reps",
+    "type": "text",
+    "placeholders": {}
+  },
+  "noAssessmentFound": "No assessment found for the current month",
+  "@noAssessmentFound": {
+    "description": "Error message for no assessment",
+    "type": "text",
+    "placeholders": {}
+  },
+  "addAction": "Add",
+  "@addAction": {
+    "description": "Generic add button text",
+    "type": "text",
+    "placeholders": {}
+  },
+  "selectRace": "Select Race",
+  "@selectRace": {
+    "description": "Label to select race",
+    "type": "text",
+    "placeholders": {}
+  },
+  "styleName": "Style Name",
+  "@styleName": {
+    "description": "Label for style name",
+    "type": "text",
+    "placeholders": {}
+  },
+  "fightingType": "Fighting Type",
+  "@fightingType": {
+    "description": "Label for fighting type",
+    "type": "text",
+    "placeholders": {}
+  },
+  "addWeapon": "Add Weapon",
+  "@addWeapon": {
+    "description": "Add weapon button text",
+    "type": "text",
+    "placeholders": {}
+  },
+  "addAttack": "Add Attack",
+  "@addAttack": {
+    "description": "Add attack button text",
+    "type": "text",
+    "placeholders": {}
+  },
+  "threeSwordsStyleHint": "e.g.: Three Swords Style",
+  "@threeSwordsStyleHint": {
+    "description": "Hint for fighting style",
+    "type": "text",
+    "placeholders": {}
+  },
+  "englishLang": "English",
+  "@englishLang": {
+    "description": "English language name",
+    "type": "text",
+    "placeholders": {}
+  },
+  "portugueseLang": "Português",
+  "@portugueseLang": {
+    "description": "Portuguese language name",
+    "type": "text",
+    "placeholders": {}
+  },
+  "bodyComposition": "Body Composition",
+  "@bodyComposition": {
+    "description": "Body composition title",
+    "type": "text",
+    "placeholders": {}
+  },
+  "bodyData": "Body Data",
+  "@bodyData": {
+    "description": "Body data title",
+    "type": "text",
+    "placeholders": {}
+  },
+  "createFirstGoal": "Create First Goal",
+  "@createFirstGoal": {
+    "description": "Create first goal button text",
+    "type": "text",
+    "placeholders": {}
+  },
+  "cancelAction": "Cancel",
+  "@cancelAction": {
+    "description": "Cancel button text",
+    "type": "text",
+    "placeholders": {}
+  },
+  "saveAction": "Save",
+  "@saveAction": {
     "description": "Save button text",
     "type": "text",
     "placeholders": {}
+  },
+  "clearAction": "Clear",
+  "@clearAction": {
+    "description": "Clear button text",
+    "type": "text",
+    "placeholders": {}
+  },
+  "updateBodyComposition": "Update Body Composition",
+  "@updateBodyComposition": {
+    "description": "Update body composition button text",
+    "type": "text",
+    "placeholders": {}
+  },
+  "tryAgainAction": "Try again",
+  "@tryAgainAction": {
+    "description": "Try again button text",
+    "type": "text",
+    "placeholders": {}
+  },
+  "foodExampleHint": "e.g.: chicken, rice, onion...",
+  "@foodExampleHint": {
+    "description": "Hint for food ingredients",
+    "type": "text",
+    "placeholders": {}
+  },
+  "mealType": "Meal Type",
+  "@mealType": {
+    "description": "Label for meal type",
+    "type": "text",
+    "placeholders": {}
+  },
+  "dietaryRestrictions": "Dietary Restrictions",
+  "@dietaryRestrictions": {
+    "description": "Label for dietary restrictions",
+    "type": "text",
+    "placeholders": {}
+  },
+  "noIncomeRegistered": "No income registered",
+  "@noIncomeRegistered": {
+    "description": "Empty state for incomes",
+    "type": "text",
+    "placeholders": {}
+  },
+  "setupFinances": "Setup finances",
+  "@setupFinances": {
+    "description": "Setup finances button text",
+    "type": "text",
+    "placeholders": {}
+  },
+  "viewDetails": "View Details",
+  "@viewDetails": {
+    "description": "View details button text",
+    "type": "text",
+    "placeholders": {}
+  },
+  "editData": "Edit data",
+  "@editData": {
+    "description": "Edit data button text",
+    "type": "text",
+    "placeholders": {}
+  },
+  "monthBalance": "Month Balance",
+  "@monthBalance": {
+    "description": "Title for month balance",
+    "type": "text",
+    "placeholders": {}
+  },
+  "incomes": "Incomes",
+  "@incomes": {
+    "description": "Title for incomes",
+    "type": "text",
+    "placeholders": {}
+  },
+  "reserves": "Reserves",
+  "@reserves": {
+    "description": "Title for reserves",
+    "type": "text",
+    "placeholders": {}
+  },
+  "categories": "Categories",
+  "@categories": {
+    "description": "Title for categories",
+    "type": "text",
+    "placeholders": {}
+  },
+  "promptPirateFlag": "Enter a prompt to generate the pirate flag",
+  "@promptPirateFlag": {
+    "description": "Instruction to generate pirate flag",
+    "type": "text",
+    "placeholders": {}
+  },
+  "flagGeneratedSuccess": "Pirate flag generated successfully!",
+  "@flagGeneratedSuccess": {
+    "description": "Success message for generated flag",
+    "type": "text",
+    "placeholders": {}
+  },
+  "promptShip": "Enter a prompt to generate the ship",
+  "@promptShip": {
+    "description": "Instruction to generate ship",
+    "type": "text",
+    "placeholders": {}
+  },
+  "shipGeneratedSuccess": "Ship generated successfully!",
+  "@shipGeneratedSuccess": {
+    "description": "Success message for generated ship",
+    "type": "text",
+    "placeholders": {}
+  },
+  "createCrewTitle": "Create Crew",
+  "@createCrewTitle": {
+    "description": "Title for create crew screen",
+    "type": "text",
+    "placeholders": {}
+  },
+  "crewCreatedSuccess": "Crew created successfully!",
+  "@crewCreatedSuccess": {
+    "description": "Success message for created crew",
+    "type": "text",
+    "placeholders": {}
+  },
+  "crewTagsHint": "e.g.: Pirates, Adventurers, etc.",
+  "@crewTagsHint": {
+    "description": "Hint for crew tags",
+    "type": "text",
+    "placeholders": {}
+  },
+  "crewNameRequired": "Crew Name *",
+  "@crewNameRequired": {
+    "description": "Label for required crew name",
+    "type": "text",
+    "placeholders": {}
+  },
+  "crewDescriptionHint": "Tell us a bit about your crew...",
+  "@crewDescriptionHint": {
+    "description": "Hint for crew description",
+    "type": "text",
+    "placeholders": {}
+  },
+  "shipNameLabel": "Ship Name",
+  "@shipNameLabel": {
+    "description": "Label for ship name",
+    "type": "text",
+    "placeholders": {}
+  },
+  "pirateFlagLabel": "Pirate Flag",
+  "@pirateFlagLabel": {
+    "description": "Label for pirate flag",
+    "type": "text",
+    "placeholders": {}
+  },
+  "crewShipLabel": "Crew Ship",
+  "@crewShipLabel": {
+    "description": "Label for crew ship",
+    "type": "text",
+    "placeholders": {}
+  },
+  "tagNameLabel": "Tag name",
+  "@tagNameLabel": {
+    "description": "Label for tag name",
+    "type": "text",
+    "placeholders": {}
+  },
+  "customCrewHint": "e.g.: Mugiwaras Custom",
+  "@customCrewHint": {
+    "description": "Hint for custom crew",
+    "type": "text",
+    "placeholders": {}
+  },
+  "merryShipHint": "e.g.: Going Merry",
+  "@merryShipHint": {
+    "description": "Hint for merry ship",
+    "type": "text",
+    "placeholders": {}
+  },
+  "goHomeAction": "Go Home",
+  "@goHomeAction": {
+    "description": "Go home button text",
+    "type": "text",
+    "placeholders": {}
+  },
+  "aiGeneratedImage": "AI Generated Image",
+  "@aiGeneratedImage": {
+    "description": "Title for AI generated image",
+    "type": "text",
+    "placeholders": {}
+  },
+  "monthlyReportFinances": "💰 Monthly Report - Nami Finances",
+  "@monthlyReportFinances": {
+    "description": "Notification title for Nami finances",
+    "type": "text",
+    "placeholders": {}
+  },
+  "zoroWorkoutNotif": "⚔️ Zoro's Workout",
+  "@zoroWorkoutNotif": {
+    "description": "Notification title for Zoro workout",
+    "type": "text",
+    "placeholders": {}
+  },
+  "sanjiTipNotif": "👨‍🍳 Sanji's Tip",
+  "@sanjiTipNotif": {
+    "description": "Notification title for Sanji tip",
+    "type": "text",
+    "placeholders": {}
+  },
+  "featuredCharacterNotif": "🏴‍☠️ Featured Character",
+  "@featuredCharacterNotif": {
+    "description": "Notification title for featured character",
+    "type": "text",
+    "placeholders": {}
+  },
+  "financialTipNotif": "💰 Financial Tip",
+  "@financialTipNotif": {
+    "description": "Notification title for financial tip",
+    "type": "text",
+    "placeholders": {}
+  },
+  "characterDuelNotif": "🎯 Character Duel",
+  "@characterDuelNotif": {
+    "description": "Notification title for character duel",
+    "type": "text",
+    "placeholders": {}
+  },
+  "checkingAuthStatus": "Checking authentication status...",
+  "@checkingAuthStatus": {
+    "description": "Auth status message",
+    "type": "text",
+    "placeholders": {}
+  },
+  "signingInAuth": "Signing in...",
+  "@signingInAuth": {
+    "description": "Auth status message for signing in",
+    "type": "text",
+    "placeholders": {}
+  },
+  "signingOutAuth": "Signing out...",
+  "@signingOutAuth": {
+    "description": "Auth status message for signing out",
+    "type": "text",
+    "placeholders": {}
+  },
+  "createWorkoutPlan": "Create Workout Plan",
+  "createCustomPlanTap": "Tap to create your custom plan",
+  "defaultWorkoutName": "Workout",
+  "todayWorkoutCompleted": "Today's Workout (Completed)",
+  "todayWorkout": "Today's Workout",
+  "exerciseCount": "{count, plural, =1 {1 exercise} other {{count} exercises}}",
+  "@exerciseCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "completedWithCheck": "✅ Completed",
+  "today": "Today",
+  "noExercisesInSplit": "No exercises in this split.",
+  "viewProgress": "View Progress",
+  "startWorkout": "Start Workout",
+  "increaseProgressTitle": "Increase Progress",
+  "decreaseProgressTitle": "Decrease Progress",
+  "objectiveLabel": "Objective: {title}",
+  "@objectiveLabel": {
+    "placeholders": {
+      "title": {
+        "type": "String"
+      }
+    }
+  },
+  "currentProgressLabel": "Current progress: ",
+  "newProgressLabel": "New progress: ",
+  "planUpdatesLabel": "Updates on the plan:",
+  "progressIncreaseHint": "What did you do to progress? (e.g., studied for 2 hours, completed exercises...)",
+  "progressDecreaseHint": "Why did the progress decrease? (e.g., delay, difficulty encountered...)",
+  "describeWhatHappened": "Please describe what happened",
+  "increaseAction": "Increase",
+  "decreaseAction": "Decrease",
+  "emptyTimelineSubtitle": "Start by creating your first objective to organize your study goals and track your progress.",
+  "biologicalSexLabel": "Biological Sex",
+  "objectiveTitle": "Objective",
+  "activityLevelLabel": "Physical Activity Level",
+  "circumferencesLabel": "Circumferences",
+  "optionalLabel": "Optional",
+  "ageLabel": "Age",
+  "heightLabel": "Height",
+  "currentWeightLabel": "Current Weight",
+  "waistLabel": "Waist",
+  "chestLabel": "Chest",
+  "armLabel": "Arm",
+  "hipLabel": "Hip",
+  "thighLabel": "Thigh",
+  "monthOverview": "Month overview",
+  "balanceChart": "Balance chart",
+  "incomesLabel": "Incomes",
+  "expensesLabel": "Expenses",
+  "reservesLabel": "Reserves",
+  "totalReceived": "Total received",
+  "totalSpent": "Total spent",
+  "noIncomesRegistered": "No incomes registered",
+  "errorPrefix": "Error: {error}",
+  "@errorPrefix": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "errorGeneratingFlag": "Error generating flag: {error}",
+  "@errorGeneratingFlag": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "errorGeneratingShip": "Error generating ship: {error}",
+  "@errorGeneratingShip": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "crewDeletedMessage": "Crew \"{name}\" deleted",
+  "@crewDeletedMessage": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "averageBountyLabel": "Average Bounty",
+  "rolesLabel": "Roles",
+  "updateBodyCompositionLabel": "Update Body Composition",
+  "linkLabel": "Link: {url}",
+  "@linkLabel": {
+    "placeholders": {
+      "url": {
+        "type": "String"
+      }
+    }
+  },
+  "saveLabel": "Save",
+  "ageValidator": "Please enter your age",
+  "heightValidator": "Please enter your height",
+  "weightValidator": "Please enter your weight",
+  "goalsAndMeasuresTitle": "Goals & Measures",
+  "goalsAndMeasuresSubtitle": "Define your objective and add measures to track your progress with Sanji & Zoro.",
+  "goalLoseWeight": "Lose Weight",
+  "goalMaintain": "Maintain Weight",
+  "goalGainMuscle": "Gain Muscle",
+  "activitySedentary": "Sedentary",
+  "activityLight": "Light",
+  "activityModerate": "Moderate",
+  "activityIntense": "Intense",
+  "activityVeryIntense": "Very Intense",
+  "expensesDetails": "Expenses Details",
+  "totalExpensesLabel": "Total Expenses:",
+  "copyAction": "Copy",
+  "cookingTipsHint": "Ex: chicken, rice, onion...",
+  "todayCompleted": "Today (completed)",
+  "assessmentResultsTitle": "Assessment Results",
+  "topRecommendationsTitle": "Top Recommendations",
+  "weekProgressTitle": "Week Progress",
+  "streakTitle": "Streak",
+  "thisMonthSuffix": "this month",
+  "daysSuffix": "days",
+  "doneTodayLabel": "Done today",
+  "pendingLabel": "Pending",
+  "onlyCurrentMonthEditAllowed": "Only possible to edit finances of the current month",
+  "saveWithNami": "Save with Nami",
+  "configureYourFinances": "Configure your finances of the month and track\nyour progress in real time.",
+  "incomeLabel": "Income",
+  "noExpensesRegistered": "No expenses registered",
+  "categoryFixed": "Fixed",
+  "categoryFood": "Food",
+  "categoryTransport": "Transport",
+  "categoryEntertainment": "Entertainment",
+  "categoryHealth": "Health",
+  "categoryOther": "Other",
+  "availableLabel": "Available",
+  "savingsLabel": "Savings",
+  "incomeDetailsTitle": "Income Details",
+  "savingsDetailsTitle": "Savings Details",
+  "monthSavings": "Month Savings",
+  "financialMetricsTitle": "Financial Metrics",
+  "dailyAvailableAmount": "Daily Available Amount",
+  "janAbbr": "Jan",
+  "febAbbr": "Feb",
+  "marAbbr": "Mar",
+  "aprAbbr": "Apr",
+  "mayAbbr": "May",
+  "junAbbr": "Jun",
+  "julAbbr": "Jul",
+  "augAbbr": "Aug",
+  "sepAbbr": "Sep",
+  "octAbbr": "Oct",
+  "novAbbr": "Nov",
+  "decAbbr": "Dec",
+  "availableBalance": "Available Balance",
+  "currentMonthLabel": "Current Month",
+  "yesLabel": "Yes",
+  "noLabel": "No",
+  "workoutStatusDefeated": "Defeated",
+  "workoutStatusOnTarget": "On Target!",
+  "zoroQuoteDefeated": "\"I will never lose again.\"",
+  "zoroQuoteProud": "\"No matter what happens, I will never lose again.\"",
+  "zoroStatusDefeated": "Zoro is defeated...",
+  "zoroStatusProud": "Zoro is proud!",
+  "workoutsRemaining": "{count, plural, =1{1 workout remaining this week} other{{count} workouts remaining this week}}",
+  "@workoutsRemaining": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "weeklyGoalCompleted": "Weekly goal completed! 🎯",
+  "workoutDaysCount": "{done} / {total} days",
+  "@workoutDaysCount": {
+    "placeholders": {
+      "done": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
   }
 }

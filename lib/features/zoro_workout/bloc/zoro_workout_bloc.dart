@@ -135,7 +135,7 @@ class ZoroWorkoutBloc extends Bloc<ZoroWorkoutEvent, ZoroWorkoutState> {
       final currentAssessment = await _service.getCurrentUserAssessment();
       if (currentAssessment == null) {
         emit(const ZoroWorkoutError(
-            message: 'None assessment found for the current month'));
+            message: 'noAssessmentFound'));
         return;
       }
 

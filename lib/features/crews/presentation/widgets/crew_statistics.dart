@@ -36,12 +36,12 @@ class CrewStatistics extends StatelessWidget {
         icon: Icons.monetization_on,
       ),
       StatisticData(
-        label: 'Bounty Média',
+        label: AppLocalizations.of(context)!.averageBountyLabel,
         value: Constants.formatAbbreviateBounty(double.parse(averageBounty)),
         icon: Icons.trending_up,
       ),
       StatisticData(
-        label: 'Funções',
+        label: AppLocalizations.of(context)!.rolesLabel,
         value: crew.rolesFilled.length.toString(),
         icon: Icons.work,
       ),

@@ -4,6 +4,7 @@ import 'package:opfan/core/models/workout_plan_model.dart';
 import 'package:opfan/features/zoro_workout/bloc/zoro_workout_bloc.dart';
 import 'package:opfan/features/zoro_workout/bloc/zoro_workout_event.dart';
 import 'package:opfan/features/zoro_workout/bloc/zoro_workout_state.dart';
+import 'package:opfan/l10n/app_localizations.dart';
 
 /// Full-screen editor for creating/editing a user's workout plan.
 /// Supports multiple named splits (A, B, C…), each with a list of exercises.
@@ -118,8 +119,8 @@ class _WorkoutPlanEditorScreenState extends State<WorkoutPlanEditorScreen> {
             setState(() => _saving = false);
             Navigator.pop(context);
             ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(
-                content: Text('Plano de treino salvo com sucesso!'),
+              SnackBar(
+                content: Text(AppLocalizations.of(context)!.workoutPlanSaved),
                 backgroundColor: Colors.green,
                 behavior: SnackBarBehavior.floating,
               ),
@@ -143,7 +144,7 @@ class _WorkoutPlanEditorScreenState extends State<WorkoutPlanEditorScreen> {
           else
             TextButton(
               onPressed: _save,
-              child: Text('Salvar', style: TextStyle(color: primary, fontWeight: FontWeight.bold)),
+              child: Text(AppLocalizations.of(context)!.saveLabel, style: TextStyle(color: primary, fontWeight: FontWeight.bold)),
             ),
         ],
       ),
@@ -196,7 +197,7 @@ class _WorkoutPlanEditorScreenState extends State<WorkoutPlanEditorScreen> {
           OutlinedButton.icon(
             onPressed: _splits.length < 6 ? _addSplit : null,
             icon: const Icon(Icons.add),
-            label: const Text('Adicionar Split'),
+            label: Text(AppLocalizations.of(context)!.addSplit),
             style: OutlinedButton.styleFrom(
               padding: const EdgeInsets.symmetric(vertical: 14),
               side: BorderSide(color: primary.withValues(alpha: 0.5)),
@@ -308,8 +309,8 @@ class _SplitCard extends StatelessWidget {
                         .textTheme
                         .titleSmall
                         ?.copyWith(fontWeight: FontWeight.bold),
-                    decoration: const InputDecoration(
-                      hintText: 'Nome do split (ex: Treino A)',
+                    decoration: InputDecoration(
+                      hintText: AppLocalizations.of(context)!.splitNameHint,
                       border: InputBorder.none,
                       isDense: true,
                       contentPadding: EdgeInsets.zero,
@@ -364,7 +365,7 @@ class _SplitCard extends StatelessWidget {
                             controller: ex.nameController,
                             onChanged: (_) => onChanged(),
                             decoration: InputDecoration(
-                              hintText: 'Exercício',
+                              hintText: AppLocalizations.of(context)!.exerciseHint,
                               hintStyle: Theme.of(context)
                                   .textTheme
                                   .bodySmall
@@ -403,7 +404,7 @@ class _SplitCard extends StatelessWidget {
                             controller: ex.volumeController,
                             onChanged: (_) => onChanged(),
                             decoration: InputDecoration(
-                              hintText: '3x15',
+                              hintText: AppLocalizations.of(context)!.setsRepsHint,
                               hintStyle: Theme.of(context)
                                   .textTheme
                                   .bodySmall

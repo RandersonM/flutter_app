@@ -195,9 +195,9 @@ class _FinancesHistoryWidgetState extends State<FinancesHistoryWidget> {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
-            _buildLegendItem('Despesas', AppColors.red[500]!),
-            _buildLegendItem('Disponível', AppColors.green[500]!),
-            _buildLegendItem('Poupança', AppColors.orange[500]!),
+            _buildLegendItem(AppLocalizations.of(context)!.expensesLabel, AppColors.red[500]!),
+            _buildLegendItem(AppLocalizations.of(context)!.availableLabel, AppColors.green[500]!),
+            _buildLegendItem(AppLocalizations.of(context)!.savingsLabel, AppColors.orange[500]!),
           ],
         ),
       ],
@@ -290,18 +290,18 @@ class _FinancesHistoryWidgetState extends State<FinancesHistoryWidget> {
 
   String _getMonthName(int month) {
     switch (month) {
-      case 1: return 'Jan';
-      case 2: return 'Fev';
-      case 3: return 'Mar';
-      case 4: return 'Abr';
-      case 5: return 'Mai';
-      case 6: return 'Jun';
-      case 7: return 'Jul';
-      case 8: return 'Ago';
-      case 9: return 'Set';
-      case 10: return 'Out';
-      case 11: return 'Nov';
-      case 12: return 'Dez';
+      case 1: return AppLocalizations.of(context)!.janAbbr;
+      case 2: return AppLocalizations.of(context)!.febAbbr;
+      case 3: return AppLocalizations.of(context)!.marAbbr;
+      case 4: return AppLocalizations.of(context)!.aprAbbr;
+      case 5: return AppLocalizations.of(context)!.mayAbbr;
+      case 6: return AppLocalizations.of(context)!.junAbbr;
+      case 7: return AppLocalizations.of(context)!.julAbbr;
+      case 8: return AppLocalizations.of(context)!.augAbbr;
+      case 9: return AppLocalizations.of(context)!.sepAbbr;
+      case 10: return AppLocalizations.of(context)!.octAbbr;
+      case 11: return AppLocalizations.of(context)!.novAbbr;
+      case 12: return AppLocalizations.of(context)!.decAbbr;
       default: return '';
     }
   }

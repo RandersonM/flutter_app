@@ -8,6 +8,7 @@ import 'package:opfan/core/auth/blocs/index.dart';
 import 'package:opfan/core/auth/models/user_model.dart';
 import 'package:opfan/shared/utils/constants.dart';
 import 'package:opfan/features/onboarding/presentation/widgets/onboarding_step_indicator.dart';
+import 'package:opfan/l10n/app_localizations.dart';
 
 class OnboardingScreen extends StatefulWidget {
   const OnboardingScreen({super.key});
@@ -107,7 +108,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
         );
       } else if (_gender == null) {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Por favor, selecione seu sexo biológico.')),
+          SnackBar(content: Text(AppLocalizations.of(context)!.onboardingBiologicalSex)),
         );
       }
     } else {
@@ -140,7 +141,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
       }
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Por favor, preencha todos os campos obrigatórios.')),
+        SnackBar(content: Text(AppLocalizations.of(context)!.onboardingFillAllFields)),
       );
     }
   }
@@ -229,13 +230,13 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
             ),
             const SizedBox(height: 32),
 
-            Text('Sexo Biológico', style: Theme.of(context).textTheme.titleMedium),
+            Text(AppLocalizations.of(context)!.biologicalSexLabel, style: Theme.of(context).textTheme.titleMedium),
             const SizedBox(height: 12),
             Row(
               children: [
                 Expanded(
                   child: ChoiceChip(
-                    label: const Center(child: Text('Masculino')),
+                    label: Center(child: Text(AppLocalizations.of(context)!.male)),
                     selected: _gender == 'male',
                     onSelected: (selected) => setState(() => _gender = selected ? 'male' : _gender),
                   ),
@@ -243,7 +244,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                 const SizedBox(width: 16),
                 Expanded(
                   child: ChoiceChip(
-                    label: const Center(child: Text('Feminino')),
+                    label: Center(child: Text(AppLocalizations.of(context)!.female)),
                     selected: _gender == 'female',
                     onSelected: (selected) => setState(() => _gender = selected ? 'female' : _gender),
                   ),
@@ -254,25 +255,25 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
 
             _buildNumberField(
               controller: _ageController,
-              label: 'Idade',
+              label: AppLocalizations.of(context)!.ageLabel,
               suffix: 'anos',
-              validatorMsg: 'Insira sua idade',
+              validatorMsg: AppLocalizations.of(context)!.ageValidator,
             ),
             const SizedBox(height: 16),
 
             _buildNumberField(
               controller: _heightController,
-              label: 'Altura',
+              label: AppLocalizations.of(context)!.heightLabel,
               suffix: 'cm',
-              validatorMsg: 'Insira sua altura',
+              validatorMsg: AppLocalizations.of(context)!.heightValidator,
             ),
             const SizedBox(height: 16),
 
             _buildNumberField(
               controller: _weightController,
-              label: 'Peso Atual',
+              label: AppLocalizations.of(context)!.currentWeightLabel,
               suffix: 'kg',
-              validatorMsg: 'Insira seu peso',
+              validatorMsg: AppLocalizations.of(context)!.weightValidator,
             ),
           ],
         ),
@@ -289,51 +290,51 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              'Metas & Medidas',
+              AppLocalizations.of(context)!.goalsAndMeasuresTitle,
               style: Theme.of(context).textTheme.headlineMedium?.copyWith(
                 fontWeight: FontWeight.bold,
               ),
             ),
             const SizedBox(height: 8),
             Text(
-              'Defina seu objetivo e adicione medidas para rastrear seu progresso com Sanji & Zoro.',
+              AppLocalizations.of(context)!.goalsAndMeasuresSubtitle,
               style: Theme.of(context).textTheme.bodyLarge?.copyWith(
                 color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.7),
               ),
             ),
             const SizedBox(height: 32),
 
-            Text('Objetivo', style: Theme.of(context).textTheme.titleMedium),
+            Text(AppLocalizations.of(context)!.objectiveTitle, style: Theme.of(context).textTheme.titleMedium),
             const SizedBox(height: 12),
             Wrap(
               spacing: 8.0,
               runSpacing: 8.0,
               children: [
-                _buildChoiceChip('lose_weight', 'Emagrecer', _goal, (v) => setState(() => _goal = v)),
-                _buildChoiceChip('maintain', 'Manter Peso', _goal, (v) => setState(() => _goal = v)),
-                _buildChoiceChip('gain_muscle', 'Ganhar Massa', _goal, (v) => setState(() => _goal = v)),
+                _buildChoiceChip('lose_weight', AppLocalizations.of(context)!.goalLoseWeight, _goal, (v) => setState(() => _goal = v)),
+                _buildChoiceChip('maintain', AppLocalizations.of(context)!.goalMaintain, _goal, (v) => setState(() => _goal = v)),
+                _buildChoiceChip('gain_muscle', AppLocalizations.of(context)!.goalGainMuscle, _goal, (v) => setState(() => _goal = v)),
               ],
             ),
             const SizedBox(height: 24),
 
-            Text('Nível de Atividade Física', style: Theme.of(context).textTheme.titleMedium),
+            Text(AppLocalizations.of(context)!.activityLevelLabel, style: Theme.of(context).textTheme.titleMedium),
             const SizedBox(height: 12),
             Wrap(
               spacing: 8.0,
               runSpacing: 8.0,
               children: [
-                _buildChoiceChip('sedentary', 'Sedentário', _activityLevel, (v) => setState(() => _activityLevel = v)),
-                _buildChoiceChip('light', 'Leve', _activityLevel, (v) => setState(() => _activityLevel = v)),
-                _buildChoiceChip('moderate', 'Moderado', _activityLevel, (v) => setState(() => _activityLevel = v)),
-                _buildChoiceChip('intense', 'Intenso', _activityLevel, (v) => setState(() => _activityLevel = v)),
-                _buildChoiceChip('very_intense', 'Muito Intenso', _activityLevel, (v) => setState(() => _activityLevel = v)),
+                _buildChoiceChip('sedentary', AppLocalizations.of(context)!.activitySedentary, _activityLevel, (v) => setState(() => _activityLevel = v)),
+                _buildChoiceChip('light', AppLocalizations.of(context)!.activityLight, _activityLevel, (v) => setState(() => _activityLevel = v)),
+                _buildChoiceChip('moderate', AppLocalizations.of(context)!.activityModerate, _activityLevel, (v) => setState(() => _activityLevel = v)),
+                _buildChoiceChip('intense', AppLocalizations.of(context)!.activityIntense, _activityLevel, (v) => setState(() => _activityLevel = v)),
+                _buildChoiceChip('very_intense', AppLocalizations.of(context)!.activityVeryIntense, _activityLevel, (v) => setState(() => _activityLevel = v)),
               ],
             ),
             const SizedBox(height: 32),
 
             Row(
               children: [
-                Text('Circunferências', style: Theme.of(context).textTheme.titleMedium),
+                Text(AppLocalizations.of(context)!.circumferencesLabel, style: Theme.of(context).textTheme.titleMedium),
                 const SizedBox(width: 8),
                 Container(
                   padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
@@ -341,7 +342,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                     color: Theme.of(context).colorScheme.surfaceContainerHighest,
                     borderRadius: BorderRadius.circular(12),
                   ),
-                  child: Text('Opcional', style: Theme.of(context).textTheme.bodySmall),
+                  child: Text(AppLocalizations.of(context)!.optionalLabel, style: Theme.of(context).textTheme.bodySmall),
                 ),
               ],
             ),
@@ -349,18 +350,18 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
 
             Row(
               children: [
-                Expanded(child: _buildNumberField(controller: _waistController, label: 'Cintura', suffix: 'cm', isOptional: true)),
+                Expanded(child: _buildNumberField(controller: _waistController, label: AppLocalizations.of(context)!.waistLabel, suffix: 'cm', isOptional: true)),
                 const SizedBox(width: 16),
-                Expanded(child: _buildNumberField(controller: _chestController, label: 'Peito', suffix: 'cm', isOptional: true)),
+                Expanded(child: _buildNumberField(controller: _chestController, label: AppLocalizations.of(context)!.chestLabel, suffix: 'cm', isOptional: true)),
               ],
             ),
             const SizedBox(height: 16),
 
             Row(
               children: [
-                Expanded(child: _buildNumberField(controller: _armController, label: 'Braço', suffix: 'cm', isOptional: true)),
+                Expanded(child: _buildNumberField(controller: _armController, label: AppLocalizations.of(context)!.armLabel, suffix: 'cm', isOptional: true)),
                 const SizedBox(width: 16),
-                Expanded(child: _buildNumberField(controller: _hipController, label: 'Quadril', suffix: 'cm', isOptional: true)),
+                Expanded(child: _buildNumberField(controller: _hipController, label: AppLocalizations.of(context)!.hipLabel, suffix: 'cm', isOptional: true)),
               ],
             ),
             const SizedBox(height: 16),
@@ -369,7 +370,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
               widthFactor: 0.5,
               child: Padding(
                 padding: const EdgeInsets.only(right: 8.0),
-                child: _buildNumberField(controller: _thighController, label: 'Coxa', suffix: 'cm', isOptional: true),
+                child: _buildNumberField(controller: _thighController, label: AppLocalizations.of(context)!.thighLabel, suffix: 'cm', isOptional: true),
               ),
             ),
             const SizedBox(height: 24),

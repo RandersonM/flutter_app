@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:opfan/shared/utils/constants.dart';
+import 'package:opfan/l10n/app_localizations.dart';
 
 const _purple = Color(0xFF8B5CF6);
 const _cardBg = Color(0xFF16161C);
@@ -37,7 +38,7 @@ class FinancesEmptyState extends StatelessWidget {
             ),
             const SizedBox(height: Constants.margin * 2),
             Text(
-              'Economize com a Nami',
+              AppLocalizations.of(context)!.saveWithNami,
               style: Theme.of(context).textTheme.titleLarge?.copyWith(
                     color: Colors.white,
                     fontWeight: FontWeight.bold,
@@ -46,7 +47,7 @@ class FinancesEmptyState extends StatelessWidget {
             ),
             const SizedBox(height: Constants.margin),
             Text(
-              'Configure suas finanças do mês e acompanhe\nseu progresso em tempo real.',
+              AppLocalizations.of(context)!.configureYourFinances,
               style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                     color: Colors.white54,
                     height: 1.5,
@@ -54,19 +55,19 @@ class FinancesEmptyState extends StatelessWidget {
               textAlign: TextAlign.center,
             ),
             const SizedBox(height: Constants.margin * 3),
-            const _FeaturePill(
+            _FeaturePill(
               icon: Icons.trending_up_rounded,
-              label: 'Visão geral do mês',
+              label: AppLocalizations.of(context)!.monthOverview,
             ),
             const SizedBox(height: 10),
-            const _FeaturePill(
+            _FeaturePill(
               icon: Icons.donut_large_rounded,
-              label: 'Gráfico de balanço',
+              label: AppLocalizations.of(context)!.balanceChart,
             ),
             const SizedBox(height: 10),
-            const _FeaturePill(
+            _FeaturePill(
               icon: Icons.pie_chart_rounded,
-              label: 'Gastos por categoria',
+              label: AppLocalizations.of(context)!.expensesByCategory,
             ),
             const SizedBox(height: Constants.margin * 3),
             SizedBox(
@@ -74,7 +75,7 @@ class FinancesEmptyState extends StatelessWidget {
               child: FilledButton.icon(
                 onPressed: onSetup,
                 icon: const Icon(Icons.add_rounded, size: 18),
-                label: const Text('Configurar finanças'),
+                label: Text(AppLocalizations.of(context)!.setupFinances),
                 style: FilledButton.styleFrom(
                   backgroundColor: _purple,
                   foregroundColor: Colors.white,

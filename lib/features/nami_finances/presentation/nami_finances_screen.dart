@@ -93,7 +93,7 @@ class _NamiFinancesScreenState extends State<NamiFinancesScreen> {
               }
 
               if (state is NamiFinancesError) {
-                return Center(child: Text('Erro: ${state.message}'));
+                return Center(child: Text(AppLocalizations.of(context)!.errorPrefix(state.message)));
               }
 
               return const SizedBox.shrink();

@@ -63,9 +63,9 @@ class _CreateCrewScreenState extends State<CreateCrewScreen> {
         title: Text(AppLocalizations.of(context)!.addTag),
         content: TextField(
           controller: tagController,
-          decoration: const InputDecoration(
-            labelText: 'Nome da tag',
-            hintText: 'Ex: Piratas, Aventureiros, etc.',
+          decoration: InputDecoration(
+            labelText: AppLocalizations.of(context)!.tagNameLabel,
+            hintText: AppLocalizations.of(context)!.crewTagsHint,
           ),
           autofocus: true,
         ),
@@ -89,8 +89,8 @@ class _CreateCrewScreenState extends State<CreateCrewScreen> {
   Future<void> _generateJollyRoger() async {
     if (_jollyRogerPromptController.text.trim().isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Digite um prompt para gerar a bandeira pirata'),
+        SnackBar(
+          content: Text(AppLocalizations.of(context)!.promptPirateFlag),
           backgroundColor: Colors.orange,
         ),
       );
@@ -120,8 +120,8 @@ class _CreateCrewScreenState extends State<CreateCrewScreen> {
 
       if (imageUrl != null && mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('Bandeira pirata gerada com sucesso!'),
+          SnackBar(
+            content: Text(AppLocalizations.of(context)!.flagGeneratedSuccess),
             backgroundColor: Colors.green,
           ),
         );
@@ -133,7 +133,7 @@ class _CreateCrewScreenState extends State<CreateCrewScreen> {
       if (mounted) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text('Erro ao gerar bandeira: $e'),
+          content: Text(AppLocalizations.of(context)!.errorGeneratingFlag(e.toString())),
             backgroundColor: Theme.of(context).colorScheme.error,
           ),
         );
@@ -144,8 +144,8 @@ class _CreateCrewScreenState extends State<CreateCrewScreen> {
   Future<void> _generateBoat() async {
     if (_boatPromptController.text.trim().isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Digite um prompt para gerar o barco'),
+        SnackBar(
+          content: Text(AppLocalizations.of(context)!.promptShip),
           backgroundColor: Colors.orange,
         ),
       );
@@ -175,8 +175,8 @@ class _CreateCrewScreenState extends State<CreateCrewScreen> {
 
       if (imageUrl != null && mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('Barco gerado com sucesso!'),
+          SnackBar(
+            content: Text(AppLocalizations.of(context)!.shipGeneratedSuccess),
             backgroundColor: Colors.green,
           ),
         );
@@ -188,7 +188,7 @@ class _CreateCrewScreenState extends State<CreateCrewScreen> {
       if (mounted) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text('Erro ao gerar barco: $e'),
+          content: Text(AppLocalizations.of(context)!.errorGeneratingShip(e.toString())),
           backgroundColor: Theme.of(context).colorScheme.error,
         ),
       );
@@ -206,16 +206,15 @@ class _CreateCrewScreenState extends State<CreateCrewScreen> {
       child: Builder(
         builder: (context) {
           return Scaffold(
-            appBar: const DefaultAppBar(
-              title: Text('Criar Tripulação'),
-              
+            appBar: DefaultAppBar(
+              title: Text(AppLocalizations.of(context)!.createCrewTitle),
             ),
             body: BlocListener<CreateCrewBloc, CreateCrewState>(
               listener: (context, state) {
                 if (state is CreateCrewSuccess) {
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(
-                      content: const Text('Tripulação criada com sucesso!'),
+                      content: Text(AppLocalizations.of(context)!.crewCreatedSuccess),
                       backgroundColor: AppColors.green[500]!,
                     ),
                   );
@@ -223,7 +222,7 @@ class _CreateCrewScreenState extends State<CreateCrewScreen> {
                 } else if (state is CreateCrewFailure) {
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(
-                      content: Text('Erro: ${state.error}'),
+                      content: Text(AppLocalizations.of(context)!.errorPrefix(state.error)),
                       backgroundColor: Theme.of(context).colorScheme.error,
                     ),
                   );
@@ -279,8 +278,8 @@ class _CreateCrewScreenState extends State<CreateCrewScreen> {
                           TextFormField(
                             controller: _nameController,
                             decoration: InputDecoration(
-                              labelText: 'Nome da Tripulação *',
-                              hintText: 'Ex: Mugiwaras Custom',
+                              labelText: AppLocalizations.of(context)!.crewNameRequired,
+                              hintText: AppLocalizations.of(context)!.customCrewHint,
                               prefixIcon: const Icon(Icons.flag),
                               border: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(12),
@@ -306,7 +305,7 @@ class _CreateCrewScreenState extends State<CreateCrewScreen> {
                             maxLines: 3,
                             decoration: InputDecoration(
                               labelText: 'Descrição',
-                              hintText: 'Conte um pouco sobre sua tripulação...',
+                              hintText: AppLocalizations.of(context)!.crewDescriptionHint,
                               prefixIcon: const Icon(Icons.description),
                               border: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(12),
@@ -404,15 +403,15 @@ class _CreateCrewScreenState extends State<CreateCrewScreen> {
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                const Row(
+                                Row(
                                   children: [
-                                    Icon(
+                                    const Icon(
                                       Icons.flag,
                                     ),
-                                    SizedBox(width: 8),
+                                    const SizedBox(width: 8),
                                     Text(
-                                      'Bandeira Pirata (Jolly Roger)',
-                                      style: TextStyle(
+                                      AppLocalizations.of(context)!.pirateFlagLabel,
+                                      style: const TextStyle(
                                         fontSize: 16,
                                         fontWeight: FontWeight.w500,
                                       ),
@@ -423,7 +422,7 @@ class _CreateCrewScreenState extends State<CreateCrewScreen> {
                                 TextFormField(
                                   controller: _jollyRogerPromptController,
                                   decoration: InputDecoration(
-                                    labelText: 'Prompt para IA',
+                                    labelText: AppLocalizations.of(context)!.aiPromptLabel,
                                     hintText:
                                         'Ex: caveira com espadas cruzadas, bandeira negra',
                                     border: OutlineInputBorder(
@@ -516,7 +515,7 @@ class _CreateCrewScreenState extends State<CreateCrewScreen> {
                                       Icons.directions_boat,
                                     ),
                                     Text(
-                                      'Barco da Tripulação',
+                                      AppLocalizations.of(context)!.crewShipLabel,
                                       style: Theme.of(context)
                                           .textTheme
                                           .titleMedium
@@ -531,8 +530,8 @@ class _CreateCrewScreenState extends State<CreateCrewScreen> {
                                 TextFormField(
                                   controller: _boatNameController,
                                   decoration: InputDecoration(
-                                    labelText: 'Nome do Barco',
-                                    hintText: 'Ex: Going Merry',
+                                    labelText: AppLocalizations.of(context)!.shipNameLabel,
+                                    hintText: AppLocalizations.of(context)!.merryShipHint,
                                     prefixIcon:
                                         const Icon(Icons.directions_boat),
                                     border: OutlineInputBorder(
@@ -547,7 +546,7 @@ class _CreateCrewScreenState extends State<CreateCrewScreen> {
                                 TextFormField(
                                   controller: _boatPromptController,
                                   decoration: InputDecoration(
-                                    labelText: 'Prompt para IA',
+                                    labelText: AppLocalizations.of(context)!.aiPromptLabel,
                                     hintText:
                                         'Ex: navio pirata de madeira com velas pretas',
                                     border: OutlineInputBorder(
@@ -696,9 +695,9 @@ class _CreateCrewScreenState extends State<CreateCrewScreen> {
                                           ),
                                         ),
                                       )
-                                    : const Text(
-                                        'Criar Tripulação',
-                                        style: TextStyle(
+                                    : Text(
+                                        AppLocalizations.of(context)!.createCrewTitle,
+                                        style: const TextStyle(
                                           fontSize: 16,
                                           fontWeight: FontWeight.bold,
                                         ),

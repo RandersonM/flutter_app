@@ -9,7 +9,7 @@ class GeminiService {
   
   static const String _baseUrl =
       'https://generativelanguage.googleapis.com/v1beta';
-  static const String _textModel = 'gemini-2.0-flash-lite';
+  static const String _textModel = 'gemini-2.5-flash-lite';
   static const String _imageModel = 'gemini-2.5-flash-image';
 
   final Map<String, String> _imageCache = {};
@@ -18,7 +18,7 @@ class GeminiService {
 
   bool _quotaExceeded = false;
   DateTime? _quotaExceededTime;
-  static const Duration _quotaResetDuration = Duration(hours: 24);
+  static const Duration _quotaResetDuration = Duration(minutes: 2);
 
   late final Dio _dio;
 

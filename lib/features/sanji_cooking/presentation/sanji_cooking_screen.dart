@@ -88,7 +88,7 @@ class _SanjiCookingScreenState extends State<SanjiCookingScreen> {
                                 style: OutlinedButton.styleFrom(
                                   padding: const EdgeInsets.symmetric(vertical: 16),
                                 ),
-                                child: const Text('Atualizar Composição Corporal'),
+                                child: Text(AppLocalizations.of(context)!.updateBodyCompositionLabel),
                               ),
                             ),
                           ],
@@ -111,7 +111,7 @@ class _SanjiCookingScreenState extends State<SanjiCookingScreen> {
                                 const SizedBox(height: 16),
                                 ElevatedButton(
                                   onPressed: () => _bloc.add(const InitializeSanjiCooking()),
-                                  child: const Text('Tentar novamente'),
+                                  child: Text(AppLocalizations.of(context)!.tryAgain),
                                 ),
                               ],
                             ),

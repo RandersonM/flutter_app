@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:opfan/app/di/injection.dart';
+import 'package:opfan/l10n/app_localizations.dart';
 import 'add_goal_dialog.dart';
 
 class EmptyTimeline extends StatelessWidget {
@@ -28,7 +29,7 @@ class EmptyTimeline extends StatelessWidget {
             ),
             const SizedBox(height: 24),
             Text(
-              'Nenhum objetivo criado',
+              AppLocalizations.of(context)!.noObjectivesCreated,
               style: Theme.of(context).textTheme.titleLarge?.copyWith(
                 fontWeight: FontWeight.bold,
                 color: Colors.grey[700],
@@ -37,7 +38,7 @@ class EmptyTimeline extends StatelessWidget {
             ),
             const SizedBox(height: 12),
             Text(
-              'Comece criando seu primeiro objetivo para organizar suas metas de estudo e acompanhar seu progresso.',
+              AppLocalizations.of(context)!.emptyTimelineSubtitle,
               style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                 color: Colors.grey[600],
               ),
@@ -53,7 +54,7 @@ class EmptyTimeline extends StatelessWidget {
                 );
               },
               icon: const Icon(FontAwesomeIcons.plus),
-              label: const Text('Criar Primeiro Objetivo'),
+              label: Text(AppLocalizations.of(context)!.createFirstGoal),
               style: ElevatedButton.styleFrom(
                 padding: const EdgeInsets.symmetric(
                   horizontal: 24,
