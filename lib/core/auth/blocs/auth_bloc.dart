@@ -44,10 +44,8 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         final user = await _authService.checkAuthStatus();
         if (user != null) {
           final processedUser = _processUserWithMiddleware(user);
-          final hasCompleteProfile =
-              await _authService.hasCompleteProfile(user.uid);
 
-          if (hasCompleteProfile) {
+          if (processedUser.isProfileComplete) {
             emit(AuthAuthenticated(user: processedUser));
           } else {
             emit(AuthNeedsOnboarding(user: processedUser));
@@ -199,10 +197,8 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         final user = await _authService.checkAuthStatus();
         if (user != null) {
           final processedUser = _processUserWithMiddleware(user);
-          final hasCompleteProfile =
-              await _authService.hasCompleteProfile(user.uid);
 
-          if (hasCompleteProfile) {
+          if (processedUser.isProfileComplete) {
             emit(AuthAuthenticated(user: processedUser));
           } else {
             emit(AuthNeedsOnboarding(user: processedUser));

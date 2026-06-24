@@ -8,7 +8,6 @@ import 'package:hive/hive.dart';
 import 'package:opfan/core/auth/models/user_model.dart';
 import 'package:opfan/core/services/notification_service.dart';
 import 'package:opfan/core/user_profile/repository/user_profile_repository_interface.dart';
-import 'package:opfan/core/user_profile/repository/user_profile_repository.dart';
 
 enum AuthStatus { unknown, authenticated, unauthenticated }
 
@@ -24,10 +23,10 @@ class AuthService {
   AuthService({
     FirebaseAuth? firebaseAuth,
     GoogleSignIn? googleSignIn,
-    IUserProfileRepository? userProfileRepository,
+    required IUserProfileRepository userProfileRepository,
   })  : _firebaseAuth = firebaseAuth ?? FirebaseAuth.instance,
         _googleSignIn = googleSignIn ?? GoogleSignIn(),
-        _userProfileRepository = userProfileRepository ?? UserProfileRepository();
+        _userProfileRepository = userProfileRepository;
 
   Future<void> init() async {
     try {
@@ -297,8 +296,8 @@ class AuthService {
     try {
       final User? user = _firebaseAuth.currentUser;
       if (user != null) {
-        await _userProfileRepository.deleteProfile(user.uid);
         await user.delete();
+        await _userProfileRepository.deleteProfile(user.uid);
         await _googleSignIn.signOut();
         await _clearUser();
       }

@@ -45,12 +45,20 @@ class UserProfileRepository implements IUserProfileRepository {
   @override
   Future<void> saveProfile(UserModel profile) async {
     try {
-      final data = profile.toJson();
-
-      // Store timestamps as Firestore Timestamps for efficient range queries.
-      data['created_at'] = Timestamp.fromDate(profile.createdAt);
-      data['last_sign_in'] = Timestamp.fromDate(profile.lastSignIn);
-      data['updated_at'] = FieldValue.serverTimestamp();
+      final data = <String, dynamic>{
+        'gender': profile.gender,
+        'age': profile.age,
+        'height_cm': profile.heightCm,
+        'weight_kg': profile.weightKg,
+        'activity_level': profile.activityLevel,
+        'goal': profile.goal,
+        'waist_cm': profile.waistCm,
+        'chest_cm': profile.chestCm,
+        'arm_cm': profile.armCm,
+        'hip_cm': profile.hipCm,
+        'thigh_cm': profile.thighCm,
+        'updated_at': FieldValue.serverTimestamp(),
+      };
 
       await _docRef(profile.uid).set(data, SetOptions(merge: true));
     } catch (e) {

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:opfan/shared/utils/app_routes.dart';
 
 class GlobalErrorBoundary extends StatefulWidget {
   final Widget child;
@@ -12,10 +13,12 @@ class GlobalErrorBoundary extends StatefulWidget {
 class _GlobalErrorBoundaryState extends State<GlobalErrorBoundary> {
   bool _hasError = false;
   FlutterErrorDetails? _errorDetails;
+  ErrorWidgetBuilder? _previousBuilder;
 
   @override
   void initState() {
     super.initState();
+    _previousBuilder = ErrorWidget.builder;
     ErrorWidget.builder = (FlutterErrorDetails details) {
       if (mounted) {
         WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -30,6 +33,14 @@ class _GlobalErrorBoundaryState extends State<GlobalErrorBoundary> {
       // Return empty size during exception layout cycle
       return const SizedBox.shrink();
     };
+  }
+
+  @override
+  void dispose() {
+    if (_previousBuilder != null) {
+      ErrorWidget.builder = _previousBuilder!;
+    }
+    super.dispose();
   }
 
   @override
@@ -117,6 +128,26 @@ class _GlobalErrorBoundaryState extends State<GlobalErrorBoundary> {
                         },
                         icon: const Icon(Icons.refresh),
                         label: const Text('Try Again'),
+                      ),
+                      const SizedBox(height: 16),
+                      ElevatedButton.icon(
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Theme.of(context).primaryColor,
+                          foregroundColor: Colors.white,
+                          padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                        ),
+                        onPressed: () {
+                          setState(() {
+                            _hasError = false;
+                            _errorDetails = null;
+                          });
+                          Navigator.pushNamedAndRemoveUntil(context, AppRoutes.home, (route) => false);
+                        },
+                        icon: const Icon(Icons.home),
+                        label: const Text('Go Home'),
                       ),
                     ],
                   ),
