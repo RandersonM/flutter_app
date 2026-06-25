@@ -251,9 +251,10 @@ class _WorkoutSetupState extends State<WorkoutSetup> {
               });
             },
             validator: (value) {
-              if (value == null)
+              if (value == null) {
                 return AppLocalizations.of(context)!
                     .workout_validation_gender_required;
+              }
               return null;
             },
             itemToString: (status) => status,
@@ -337,9 +338,10 @@ class _WorkoutSetupState extends State<WorkoutSetup> {
               });
             },
             validator: (value) {
-              if (value == null)
+              if (value == null) {
                 return AppLocalizations.of(context)!
                     .workout_validation_workout_days_required;
+              }
               return null;
             },
             itemToString: (days) =>

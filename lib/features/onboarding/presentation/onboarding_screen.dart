@@ -71,26 +71,34 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
     if (_initialData == null) return;
 
     _gender = _initialData!.gender;
-    if (_initialData!.age != null)
+    if (_initialData!.age != null) {
       _ageController.text = _initialData!.age.toString();
-    if (_initialData!.heightCm != null)
+    }
+    if (_initialData!.heightCm != null) {
       _heightController.text = _initialData!.heightCm.toString();
-    if (_initialData!.weightKg != null)
+    }
+    if (_initialData!.weightKg != null) {
       _weightController.text = _initialData!.weightKg.toString();
+    }
 
     _activityLevel = _initialData!.activityLevel;
     _goal = _initialData!.goal;
 
-    if (_initialData!.waistCm != null)
+    if (_initialData!.waistCm != null) {
       _waistController.text = _initialData!.waistCm.toString();
-    if (_initialData!.chestCm != null)
+    }
+    if (_initialData!.chestCm != null) {
       _chestController.text = _initialData!.chestCm.toString();
-    if (_initialData!.armCm != null)
+    }
+    if (_initialData!.armCm != null) {
       _armController.text = _initialData!.armCm.toString();
-    if (_initialData!.hipCm != null)
+    }
+    if (_initialData!.hipCm != null) {
       _hipController.text = _initialData!.hipCm.toString();
-    if (_initialData!.thighCm != null)
+    }
+    if (_initialData!.thighCm != null) {
       _thighController.text = _initialData!.thighCm.toString();
+    }
   }
 
   @override

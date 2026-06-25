@@ -224,10 +224,14 @@ class CrewMembersList extends StatelessWidget {
         // Prioridade para capitão
         if (roleA.contains('capitão') ||
             roleA.contains('capitao') ||
-            roleA.contains('captain')) return -1;
+            roleA.contains('captain')) {
+          return -1;
+        }
         if (roleB.contains('capitão') ||
             roleB.contains('capitao') ||
-            roleB.contains('captain')) return 1;
+            roleB.contains('captain')) {
+          return 1;
+        }
 
         // Prioridade para vice-capitão
         if (roleA.contains('vice')) return -1;

@@ -335,7 +335,7 @@ class _HomeScreenState extends State<HomeScreen> {
             icon:
                 character.devilFruit != null && character.devilFruit!.isNotEmpty
                     ? null
-                    : PhosphorIconsRegular.swimmingPool,
+                    : PhosphorIconsRegular.personSimpleSwim,
           ),
           StatisticData(
             label: AppLocalizations.of(context)!.signo,

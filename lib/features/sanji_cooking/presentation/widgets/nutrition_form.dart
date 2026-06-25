@@ -150,8 +150,9 @@ class _NutritionFormState extends State<NutritionForm> {
               });
             },
             validator: (value) {
-              if (value == null)
+              if (value == null) {
                 return AppLocalizations.of(context)!.selectGender;
+              }
               return null;
             },
             itemToString: (gender) => gender,
@@ -234,9 +235,10 @@ class _NutritionFormState extends State<NutritionForm> {
               });
             },
             validator: (value) {
-              if (value == null)
+              if (value == null) {
                 return AppLocalizations.of(context)!
                     .selectActivityLevelValidation;
+              }
               return null;
             },
             itemToString: (level) =>
@@ -278,8 +280,9 @@ class _NutritionFormState extends State<NutritionForm> {
               });
             },
             validator: (value) {
-              if (value == null)
+              if (value == null) {
                 return AppLocalizations.of(context)!.selectGoalValidation;
+              }
               return null;
             },
             itemToString: (goal) =>

@@ -17,9 +17,9 @@ class FightingStyleDetails extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
-    if (fightingStyle == null) {
-      return const SizedBox.shrink();
-    }
+    if (fightingStyle == null) return const SizedBox.shrink();
+
+    final theme = Theme.of(context);
 
     return Card(
       margin: const EdgeInsets.symmetric(
@@ -29,145 +29,172 @@ class FightingStyleDetails extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            // Header
             Row(
               children: [
-                AppIcon(
-                  PhosphorIconsRegular.handFist,
-                  color: Theme.of(context).primaryColor,
-                ),
+                AppIcon(PhosphorIconsRegular.handFist,
+                    color: theme.colorScheme.primary),
                 const SizedBox(width: Constants.margin),
                 Text(
                   l10n.fightingStyleSectionTitle,
-                  style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                        fontWeight: FontWeight.bold,
-                      ),
+                  style: theme.textTheme.titleMedium?.copyWith(
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
               ],
             ),
-            const SizedBox(height: Constants.margin * 2),
-            if (fightingStyle!.name != null &&
-                fightingStyle!.name!.isNotEmpty) ...[
-              _buildDetailRow(
-                  context, l10n.fightingStyleNameLabel, fightingStyle!.name!),
-              const SizedBox(height: Constants.margin),
-            ],
-            _buildDetailRow(
-                context,
-                l10n.fightingStyleTypeLabel,
-                CharacterLocalizationMapper.getFightingTypeLabel(
-                    fightingStyle!.type, l10n)),
-            if (fightingStyle!.weapons != null &&
-                fightingStyle!.weapons!.isNotEmpty) ...[
-              const SizedBox(height: Constants.margin),
-              _buildDetailRow(context, l10n.fightingStyleWeaponsLabel,
-                  fightingStyle!.weapons!.join(', ')),
-            ],
+            const SizedBox(height: Constants.margin * 1.5),
+            Divider(
+                height: 1,
+                thickness: 0.5,
+                color: theme.colorScheme.outline.withValues(alpha: 0.3)),
+            const SizedBox(height: Constants.margin * 1.5),
+
+            // Info chips row
+            Wrap(
+              spacing: 8,
+              runSpacing: 8,
+              children: [
+                if (fightingStyle!.name != null &&
+                    fightingStyle!.name!.isNotEmpty)
+                  _InfoChip(
+                    icon: PhosphorIconsRegular.tag,
+                    label: l10n.fightingStyleNameLabel,
+                    value: fightingStyle!.name!,
+                  ),
+                _InfoChip(
+                  icon: PhosphorIconsRegular.handFist,
+                  label: l10n.fightingStyleTypeLabel,
+                  value: CharacterLocalizationMapper.getFightingTypeLabel(
+                      fightingStyle!.type, l10n),
+                ),
+                if (fightingStyle!.weapons != null &&
+                    fightingStyle!.weapons!.isNotEmpty)
+                  _InfoChip(
+                    icon: PhosphorIconsRegular.sword,
+                    label: l10n.fightingStyleWeaponsLabel,
+                    value: fightingStyle!.weapons!.join(', '),
+                  ),
+              ],
+            ),
+
+            // Attacks
             if (fightingStyle!.attacks != null &&
                 fightingStyle!.attacks!.isNotEmpty) ...[
               const SizedBox(height: Constants.margin * 2),
-              Text(
-                l10n.fightingStyleAttacksLabel,
-                style: Theme.of(context).textTheme.titleSmall?.copyWith(
+              Row(
+                children: [
+                  AppIcon(PhosphorIconsRegular.lightning,
+                      size: 16, color: theme.colorScheme.primary),
+                  const SizedBox(width: 6),
+                  Text(
+                    l10n.fightingStyleAttacksLabel,
+                    style: theme.textTheme.titleSmall?.copyWith(
                       fontWeight: FontWeight.bold,
-                      color: Theme.of(context).colorScheme.primary,
+                      color: theme.colorScheme.primary,
                     ),
+                  ),
+                ],
               ),
               const SizedBox(height: Constants.margin),
-              _buildAttacksGrid(context, fightingStyle!.attacks!),
+              Wrap(
+                spacing: 8,
+                runSpacing: 8,
+                children: fightingStyle!.attacks!
+                    .map((attack) => _AttackChip(name: attack))
+                    .toList(),
+              ),
             ],
           ],
         ),
       ),
     );
   }
+}
 
-  Widget _buildDetailRow(BuildContext context, String label, String value) {
-    return Row(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        SizedBox(
-          width: 120,
-          child: Text(
-            '$label:',
-            style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                  fontWeight: FontWeight.bold,
-                ),
+class _InfoChip extends StatelessWidget {
+  const _InfoChip({
+    required this.icon,
+    required this.label,
+    required this.value,
+  });
+
+  final IconData icon;
+  final String label;
+  final String value;
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+      decoration: BoxDecoration(
+        color: theme.colorScheme.surfaceContainerHigh.withValues(alpha: 0.5),
+        borderRadius: BorderRadius.circular(10),
+        border: Border.all(
+            color: theme.colorScheme.outline.withValues(alpha: 0.15)),
+      ),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Icon(icon, size: 14, color: theme.colorScheme.primary),
+          const SizedBox(width: 6),
+          Text(
+            '$label: ',
+            style: theme.textTheme.labelSmall?.copyWith(
+              color: theme.colorScheme.onSurfaceVariant,
+            ),
           ),
-        ),
-        const SizedBox(width: Constants.margin),
-        Expanded(
-          child: Text(
-            value,
-            style: Theme.of(context).textTheme.bodyMedium,
-            maxLines: 4,
-            overflow: TextOverflow.ellipsis,
-            textAlign: TextAlign.end,
+          ConstrainedBox(
+            constraints: const BoxConstraints(maxWidth: 180),
+            child: Text(
+              value,
+              style: theme.textTheme.labelSmall?.copyWith(
+                fontWeight: FontWeight.w700,
+                color: theme.colorScheme.onSurface,
+              ),
+              overflow: TextOverflow.ellipsis,
+            ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
+}
 
-  Widget _buildAttacksGrid(BuildContext context, List<String> attacks) {
+class _AttackChip extends StatelessWidget {
+  const _AttackChip({required this.name});
+
+  final String name;
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return Container(
-      padding: const EdgeInsets.all(Constants.margin),
+      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
       decoration: BoxDecoration(
-        color: Theme.of(context)
-            .colorScheme
-            .surfaceContainerHigh
-            .withValues(alpha: 0.5),
-        borderRadius: BorderRadius.circular(12),
+        color: theme.colorScheme.surface,
+        borderRadius: BorderRadius.circular(8),
         border: Border.all(
-          color: Theme.of(context).colorScheme.outline.withValues(alpha: 0.2),
-          width: 2,
+          color: theme.colorScheme.outline.withValues(alpha: 0.4),
+          width: 1.5,
         ),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withValues(alpha: 0.08),
+            offset: const Offset(1, 1),
+            blurRadius: 3,
+          ),
+        ],
       ),
-      child: GridView.builder(
-        shrinkWrap: true,
-        physics: const NeverScrollableScrollPhysics(),
-        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: 2,
-          childAspectRatio: 2.5,
-          crossAxisSpacing: 8,
-          mainAxisSpacing: 8,
+      child: Text(
+        name,
+        textAlign: TextAlign.center,
+        style: theme.textTheme.labelMedium?.copyWith(
+          fontWeight: FontWeight.w800,
+          letterSpacing: 0.5,
+          color: theme.colorScheme.onSurface,
         ),
-        itemCount: attacks.length,
-        itemBuilder: (context, index) {
-          return Container(
-            padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 2),
-            decoration: BoxDecoration(
-              color: Theme.of(context).colorScheme.surface,
-              borderRadius: BorderRadius.circular(8),
-              border: Border.all(
-                color: Theme.of(context)
-                    .colorScheme
-                    .outline
-                    .withValues(alpha: 0.5),
-                width: 1.5,
-              ),
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.black.withValues(alpha: 0.1),
-                  offset: const Offset(1, 1),
-                  blurRadius: 2,
-                ),
-              ],
-            ),
-            child: Center(
-              child: Text(
-                attacks[index],
-                textAlign: TextAlign.center,
-                style: Theme.of(context).textTheme.labelMedium?.copyWith(
-                      fontWeight: FontWeight.w800,
-                      letterSpacing: 0.5,
-                      color: Theme.of(context).colorScheme.onSurface,
-                    ),
-                maxLines: 2,
-                overflow: TextOverflow.ellipsis,
-              ),
-            ),
-          );
-        },
       ),
     );
   }

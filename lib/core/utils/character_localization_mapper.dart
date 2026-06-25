@@ -80,12 +80,15 @@ class CharacterLocalizationMapper {
 
   static String mapLocalizedToHaki(
       String localizedHaki, AppLocalizations l10n) {
-    if (localizedHaki == l10n.haoshokuHaki)
+    if (localizedHaki == l10n.haoshokuHaki) {
       return 'haoshoku haki (king\'s haki)';
-    if (localizedHaki == l10n.busoshokuHaki)
+    }
+    if (localizedHaki == l10n.busoshokuHaki) {
       return 'busoshoku haki (armament haki)';
-    if (localizedHaki == l10n.kenbunshokuHaki)
+    }
+    if (localizedHaki == l10n.kenbunshokuHaki) {
       return 'kenbunshoku haki (observation haki)';
+    }
     return localizedHaki.toLowerCase(); // Return lowercase if no mapping found
   }
 
