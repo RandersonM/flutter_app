@@ -13,15 +13,15 @@ class CharacterDescriptionSection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
-    
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
           l10n.description,
           style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-            fontWeight: FontWeight.bold,
-          ),
+                fontWeight: FontWeight.bold,
+              ),
         ),
         const SizedBox(height: 16),
         CustomTextField(
@@ -33,4 +33,4 @@ class CharacterDescriptionSection extends StatelessWidget {
       ],
     );
   }
-} 
+}

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:opfan/core/models/workout_assessment_model.dart';
 import 'package:opfan/l10n/app_localizations.dart';
+
 class WorkoutHeader extends StatelessWidget {
   final WorkoutAssessmentModel? currentAssessment;
 
@@ -49,7 +50,9 @@ class WorkoutHeader extends StatelessWidget {
     final statusColor = isDefeated
         ? Theme.of(context).colorScheme.error
         : Colors.green.shade500;
-    final statusLabel = isDefeated ? AppLocalizations.of(context)!.workoutStatusDefeated : AppLocalizations.of(context)!.workoutStatusOnTarget;
+    final statusLabel = isDefeated
+        ? AppLocalizations.of(context)!.workoutStatusDefeated
+        : AppLocalizations.of(context)!.workoutStatusOnTarget;
 
     return Stack(
       children: [
@@ -145,8 +148,9 @@ class WorkoutHeader extends StatelessWidget {
         ? AppLocalizations.of(context)!.zoroQuoteDefeated
         : AppLocalizations.of(context)!.zoroQuoteProud;
 
-    final titleText =
-        isDefeated ? AppLocalizations.of(context)!.zoroStatusDefeated : AppLocalizations.of(context)!.zoroStatusProud;
+    final titleText = isDefeated
+        ? AppLocalizations.of(context)!.zoroStatusDefeated
+        : AppLocalizations.of(context)!.zoroStatusProud;
 
     return Container(
       padding: const EdgeInsets.all(20),
@@ -160,8 +164,8 @@ class WorkoutHeader extends StatelessWidget {
         children: [
           Text(
             titleText,
-                  style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                    fontWeight: FontWeight.bold,
+            style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                  fontWeight: FontWeight.bold,
                   color: accentColor,
                 ),
           ),
@@ -184,7 +188,8 @@ class WorkoutHeader extends StatelessWidget {
                   children: [
                     Text(
                       isDefeated
-                          ? AppLocalizations.of(context)!.workoutsRemaining(remaining)
+                          ? AppLocalizations.of(context)!
+                              .workoutsRemaining(remaining)
                           : AppLocalizations.of(context)!.weeklyGoalCompleted,
                       style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                             fontWeight: FontWeight.w600,
@@ -201,7 +206,8 @@ class WorkoutHeader extends StatelessWidget {
                     ),
                     const SizedBox(height: 4),
                     Text(
-                      AppLocalizations.of(context)!.workoutDaysCount(workouts, goal),
+                      AppLocalizations.of(context)!
+                          .workoutDaysCount(workouts, goal),
                       style: Theme.of(context).textTheme.bodySmall?.copyWith(
                             color: Theme.of(context)
                                 .colorScheme

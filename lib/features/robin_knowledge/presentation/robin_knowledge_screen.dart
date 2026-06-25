@@ -1,3 +1,5 @@
+import 'package:opfan/shared/widgets/atoms/app_icon.dart';
+import 'package:phosphor_flutter/phosphor_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:opfan/l10n/app_localizations.dart';
@@ -21,10 +23,11 @@ class RobinKnowledgeScreen extends StatelessWidget {
     });
 
     return Scaffold(
-      appBar:  DefaultAppBar(
+      appBar: DefaultAppBar(
         title: Text(AppLocalizations.of(context)!.knowledgeTitleScreen),
       ),
-      bottomNavigationBar: const BottomNavigation(BottomNavigationPages.knowledge),
+      bottomNavigationBar:
+          const BottomNavigation(BottomNavigationPages.knowledge),
       body: SingleChildScrollView(
         child: Column(
           children: [
@@ -48,13 +51,13 @@ class RobinKnowledgeScreen extends StatelessWidget {
             mainAxisSize: MainAxisSize.max,
             children: [
               Expanded(
-                child:               Text(
-                AppLocalizations.of(context)!.timelineOfObjectives,
-                maxLines: 2,
-                style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                  fontWeight: FontWeight.bold,
+                child: Text(
+                  AppLocalizations.of(context)!.timelineOfObjectives,
+                  maxLines: 2,
+                  style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                        fontWeight: FontWeight.bold,
+                      ),
                 ),
-              ),
               ),
               Flexible(
                 child: TextButton.icon(
@@ -72,7 +75,7 @@ class RobinKnowledgeScreen extends StatelessWidget {
                       borderRadius: BorderRadius.circular(12),
                     ),
                   ),
-                  icon: const Icon(Icons.arrow_forward),
+                  icon: const AppIcon(PhosphorIconsRegular.arrowRight),
                   label: Text(AppLocalizations.of(context)!.seeAll),
                 ),
               ),
@@ -104,12 +107,12 @@ class RobinKnowledgeScreen extends StatelessWidget {
                       borderRadius: BorderRadius.circular(12),
                       border: Border.all(color: AppColors.purple[350]!),
                     ),
-                    child:  Center(
+                    child: Center(
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          const Icon(
-                            Icons.timeline,
+                          const AppIcon(
+                            PhosphorIconsRegular.chartLine,
                             size: 48,
                             color: Colors.grey,
                           ),
@@ -124,7 +127,8 @@ class RobinKnowledgeScreen extends StatelessWidget {
                           ),
                           const SizedBox(height: 4),
                           Text(
-                            AppLocalizations.of(context)!.startCreatingFirstObjective,
+                            AppLocalizations.of(context)!
+                                .startCreatingFirstObjective,
                             style: const TextStyle(
                               fontSize: 14,
                               color: Colors.grey,
@@ -159,15 +163,21 @@ class RobinKnowledgeScreen extends StatelessWidget {
                           children: [
                             Text(
                               AppLocalizations.of(context)!.recentObjectives,
-                              style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                                fontWeight: FontWeight.bold,
-                              ),
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .titleMedium
+                                  ?.copyWith(
+                                    fontWeight: FontWeight.bold,
+                                  ),
                             ),
                             Text(
                               '${state.goals.length} ${AppLocalizations.of(context)!.total}',
-                              style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                                color: Colors.grey[600],
-                              ),
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .bodySmall
+                                  ?.copyWith(
+                                    color: Colors.grey[600],
+                                  ),
                             ),
                           ],
                         ),
@@ -180,7 +190,8 @@ class RobinKnowledgeScreen extends StatelessWidget {
                             final goal = recentGoals[index];
                             return Container(
                               width: MediaQuery.of(context).size.width * 0.9,
-                              margin: const EdgeInsets.only(right: Constants.margin * 2),
+                              margin: const EdgeInsets.only(
+                                  right: Constants.margin * 2),
                               child: GoalCard(goal: goal),
                             );
                           },
@@ -203,8 +214,8 @@ class RobinKnowledgeScreen extends StatelessWidget {
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Icon(
-                          Icons.error,
+                        AppIcon(
+                          PhosphorIconsRegular.warningCircle,
                           size: 48,
                           color: Colors.red[300],
                         ),
@@ -240,12 +251,12 @@ class RobinKnowledgeScreen extends StatelessWidget {
                   borderRadius: BorderRadius.circular(12),
                   border: Border.all(color: Colors.grey[300]!),
                 ),
-                child:  Center(
+                child: Center(
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      const Icon(
-                        Icons.timeline,
+                      const AppIcon(
+                        PhosphorIconsRegular.chartLine,
                         size: 48,
                         color: Colors.grey,
                       ),

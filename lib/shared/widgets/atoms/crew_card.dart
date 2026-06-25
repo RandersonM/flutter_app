@@ -1,3 +1,5 @@
+import 'package:opfan/shared/widgets/atoms/app_icon.dart';
+import 'package:phosphor_flutter/phosphor_flutter.dart';
 // Developed by Randerson Mayllon
 // Copyright © 2022.
 
@@ -26,7 +28,6 @@ class CrewCard extends StatefulWidget {
 }
 
 class _CrewCardState extends State<CrewCard> {
-
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
@@ -72,34 +73,35 @@ class _CrewCardState extends State<CrewCard> {
                     Text(
                       widget.crew.name,
                       style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                        fontWeight: FontWeight.bold,
-                        color: Theme.of(context).colorScheme.primary,
-                      ),
+                            fontWeight: FontWeight.bold,
+                            color: Theme.of(context).colorScheme.primary,
+                          ),
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                     ),
                     const SizedBox(height: Constants.margin),
-                    if (widget.crew.captain != null || widget.crew.viceCaptain != null)
+                    if (widget.crew.captain != null ||
+                        widget.crew.viceCaptain != null)
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           if (widget.crew.captain != null)
                             _buildInfoRow(
                               context,
-                              Icons.person,
+                              PhosphorIconsRegular.user,
                               '${l10n.captain}: ${widget.crew.captain}',
                             ),
                           if (widget.crew.viceCaptain != null)
                             _buildInfoRow(
                               context,
-                              Icons.person_outline,
+                              PhosphorIconsRegular.user,
                               '${l10n.viceCaptain}: ${widget.crew.viceCaptain}',
                             ),
                         ],
                       ),
                     _buildInfoRow(
                       context,
-                      Icons.monetization_on,
+                      PhosphorIconsRegular.coin,
                       '${_formatBounty(widget.crew.members.fold<int>(0, (sum, member) {
                         final bountyString =
                             member.bounty.replaceAll(RegExp(r'[^\d]'), '');
@@ -109,24 +111,28 @@ class _CrewCardState extends State<CrewCard> {
                     ),
                     _buildInfoRow(
                       context,
-                      Icons.group,
+                      PhosphorIconsRegular.users,
                       '${widget.crew.members.length} ${l10n.members(widget.crew.members.length)}',
                     ),
                     if (widget.crew.tags.isNotEmpty)
                       Wrap(
                         spacing: 4,
-                        children: widget.crew.tags.take(2).map((tag) => Chip(
-                          label: Text(
-                            tag,
-                            style: const TextStyle(fontSize: 10),
-                          ),
+                        children: widget.crew.tags
+                            .take(2)
+                            .map((tag) => Chip(
+                                  label: Text(
+                                    tag,
+                                    style: const TextStyle(fontSize: 10),
+                                  ),
                                   backgroundColor: Theme.of(context)
                                       .colorScheme
                                       .primaryContainer
                                       .withValues(alpha: 0.2),
-                          materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                          visualDensity: VisualDensity.compact,
-                        )).toList(),
+                                  materialTapTargetSize:
+                                      MaterialTapTargetSize.shrinkWrap,
+                                  visualDensity: VisualDensity.compact,
+                                ))
+                            .toList(),
                       ),
                   ],
                 ),
@@ -138,7 +144,8 @@ class _CrewCardState extends State<CrewCard> {
                     if (widget.onEdit != null)
                       IconButton(
                         onPressed: widget.onEdit,
-                        icon: const Icon(Icons.edit, size: 20),
+                        icon: const AppIcon(PhosphorIconsRegular.pencil,
+                            size: 20),
                         tooltip: AppLocalizations.of(context)!.edit,
                         padding: EdgeInsets.zero,
                         constraints: const BoxConstraints(),
@@ -146,7 +153,8 @@ class _CrewCardState extends State<CrewCard> {
                     if (widget.onDelete != null)
                       IconButton(
                         onPressed: widget.onDelete,
-                        icon: const Icon(Icons.delete, size: 20, color: Colors.red),
+                        icon: const AppIcon(PhosphorIconsRegular.trash,
+                            size: 20, color: Colors.red),
                         tooltip: AppLocalizations.of(context)!.delete,
                         padding: EdgeInsets.zero,
                         constraints: const BoxConstraints(),
@@ -161,7 +169,8 @@ class _CrewCardState extends State<CrewCard> {
   }
 
   Widget _buildCrewImage() {
-    if (widget.crew.jollyRogerUrl != null && widget.crew.jollyRogerUrl!.isNotEmpty) {
+    if (widget.crew.jollyRogerUrl != null &&
+        widget.crew.jollyRogerUrl!.isNotEmpty) {
       return UniversalImage(
         imageUrl: widget.crew.jollyRogerUrl!,
         fit: BoxFit.fill,
@@ -180,7 +189,8 @@ class _CrewCardState extends State<CrewCard> {
           return _buildPlaceholderImage();
         },
       );
-    } else if (widget.crew.boatImageUrl != null && widget.crew.boatImageUrl!.isNotEmpty) {
+    } else if (widget.crew.boatImageUrl != null &&
+        widget.crew.boatImageUrl!.isNotEmpty) {
       return UniversalImage(
         imageUrl: widget.crew.boatImageUrl!,
         fit: BoxFit.cover,
@@ -215,8 +225,8 @@ class _CrewCardState extends State<CrewCard> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Icon(
-                Icons.sailing,
+              AppIcon(
+                PhosphorIconsRegular.sailboat,
                 size: 32,
                 color: Colors.grey[600],
               ),
@@ -250,8 +260,8 @@ class _CrewCardState extends State<CrewCard> {
           child: Text(
             text,
             style: Theme.of(context).textTheme.bodySmall?.copyWith(
-              color: Colors.grey[600],
-            ),
+                  color: Colors.grey[600],
+                ),
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
           ),
@@ -263,4 +273,4 @@ class _CrewCardState extends State<CrewCard> {
   String _formatBounty(int bounty) {
     return Constants.formatAbbreviateBounty(bounty.toDouble());
   }
-} 
+}

@@ -1,3 +1,5 @@
+import 'package:opfan/shared/widgets/atoms/app_icon.dart';
+import 'package:phosphor_flutter/phosphor_flutter.dart';
 // Developed by Randerson Mayllon
 // Copyright © 2022.
 
@@ -6,7 +8,6 @@ import 'package:opfan/features/one_piece/bloc/search_cubit.dart';
 import 'package:opfan/l10n/app_localizations.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-
 import 'package:opfan/shared/utils/theme.dart';
 
 enum InputState { empty, filled }
@@ -14,13 +15,13 @@ enum InputState { empty, filled }
 class SearchInput extends StatefulWidget {
   SearchInput({Key? key}) : super(key: key);
 
-  final Icon searchIcon = Icon(
-    Icons.search,
+  final Widget searchIcon = AppIcon(
+    PhosphorIconsRegular.magnifyingGlass,
     color: AppColors.grey[700],
     size: IconSize.small,
   );
-  final Icon clearIcon = Icon(
-    Icons.cancel,
+  final Widget clearIcon = AppIcon(
+    PhosphorIconsRegular.xCircle,
     size: IconSize.standard,
     color: AppColors.grey[700]!,
   );

@@ -1,9 +1,10 @@
+import 'package:opfan/shared/widgets/atoms/app_icon.dart';
+import 'package:phosphor_flutter/phosphor_flutter.dart';
 // Developed by Randerson Mayllon
 // Copyright © 2022.
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:opfan/app/di/injection.dart';
 import 'package:opfan/features/home/data/repository/featured_character_repository_interface.dart';
 import 'package:opfan/features/custom_character/data/repository/custom_character_repository_interface.dart';
@@ -45,7 +46,7 @@ class _DuelsScreenState extends State<DuelsScreen> {
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
-    
+
     return BlocProvider.value(
       value: _duelsBloc,
       child: Scaffold(
@@ -53,8 +54,7 @@ class _DuelsScreenState extends State<DuelsScreen> {
         appBar: DefaultAppBar(
           title: Text(
             l10n.duels,
-            style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-            ),
+            style: Theme.of(context).textTheme.headlineSmall?.copyWith(),
           ),
           actions: [
             BlocBuilder<DuelsBloc, DuelsState>(
@@ -62,7 +62,7 @@ class _DuelsScreenState extends State<DuelsScreen> {
                 if (state is DuelsReady) {
                   return IconButton(
                     icon: const Icon(
-                      FontAwesomeIcons.shuffle,
+                      PhosphorIconsRegular.shuffle,
                     ),
                     onPressed: () {
                       _duelsBloc.add(const RandomizeCharacters());
@@ -77,9 +77,8 @@ class _DuelsScreenState extends State<DuelsScreen> {
               builder: (context, state) {
                 if (state is DuelsReady && state.hasCharactersSelected) {
                   return IconButton(
-                    icon: const Icon(
-                      Icons.refresh,
-
+                    icon: const AppIcon(
+                      PhosphorIconsRegular.arrowsClockwise,
                     ),
                     onPressed: () {
                       _duelsBloc.add(const ResetDuel());
@@ -122,15 +121,15 @@ class _DuelsScreenState extends State<DuelsScreen> {
 
   Widget _buildErrorState(String message) {
     final l10n = AppLocalizations.of(context)!;
-    
+
     return Center(
       child: Padding(
         padding: const EdgeInsets.all(Constants.margin * 2),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            const Icon(
-              Icons.error_outline,
+            const AppIcon(
+              PhosphorIconsRegular.warningCircle,
               size: 64,
               color: Colors.white,
             ),
@@ -138,17 +137,17 @@ class _DuelsScreenState extends State<DuelsScreen> {
             Text(
               l10n.error,
               style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                color: Colors.white,
-                fontWeight: FontWeight.bold,
-              ),
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold,
+                  ),
             ),
             const SizedBox(height: Constants.margin),
             Text(
               message,
               textAlign: TextAlign.center,
               style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                color: Colors.white70,
-              ),
+                    color: Colors.white70,
+                  ),
             ),
             const SizedBox(height: Constants.margin * 2),
             ElevatedButton(
@@ -165,16 +164,14 @@ class _DuelsScreenState extends State<DuelsScreen> {
 
   Widget _buildDuelsContent(DuelsReady state) {
     final l10n = AppLocalizations.of(context)!;
-    
+
     return SafeArea(
       child: SingleChildScrollView(
         padding: const EdgeInsets.all(Constants.margin),
         child: Column(
           children: [
             _buildHeader(),
-            
             const SizedBox(height: Constants.margin * 2),
-            
             CharacterSelector(
               title: l10n.selectFirstFighter,
               selectedCharacter: state.firstCharacter,
@@ -187,9 +184,7 @@ class _DuelsScreenState extends State<DuelsScreen> {
               },
               position: 1,
             ),
-            
             const SizedBox(height: Constants.margin * 2),
-            
             if (state.firstCharacter != null && state.secondCharacter != null)
               DuelArena(
                 firstCharacter: state.firstCharacter!,
@@ -203,9 +198,7 @@ class _DuelsScreenState extends State<DuelsScreen> {
               )
             else
               _buildVsIndicator(),
-            
             const SizedBox(height: Constants.margin * 2),
-            
             CharacterSelector(
               title: l10n.selectSecondFighter,
               selectedCharacter: state.secondCharacter,
@@ -218,7 +211,6 @@ class _DuelsScreenState extends State<DuelsScreen> {
               },
               position: 2,
             ),
-            
             if (state.winner != null) ...[
               const SizedBox(height: Constants.margin * 2),
               DuelResult(
@@ -228,7 +220,6 @@ class _DuelsScreenState extends State<DuelsScreen> {
                 },
               ),
             ],
-            
             const SizedBox(height: Constants.margin * 4),
           ],
         ),
@@ -238,7 +229,7 @@ class _DuelsScreenState extends State<DuelsScreen> {
 
   Widget _buildHeader() {
     final l10n = AppLocalizations.of(context)!;
-    
+
     return Column(
       children: [
         const SizedBox(height: Constants.margin),
@@ -278,4 +269,4 @@ class _DuelsScreenState extends State<DuelsScreen> {
       ),
     );
   }
-} 
+}

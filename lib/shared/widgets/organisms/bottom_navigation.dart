@@ -1,12 +1,12 @@
+import 'package:phosphor_flutter/phosphor_flutter.dart';
 // Developed by Randerson Mayllon
 // Copyright © 2022.
 
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:opfan/l10n/app_localizations.dart';
 import 'package:opfan/shared/utils/app_routes.dart';
 import 'package:opfan/shared/utils/constants.dart';
-import 'package:opfan/shared/utils/icons/one_piece_icons.dart';
+
 
 // Fixed dark plum color — identical for light and dark mode.
 const Color _kNavBarBackground = Color(0xFF2D1648);
@@ -104,23 +104,23 @@ class BottomNavigationState extends State<BottomNavigation> {
     final (String label, IconData icon) = switch (page) {
       BottomNavigationPages.finances => (
           localizations.finances,
-          FontAwesomeIcons.coins,
+          PhosphorIconsRegular.coins,
         ),
       BottomNavigationPages.workout => (
           localizations.workout,
-          FontAwesomeIcons.dumbbell,
+          PhosphorIconsRegular.barbell,
         ),
       BottomNavigationPages.home => (
           localizations.home,
-          OnePieceIcons.jollyRoger,
+          PhosphorIconsRegular.skull,
         ),
       BottomNavigationPages.cooking => (
           localizations.cooking,
-          FontAwesomeIcons.utensils,
+          PhosphorIconsRegular.forkKnife,
         ),
       BottomNavigationPages.knowledge => (
           localizations.planner,
-          FontAwesomeIcons.book,
+          PhosphorIconsRegular.book,
         ),
     };
 

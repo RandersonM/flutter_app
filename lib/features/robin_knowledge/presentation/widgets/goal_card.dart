@@ -1,13 +1,12 @@
+import 'package:opfan/shared/widgets/atoms/app_icon.dart';
+import 'package:phosphor_flutter/phosphor_flutter.dart';
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:opfan/core/models/goal_model.dart';
 import 'package:opfan/app/di/injection.dart';
 import 'package:opfan/features/robin_knowledge/bloc/robin_knowledge_bloc.dart';
 import 'package:opfan/features/robin_knowledge/presentation/goal_details_screen.dart';
 import 'package:opfan/shared/utils/theme.dart';
 import 'package:opfan/l10n/app_localizations.dart';
-
-
 
 class GoalCard extends StatelessWidget {
   final GoalModel goal;
@@ -56,8 +55,8 @@ class GoalCard extends StatelessWidget {
               Text(
                 goal.title,
                 style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                  fontWeight: FontWeight.bold,
-                ),
+                      fontWeight: FontWeight.bold,
+                    ),
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
               ),
@@ -66,8 +65,8 @@ class GoalCard extends StatelessWidget {
                 Text(
                   goal.description,
                   style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                    color: Colors.grey[600],
-                  ),
+                        color: Colors.grey[600],
+                      ),
                   maxLines: 2,
                   overflow: TextOverflow.ellipsis,
                 ),
@@ -100,19 +99,19 @@ class GoalCard extends StatelessWidget {
 
     switch (goal.status) {
       case GoalStatus.completed:
-        iconData = FontAwesomeIcons.circleCheck;
+        iconData = PhosphorIconsRegular.checkCircle;
         color = AppColors.purple[350]!;
         break;
       case GoalStatus.inProgress:
-        iconData = FontAwesomeIcons.clock;
+        iconData = PhosphorIconsRegular.clock;
         color = Colors.orange;
         break;
       case GoalStatus.overdue:
-        iconData = FontAwesomeIcons.triangleExclamation;
+        iconData = PhosphorIconsRegular.warning;
         color = Colors.red;
         break;
       default:
-        iconData = FontAwesomeIcons.circle;
+        iconData = PhosphorIconsRegular.circle;
         color = Colors.grey;
     }
 
@@ -129,15 +128,15 @@ class GoalCard extends StatelessWidget {
             Text(
               AppLocalizations.of(context)!.progress,
               style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                fontWeight: FontWeight.w500,
-              ),
+                    fontWeight: FontWeight.w500,
+                  ),
             ),
             Text(
               '${goal.progress.toInt()}%',
               style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                fontWeight: FontWeight.bold,
-                color: AppColors.purple[350],
-              ),
+                    fontWeight: FontWeight.bold,
+                    color: AppColors.purple[350],
+                  ),
             ),
           ],
         ),
@@ -172,13 +171,15 @@ class GoalCard extends StatelessWidget {
     Color textColor;
 
     if (isOverdue) {
-      deadlineText = AppLocalizations.of(context)!.overdueDays(daysUntilDeadline.abs());
+      deadlineText =
+          AppLocalizations.of(context)!.overdueDays(daysUntilDeadline.abs());
       textColor = Colors.red;
     } else if (daysUntilDeadline == 0) {
       deadlineText = AppLocalizations.of(context)!.dueToday;
       textColor = Colors.orange;
     } else if (daysUntilDeadline < 0) {
-      deadlineText = AppLocalizations.of(context)!.dueDaysAgo(daysUntilDeadline.abs());
+      deadlineText =
+          AppLocalizations.of(context)!.dueDaysAgo(daysUntilDeadline.abs());
       textColor = Colors.red;
     } else {
       deadlineText = AppLocalizations.of(context)!.dueInDays(daysUntilDeadline);
@@ -187,8 +188,8 @@ class GoalCard extends StatelessWidget {
 
     return Row(
       children: [
-        Icon(
-          FontAwesomeIcons.calendar,
+        AppIcon(
+          PhosphorIconsRegular.calendar,
           size: 14,
           color: textColor,
         ),
@@ -196,9 +197,9 @@ class GoalCard extends StatelessWidget {
         Text(
           deadlineText,
           style: Theme.of(context).textTheme.bodySmall?.copyWith(
-            color: textColor,
-            fontWeight: FontWeight.w500,
-          ),
+                color: textColor,
+                fontWeight: FontWeight.w500,
+              ),
         ),
       ],
     );
@@ -208,7 +209,7 @@ class GoalCard extends StatelessWidget {
     return Row(
       children: [
         IconButton(
-          icon: const Icon(FontAwesomeIcons.trash, size: 16),
+          icon: const AppIcon(PhosphorIconsRegular.trash, size: 16),
           onPressed: () => _deleteGoal(context),
           tooltip: AppLocalizations.of(context)!.delete,
         ),
@@ -219,17 +220,17 @@ class GoalCard extends StatelessWidget {
   IconData _getCategoryIcon(GoalCategory category) {
     switch (category) {
       case GoalCategory.study:
-        return FontAwesomeIcons.book;
+        return PhosphorIconsRegular.book;
       case GoalCategory.work:
-        return FontAwesomeIcons.briefcase;
+        return PhosphorIconsRegular.briefcase;
       case GoalCategory.personal:
-        return FontAwesomeIcons.user;
+        return PhosphorIconsRegular.user;
       case GoalCategory.health:
-        return FontAwesomeIcons.heart;
+        return PhosphorIconsRegular.heart;
       case GoalCategory.finance:
-        return FontAwesomeIcons.coins;
+        return PhosphorIconsRegular.coins;
       case GoalCategory.other:
-        return FontAwesomeIcons.star;
+        return PhosphorIconsRegular.star;
     }
   }
 
@@ -267,13 +268,13 @@ class GoalCard extends StatelessWidget {
     );
   }
 
-
   void _deleteGoal(BuildContext context) {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
         title: Text(AppLocalizations.of(context)!.deleteObjective),
-        content: Text(AppLocalizations.of(context)!.deleteObjectiveConfirmation(goal.title)),
+        content: Text(AppLocalizations.of(context)!
+            .deleteObjectiveConfirmation(goal.title)),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),

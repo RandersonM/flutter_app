@@ -61,4 +61,4 @@ class CustomCharacterDeleted extends CustomCharacterState {
 
   @override
   List<Object?> get props => [characterId];
-} 
+}

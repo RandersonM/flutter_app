@@ -97,7 +97,6 @@ class CharactersCubit extends Cubit<CharactersState> {
         characters: _characters,
         hasMoreData: newHasMoreData,
       ));
-
     } catch (e) {
       debugPrint('CharactersCubit: Error - $e');
       emit(CharactersError(

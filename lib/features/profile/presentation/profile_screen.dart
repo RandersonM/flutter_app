@@ -1,3 +1,5 @@
+import 'package:opfan/shared/widgets/atoms/app_icon.dart';
+import 'package:phosphor_flutter/phosphor_flutter.dart';
 // Developed by Randerson Mayllon
 // Copyright © 2025.
 
@@ -41,7 +43,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
         title: Text(AppLocalizations.of(context)!.profile),
         actions: [
           IconButton(
-            icon: const Icon(Icons.logout),
+            icon: const AppIcon(PhosphorIconsRegular.signOut),
             onPressed: () {
               context.read<AuthBloc>().add(const AuthSignOutRequested());
             },
@@ -53,7 +55,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
           if (state is AuthAuthenticated) {
             return _buildProfileContent(context, state.user);
           }
-          
+
           return const Center(
             child: CircularProgressIndicator(),
           );
@@ -89,22 +91,25 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 Text(
                   user.displayName,
                   style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                    fontWeight: FontWeight.bold,
-                  ),
+                        fontWeight: FontWeight.bold,
+                      ),
                 ),
                 const SizedBox(height: 8),
                 Text(
                   user.email,
                   style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                    color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.7),
-                  ),
+                        color: Theme.of(context)
+                            .colorScheme
+                            .onSurface
+                            .withValues(alpha: 0.7),
+                      ),
                 ),
               ],
             ),
           ),
-          
+
           const SizedBox(height: Constants.margin * 2),
-          
+
           if (user.isProfileComplete) ...[
             _buildSection(
               context,
@@ -112,9 +117,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
               items: [
                 _buildProfileItem(
                   context,
-                  icon: Icons.fitness_center,
+                  icon: PhosphorIconsRegular.barbell,
                   title: AppLocalizations.of(context)!.bodyData,
-                  subtitle: '${user.weightKg} kg • ${user.heightCm} cm • IMC: ${(user.weightKg! / ((user.heightCm! / 100) * (user.heightCm! / 100))).toStringAsFixed(1)}',
+                  subtitle:
+                      '${user.weightKg} kg • ${user.heightCm} cm • IMC: ${(user.weightKg! / ((user.heightCm! / 100) * (user.heightCm! / 100))).toStringAsFixed(1)}',
                   onTap: () {
                     Navigator.of(context).pushNamed(
                       AppRoutes.onboarding,
@@ -134,7 +140,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
             items: [
               _buildProfileItem(
                 context,
-                icon: Icons.person,
+                icon: PhosphorIconsRegular.user,
                 title: AppLocalizations.of(context)!.editProfile,
                 subtitle: AppLocalizations.of(context)!.editProfileSubtitle,
                 onTap: () {
@@ -148,7 +154,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
               ),
               _buildProfileItem(
                 context,
-                icon: Icons.notifications,
+                icon: PhosphorIconsRegular.bell,
                 title: AppLocalizations.of(context)!.notifications,
                 subtitle: AppLocalizations.of(context)!.notificationsSubtitle,
                 onTap: () {
@@ -162,16 +168,16 @@ class _ProfileScreenState extends State<ProfileScreen> {
               ),
             ],
           ),
-          
+
           const SizedBox(height: Constants.margin),
-          
+
           _buildSection(
             context,
             title: AppLocalizations.of(context)!.appSettings,
             items: [
               _buildProfileItem(
                 context,
-                icon: Icons.language,
+                icon: PhosphorIconsRegular.globe,
                 title: AppLocalizations.of(context)!.language,
                 subtitle: AppLocalizations.of(context)!.languageSubtitle,
                 onTap: () async {
@@ -182,12 +188,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       title: Text(AppLocalizations.of(context)!.language),
                       children: [
                         SimpleDialogOption(
-                          child: Text(AppLocalizations.of(context)!.englishLang),
+                          child:
+                              Text(AppLocalizations.of(context)!.englishLang),
                           onPressed: () =>
                               Navigator.pop(context, const Locale('en')),
                         ),
                         SimpleDialogOption(
-                          child: Text(AppLocalizations.of(context)!.portugueseLang),
+                          child: Text(
+                              AppLocalizations.of(context)!.portugueseLang),
                           onPressed: () =>
                               Navigator.pop(context, const Locale('pt')),
                         ),
@@ -202,16 +210,16 @@ class _ProfileScreenState extends State<ProfileScreen> {
               _buildThemeItem(context),
             ],
           ),
-          
+
           const SizedBox(height: Constants.margin),
-          
+
           _buildSection(
             context,
             title: AppLocalizations.of(context)!.support,
             items: [
               _buildProfileItem(
                 context,
-                icon: Icons.help,
+                icon: PhosphorIconsRegular.question,
                 title: AppLocalizations.of(context)!.helpSupport,
                 subtitle: AppLocalizations.of(context)!.helpSupportSubtitle,
                 onTap: () {
@@ -225,7 +233,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
               ),
               _buildProfileItem(
                 context,
-                icon: Icons.info,
+                icon: PhosphorIconsRegular.info,
                 title: AppLocalizations.of(context)!.about,
                 subtitle: AppLocalizations.of(context)!.aboutSubtitle,
                 onTap: () {
@@ -248,7 +256,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
     return BlocBuilder<ThemeCubit, ThemeState>(
       builder: (context, themeState) => ListTile(
         leading: Icon(
-          themeState.isDarkMode ? Icons.dark_mode : Icons.light_mode,
+          themeState.isDarkMode
+              ? PhosphorIconsRegular.moon
+              : PhosphorIconsRegular.sun,
           color: Theme.of(context).colorScheme.primary,
         ),
         title: Text(
@@ -281,9 +291,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
         Text(
           title,
           style: Theme.of(context).textTheme.titleMedium?.copyWith(
-            fontWeight: FontWeight.bold,
-            color: Theme.of(context).colorScheme.primary,
-          ),
+                fontWeight: FontWeight.bold,
+                color: Theme.of(context).colorScheme.primary,
+              ),
         ),
         const SizedBox(height: Constants.margin),
         Container(
@@ -323,8 +333,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
         style: const TextStyle(fontWeight: FontWeight.w500),
       ),
       subtitle: Text(subtitle),
-      trailing: const Icon(Icons.chevron_right),
+      trailing: const AppIcon(PhosphorIconsRegular.caretRight),
       onTap: onTap,
     );
   }
-} 
+}

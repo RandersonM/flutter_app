@@ -32,13 +32,13 @@ class CreateCrewBloc extends Bloc<CreateCrewEvent, CreateCrewState> {
 
       final crew = CrewModel(
         name: event.name.trim(),
-        userId: _userId!, 
+        userId: _userId!,
         description: event.description?.trim(),
         jollyRogerUrl: event.jollyRogerUrl?.trim(),
         boatImageUrl: event.boatImageUrl?.trim(),
         tags: event.tags,
         boatName: event.boatName?.trim(),
-        members: [], 
+        members: [],
         captain: null,
         viceCaptain: null,
         rolesFilled: [],
@@ -57,4 +57,4 @@ class CreateCrewBloc extends Bloc<CreateCrewEvent, CreateCrewState> {
   ) {
     emit(CreateCrewInitial());
   }
-} 
+}

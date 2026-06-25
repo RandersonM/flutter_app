@@ -141,7 +141,6 @@ class AppColors {
       1000: Color(0xFFFFC107), // semelhante ao amber[500]
     },
   );
-
 }
 
 class _Typography {
@@ -412,7 +411,8 @@ ThemeData getDarkTheme() {
     ),
     cardTheme: CardThemeData(
       shape: RoundedRectangleBorder(
-          side: BorderSide(color: AppColors.purple[900]!.withValues(alpha: 0.3), width: 1),
+          side: BorderSide(
+              color: AppColors.purple[900]!.withValues(alpha: 0.3), width: 1),
           borderRadius: const BorderRadius.all(Radius.circular(16))),
       margin: EdgeInsets.zero,
       shadowColor: Colors.black.withValues(alpha: 0.5),
@@ -421,7 +421,8 @@ ThemeData getDarkTheme() {
     scaffoldBackgroundColor: const Color(0xFF0F0E13),
     inputDecorationTheme: InputDecorationTheme(
       border: OutlineInputBorder(
-        borderSide: BorderSide(color: AppColors.purple[900]!.withValues(alpha: 0.5)),
+        borderSide:
+            BorderSide(color: AppColors.purple[900]!.withValues(alpha: 0.5)),
         borderRadius: const BorderRadius.all(Radius.circular(16)),
       ),
       disabledBorder: const OutlineInputBorder(
@@ -429,7 +430,8 @@ ThemeData getDarkTheme() {
         borderRadius: BorderRadius.all(Radius.circular(16)),
       ),
       enabledBorder: OutlineInputBorder(
-        borderSide: BorderSide(color: AppColors.purple[900]!.withValues(alpha: 0.5)),
+        borderSide:
+            BorderSide(color: AppColors.purple[900]!.withValues(alpha: 0.5)),
         borderRadius: const BorderRadius.all(Radius.circular(16)),
       ),
       focusedBorder: OutlineInputBorder(
@@ -449,7 +451,8 @@ ThemeData getDarkTheme() {
           borderRadius: BorderRadius.all(Radius.circular(16)),
         ),
         enabledBorder: OutlineInputBorder(
-          borderSide: BorderSide(color: AppColors.purple[900]!.withValues(alpha: 0.5)),
+          borderSide:
+              BorderSide(color: AppColors.purple[900]!.withValues(alpha: 0.5)),
           borderRadius: const BorderRadius.all(Radius.circular(16)),
         ),
         focusedBorder: OutlineInputBorder(

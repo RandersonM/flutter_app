@@ -1,3 +1,5 @@
+import 'package:opfan/shared/widgets/atoms/app_icon.dart';
+import 'package:phosphor_flutter/phosphor_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:opfan/shared/utils/constants.dart';
@@ -19,11 +21,13 @@ class _FinancesHistoryWidgetState extends State<FinancesHistoryWidget> {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => getIt<NamiFinancesBloc>()..add(LoadFinancesHistory()),
+      create: (context) =>
+          getIt<NamiFinancesBloc>()..add(LoadFinancesHistory()),
       child: Container(
         padding: const EdgeInsets.all(Constants.margin),
         decoration: BoxDecoration(
-          color: Theme.of(context).colorScheme.onSecondary.withValues(alpha: 0.3),
+          color:
+              Theme.of(context).colorScheme.onSecondary.withValues(alpha: 0.3),
           borderRadius: BorderRadius.circular(Constants.margin * 2),
         ),
         child: Column(
@@ -31,7 +35,8 @@ class _FinancesHistoryWidgetState extends State<FinancesHistoryWidget> {
           children: [
             Row(
               children: [
-                Icon(Icons.timeline, color: AppColors.blue[500], size: 24),
+                AppIcon(PhosphorIconsRegular.chartLine,
+                    color: AppColors.blue[500], size: 24),
                 const SizedBox(width: Constants.margin),
                 Text(
                   AppLocalizations.of(context)!.historyLast6Months,
@@ -47,7 +52,7 @@ class _FinancesHistoryWidgetState extends State<FinancesHistoryWidget> {
                   if (state is NamiFinancesHistoryLoaded) {
                     return _buildHistoryChart(state.financesHistory);
                   }
-                  
+
                   return Center(
                     child: Text(AppLocalizations.of(context)!.loadingHistory),
                   );
@@ -190,14 +195,16 @@ class _FinancesHistoryWidgetState extends State<FinancesHistoryWidget> {
             ),
           ),
         ),
-
         const SizedBox(height: 16),
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
-            _buildLegendItem(AppLocalizations.of(context)!.expensesLabel, AppColors.red[500]!),
-            _buildLegendItem(AppLocalizations.of(context)!.availableLabel, AppColors.green[500]!),
-            _buildLegendItem(AppLocalizations.of(context)!.savingsLabel, AppColors.orange[500]!),
+            _buildLegendItem(AppLocalizations.of(context)!.expensesLabel,
+                AppColors.red[500]!),
+            _buildLegendItem(AppLocalizations.of(context)!.availableLabel,
+                AppColors.green[500]!),
+            _buildLegendItem(AppLocalizations.of(context)!.savingsLabel,
+                AppColors.orange[500]!),
           ],
         ),
       ],
@@ -290,19 +297,32 @@ class _FinancesHistoryWidgetState extends State<FinancesHistoryWidget> {
 
   String _getMonthName(int month) {
     switch (month) {
-      case 1: return AppLocalizations.of(context)!.janAbbr;
-      case 2: return AppLocalizations.of(context)!.febAbbr;
-      case 3: return AppLocalizations.of(context)!.marAbbr;
-      case 4: return AppLocalizations.of(context)!.aprAbbr;
-      case 5: return AppLocalizations.of(context)!.mayAbbr;
-      case 6: return AppLocalizations.of(context)!.junAbbr;
-      case 7: return AppLocalizations.of(context)!.julAbbr;
-      case 8: return AppLocalizations.of(context)!.augAbbr;
-      case 9: return AppLocalizations.of(context)!.sepAbbr;
-      case 10: return AppLocalizations.of(context)!.octAbbr;
-      case 11: return AppLocalizations.of(context)!.novAbbr;
-      case 12: return AppLocalizations.of(context)!.decAbbr;
-      default: return '';
+      case 1:
+        return AppLocalizations.of(context)!.janAbbr;
+      case 2:
+        return AppLocalizations.of(context)!.febAbbr;
+      case 3:
+        return AppLocalizations.of(context)!.marAbbr;
+      case 4:
+        return AppLocalizations.of(context)!.aprAbbr;
+      case 5:
+        return AppLocalizations.of(context)!.mayAbbr;
+      case 6:
+        return AppLocalizations.of(context)!.junAbbr;
+      case 7:
+        return AppLocalizations.of(context)!.julAbbr;
+      case 8:
+        return AppLocalizations.of(context)!.augAbbr;
+      case 9:
+        return AppLocalizations.of(context)!.sepAbbr;
+      case 10:
+        return AppLocalizations.of(context)!.octAbbr;
+      case 11:
+        return AppLocalizations.of(context)!.novAbbr;
+      case 12:
+        return AppLocalizations.of(context)!.decAbbr;
+      default:
+        return '';
     }
   }
 }

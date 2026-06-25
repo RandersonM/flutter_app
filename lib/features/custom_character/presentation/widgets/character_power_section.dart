@@ -26,7 +26,7 @@ class CharacterPowerSection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
-    
+
     final hakiOptions =
         CharacterLocalizationMapper.getLocalizedHakiOptions(l10n);
 
@@ -36,8 +36,8 @@ class CharacterPowerSection extends StatelessWidget {
         Text(
           l10n.powers,
           style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-            fontWeight: FontWeight.bold,
-          ),
+                fontWeight: FontWeight.bold,
+              ),
         ),
         const SizedBox(height: 16),
         DevilFruitSearchDropdown(
@@ -57,4 +57,4 @@ class CharacterPowerSection extends StatelessWidget {
       ],
     );
   }
-} 
+}

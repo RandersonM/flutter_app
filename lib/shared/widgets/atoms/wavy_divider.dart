@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 
-
 class WavyDivider extends StatelessWidget {
   final double height;
   final Color? color;
@@ -57,13 +56,14 @@ class WavyDividerPainter extends CustomPainter {
 
     final path = Path();
     final centerY = size.height / 2;
-    
+
     path.moveTo(0, centerY);
-    
+
     for (double x = 0; x <= size.width; x += waveLength) {
       final nextX = x + waveLength;
-      final controlY = centerY + (x % (waveLength * 2) < waveLength ? waveHeight : -waveHeight);
-      
+      final controlY = centerY +
+          (x % (waveLength * 2) < waveLength ? waveHeight : -waveHeight);
+
       if (nextX <= size.width) {
         path.quadraticBezierTo(
           x + waveLength / 2,
@@ -79,4 +79,4 @@ class WavyDividerPainter extends CustomPainter {
 
   @override
   bool shouldRepaint(covariant CustomPainter oldDelegate) => false;
-} 
+}

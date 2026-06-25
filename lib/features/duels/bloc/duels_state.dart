@@ -36,12 +36,12 @@ class DuelsReady extends DuelsState {
 
   @override
   List<Object?> get props => [
-    firstCharacter,
-    secondCharacter,
-    availableCharacters,
-    isDuelInProgress,
-    winner,
-  ];
+        firstCharacter,
+        secondCharacter,
+        availableCharacters,
+        isDuelInProgress,
+        winner,
+      ];
 
   DuelsReady copyWith({
     CustomCharacterModel? firstCharacter,
@@ -54,11 +54,10 @@ class DuelsReady extends DuelsState {
     bool clearWinner = false,
   }) {
     return DuelsReady(
-      firstCharacter: clearFirstCharacter 
-          ? null 
-          : (firstCharacter ?? this.firstCharacter),
-      secondCharacter: clearSecondCharacter 
-          ? null 
+      firstCharacter:
+          clearFirstCharacter ? null : (firstCharacter ?? this.firstCharacter),
+      secondCharacter: clearSecondCharacter
+          ? null
           : (secondCharacter ?? this.secondCharacter),
       availableCharacters: availableCharacters ?? this.availableCharacters,
       isDuelInProgress: isDuelInProgress ?? this.isDuelInProgress,
@@ -66,12 +65,10 @@ class DuelsReady extends DuelsState {
     );
   }
 
-  bool get canStartDuel => 
-      firstCharacter != null && 
-      secondCharacter != null && 
-      !isDuelInProgress;
+  bool get canStartDuel =>
+      firstCharacter != null && secondCharacter != null && !isDuelInProgress;
 
-  bool get hasCharactersSelected => 
+  bool get hasCharactersSelected =>
       firstCharacter != null || secondCharacter != null;
 }
 
@@ -82,4 +79,4 @@ class DuelsError extends DuelsState {
 
   @override
   List<Object?> get props => [message];
-} 
+}

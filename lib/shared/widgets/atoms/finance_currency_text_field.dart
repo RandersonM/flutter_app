@@ -61,7 +61,7 @@ class _CurrencyInputFormatter extends TextInputFormatter {
     }
 
     final text = newValue.text.replaceAll(RegExp(r'[^\d]'), '');
-    
+
     if (text.isEmpty) {
       return newValue;
     }
@@ -78,14 +78,14 @@ class _CurrencyInputFormatter extends TextInputFormatter {
   String _formatCurrency(int value) {
     final reais = value ~/ 100;
     final centavos = value % 100;
-    
+
     if (reais == 0) {
       return '0,${centavos.toString().padLeft(2, '0')}';
     }
-    
+
     final reaisStr = reais.toString();
     final formattedReais = _addThousandSeparator(reaisStr);
-    
+
     return '$formattedReais,${centavos.toString().padLeft(2, '0')}';
   }
 

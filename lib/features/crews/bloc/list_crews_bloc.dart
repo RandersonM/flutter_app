@@ -22,7 +22,7 @@ class ListCrewsBloc extends Bloc<ListCrewsEvent, ListCrewsState> {
     Emitter<ListCrewsState> emit,
   ) async {
     emit(ListCrewsLoading());
-    
+
     try {
       final crews = await _crewRepository.getAllCrews();
       emit(ListCrewsLoaded(crews));
@@ -50,7 +50,7 @@ class ListCrewsBloc extends Bloc<ListCrewsEvent, ListCrewsState> {
     Emitter<ListCrewsState> emit,
   ) async {
     emit(ListCrewsLoading());
-    
+
     try {
       final allCrews = await _crewRepository.getAllCrews();
       final filteredCrews = allCrews
@@ -93,4 +93,4 @@ class ListCrewsBloc extends Bloc<ListCrewsEvent, ListCrewsState> {
       emit(ListCrewsError(e.toString()));
     }
   }
-} 
+}

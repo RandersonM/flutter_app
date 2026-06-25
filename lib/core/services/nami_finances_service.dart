@@ -16,7 +16,7 @@ class NamiFinancesService {
 
   Future<NamiFinancesModel?> getFinancesForMonth(DateTime month) async {
     final monthKey = _getMonthKey(month);
-    
+
     try {
       final box = await _getBox;
       return box.get(monthKey);
@@ -33,7 +33,7 @@ class NamiFinancesService {
 
   Future<void> saveFinances(NamiFinancesModel finances) async {
     final monthKey = finances.monthKey;
-    
+
     try {
       final box = await _getBox;
       await box.put(monthKey, finances);
@@ -54,7 +54,7 @@ class NamiFinancesService {
         (key) => box.get(key)?.id == id,
         orElse: () => null,
       );
-      
+
       if (key != null) {
         await box.delete(key);
       }
@@ -77,9 +77,8 @@ class NamiFinancesService {
   Future<List<NamiFinancesModel>> getFinancesForYear(int year) async {
     try {
       final box = await _getBox;
-      final finances = box.values
-          .where((finances) => finances.month.year == year)
-          .toList();
+      final finances =
+          box.values.where((finances) => finances.month.year == year).toList();
       finances.sort((a, b) => b.month.compareTo(a.month));
       return finances;
     } catch (e) {
@@ -92,12 +91,14 @@ class NamiFinancesService {
       final box = await _getBox;
       final allFinances = box.values.toList();
       allFinances.sort((a, b) => b.month.compareTo(a.month));
-      
+
       final now = DateTime.now();
       final cutoffDate = DateTime(now.year, now.month - months + 1, 1);
-      
+
       return allFinances
-          .where((finances) => finances.month.isAfter(cutoffDate) || finances.month.isAtSameMomentAs(cutoffDate))
+          .where((finances) =>
+              finances.month.isAfter(cutoffDate) ||
+              finances.month.isAtSameMomentAs(cutoffDate))
           .toList();
     } catch (e) {
       throw Exception('Erro ao buscar finanças dos últimos meses: $e');

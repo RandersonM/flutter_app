@@ -1,7 +1,7 @@
+import 'package:phosphor_flutter/phosphor_flutter.dart';
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:opfan/core/auth/models/user_model.dart';
-import 'package:opfan/shared/utils/icons/one_piece_icons.dart';
+
 import 'package:opfan/shared/widgets/atoms/circle_avatar.dart';
 import 'package:opfan/shared/widgets/atoms/gomu_gomu_divider.dart';
 import 'package:opfan/shared/widgets/atoms/futuristic_background.dart';
@@ -13,7 +13,9 @@ import 'package:opfan/shared/utils/app_routes.dart' show AppRoutes;
 class UserDrawerContent extends StatelessWidget {
   final UserModel user;
   final AuthBloc authBloc;
-  const UserDrawerContent({Key? key, required this.user, required this.authBloc}) : super(key: key);
+  const UserDrawerContent(
+      {Key? key, required this.user, required this.authBloc})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -79,12 +81,10 @@ class UserDrawerContent extends StatelessWidget {
                   ],
                 ),
               ),
-              
               GomuGomuDivider(
                 color: Theme.of(context).colorScheme.onPrimary,
                 height: 12,
                 thickness: 1.5,
-                
               ),
               Padding(
                 padding: const EdgeInsets.symmetric(vertical: Constants.margin),
@@ -93,7 +93,7 @@ class UserDrawerContent extends StatelessWidget {
                   children: [
                     _buildFuturisticListTile(
                       context,
-                      icon: FontAwesomeIcons.userAstronaut,
+                      icon: PhosphorIconsRegular.alien,
                       title: AppLocalizations.of(context)!.myCharacters,
                       onTap: () {
                         Navigator.of(context)
@@ -102,7 +102,7 @@ class UserDrawerContent extends StatelessWidget {
                     ),
                     _buildFuturisticListTile(
                       context,
-                      icon: OnePieceIcons.jollyRoger,
+                      icon: PhosphorIconsRegular.skull,
                       title: AppLocalizations.of(context)!.pirate,
                       onTap: () {
                         Navigator.pushNamed(
@@ -113,7 +113,7 @@ class UserDrawerContent extends StatelessWidget {
                     ),
                     _buildFuturisticListTile(
                       context,
-                      icon: FontAwesomeIcons.explosion,
+                      icon: PhosphorIconsRegular.sparkle,
                       title: AppLocalizations.of(context)!.duels,
                       onTap: () {
                         Navigator.pushNamed(
@@ -124,7 +124,7 @@ class UserDrawerContent extends StatelessWidget {
                     ),
                     _buildFuturisticListTile(
                       context,
-                      icon: FontAwesomeIcons.ship,
+                      icon: PhosphorIconsRegular.boat,
                       title: AppLocalizations.of(context)!.crew(2),
                       onTap: () {
                         Navigator.pushNamed(
@@ -135,7 +135,7 @@ class UserDrawerContent extends StatelessWidget {
                     ),
                     _buildFuturisticListTile(
                       context,
-                      icon: FontAwesomeIcons.personDrowning,
+                      icon: PhosphorIconsRegular.orange,
                       title: AppLocalizations.of(context)!.devilFruit,
                       onTap: () {
                         Navigator.pushNamed(
@@ -146,26 +146,25 @@ class UserDrawerContent extends StatelessWidget {
                     ),
                     _buildFuturisticListTile(
                       context,
-                      icon: Icons.person,
+                      icon: PhosphorIconsRegular.user,
                       title: AppLocalizations.of(context)!.profile,
                       onTap: () {
                         Navigator.pop(context);
                         Navigator.pushNamed(context, AppRoutes.profile);
                       },
                     ),
-                  
                     Padding(
                       padding: const EdgeInsets.symmetric(
                           vertical: Constants.margin),
                       child: GomuGomuDivider(
-                        color: Theme.of(context).colorScheme.onPrimary, 
+                        color: Theme.of(context).colorScheme.onPrimary,
                         height: 12,
                         thickness: 1.5,
                       ),
                     ),
                     _buildFuturisticListTile(
                       context,
-                      icon: Icons.logout,
+                      icon: PhosphorIconsRegular.signOut,
                       title: AppLocalizations.of(context)!.logout,
                       isDestructive: true,
                       onTap: () {
@@ -190,8 +189,7 @@ class UserDrawerContent extends StatelessWidget {
     required VoidCallback onTap,
     bool isDestructive = false,
   }) {
-    final color =
-        isDestructive
+    final color = isDestructive
         ? Theme.of(context).colorScheme.onError
         : Theme.of(context).colorScheme.surfaceContainer;
 
@@ -253,4 +251,4 @@ class UserDrawerContent extends StatelessWidget {
       ),
     );
   }
-} 
+}

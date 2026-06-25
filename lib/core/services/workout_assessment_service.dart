@@ -54,7 +54,7 @@ class WorkoutAssessmentService {
       if (existingDoc.docs.isNotEmpty) {
         final docId = existingDoc.docs.first.id;
         final existingData = existingDoc.docs.first.data();
-        
+
         // Safe data extraction with null checks
         final existingBmi = existingData['bmi'];
         final existingWaistToHeightRatio =
@@ -165,7 +165,7 @@ class WorkoutAssessmentService {
 
       final data = doc.docs.first.data();
       data['id'] = doc.docs.first.id;
-      
+
       if (data['created_at'] is Timestamp) {
         data['created_at'] =
             (data['created_at'] as Timestamp).toDate().toIso8601String();
@@ -285,7 +285,7 @@ class WorkoutAssessmentService {
       return sortedDocs.map((doc) {
         final data = doc.data();
         data['id'] = doc.id;
-        
+
         if (data['created_at'] is Timestamp) {
           data['created_at'] =
               (data['created_at'] as Timestamp).toDate().toIso8601String();
@@ -294,7 +294,7 @@ class WorkoutAssessmentService {
           data['updated_at'] =
               (data['updated_at'] as Timestamp).toDate().toIso8601String();
         }
-        
+
         return WorkoutAssessmentModel.fromJson(data);
       }).toList();
     } catch (e) {
@@ -343,7 +343,6 @@ class WorkoutAssessmentService {
       for (final doc in docs.docs) {
         await doc.reference.delete();
       }
-
     } catch (e) {
       debugPrint(
           'WorkoutAssessmentService: Erro ao deletar todas as avaliações: $e');
@@ -371,8 +370,7 @@ class WorkoutAssessmentService {
       }
 
       final docId = doc.docs.first.id;
-      await _firestore
-          .collection('workout_assessments').doc(docId).update({
+      await _firestore.collection('workout_assessments').doc(docId).update({
         'workout_days': workoutDays,
         'updated_at': Timestamp.fromDate(DateTime.now()),
       });
@@ -402,22 +400,17 @@ class WorkoutAssessmentService {
       }
 
       final docId = doc.docs.first.id;
-      await _firestore
-          .collection('workout_assessments')
-          .doc(docId)
-          .update({
+      await _firestore.collection('workout_assessments').doc(docId).update({
         'workout_plan': plan.toJson(),
         'updated_at': Timestamp.fromDate(DateTime.now()),
       });
 
       debugPrint('WorkoutAssessmentService: workout_plan salvo com sucesso');
     } catch (e) {
-      debugPrint(
-          'WorkoutAssessmentService: Erro ao salvar workout_plan: $e');
+      debugPrint('WorkoutAssessmentService: Erro ao salvar workout_plan: $e');
       rethrow;
     }
   }
-
 
   Future<WorkoutAssessmentModel> updateNutritionData({
     required String gender,

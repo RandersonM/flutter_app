@@ -1,3 +1,5 @@
+import 'package:opfan/shared/widgets/atoms/app_icon.dart';
+import 'package:phosphor_flutter/phosphor_flutter.dart';
 // Developed by Randerson Mayllon
 // Copyright © 2022.
 
@@ -31,8 +33,8 @@ class CrewInfoSection extends StatelessWidget {
           children: [
             Row(
               children: [
-                Icon(
-                  Icons.info_outline,
+                AppIcon(
+                  PhosphorIconsRegular.info,
                   color: theme.colorScheme.primary,
                 ),
                 const SizedBox(width: Constants.margin),
@@ -48,9 +50,9 @@ class CrewInfoSection extends StatelessWidget {
             const SizedBox(height: Constants.margin * 2),
             _buildInfoRow(
               context,
-              Icons.calendar_today,
+              PhosphorIconsRegular.calendarBlank,
               'Criada em',
-              crew.createdAt != null 
+              crew.createdAt != null
                   ? dateFormat.format(crew.createdAt!)
                   : 'Data não disponível',
             ),
@@ -58,7 +60,7 @@ class CrewInfoSection extends StatelessWidget {
               const SizedBox(height: Constants.margin),
               _buildInfoRow(
                 context,
-                Icons.update,
+                PhosphorIconsRegular.clockCounterClockwise,
                 'Atualizada em',
                 dateFormat.format(crew.updatedAt!),
               ),
@@ -67,7 +69,7 @@ class CrewInfoSection extends StatelessWidget {
               const SizedBox(height: Constants.margin),
               _buildInfoRow(
                 context,
-                Icons.work,
+                PhosphorIconsRegular.briefcase,
                 'Funções preenchidas',
                 crew.rolesFilled.join(', '),
               ),
@@ -75,7 +77,7 @@ class CrewInfoSection extends StatelessWidget {
             const SizedBox(height: Constants.margin),
             _buildInfoRow(
               context,
-              Icons.person,
+              PhosphorIconsRegular.user,
               'Proprietário',
               crew.userId,
             ),
@@ -85,9 +87,10 @@ class CrewInfoSection extends StatelessWidget {
     );
   }
 
-  Widget _buildInfoRow(BuildContext context, IconData icon, String label, String value) {
+  Widget _buildInfoRow(
+      BuildContext context, IconData icon, String label, String value) {
     final theme = Theme.of(context);
-    
+
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -123,4 +126,4 @@ class CrewInfoSection extends StatelessWidget {
       ],
     );
   }
-} 
+}

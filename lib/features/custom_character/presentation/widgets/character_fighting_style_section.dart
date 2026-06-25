@@ -15,17 +15,18 @@ class CharacterFightingStyleSection extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  State<CharacterFightingStyleSection> createState() => _CharacterFightingStyleSectionState();
+  State<CharacterFightingStyleSection> createState() =>
+      _CharacterFightingStyleSectionState();
 }
 
-class _CharacterFightingStyleSectionState extends State<CharacterFightingStyleSection> {
+class _CharacterFightingStyleSectionState
+    extends State<CharacterFightingStyleSection> {
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _weaponController = TextEditingController();
   final TextEditingController _attackController = TextEditingController();
   String? _selectedType;
   List<String> _weapons = [];
   List<String> _attacks = [];
-
 
   @override
   void initState() {
@@ -53,7 +54,9 @@ class _CharacterFightingStyleSectionState extends State<CharacterFightingStyleSe
   void _updateFightingStyle() {
     if (_selectedType != null) {
       final fightingStyle = FightingStyleModel(
-        name: _nameController.text.trim().isEmpty ? null : _nameController.text.trim(),
+        name: _nameController.text.trim().isEmpty
+            ? null
+            : _nameController.text.trim(),
         type: _selectedType!,
         weapons: _weapons.isEmpty ? null : _weapons,
         attacks: _attacks.isEmpty ? null : _attacks,
@@ -98,7 +101,6 @@ class _CharacterFightingStyleSectionState extends State<CharacterFightingStyleSe
     _updateFightingStyle();
   }
 
-
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
@@ -111,11 +113,11 @@ class _CharacterFightingStyleSectionState extends State<CharacterFightingStyleSe
             Text(
               'Estilo de Luta',
               style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                fontWeight: FontWeight.bold,
-              ),
+                    fontWeight: FontWeight.bold,
+                  ),
             ),
             const SizedBox(height: Constants.margin * 2),
-            
+
             // Nome do estilo (opcional)
             TextFormField(
               controller: _nameController,
@@ -127,7 +129,7 @@ class _CharacterFightingStyleSectionState extends State<CharacterFightingStyleSe
               onChanged: (_) => _updateFightingStyle(),
             ),
             const SizedBox(height: Constants.margin * 2),
-            
+
             // Tipo do estilo (obrigatório)
             DropdownButtonFormField<String>(
               value: _selectedType,
@@ -138,8 +140,8 @@ class _CharacterFightingStyleSectionState extends State<CharacterFightingStyleSe
               items: CharacterLocalizationMapper.getFightingTypes().map((type) {
                 return DropdownMenuItem(
                   value: type,
-                  child: Text(
-                      CharacterLocalizationMapper.getFightingTypeLabel(type, l10n)),
+                  child: Text(CharacterLocalizationMapper.getFightingTypeLabel(
+                      type, l10n)),
                 );
               }).toList(),
               onChanged: (value) {
@@ -156,16 +158,16 @@ class _CharacterFightingStyleSectionState extends State<CharacterFightingStyleSe
               },
             ),
             const SizedBox(height: Constants.margin * 2),
-            
+
             // Armas
             Text(
               'Armas',
               style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                fontWeight: FontWeight.bold,
-              ),
+                    fontWeight: FontWeight.bold,
+                  ),
             ),
             const SizedBox(height: Constants.margin),
-            
+
             Row(
               children: [
                 Expanded(
@@ -181,11 +183,11 @@ class _CharacterFightingStyleSectionState extends State<CharacterFightingStyleSe
                 const SizedBox(width: Constants.margin),
                 ElevatedButton(
                   onPressed: _addWeapon,
-                  child:  Text(l10n.addTag),
+                  child: Text(l10n.addTag),
                 ),
               ],
             ),
-            
+
             if (_weapons.isNotEmpty) ...[
               const SizedBox(height: Constants.margin),
               Wrap(
@@ -199,18 +201,18 @@ class _CharacterFightingStyleSectionState extends State<CharacterFightingStyleSe
                 }).toList(),
               ),
             ],
-            
+
             const SizedBox(height: Constants.margin * 2),
-            
+
             // Ataques
             Text(
               'Ataques',
               style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                fontWeight: FontWeight.bold,
-              ),
+                    fontWeight: FontWeight.bold,
+                  ),
             ),
             const SizedBox(height: Constants.margin),
-            
+
             Row(
               children: [
                 Expanded(
@@ -230,7 +232,7 @@ class _CharacterFightingStyleSectionState extends State<CharacterFightingStyleSe
                 ),
               ],
             ),
-            
+
             if (_attacks.isNotEmpty) ...[
               const SizedBox(height: Constants.margin),
               Wrap(
@@ -257,4 +259,4 @@ class _CharacterFightingStyleSectionState extends State<CharacterFightingStyleSe
     _attackController.dispose();
     super.dispose();
   }
-} 
+}

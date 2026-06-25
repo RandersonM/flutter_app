@@ -1,3 +1,5 @@
+import 'package:opfan/shared/widgets/atoms/app_icon.dart';
+import 'package:phosphor_flutter/phosphor_flutter.dart';
 // Developed by Randerson Mayllon
 // Copyright © 2022.
 
@@ -55,7 +57,7 @@ class _DevilFruitListScreenState extends State<DevilFruitListScreen> {
             BlocBuilder<DevilFruitBloc, DevilFruitState>(
               builder: (context, state) {
                 return IconButton(
-                  icon: const Icon(Icons.refresh),
+                  icon: const AppIcon(PhosphorIconsRegular.arrowsClockwise),
                   onPressed: state is DevilFruitLoading
                       ? null
                       : () => _devilFruitBloc.add(const RefreshDevilFruits()),
@@ -94,8 +96,8 @@ class _DevilFruitListScreenState extends State<DevilFruitListScreen> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(
-              Icons.error_outline,
+            AppIcon(
+              PhosphorIconsRegular.warningCircle,
               size: 64,
               color: Colors.red[400],
             ),
@@ -116,7 +118,7 @@ class _DevilFruitListScreenState extends State<DevilFruitListScreen> {
             const SizedBox(height: Constants.margin * 2),
             ElevatedButton.icon(
               onPressed: () => _devilFruitBloc.add(const LoadDevilFruits()),
-              icon: const Icon(Icons.refresh),
+              icon: const AppIcon(PhosphorIconsRegular.arrowsClockwise),
               label: Text(AppLocalizations.of(context)!.tryAgain),
             ),
           ],
@@ -138,11 +140,9 @@ class _DevilFruitListScreenState extends State<DevilFruitListScreen> {
               child: DevilFruitSearchHeader(),
             ),
           ),
-
           SliverToBoxAdapter(
             child: _buildFiltersSection(state),
           ),
-
           if (state.isSearching)
             const SliverToBoxAdapter(
               child: Padding(
@@ -152,7 +152,6 @@ class _DevilFruitListScreenState extends State<DevilFruitListScreen> {
                 ),
               ),
             ),
-
           if (state.filteredFruits.isEmpty && !state.isSearching)
             SliverToBoxAdapter(
               child: EmptyDevilFruitList(
@@ -185,7 +184,6 @@ class _DevilFruitListScreenState extends State<DevilFruitListScreen> {
                 ),
               ),
             ),
-
           const SliverToBoxAdapter(
             child: SizedBox(height: Constants.margin * 2),
           ),
@@ -328,13 +326,13 @@ class _DevilFruitListScreenState extends State<DevilFruitListScreen> {
   IconData _getTypeIcon(String type) {
     switch (type.toLowerCase()) {
       case 'logia':
-        return Icons.water_drop;
+        return PhosphorIconsRegular.drop;
       case 'paramecia':
-        return Icons.auto_fix_high;
+        return PhosphorIconsRegular.magicWand;
       case 'zoan':
-        return Icons.pets;
+        return PhosphorIconsRegular.pawPrint;
       default:
-        return Icons.help;
+        return PhosphorIconsRegular.question;
     }
   }
 }

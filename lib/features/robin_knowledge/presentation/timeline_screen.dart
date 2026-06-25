@@ -1,5 +1,6 @@
+import 'package:opfan/shared/widgets/atoms/app_icon.dart';
+import 'package:phosphor_flutter/phosphor_flutter.dart';
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:opfan/app/di/injection.dart';
 import 'package:opfan/features/robin_knowledge/bloc/robin_knowledge_bloc.dart';
 import 'package:opfan/shared/widgets/molecules/default_app_bar.dart';
@@ -23,7 +24,7 @@ class TimelineScreen extends StatelessWidget {
         title: Text(AppLocalizations.of(context)!.timelineOfObjectives),
         actions: [
           IconButton(
-            icon: const Icon(FontAwesomeIcons.plus),
+            icon: const AppIcon(PhosphorIconsRegular.plus),
             onPressed: () => _showAddGoalDialog(context),
           ),
         ],
@@ -46,7 +47,8 @@ class TimelineScreen extends StatelessWidget {
     final robinKnowledgeBloc = getIt.robinKnowledgeBloc;
     showDialog(
       context: context,
-      builder: (context) => AddGoalDialog(robinKnowledgeBloc: robinKnowledgeBloc),
+      builder: (context) =>
+          AddGoalDialog(robinKnowledgeBloc: robinKnowledgeBloc),
     );
   }
 }

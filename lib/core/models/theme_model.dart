@@ -18,4 +18,4 @@ class ThemeSettings extends HiveObject {
       isDarkMode: isDarkMode ?? this.isDarkMode,
     );
   }
-} 
+}

@@ -1,3 +1,5 @@
+import 'package:opfan/shared/widgets/atoms/app_icon.dart';
+import 'package:phosphor_flutter/phosphor_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:opfan/l10n/app_localizations.dart';
@@ -11,6 +13,7 @@ import 'package:opfan/shared/widgets/molecules/default_app_bar.dart';
 import 'package:opfan/shared/widgets/organisms/bottom_navigation.dart';
 import 'package:opfan/shared/utils/app_routes.dart';
 import 'package:opfan/core/services/auth_service.dart';
+import 'package:opfan/shared/widgets/atoms/app_button.dart';
 
 class SanjiCookingScreen extends StatefulWidget {
   const SanjiCookingScreen({super.key});
@@ -35,10 +38,12 @@ class _SanjiCookingScreenState extends State<SanjiCookingScreen> {
 
   void _onNewCalculation() {
     final user = getIt<AuthService>().currentUser;
-    Navigator.of(context).pushNamed(
+    Navigator.of(context)
+        .pushNamed(
       AppRoutes.onboarding,
       arguments: user,
-    ).then((_) {
+    )
+        .then((_) {
       _bloc.add(const InitializeSanjiCooking());
     });
   }
@@ -62,14 +67,14 @@ class _SanjiCookingScreenState extends State<SanjiCookingScreen> {
                     child: Column(
                       children: [
                         const SizedBox(height: 24),
-                        
                         if (state is SanjiCookingLoading) ...[
                           Center(
                             child: Column(
                               children: [
                                 const CircularProgressIndicator(),
                                 const SizedBox(height: 16),
-                                Text(AppLocalizations.of(context)!.calculatingNutrition),
+                                Text(AppLocalizations.of(context)!
+                                    .calculatingNutrition),
                               ],
                             ),
                           ),
@@ -81,15 +86,12 @@ class _SanjiCookingScreenState extends State<SanjiCookingScreen> {
                           ] else if (state.nutritionResults != null) ...[
                             NutritionResults(results: state.nutritionResults!),
                             const SizedBox(height: 24),
-                            SizedBox(
-                              width: double.infinity,
-                              child: OutlinedButton(
-                                onPressed: _onNewCalculation,
-                                style: OutlinedButton.styleFrom(
-                                  padding: const EdgeInsets.symmetric(vertical: 16),
-                                ),
-                                child: Text(AppLocalizations.of(context)!.updateBodyCompositionLabel),
-                              ),
+                            AppButton(
+                              onPressed: _onNewCalculation,
+                              variant: AppButtonVariant.outline,
+                              label: AppLocalizations.of(context)!
+                                  .updateBodyCompositionLabel,
+                              isFullWidth: true,
                             ),
                           ],
                         ] else if (state is SanjiCookingFormWithData) ...[
@@ -101,7 +103,10 @@ class _SanjiCookingScreenState extends State<SanjiCookingScreen> {
                           Center(
                             child: Column(
                               children: [
-                                Icon(Icons.error_outline, size: 48, color: Colors.red.shade300),
+                                AppIcon(
+                                    PhosphorIconsRegular.warningCircle,
+                                    size: 48,
+                                    color: Colors.red.shade300),
                                 const SizedBox(height: 16),
                                 Text(
                                   state.message,
@@ -109,9 +114,10 @@ class _SanjiCookingScreenState extends State<SanjiCookingScreen> {
                                   style: TextStyle(color: Colors.red.shade700),
                                 ),
                                 const SizedBox(height: 16),
-                                ElevatedButton(
-                                  onPressed: () => _bloc.add(const InitializeSanjiCooking()),
-                                  child: Text(AppLocalizations.of(context)!.tryAgain),
+                                AppButton(
+                                  onPressed: () =>
+                                      _bloc.add(const InitializeSanjiCooking()),
+                                  label: AppLocalizations.of(context)!.tryAgain,
                                 ),
                               ],
                             ),

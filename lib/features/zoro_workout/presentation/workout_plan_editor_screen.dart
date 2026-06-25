@@ -1,3 +1,5 @@
+import 'package:opfan/shared/widgets/atoms/app_icon.dart';
+import 'package:phosphor_flutter/phosphor_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:opfan/core/models/workout_plan_model.dart';
@@ -5,6 +7,7 @@ import 'package:opfan/features/zoro_workout/bloc/zoro_workout_bloc.dart';
 import 'package:opfan/features/zoro_workout/bloc/zoro_workout_event.dart';
 import 'package:opfan/features/zoro_workout/bloc/zoro_workout_state.dart';
 import 'package:opfan/l10n/app_localizations.dart';
+import 'package:opfan/shared/widgets/atoms/app_button.dart';
 
 /// Full-screen editor for creating/editing a user's workout plan.
 /// Supports multiple named splits (A, B, C…), each with a list of exercises.
@@ -36,14 +39,17 @@ class _WorkoutPlanEditorScreenState extends State<WorkoutPlanEditorScreen> {
         );
       }).toList();
     } else {
-      _splits = [_SplitDraft(name: 'Treino A', exercises: [_ExerciseDraft()])];
+      _splits = [
+        _SplitDraft(name: 'Treino A', exercises: [_ExerciseDraft()])
+      ];
     }
   }
 
   void _addSplit() {
     setState(() {
       final letter = String.fromCharCode('A'.codeUnitAt(0) + _splits.length);
-      _splits.add(_SplitDraft(name: 'Treino $letter', exercises: [_ExerciseDraft()]));
+      _splits.add(
+          _SplitDraft(name: 'Treino $letter', exercises: [_ExerciseDraft()]));
     });
   }
 
@@ -91,8 +97,8 @@ class _WorkoutPlanEditorScreenState extends State<WorkoutPlanEditorScreen> {
   }
 
   void _showError(String msg) {
-    ScaffoldMessenger.of(context)
-        .showSnackBar(SnackBar(content: Text(msg), behavior: SnackBarBehavior.floating));
+    ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(msg), behavior: SnackBarBehavior.floating));
   }
 
   @override
@@ -133,87 +139,96 @@ class _WorkoutPlanEditorScreenState extends State<WorkoutPlanEditorScreen> {
       },
       child: Scaffold(
         appBar: AppBar(
-        title: Text(isEdit ? 'Editar Plano de Treino' : 'Criar Plano de Treino'),
-        centerTitle: true,
-        actions: [
-          if (_saving)
-            const Padding(
-              padding: EdgeInsets.only(right: 16),
-              child: Center(child: SizedBox(width: 20, height: 20, child: CircularProgressIndicator(strokeWidth: 2))),
-            )
-          else
-            TextButton(
-              onPressed: _save,
-              child: Text(AppLocalizations.of(context)!.saveLabel, style: TextStyle(color: primary, fontWeight: FontWeight.bold)),
-            ),
-        ],
-      ),
-      body: ListView(
-        padding: const EdgeInsets.fromLTRB(20, 16, 20, 100),
-        children: [
-          // Instrução
-          Container(
-            padding: const EdgeInsets.all(14),
-            decoration: BoxDecoration(
-              color: primary.withValues(alpha: 0.08),
-              borderRadius: BorderRadius.circular(12),
-            ),
-            child: Row(
-              children: [
-                Icon(Icons.info_outline, color: primary, size: 18),
-                const SizedBox(width: 10),
-                Expanded(
-                  child: Text(
-                    'Crie splits (A, B, C…) com exercícios. O app vai rodiziar automaticamente conforme seus dias de treino.',
-                    style: Theme.of(context).textTheme.bodySmall,
+          title:
+              Text(isEdit ? 'Editar Plano de Treino' : 'Criar Plano de Treino'),
+          centerTitle: true,
+          actions: [
+            if (_saving)
+              const Padding(
+                padding: EdgeInsets.only(right: 16),
+                child: Center(
+                    child: SizedBox(
+                        width: 20,
+                        height: 20,
+                        child: CircularProgressIndicator(strokeWidth: 2))),
+              )
+            else
+              AppButton(
+                onPressed: _save,
+                variant: AppButtonVariant.text,
+                label: AppLocalizations.of(context)!.saveLabel,
+              ),
+          ],
+        ),
+        body: ListView(
+          padding: const EdgeInsets.fromLTRB(20, 16, 20, 100),
+          children: [
+            // Instrução
+            Container(
+              padding: const EdgeInsets.all(14),
+              decoration: BoxDecoration(
+                color: primary.withValues(alpha: 0.08),
+                borderRadius: BorderRadius.circular(12),
+              ),
+              child: Row(
+                children: [
+                  AppIcon(PhosphorIconsRegular.info,
+                      color: primary, size: 18),
+                  const SizedBox(width: 10),
+                  Expanded(
+                    child: Text(
+                      'Crie splits (A, B, C…) com exercícios. O app vai rodiziar automaticamente conforme seus dias de treino.',
+                      style: Theme.of(context).textTheme.bodySmall,
+                    ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
-          ),
-          const SizedBox(height: 24),
+            const SizedBox(height: 24),
 
-          // Lista de splits
-          ...List.generate(_splits.length, (splitIndex) {
-            final split = _splits[splitIndex];
-            return _SplitCard(
-              split: split,
-              splitIndex: splitIndex,
-              totalSplits: _splits.length,
-              primaryColor: primary,
-              onRemove: () => _removeSplit(splitIndex),
-              onAddExercise: () =>
-                  setState(() => split.exercises.add(_ExerciseDraft())),
-              onRemoveExercise: (exIndex) {
-                if (split.exercises.length <= 1) return;
-                setState(() => split.exercises.removeAt(exIndex));
-              },
-              onChanged: () => setState(() {}),
-            );
-          }),
+            // Lista de splits
+            ...List.generate(_splits.length, (splitIndex) {
+              final split = _splits[splitIndex];
+              return _SplitCard(
+                split: split,
+                splitIndex: splitIndex,
+                totalSplits: _splits.length,
+                primaryColor: primary,
+                onRemove: () => _removeSplit(splitIndex),
+                onAddExercise: () =>
+                    setState(() => split.exercises.add(_ExerciseDraft())),
+                onRemoveExercise: (exIndex) {
+                  if (split.exercises.length <= 1) return;
+                  setState(() => split.exercises.removeAt(exIndex));
+                },
+                onChanged: () => setState(() {}),
+              );
+            }),
 
-          // Botão adicionar split
-          const SizedBox(height: 16),
-          OutlinedButton.icon(
-            onPressed: _splits.length < 6 ? _addSplit : null,
-            icon: const Icon(Icons.add),
-            label: Text(AppLocalizations.of(context)!.addSplit),
-            style: OutlinedButton.styleFrom(
+            // Botão adicionar split
+            const SizedBox(height: 16),
+            AppButton(
+              onPressed: _splits.length < 6 ? _addSplit : null,
+              variant: AppButtonVariant.outline,
+              icon: const AppIcon(PhosphorIconsRegular.plus),
+              label: AppLocalizations.of(context)!.addSplit,
               padding: const EdgeInsets.symmetric(vertical: 14),
-              side: BorderSide(color: primary.withValues(alpha: 0.5)),
             ),
-          ),
-        ],
-      ),
-      floatingActionButton: FloatingActionButton.extended(
-        onPressed: _saving ? null : _save,
-        backgroundColor: primary,
-        foregroundColor: Colors.white,
-        icon: _saving
-            ? const SizedBox(width: 18, height: 18, child: CircularProgressIndicator(strokeWidth: 2, color: Colors.white))
-            : const Icon(Icons.check),
-        label: Text(_saving ? 'Salvando…' : 'Salvar Plano'),
-      ),
+          ],
+        ),
+        floatingActionButton: FloatingActionButton.extended(
+          onPressed: _saving ? null : _save,
+          backgroundColor: primary,
+          foregroundColor: Colors.white,
+          icon: _saving
+              ? const SizedBox(
+                  width: 18,
+                  height: 18,
+                  child: CircularProgressIndicator(
+                      strokeWidth: 2, color: Colors.white))
+              : const AppIcon(PhosphorIconsRegular.check),
+          label: Text(_saving ? 'Salvando…' : 'Salvar Plano'),
+        ),
       ),
     );
   }
@@ -280,7 +295,8 @@ class _SplitCard extends StatelessWidget {
             padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
             decoration: BoxDecoration(
               color: primaryColor.withValues(alpha: 0.08),
-              borderRadius: const BorderRadius.vertical(top: Radius.circular(16)),
+              borderRadius:
+                  const BorderRadius.vertical(top: Radius.circular(16)),
             ),
             child: Row(
               children: [
@@ -320,7 +336,7 @@ class _SplitCard extends StatelessWidget {
                 if (totalSplits > 1)
                   IconButton(
                     onPressed: onRemove,
-                    icon: Icon(Icons.delete_outline,
+                    icon: AppIcon(PhosphorIconsRegular.trash,
                         color: Theme.of(context).colorScheme.error, size: 20),
                     padding: EdgeInsets.zero,
                     constraints: const BoxConstraints(),
@@ -365,7 +381,8 @@ class _SplitCard extends StatelessWidget {
                             controller: ex.nameController,
                             onChanged: (_) => onChanged(),
                             decoration: InputDecoration(
-                              hintText: AppLocalizations.of(context)!.exerciseHint,
+                              hintText:
+                                  AppLocalizations.of(context)!.exerciseHint,
                               hintStyle: Theme.of(context)
                                   .textTheme
                                   .bodySmall
@@ -404,7 +421,8 @@ class _SplitCard extends StatelessWidget {
                             controller: ex.volumeController,
                             onChanged: (_) => onChanged(),
                             decoration: InputDecoration(
-                              hintText: AppLocalizations.of(context)!.setsRepsHint,
+                              hintText:
+                                  AppLocalizations.of(context)!.setsRepsHint,
                               hintStyle: Theme.of(context)
                                   .textTheme
                                   .bodySmall
@@ -440,7 +458,7 @@ class _SplitCard extends StatelessWidget {
                         if (split.exercises.length > 1)
                           GestureDetector(
                             onTap: () => onRemoveExercise(exIndex),
-                            child: Icon(Icons.close,
+                            child: AppIcon(PhosphorIconsRegular.x,
                                 size: 18,
                                 color: Theme.of(context)
                                     .colorScheme
@@ -459,7 +477,7 @@ class _SplitCard extends StatelessWidget {
                   onTap: onAddExercise,
                   child: Row(
                     children: [
-                      Icon(Icons.add_circle_outline,
+                      AppIcon(PhosphorIconsRegular.plusCircle,
                           size: 18, color: primaryColor.withValues(alpha: 0.7)),
                       const SizedBox(width: 6),
                       Text(

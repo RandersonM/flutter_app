@@ -28,17 +28,18 @@ class AppRoutes {
   // Auth routes
   static const String login = AuthRoutes.login;
   static const String onboarding = OnboardingRoutes.onboarding;
-  
+
   // Main navigation routes (public)
   static const String home = HomeRoutes.home;
   static const String calculator = CalculatorRoutes.calculator;
   static const String finances = NamiFinancesRoutes.finances;
   static const String devilFruit = DevilFruitRoutes.devilFruit;
   static const String knowledge = RobinKnowledgeRoutes.knowledge;
-  
+
   // Additional screen routes (public)
   static const String youtubePlayer = YouTubeRoutes.youtubePlayer;
-  static const String characterSelection = FavCharacterSelectionRoutes.characterSelection;
+  static const String characterSelection =
+      FavCharacterSelectionRoutes.characterSelection;
   static const String characterDetails = OnePieceRoutes.characterDetails;
   static const String workout = ZoroWorkoutRoutes.workout;
   static const String cooking = SanjiCookingRoutes.cooking;
@@ -48,9 +49,12 @@ class AppRoutes {
   static const String profile = ProfileRoutes.profile;
   static const String settings = '/settings'; // Legacy/Unused
   static const String favorites = '/favorites'; // Legacy/Unused
-  static const String createCustomCharacter = CustomCharacterRoutes.createCustomCharacter;
-  static const String customCharacterList = CustomCharacterRoutes.customCharacterList;
-  static const String editCustomCharacter = CustomCharacterRoutes.editCustomCharacter;
+  static const String createCustomCharacter =
+      CustomCharacterRoutes.createCustomCharacter;
+  static const String customCharacterList =
+      CustomCharacterRoutes.customCharacterList;
+  static const String editCustomCharacter =
+      CustomCharacterRoutes.editCustomCharacter;
   static const String createCrew = CrewsRoutes.createCrew;
   static const String editCrew = CrewsRoutes.editCrew;
   static const String listCrews = CrewsRoutes.listCrews;
@@ -58,7 +62,8 @@ class AppRoutes {
   static const String duels = DuelsRoutes.duels;
   static const String onePiece = OnePieceRoutes.onePiece;
   static const String cookingTips = SanjiCookingRoutes.cookingTips;
-  static const String namiDetailedFinances = NamiFinancesRoutes.namiDetailedFinances;
+  static const String namiDetailedFinances =
+      NamiFinancesRoutes.namiDetailedFinances;
 
   static final List<FeatureRouteModule> _modules = [
     AuthRoutes(),

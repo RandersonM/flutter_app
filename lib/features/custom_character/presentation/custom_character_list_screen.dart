@@ -1,3 +1,5 @@
+import 'package:opfan/shared/widgets/atoms/app_icon.dart';
+import 'package:phosphor_flutter/phosphor_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:opfan/l10n/app_localizations.dart';
@@ -40,7 +42,7 @@ class _CustomCharacterListScreenContent extends StatelessWidget {
         actions: [
           IconButton(
             onPressed: () => _navigateToCreateCharacter(context),
-            icon: const Icon(Icons.add),
+            icon: const AppIcon(PhosphorIconsRegular.plus),
             tooltip: l10n.createCustomCharacter,
           ),
         ],
@@ -95,4 +97,4 @@ class _CustomCharacterListScreenContent extends StatelessWidget {
       ),
     );
   }
-} 
+}

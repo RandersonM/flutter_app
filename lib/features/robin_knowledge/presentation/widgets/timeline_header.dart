@@ -1,11 +1,10 @@
+import 'package:phosphor_flutter/phosphor_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:opfan/core/models/goal_model.dart';
 import 'package:opfan/app/di/injection.dart';
 import 'package:opfan/features/robin_knowledge/bloc/robin_knowledge_bloc.dart';
 import 'package:opfan/l10n/app_localizations.dart';
-
 
 class TimelineHeader extends StatelessWidget {
   const TimelineHeader({super.key});
@@ -34,7 +33,8 @@ class TimelineHeader extends StatelessWidget {
 
   Widget _buildStatsRow(BuildContext context, List<GoalModel> goals) {
     final completed = goals.where((g) => g.isCompleted).length;
-    final inProgress = goals.where((g) => g.status == GoalStatus.inProgress).length;
+    final inProgress =
+        goals.where((g) => g.status == GoalStatus.inProgress).length;
     final overdue = goals.where((g) => g.isOverdue).length;
 
     return Row(
@@ -44,21 +44,21 @@ class TimelineHeader extends StatelessWidget {
           context,
           AppLocalizations.of(context)!.completed,
           completed.toString(),
-          FontAwesomeIcons.circleCheck,
+          PhosphorIconsRegular.checkCircle,
           Colors.green,
         ),
         _buildStatCard(
           context,
           AppLocalizations.of(context)!.inProgress,
           inProgress.toString(),
-          FontAwesomeIcons.clock,
+          PhosphorIconsRegular.clock,
           Colors.orange,
         ),
         _buildStatCard(
           context,
           AppLocalizations.of(context)!.overdue,
           overdue.toString(),
-          FontAwesomeIcons.triangleExclamation,
+          PhosphorIconsRegular.warning,
           Colors.red,
         ),
       ],
@@ -89,15 +89,15 @@ class TimelineHeader extends StatelessWidget {
           Text(
             value,
             style: Theme.of(context).textTheme.titleLarge?.copyWith(
-              color: color,
-              fontWeight: FontWeight.bold,
-            ),
+                  color: color,
+                  fontWeight: FontWeight.bold,
+                ),
           ),
           Text(
             title,
             style: Theme.of(context).textTheme.bodySmall?.copyWith(
-              color: color,
-            ),
+                  color: color,
+                ),
             textAlign: TextAlign.center,
           ),
         ],
@@ -111,17 +111,23 @@ class TimelineHeader extends StatelessWidget {
       child: Row(
         children: [
           _buildFilterChip(context, AppLocalizations.of(context)!.all, null),
-          _buildFilterChip(context, AppLocalizations.of(context)!.study, GoalCategory.study),
-          _buildFilterChip(context, AppLocalizations.of(context)!.work, GoalCategory.work),
-          _buildFilterChip(context, AppLocalizations.of(context)!.personal, GoalCategory.personal),
-          _buildFilterChip(context, AppLocalizations.of(context)!.health, GoalCategory.health),
-          _buildFilterChip(context, AppLocalizations.of(context)!.finance, GoalCategory.finance),
+          _buildFilterChip(
+              context, AppLocalizations.of(context)!.study, GoalCategory.study),
+          _buildFilterChip(
+              context, AppLocalizations.of(context)!.work, GoalCategory.work),
+          _buildFilterChip(context, AppLocalizations.of(context)!.personal,
+              GoalCategory.personal),
+          _buildFilterChip(context, AppLocalizations.of(context)!.health,
+              GoalCategory.health),
+          _buildFilterChip(context, AppLocalizations.of(context)!.finance,
+              GoalCategory.finance),
         ],
       ),
     );
   }
 
-  Widget _buildFilterChip(BuildContext context, String label, GoalCategory? category) {
+  Widget _buildFilterChip(
+      BuildContext context, String label, GoalCategory? category) {
     return Padding(
       padding: const EdgeInsets.only(right: 8),
       child: FilterChip(
@@ -131,7 +137,8 @@ class TimelineHeader extends StatelessWidget {
           // TODO: Implementar filtro
         },
         backgroundColor: Colors.grey[200],
-        selectedColor: Theme.of(context).colorScheme.primary.withValues(alpha: 0.2),
+        selectedColor:
+            Theme.of(context).colorScheme.primary.withValues(alpha: 0.2),
       ),
     );
   }

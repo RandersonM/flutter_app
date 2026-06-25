@@ -1,3 +1,5 @@
+import 'package:opfan/shared/widgets/atoms/app_icon.dart';
+import 'package:phosphor_flutter/phosphor_flutter.dart';
 // Developed by Randerson Mayllon
 // Copyright © 2025.
 
@@ -56,8 +58,8 @@ class _AppWrapperState extends State<AppWrapper> {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    const Icon(
-                      Icons.error_outline,
+                    const AppIcon(
+                      PhosphorIconsRegular.warningCircle,
                       size: 64,
                       color: Colors.red,
                     ),
@@ -84,7 +86,8 @@ class _AppWrapperState extends State<AppWrapper> {
                       onPressed: () {
                         _authBloc.add(const AuthClearCache());
                       },
-                      child: Text(AppLocalizations.of(context)!.clearDataAndContinue),
+                      child: Text(
+                          AppLocalizations.of(context)!.clearDataAndContinue),
                     ),
                   ],
                 ),

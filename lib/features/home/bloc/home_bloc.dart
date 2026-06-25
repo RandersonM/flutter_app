@@ -8,7 +8,6 @@ import 'package:opfan/features/home/data/repository/featured_character_repositor
 import 'home_event.dart';
 import 'home_state.dart';
 
-
 class HomeBloc extends Bloc<HomeEvent, HomeState> {
   final YouTubeService _youTubeService;
   final IFeaturedCharacterRepository _featuredCharacterRepository;

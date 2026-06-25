@@ -1,6 +1,7 @@
 class FightingStyleModel {
   final String? name;
-  final String type; // obrigatório: espadachim, atirador, lutador, boxeador, etc.
+  final String
+      type; // obrigatório: espadachim, atirador, lutador, boxeador, etc.
   final List<String>? weapons; // opcional: lista de armas
   final List<String>? attacks; // opcional: lista de ataques
 
@@ -15,10 +16,10 @@ class FightingStyleModel {
     return FightingStyleModel(
       name: map['name'] as String?,
       type: map['type'] as String,
-      weapons: map['weapons'] != null 
+      weapons: map['weapons'] != null
           ? List<String>.from(map['weapons'] as List)
           : null,
-      attacks: map['attacks'] != null 
+      attacks: map['attacks'] != null
           ? List<String>.from(map['attacks'] as List)
           : null,
     );
@@ -64,9 +65,6 @@ class FightingStyleModel {
 
   @override
   int get hashCode {
-    return name.hashCode ^
-        type.hashCode ^
-        weapons.hashCode ^
-        attacks.hashCode;
+    return name.hashCode ^ type.hashCode ^ weapons.hashCode ^ attacks.hashCode;
   }
-} 
+}

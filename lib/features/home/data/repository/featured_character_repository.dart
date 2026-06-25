@@ -10,11 +10,11 @@ class FeaturedCharacterRepository implements IFeaturedCharacterRepository {
   FeaturedCharacterRepository();
 
   final FirestoreService _firestoreService = FirestoreService();
-  
+
   static const String _collection = 'featuredCharacters';
   static const String _hiveBoxName = 'featured_character_box';
   static const String _currentCharacterKey = 'current_featured_character';
-  
+
   late Box<TodayCharacter> _box;
 
   Future<void> _initHive() async {
@@ -62,7 +62,9 @@ class FeaturedCharacterRepository implements IFeaturedCharacterRepository {
 
       if (currentCharacter != null && currentCharacter.isToday) {
         final allCharacters = await getAllOnePieceCharacters();
-        final foundCharacter = allCharacters.where((c) => c.id == currentCharacter.characterId).firstOrNull;
+        final foundCharacter = allCharacters
+            .where((c) => c.id == currentCharacter.characterId)
+            .firstOrNull;
         if (foundCharacter != null) {
           return foundCharacter;
         }
@@ -86,7 +88,7 @@ class FeaturedCharacterRepository implements IFeaturedCharacterRepository {
   Future<CustomCharacterModel> getRandomCharacter() async {
     try {
       final featuredCharacters = await _getAllFeaturedCharacters();
-      
+
       if (featuredCharacters.isNotEmpty) {
         final random = Random();
         final randomIndex = random.nextInt(featuredCharacters.length);
@@ -115,7 +117,8 @@ class FeaturedCharacterRepository implements IFeaturedCharacterRepository {
   }
 
   @override
-  Future<void> updateFeaturedCharacter(String documentId, TodayCharacter character) async {
+  Future<void> updateFeaturedCharacter(
+      String documentId, TodayCharacter character) async {
     try {
       await _initHive();
       await _box.put(_currentCharacterKey, character);
@@ -218,21 +221,23 @@ class FeaturedCharacterRepository implements IFeaturedCharacterRepository {
     return {
       'collection': _collection,
       'hiveBox': _hiveBoxName,
-      'message': 'FeaturedCharacterRepository using Firestore for global characters and Hive for daily featured',
+      'message':
+          'FeaturedCharacterRepository using Firestore for global characters and Hive for daily featured',
     };
   }
 
   @override
-  Future<List<CustomCharacterModel>> getAllOnePieceCharacters({int? limit}) async {
+  Future<List<CustomCharacterModel>> getAllOnePieceCharacters(
+      {int? limit}) async {
     try {
       final documents = await _firestoreService.getDocuments(
         collection: _collection,
         limit: limit,
       );
-      
-      
+
       return documents
-          .map((doc) => CustomCharacterModel.fromFirestore(doc, doc['id'] as String))
+          .map((doc) =>
+              CustomCharacterModel.fromFirestore(doc, doc['id'] as String))
           .toList();
     } catch (e) {
       debugPrint('Error getting all One Piece characters: $e');
@@ -241,13 +246,17 @@ class FeaturedCharacterRepository implements IFeaturedCharacterRepository {
   }
 
   @override
-  Future<List<CustomCharacterModel>> searchOnePieceCharacters(String query) async {
+  Future<List<CustomCharacterModel>> searchOnePieceCharacters(
+      String query) async {
     try {
       final allCharacters = await getAllOnePieceCharacters();
       return allCharacters
-          .where((character) => 
+          .where((character) =>
               character.name.toLowerCase().contains(query.toLowerCase()) ||
-              (character.nickname?.toLowerCase().contains(query.toLowerCase()) ?? false))
+              (character.nickname
+                      ?.toLowerCase()
+                      .contains(query.toLowerCase()) ??
+                  false))
           .toList();
     } catch (e) {
       debugPrint('Error searching One Piece characters: $e');
@@ -263,7 +272,8 @@ class FeaturedCharacterRepository implements IFeaturedCharacterRepository {
       );
 
       return documents
-          .map((doc) => CustomCharacterModel.fromFirestore(doc, doc['id'] as String))
+          .map((doc) =>
+              CustomCharacterModel.fromFirestore(doc, doc['id'] as String))
           .toList();
     } catch (e) {
       debugPrint('Error getting all featured characters: $e');
@@ -280,7 +290,8 @@ class FeaturedCharacterRepository implements IFeaturedCharacterRepository {
     return CustomCharacterModel(
       name: 'Monkey D. Luffy',
       nickname: 'Straw Hat Luffy',
-      image: 'https://static.wikia.nocookie.net/onepiece/images/6/6d/Monkey_D._Luffy_Anime_Post_Timeskip_Infobox.png',
+      image:
+          'https://static.wikia.nocookie.net/onepiece/images/6/6d/Monkey_D._Luffy_Anime_Post_Timeskip_Infobox.png',
       bounty: '3,000,000,000',
       affiliations: ['Straw Hat Pirates'],
       occupation: ['Pirate Captain'],
@@ -291,4 +302,3 @@ class FeaturedCharacterRepository implements IFeaturedCharacterRepository {
     );
   }
 }
-

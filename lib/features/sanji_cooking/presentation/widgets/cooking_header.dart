@@ -16,13 +16,14 @@ class CookingHeader extends StatefulWidget {
   State<CookingHeader> createState() => _CookingHeaderState();
 }
 
-class _CookingHeaderState extends State<CookingHeader> with TickerProviderStateMixin {
+class _CookingHeaderState extends State<CookingHeader>
+    with TickerProviderStateMixin {
   late PageController _pageController;
   int _currentIndex = 0;
 
   List<String> _buildSanjiQuotes(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
-    
+
     return [
       l10n.sanjiQuote1,
       l10n.sanjiQuote2,
@@ -49,7 +50,7 @@ class _CookingHeaderState extends State<CookingHeader> with TickerProviderStateM
 
   void _nextQuote() {
     _currentIndex++;
-    
+
     if (_currentIndex >= _buildSanjiQuotes(context).length) {
       _currentIndex = 0;
       _pageController.jumpToPage(0);

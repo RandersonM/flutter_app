@@ -1,3 +1,5 @@
+import 'package:opfan/shared/widgets/atoms/app_icon.dart';
+import 'package:phosphor_flutter/phosphor_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:opfan/l10n/app_localizations.dart';
 import 'package:opfan/shared/utils/constants.dart';
@@ -5,6 +7,7 @@ import 'package:opfan/shared/utils/theme.dart';
 import 'package:opfan/shared/widgets/atoms/custom_dropdown.dart';
 import 'package:opfan/shared/widgets/atoms/custom_text_field.dart';
 import 'package:opfan/shared/widgets/atoms/finance_currency_text_field.dart';
+import 'package:opfan/shared/widgets/atoms/app_button.dart';
 
 class AddExpenseDialog extends StatefulWidget {
   final Function(ExpenseItem) onExpenseAdded;
@@ -38,12 +41,11 @@ class _AddExpenseDialogState extends State<AddExpenseDialog> {
         category: selectedCategory!,
         description: _descriptionController.text.trim(),
       );
-      
+
       widget.onExpenseAdded(expenseItem);
       Navigator.of(context).pop();
     }
   }
-
 
   String _getCategoryLabel(ExpenseCategory category, AppLocalizations l10n) {
     switch (category) {
@@ -65,7 +67,7 @@ class _AddExpenseDialogState extends State<AddExpenseDialog> {
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
-    
+
     return AlertDialog(
       backgroundColor: const Color(0xFF16161C),
       surfaceTintColor: Colors.transparent,
@@ -74,7 +76,7 @@ class _AddExpenseDialogState extends State<AddExpenseDialog> {
       ),
       title: Row(
         children: [
-          Icon(Icons.add_circle_outline_rounded, color: AppColors.red[500]),
+          AppIcon(PhosphorIconsRegular.plusCircle, color: AppColors.red[500]),
           const SizedBox(width: 8),
           Text(l10n.addExpense),
         ],
@@ -101,9 +103,7 @@ class _AddExpenseDialogState extends State<AddExpenseDialog> {
                 return null;
               },
             ),
-            
             const SizedBox(height: Constants.margin),
-            
             FinanceCurrencyTextField(
               label: l10n.value,
               hint: '0,00',
@@ -112,43 +112,37 @@ class _AddExpenseDialogState extends State<AddExpenseDialog> {
                 if (value == null || value.isEmpty) {
                   return 'Por favor, insira um valor';
                 }
-                final amount = double.tryParse(value.replaceAll(RegExp(r'[^\d]'), ''));
+                final amount =
+                    double.tryParse(value.replaceAll(RegExp(r'[^\d]'), ''));
                 if (amount == null || amount <= 0) {
                   return 'Por favor, insira um valor válido';
                 }
                 return null;
               },
             ),
-            
             const SizedBox(height: Constants.margin),
-            
             CustomTextField(
-               label: l10n.description,
-               hint: 'Descrição (opcional)',
-               controller: _descriptionController,
-               maxLines: 2,
-             ),
+              label: l10n.description,
+              hint: 'Descrição (opcional)',
+              controller: _descriptionController,
+              maxLines: 2,
+            ),
           ],
         ),
       ),
       actions: [
-        TextButton(
+        AppButton(
           onPressed: () => Navigator.of(context).pop(),
-          style: TextButton.styleFrom(
-            foregroundColor: Colors.white54,
-          ),
-          child: Text(l10n.cancel),
+          variant: AppButtonVariant.text,
+          label: l10n.cancel,
+          foregroundColor: Colors.white54,
         ),
-        FilledButton(
+        AppButton(
           onPressed: _addExpense,
-          style: FilledButton.styleFrom(
-            backgroundColor: AppColors.red[500],
-            foregroundColor: Colors.white,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(12),
-            ),
-          ),
-          child: Text(l10n.add),
+          label: l10n.add,
+          backgroundColor: AppColors.red[500],
+          foregroundColor: Colors.white,
+          borderRadius: 12,
         ),
       ],
     );

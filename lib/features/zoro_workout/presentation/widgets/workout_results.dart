@@ -1,3 +1,5 @@
+import 'package:opfan/shared/widgets/atoms/app_icon.dart';
+import 'package:phosphor_flutter/phosphor_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:opfan/core/models/workout_assessment_model.dart';
@@ -11,6 +13,7 @@ import '../../bloc/zoro_workout_bloc.dart';
 import '../workout_constants.dart';
 import '../workout_plan_editor_screen.dart';
 import 'workout_calendar.dart';
+import 'package:opfan/shared/widgets/atoms/app_button.dart';
 
 class WorkoutResults extends StatelessWidget {
   final Map<String, dynamic> healthResults;
@@ -53,7 +56,7 @@ class WorkoutResults extends StatelessWidget {
                     fontWeight: FontWeight.bold,
                   ),
             ),
-            TextButton(
+            AppButton(
               onPressed: () => Navigator.push(
                 context,
                 MaterialPageRoute(
@@ -62,7 +65,8 @@ class WorkoutResults extends StatelessWidget {
                   ),
                 ),
               ),
-              child: Text(AppLocalizations.of(context)!.seeAll),
+              variant: AppButtonVariant.text,
+              label: AppLocalizations.of(context)!.seeAll,
             ),
           ],
         ),
@@ -71,15 +75,11 @@ class WorkoutResults extends StatelessWidget {
         const SizedBox(height: Constants.margin * 2),
         const WorkoutCalendar(),
         const SizedBox(height: 30),
-        SizedBox(
-          width: double.infinity,
-          child: OutlinedButton(
-            onPressed: onBackToSetup,
-            style: OutlinedButton.styleFrom(
-              padding: const EdgeInsets.symmetric(vertical: 16),
-            ),
-            child: Text(AppLocalizations.of(context)!.workout_new_assessment),
-          ),
+        AppButton(
+          onPressed: onBackToSetup,
+          variant: AppButtonVariant.outline,
+          label: AppLocalizations.of(context)!.workout_new_assessment,
+          isFullWidth: true,
         ),
       ],
     );
@@ -119,125 +119,126 @@ class WorkoutResults extends StatelessWidget {
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-        Expanded(
-          flex: 2,
-          child: Container(
-            padding: const EdgeInsets.all(16),
-            decoration: BoxDecoration(
-              color: Theme.of(context).colorScheme.surface,
-              borderRadius: BorderRadius.circular(16),
-              border: Border.all(
-                color: Theme.of(context)
-                    .colorScheme
-                    .primary
-                    .withValues(alpha: 0.3),
+          Expanded(
+            flex: 2,
+            child: Container(
+              padding: const EdgeInsets.all(16),
+              decoration: BoxDecoration(
+                color: Theme.of(context).colorScheme.surface,
+                borderRadius: BorderRadius.circular(16),
+                border: Border.all(
+                  color: Theme.of(context)
+                      .colorScheme
+                      .primary
+                      .withValues(alpha: 0.3),
+                ),
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    AppLocalizations.of(context)!.weekProgressTitle,
+                    style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                          fontWeight: FontWeight.bold,
+                        ),
+                  ),
+                  const SizedBox(height: 12),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        '$weekWorkouts / $goal workouts',
+                        style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                              color: Theme.of(context)
+                                  .colorScheme
+                                  .onSurface
+                                  .withValues(alpha: 0.7),
+                            ),
+                      ),
+                      Text(
+                        '${(progress * 100).toInt()}%',
+                        style: Theme.of(context).textTheme.titleSmall?.copyWith(
+                              fontWeight: FontWeight.bold,
+                              color: Theme.of(context)
+                                  .colorScheme
+                                  .primary
+                                  .withValues(alpha: 0.8),
+                            ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 8),
+                  LinearProgressIndicator(
+                    value: progress,
+                    minHeight: 8,
+                    backgroundColor:
+                        Theme.of(context).colorScheme.surfaceContainerHighest,
+                    valueColor: AlwaysStoppedAnimation<Color>(
+                        Theme.of(context).colorScheme.primary),
+                    borderRadius: BorderRadius.circular(4),
+                  ),
+                ],
               ),
             ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  AppLocalizations.of(context)!.weekProgressTitle,
-                  style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                        fontWeight: FontWeight.bold,
+          ),
+          const SizedBox(width: 12),
+          Expanded(
+            flex: 1,
+            child: Container(
+              padding: const EdgeInsets.all(16),
+              decoration: BoxDecoration(
+                color: Theme.of(context).colorScheme.surface,
+                borderRadius: BorderRadius.circular(16),
+                border: Border.all(color: Colors.orange.withValues(alpha: 0.3)),
+              ),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    AppLocalizations.of(context)!.streakTitle,
+                    style: Theme.of(context).textTheme.titleSmall?.copyWith(
+                          fontWeight: FontWeight.bold,
+                        ),
+                  ),
+                  const SizedBox(height: 4),
+                  Text(
+                    AppLocalizations.of(context)!.thisMonthSuffix,
+                    style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                          color: Theme.of(context)
+                              .colorScheme
+                              .onSurface
+                              .withValues(alpha: 0.5),
+                        ),
+                  ),
+                  const SizedBox(height: 8),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      const Text('🔥', style: TextStyle(fontSize: 18)),
+                      const SizedBox(width: 4),
+                      Text(
+                        '$monthStreak',
+                        style:
+                            Theme.of(context).textTheme.headlineSmall?.copyWith(
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.orange,
+                                ),
                       ),
-                ),
-                const SizedBox(height: 12),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      '$weekWorkouts / $goal workouts',
-                      style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                            color: Theme.of(context)
-                                .colorScheme
-                                .onSurface
-                                .withValues(alpha: 0.7),
-                          ),
-                    ),
-                    Text(
-                      '${(progress * 100).toInt()}%',
-                      style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                            fontWeight: FontWeight.bold,
-                            color: Theme.of(context)
-                                .colorScheme
-                                .primary
-                                .withValues(alpha: 0.8),
-                          ),
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 8),
-                LinearProgressIndicator(
-                  value: progress,
-                  minHeight: 8,
-                  backgroundColor:
-                      Theme.of(context).colorScheme.surfaceContainerHighest,
-                  valueColor: AlwaysStoppedAnimation<Color>(
-                      Theme.of(context).colorScheme.primary),
-                  borderRadius: BorderRadius.circular(4),
-                ),
-              ],
+                    ],
+                  ),
+                  Text(
+                    AppLocalizations.of(context)!.daysSuffix,
+                    style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                          color: Colors.orange.withValues(alpha: 0.8),
+                          fontWeight: FontWeight.w600,
+                        ),
+                  ),
+                ],
+              ),
             ),
           ),
-        ),
-        const SizedBox(width: 12),
-        Expanded(
-          flex: 1,
-          child: Container(
-            padding: const EdgeInsets.all(16),
-            decoration: BoxDecoration(
-              color: Theme.of(context).colorScheme.surface,
-              borderRadius: BorderRadius.circular(16),
-              border: Border.all(color: Colors.orange.withValues(alpha: 0.3)),
-            ),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text(
-                  AppLocalizations.of(context)!.streakTitle,
-                  style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                        fontWeight: FontWeight.bold,
-                      ),
-                ),
-                const SizedBox(height: 4),
-                Text(
-                  AppLocalizations.of(context)!.thisMonthSuffix,
-                  style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                        color: Theme.of(context)
-                            .colorScheme
-                            .onSurface
-                            .withValues(alpha: 0.5),
-                      ),
-                ),
-                const SizedBox(height: 8),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    const Text('🔥', style: TextStyle(fontSize: 18)),
-                    const SizedBox(width: 4),
-                    Text(
-                      '$monthStreak',
-                      style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                            fontWeight: FontWeight.bold,
-                            color: Colors.orange,
-                          ),
-                    ),
-                  ],
-                ),
-                Text(
-                  AppLocalizations.of(context)!.daysSuffix,
-                  style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                        color: Colors.orange.withValues(alpha: 0.8),
-                        fontWeight: FontWeight.w600,
-                      ),
-                ),
-              ],
-            ),
-          ),
-        ),
-      ],
-    ),
+        ],
+      ),
     );
   }
 
@@ -276,7 +277,7 @@ class WorkoutResults extends StatelessWidget {
                 decoration: BoxDecoration(
                     color: primary.withValues(alpha: 0.12),
                     borderRadius: BorderRadius.circular(12)),
-                child: Icon(Icons.add, color: primary),
+                child: AppIcon(PhosphorIconsRegular.plus, color: primary),
               ),
               const SizedBox(width: 16),
               Expanded(
@@ -284,8 +285,11 @@ class WorkoutResults extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(AppLocalizations.of(context)!.createWorkoutPlan,
-                        style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                            fontWeight: FontWeight.bold, color: primary)),
+                        style: Theme.of(context)
+                            .textTheme
+                            .titleMedium
+                            ?.copyWith(
+                                fontWeight: FontWeight.bold, color: primary)),
                     const SizedBox(height: 2),
                     Text(AppLocalizations.of(context)!.createCustomPlanTap,
                         style: Theme.of(context).textTheme.bodySmall?.copyWith(
@@ -296,7 +300,8 @@ class WorkoutResults extends StatelessWidget {
                   ],
                 ),
               ),
-              Icon(Icons.chevron_right, color: primary.withValues(alpha: 0.5)),
+              AppIcon(PhosphorIconsRegular.caretRight,
+                  color: primary.withValues(alpha: 0.5)),
             ],
           ),
         ),
@@ -304,7 +309,8 @@ class WorkoutResults extends StatelessWidget {
     }
 
     final exercises = split?.exercises ?? [];
-    final splitName = split?.name ?? AppLocalizations.of(context)!.defaultWorkoutName;
+    final splitName =
+        split?.name ?? AppLocalizations.of(context)!.defaultWorkoutName;
     final preview = exercises.take(3).map((e) => e.name).join(', ');
 
     return GestureDetector(
@@ -315,7 +321,10 @@ class WorkoutResults extends StatelessWidget {
           color: Theme.of(context).colorScheme.surface,
           borderRadius: BorderRadius.circular(16),
           border: Border.all(
-              color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.1)),
+              color: Theme.of(context)
+                  .colorScheme
+                  .onSurface
+                  .withValues(alpha: 0.1)),
         ),
         child: Row(
           children: [
@@ -328,8 +337,12 @@ class WorkoutResults extends StatelessWidget {
                 borderRadius: BorderRadius.circular(12),
               ),
               child: Icon(
-                isDone ? Icons.check_circle_outline : Icons.fitness_center,
-                color: isDone ? Colors.green.shade400 : primary.withValues(alpha: 0.8),
+                isDone
+                    ? PhosphorIconsRegular.checkCircle
+                    : PhosphorIconsRegular.barbell,
+                color: isDone
+                    ? Colors.green.shade400
+                    : primary.withValues(alpha: 0.8),
               ),
             ),
             const SizedBox(width: 16),
@@ -337,7 +350,10 @@ class WorkoutResults extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(isDone ? AppLocalizations.of(context)!.todayWorkoutCompleted : AppLocalizations.of(context)!.todayWorkout,
+                  Text(
+                      isDone
+                          ? AppLocalizations.of(context)!.todayWorkoutCompleted
+                          : AppLocalizations.of(context)!.todayWorkout,
                       style: Theme.of(context).textTheme.bodySmall?.copyWith(
                           color: Theme.of(context)
                               .colorScheme
@@ -350,16 +366,19 @@ class WorkoutResults extends StatelessWidget {
                           .titleMedium
                           ?.copyWith(fontWeight: FontWeight.bold)),
                   const SizedBox(height: 4),
-                  Text('${AppLocalizations.of(context)!.exerciseCount(exercises.length)} • $preview',
+                  Text(
+                      '${AppLocalizations.of(context)!.exerciseCount(exercises.length)} • $preview',
                       style: Theme.of(context).textTheme.bodySmall,
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis),
                 ],
               ),
             ),
-            Icon(Icons.chevron_right,
-                color:
-                    Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.5)),
+            AppIcon(PhosphorIconsRegular.caretRight,
+                color: Theme.of(context)
+                    .colorScheme
+                    .onSurface
+                    .withValues(alpha: 0.5)),
           ],
         ),
       ),
@@ -526,7 +545,8 @@ class WorkoutResults extends StatelessWidget {
                       shape: BoxShape.circle,
                     ),
                     child: Icon(
-                      exercise['icon'] as IconData? ?? Icons.fitness_center,
+                      exercise['icon'] as IconData? ??
+                          PhosphorIconsRegular.barbell,
                       color: Theme.of(context)
                           .colorScheme
                           .primary
@@ -556,7 +576,8 @@ class WorkoutResults extends StatelessWidget {
   String _getBMICategory(BuildContext context, double bmi) {
     const thresholds = WorkoutConstants.bmiThresholds;
     final loc = AppLocalizations.of(context)!;
-    if (bmi < thresholds['underweight']!) return loc.workout_category_underweight;
+    if (bmi < thresholds['underweight']!)
+      return loc.workout_category_underweight;
     if (bmi < thresholds['normal']!) return loc.workout_category_normal;
     if (bmi < thresholds['overweight']!) return loc.workout_category_overweight;
     if (bmi < thresholds['obesity_1']!) return loc.workout_category_obesity_1;
@@ -573,17 +594,21 @@ class WorkoutResults extends StatelessWidget {
 
     final thresholds =
         internalGender == GenderMapper.male ? maleThresholds : femaleThresholds;
-    if (percentage < thresholds['very_low']!) return loc.workout_category_very_low;
-    if (percentage < thresholds['athletic']!) return loc.workout_category_athletic;
+    if (percentage < thresholds['very_low']!)
+      return loc.workout_category_very_low;
+    if (percentage < thresholds['athletic']!)
+      return loc.workout_category_athletic;
     if (percentage < thresholds['good']!) return loc.workout_category_good;
-    if (percentage < thresholds['acceptable']!) return loc.workout_category_acceptable;
+    if (percentage < thresholds['acceptable']!)
+      return loc.workout_category_acceptable;
     return loc.workout_category_high;
   }
 
   String _getHealthCategory(BuildContext context, double score) {
     const thresholds = WorkoutConstants.healthScoreThresholds;
     final loc = AppLocalizations.of(context)!;
-    if (score >= thresholds['excellent']!) return loc.workout_category_excellent;
+    if (score >= thresholds['excellent']!)
+      return loc.workout_category_excellent;
     if (score >= thresholds['good']!) return loc.workout_category_good;
     if (score >= thresholds['regular']!) return loc.workout_category_regular;
     return loc.workout_category_needs_improvement;
@@ -609,7 +634,8 @@ class _NextWorkoutModal extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final exercises = split?.exercises ?? [];
-    final splitName = split?.name ?? AppLocalizations.of(context)!.defaultWorkoutName;
+    final splitName =
+        split?.name ?? AppLocalizations.of(context)!.defaultWorkoutName;
 
     return DraggableScrollableSheet(
       initialChildSize: 0.75,
@@ -627,9 +653,13 @@ class _NextWorkoutModal extends StatelessWidget {
               Padding(
                 padding: const EdgeInsets.symmetric(vertical: 12),
                 child: Container(
-                  width: 40, height: 4,
+                  width: 40,
+                  height: 4,
                   decoration: BoxDecoration(
-                    color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.2),
+                    color: Theme.of(context)
+                        .colorScheme
+                        .onSurface
+                        .withValues(alpha: 0.2),
                     borderRadius: BorderRadius.circular(2),
                   ),
                 ),
@@ -648,7 +678,9 @@ class _NextWorkoutModal extends StatelessWidget {
                         borderRadius: BorderRadius.circular(12),
                       ),
                       child: Icon(
-                        isDone ? Icons.check_circle_outline : Icons.fitness_center,
+                        isDone
+                            ? PhosphorIconsRegular.checkCircle
+                            : PhosphorIconsRegular.barbell,
                         color: isDone ? Colors.green.shade400 : primaryColor,
                         size: 22,
                       ),
@@ -659,27 +691,43 @@ class _NextWorkoutModal extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(splitName,
-                              style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                                  fontWeight: FontWeight.bold)),
-                          Text(AppLocalizations.of(context)!.exerciseCount(exercises.length),
-                              style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                                  color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.6))),
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .titleLarge
+                                  ?.copyWith(fontWeight: FontWeight.bold)),
+                          Text(
+                              AppLocalizations.of(context)!
+                                  .exerciseCount(exercises.length),
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .bodySmall
+                                  ?.copyWith(
+                                      color: Theme.of(context)
+                                          .colorScheme
+                                          .onSurface
+                                          .withValues(alpha: 0.6))),
                         ],
                       ),
                     ),
                     // Badge status
                     Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 10, vertical: 4),
                       decoration: BoxDecoration(
                         color: isDone
                             ? Colors.green.withValues(alpha: 0.12)
                             : primaryColor.withValues(alpha: 0.12),
                         borderRadius: BorderRadius.circular(20),
                       ),
-                      child: Text(isDone ? AppLocalizations.of(context)!.completedWithCheck : AppLocalizations.of(context)!.today,
+                      child: Text(
+                          isDone
+                              ? AppLocalizations.of(context)!.completedWithCheck
+                              : AppLocalizations.of(context)!.today,
                           style: TextStyle(
-                            color: isDone ? Colors.green.shade400 : primaryColor,
-                            fontWeight: FontWeight.bold, fontSize: 12,
+                            color:
+                                isDone ? Colors.green.shade400 : primaryColor,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 12,
                           )),
                     ),
                   ],
@@ -690,29 +738,51 @@ class _NextWorkoutModal extends StatelessWidget {
                 padding: const EdgeInsets.symmetric(horizontal: 20),
                 child: Row(
                   children: [
-                    _InfoChip(icon: Icons.loop, label: AppLocalizations.of(context)!.exerciseCount(exercises.length), primaryColor: primaryColor),
+                    _InfoChip(
+                        icon: PhosphorIconsRegular.arrowsClockwise,
+                        label: AppLocalizations.of(context)!
+                            .exerciseCount(exercises.length),
+                        primaryColor: primaryColor),
                     const SizedBox(width: 8),
                     _InfoChip(
-                        icon: isDone ? Icons.check : Icons.radio_button_unchecked,
-                        label: isDone ? AppLocalizations.of(context)!.doneTodayLabel : AppLocalizations.of(context)!.pendingLabel,
-                        primaryColor: isDone ? Colors.green.shade400 : primaryColor),
+                        icon: isDone
+                            ? PhosphorIconsRegular.check
+                            : PhosphorIconsRegular.circle,
+                        label: isDone
+                            ? AppLocalizations.of(context)!.doneTodayLabel
+                            : AppLocalizations.of(context)!.pendingLabel,
+                        primaryColor:
+                            isDone ? Colors.green.shade400 : primaryColor),
                   ],
                 ),
               ),
               const SizedBox(height: 16),
-              Divider(height: 1, color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.08)),
+              Divider(
+                  height: 1,
+                  color: Theme.of(context)
+                      .colorScheme
+                      .onSurface
+                      .withValues(alpha: 0.08)),
               const SizedBox(height: 8),
               // Lista de exercícios com status
               Expanded(
                 child: exercises.isEmpty
                     ? Center(
-                        child: Text(AppLocalizations.of(context)!.noExercisesInSplit,
-                            style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                                color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.5))),
+                        child: Text(
+                            AppLocalizations.of(context)!.noExercisesInSplit,
+                            style: Theme.of(context)
+                                .textTheme
+                                .bodyMedium
+                                ?.copyWith(
+                                    color: Theme.of(context)
+                                        .colorScheme
+                                        .onSurface
+                                        .withValues(alpha: 0.5))),
                       )
                     : ListView.separated(
                         controller: scrollController,
-                        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 20, vertical: 8),
                         itemCount: exercises.length,
                         separatorBuilder: (_, __) => const SizedBox(height: 10),
                         itemBuilder: (ctx, i) {
@@ -721,39 +791,65 @@ class _NextWorkoutModal extends StatelessWidget {
                             children: [
                               // Indicador ✅ / ⬜
                               Icon(
-                                isDone ? Icons.check_circle : Icons.radio_button_unchecked,
-                                color: isDone ? Colors.green.shade400 : Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.3),
+                                isDone
+                                    ? PhosphorIconsRegular.checkCircle
+                                    : PhosphorIconsRegular.circle,
+                                color: isDone
+                                    ? Colors.green.shade400
+                                    : Theme.of(context)
+                                        .colorScheme
+                                        .onSurface
+                                        .withValues(alpha: 0.3),
                                 size: 20,
                               ),
                               const SizedBox(width: 10),
                               Container(
-                                width: 28, height: 28,
+                                width: 28,
+                                height: 28,
                                 alignment: Alignment.center,
                                 decoration: BoxDecoration(
                                   color: primaryColor.withValues(alpha: 0.08),
                                   borderRadius: BorderRadius.circular(6),
                                 ),
                                 child: Text('${i + 1}',
-                                    style: TextStyle(color: primaryColor, fontWeight: FontWeight.bold, fontSize: 12)),
+                                    style: TextStyle(
+                                        color: primaryColor,
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 12)),
                               ),
                               const SizedBox(width: 10),
                               Expanded(
                                 child: Text(ex.name,
-                                    style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                                        fontWeight: FontWeight.w500,
-                                        decoration: isDone ? TextDecoration.lineThrough : null,
-                                        color: isDone
-                                            ? Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.5)
-                                            : null)),
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .bodyMedium
+                                        ?.copyWith(
+                                            fontWeight: FontWeight.w500,
+                                            decoration: isDone
+                                                ? TextDecoration.lineThrough
+                                                : null,
+                                            color: isDone
+                                                ? Theme.of(context)
+                                                    .colorScheme
+                                                    .onSurface
+                                                    .withValues(alpha: 0.5)
+                                                : null)),
                               ),
                               Container(
-                                padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 10, vertical: 4),
                                 decoration: BoxDecoration(
-                                  color: Theme.of(context).colorScheme.surfaceContainerHighest,
+                                  color: Theme.of(context)
+                                      .colorScheme
+                                      .surfaceContainerHighest,
                                   borderRadius: BorderRadius.circular(8),
                                 ),
                                 child: Text(ex.volume,
-                                    style: Theme.of(context).textTheme.bodySmall?.copyWith(fontWeight: FontWeight.bold)),
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .bodySmall
+                                        ?.copyWith(
+                                            fontWeight: FontWeight.bold)),
                               ),
                             ],
                           );
@@ -767,35 +863,40 @@ class _NextWorkoutModal extends StatelessWidget {
                   children: [
                     Expanded(
                       flex: 1,
-                      child: OutlinedButton.icon(
+                      child: AppButton(
                         onPressed: () {
                           final bloc = context.read<ZoroWorkoutBloc>();
                           Navigator.pop(context);
-                          Navigator.push(context, MaterialPageRoute(
-                            builder: (_) => BlocProvider.value(
-                              value: bloc,
-                              child: WorkoutPlanEditorScreen(existingPlan: currentAssessment?.workoutPlan),
-                            ),
-                          ));
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (_) => BlocProvider.value(
+                                  value: bloc,
+                                  child: WorkoutPlanEditorScreen(
+                                      existingPlan:
+                                          currentAssessment?.workoutPlan),
+                                ),
+                              ));
                         },
-                        icon: const Icon(Icons.edit_outlined, size: 16),
-                        label: Text(AppLocalizations.of(context)!.editPlan),
-                        style: OutlinedButton.styleFrom(padding: const EdgeInsets.symmetric(vertical: 14, horizontal: 2)),
+                        variant: AppButtonVariant.outline,
+                        icon: const AppIcon(
+                            PhosphorIconsRegular.pencilSimple,
+                            size: 16),
+                        label: AppLocalizations.of(context)!.editPlan,
+                        padding: const EdgeInsets.symmetric(
+                            vertical: 14, horizontal: 2),
                       ),
                     ),
                     const SizedBox(width: 12),
                     Expanded(
                       flex: 1,
-                      child: ElevatedButton(
+                      child: AppButton(
                         onPressed: () => Navigator.pop(context),
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: primaryColor,
-                          foregroundColor: Colors.white,
-                          padding: const EdgeInsets.symmetric(vertical: 14),
-                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
-                        ),
-                        child: Text(isDone ? AppLocalizations.of(context)!.viewProgress : AppLocalizations.of(context)!.startWorkout,
-                            style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 15)),
+                        label: isDone
+                            ? AppLocalizations.of(context)!.viewProgress
+                            : AppLocalizations.of(context)!.startWorkout,
+                        padding: const EdgeInsets.symmetric(vertical: 14),
+                        borderRadius: 14,
                       ),
                     ),
                   ],
@@ -814,7 +915,8 @@ class _InfoChip extends StatelessWidget {
   final String label;
   final Color primaryColor;
 
-  const _InfoChip({required this.icon, required this.label, required this.primaryColor});
+  const _InfoChip(
+      {required this.icon, required this.label, required this.primaryColor});
 
   @override
   Widget build(BuildContext context) {
@@ -829,11 +931,13 @@ class _InfoChip extends StatelessWidget {
         children: [
           Icon(icon, size: 13, color: primaryColor),
           const SizedBox(width: 4),
-          Text(label, style: Theme.of(context).textTheme.bodySmall?.copyWith(fontWeight: FontWeight.w600)),
+          Text(label,
+              style: Theme.of(context)
+                  .textTheme
+                  .bodySmall
+                  ?.copyWith(fontWeight: FontWeight.w600)),
         ],
       ),
     );
   }
 }
-
-

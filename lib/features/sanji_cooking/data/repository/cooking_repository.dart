@@ -72,7 +72,7 @@ Please provide:
     int? servings,
   }) async {
     final ingredientsList = ingredients.join(', ');
-    
+
     final prompt = _isPortuguese
         ? '''
 Sugira receitas usando estes ingredientes: $ingredientsList

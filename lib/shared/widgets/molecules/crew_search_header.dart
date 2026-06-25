@@ -1,3 +1,5 @@
+import 'package:opfan/shared/widgets/atoms/app_icon.dart';
+import 'package:phosphor_flutter/phosphor_flutter.dart';
 // Developed by Randerson Mayllon
 // Copyright © 2022.
 
@@ -22,14 +24,14 @@ class CrewSearchHeader extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
-    
+
     return Container(
       padding: const EdgeInsets.all(Constants.margin),
       decoration: BoxDecoration(
         color: Theme.of(context).colorScheme.surface,
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withValues(alpha :0.1),
+            color: Colors.black.withValues(alpha: 0.1),
             blurRadius: 4,
             offset: const Offset(0, 2),
           ),
@@ -42,10 +44,11 @@ class CrewSearchHeader extends StatelessWidget {
               controller: searchController,
               decoration: InputDecoration(
                 hintText: l10n.searchCrews,
-                prefixIcon: const Icon(Icons.search),
+                prefixIcon:
+                    const AppIcon(PhosphorIconsRegular.magnifyingGlass),
                 suffixIcon: searchController.text.isNotEmpty
                     ? IconButton(
-                        icon: const Icon(Icons.clear),
+                        icon: const AppIcon(PhosphorIconsRegular.x),
                         onPressed: () {
                           searchController.clear();
                           onSearch();
@@ -70,7 +73,7 @@ class CrewSearchHeader extends StatelessWidget {
             const SizedBox(width: Constants.margin),
             IconButton(
               onPressed: onFilter,
-              icon: const Icon(Icons.filter_list),
+              icon: const AppIcon(PhosphorIconsRegular.faders),
               tooltip: filterLabel ?? l10n.filter,
               style: IconButton.styleFrom(
                 backgroundColor: Theme.of(context).colorScheme.primary,
@@ -82,4 +85,4 @@ class CrewSearchHeader extends StatelessWidget {
       ),
     );
   }
-} 
+}

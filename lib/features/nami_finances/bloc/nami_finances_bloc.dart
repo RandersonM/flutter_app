@@ -7,7 +7,7 @@ import 'nami_finances_state.dart';
 
 class NamiFinancesBloc extends Bloc<NamiFinancesEvent, NamiFinancesState> {
   final NamiFinancesService _service;
-  
+
   NamiFinancesBloc(this._service) : super(NamiFinancesInitial()) {
     on<LoadFinances>(_onLoadFinances);
     on<LoadCurrentMonthFinances>(_onLoadCurrentMonthFinances);
@@ -21,7 +21,7 @@ class NamiFinancesBloc extends Bloc<NamiFinancesEvent, NamiFinancesState> {
     Emitter<NamiFinancesState> emit,
   ) async {
     emit(NamiFinancesLoading());
-    
+
     try {
       final finances = await _service.getFinancesForMonth(event.month);
       emit(NamiFinancesLoaded(
@@ -38,7 +38,7 @@ class NamiFinancesBloc extends Bloc<NamiFinancesEvent, NamiFinancesState> {
     Emitter<NamiFinancesState> emit,
   ) async {
     emit(NamiFinancesLoading());
-    
+
     try {
       final finances = await _service.getCurrentMonthFinances();
       emit(NamiFinancesLoaded(
@@ -55,7 +55,8 @@ class NamiFinancesBloc extends Bloc<NamiFinancesEvent, NamiFinancesState> {
     Emitter<NamiFinancesState> emit,
   ) async {
     try {
-      final financesHistory = await _service.getLastMonthsFinances(event.months);
+      final financesHistory =
+          await _service.getLastMonthsFinances(event.months);
       emit(NamiFinancesHistoryLoaded(financesHistory));
     } catch (e) {
       emit(NamiFinancesError('Erro ao carregar histórico de finanças: $e'));
@@ -67,7 +68,7 @@ class NamiFinancesBloc extends Bloc<NamiFinancesEvent, NamiFinancesState> {
     Emitter<NamiFinancesState> emit,
   ) async {
     emit(NamiFinancesLoading());
-    
+
     try {
       final canEdit = await _service.canEditFinances(event.month);
       if (!canEdit) {
@@ -84,7 +85,7 @@ class NamiFinancesBloc extends Bloc<NamiFinancesEvent, NamiFinancesState> {
         createdAt: DateTime.now(),
         updatedAt: DateTime.now(),
       );
-      
+
       await _service.saveFinances(finances);
       emit(NamiFinancesLoaded(
         finances: finances,
@@ -100,7 +101,7 @@ class NamiFinancesBloc extends Bloc<NamiFinancesEvent, NamiFinancesState> {
     Emitter<NamiFinancesState> emit,
   ) async {
     emit(NamiFinancesLoading());
-    
+
     try {
       await _service.deleteFinances(event.id);
       emit(NamiFinancesLoaded(finances: null, hasData: false));

@@ -4,6 +4,7 @@ import 'package:opfan/shared/widgets/atoms/custom_text_field.dart';
 import 'package:opfan/l10n/app_localizations.dart';
 import 'package:opfan/app/di/injection.dart';
 import 'package:opfan/shared/utils/gender_mapper.dart';
+import 'package:opfan/shared/widgets/atoms/app_button.dart';
 import '../../bloc/index.dart';
 
 class WorkoutSetup extends StatefulWidget {
@@ -178,7 +179,6 @@ class _WorkoutSetupState extends State<WorkoutSetup> {
     return score.clamp(0, 100);
   }
 
-
   Widget _buildFormulaItem(String title, String formula) {
     return Padding(
       padding: const EdgeInsets.only(bottom: 4),
@@ -215,8 +215,8 @@ class _WorkoutSetupState extends State<WorkoutSetup> {
           Text(
             AppLocalizations.of(context)!.workout_health_assessment,
             style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-              fontWeight: FontWeight.bold,
-            ),
+                  fontWeight: FontWeight.bold,
+                ),
           ),
           const SizedBox(height: 10),
           Text(
@@ -229,15 +229,17 @@ class _WorkoutSetupState extends State<WorkoutSetup> {
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              _buildFormulaItem('IMC', AppLocalizations.of(context)!.workout_formula_bmi),
-              _buildFormulaItem('Relação Cintura/Altura',
-                  AppLocalizations.of(context)!.workout_formula_waist_to_height),
+              _buildFormulaItem(
+                  'IMC', AppLocalizations.of(context)!.workout_formula_bmi),
+              _buildFormulaItem(
+                  'Relação Cintura/Altura',
+                  AppLocalizations.of(context)!
+                      .workout_formula_waist_to_height),
               _buildFormulaItem('Percentual de Gordura',
                   AppLocalizations.of(context)!.workout_formula_body_fat),
             ],
           ),
           const SizedBox(height: 20),
-
           CustomDropdown<String>(
             value: _selectedGender,
             label: AppLocalizations.of(context)!.workout_gender,
@@ -249,23 +251,26 @@ class _WorkoutSetupState extends State<WorkoutSetup> {
               });
             },
             validator: (value) {
-              if (value == null) return AppLocalizations.of(context)!.workout_validation_gender_required;
+              if (value == null)
+                return AppLocalizations.of(context)!
+                    .workout_validation_gender_required;
               return null;
             },
             itemToString: (status) => status,
           ),
           const SizedBox(height: 16),
-
           CustomTextField(
             controller: _ageController,
             label: AppLocalizations.of(context)!.workout_age,
             keyboardType: TextInputType.number,
             validator: (value) {
               if (value == null || value.isEmpty) {
-                return AppLocalizations.of(context)!.workout_validation_age_required;
+                return AppLocalizations.of(context)!
+                    .workout_validation_age_required;
               }
               if (int.tryParse(value) == null) {
-                return AppLocalizations.of(context)!.workout_validation_age_invalid;
+                return AppLocalizations.of(context)!
+                    .workout_validation_age_invalid;
               }
               return null;
             },
@@ -277,26 +282,29 @@ class _WorkoutSetupState extends State<WorkoutSetup> {
             keyboardType: TextInputType.number,
             validator: (value) {
               if (value == null || value.isEmpty) {
-                return AppLocalizations.of(context)!.workout_validation_height_required;
+                return AppLocalizations.of(context)!
+                    .workout_validation_height_required;
               }
               if (double.tryParse(value) == null) {
-                return AppLocalizations.of(context)!.workout_validation_height_invalid;
+                return AppLocalizations.of(context)!
+                    .workout_validation_height_invalid;
               }
               return null;
             },
           ),
           const SizedBox(height: 16),
-
           CustomTextField(
             controller: _weightController,
             label: AppLocalizations.of(context)!.workout_weight,
             keyboardType: TextInputType.number,
             validator: (value) {
               if (value == null || value.isEmpty) {
-                return AppLocalizations.of(context)!.workout_validation_weight_required;
+                return AppLocalizations.of(context)!
+                    .workout_validation_weight_required;
               }
               if (double.tryParse(value) == null) {
-                return AppLocalizations.of(context)!.workout_validation_weight_invalid;
+                return AppLocalizations.of(context)!
+                    .workout_validation_weight_invalid;
               }
               return null;
             },
@@ -308,16 +316,17 @@ class _WorkoutSetupState extends State<WorkoutSetup> {
             keyboardType: TextInputType.number,
             validator: (value) {
               if (value == null || value.isEmpty) {
-                return AppLocalizations.of(context)!.workout_validation_waist_required;
+                return AppLocalizations.of(context)!
+                    .workout_validation_waist_required;
               }
               if (double.tryParse(value) == null) {
-                return AppLocalizations.of(context)!.workout_validation_waist_invalid;
+                return AppLocalizations.of(context)!
+                    .workout_validation_waist_invalid;
               }
               return null;
             },
           ),
           const SizedBox(height: 16),
-
           CustomDropdown<int>(
             value: _selectedWorkoutDays,
             label: AppLocalizations.of(context)!.workout_workout_days_goal,
@@ -328,22 +337,19 @@ class _WorkoutSetupState extends State<WorkoutSetup> {
               });
             },
             validator: (value) {
-              if (value == null) return AppLocalizations.of(context)!.workout_validation_workout_days_required;
+              if (value == null)
+                return AppLocalizations.of(context)!
+                    .workout_validation_workout_days_required;
               return null;
             },
-            itemToString: (days) => '$days ${days == 1 ? AppLocalizations.of(context)!.workout_day : AppLocalizations.of(context)!.workout_days}',
+            itemToString: (days) =>
+                '$days ${days == 1 ? AppLocalizations.of(context)!.workout_day : AppLocalizations.of(context)!.workout_days}',
           ),
           const SizedBox(height: 20),
-
-          SizedBox(
-            width: double.infinity,
-            child: ElevatedButton(
-              onPressed: _calculateHealthMetrics,
-              style: ElevatedButton.styleFrom(
-                padding: const EdgeInsets.symmetric(vertical: 16),
-              ),
-              child: Text(AppLocalizations.of(context)!.workout_calculate_metrics),
-            ),
+          AppButton(
+            onPressed: _calculateHealthMetrics,
+            label: AppLocalizations.of(context)!.workout_calculate_metrics,
+            isFullWidth: true,
           ),
         ],
       ),

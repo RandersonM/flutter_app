@@ -1,3 +1,5 @@
+import 'package:opfan/shared/widgets/atoms/app_icon.dart';
+import 'package:phosphor_flutter/phosphor_flutter.dart';
 // Developed by Randerson Mayllon
 // Copyright © 2022.
 
@@ -19,24 +21,24 @@ class _CharactersListScreenState extends State<CharactersListScreen> {
   @override
   Widget build(BuildContext context) => Scaffold(
         appBar: DefaultAppBar(
-          title: Text(AppLocalizations.of(context)!.onePiece),
+            title: Text(AppLocalizations.of(context)!.onePiece),
             leading: IconButton(
               onPressed: () {
                 Navigator.of(context).pop();
               },
-              icon: const Icon(Icons.chevron_left, size: 34),
+              icon: const AppIcon(PhosphorIconsRegular.caretLeft, size: 34),
             ),
             actions: [
               Builder(
-            builder: (context) => IconButton(
-              icon: const Icon(Icons.search_rounded),
-              onPressed: () => Scaffold.of(context).openDrawer(),
-            ),
+                builder: (context) => IconButton(
+                  icon: const AppIcon(
+                      PhosphorIconsRegular.magnifyingGlass),
+                  onPressed: () => Scaffold.of(context).openDrawer(),
+                ),
               ),
-            ]
-        ),
+            ]),
         body: const ListContent(),
-        drawer: Drawer( 
+        drawer: Drawer(
           backgroundColor: Theme.of(context).colorScheme.primaryContainer,
           elevation: 0.0,
           child: const Search(),

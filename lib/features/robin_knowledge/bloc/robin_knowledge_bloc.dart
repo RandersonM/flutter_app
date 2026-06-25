@@ -6,7 +6,8 @@ import 'package:opfan/features/robin_knowledge/data/repository/planner_repositor
 part 'robin_knowledge_event.dart';
 part 'robin_knowledge_state.dart';
 
-class RobinKnowledgeBloc extends Bloc<RobinKnowledgeEvent, RobinKnowledgeState> {
+class RobinKnowledgeBloc
+    extends Bloc<RobinKnowledgeEvent, RobinKnowledgeState> {
   final PlannerRepositoryInterface _plannerRepository;
 
   RobinKnowledgeBloc({required PlannerRepositoryInterface plannerRepository})
@@ -30,7 +31,8 @@ class RobinKnowledgeBloc extends Bloc<RobinKnowledgeEvent, RobinKnowledgeState> 
     }
   }
 
-  Future<void> _onAddGoal(AddGoal event, Emitter<RobinKnowledgeState> emit) async {
+  Future<void> _onAddGoal(
+      AddGoal event, Emitter<RobinKnowledgeState> emit) async {
     try {
       await _plannerRepository.createGoal(event.goal);
       final goals = await _plannerRepository.getGoals();
@@ -65,7 +67,8 @@ class RobinKnowledgeBloc extends Bloc<RobinKnowledgeEvent, RobinKnowledgeState> 
   Future<void> _onUpdateGoalProgress(
       UpdateGoalProgress event, Emitter<RobinKnowledgeState> emit) async {
     try {
-      await _plannerRepository.updateGoalProgress(event.goalId, event.progress, notes: event.notes);
+      await _plannerRepository.updateGoalProgress(event.goalId, event.progress,
+          notes: event.notes);
       final goals = await _plannerRepository.getGoals();
       emit(RobinKnowledgeLoaded(goals: goals));
     } catch (e) {

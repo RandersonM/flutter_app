@@ -1,3 +1,5 @@
+import 'package:opfan/shared/widgets/atoms/app_icon.dart';
+import 'package:phosphor_flutter/phosphor_flutter.dart';
 // Developed by Randerson Mayllon
 // Copyright © 2022.
 
@@ -33,8 +35,8 @@ class CrewTagsSection extends StatelessWidget {
           children: [
             Row(
               children: [
-                Icon(
-                  Icons.label,
+                AppIcon(
+                  PhosphorIconsRegular.tag,
                   color: theme.colorScheme.primary,
                 ),
                 const SizedBox(width: Constants.margin),
@@ -51,7 +53,8 @@ class CrewTagsSection extends StatelessWidget {
             Wrap(
               spacing: Constants.margin,
               runSpacing: Constants.margin,
-              children: crew.tags.map((tag) => _buildTagChip(context, tag)).toList(),
+              children:
+                  crew.tags.map((tag) => _buildTagChip(context, tag)).toList(),
             ),
           ],
         ),
@@ -61,7 +64,7 @@ class CrewTagsSection extends StatelessWidget {
 
   Widget _buildTagChip(BuildContext context, String tag) {
     final theme = Theme.of(context);
-    
+
     return Container(
       padding: const EdgeInsets.symmetric(
         horizontal: Constants.margin,

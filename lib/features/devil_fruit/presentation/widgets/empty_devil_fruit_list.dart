@@ -1,3 +1,5 @@
+import 'package:opfan/shared/widgets/atoms/app_icon.dart';
+import 'package:phosphor_flutter/phosphor_flutter.dart';
 // Developed by Randerson Mayllon
 // Copyright © 2022.
 
@@ -29,14 +31,14 @@ class EmptyDevilFruitList extends StatelessWidget {
               shape: BoxShape.circle,
             ),
             child: Icon(
-              hasFilters ? Icons.filter_list_off : Icons.sentiment_dissatisfied,
+              hasFilters
+                  ? PhosphorIconsRegular.faders
+                  : PhosphorIconsRegular.smileySad,
               size: 64,
               color: Colors.grey[400],
             ),
           ),
-
           const SizedBox(height: Constants.margin * 2),
-
           Text(
             hasFilters
                 ? AppLocalizations.of(context)!.noFruitFound
@@ -47,9 +49,7 @@ class EmptyDevilFruitList extends StatelessWidget {
                 ),
             textAlign: TextAlign.center,
           ),
-
           const SizedBox(height: Constants.margin),
-
           Text(
             hasFilters
                 ? AppLocalizations.of(context)!.adjustFiltersOrSearch
@@ -59,13 +59,11 @@ class EmptyDevilFruitList extends StatelessWidget {
                 ),
             textAlign: TextAlign.center,
           ),
-
           const SizedBox(height: Constants.margin * 2),
-
           if (hasFilters && onClearFilters != null)
             ElevatedButton.icon(
               onPressed: onClearFilters,
-              icon: const Icon(Icons.clear),
+              icon: const AppIcon(PhosphorIconsRegular.x),
               label: Text(AppLocalizations.of(context)!.clearFilters),
               style: ElevatedButton.styleFrom(
                 padding: const EdgeInsets.symmetric(

@@ -57,7 +57,8 @@ class WorkoutPlanResolver {
   }
 
   /// Returns a human-readable label for when the split is scheduled.
-  static String resolveScheduleLabel(WorkoutAssessmentModel? assessment, AppLocalizations loc) {
+  static String resolveScheduleLabel(
+      WorkoutAssessmentModel? assessment, AppLocalizations loc) {
     if (assessment == null) return '';
     final done = isTodayWorkoutDone(assessment);
     return done ? loc.todayCompleted : loc.today;

@@ -1,3 +1,4 @@
+import 'package:phosphor_flutter/phosphor_flutter.dart';
 // Developed by Randerson Mayllon
 // Copyright © 2022.
 
@@ -16,7 +17,7 @@ class ClickableAvatar extends StatelessWidget {
     super.key,
     this.imageUrl,
     this.radius = 20.0,
-    this.fallbackIcon = Icons.person,
+    this.fallbackIcon = PhosphorIconsRegular.user,
     this.backgroundColor,
     this.foregroundColor,
     this.onTap,
@@ -58,4 +59,4 @@ class AvatarDrawer extends StatelessWidget {
       ),
     );
   }
-} 
+}

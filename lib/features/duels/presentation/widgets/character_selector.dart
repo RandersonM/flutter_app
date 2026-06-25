@@ -1,10 +1,13 @@
+import 'package:opfan/shared/widgets/atoms/app_icon.dart';
+import 'package:phosphor_flutter/phosphor_flutter.dart';
 // Developed by Randerson Mayllon
 // Copyright © 2022.
 
 import 'package:flutter/material.dart';
 import 'package:opfan/core/models/one_piece/custom_character_model.dart';
 import 'package:opfan/l10n/app_localizations.dart';
-import 'package:opfan/features/duels/presentation/widgets/character_selector_modal.dart' show CharacterSelectionModal;
+import 'package:opfan/features/duels/presentation/widgets/character_selector_modal.dart'
+    show CharacterSelectionModal;
 import 'package:opfan/shared/utils/app_routes.dart';
 import 'package:opfan/shared/utils/constants.dart';
 import 'package:opfan/shared/widgets/atoms/clickable_image.dart';
@@ -30,7 +33,7 @@ class CharacterSelector extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    
+
     return Center(
       child: Container(
         width: double.infinity,
@@ -59,7 +62,6 @@ class CharacterSelector extends StatelessWidget {
               textAlign: TextAlign.center,
             ),
             const SizedBox(height: Constants.margin),
-            
             if (selectedCharacter != null)
               _buildSelectedCharacter(context)
             else
@@ -73,7 +75,7 @@ class CharacterSelector extends StatelessWidget {
   Widget _buildSelectedCharacter(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
     final theme = Theme.of(context);
-    
+
     return Column(
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.center,
@@ -99,9 +101,7 @@ class CharacterSelector extends StatelessWidget {
             ),
           ),
         ),
-        
         const SizedBox(height: Constants.margin),
-        
         Text(
           selectedCharacter!.name,
           style: theme.textTheme.titleMedium?.copyWith(
@@ -109,7 +109,6 @@ class CharacterSelector extends StatelessWidget {
           ),
           textAlign: TextAlign.center,
         ),
-        
         if (selectedCharacter!.nickname != null) ...[
           const SizedBox(height: Constants.margin * 0.5),
           Text(
@@ -120,7 +119,6 @@ class CharacterSelector extends StatelessWidget {
             textAlign: TextAlign.center,
           ),
         ],
-        
         if (selectedCharacter!.bounty.isNotEmpty) ...[
           const SizedBox(height: Constants.margin),
           Container(
@@ -129,7 +127,8 @@ class CharacterSelector extends StatelessWidget {
               vertical: Constants.margin * 0.5,
             ),
             decoration: BoxDecoration(
-              color: Theme.of(context).colorScheme.tertiary.withValues(alpha: 0.3),
+              color:
+                  Theme.of(context).colorScheme.tertiary.withValues(alpha: 0.3),
               borderRadius: BorderRadius.circular(Constants.margin),
             ),
             child: Text(
@@ -140,9 +139,7 @@ class CharacterSelector extends StatelessWidget {
             ),
           ),
         ],
-        
         const SizedBox(height: Constants.margin),
-        
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
@@ -155,7 +152,8 @@ class CharacterSelector extends StatelessWidget {
                     arguments: selectedCharacter,
                   );
                 },
-                icon: const Icon(Icons.info_outline, size: 16),
+                icon:
+                    const AppIcon(PhosphorIconsRegular.info, size: 16),
                 label: Text(l10n.statistics),
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.blue.withValues(alpha: 0.7),
@@ -167,12 +165,11 @@ class CharacterSelector extends StatelessWidget {
                 ),
               ),
             ),
-            
             const SizedBox(width: Constants.margin),
             Expanded(
               child: ElevatedButton.icon(
                 onPressed: onClearSelection,
-                icon: const Icon(Icons.clear, size: 16),
+                icon: const AppIcon(PhosphorIconsRegular.x, size: 16),
                 label: Text(l10n.clear),
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Theme.of(context)
@@ -196,13 +193,13 @@ class CharacterSelector extends StatelessWidget {
   Widget _buildCharacterSelection(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
     final theme = Theme.of(context);
-    
+
     if (availableCharacters.isEmpty) {
       return Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          const Icon(
-            Icons.person_off,
+          const AppIcon(
+            PhosphorIconsRegular.userMinus,
             size: 64,
             color: Colors.white54,
           ),
@@ -217,7 +214,7 @@ class CharacterSelector extends StatelessWidget {
         ],
       );
     }
-    
+
     return Column(
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.center,
@@ -232,27 +229,24 @@ class CharacterSelector extends StatelessWidget {
               style: BorderStyle.solid,
             ),
           ),
-          child: const Icon(
-            Icons.person_add,
+          child: const AppIcon(
+            PhosphorIconsRegular.userPlus,
             size: 48,
           ),
         ),
-        
         const SizedBox(height: Constants.margin),
-        
         Text(
           l10n.selectACharacter,
-          style: theme.textTheme.bodyMedium?.copyWith(
-          ),
+          style: theme.textTheme.bodyMedium?.copyWith(),
           textAlign: TextAlign.center,
         ),
-        
         const SizedBox(height: Constants.margin),
         SizedBox(
           width: double.infinity,
           child: ElevatedButton.icon(
             onPressed: () => _showCharacterSelectionModal(context),
-            icon: const Icon(Icons.search, size: 18),
+            icon:
+                const AppIcon(PhosphorIconsRegular.magnifyingGlass, size: 18),
             label: Text(l10n.selectCharacter),
             style: ElevatedButton.styleFrom(
               backgroundColor:

@@ -19,7 +19,7 @@ class SaveFinances extends NamiFinancesEvent {
   final List<ExpenseModel> expenses;
   final double savings;
   final DateTime month;
-  
+
   SaveFinances({
     required this.incomes,
     required this.expenses,

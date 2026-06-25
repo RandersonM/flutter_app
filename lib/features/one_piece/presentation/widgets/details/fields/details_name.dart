@@ -7,13 +7,11 @@ import 'package:opfan/l10n/app_localizations.dart';
 import 'package:opfan/shared/utils/constants.dart';
 
 class DetailsName extends StatelessWidget {
-  const DetailsName(
-      {Key? key, required this.name, this.nickname, this.devilFruit})
+  const DetailsName({Key? key, required this.name, this.nickname})
       : super(key: key);
 
   final String name;
   final String? nickname;
-  final String? devilFruit;
   @override
   Widget build(BuildContext context) => Column(
         children: <Widget>[
@@ -32,12 +30,6 @@ class DetailsName extends StatelessWidget {
                 nickname!,
                 style: Theme.of(context).textTheme.titleMedium,
               ),
-            ),
-          if (devilFruit != null)
-            Text(
-              "${AppLocalizations.of(context)!.devilFruitUserPrefix} ${devilFruit!}",
-              textAlign: TextAlign.center,
-              style: Theme.of(context).textTheme.bodySmall,
             ),
         ],
       );

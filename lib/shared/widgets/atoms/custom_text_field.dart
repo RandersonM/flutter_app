@@ -150,7 +150,7 @@ class _DateInputFormatter extends TextInputFormatter {
     }
 
     final text = newValue.text.replaceAll(RegExp(r'[^\d]'), '');
-    
+
     if (text.length > 8) {
       return oldValue;
     }
@@ -169,4 +169,3 @@ class _DateInputFormatter extends TextInputFormatter {
     );
   }
 }
-

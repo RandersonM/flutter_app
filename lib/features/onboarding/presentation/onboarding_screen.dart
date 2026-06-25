@@ -9,6 +9,7 @@ import 'package:opfan/core/auth/models/user_model.dart';
 import 'package:opfan/shared/utils/constants.dart';
 import 'package:opfan/features/onboarding/presentation/widgets/onboarding_step_indicator.dart';
 import 'package:opfan/l10n/app_localizations.dart';
+import 'package:opfan/shared/widgets/atoms/app_button.dart';
 
 class OnboardingScreen extends StatefulWidget {
   const OnboardingScreen({super.key});
@@ -35,7 +36,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
   // Step 2 - Goals & Measurements
   String? _activityLevel;
   String? _goal;
-  
+
   final TextEditingController _waistController = TextEditingController();
   final TextEditingController _chestController = TextEditingController();
   final TextEditingController _armController = TextEditingController();
@@ -45,7 +46,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    
+
     // Suporte a modo de edição via RouteSettings
     final args = ModalRoute.of(context)?.settings.arguments;
     if (args != null && args is UserModel && !_isEditing) {
@@ -68,20 +69,28 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
 
   void _prefillData() {
     if (_initialData == null) return;
-    
+
     _gender = _initialData!.gender;
-    if (_initialData!.age != null) _ageController.text = _initialData!.age.toString();
-    if (_initialData!.heightCm != null) _heightController.text = _initialData!.heightCm.toString();
-    if (_initialData!.weightKg != null) _weightController.text = _initialData!.weightKg.toString();
-    
+    if (_initialData!.age != null)
+      _ageController.text = _initialData!.age.toString();
+    if (_initialData!.heightCm != null)
+      _heightController.text = _initialData!.heightCm.toString();
+    if (_initialData!.weightKg != null)
+      _weightController.text = _initialData!.weightKg.toString();
+
     _activityLevel = _initialData!.activityLevel;
     _goal = _initialData!.goal;
-    
-    if (_initialData!.waistCm != null) _waistController.text = _initialData!.waistCm.toString();
-    if (_initialData!.chestCm != null) _chestController.text = _initialData!.chestCm.toString();
-    if (_initialData!.armCm != null) _armController.text = _initialData!.armCm.toString();
-    if (_initialData!.hipCm != null) _hipController.text = _initialData!.hipCm.toString();
-    if (_initialData!.thighCm != null) _thighController.text = _initialData!.thighCm.toString();
+
+    if (_initialData!.waistCm != null)
+      _waistController.text = _initialData!.waistCm.toString();
+    if (_initialData!.chestCm != null)
+      _chestController.text = _initialData!.chestCm.toString();
+    if (_initialData!.armCm != null)
+      _armController.text = _initialData!.armCm.toString();
+    if (_initialData!.hipCm != null)
+      _hipController.text = _initialData!.hipCm.toString();
+    if (_initialData!.thighCm != null)
+      _thighController.text = _initialData!.thighCm.toString();
   }
 
   @override
@@ -108,7 +117,9 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
         );
       } else if (_gender == null) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text(AppLocalizations.of(context)!.onboardingBiologicalSex)),
+          SnackBar(
+              content:
+                  Text(AppLocalizations.of(context)!.onboardingBiologicalSex)),
         );
       }
     } else {
@@ -117,9 +128,12 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
   }
 
   void _submitForm() {
-    if (_formKey2.currentState!.validate() && _activityLevel != null && _goal != null) {
-      final user = _initialData ?? context.read<AuthBloc>().state.props.first as UserModel;
-      
+    if (_formKey2.currentState!.validate() &&
+        _activityLevel != null &&
+        _goal != null) {
+      final user = _initialData ??
+          context.read<AuthBloc>().state.props.first as UserModel;
+
       final updatedUser = user.copyWith(
         gender: _gender,
         age: int.tryParse(_ageController.text),
@@ -134,14 +148,18 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
         thighCm: double.tryParse(_thighController.text),
       );
 
-      context.read<AuthBloc>().add(AuthProfileBodyUpdated(updatedUser: updatedUser));
-      
+      context
+          .read<AuthBloc>()
+          .add(AuthProfileBodyUpdated(updatedUser: updatedUser));
+
       if (_isEditing) {
         Navigator.of(context).pop();
       }
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(AppLocalizations.of(context)!.onboardingFillAllFields)),
+        SnackBar(
+            content:
+                Text(AppLocalizations.of(context)!.onboardingFillAllFields)),
       );
     }
   }
@@ -182,23 +200,13 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
             ),
             Padding(
               padding: const EdgeInsets.all(Constants.margin * 2),
-              child: SizedBox(
-                width: double.infinity,
-                height: 56,
-                child: FilledButton(
-                  onPressed: _nextStep,
-                  style: FilledButton.styleFrom(
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(16),
-                    ),
-                  ),
-                  child: Text(
-                    _currentStep == 0 
-                      ? 'Próximo' 
-                      : (_isEditing ? 'Salvar Alterações' : 'Concluir Cadastro'),
-                    style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-                  ),
-                ),
+              child: AppButton(
+                label: _currentStep == 0
+                    ? 'Próximo'
+                    : (_isEditing ? 'Salvar Alterações' : 'Concluir Cadastro'),
+                variant: AppButtonVariant.primary,
+                isFullWidth: true,
+                onPressed: _nextStep,
               ),
             ),
           ],
@@ -218,41 +226,47 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
             Text(
               'Dados Pessoais',
               style: Theme.of(context).textTheme.headlineMedium?.copyWith(
-                fontWeight: FontWeight.bold,
-              ),
+                    fontWeight: FontWeight.bold,
+                  ),
             ),
             const SizedBox(height: 8),
             Text(
               'Essas informações são essenciais para calcularmos seu plano nutricional de forma precisa.',
               style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.7),
-              ),
+                    color: Theme.of(context)
+                        .colorScheme
+                        .onSurface
+                        .withValues(alpha: 0.7),
+                  ),
             ),
             const SizedBox(height: 32),
-
-            Text(AppLocalizations.of(context)!.biologicalSexLabel, style: Theme.of(context).textTheme.titleMedium),
+            Text(AppLocalizations.of(context)!.biologicalSexLabel,
+                style: Theme.of(context).textTheme.titleMedium),
             const SizedBox(height: 12),
             Row(
               children: [
                 Expanded(
                   child: ChoiceChip(
-                    label: Center(child: Text(AppLocalizations.of(context)!.male)),
+                    label:
+                        Center(child: Text(AppLocalizations.of(context)!.male)),
                     selected: _gender == 'male',
-                    onSelected: (selected) => setState(() => _gender = selected ? 'male' : _gender),
+                    onSelected: (selected) =>
+                        setState(() => _gender = selected ? 'male' : _gender),
                   ),
                 ),
                 const SizedBox(width: 16),
                 Expanded(
                   child: ChoiceChip(
-                    label: Center(child: Text(AppLocalizations.of(context)!.female)),
+                    label: Center(
+                        child: Text(AppLocalizations.of(context)!.female)),
                     selected: _gender == 'female',
-                    onSelected: (selected) => setState(() => _gender = selected ? 'female' : _gender),
+                    onSelected: (selected) =>
+                        setState(() => _gender = selected ? 'female' : _gender),
                   ),
                 ),
               ],
             ),
             const SizedBox(height: 24),
-
             _buildNumberField(
               controller: _ageController,
               label: AppLocalizations.of(context)!.ageLabel,
@@ -260,7 +274,6 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
               validatorMsg: AppLocalizations.of(context)!.ageValidator,
             ),
             const SizedBox(height: 16),
-
             _buildNumberField(
               controller: _heightController,
               label: AppLocalizations.of(context)!.heightLabel,
@@ -268,7 +281,6 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
               validatorMsg: AppLocalizations.of(context)!.heightValidator,
             ),
             const SizedBox(height: 16),
-
             _buildNumberField(
               controller: _weightController,
               label: AppLocalizations.of(context)!.currentWeightLabel,
@@ -292,85 +304,144 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
             Text(
               AppLocalizations.of(context)!.goalsAndMeasuresTitle,
               style: Theme.of(context).textTheme.headlineMedium?.copyWith(
-                fontWeight: FontWeight.bold,
-              ),
+                    fontWeight: FontWeight.bold,
+                  ),
             ),
             const SizedBox(height: 8),
             Text(
               AppLocalizations.of(context)!.goalsAndMeasuresSubtitle,
               style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.7),
-              ),
+                    color: Theme.of(context)
+                        .colorScheme
+                        .onSurface
+                        .withValues(alpha: 0.7),
+                  ),
             ),
             const SizedBox(height: 32),
-
-            Text(AppLocalizations.of(context)!.objectiveTitle, style: Theme.of(context).textTheme.titleMedium),
+            Text(AppLocalizations.of(context)!.objectiveTitle,
+                style: Theme.of(context).textTheme.titleMedium),
             const SizedBox(height: 12),
             Wrap(
               spacing: 8.0,
               runSpacing: 8.0,
               children: [
-                _buildChoiceChip('lose_weight', AppLocalizations.of(context)!.goalLoseWeight, _goal, (v) => setState(() => _goal = v)),
-                _buildChoiceChip('maintain', AppLocalizations.of(context)!.goalMaintain, _goal, (v) => setState(() => _goal = v)),
-                _buildChoiceChip('gain_muscle', AppLocalizations.of(context)!.goalGainMuscle, _goal, (v) => setState(() => _goal = v)),
+                _buildChoiceChip(
+                    'lose_weight',
+                    AppLocalizations.of(context)!.goalLoseWeight,
+                    _goal,
+                    (v) => setState(() => _goal = v)),
+                _buildChoiceChip(
+                    'maintain',
+                    AppLocalizations.of(context)!.goalMaintain,
+                    _goal,
+                    (v) => setState(() => _goal = v)),
+                _buildChoiceChip(
+                    'gain_muscle',
+                    AppLocalizations.of(context)!.goalGainMuscle,
+                    _goal,
+                    (v) => setState(() => _goal = v)),
               ],
             ),
             const SizedBox(height: 24),
-
-            Text(AppLocalizations.of(context)!.activityLevelLabel, style: Theme.of(context).textTheme.titleMedium),
+            Text(AppLocalizations.of(context)!.activityLevelLabel,
+                style: Theme.of(context).textTheme.titleMedium),
             const SizedBox(height: 12),
             Wrap(
               spacing: 8.0,
               runSpacing: 8.0,
               children: [
-                _buildChoiceChip('sedentary', AppLocalizations.of(context)!.activitySedentary, _activityLevel, (v) => setState(() => _activityLevel = v)),
-                _buildChoiceChip('light', AppLocalizations.of(context)!.activityLight, _activityLevel, (v) => setState(() => _activityLevel = v)),
-                _buildChoiceChip('moderate', AppLocalizations.of(context)!.activityModerate, _activityLevel, (v) => setState(() => _activityLevel = v)),
-                _buildChoiceChip('intense', AppLocalizations.of(context)!.activityIntense, _activityLevel, (v) => setState(() => _activityLevel = v)),
-                _buildChoiceChip('very_intense', AppLocalizations.of(context)!.activityVeryIntense, _activityLevel, (v) => setState(() => _activityLevel = v)),
+                _buildChoiceChip(
+                    'sedentary',
+                    AppLocalizations.of(context)!.activitySedentary,
+                    _activityLevel,
+                    (v) => setState(() => _activityLevel = v)),
+                _buildChoiceChip(
+                    'light',
+                    AppLocalizations.of(context)!.activityLight,
+                    _activityLevel,
+                    (v) => setState(() => _activityLevel = v)),
+                _buildChoiceChip(
+                    'moderate',
+                    AppLocalizations.of(context)!.activityModerate,
+                    _activityLevel,
+                    (v) => setState(() => _activityLevel = v)),
+                _buildChoiceChip(
+                    'intense',
+                    AppLocalizations.of(context)!.activityIntense,
+                    _activityLevel,
+                    (v) => setState(() => _activityLevel = v)),
+                _buildChoiceChip(
+                    'very_intense',
+                    AppLocalizations.of(context)!.activityVeryIntense,
+                    _activityLevel,
+                    (v) => setState(() => _activityLevel = v)),
               ],
             ),
             const SizedBox(height: 32),
-
             Row(
               children: [
-                Text(AppLocalizations.of(context)!.circumferencesLabel, style: Theme.of(context).textTheme.titleMedium),
+                Text(AppLocalizations.of(context)!.circumferencesLabel,
+                    style: Theme.of(context).textTheme.titleMedium),
                 const SizedBox(width: 8),
                 Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
                   decoration: BoxDecoration(
-                    color: Theme.of(context).colorScheme.surfaceContainerHighest,
+                    color:
+                        Theme.of(context).colorScheme.surfaceContainerHighest,
                     borderRadius: BorderRadius.circular(12),
                   ),
-                  child: Text(AppLocalizations.of(context)!.optionalLabel, style: Theme.of(context).textTheme.bodySmall),
+                  child: Text(AppLocalizations.of(context)!.optionalLabel,
+                      style: Theme.of(context).textTheme.bodySmall),
                 ),
               ],
             ),
             const SizedBox(height: 16),
-
             Row(
               children: [
-                Expanded(child: _buildNumberField(controller: _waistController, label: AppLocalizations.of(context)!.waistLabel, suffix: 'cm', isOptional: true)),
+                Expanded(
+                    child: _buildNumberField(
+                        controller: _waistController,
+                        label: AppLocalizations.of(context)!.waistLabel,
+                        suffix: 'cm',
+                        isOptional: true)),
                 const SizedBox(width: 16),
-                Expanded(child: _buildNumberField(controller: _chestController, label: AppLocalizations.of(context)!.chestLabel, suffix: 'cm', isOptional: true)),
+                Expanded(
+                    child: _buildNumberField(
+                        controller: _chestController,
+                        label: AppLocalizations.of(context)!.chestLabel,
+                        suffix: 'cm',
+                        isOptional: true)),
               ],
             ),
             const SizedBox(height: 16),
-
             Row(
               children: [
-                Expanded(child: _buildNumberField(controller: _armController, label: AppLocalizations.of(context)!.armLabel, suffix: 'cm', isOptional: true)),
+                Expanded(
+                    child: _buildNumberField(
+                        controller: _armController,
+                        label: AppLocalizations.of(context)!.armLabel,
+                        suffix: 'cm',
+                        isOptional: true)),
                 const SizedBox(width: 16),
-                Expanded(child: _buildNumberField(controller: _hipController, label: AppLocalizations.of(context)!.hipLabel, suffix: 'cm', isOptional: true)),
+                Expanded(
+                    child: _buildNumberField(
+                        controller: _hipController,
+                        label: AppLocalizations.of(context)!.hipLabel,
+                        suffix: 'cm',
+                        isOptional: true)),
               ],
             ),
             const SizedBox(height: 16),
-            
             FractionallySizedBox(
               widthFactor: 0.5,
               child: Padding(
                 padding: const EdgeInsets.only(right: 8.0),
-                child: _buildNumberField(controller: _thighController, label: AppLocalizations.of(context)!.thighLabel, suffix: 'cm', isOptional: true),
+                child: _buildNumberField(
+                    controller: _thighController,
+                    label: AppLocalizations.of(context)!.thighLabel,
+                    suffix: 'cm',
+                    isOptional: true),
               ),
             ),
             const SizedBox(height: 24),
@@ -380,7 +451,8 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
     );
   }
 
-  Widget _buildChoiceChip(String value, String label, String? groupValue, ValueChanged<String> onSelected) {
+  Widget _buildChoiceChip(String value, String label, String? groupValue,
+      ValueChanged<String> onSelected) {
     return ChoiceChip(
       label: Text(label),
       selected: groupValue == value,

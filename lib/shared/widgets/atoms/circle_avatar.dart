@@ -1,3 +1,4 @@
+import 'package:phosphor_flutter/phosphor_flutter.dart';
 // Developed by Randerson Mayllon
 // Copyright © 2022.
 
@@ -14,7 +15,7 @@ class CircleAvatarAtom extends StatelessWidget {
     super.key,
     this.imageUrl,
     this.radius = 20.0,
-    this.fallbackIcon = Icons.person,
+    this.fallbackIcon = PhosphorIconsRegular.user,
     this.backgroundColor,
     this.foregroundColor,
   });
@@ -24,9 +25,10 @@ class CircleAvatarAtom extends StatelessWidget {
     return CircleAvatar(
       radius: radius,
       backgroundColor: backgroundColor ?? Theme.of(context).colorScheme.primary,
-      foregroundColor: foregroundColor ?? Theme.of(context).colorScheme.onPrimary,
+      foregroundColor:
+          foregroundColor ?? Theme.of(context).colorScheme.onPrimary,
       backgroundImage: imageUrl != null ? NetworkImage(imageUrl!) : null,
       child: imageUrl == null ? Icon(fallbackIcon) : null,
     );
   }
-} 
+}

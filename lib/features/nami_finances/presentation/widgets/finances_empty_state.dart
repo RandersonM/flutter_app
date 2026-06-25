@@ -1,6 +1,9 @@
+import 'package:opfan/shared/widgets/atoms/app_icon.dart';
+import 'package:phosphor_flutter/phosphor_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:opfan/shared/utils/constants.dart';
 import 'package:opfan/l10n/app_localizations.dart';
+import 'package:opfan/shared/widgets/atoms/app_button.dart';
 
 const _purple = Color(0xFF8B5CF6);
 const _cardBg = Color(0xFF16161C);
@@ -30,8 +33,8 @@ class FinancesEmptyState extends StatelessWidget {
                 color: _purple.withValues(alpha: 0.12),
                 shape: BoxShape.circle,
               ),
-              child: const Icon(
-                Icons.account_balance_wallet_rounded,
+              child: const AppIcon(
+                PhosphorIconsRegular.bank,
                 color: _purple,
                 size: 48,
               ),
@@ -56,35 +59,25 @@ class FinancesEmptyState extends StatelessWidget {
             ),
             const SizedBox(height: Constants.margin * 3),
             _FeaturePill(
-              icon: Icons.trending_up_rounded,
+              icon: PhosphorIconsRegular.trendUp,
               label: AppLocalizations.of(context)!.monthOverview,
             ),
             const SizedBox(height: 10),
             _FeaturePill(
-              icon: Icons.donut_large_rounded,
+              icon: PhosphorIconsRegular.circle,
               label: AppLocalizations.of(context)!.balanceChart,
             ),
             const SizedBox(height: 10),
             _FeaturePill(
-              icon: Icons.pie_chart_rounded,
+              icon: PhosphorIconsRegular.chartPieSlice,
               label: AppLocalizations.of(context)!.expensesByCategory,
             ),
             const SizedBox(height: Constants.margin * 3),
-            SizedBox(
-              width: double.infinity,
-              child: FilledButton.icon(
-                onPressed: onSetup,
-                icon: const Icon(Icons.add_rounded, size: 18),
-                label: Text(AppLocalizations.of(context)!.setupFinances),
-                style: FilledButton.styleFrom(
-                  backgroundColor: _purple,
-                  foregroundColor: Colors.white,
-                  padding: const EdgeInsets.symmetric(vertical: 14),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                ),
-              ),
+            AppButton(
+              onPressed: onSetup,
+              icon: const AppIcon(PhosphorIconsRegular.plus, size: 18),
+              label: AppLocalizations.of(context)!.setupFinances,
+              isFullWidth: true,
             ),
           ],
         ),

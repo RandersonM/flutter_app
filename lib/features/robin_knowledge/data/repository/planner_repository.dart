@@ -19,7 +19,7 @@ class PlannerRepository implements PlannerRepositoryInterface {
 
       final goals = documents.map((doc) => _documentToGoalModel(doc)).toList();
       goals.sort((a, b) => b.createdAt.compareTo(a.createdAt));
-      
+
       return goals;
     } catch (e) {
       throw Exception('Failed to get goals: $e');
@@ -81,7 +81,8 @@ class PlannerRepository implements PlannerRepositoryInterface {
   }
 
   @override
-  Future<void> updateGoalProgress(String id, double progress, {String? notes}) async {
+  Future<void> updateGoalProgress(String id, double progress,
+      {String? notes}) async {
     try {
       final goal = await getGoalById(id);
       if (goal == null) {
@@ -91,9 +92,10 @@ class PlannerRepository implements PlannerRepositoryInterface {
       String updatedNotes = goal.notes ?? '';
       if (notes != null && notes.isNotEmpty) {
         final now = DateTime.now();
-        final dateFormat = '${now.day.toString().padLeft(2, '0')}/${now.month.toString().padLeft(2, '0')}/${now.year} ${now.hour.toString().padLeft(2, '0')}:${now.minute.toString().padLeft(2, '0')}';
+        final dateFormat =
+            '${now.day.toString().padLeft(2, '0')}/${now.month.toString().padLeft(2, '0')}/${now.year} ${now.hour.toString().padLeft(2, '0')}:${now.minute.toString().padLeft(2, '0')}';
         final newNote = '[$dateFormat] ${progress.toStringAsFixed(1)}%: $notes';
-        
+
         if (updatedNotes.isNotEmpty) {
           updatedNotes += '\n\n$newNote';
         } else {
@@ -107,11 +109,11 @@ class PlannerRepository implements PlannerRepositoryInterface {
         data: {
           'progress': progress,
           'notes': updatedNotes,
-          'status': progress == 0.0 
-            ? GoalStatus.notStarted.name 
-            : progress >= 100.0 
-              ? GoalStatus.completed.name 
-              : GoalStatus.inProgress.name,
+          'status': progress == 0.0
+              ? GoalStatus.notStarted.name
+              : progress >= 100.0
+                  ? GoalStatus.completed.name
+                  : GoalStatus.inProgress.name,
         },
       );
     } catch (e) {
@@ -122,12 +124,13 @@ class PlannerRepository implements PlannerRepositoryInterface {
   @override
   Stream<List<GoalModel>> streamGoals() {
     try {
-      return _firestoreService.streamUserDocuments(
+      return _firestoreService
+          .streamUserDocuments(
         collection: _collection,
-      ).map((documents) {
-        final goals = documents
-            .map((doc) => _documentToGoalModel(doc))
-            .toList();
+      )
+          .map((documents) {
+        final goals =
+            documents.map((doc) => _documentToGoalModel(doc)).toList();
         goals.sort((a, b) => b.createdAt.compareTo(a.createdAt));
         return goals;
       });
@@ -143,7 +146,9 @@ class PlannerRepository implements PlannerRepositoryInterface {
       'deadline': Timestamp.fromDate(goal.deadline),
       'createdAt': Timestamp.fromDate(goal.createdAt),
       'category': goal.category.name,
-      'status': goal.progress == 0.0 ? GoalStatus.notStarted.name : GoalStatus.inProgress.name,
+      'status': goal.progress == 0.0
+          ? GoalStatus.notStarted.name
+          : GoalStatus.inProgress.name,
       'progress': goal.progress,
       'tags': goal.tags,
       'notes': goal.notes,

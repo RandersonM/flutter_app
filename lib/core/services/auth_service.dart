@@ -31,7 +31,7 @@ class AuthService {
   Future<void> init() async {
     try {
       _box = await Hive.openBox<UserModel>(_boxName);
-      
+
       final cachedUser = currentUser;
       if (cachedUser != null) {
         final firebaseUser = _firebaseAuth.currentUser;
@@ -124,7 +124,8 @@ class AuthService {
         return null;
       }
 
-      final GoogleSignInAuthentication googleAuth = await googleUser.authentication;
+      final GoogleSignInAuthentication googleAuth =
+          await googleUser.authentication;
 
       final credential = GoogleAuthProvider.credential(
         accessToken: googleAuth.accessToken,
@@ -137,7 +138,7 @@ class AuthService {
       final User? user = userCredential.user;
       if (user != null) {
         await user.getIdToken(true);
-        
+
         final userModel = UserModel(
           uid: user.uid,
           email: user.email ?? '',
@@ -149,7 +150,8 @@ class AuthService {
           lastSignIn: user.metadata.lastSignInTime ?? DateTime.now(),
         );
 
-        final firestoreProfile = await _userProfileRepository.fetchProfile(user.uid);
+        final firestoreProfile =
+            await _userProfileRepository.fetchProfile(user.uid);
         final finalUser = firestoreProfile != null
             ? userModel.copyWith(
                 gender: firestoreProfile.gender,
@@ -167,7 +169,7 @@ class AuthService {
             : userModel;
 
         await _saveUser(finalUser);
-        
+
         try {
           final notificationService = NotificationService();
           if (notificationService.isInitialized) {
@@ -176,7 +178,7 @@ class AuthService {
         } catch (e) {
           debugPrint('AuthService: Erro ao salvar token FCM: $e');
         }
-        
+
         debugPrint('AuthService: User signed in successfully and cached');
         return finalUser;
       }
@@ -198,7 +200,7 @@ class AuthService {
       } catch (e) {
         debugPrint('AuthService: Erro ao limpar token FCM: $e');
       }
-      
+
       await Future.wait([
         _firebaseAuth.signOut(),
         _googleSignIn.signOut(),
@@ -226,7 +228,7 @@ class AuthService {
 
         final isGoogleProvider = firebaseUser.providerData
             .any((provider) => provider.providerId == 'google.com');
-        
+
         if (isGoogleProvider) {
           try {
             final googleUser = _googleSignIn.currentUser;
@@ -263,7 +265,8 @@ class AuthService {
           );
         }
 
-        final firestoreProfile = await _userProfileRepository.fetchProfile(firebaseUser.uid);
+        final firestoreProfile =
+            await _userProfileRepository.fetchProfile(firebaseUser.uid);
         final finalUser = firestoreProfile != null
             ? baseUser.copyWith(
                 gender: firestoreProfile.gender,

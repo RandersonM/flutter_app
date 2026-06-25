@@ -49,7 +49,8 @@ void registerFeaturesModule(GetIt getIt) {
   getIt.registerFactory<SanjiCookingBloc>(() => SanjiCookingBloc());
 
   getIt.registerLazySingleton<RobinKnowledgeBloc>(
-    () => RobinKnowledgeBloc(plannerRepository: getIt<PlannerRepositoryInterface>()),
+    () => RobinKnowledgeBloc(
+        plannerRepository: getIt<PlannerRepositoryInterface>()),
   );
 }
 

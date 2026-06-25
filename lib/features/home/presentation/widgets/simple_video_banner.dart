@@ -1,3 +1,5 @@
+import 'package:opfan/shared/widgets/atoms/app_icon.dart';
+import 'package:phosphor_flutter/phosphor_flutter.dart';
 // Developed by Randerson Mayllon
 // Copyright © 2022.
 
@@ -42,23 +44,30 @@ class SimpleVideoBanner extends StatelessWidget {
         width: double.infinity,
         decoration: BoxDecoration(
           color: Colors.black,
-          borderRadius: BorderRadius.circular(12),
+          borderRadius: BorderRadius.circular(16),
+          border: Border.all(
+            color: Theme.of(context).colorScheme.primary.withValues(alpha: 0.6),
+            width: 1.5,
+          ),
           boxShadow: [
             BoxShadow(
-              color: Colors.black.withValues(alpha: 0.3),
-              blurRadius: 8,
+              color:
+                  Theme.of(context).colorScheme.primary.withValues(alpha: 0.25),
+              blurRadius: 16,
+              spreadRadius: 2,
               offset: const Offset(0, 4),
             ),
           ],
         ),
         child: ClipRRect(
-          borderRadius: BorderRadius.circular(12),
+          borderRadius: BorderRadius.circular(14),
           child: Stack(
             fit: StackFit.expand,
             children: [
               _buildContent(),
               if (title != null || subtitle != null) _buildOverlay(context),
-              if (bannerType == SimpleBannerType.youtube) _buildPlayButton(),
+              if (bannerType == SimpleBannerType.youtube)
+                _buildPlayButton(context),
             ],
           ),
         ),
@@ -113,25 +122,30 @@ class SimpleVideoBanner extends StatelessWidget {
     );
   }
 
-  Widget _buildPlayButton() {
+  Widget _buildPlayButton(BuildContext context) {
     return Center(
       child: Container(
-        width: 80,
-        height: 80,
+        width: 72,
+        height: 72,
         decoration: BoxDecoration(
-          color: Colors.red.withValues(alpha: 0.9),
+          color: Theme.of(context)
+              .colorScheme
+              .primaryContainer
+              .withValues(alpha: 0.9),
           shape: BoxShape.circle,
           boxShadow: [
             BoxShadow(
-              color: Colors.black.withValues(alpha: 0.3),
-              blurRadius: 10,
-              offset: const Offset(0, 2),
+              color:
+                  Theme.of(context).colorScheme.primary.withValues(alpha: 0.3),
+              blurRadius: 12,
+              spreadRadius: 2,
+              offset: const Offset(0, 4),
             ),
           ],
         ),
-        child: const Icon(
-          Icons.play_arrow,
-          color: Colors.white,
+        child: AppIcon(
+          PhosphorIconsRegular.play,
+          color: Theme.of(context).colorScheme.onPrimaryContainer,
           size: 40,
         ),
       ),
@@ -176,8 +190,8 @@ class SimpleVideoBanner extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(
-              Icons.wifi_off,
+            AppIcon(
+              PhosphorIconsRegular.wifiNone,
               color: Colors.white,
               size: 48,
             ),
@@ -225,15 +239,14 @@ class SimpleVideoBanner extends StatelessWidget {
             if (title != null)
               Text(
                 title!,
-                style: const TextStyle(
+                style: Theme.of(context).textTheme.headlineSmall?.copyWith(
                   color: Colors.white,
-                  fontSize: 20,
                   fontWeight: FontWeight.bold,
-                  shadows: [
+                  shadows: const [
                     Shadow(
                       offset: Offset(1, 1),
-                      blurRadius: 3,
-                      color: Colors.black54,
+                      blurRadius: 4,
+                      color: Colors.black87,
                     ),
                   ],
                 ),
@@ -241,17 +254,17 @@ class SimpleVideoBanner extends StatelessWidget {
                 overflow: TextOverflow.ellipsis,
               ),
             if (subtitle != null) ...[
-              const SizedBox(height: 4),
+              const SizedBox(height: 6),
               Text(
                 subtitle!,
-                style: const TextStyle(
-                  color: Colors.white70,
-                  fontSize: 14,
-                  shadows: [
+                style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                  color: Colors.white.withValues(alpha: 0.85),
+                  fontWeight: FontWeight.w500,
+                  shadows: const [
                     Shadow(
                       offset: Offset(1, 1),
                       blurRadius: 3,
-                      color: Colors.black54,
+                      color: Colors.black87,
                     ),
                   ],
                 ),

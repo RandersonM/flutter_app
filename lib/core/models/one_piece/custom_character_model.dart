@@ -46,16 +46,16 @@ class CustomCharacterModel {
     this.updatedAt,
   });
 
-  factory CustomCharacterModel.fromFirestore(Map<String, dynamic> data, String documentId) {
+  factory CustomCharacterModel.fromFirestore(
+      Map<String, dynamic> data, String documentId) {
     return CustomCharacterModel(
       id: documentId,
       userId: data['userId'] as String?,
       name: data['name'] as String? ?? 'Unknown Character',
       nickname: data['nickname'] as String?,
       devilFruit: data['devilFruit'] as String?,
-      haki: data['haki'] != null 
-          ? List<String>.from(data['haki'] as List)
-          : null,
+      haki:
+          data['haki'] != null ? List<String>.from(data['haki'] as List) : null,
       affiliations: data['affiliations'] != null
           ? List<String>.from(data['affiliations'] as List)
           : ['Unknown'],
@@ -77,11 +77,11 @@ class CustomCharacterModel {
           ? (data['birthDate'] as Timestamp).toDate()
           : null,
       description: data['description'] as String?,
-      createdAt: data['createdAt'] != null 
-          ? (data['createdAt'] as Timestamp).toDate() 
+      createdAt: data['createdAt'] != null
+          ? (data['createdAt'] as Timestamp).toDate()
           : null,
-      updatedAt: data['updatedAt'] != null 
-          ? (data['updatedAt'] as Timestamp).toDate() 
+      updatedAt: data['updatedAt'] != null
+          ? (data['updatedAt'] as Timestamp).toDate()
           : null,
     );
   }
@@ -239,5 +239,4 @@ class CustomCharacterModel {
   bool get isCustomCharacter => userId != null;
 
   int? get calculatedAge => age;
-
-} 
+}

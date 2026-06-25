@@ -1,3 +1,5 @@
+import 'package:opfan/shared/widgets/atoms/app_icon.dart';
+import 'package:phosphor_flutter/phosphor_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:opfan/shared/widgets/molecules/default_app_bar.dart';
@@ -8,20 +10,23 @@ import 'package:opfan/core/models/nami_finances_model.dart';
 import 'package:opfan/features/nami_finances/bloc/index.dart';
 import 'package:opfan/app/di/injection.dart';
 import 'package:opfan/shared/utils/theme.dart';
+import 'package:opfan/shared/widgets/atoms/app_button.dart';
 
 class NamiDetailedFinancesScreen extends StatefulWidget {
   final DateTime? selectedMonth;
-  
+
   const NamiDetailedFinancesScreen({
     super.key,
     this.selectedMonth,
   });
 
   @override
-  State<NamiDetailedFinancesScreen> createState() => _NamiDetailedFinancesScreenState();
+  State<NamiDetailedFinancesScreen> createState() =>
+      _NamiDetailedFinancesScreenState();
 }
 
-class _NamiDetailedFinancesScreenState extends State<NamiDetailedFinancesScreen> {
+class _NamiDetailedFinancesScreenState
+    extends State<NamiDetailedFinancesScreen> {
   DateTime _selectedMonth = DateTime.now();
 
   @override
@@ -32,17 +37,17 @@ class _NamiDetailedFinancesScreenState extends State<NamiDetailedFinancesScreen>
     }
   }
 
-
-
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
-    
+
     return BlocProvider(
       key: ValueKey('${_selectedMonth.year}-${_selectedMonth.month}'),
-      create: (context) => getIt<NamiFinancesBloc>()..add(LoadFinances(_selectedMonth)),
+      create: (context) =>
+          getIt<NamiFinancesBloc>()..add(LoadFinances(_selectedMonth)),
       child: Scaffold(
-        bottomNavigationBar: const BottomNavigation(BottomNavigationPages.finances),
+        bottomNavigationBar:
+            const BottomNavigation(BottomNavigationPages.finances),
         appBar: DefaultAppBar(
           title: Text(l10n.financialSummary),
         ),
@@ -51,31 +56,41 @@ class _NamiDetailedFinancesScreenState extends State<NamiDetailedFinancesScreen>
           color: Theme.of(context).colorScheme.surface,
           child: Column(
             children: [
-                             Row(
-                 mainAxisSize: MainAxisSize.max,
-                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                 children: [
-                   IconButton(
-                     icon: const Icon(Icons.chevron_left),
-                     onPressed: _canGoToPreviousMonth() ? _goToPreviousMonth : null,
-                     style: IconButton.styleFrom(
-                       foregroundColor: _canGoToPreviousMonth() 
-                           ? Theme.of(context).colorScheme.primary 
-                           : Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.38),
-                     ),
-                   ),
-                   Text(_formatMonth(_selectedMonth), style: TextTheme.of(context).titleMedium,),
-                   IconButton(
-                     icon: const Icon(Icons.chevron_right),
-                     onPressed: _canGoToNextMonth() ? _goToNextMonth : null,
-                     style: IconButton.styleFrom(
-                       foregroundColor: _canGoToNextMonth() 
-                           ? Theme.of(context).colorScheme.primary 
-                           : Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.38),
-                     ),
-                   ),
-                 ],
-               ),
+              Row(
+                mainAxisSize: MainAxisSize.max,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  IconButton(
+                    icon: const AppIcon(PhosphorIconsRegular.caretLeft),
+                    onPressed:
+                        _canGoToPreviousMonth() ? _goToPreviousMonth : null,
+                    style: IconButton.styleFrom(
+                      foregroundColor: _canGoToPreviousMonth()
+                          ? Theme.of(context).colorScheme.primary
+                          : Theme.of(context)
+                              .colorScheme
+                              .onSurface
+                              .withValues(alpha: 0.38),
+                    ),
+                  ),
+                  Text(
+                    _formatMonth(_selectedMonth),
+                    style: TextTheme.of(context).titleMedium,
+                  ),
+                  IconButton(
+                    icon: const AppIcon(PhosphorIconsRegular.caretRight),
+                    onPressed: _canGoToNextMonth() ? _goToNextMonth : null,
+                    style: IconButton.styleFrom(
+                      foregroundColor: _canGoToNextMonth()
+                          ? Theme.of(context).colorScheme.primary
+                          : Theme.of(context)
+                              .colorScheme
+                              .onSurface
+                              .withValues(alpha: 0.38),
+                    ),
+                  ),
+                ],
+              ),
               const SizedBox(height: Constants.margin * 2),
               Expanded(
                 child: BlocListener<NamiFinancesBloc, NamiFinancesState>(
@@ -89,19 +104,20 @@ class _NamiDetailedFinancesScreenState extends State<NamiDetailedFinancesScreen>
                           child: CircularProgressIndicator(),
                         );
                       }
-                      
+
                       if (state is NamiFinancesLoaded) {
                         if (state.hasData && state.finances != null) {
-                          return _buildDetailedFinancesView(state.finances!, l10n);
+                          return _buildDetailedFinancesView(
+                              state.finances!, l10n);
                         } else {
                           return _buildNoDataView(l10n);
                         }
                       }
-                      
+
                       if (state is NamiFinancesError) {
                         return _buildErrorView(state.message, l10n);
                       }
-                      
+
                       return const SizedBox.shrink();
                     },
                   ),
@@ -114,7 +130,8 @@ class _NamiDetailedFinancesScreenState extends State<NamiDetailedFinancesScreen>
     );
   }
 
-  Widget _buildDetailedFinancesView(NamiFinancesModel finances, AppLocalizations l10n) {
+  Widget _buildDetailedFinancesView(
+      NamiFinancesModel finances, AppLocalizations l10n) {
     return SingleChildScrollView(
       padding: const EdgeInsets.all(Constants.margin),
       child: Column(
@@ -135,7 +152,8 @@ class _NamiDetailedFinancesScreenState extends State<NamiDetailedFinancesScreen>
     );
   }
 
-  Widget _buildMonthOverviewCard(NamiFinancesModel finances, AppLocalizations l10n) {
+  Widget _buildMonthOverviewCard(
+      NamiFinancesModel finances, AppLocalizations l10n) {
     return Container(
       padding: const EdgeInsets.all(Constants.margin * 2),
       decoration: BoxDecoration(
@@ -155,9 +173,9 @@ class _NamiDetailedFinancesScreenState extends State<NamiDetailedFinancesScreen>
           Text(
             l10n.financialSummary,
             style: TextTheme.of(context).titleLarge?.copyWith(
-              color: Theme.of(context).colorScheme.onPrimary,
-              fontWeight: FontWeight.bold,
-            ),
+                  color: Theme.of(context).colorScheme.onPrimary,
+                  fontWeight: FontWeight.bold,
+                ),
           ),
           const SizedBox(height: Constants.margin * 2),
           Row(
@@ -166,7 +184,7 @@ class _NamiDetailedFinancesScreenState extends State<NamiDetailedFinancesScreen>
                 child: _buildOverviewItem(
                   l10n.totalIncome,
                   finances.totalIncome,
-                  Icons.account_balance_wallet,
+                  PhosphorIconsRegular.bank,
                   AppColors.green[500]!,
                 ),
               ),
@@ -174,7 +192,7 @@ class _NamiDetailedFinancesScreenState extends State<NamiDetailedFinancesScreen>
                 child: _buildOverviewItem(
                   l10n.totalExpenses,
                   finances.totalExpenses,
-                  Icons.shopping_cart,
+                  PhosphorIconsRegular.shoppingCart,
                   Theme.of(context).colorScheme.error,
                 ),
               ),
@@ -187,7 +205,7 @@ class _NamiDetailedFinancesScreenState extends State<NamiDetailedFinancesScreen>
                 child: _buildOverviewItem(
                   AppLocalizations.of(context)!.savingsLabel,
                   finances.savings,
-                  Icons.savings,
+                  PhosphorIconsRegular.piggyBank,
                   AppColors.blue[500]!,
                 ),
               ),
@@ -195,7 +213,7 @@ class _NamiDetailedFinancesScreenState extends State<NamiDetailedFinancesScreen>
                 child: _buildOverviewItem(
                   AppLocalizations.of(context)!.availableLabel,
                   finances.availableAmount,
-                  Icons.account_balance,
+                  PhosphorIconsRegular.bank,
                   AppColors.orange[500]!,
                 ),
               ),
@@ -206,11 +224,15 @@ class _NamiDetailedFinancesScreenState extends State<NamiDetailedFinancesScreen>
     );
   }
 
-  Widget _buildOverviewItem(String label, double value, IconData icon, Color color) {
+  Widget _buildOverviewItem(
+      String label, double value, IconData icon, Color color) {
     return Container(
       padding: const EdgeInsets.all(Constants.margin),
       decoration: BoxDecoration(
-        color: Theme.of(context).colorScheme.surfaceContainer.withValues(alpha: 0.1),
+        color: Theme.of(context)
+            .colorScheme
+            .surfaceContainer
+            .withValues(alpha: 0.1),
         borderRadius: BorderRadius.circular(Constants.margin),
       ),
       child: Column(
@@ -220,17 +242,17 @@ class _NamiDetailedFinancesScreenState extends State<NamiDetailedFinancesScreen>
           Text(
             label,
             style: TextTheme.of(context).bodySmall?.copyWith(
-              color: Theme.of(context).colorScheme.onPrimary,
-            ),
+                  color: Theme.of(context).colorScheme.onPrimary,
+                ),
             textAlign: TextAlign.center,
           ),
           const SizedBox(height: Constants.margin),
           Text(
             'R\$ ${value.toStringAsFixed(2)}',
             style: TextTheme.of(context).titleMedium?.copyWith(
-              color: Theme.of(context).colorScheme.onPrimary,
-              fontWeight: FontWeight.bold,
-            ),
+                  color: Theme.of(context).colorScheme.onPrimary,
+                  fontWeight: FontWeight.bold,
+                ),
             textAlign: TextAlign.center,
           ),
         ],
@@ -238,7 +260,8 @@ class _NamiDetailedFinancesScreenState extends State<NamiDetailedFinancesScreen>
     );
   }
 
-  Widget _buildIncomeDetailsCard(NamiFinancesModel finances, AppLocalizations l10n) {
+  Widget _buildIncomeDetailsCard(
+      NamiFinancesModel finances, AppLocalizations l10n) {
     return Card(
       elevation: 4,
       child: Padding(
@@ -248,19 +271,22 @@ class _NamiDetailedFinancesScreenState extends State<NamiDetailedFinancesScreen>
           children: [
             Row(
               children: [
-                Icon(Icons.account_balance_wallet, color: AppColors.green[500]!),
+                AppIcon(PhosphorIconsRegular.bank,
+                    color: AppColors.green[500]!),
                 const SizedBox(width: Constants.margin),
                 Text(
                   AppLocalizations.of(context)!.incomeDetailsTitle,
                   style: TextTheme.of(context).titleMedium?.copyWith(
-                    fontWeight: FontWeight.bold,
-                  ),
+                        fontWeight: FontWeight.bold,
+                      ),
                 ),
               ],
             ),
             const SizedBox(height: Constants.margin * 2),
             if (finances.monthlyIncomes.isNotEmpty)
-              ...finances.monthlyIncomes.map((income) => _buildIncomeItem(income)).toList()
+              ...finances.monthlyIncomes
+                  .map((income) => _buildIncomeItem(income))
+                  .toList()
             else
               Padding(
                 padding: const EdgeInsets.all(Constants.margin),
@@ -279,15 +305,15 @@ class _NamiDetailedFinancesScreenState extends State<NamiDetailedFinancesScreen>
                   Text(
                     'Total da Renda:',
                     style: TextTheme.of(context).titleMedium?.copyWith(
-                      fontWeight: FontWeight.bold,
-                    ),
+                          fontWeight: FontWeight.bold,
+                        ),
                   ),
                   Text(
                     'R\$ ${(finances.totalIncome).toStringAsFixed(2)}',
                     style: TextTheme.of(context).titleMedium?.copyWith(
-                      fontWeight: FontWeight.bold,
-                      color: AppColors.green[500]!,
-                    ),
+                          fontWeight: FontWeight.bold,
+                          color: AppColors.green[500]!,
+                        ),
                   ),
                 ],
               ),
@@ -314,9 +340,9 @@ class _NamiDetailedFinancesScreenState extends State<NamiDetailedFinancesScreen>
             child: Text(
               'R\$ ${(income.amount).toStringAsFixed(2)}',
               style: TextTheme.of(context).bodyMedium?.copyWith(
-                fontWeight: FontWeight.w500,
-                color: AppColors.green[500]!,
-              ),
+                    fontWeight: FontWeight.w500,
+                    color: AppColors.green[500]!,
+                  ),
               textAlign: TextAlign.end,
             ),
           ),
@@ -325,7 +351,8 @@ class _NamiDetailedFinancesScreenState extends State<NamiDetailedFinancesScreen>
     );
   }
 
-  Widget _buildExpensesDetailsCard(NamiFinancesModel finances, AppLocalizations l10n) {
+  Widget _buildExpensesDetailsCard(
+      NamiFinancesModel finances, AppLocalizations l10n) {
     return Card(
       elevation: 4,
       child: Padding(
@@ -335,27 +362,36 @@ class _NamiDetailedFinancesScreenState extends State<NamiDetailedFinancesScreen>
           children: [
             Row(
               children: [
-                Icon(Icons.shopping_cart, color: Theme.of(context).colorScheme.error),
+                AppIcon(PhosphorIconsRegular.shoppingCart,
+                    color: Theme.of(context).colorScheme.error),
                 const SizedBox(width: Constants.margin),
                 Text(
                   AppLocalizations.of(context)!.expensesDetails,
                   style: TextTheme.of(context).titleMedium?.copyWith(
-                    fontWeight: FontWeight.bold,
-                  ),
+                        fontWeight: FontWeight.bold,
+                      ),
                 ),
               ],
             ),
             const SizedBox(height: Constants.margin * 2),
             if (finances.expenses.isNotEmpty) ...[
-              ...finances.expenses.map((expense) => _buildExpenseItem(expense)).toList(),
+              ...finances.expenses
+                  .map((expense) => _buildExpenseItem(expense))
+                  .toList(),
               const SizedBox(height: Constants.margin * 2),
               Container(
                 padding: const EdgeInsets.all(Constants.margin * 1.5),
                 decoration: BoxDecoration(
-                  color: Theme.of(context).colorScheme.error.withValues(alpha: 0.1),
+                  color: Theme.of(context)
+                      .colorScheme
+                      .error
+                      .withValues(alpha: 0.1),
                   borderRadius: BorderRadius.circular(Constants.margin),
                   border: Border.all(
-                    color: Theme.of(context).colorScheme.error.withValues(alpha: 0.3),
+                    color: Theme.of(context)
+                        .colorScheme
+                        .error
+                        .withValues(alpha: 0.3),
                     width: 1,
                   ),
                 ),
@@ -364,8 +400,8 @@ class _NamiDetailedFinancesScreenState extends State<NamiDetailedFinancesScreen>
                   children: [
                     Row(
                       children: [
-                        Icon(
-                          Icons.shopping_cart,
+                        AppIcon(
+                          PhosphorIconsRegular.shoppingCart,
                           color: Theme.of(context).colorScheme.error,
                           size: Constants.iconSize,
                         ),
@@ -373,18 +409,18 @@ class _NamiDetailedFinancesScreenState extends State<NamiDetailedFinancesScreen>
                         Text(
                           AppLocalizations.of(context)!.totalExpensesLabel,
                           style: TextTheme.of(context).titleMedium?.copyWith(
-                            fontWeight: FontWeight.bold,
-                            color: Theme.of(context).colorScheme.error,
-                          ),
+                                fontWeight: FontWeight.bold,
+                                color: Theme.of(context).colorScheme.error,
+                              ),
                         ),
                       ],
                     ),
                     Text(
                       'R\$ ${finances.totalExpenses.toStringAsFixed(2)}',
                       style: TextTheme.of(context).titleMedium?.copyWith(
-                        fontWeight: FontWeight.bold,
-                        color: Theme.of(context).colorScheme.error,
-                      ),
+                            fontWeight: FontWeight.bold,
+                            color: Theme.of(context).colorScheme.error,
+                          ),
                     ),
                   ],
                 ),
@@ -403,8 +439,8 @@ class _NamiDetailedFinancesScreenState extends State<NamiDetailedFinancesScreen>
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Icon(
-                      Icons.info_outline,
+                    AppIcon(
+                      PhosphorIconsRegular.info,
                       color: AppColors.grey[600] ?? Colors.grey[600]!,
                       size: Constants.iconSize,
                     ),
@@ -412,8 +448,8 @@ class _NamiDetailedFinancesScreenState extends State<NamiDetailedFinancesScreen>
                     Text(
                       AppLocalizations.of(context)!.noExpensesRegistered,
                       style: TextTheme.of(context).bodyMedium?.copyWith(
-                        color: AppColors.grey[600] ?? Colors.grey[600]!,
-                      ),
+                            color: AppColors.grey[600] ?? Colors.grey[600]!,
+                          ),
                     ),
                   ],
                 ),
@@ -465,8 +501,8 @@ class _NamiDetailedFinancesScreenState extends State<NamiDetailedFinancesScreen>
                 Text(
                   expense.description,
                   style: TextTheme.of(context).bodyMedium?.copyWith(
-                    fontWeight: FontWeight.w500,
-                  ),
+                        fontWeight: FontWeight.w500,
+                      ),
                   maxLines: 2,
                   overflow: TextOverflow.ellipsis,
                 ),
@@ -477,16 +513,17 @@ class _NamiDetailedFinancesScreenState extends State<NamiDetailedFinancesScreen>
                     vertical: Constants.margin / 2,
                   ),
                   decoration: BoxDecoration(
-                    color: _getCategoryColor(expense.category).withValues(alpha: 0.1),
+                    color: _getCategoryColor(expense.category)
+                        .withValues(alpha: 0.1),
                     borderRadius: BorderRadius.circular(Constants.margin),
                   ),
                   child: Text(
                     expense.category.name.toUpperCase(),
                     style: TextTheme.of(context).bodySmall?.copyWith(
-                      color: _getCategoryColor(expense.category),
-                      fontWeight: FontWeight.w600,
-                      fontSize: 10,
-                    ),
+                          color: _getCategoryColor(expense.category),
+                          fontWeight: FontWeight.w600,
+                          fontSize: 10,
+                        ),
                   ),
                 ),
               ],
@@ -496,9 +533,9 @@ class _NamiDetailedFinancesScreenState extends State<NamiDetailedFinancesScreen>
           Text(
             'R\$ ${expense.amount.toStringAsFixed(2)}',
             style: TextTheme.of(context).titleMedium?.copyWith(
-              fontWeight: FontWeight.bold,
-              color: Theme.of(context).colorScheme.error,
-            ),
+                  fontWeight: FontWeight.bold,
+                  color: Theme.of(context).colorScheme.error,
+                ),
           ),
         ],
       ),
@@ -525,21 +562,22 @@ class _NamiDetailedFinancesScreenState extends State<NamiDetailedFinancesScreen>
   IconData _getCategoryIcon(ExpenseCategory category) {
     switch (category) {
       case ExpenseCategory.fixed:
-        return Icons.home;
+        return PhosphorIconsRegular.house;
       case ExpenseCategory.food:
-        return Icons.restaurant;
+        return PhosphorIconsRegular.forkKnife;
       case ExpenseCategory.transport:
-        return Icons.directions_car;
+        return PhosphorIconsRegular.car;
       case ExpenseCategory.entertainment:
-        return Icons.movie;
+        return PhosphorIconsRegular.filmStrip;
       case ExpenseCategory.health:
-        return Icons.local_hospital;
+        return PhosphorIconsRegular.firstAid;
       case ExpenseCategory.other:
-        return Icons.more_horiz;
+        return PhosphorIconsRegular.dotsThree;
     }
   }
 
-  Widget _buildSavingsDetailsCard(NamiFinancesModel finances, AppLocalizations l10n) {
+  Widget _buildSavingsDetailsCard(
+      NamiFinancesModel finances, AppLocalizations l10n) {
     return Card(
       elevation: 4,
       child: Padding(
@@ -549,21 +587,25 @@ class _NamiDetailedFinancesScreenState extends State<NamiDetailedFinancesScreen>
           children: [
             Row(
               children: [
-                Icon(Icons.savings, color: AppColors.blue[500]!),
+                AppIcon(PhosphorIconsRegular.piggyBank,
+                    color: AppColors.blue[500]!),
                 const SizedBox(width: Constants.margin),
                 Text(
                   AppLocalizations.of(context)!.savingsDetailsTitle,
                   style: TextTheme.of(context).titleMedium?.copyWith(
-                    fontWeight: FontWeight.bold,
-                  ),
+                        fontWeight: FontWeight.bold,
+                      ),
                 ),
               ],
             ),
             const SizedBox(height: Constants.margin),
             const SizedBox(height: Constants.margin),
-            _buildSavingsMetric(AppLocalizations.of(context)!.monthSavings, finances.savings, AppColors.blue[500]!),
-            _buildSavingsMetric(AppLocalizations.of(context)!.savingsPercentage, finances.savingsPercentage, AppColors.green[500]!),
-            _buildSavingsMetric(AppLocalizations.of(context)!.yearlySavings, finances.yearlySavings, Theme.of(context).colorScheme.primary),
+            _buildSavingsMetric(AppLocalizations.of(context)!.monthSavings,
+                finances.savings, AppColors.blue[500]!),
+            _buildSavingsMetric(AppLocalizations.of(context)!.savingsPercentage,
+                finances.savingsPercentage, AppColors.green[500]!),
+            _buildSavingsMetric(AppLocalizations.of(context)!.yearlySavings,
+                finances.yearlySavings, Theme.of(context).colorScheme.primary),
           ],
         ),
       ),
@@ -581,20 +623,21 @@ class _NamiDetailedFinancesScreenState extends State<NamiDetailedFinancesScreen>
             style: TextTheme.of(context).bodyMedium,
           ),
           Text(
-            label == AppLocalizations.of(context)!.savingsPercentage 
+            label == AppLocalizations.of(context)!.savingsPercentage
                 ? '${value.toStringAsFixed(1)}%'
                 : 'R\$ ${value.toStringAsFixed(2)}',
             style: TextTheme.of(context).bodyMedium?.copyWith(
-              fontWeight: FontWeight.w500,
-              color: color,
-            ),
+                  fontWeight: FontWeight.w500,
+                  color: color,
+                ),
           ),
         ],
       ),
     );
   }
 
-  Widget _buildFinancialMetricsCard(NamiFinancesModel finances, AppLocalizations l10n) {
+  Widget _buildFinancialMetricsCard(
+      NamiFinancesModel finances, AppLocalizations l10n) {
     return Card(
       elevation: 4,
       child: Padding(
@@ -604,21 +647,29 @@ class _NamiDetailedFinancesScreenState extends State<NamiDetailedFinancesScreen>
           children: [
             Row(
               children: [
-                Icon(Icons.analytics, color: AppColors.orange[500]!),
+                AppIcon(PhosphorIconsRegular.chartLineUp,
+                    color: AppColors.orange[500]!),
                 const SizedBox(width: Constants.margin),
                 Text(
                   AppLocalizations.of(context)!.financialMetricsTitle,
                   style: TextTheme.of(context).titleMedium?.copyWith(
-                    fontWeight: FontWeight.bold,
-                  ),
+                        fontWeight: FontWeight.bold,
+                      ),
                 ),
               ],
             ),
             const SizedBox(height: Constants.margin),
             const SizedBox(height: Constants.margin),
-            _buildMetricItem(AppLocalizations.of(context)!.dailyAvailableAmount, finances.dailyAmount, Icons.today),
-            _buildMetricItem(AppLocalizations.of(context)!.availableBalance, finances.availableAmount, Icons.account_balance),
-            _buildMetricItem(AppLocalizations.of(context)!.currentMonthLabel, finances.isCurrentMonth ? AppLocalizations.of(context)!.yesLabel : AppLocalizations.of(context)!.noLabel, Icons.calendar_month),
+            _buildMetricItem(AppLocalizations.of(context)!.dailyAvailableAmount,
+                finances.dailyAmount, PhosphorIconsRegular.calendarStar),
+            _buildMetricItem(AppLocalizations.of(context)!.availableBalance,
+                finances.availableAmount, PhosphorIconsRegular.bank),
+            _buildMetricItem(
+                AppLocalizations.of(context)!.currentMonthLabel,
+                finances.isCurrentMonth
+                    ? AppLocalizations.of(context)!.yesLabel
+                    : AppLocalizations.of(context)!.noLabel,
+                PhosphorIconsRegular.calendar),
           ],
         ),
       ),
@@ -639,13 +690,13 @@ class _NamiDetailedFinancesScreenState extends State<NamiDetailedFinancesScreen>
             ),
           ),
           Text(
-            value is double 
+            value is double
                 ? 'R\$ ${value.toStringAsFixed(2)}'
                 : value.toString(),
             style: TextTheme.of(context).bodyMedium?.copyWith(
-              fontWeight: FontWeight.w500,
-              color: AppColors.orange[500]!,
-            ),
+                  fontWeight: FontWeight.w500,
+                  color: AppColors.orange[500]!,
+                ),
           ),
         ],
       ),
@@ -657,8 +708,8 @@ class _NamiDetailedFinancesScreenState extends State<NamiDetailedFinancesScreen>
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Icon(
-            Icons.account_balance_wallet_outlined,
+          AppIcon(
+            PhosphorIconsRegular.bank,
             size: Constants.iconSize * 4,
             color: AppColors.grey[400]!,
           ),
@@ -666,14 +717,16 @@ class _NamiDetailedFinancesScreenState extends State<NamiDetailedFinancesScreen>
           Text(
             'Nenhum dado financeiro encontrado para ${_formatMonth(_selectedMonth)}',
             style: TextTheme.of(context).titleMedium?.copyWith(
-              color: AppColors.grey[600]!,
-            ),
+                  color: AppColors.grey[600]!,
+                ),
             textAlign: TextAlign.center,
           ),
           const SizedBox(height: Constants.margin * 2),
-          ElevatedButton(
-            onPressed: () => context.read<NamiFinancesBloc>().add(LoadFinances(_selectedMonth)),
-            child: Text(AppLocalizations.of(context)!.tryAgain),
+          AppButton(
+            onPressed: () => context
+                .read<NamiFinancesBloc>()
+                .add(LoadFinances(_selectedMonth)),
+            label: AppLocalizations.of(context)!.tryAgain,
           ),
         ],
       ),
@@ -685,8 +738,8 @@ class _NamiDetailedFinancesScreenState extends State<NamiDetailedFinancesScreen>
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Icon(
-            Icons.error_outline,
+          AppIcon(
+            PhosphorIconsRegular.warningCircle,
             size: Constants.iconSize * 4,
             color: Theme.of(context).colorScheme.error,
           ),
@@ -694,21 +747,23 @@ class _NamiDetailedFinancesScreenState extends State<NamiDetailedFinancesScreen>
           Text(
             'Erro ao carregar dados',
             style: TextTheme.of(context).titleMedium?.copyWith(
-              color: Theme.of(context).colorScheme.error,
-            ),
+                  color: Theme.of(context).colorScheme.error,
+                ),
           ),
           const SizedBox(height: Constants.margin),
           Text(
             message,
             style: TextTheme.of(context).bodyMedium?.copyWith(
-              color: AppColors.grey[700]!,
-            ),
+                  color: AppColors.grey[700]!,
+                ),
             textAlign: TextAlign.center,
           ),
           const SizedBox(height: Constants.margin * 2),
-          ElevatedButton(
-            onPressed: () => context.read<NamiFinancesBloc>().add(LoadFinances(_selectedMonth)),
-            child: Text(AppLocalizations.of(context)!.tryAgain),
+          AppButton(
+            onPressed: () => context
+                .read<NamiFinancesBloc>()
+                .add(LoadFinances(_selectedMonth)),
+            label: AppLocalizations.of(context)!.tryAgain,
           ),
         ],
       ),
@@ -716,19 +771,22 @@ class _NamiDetailedFinancesScreenState extends State<NamiDetailedFinancesScreen>
   }
 
   bool _canGoToPreviousMonth() {
-    final previousMonth = DateTime(_selectedMonth.year, _selectedMonth.month - 1, 1);
+    final previousMonth =
+        DateTime(_selectedMonth.year, _selectedMonth.month - 1, 1);
     return previousMonth.isAfter(DateTime(2019, 12, 31));
   }
 
   bool _canGoToNextMonth() {
-    final nextMonth = DateTime(_selectedMonth.year, _selectedMonth.month + 1, 1);
+    final nextMonth =
+        DateTime(_selectedMonth.year, _selectedMonth.month + 1, 1);
     return nextMonth.isBefore(DateTime.now().add(const Duration(days: 1)));
   }
 
   void _goToPreviousMonth() {
     if (_canGoToPreviousMonth()) {
       setState(() {
-        _selectedMonth = DateTime(_selectedMonth.year, _selectedMonth.month - 1, 1);
+        _selectedMonth =
+            DateTime(_selectedMonth.year, _selectedMonth.month - 1, 1);
       });
     }
   }
@@ -736,15 +794,26 @@ class _NamiDetailedFinancesScreenState extends State<NamiDetailedFinancesScreen>
   void _goToNextMonth() {
     if (_canGoToNextMonth()) {
       setState(() {
-        _selectedMonth = DateTime(_selectedMonth.year, _selectedMonth.month + 1, 1);
+        _selectedMonth =
+            DateTime(_selectedMonth.year, _selectedMonth.month + 1, 1);
       });
     }
   }
 
   String _formatMonth(DateTime date) {
     final months = [
-      'Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho',
-      'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'
+      'Janeiro',
+      'Fevereiro',
+      'Março',
+      'Abril',
+      'Maio',
+      'Junho',
+      'Julho',
+      'Agosto',
+      'Setembro',
+      'Outubro',
+      'Novembro',
+      'Dezembro'
     ];
     return '${months[date.month - 1]} ${date.year}';
   }

@@ -14,7 +14,8 @@ class NotificationService {
   NotificationService._internal();
 
   final FirebaseMessaging _firebaseMessaging = FirebaseMessaging.instance;
-  final FlutterLocalNotificationsPlugin _localNotifications = FlutterLocalNotificationsPlugin();
+  final FlutterLocalNotificationsPlugin _localNotifications =
+      FlutterLocalNotificationsPlugin();
 
   String? _fcmToken;
   bool _isInitialized = false;
@@ -27,13 +28,13 @@ class NotificationService {
 
     try {
       await _requestPermissions();
-      
+
       await _setupLocalNotifications();
-      
+
       await _setupFirebaseMessaging();
-      
+
       await _getFCMToken();
-      
+
       _isInitialized = true;
       debugPrint('NotificationService: Inicializado com sucesso');
     } catch (e) {
@@ -54,8 +55,9 @@ class NotificationService {
           provisional: false,
           sound: true,
         );
-        
-        debugPrint('NotificationService: Permissão iOS: ${settings.authorizationStatus}');
+
+        debugPrint(
+            'NotificationService: Permissão iOS: ${settings.authorizationStatus}');
       }
 
       if (Platform.isAndroid) {
@@ -68,8 +70,9 @@ class NotificationService {
           provisional: false,
           sound: true,
         );
-        
-        debugPrint('NotificationService: Permissão Android: ${settings.authorizationStatus}');
+
+        debugPrint(
+            'NotificationService: Permissão Android: ${settings.authorizationStatus}');
       }
     } catch (e) {
       debugPrint('NotificationService: Erro ao solicitar permissões: $e');
@@ -77,7 +80,8 @@ class NotificationService {
   }
 
   Future<void> _setupLocalNotifications() async {
-    const androidSettings = AndroidInitializationSettings('@mipmap/ic_launcher');
+    const androidSettings =
+        AndroidInitializationSettings('@mipmap/ic_launcher');
     const iosSettings = DarwinInitializationSettings(
       requestAlertPermission: true,
       requestBadgePermission: true,
@@ -110,7 +114,7 @@ class NotificationService {
     try {
       _fcmToken = await _firebaseMessaging.getToken();
       debugPrint('NotificationService: FCM Token: $_fcmToken');
-      
+
       _firebaseMessaging.onTokenRefresh.listen((newToken) {
         _fcmToken = newToken;
         debugPrint('NotificationService: Novo FCM Token: $newToken');
@@ -132,14 +136,14 @@ class NotificationService {
   void _handleMessageOpenedApp(RemoteMessage message) {
     debugPrint('NotificationService: App aberto através da notificação');
     debugPrint('NotificationService: Dados: ${message.data}');
-    
+
     _handleNotificationNavigation(message.data);
   }
 
   void _onNotificationTapped(NotificationResponse response) {
     debugPrint('NotificationService: Notificação local tocada');
     debugPrint('NotificationService: Payload: ${response.payload}');
-    
+
     if (response.payload != null) {
       final data = json.decode(response.payload!);
       _handleNotificationNavigation(data);
@@ -255,7 +259,8 @@ class NotificationService {
       await _firebaseMessaging.subscribeToTopic(topic);
       debugPrint('NotificationService: Inscrito no tópico: $topic');
     } catch (e) {
-      debugPrint('NotificationService: Erro ao se inscrever no tópico $topic: $e');
+      debugPrint(
+          'NotificationService: Erro ao se inscrever no tópico $topic: $e');
     }
   }
 
@@ -264,7 +269,8 @@ class NotificationService {
       await _firebaseMessaging.unsubscribeFromTopic(topic);
       debugPrint('NotificationService: Cancelada inscrição no tópico: $topic');
     } catch (e) {
-      debugPrint('NotificationService: Erro ao cancelar inscrição no tópico $topic: $e');
+      debugPrint(
+          'NotificationService: Erro ao cancelar inscrição no tópico $topic: $e');
     }
   }
 
@@ -281,7 +287,8 @@ class NotificationService {
           'updatedAt': FieldValue.serverTimestamp(),
         },
       );
-      debugPrint('NotificationService: Token salvo no Firestore para usuário: $userId');
+      debugPrint(
+          'NotificationService: Token salvo no Firestore para usuário: $userId');
     } catch (e) {
       debugPrint('NotificationService: Erro ao salvar token no Firestore: $e');
     }
@@ -296,4 +303,4 @@ class NotificationService {
       debugPrint('NotificationService: Erro ao limpar token: $e');
     }
   }
-} 
+}

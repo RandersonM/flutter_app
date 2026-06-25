@@ -18,7 +18,7 @@ class FormActions extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
-    
+
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 16.0),
       child: Row(
@@ -64,4 +64,4 @@ class FormActions extends StatelessWidget {
       ),
     );
   }
-} 
+}

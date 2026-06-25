@@ -26,19 +26,20 @@ class EditCustomCharacterScreen extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  State<EditCustomCharacterScreen> createState() => _EditCustomCharacterScreenState();
+  State<EditCustomCharacterScreen> createState() =>
+      _EditCustomCharacterScreenState();
 }
 
 class _EditCustomCharacterScreenState extends State<EditCustomCharacterScreen> {
   final _formKey = GlobalKey<FormState>();
-  
+
   final _nameController = TextEditingController();
   final _nicknameController = TextEditingController();
   final _birthDateController = TextEditingController();
   final _bountyController = TextEditingController();
   final _imageUrlController = TextEditingController();
   final _descriptionController = TextEditingController();
-  
+
   String? _selectedStatus;
   List<String> _selectedOccupations = [];
   final List<String> _selectedHaki = [];
@@ -62,7 +63,7 @@ class _EditCustomCharacterScreenState extends State<EditCustomCharacterScreen> {
 
   void _populateFormWithCharacterData() {
     final character = widget.character;
-    
+
     _nameController.text = character.name;
     _nicknameController.text = character.nickname ?? '';
     _bountyController.text = character.bounty;
@@ -71,11 +72,11 @@ class _EditCustomCharacterScreenState extends State<EditCustomCharacterScreen> {
     _selectedStatus = character.status;
     _selectedRace = character.race ?? 'human';
     _fightingStyle = character.fightingStyle;
-    
+
     _selectedAffiliations = [];
     _selectedOccupations = [];
     _selectedHaki.clear();
-    
+
     if (character.haki != null) {
       _selectedHaki.addAll(character.haki!);
     }
@@ -87,9 +88,10 @@ class _EditCustomCharacterScreenState extends State<EditCustomCharacterScreen> {
     }
 
     if (character.birthDate != null) {
-      _birthDateController.text = '${character.birthDate!.day.toString().padLeft(2, '0')}/${character.birthDate!.month.toString().padLeft(2, '0')}/${character.birthDate!.year}';
+      _birthDateController.text =
+          '${character.birthDate!.day.toString().padLeft(2, '0')}/${character.birthDate!.month.toString().padLeft(2, '0')}/${character.birthDate!.year}';
     }
-    
+
     setState(() {});
   }
 
@@ -155,7 +157,7 @@ class _EditCustomCharacterScreenState extends State<EditCustomCharacterScreen> {
   @override
   Widget build(BuildContext context) {
     _mapHakiDataIfNeeded();
-    
+
     return BlocProvider(
       create: (context) => CustomCharacterBloc(
         customCharacterService: getIt<ICustomCharacterRepository>(),
@@ -165,8 +167,8 @@ class _EditCustomCharacterScreenState extends State<EditCustomCharacterScreen> {
         builder: (context) {
           return Scaffold(
             appBar: DefaultAppBar(
-              title: Text(
-                  AppLocalizations.of(context)!.editCustomCharacterTitle),
+              title:
+                  Text(AppLocalizations.of(context)!.editCustomCharacterTitle),
             ),
             body: BlocListener<CustomCharacterBloc, CustomCharacterState>(
               listenWhen: (previous, current) {
@@ -346,17 +348,17 @@ class _EditCustomCharacterScreenState extends State<EditCustomCharacterScreen> {
         return CharacterLocalizationMapper.mapLocalizedToHaki(
             localizedHaki, AppLocalizations.of(context)!);
       }).toList();
-          
+
       final updatedCharacter = CustomCharacterModel(
         id: widget.character.id,
         name: _nameController.text.trim(),
-        nickname: _nicknameController.text.trim().isNotEmpty 
-            ? _nicknameController.text.trim() 
+        nickname: _nicknameController.text.trim().isNotEmpty
+            ? _nicknameController.text.trim()
             : null,
         devilFruit: _selectedDevilFruit?.romanName,
         haki: mappedHaki.isNotEmpty ? mappedHaki : null,
         affiliations: _selectedAffiliations,
-        image: _imageUrlController.text.trim().isNotEmpty 
+        image: _imageUrlController.text.trim().isNotEmpty
             ? _imageUrlController.text.trim()
             : 'https://via.placeholder.com/300x400/FF6B6B/FFFFFF?text=Personagem+Customizado',
         occupation: _selectedOccupations,
@@ -375,15 +377,15 @@ class _EditCustomCharacterScreenState extends State<EditCustomCharacterScreen> {
         age: birthDate != null ? ZodiacIcons.calculateAge(birthDate)
             : null,
         birthDate: birthDate,
-        description: _descriptionController.text.trim().isNotEmpty 
-            ? _descriptionController.text.trim() 
+        description: _descriptionController.text.trim().isNotEmpty
+            ? _descriptionController.text.trim()
             : null,
       );
-      
+
       context.read<CustomCharacterBloc>().add(UpdateCustomCharacter(
-        widget.character.id!,
-        updatedCharacter,
-      ));
+            widget.character.id!,
+            updatedCharacter,
+          ));
     }
   }
 
@@ -414,7 +416,7 @@ class _EditCustomCharacterScreenState extends State<EditCustomCharacterScreen> {
 
   void _showErrorDialog(BuildContext context, String message) {
     final l10n = AppLocalizations.of(context)!;
-    
+
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
@@ -442,4 +444,4 @@ class _EditCustomCharacterScreenState extends State<EditCustomCharacterScreen> {
     _descriptionController.dispose();
     super.dispose();
   }
-} 
+}

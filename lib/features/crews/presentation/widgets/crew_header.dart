@@ -1,8 +1,8 @@
+import 'package:phosphor_flutter/phosphor_flutter.dart';
 // Developed by Randerson Mayllon
 // Copyright © 2022.
 
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:opfan/core/models/one_piece/crew_model.dart';
 import 'package:opfan/shared/utils/constants.dart';
 import 'package:opfan/l10n/app_localizations.dart';
@@ -99,25 +99,24 @@ class CrewHeader extends StatelessWidget {
                           if (crew.boatName != null)
                             _buildInfoRow(
                               context,
-                              FontAwesomeIcons.ship,
+                              PhosphorIconsRegular.boat,
                               '${l10n.crewBoatName}: ${crew.boatName}',
                             ),
                           if (crew.captain != null)
                             _buildInfoRow(
                               context,
-                              Icons.person,
+                              PhosphorIconsRegular.user,
                               '${l10n.captain}: ${crew.captain}',
                             ),
                           if (crew.viceCaptain != null)
                             _buildInfoRow(
                               context,
-                              Icons.person_outline,
+                              PhosphorIconsRegular.user,
                               '${l10n.viceCaptain}: ${crew.viceCaptain}',
                             ),
                         ],
                       ),
                     ),
-              
                   ],
                 ),
               ],
@@ -127,7 +126,6 @@ class CrewHeader extends StatelessWidget {
       ],
     );
   }
-
 
   ImageProvider _getBackgroundImageProvider() {
     if (crew.jollyRogerUrl != null && crew.jollyRogerUrl!.isNotEmpty) {
@@ -154,8 +152,8 @@ class CrewHeader extends StatelessWidget {
             child: Text(
               text,
               style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                fontWeight: FontWeight.w500,
-              ),
+                    fontWeight: FontWeight.w500,
+                  ),
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
             ),
@@ -164,4 +162,4 @@ class CrewHeader extends StatelessWidget {
       ),
     );
   }
-} 
+}

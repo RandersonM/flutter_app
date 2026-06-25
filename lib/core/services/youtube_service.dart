@@ -11,7 +11,7 @@ import 'environment_service.dart';
 class YouTubeService {
   late final Dio _dio;
   final EnvironmentService _env = EnvironmentService.instance;
-  
+
   final Map<String, YouTubeVideo> _videoCache = {};
   final Map<String, List<YouTubeVideo>> _multipleVideoCache = {};
 
@@ -78,9 +78,9 @@ class YouTubeService {
           final random = Random();
           final randomIndex = random.nextInt(items.length);
           final video = YouTubeVideo.fromJson(items[randomIndex]);
-          
+
           _videoCache[cacheKey] = video;
-          
+
           return video;
         } else {
           return await _getMockVideo(characterName);
@@ -92,7 +92,7 @@ class YouTubeService {
     } on DioException catch (e) {
       debugPrint('YouTube Service: DioException - ${e.message}');
       debugPrint('YouTube Service: Response data - ${e.response?.data}');
-      
+
       if (e.response?.statusCode == 403) {
         _handleQuotaExceeded(e.response?.data);
       }
@@ -108,7 +108,6 @@ class YouTubeService {
       {int maxResults = 3}) async {
     final cacheKey = _getCacheKey(characterName, maxResults);
     if (_multipleVideoCache.containsKey(cacheKey)) {
-      
       return _multipleVideoCache[cacheKey]!;
     }
 
@@ -146,7 +145,7 @@ class YouTubeService {
             items.map((item) => YouTubeVideo.fromJson(item)).toList();
 
         _multipleVideoCache[cacheKey] = videos;
-        
+
         return videos;
       } else {
         debugPrint('YouTube Service: Error - Status ${response.statusCode}');
@@ -154,7 +153,7 @@ class YouTubeService {
       }
     } on DioException catch (e) {
       debugPrint('YouTube Service: DioException - ${e.message}');
-      
+
       if (e.response?.statusCode == 403) {
         _handleQuotaExceeded(e.response?.data);
       }

@@ -1,3 +1,4 @@
+import 'package:phosphor_flutter/phosphor_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:opfan/core/models/goal_model.dart';
 import 'package:opfan/shared/utils/theme.dart';
@@ -35,7 +36,9 @@ class _UpdateProgressDialogState extends State<UpdateProgressDialog> {
 
     return AlertDialog(
       title: Text(
-        isIncrement ? AppLocalizations.of(context)!.increaseProgressTitle : AppLocalizations.of(context)!.decreaseProgressTitle,
+        isIncrement
+            ? AppLocalizations.of(context)!.increaseProgressTitle
+            : AppLocalizations.of(context)!.decreaseProgressTitle,
         style: Theme.of(context).textTheme.titleLarge?.copyWith(
               fontWeight: FontWeight.bold,
             ),
@@ -84,7 +87,9 @@ class _UpdateProgressDialogState extends State<UpdateProgressDialog> {
                 ),
                 const SizedBox(width: 8),
                 Icon(
-                  isIncrement ? Icons.arrow_upward : Icons.arrow_downward,
+                  isIncrement
+                      ? PhosphorIconsRegular.arrowUp
+                      : PhosphorIconsRegular.arrowDown,
                   size: 16,
                   color: isIncrement ? Colors.green : Colors.orange,
                 ),
@@ -141,7 +146,9 @@ class _UpdateProgressDialogState extends State<UpdateProgressDialog> {
             backgroundColor: AppColors.purple[350],
             foregroundColor: Colors.white,
           ),
-          child: Text(isIncrement ? AppLocalizations.of(context)!.increaseAction : AppLocalizations.of(context)!.decreaseAction),
+          child: Text(isIncrement
+              ? AppLocalizations.of(context)!.increaseAction
+              : AppLocalizations.of(context)!.decreaseAction),
         ),
       ],
     );

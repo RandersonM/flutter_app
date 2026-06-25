@@ -13,7 +13,8 @@ class AppBlocObserver extends BlocObserver {
   void onChange(BlocBase bloc, Change change) {
     super.onChange(bloc, change);
     if (kDebugMode) {
-      debugPrint('BLOC CHANGE: [${bloc.runtimeType}] - CurrentState: ${change.currentState} -> NextState: ${change.nextState}');
+      debugPrint(
+          'BLOC CHANGE: [${bloc.runtimeType}] - CurrentState: ${change.currentState} -> NextState: ${change.nextState}');
     }
   }
 }

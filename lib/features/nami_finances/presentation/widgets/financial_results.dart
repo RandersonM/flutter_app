@@ -1,3 +1,4 @@
+import 'package:phosphor_flutter/phosphor_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:opfan/l10n/app_localizations.dart';
 import 'package:opfan/shared/utils/constants.dart';
@@ -18,30 +19,32 @@ class FinancialResults extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
-    
+
     return _buildSection(
       title: l10n.results,
-      icon: Icons.calculate,
+      icon: PhosphorIconsRegular.calculator,
       color: AppColors.blue[500]!,
       children: [
         _buildResultCard(
           title: l10n.totalExpenses,
           value: totalExpenses,
-          icon: Icons.payments,
+          icon: PhosphorIconsRegular.money,
           color: AppColors.red[500]!,
         ),
         const SizedBox(height: Constants.margin),
         _buildResultCard(
           title: l10n.availableAmount,
           value: availableAmount,
-          icon: Icons.account_balance_wallet,
-          color: availableAmount >= 0 ? AppColors.green[500]! : AppColors.red[500]!,
+          icon: PhosphorIconsRegular.bank,
+          color: availableAmount >= 0
+              ? AppColors.green[500]!
+              : AppColors.red[500]!,
         ),
         const SizedBox(height: Constants.margin),
         _buildResultCard(
           title: l10n.dailyAmount,
           value: dailyAmount,
-          icon: Icons.today,
+          icon: PhosphorIconsRegular.calendarStar,
           color: AppColors.orange[500]!,
           isDaily: true,
         ),
@@ -132,15 +135,15 @@ class FinancialResults extends StatelessWidget {
                     Text(
                       title,
                       style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                        fontWeight: FontWeight.w500,
-                      ),
+                            fontWeight: FontWeight.w500,
+                          ),
                     ),
                     Text(
                       '${_formatCurrency(value)} ${AppLocalizations.of(context)!.currency}${isDaily ? AppLocalizations.of(context)!.perDay : ''}',
                       style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                        fontWeight: FontWeight.bold,
-                        color: color,
-                      ),
+                            fontWeight: FontWeight.bold,
+                            color: color,
+                          ),
                     ),
                   ],
                 ),
@@ -154,17 +157,17 @@ class FinancialResults extends StatelessWidget {
 
   String _formatCurrency(double value) {
     if (value == 0) return '0';
-    
+
     final parts = value.toInt().toString().split('');
     final result = <String>[];
-    
+
     for (int i = parts.length - 1; i >= 0; i--) {
       if ((parts.length - 1 - i) % 3 == 0 && i != parts.length - 1) {
         result.insert(0, ',');
       }
       result.insert(0, parts[i]);
     }
-    
+
     return result.join();
   }
-} 
+}

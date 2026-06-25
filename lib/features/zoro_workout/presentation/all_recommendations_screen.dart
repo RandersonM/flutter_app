@@ -1,3 +1,5 @@
+import 'package:opfan/shared/widgets/atoms/app_icon.dart';
+import 'package:phosphor_flutter/phosphor_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:opfan/l10n/app_localizations.dart';
 
@@ -19,7 +21,8 @@ class AllRecommendationsScreen extends StatelessWidget {
         separatorBuilder: (_, __) => const SizedBox(height: 12),
         itemBuilder: (context, index) {
           final exercise = exercises[index];
-          final icon = exercise['icon'] as IconData? ?? Icons.fitness_center;
+          final icon =
+              exercise['icon'] as IconData? ?? PhosphorIconsRegular.barbell;
           final name = exercise['name'] as String? ?? '';
           final description = exercise['description'] as String?;
 
@@ -67,19 +70,20 @@ class AllRecommendationsScreen extends StatelessWidget {
                         const SizedBox(height: 4),
                         Text(
                           description,
-                          style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                                color: Theme.of(context)
-                                    .colorScheme
-                                    .onSurface
-                                    .withValues(alpha: 0.6),
-                              ),
+                          style:
+                              Theme.of(context).textTheme.bodySmall?.copyWith(
+                                    color: Theme.of(context)
+                                        .colorScheme
+                                        .onSurface
+                                        .withValues(alpha: 0.6),
+                                  ),
                         ),
                       ],
                     ],
                   ),
                 ),
-                Icon(
-                  Icons.chevron_right,
+                AppIcon(
+                  PhosphorIconsRegular.caretRight,
                   color: Theme.of(context)
                       .colorScheme
                       .onSurface

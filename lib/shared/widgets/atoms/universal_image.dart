@@ -1,3 +1,5 @@
+import 'package:opfan/shared/widgets/atoms/app_icon.dart';
+import 'package:phosphor_flutter/phosphor_flutter.dart';
 import 'dart:convert';
 import 'package:flutter/material.dart';
 
@@ -30,7 +32,8 @@ class UniversalImage extends StatelessWidget {
     final trimmedUrl = imageUrl!.trim();
 
     // Check if it's base64 data URI
-    if (trimmedUrl.startsWith('data:image/') && trimmedUrl.contains(';base64,')) {
+    if (trimmedUrl.startsWith('data:image/') &&
+        trimmedUrl.contains(';base64,')) {
       try {
         final base64Content = trimmedUrl.split(';base64,').last;
         final bytes = base64Decode(base64Content);
@@ -39,8 +42,9 @@ class UniversalImage extends StatelessWidget {
           width: width,
           height: height,
           fit: fit,
-          errorBuilder: errorBuilder ?? (context, error, stackTrace) =>
-              placeholder ?? _buildDefaultPlaceholder(),
+          errorBuilder: errorBuilder ??
+              (context, error, stackTrace) =>
+                  placeholder ?? _buildDefaultPlaceholder(),
         );
       } catch (e) {
         debugPrint('UniversalImage: Failed to decode base64 - $e');
@@ -55,8 +59,9 @@ class UniversalImage extends StatelessWidget {
         width: width,
         height: height,
         fit: fit,
-        errorBuilder: errorBuilder ?? (context, error, stackTrace) =>
-            placeholder ?? _buildDefaultPlaceholder(),
+        errorBuilder: errorBuilder ??
+            (context, error, stackTrace) =>
+                placeholder ?? _buildDefaultPlaceholder(),
       );
     }
 
@@ -67,8 +72,9 @@ class UniversalImage extends StatelessWidget {
       height: height,
       fit: fit,
       loadingBuilder: loadingBuilder,
-      errorBuilder: errorBuilder ?? (context, error, stackTrace) =>
-          placeholder ?? _buildDefaultPlaceholder(),
+      errorBuilder: errorBuilder ??
+          (context, error, stackTrace) =>
+              placeholder ?? _buildDefaultPlaceholder(),
     );
   }
 
@@ -78,8 +84,8 @@ class UniversalImage extends StatelessWidget {
       height: height,
       color: Colors.grey[300],
       child: const Center(
-        child: Icon(
-          Icons.image,
+        child: AppIcon(
+          PhosphorIconsRegular.image,
           color: Colors.grey,
         ),
       ),

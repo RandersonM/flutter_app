@@ -21,19 +21,21 @@ class CreateCustomCharacterScreen extends StatefulWidget {
   const CreateCustomCharacterScreen({Key? key}) : super(key: key);
 
   @override
-  State<CreateCustomCharacterScreen> createState() => _CreateCustomCharacterScreenState();
+  State<CreateCustomCharacterScreen> createState() =>
+      _CreateCustomCharacterScreenState();
 }
 
-class _CreateCustomCharacterScreenState extends State<CreateCustomCharacterScreen> {
+class _CreateCustomCharacterScreenState
+    extends State<CreateCustomCharacterScreen> {
   final _formKey = GlobalKey<FormState>();
-  
+
   final _nameController = TextEditingController();
   final _nicknameController = TextEditingController();
   final _birthDateController = TextEditingController();
   final _bountyController = TextEditingController();
   final _imageUrlController = TextEditingController();
   final _descriptionController = TextEditingController();
-  
+
   String? _selectedStatus;
   List<String> _selectedOccupations = [];
   final List<String> _selectedHaki = [];
@@ -274,16 +276,16 @@ class _CreateCustomCharacterScreenState extends State<CreateCustomCharacterScree
         return CharacterLocalizationMapper.mapLocalizedToHaki(
             localizedHaki, AppLocalizations.of(context)!);
       }).toList();
-      
+
       final newCharacter = CustomCharacterModel(
         name: _nameController.text.trim(),
-        nickname: _nicknameController.text.trim().isNotEmpty 
-            ? _nicknameController.text.trim() 
+        nickname: _nicknameController.text.trim().isNotEmpty
+            ? _nicknameController.text.trim()
             : null,
         devilFruit: _selectedDevilFruit?.romanName,
         haki: mappedHaki.isNotEmpty ? mappedHaki : null,
         affiliations: _selectedAffiliations,
-        image: _imageUrlController.text.trim().isNotEmpty 
+        image: _imageUrlController.text.trim().isNotEmpty
             ? _imageUrlController.text.trim()
             : 'https://via.placeholder.com/300x400/FF6B6B/FFFFFF?text=Personagem+Customizado',
         occupation: _selectedOccupations,
@@ -302,16 +304,16 @@ class _CreateCustomCharacterScreenState extends State<CreateCustomCharacterScree
         age: birthDate != null ? ZodiacIcons.calculateAge(birthDate)
             : null,
         birthDate: birthDate,
-        description: _descriptionController.text.trim().isNotEmpty 
-            ? _descriptionController.text.trim() 
+        description: _descriptionController.text.trim().isNotEmpty
+            ? _descriptionController.text.trim()
             : null,
       );
-      
+
       debugPrint(
           'CreateCharacter: Character birth date: ${newCharacter.birthDate}');
       debugPrint('CreateCharacter: Character age: ${newCharacter.age}');
       debugPrint('CreateCharacter: Character signo: ${newCharacter.signo}');
-      
+
       context.read<CustomCharacterBloc>().add(CreateCustomCharacter(
             newCharacter,
             crewId: _selectedCrewId,
@@ -347,7 +349,7 @@ class _CreateCustomCharacterScreenState extends State<CreateCustomCharacterScree
 
   void _showErrorDialog(BuildContext context, String message) {
     final l10n = AppLocalizations.of(context)!;
-    
+
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
@@ -376,4 +378,3 @@ class _CreateCustomCharacterScreenState extends State<CreateCustomCharacterScree
     super.dispose();
   }
 }
-

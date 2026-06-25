@@ -1,3 +1,4 @@
+import 'package:phosphor_flutter/phosphor_flutter.dart';
 // Developed by Randerson Mayllon
 // Copyright © 2022.
 
@@ -18,9 +19,9 @@ class CrewStatistics extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
-    
+
     final totalBounty = _calculateTotalBounty();
-    final averageBounty = crew.members.isNotEmpty 
+    final averageBounty = crew.members.isNotEmpty
         ? (totalBounty / crew.members.length).toStringAsFixed(0)
         : '0';
 
@@ -28,22 +29,22 @@ class CrewStatistics extends StatelessWidget {
       StatisticData(
         label: l10n.members(crew.members.length),
         value: crew.members.length.toString(),
-        icon: Icons.group,
+        icon: PhosphorIconsRegular.users,
       ),
       StatisticData(
         label: l10n.berriesTotal,
         value: Constants.formatAbbreviateBounty(totalBounty),
-        icon: Icons.monetization_on,
+        icon: PhosphorIconsRegular.coin,
       ),
       StatisticData(
         label: AppLocalizations.of(context)!.averageBountyLabel,
         value: Constants.formatAbbreviateBounty(double.parse(averageBounty)),
-        icon: Icons.trending_up,
+        icon: PhosphorIconsRegular.trendUp,
       ),
       StatisticData(
         label: AppLocalizations.of(context)!.rolesLabel,
         value: crew.rolesFilled.length.toString(),
-        icon: Icons.work,
+        icon: PhosphorIconsRegular.briefcase,
       ),
     ];
 
@@ -60,10 +61,10 @@ class CrewStatistics extends StatelessWidget {
   double _calculateTotalBounty() {
     double total = 0;
     for (final member in crew.members) {
-      final bounty = double.tryParse(member.bounty.replaceAll(RegExp(r'[^\d.]'), '')) ?? 0;
+      final bounty =
+          double.tryParse(member.bounty.replaceAll(RegExp(r'[^\d.]'), '')) ?? 0;
       total += bounty;
     }
     return total;
   }
-
-} 
+}

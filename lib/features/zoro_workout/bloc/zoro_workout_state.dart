@@ -55,7 +55,8 @@ class ZoroWorkoutLoaded extends ZoroWorkoutState {
       currentAssessment: currentAssessment ?? this.currentAssessment,
       assessmentHistory: assessmentHistory ?? this.assessmentHistory,
       hasCurrentAssessment: hasCurrentAssessment ?? this.hasCurrentAssessment,
-      canEditCurrentAssessment: canEditCurrentAssessment ?? this.canEditCurrentAssessment,
+      canEditCurrentAssessment:
+          canEditCurrentAssessment ?? this.canEditCurrentAssessment,
       currentMonthProgress: currentMonthProgress ?? this.currentMonthProgress,
       remainingDaysToGoal: remainingDaysToGoal ?? this.remainingDaysToGoal,
     );

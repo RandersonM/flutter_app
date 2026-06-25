@@ -16,8 +16,7 @@ class FilterChipList extends StatelessWidget {
         reverse: true,
         child: Row(
           children: <Widget>[
-            SearchFilter(
-                label: AppLocalizations.of(context)!.superRookie),
+            SearchFilter(label: AppLocalizations.of(context)!.superRookie),
             SearchFilter(
               label: AppLocalizations.of(context)!.emperors,
             ),

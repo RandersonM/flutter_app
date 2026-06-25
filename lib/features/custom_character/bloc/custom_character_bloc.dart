@@ -6,7 +6,8 @@ import 'package:opfan/core/models/one_piece/crew_model.dart';
 import 'custom_character_event.dart';
 import 'custom_character_state.dart';
 
-class CustomCharacterBloc extends Bloc<CustomCharacterEvent, CustomCharacterState> {
+class CustomCharacterBloc
+    extends Bloc<CustomCharacterEvent, CustomCharacterState> {
   final ICustomCharacterRepository _customCharacterService;
   final ICrewRepository _crewRepository;
 
@@ -21,7 +22,8 @@ class CustomCharacterBloc extends Bloc<CustomCharacterEvent, CustomCharacterStat
     on<UpdateCustomCharacter>(_onUpdateCustomCharacter);
     on<DeleteCustomCharacter>(_onDeleteCustomCharacter);
     on<SearchCustomCharacters>(_onSearchCustomCharacters);
-    on<FilterCustomCharactersByDevilFruit>(_onFilterCustomCharactersByDevilFruit);
+    on<FilterCustomCharactersByDevilFruit>(
+        _onFilterCustomCharactersByDevilFruit);
     on<FilterCustomCharactersByCrew>(_onFilterCustomCharactersByCrew);
   }
 
@@ -30,10 +32,11 @@ class CustomCharacterBloc extends Bloc<CustomCharacterEvent, CustomCharacterStat
     Emitter<CustomCharacterState> emit,
   ) async {
     emit(CustomCharacterLoading());
-    
+
     try {
-      final characters = await _customCharacterService.getUserCustomCharacters();
-      
+      final characters =
+          await _customCharacterService.getUserCustomCharacters();
+
       emit(CustomCharacterLoaded(characters));
     } catch (e) {
       emit(CustomCharacterError(e.toString()));
@@ -46,8 +49,9 @@ class CustomCharacterBloc extends Bloc<CustomCharacterEvent, CustomCharacterStat
   ) async {
     emit(CustomCharacterCreating());
     try {
-      final characterId = await _customCharacterService.createCustomCharacter(event.character);
-      
+      final characterId =
+          await _customCharacterService.createCustomCharacter(event.character);
+
       if (event.crewId != null && event.crewRole != null) {
         try {
           final crewMember = CrewMember(
@@ -63,16 +67,18 @@ class CustomCharacterBloc extends Bloc<CustomCharacterEvent, CustomCharacterStat
           debugPrint('Erro ao adicionar personagem à tripulação: $e');
         }
       }
-      
+
       emit(CustomCharacterCreated(characterId));
-      
+
       await Future.delayed(const Duration(milliseconds: 500));
-      
+
       try {
-        final characters = await _customCharacterService.getUserCustomCharacters();
+        final characters =
+            await _customCharacterService.getUserCustomCharacters();
         emit(CustomCharacterLoaded(characters));
       } catch (e) {
-        emit(CustomCharacterError('Personagem criado com sucesso, mas houve um erro ao atualizar a lista: $e'));
+        emit(CustomCharacterError(
+            'Personagem criado com sucesso, mas houve um erro ao atualizar a lista: $e'));
       }
     } catch (e) {
       emit(CustomCharacterError(e.toString()));
@@ -85,16 +91,19 @@ class CustomCharacterBloc extends Bloc<CustomCharacterEvent, CustomCharacterStat
   ) async {
     emit(CustomCharacterUpdating());
     try {
-      await _customCharacterService.updateCustomCharacter(event.characterId, event.character);
+      await _customCharacterService.updateCustomCharacter(
+          event.characterId, event.character);
       emit(CustomCharacterUpdated(event.characterId));
-      
+
       await Future.delayed(const Duration(milliseconds: 500));
-      
+
       try {
-        final characters = await _customCharacterService.getUserCustomCharacters();
+        final characters =
+            await _customCharacterService.getUserCustomCharacters();
         emit(CustomCharacterLoaded(characters));
       } catch (e) {
-        emit(CustomCharacterError('Personagem atualizado com sucesso, mas houve um erro ao atualizar a lista: $e'));
+        emit(CustomCharacterError(
+            'Personagem atualizado com sucesso, mas houve um erro ao atualizar a lista: $e'));
       }
     } catch (e) {
       emit(CustomCharacterError(e.toString()));
@@ -109,14 +118,16 @@ class CustomCharacterBloc extends Bloc<CustomCharacterEvent, CustomCharacterStat
     try {
       await _customCharacterService.deleteCustomCharacter(event.characterId);
       emit(CustomCharacterDeleted(event.characterId));
-      
+
       await Future.delayed(const Duration(milliseconds: 500));
-      
+
       try {
-        final characters = await _customCharacterService.getUserCustomCharacters();
+        final characters =
+            await _customCharacterService.getUserCustomCharacters();
         emit(CustomCharacterLoaded(characters));
       } catch (e) {
-        emit(CustomCharacterError('Personagem deletado com sucesso, mas houve um erro ao atualizar a lista: $e'));
+        emit(CustomCharacterError(
+            'Personagem deletado com sucesso, mas houve um erro ao atualizar a lista: $e'));
       }
     } catch (e) {
       emit(CustomCharacterError(e.toString()));
@@ -129,7 +140,8 @@ class CustomCharacterBloc extends Bloc<CustomCharacterEvent, CustomCharacterStat
   ) async {
     emit(CustomCharacterLoading());
     try {
-      final characters = await _customCharacterService.searchCustomCharactersByName(event.query);
+      final characters = await _customCharacterService
+          .searchCustomCharactersByName(event.query);
       emit(CustomCharacterLoaded(characters));
     } catch (e) {
       emit(CustomCharacterError(e.toString()));
@@ -142,7 +154,8 @@ class CustomCharacterBloc extends Bloc<CustomCharacterEvent, CustomCharacterStat
   ) async {
     emit(CustomCharacterLoading());
     try {
-      final characters = await _customCharacterService.getCustomCharactersByDevilFruit(event.devilFruit);
+      final characters = await _customCharacterService
+          .getCustomCharactersByDevilFruit(event.devilFruit);
       emit(CustomCharacterLoaded(characters));
     } catch (e) {
       emit(CustomCharacterError(e.toString()));
@@ -155,10 +168,11 @@ class CustomCharacterBloc extends Bloc<CustomCharacterEvent, CustomCharacterStat
   ) async {
     emit(CustomCharacterLoading());
     try {
-      final characters = await _customCharacterService.getCustomCharactersByCrew(event.crew);
+      final characters =
+          await _customCharacterService.getCustomCharactersByCrew(event.crew);
       emit(CustomCharacterLoaded(characters));
     } catch (e) {
       emit(CustomCharacterError(e.toString()));
     }
   }
-} 
+}

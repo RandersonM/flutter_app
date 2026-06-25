@@ -1,6 +1,7 @@
+import 'package:opfan/shared/widgets/atoms/app_icon.dart';
+import 'package:phosphor_flutter/phosphor_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:opfan/l10n/app_localizations.dart';
 import 'package:opfan/shared/utils/constants.dart';
 import 'package:opfan/core/auth/blocs/index.dart';
@@ -20,7 +21,7 @@ class HomeAppBar extends StatelessWidget implements PreferredSizeWidget {
               children: [
                 IconButton(
                   onPressed: () => _openUserDrawer(context, state.user),
-                  icon: const Icon(FontAwesomeIcons.bars),
+                  icon: const AppIcon(PhosphorIconsRegular.list),
                 ),
                 const SizedBox(width: Constants.margin),
                 Expanded(
@@ -35,8 +36,8 @@ class HomeAppBar extends StatelessWidget implements PreferredSizeWidget {
                             ),
                       ),
                       Text(
-                        state.user.displayName.isNotEmpty 
-                            ? state.user.displayName 
+                        state.user.displayName.isNotEmpty
+                            ? state.user.displayName
                             : AppLocalizations.of(context)!.home,
                         maxLines: 2,
                         overflow: TextOverflow.ellipsis,
@@ -62,7 +63,7 @@ class HomeAppBar extends StatelessWidget implements PreferredSizeWidget {
           builder: (context, state) {
             if (state is AuthAuthenticated) {
               return IconButton(
-                icon: const Icon(Icons.logout),
+                icon: const AppIcon(PhosphorIconsRegular.signOut),
                 onPressed: () {
                   context.read<AuthBloc>().add(const AuthSignOutRequested());
                 },
@@ -93,7 +94,7 @@ class HomeAppBar extends StatelessWidget implements PreferredSizeWidget {
             color: Theme.of(context).colorScheme.primaryContainer,
             borderRadius: const BorderRadius.vertical(top: Radius.circular(20)),
           ),
-          clipBehavior: Clip.antiAlias, 
+          clipBehavior: Clip.antiAlias,
           child: SingleChildScrollView(
             controller: scrollController,
             child: UserDrawerContent(user: user, authBloc: authBloc),
@@ -105,4 +106,4 @@ class HomeAppBar extends StatelessWidget implements PreferredSizeWidget {
 
   @override
   Size get preferredSize => const Size.fromHeight(kToolbarHeight);
-} 
+}

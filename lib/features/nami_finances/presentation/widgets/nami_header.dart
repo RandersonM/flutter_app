@@ -48,4 +48,4 @@ class _NamiHeaderState extends State<NamiHeader> {
       ),
     );
   }
-} 
+}

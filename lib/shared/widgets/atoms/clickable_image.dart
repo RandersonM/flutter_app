@@ -1,3 +1,5 @@
+import 'package:opfan/shared/widgets/atoms/app_icon.dart';
+import 'package:phosphor_flutter/phosphor_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:opfan/shared/widgets/atoms/universal_image.dart';
 
@@ -63,8 +65,8 @@ class ClickableImage extends StatelessWidget {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Icon(
-                      Icons.error_outline,
+                    AppIcon(
+                      PhosphorIconsRegular.warningCircle,
                       color: theme.colorScheme.error,
                       size: 48,
                     ),
@@ -96,7 +98,7 @@ class ClickableImage extends StatelessWidget {
 
   void _showImageDialog(BuildContext context) {
     final theme = Theme.of(context);
-    
+
     showDialog(
       context: context,
       barrierDismissible: true,
@@ -118,10 +120,9 @@ class ClickableImage extends StatelessWidget {
                   ),
                 ),
               ),
-              
               Center(
                 child: GestureDetector(
-                  onTap: () {}, 
+                  onTap: () {},
                   child: Container(
                     margin: const EdgeInsets.all(16),
                     decoration: BoxDecoration(
@@ -140,7 +141,8 @@ class ClickableImage extends StatelessWidget {
                               color: Colors.transparent,
                               child: Center(
                                 child: CircularProgressIndicator(
-                                  value: loadingProgress.expectedTotalBytes != null
+                                  value: loadingProgress.expectedTotalBytes !=
+                                          null
                                       ? loadingProgress.cumulativeBytesLoaded /
                                           loadingProgress.expectedTotalBytes!
                                       : null,
@@ -156,15 +158,16 @@ class ClickableImage extends StatelessWidget {
                                 child: Column(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
-                                    const Icon(
-                                      Icons.error_outline,
+                                    const AppIcon(
+                                      PhosphorIconsRegular.warningCircle,
                                       color: Colors.white,
                                       size: 48,
                                     ),
                                     const SizedBox(height: 8),
                                     Text(
                                       'Erro ao carregar imagem',
-                                      style: theme.textTheme.bodyMedium?.copyWith(
+                                      style:
+                                          theme.textTheme.bodyMedium?.copyWith(
                                         color: Colors.white,
                                       ),
                                     ),
@@ -179,8 +182,6 @@ class ClickableImage extends StatelessWidget {
                   ),
                 ),
               ),
-              
-
               Positioned(
                 top: 40,
                 right: 20,
@@ -192,15 +193,14 @@ class ClickableImage extends StatelessWidget {
                       color: Colors.black54,
                       shape: BoxShape.circle,
                     ),
-                    child: const Icon(
-                      Icons.close,
+                    child: const AppIcon(
+                      PhosphorIconsRegular.x,
                       color: Colors.white,
                       size: 24,
                     ),
                   ),
                 ),
               ),
-              
               if (title != null && title!.isNotEmpty && showTitleInDialog)
                 Positioned(
                   top: 40,
@@ -229,4 +229,4 @@ class ClickableImage extends StatelessWidget {
       ),
     );
   }
-} 
+}

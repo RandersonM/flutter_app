@@ -50,4 +50,4 @@ class EditCrewBloc extends Bloc<EditCrewEvent, EditCrewState> {
   ) {
     emit(EditCrewInitial());
   }
-} 
+}

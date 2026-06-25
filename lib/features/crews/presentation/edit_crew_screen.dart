@@ -1,3 +1,5 @@
+import 'package:opfan/shared/widgets/atoms/app_icon.dart';
+import 'package:phosphor_flutter/phosphor_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:opfan/core/models/one_piece/crew_model.dart';
@@ -29,7 +31,7 @@ class _EditCrewScreenState extends State<EditCrewScreen> {
   final _boatPromptController = TextEditingController();
   final _boatNameController = TextEditingController();
   List<String> _tags = [];
-  
+
   final CrewImageService _crewImageService = CrewImageService();
   String? _generatedJollyRogerUrl;
   String? _generatedBoatUrl;
@@ -44,14 +46,14 @@ class _EditCrewScreenState extends State<EditCrewScreen> {
 
   void _populateFormWithCrewData() {
     final crew = widget.crew;
-    
+
     _nameController.text = crew.name;
     _descriptionController.text = crew.description ?? '';
     _boatNameController.text = crew.boatName ?? '';
     _tags = List.from(crew.tags);
     _generatedJollyRogerUrl = crew.jollyRogerUrl;
     _generatedBoatUrl = crew.boatImageUrl;
-    
+
     setState(() {});
   }
 
@@ -238,7 +240,8 @@ class _EditCrewScreenState extends State<EditCrewScreen> {
               listenWhen: (previous, current) {
                 return current is EditCrewSuccess ||
                     (current is EditCrewFailure &&
-                        !current.error.contains('mas houve um erro ao atualizar a lista'));
+                        !current.error.contains(
+                            'mas houve um erro ao atualizar a lista'));
               },
               listener: (context, state) {
                 if (state is EditCrewSuccess) {
@@ -287,7 +290,8 @@ class _EditCrewScreenState extends State<EditCrewScreen> {
                                     AppLocalizations.of(context)!.crewName,
                                 hintText:
                                     AppLocalizations.of(context)!.crewNameHint,
-                                prefixIcon: const Icon(Icons.flag),
+                                prefixIcon:
+                                    const AppIcon(PhosphorIconsRegular.flag),
                                 border: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(12),
                                 ),
@@ -315,7 +319,8 @@ class _EditCrewScreenState extends State<EditCrewScreen> {
                                     AppLocalizations.of(context)!.description,
                                 hintText: AppLocalizations.of(context)!
                                     .descriptionHint,
-                                prefixIcon: const Icon(Icons.description),
+                                prefixIcon: const AppIcon(
+                                    PhosphorIconsRegular.fileText),
                                 border: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(12),
                                 ),
@@ -324,7 +329,6 @@ class _EditCrewScreenState extends State<EditCrewScreen> {
                               style: theme.textTheme.bodyMedium,
                             ),
                             const SizedBox(height: 16),
-
                             Container(
                               padding: const EdgeInsets.all(16),
                               decoration: BoxDecoration(
@@ -349,8 +353,8 @@ class _EditCrewScreenState extends State<EditCrewScreen> {
                                       ),
                                       IconButton(
                                         onPressed: _showAddTagDialog,
-                                        icon: const Icon(
-                                          Icons.add_circle_outline,
+                                        icon: const AppIcon(
+                                          PhosphorIconsRegular.plusCircle,
                                         ),
                                       ),
                                     ],
@@ -377,7 +381,8 @@ class _EditCrewScreenState extends State<EditCrewScreen> {
                                           label: Text(tag,
                                               style:
                                                   theme.textTheme.bodyMedium),
-                                          deleteIcon: const Icon(Icons.close),
+                                          deleteIcon: const AppIcon(
+                                              PhosphorIconsRegular.x),
                                           onDeleted: () => _removeTag(tag),
                                         );
                                       }).toList(),
@@ -387,7 +392,6 @@ class _EditCrewScreenState extends State<EditCrewScreen> {
                               ),
                             ),
                             const SizedBox(height: 24),
-
                             Container(
                               padding: const EdgeInsets.all(16),
                               decoration: BoxDecoration(
@@ -468,14 +472,15 @@ class _EditCrewScreenState extends State<EditCrewScreen> {
                                                             Colors.white),
                                                   ),
                                                 )
-                                              : const Icon(Icons.auto_awesome),
+                                              : const AppIcon(
+                                                  PhosphorIconsRegular
+                                                      .magicWand),
                                           label: Text(_isGeneratingJollyRoger
                                               ? AppLocalizations.of(context)!
                                                   .generatingImage
                                               : AppLocalizations.of(context)!
                                                   .generateFlag),
-                                          style: ElevatedButton.styleFrom(
-                                          ),
+                                          style: ElevatedButton.styleFrom(),
                                         ),
                                       ),
                                     ],
@@ -484,7 +489,6 @@ class _EditCrewScreenState extends State<EditCrewScreen> {
                               ),
                             ),
                             const SizedBox(height: 24),
-
                             Container(
                               padding: const EdgeInsets.all(16),
                               decoration: BoxDecoration(
@@ -512,8 +516,8 @@ class _EditCrewScreenState extends State<EditCrewScreen> {
                                           .crewBoatName,
                                       hintText: AppLocalizations.of(context)!
                                           .boatNameHint,
-                                      prefixIcon:
-                                          const Icon(Icons.directions_boat),
+                                      prefixIcon: const AppIcon(
+                                          PhosphorIconsRegular.boat),
                                       border: OutlineInputBorder(
                                         borderRadius: BorderRadius.circular(12),
                                       ),
@@ -557,14 +561,15 @@ class _EditCrewScreenState extends State<EditCrewScreen> {
                                                             Colors.white),
                                                   ),
                                                 )
-                                              : const Icon(Icons.auto_awesome),
+                                              : const AppIcon(
+                                                  PhosphorIconsRegular
+                                                      .magicWand),
                                           label: Text(_isGeneratingBoat
                                               ? AppLocalizations.of(context)!
                                                   .generatingImage
                                               : AppLocalizations.of(context)!
                                                   .generateBoat),
-                                          style: ElevatedButton.styleFrom(
-                                          ),
+                                          style: ElevatedButton.styleFrom(),
                                         ),
                                       ),
                                     ],
@@ -595,7 +600,6 @@ class _EditCrewScreenState extends State<EditCrewScreen> {
                                 ],
                               ),
                             ),
-
                             const SizedBox(height: 24),
                             Container(
                               padding: const EdgeInsets.all(16),
@@ -607,8 +611,8 @@ class _EditCrewScreenState extends State<EditCrewScreen> {
                               ),
                               child: Row(
                                 children: [
-                                  Icon(
-                                    Icons.info_outline,
+                                  AppIcon(
+                                    PhosphorIconsRegular.info,
                                     color: AppColors.purple[600]!,
                                   ),
                                   const SizedBox(width: 12),
@@ -651,20 +655,20 @@ class _EditCrewScreenState extends State<EditCrewScreen> {
   void _submitForm(BuildContext context) {
     if (_formKey.currentState!.validate()) {
       context.read<EditCrewBloc>().add(
-        EditCrewSubmitted(
-          crewId: widget.crew.id!,
-          name: _nameController.text,
-          description: _descriptionController.text.isEmpty 
-              ? null 
-              : _descriptionController.text,
-          jollyRogerUrl: _generatedJollyRogerUrl,
-          boatImageUrl: _generatedBoatUrl,
-          tags: _tags,
-          boatName: _boatNameController.text.isEmpty
-              ? null
-              : _boatNameController.text,
-        ),
-      );
+            EditCrewSubmitted(
+              crewId: widget.crew.id!,
+              name: _nameController.text,
+              description: _descriptionController.text.isEmpty
+                  ? null
+                  : _descriptionController.text,
+              jollyRogerUrl: _generatedJollyRogerUrl,
+              boatImageUrl: _generatedBoatUrl,
+              tags: _tags,
+              boatName: _boatNameController.text.isEmpty
+                  ? null
+                  : _boatNameController.text,
+            ),
+          );
     }
   }
 
@@ -695,7 +699,7 @@ class _EditCrewScreenState extends State<EditCrewScreen> {
 
   void _showErrorDialog(BuildContext context, String message) {
     final l10n = AppLocalizations.of(context)!;
-    
+
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
@@ -712,4 +716,4 @@ class _EditCrewScreenState extends State<EditCrewScreen> {
       ),
     );
   }
-} 
+}

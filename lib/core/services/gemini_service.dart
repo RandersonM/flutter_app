@@ -6,7 +6,7 @@ import 'package:opfan/core/services/environment_service.dart';
 
 class GeminiService {
   final EnvironmentService _env = EnvironmentService.instance;
-  
+
   static const String _baseUrl =
       'https://generativelanguage.googleapis.com/v1beta';
   static const String _textModel = 'gemini-2.5-flash-lite';
@@ -41,31 +41,30 @@ class GeminiService {
             error.type == DioExceptionType.connectionTimeout ||
             error.type == DioExceptionType.receiveTimeout ||
             error.type == DioExceptionType.sendTimeout) {
-          
           debugPrint('Gemini Service: Network error detected, retrying...');
-          
+
           await Future.delayed(const Duration(milliseconds: 1000));
-          
+
           try {
             final retryOptions = Options(
               receiveTimeout: const Duration(seconds: 60),
               sendTimeout: const Duration(seconds: 60),
             );
-            
+
             final retryResponse = await _dio.request(
               error.requestOptions.path,
               data: error.requestOptions.data,
               queryParameters: error.requestOptions.queryParameters,
               options: retryOptions,
             );
-            
+
             handler.resolve(retryResponse);
             return;
           } catch (retryError) {
             debugPrint('Gemini Service: Retry failed - $retryError');
           }
         }
-        
+
         handler.next(error);
       },
     ));
@@ -118,14 +117,14 @@ class GeminiService {
 
       debugPrint('Gemini Service: Invalid response from Gemini AI');
       return null;
-
     } catch (e) {
       final msg = e.toString();
       if (msg.contains('RESOURCE_EXHAUSTED') ||
           msg.contains('quota') ||
           msg.contains('rate limit') ||
           msg.contains('429')) {
-        debugPrint('Gemini Service: Quota/rate-limit exceeded — activating cooldown');
+        debugPrint(
+            'Gemini Service: Quota/rate-limit exceeded — activating cooldown');
         _handleQuotaExceeded();
         return null;
       }
@@ -146,9 +145,7 @@ class GeminiService {
         "contents": [
           {
             "parts": [
-              {
-                "text": prompt
-              }
+              {"text": prompt}
             ]
           }
         ],
@@ -186,7 +183,8 @@ class GeminiService {
 
       // Handle quota / rate-limit (429) explicitly
       if (response.statusCode == 429) {
-        final retryMsg = response.data?['error']?['message'] ?? 'Rate limit exceeded';
+        final retryMsg =
+            response.data?['error']?['message'] ?? 'Rate limit exceeded';
         debugPrint('Gemini Service: 429 RESOURCE_EXHAUSTED — $retryMsg');
         throw Exception('RESOURCE_EXHAUSTED: $retryMsg');
       }
@@ -209,7 +207,8 @@ class GeminiService {
       debugPrint('Gemini Service: Response body: ${response.data}');
       return null;
     } on DioException catch (e) {
-      debugPrint('Gemini Service: DioException in text generation - ${e.message}');
+      debugPrint(
+          'Gemini Service: DioException in text generation - ${e.message}');
       return null;
     } catch (e) {
       debugPrint('Gemini Service: Unexpected error in text generation - $e');
@@ -217,7 +216,8 @@ class GeminiService {
     }
   }
 
-  String _buildTextPrompt(String prompt, String? context, Map<String, dynamic>? parameters) {
+  String _buildTextPrompt(
+      String prompt, String? context, Map<String, dynamic>? parameters) {
     // Return the prompt as-is — callers (repositories) are responsible for
     // crafting detailed prompts; generic suffixes like "keep it concise" would
     // contradict prompts that explicitly request long, structured responses.
@@ -236,7 +236,7 @@ class GeminiService {
       'I understand your question and here\'s my response.',
       'Based on the context, here\'s what I recommend.',
     ];
-    
+
     return fallbackResponses[random.nextInt(fallbackResponses.length)];
   }
 
@@ -271,7 +271,7 @@ class GeminiService {
       _recordRequest();
 
       final imageUrl = await _generateImageWithGemini(prompt);
-      
+
       if (imageUrl != null && imageUrl.isNotEmpty) {
         if (!forceRefresh) {
           _imageCache[cacheKey] = imageUrl;
@@ -279,14 +279,14 @@ class GeminiService {
         debugPrint('Gemini Service: Image generation successful');
         return imageUrl;
       }
-      
+
       debugPrint('Gemini Service: Invalid response from Gemini AI');
       return null;
-      
     } catch (e) {
       debugPrint('Gemini Service: Error in image generation - $e');
-      
-      if (e.toString().contains('quota') || e.toString().contains('rate limit')) {
+
+      if (e.toString().contains('quota') ||
+          e.toString().contains('rate limit')) {
         _handleQuotaExceeded();
       }
 
@@ -303,9 +303,7 @@ class GeminiService {
         "contents": [
           {
             "parts": [
-              {
-                "text": prompt
-              }
+              {"text": prompt}
             ]
           }
         ],
@@ -351,7 +349,7 @@ class GeminiService {
           }
         }
       }
-      
+
       debugPrint(
           'Gemini Service: No image returned from Gemini REST API (Status ${response.statusCode})');
       if (response.data != null && response.data['error'] != null) {
@@ -360,10 +358,12 @@ class GeminiService {
       }
       return null;
     } on DioException catch (e) {
-      debugPrint('Gemini Service: DioException in Gemini REST image generation - ${e.message}');
+      debugPrint(
+          'Gemini Service: DioException in Gemini REST image generation - ${e.message}');
       return null;
     } catch (e) {
-      debugPrint('Gemini Service: Unexpected error in Gemini REST image generation - $e');
+      debugPrint(
+          'Gemini Service: Unexpected error in Gemini REST image generation - $e');
       return null;
     }
   }
@@ -375,24 +375,24 @@ class GeminiService {
         'image': base64Encode(imageData),
         'type': 'base64',
       });
-      
+
       final response = await uploadDio.post(
         'https://api.imgur.com/3/image',
         data: formData,
         options: Options(
           headers: {
-            'Authorization': 'Client-ID 546c25a59c58ad7', 
+            'Authorization': 'Client-ID 546c25a59c58ad7',
           },
         ),
       );
-      
+
       if (response.statusCode == 200 && response.data['data'] != null) {
         return response.data['data']['link'];
       }
     } catch (e) {
       debugPrint('Gemini Service: Failed to upload image - $e');
     }
-    
+
     return 'data:image/png;base64,${base64Encode(imageData)}';
   }
 
@@ -401,23 +401,24 @@ class GeminiService {
     if (!_quotaExceeded || _quotaExceededTime == null) {
       return false;
     }
-    
+
     final timeSinceExceeded = DateTime.now().difference(_quotaExceededTime!);
     if (timeSinceExceeded >= _quotaResetDuration) {
       _quotaExceeded = false;
       _quotaExceededTime = null;
       return false;
     }
-    
+
     return true;
   }
 
   bool _canMakeRequest() {
     final now = DateTime.now();
     final oneHourAgo = now.subtract(const Duration(hours: 1));
-    
-    _requestTimestamps.removeWhere((timestamp) => timestamp.isBefore(oneHourAgo));
-    
+
+    _requestTimestamps
+        .removeWhere((timestamp) => timestamp.isBefore(oneHourAgo));
+
     return _requestTimestamps.length < _maxRequestsPerHour;
   }
 
@@ -428,7 +429,8 @@ class GeminiService {
   void _handleQuotaExceeded() {
     _quotaExceeded = true;
     _quotaExceededTime = DateTime.now();
-    debugPrint('Gemini Service: Quota exceeded, will reset in $_quotaResetDuration');
+    debugPrint(
+        'Gemini Service: Quota exceeded, will reset in $_quotaResetDuration');
   }
 
   void clearCache() {
@@ -442,7 +444,8 @@ class GeminiService {
       'requests_this_hour': _requestTimestamps.length,
       'max_requests_per_hour': _maxRequestsPerHour,
       'cache_size': _imageCache.length,
-      'api_configured': _env.geminiApiKey.isNotEmpty && _env.geminiApiKey != 'dev_mode',
+      'api_configured':
+          _env.geminiApiKey.isNotEmpty && _env.geminiApiKey != 'dev_mode',
     };
   }
 }

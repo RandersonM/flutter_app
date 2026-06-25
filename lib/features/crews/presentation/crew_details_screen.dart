@@ -1,3 +1,5 @@
+import 'package:opfan/shared/widgets/atoms/app_icon.dart';
+import 'package:phosphor_flutter/phosphor_flutter.dart';
 // Developed by Randerson Mayllon
 // Copyright © 2022.
 
@@ -52,12 +54,13 @@ class _CrewDetailsScreenState extends State<CrewDetailsScreen> {
           if (canEdit) ...[
             IconButton(
               onPressed: _onEditCrew,
-              icon: const Icon(Icons.edit),
+              icon: const AppIcon(PhosphorIconsRegular.pencil),
               tooltip: l10n.edit,
             ),
             IconButton(
               onPressed: _onDeleteCrew,
-              icon: const Icon(Icons.delete, color: Colors.red),
+              icon:
+                  const AppIcon(PhosphorIconsRegular.trash, color: Colors.red),
               tooltip: l10n.delete,
             ),
           ],
@@ -72,28 +75,24 @@ class _CrewDetailsScreenState extends State<CrewDetailsScreen> {
               crew: _crew,
               onEdit: _onEditCrew,
             ),
-            
             CrewStatistics(crew: _crew),
-            
             CrewMembersList(
               crew: _crew,
               onMemberTap: _onMemberTap,
             ),
-              
             CrewBoatSection(crew: _crew),
             CrewTagsSection(crew: _crew),
             CrewInfoSection(crew: _crew),
-            
             const SizedBox(height: Constants.margin * 10),
           ],
         ),
       ),
       floatingActionButton: canEdit
           ? FloatingActionButton.extended(
-        onPressed: _onAddMember,
-        backgroundColor: theme.colorScheme.primary,
-        foregroundColor: Colors.white,
-        icon: const Icon(Icons.person_add),
+              onPressed: _onAddMember,
+              backgroundColor: theme.colorScheme.primary,
+              foregroundColor: Colors.white,
+              icon: const AppIcon(PhosphorIconsRegular.userPlus),
               label: Text(l10n.addMember),
             )
           : null,
@@ -114,7 +113,7 @@ class _CrewDetailsScreenState extends State<CrewDetailsScreen> {
       );
       return;
     }
-    
+
     Navigator.pushNamed(context, AppRoutes.editCrew, arguments: _crew);
   }
 
@@ -132,7 +131,7 @@ class _CrewDetailsScreenState extends State<CrewDetailsScreen> {
       );
       return;
     }
-    
+
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
@@ -173,7 +172,7 @@ class _CrewDetailsScreenState extends State<CrewDetailsScreen> {
       await crewRepository.deleteCrew(_crew.id!);
 
       if (!mounted) return;
-      Navigator.of(context).pop(); 
+      Navigator.of(context).pop();
 
       WidgetsBinding.instance.addPostFrameCallback((_) {
         if (mounted) {
@@ -190,8 +189,8 @@ class _CrewDetailsScreenState extends State<CrewDetailsScreen> {
     } catch (e) {
       final l10n = AppLocalizations.of(context)!;
       if (!mounted) return;
-      Navigator.of(context).pop(); 
-      
+      Navigator.of(context).pop();
+
       WidgetsBinding.instance.addPostFrameCallback((_) {
         if (mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
@@ -219,7 +218,7 @@ class _CrewDetailsScreenState extends State<CrewDetailsScreen> {
       );
       return;
     }
-    
+
     _showAddMemberDialog();
   }
 
@@ -282,7 +281,7 @@ class _CrewDetailsScreenState extends State<CrewDetailsScreen> {
                     }
 
                     final availableCharacters = snapshot.data ?? [];
-                    
+
                     if (availableCharacters.isEmpty) {
                       return Text(l10n.noCharactersAvailable);
                     }
@@ -317,7 +316,6 @@ class _CrewDetailsScreenState extends State<CrewDetailsScreen> {
                             borderRadius: BorderRadius.circular(8),
                           ),
                           filled: true,
-
                         ),
                       ),
                     );
@@ -363,26 +361,27 @@ class _CrewDetailsScreenState extends State<CrewDetailsScreen> {
 
   Future<List<CustomCharacterModel>> _getAvailableCharacters() async {
     try {
-      final allCharacters = await getIt<ICustomCharacterRepository>().getUserCustomCharacters();
-      
+      final allCharacters =
+          await getIt<ICustomCharacterRepository>().getUserCustomCharacters();
+
       if (allCharacters.isEmpty) {
         return [];
       }
 
       final allCrews = await getIt<ICrewRepository>().getUserCrews();
-      
+
       final usedCharacterIds = <String>{};
-      
+
       for (final crew in allCrews) {
         for (final member in crew.members) {
           usedCharacterIds.add(member.characterId);
         }
       }
-      
+
       final availableCharacters = allCharacters
           .where((character) => !usedCharacterIds.contains(character.id))
           .toList();
-      
+
       return availableCharacters;
     } catch (e) {
       return [];
@@ -419,7 +418,7 @@ class _CrewDetailsScreenState extends State<CrewDetailsScreen> {
             CharacterLocalizationMapper.mapOccupationToLocalized(occ, l10n))
         .take(2)
         .join(', ');
-    
+
     return Container(
       constraints: const BoxConstraints(maxHeight: 60),
       child: Padding(
@@ -481,8 +480,10 @@ class _CrewDetailsScreenState extends State<CrewDetailsScreen> {
         bounty: character.bounty,
       );
 
-      final updatedMembers = List<CrewMember>.from(_crew.members)..add(newMember);
-      final updatedRolesFilled = List<String>.from(_crew.rolesFilled)..add(roleKey);
+      final updatedMembers = List<CrewMember>.from(_crew.members)
+        ..add(newMember);
+      final updatedRolesFilled = List<String>.from(_crew.rolesFilled)
+        ..add(roleKey);
 
       final updatedCrew = _crew.copyWith(
         members: updatedMembers,
@@ -494,7 +495,8 @@ class _CrewDetailsScreenState extends State<CrewDetailsScreen> {
 
       final updatedCharacter = character.copyWith(crew: _crew.name);
       final customCharacterRepository = getIt<ICustomCharacterRepository>();
-      await customCharacterRepository.updateCustomCharacter(character.id!, updatedCharacter);
+      await customCharacterRepository.updateCustomCharacter(
+          character.id!, updatedCharacter);
 
       if (mounted) {
         setState(() {
@@ -570,7 +572,8 @@ class _CrewDetailsScreenState extends State<CrewDetailsScreen> {
       );
 
       final customCharacterRepository = getIt<ICustomCharacterRepository>();
-      final character = await customCharacterRepository.getCustomCharacter(member.characterId);
+      final character = await customCharacterRepository
+          .getCustomCharacter(member.characterId);
 
       if (!mounted) return;
       Navigator.of(context).pop();
@@ -578,7 +581,6 @@ class _CrewDetailsScreenState extends State<CrewDetailsScreen> {
       if (character != null) {
         Navigator.pushNamed(context, AppRoutes.characterDetails,
             arguments: character);
-        
       } else {
         WidgetsBinding.instance.addPostFrameCallback((_) {
           if (mounted) {
@@ -594,7 +596,7 @@ class _CrewDetailsScreenState extends State<CrewDetailsScreen> {
     } catch (e) {
       if (!mounted) return;
       Navigator.of(context).pop();
-      
+
       WidgetsBinding.instance.addPostFrameCallback((_) {
         if (mounted) {
           ScaffoldMessenger.of(context).showSnackBar(

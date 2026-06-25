@@ -17,15 +17,15 @@ class CharacterBasicInfoSection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
-    
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
           l10n.basicInfo,
           style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-            fontWeight: FontWeight.bold,
-          ),
+                fontWeight: FontWeight.bold,
+              ),
         ),
         const SizedBox(height: 16),
         CustomTextField(
@@ -53,20 +53,20 @@ class CharacterBasicInfoSection extends StatelessWidget {
               if (!RegExp(r'^\d{2}/\d{2}/\d{4}$').hasMatch(value)) {
                 return 'Data inválida. Use o formato DD/MM/AAAA';
               }
-            
+
               final parts = value.split('/');
               final day = int.parse(parts[0]);
               final month = int.parse(parts[1]);
               final year = int.parse(parts[2]);
-              
+
               if (year < 1900 || year > 2100) {
                 return 'Ano deve estar entre 1900 e 2100';
               }
-              
+
               if (month < 1 || month > 12) {
                 return 'Mês inválido';
               }
-              
+
               if (day < 1 || day > 31) {
                 return 'Dia inválido';
               }
@@ -77,4 +77,4 @@ class CharacterBasicInfoSection extends StatelessWidget {
       ],
     );
   }
-} 
+}

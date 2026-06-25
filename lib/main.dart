@@ -29,9 +29,9 @@ import 'package:opfan/shared/widgets/global_error_boundary.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  
+
   Bloc.observer = AppBlocObserver();
-  
+
   await setupDependencies();
   await getIt<IStorageService>().initialize();
 
@@ -88,13 +88,11 @@ class MyApp extends StatelessWidget {
         child: BlocBuilder<ThemeCubit, ThemeState>(
           builder: (context, themeState) =>
               BlocBuilder<LocaleCubit, LocaleState>(
-            builder: (context, localeState) =>
-                BlocBuilder<AuthBloc, AuthState>(
+            builder: (context, localeState) => BlocBuilder<AuthBloc, AuthState>(
               builder: (context, authState) => MaterialApp(
                 title: EnvironmentService.instance.appName,
                 locale: localeState.locale,
-                localizationsDelegates:
-                    AppLocalizations.localizationsDelegates,
+                localizationsDelegates: AppLocalizations.localizationsDelegates,
                 supportedLocales: const <Locale>[
                   Locale('en', ''),
                   Locale('pt', ''),

@@ -67,10 +67,11 @@ class GoalModel extends Equatable {
     );
   }
 
-  bool get isOverdue => DateTime.now().isAfter(deadline) && status != GoalStatus.completed;
-  
+  bool get isOverdue =>
+      DateTime.now().isAfter(deadline) && status != GoalStatus.completed;
+
   bool get isCompleted => status == GoalStatus.completed || progress >= 100.0;
-  
+
   int get daysUntilDeadline {
     final now = DateTime.now();
     final difference = deadline.difference(now);

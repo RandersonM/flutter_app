@@ -37,8 +37,6 @@ class DuelsBloc extends Bloc<DuelsEvent, DuelsState> {
     try {
       emit(const DuelsLoading());
 
-    
-
       final onePieceCharacters = await _featuredCharacterRepository
           .getAllOnePieceCharacters(limit: 100);
 
@@ -61,7 +59,7 @@ class DuelsBloc extends Bloc<DuelsEvent, DuelsState> {
   ) {
     if (state is DuelsReady) {
       final currentState = state as DuelsReady;
-      
+
       // Verificar se o personagem já está selecionado como segundo
       if (currentState.secondCharacter?.id == event.character.id) {
         emit(currentState.copyWith(
@@ -82,7 +80,7 @@ class DuelsBloc extends Bloc<DuelsEvent, DuelsState> {
   ) {
     if (state is DuelsReady) {
       final currentState = state as DuelsReady;
-      
+
       // Verificar se o personagem já está selecionado como primeiro
       if (currentState.firstCharacter?.id == event.character.id) {
         emit(currentState.copyWith(
@@ -103,7 +101,7 @@ class DuelsBloc extends Bloc<DuelsEvent, DuelsState> {
   ) {
     if (state is DuelsReady) {
       final currentState = state as DuelsReady;
-      
+
       if (event.position == 1) {
         emit(currentState.copyWith(clearFirstCharacter: true));
       } else if (event.position == 2) {
@@ -118,7 +116,7 @@ class DuelsBloc extends Bloc<DuelsEvent, DuelsState> {
   ) async {
     if (state is DuelsReady) {
       final currentState = state as DuelsReady;
-      
+
       if (!currentState.canStartDuel) {
         return;
       }
@@ -148,7 +146,7 @@ class DuelsBloc extends Bloc<DuelsEvent, DuelsState> {
   ) {
     if (state is DuelsReady) {
       final currentState = state as DuelsReady;
-      
+
       emit(currentState.copyWith(
         clearFirstCharacter: true,
         clearSecondCharacter: true,
@@ -164,12 +162,12 @@ class DuelsBloc extends Bloc<DuelsEvent, DuelsState> {
   ) {
     if (state is DuelsReady) {
       final currentState = state as DuelsReady;
-      
+
       if (currentState.availableCharacters.length >= 2) {
         final shuffledCharacters = List<CustomCharacterModel>.from(
           currentState.availableCharacters,
         )..shuffle(_random);
-        
+
         emit(currentState.copyWith(
           firstCharacter: shuffledCharacters[0],
           secondCharacter: shuffledCharacters[1],
@@ -183,52 +181,56 @@ class DuelsBloc extends Bloc<DuelsEvent, DuelsState> {
     CustomCharacterModel character1,
     CustomCharacterModel character2,
   ) {
-
     int score1 = _calculateCharacterScore(character1);
     int score2 = _calculateCharacterScore(character2);
-    
 
     score1 += _calculateStrategicBonus(character1, character2);
     score2 += _calculateStrategicBonus(character2, character1);
-    
-  
+
     score1 += _random.nextInt(80);
     score2 += _random.nextInt(80);
-    
+
     return score1 >= score2 ? character1 : character2;
   }
 
-
   int _calculateCharacterScore(CustomCharacterModel character) {
     int score = 0;
-    
+
     if (character.haki != null) {
       for (final hakiType in character.haki!) {
         final normalizedHaki = hakiType.toLowerCase();
-        
-        if (normalizedHaki.contains('haoshoku') || normalizedHaki.contains('king')) {
-          score += 50; 
+
+        if (normalizedHaki.contains('haoshoku') ||
+            normalizedHaki.contains('king')) {
+          score += 50;
         }
-      
-        if (normalizedHaki.contains('busoshoku') || normalizedHaki.contains('armament')) {
-          score += 40; 
+
+        if (normalizedHaki.contains('busoshoku') ||
+            normalizedHaki.contains('armament')) {
+          score += 40;
         }
-        
-        if (normalizedHaki.contains('kenbunshoku') || normalizedHaki.contains('observation')) {
-          score += 30; 
+
+        if (normalizedHaki.contains('kenbunshoku') ||
+            normalizedHaki.contains('observation')) {
+          score += 30;
         }
       }
     }
-    
+
     if (character.devilFruit != null && character.devilFruit!.isNotEmpty) {
-      score += 25; 
+      score += 25;
     }
-    
-    final importantAffiliations = ['yonkou', 'admiral', 'shichibukai', 'four emperors'];
+
+    final importantAffiliations = [
+      'yonkou',
+      'admiral',
+      'shichibukai',
+      'four emperors'
+    ];
     for (final affiliation in character.affiliations) {
-      if (importantAffiliations.any((important) => 
-          affiliation.toLowerCase().contains(important))) {
-        score += 30; 
+      if (importantAffiliations
+          .any((important) => affiliation.toLowerCase().contains(important))) {
+        score += 30;
       }
     }
 
@@ -236,62 +238,72 @@ class DuelsBloc extends Bloc<DuelsEvent, DuelsState> {
       final fightingType = character.fightingStyle!.type.toLowerCase();
       switch (fightingType) {
         case 'swordsman':
-          score += 20; 
+          score += 20;
           break;
         case 'martial_arts':
-          score += 15; 
+          score += 15;
           break;
         default:
-          score += 10; 
+          score += 10;
       }
     }
-    
+
     return score;
   }
 
-  int _calculateStrategicBonus(CustomCharacterModel attacker, CustomCharacterModel defender) {
+  int _calculateStrategicBonus(
+      CustomCharacterModel attacker, CustomCharacterModel defender) {
     int bonus = 0;
-    
-    if (attacker.haki != null && defender.devilFruit != null && defender.devilFruit!.isNotEmpty) {
+
+    if (attacker.haki != null &&
+        defender.devilFruit != null &&
+        defender.devilFruit!.isNotEmpty) {
       for (final hakiType in attacker.haki!) {
-        if (hakiType.toLowerCase().contains('busoshoku') || 
+        if (hakiType.toLowerCase().contains('busoshoku') ||
             hakiType.toLowerCase().contains('armament')) {
-          bonus += 20; 
+          bonus += 20;
           break;
         }
       }
     }
-    
-    if (attacker.haki != null && (defender.fightingStyle?.type == 'martial_arts' || defender.fightingStyle?.type == 'swordsman')) {
+
+    if (attacker.haki != null &&
+        (defender.fightingStyle?.type == 'martial_arts' ||
+            defender.fightingStyle?.type == 'swordsman')) {
       for (final hakiType in attacker.haki!) {
-        if (hakiType.toLowerCase().contains('kenbunshoku') || 
+        if (hakiType.toLowerCase().contains('kenbunshoku') ||
             hakiType.toLowerCase().contains('observation')) {
-          bonus += 10; 
+          bonus += 10;
           break;
         }
       }
     }
-    
-    bool attackerHasKingsHaki = attacker.haki?.any((h) => 
-        h.toLowerCase().contains('haoshoku') || h.toLowerCase().contains('king')) ?? false;
-    bool defenderHasKingsHaki = defender.haki?.any((h) => 
-        h.toLowerCase().contains('haoshoku') || h.toLowerCase().contains('king')) ?? false;
-    
+
+    bool attackerHasKingsHaki = attacker.haki?.any((h) =>
+            h.toLowerCase().contains('haoshoku') ||
+            h.toLowerCase().contains('king')) ??
+        false;
+    bool defenderHasKingsHaki = defender.haki?.any((h) =>
+            h.toLowerCase().contains('haoshoku') ||
+            h.toLowerCase().contains('king')) ??
+        false;
+
     if (attackerHasKingsHaki && !defenderHasKingsHaki) {
-      bonus += 20; 
+      bonus += 20;
     }
-    
-    if (attacker.devilFruit != null && attacker.devilFruit!.isNotEmpty && 
+
+    if (attacker.devilFruit != null &&
+        attacker.devilFruit!.isNotEmpty &&
         defender.haki != null) {
       for (final hakiType in defender.haki!) {
-        if (hakiType.toLowerCase().contains('busoshoku') || 
+        if (hakiType.toLowerCase().contains('busoshoku') ||
             hakiType.toLowerCase().contains('armament')) {
-          bonus -= 20; 
+          bonus -= 20;
           break;
         }
       }
     }
-    
+
     return bonus;
   }
-} 
+}

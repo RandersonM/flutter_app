@@ -1,3 +1,5 @@
+import 'package:opfan/shared/widgets/atoms/app_icon.dart';
+import 'package:phosphor_flutter/phosphor_flutter.dart';
 // Developed by Randerson Mayllon
 // Copyright © 2022.
 
@@ -29,14 +31,14 @@ class CustomCharacterSearchHeader extends StatelessWidget {
             controller: searchController,
             decoration: InputDecoration(
               hintText: AppLocalizations.of(context)!.search,
-              prefixIcon: const Icon(Icons.search),
+              prefixIcon: const AppIcon(PhosphorIconsRegular.magnifyingGlass),
               suffixIcon: searchController.text.isNotEmpty
                   ? IconButton(
                       onPressed: () {
                         searchController.clear();
                         onSearch?.call();
                       },
-                      icon: const Icon(Icons.clear),
+                      icon: const AppIcon(PhosphorIconsRegular.x),
                     )
                   : null,
               border: OutlineInputBorder(
@@ -54,7 +56,7 @@ class CustomCharacterSearchHeader extends StatelessWidget {
                 Expanded(
                   child: OutlinedButton.icon(
                     onPressed: onFilter,
-                    icon: const Icon(Icons.filter_list),
+                    icon: const AppIcon(PhosphorIconsRegular.faders),
                     label: Text(filterLabel ?? 'Filtrar'),
                     style: OutlinedButton.styleFrom(
                       shape: RoundedRectangleBorder(
@@ -70,4 +72,4 @@ class CustomCharacterSearchHeader extends StatelessWidget {
       ),
     );
   }
-} 
+}

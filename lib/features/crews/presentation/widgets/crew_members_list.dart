@@ -1,3 +1,5 @@
+import 'package:opfan/shared/widgets/atoms/app_icon.dart';
+import 'package:phosphor_flutter/phosphor_flutter.dart';
 // Developed by Randerson Mayllon
 // Copyright © 2022.
 
@@ -33,8 +35,8 @@ class CrewMembersList extends StatelessWidget {
           padding: const EdgeInsets.all(Constants.margin * 3),
           child: Column(
             children: [
-              Icon(
-                Icons.group_off,
+              AppIcon(
+                PhosphorIconsRegular.users,
                 size: 48,
                 color: Colors.grey[400],
               ),
@@ -72,8 +74,8 @@ class CrewMembersList extends StatelessWidget {
           children: [
             Row(
               children: [
-                Icon(
-                  Icons.group,
+                AppIcon(
+                  PhosphorIconsRegular.users,
                   color: theme.colorScheme.primary,
                 ),
                 const SizedBox(width: Constants.margin),
@@ -91,7 +93,8 @@ class CrewMembersList extends StatelessWidget {
               shrinkWrap: true,
               physics: const NeverScrollableScrollPhysics(),
               itemCount: crew.members.length,
-              separatorBuilder: (context, index) => const SizedBox(height: Constants.margin),
+              separatorBuilder: (context, index) =>
+                  const SizedBox(height: Constants.margin),
               itemBuilder: (context, index) {
                 final sortedMembers = _sortMembersByRole(crew.members);
                 final member = sortedMembers[index];
@@ -107,9 +110,9 @@ class CrewMembersList extends StatelessWidget {
   Widget _buildMemberCard(BuildContext context, CrewMember member, int index) {
     final theme = Theme.of(context);
     final roleIcon = RoleIconMapper.getIconForRole(member.role);
-    final roleColor = RoleIconMapper.getColorForRole(member.role, theme.colorScheme);
+    final roleColor =
+        RoleIconMapper.getColorForRole(member.role, theme.colorScheme);
     final l10n = AppLocalizations.of(context)!;
-
 
     return InkWell(
       onTap: () => onMemberTap?.call(member),
@@ -162,7 +165,8 @@ class CrewMembersList extends StatelessWidget {
                       mainAxisSize: MainAxisSize.max,
                       children: [
                         Text(
-                          CharacterLocalizationMapper.mapOccupationToLocalized( member.role!, l10n),
+                          CharacterLocalizationMapper.mapOccupationToLocalized(
+                              member.role!, l10n),
                           style: theme.textTheme.titleLarge?.copyWith(
                             fontWeight: FontWeight.bold,
                             color: roleColor,
@@ -171,7 +175,7 @@ class CrewMembersList extends StatelessWidget {
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
                         ),
-                          Row(
+                        Row(
                           children: [
                             Text(
                               _formatBounty(member.bounty),
@@ -180,7 +184,7 @@ class CrewMembersList extends StatelessWidget {
                                 color: theme.colorScheme.primary,
                               ),
                             ),
-                            const SizedBox(width: Constants.margin/ 4),
+                            const SizedBox(width: Constants.margin / 4),
                             Text(
                               '฿',
                               style: theme.textTheme.bodySmall?.copyWith(
@@ -212,27 +216,32 @@ class CrewMembersList extends StatelessWidget {
   }
 
   List<CrewMember> _sortMembersByRole(List<CrewMember> members) {
-    return List.from(members)..sort((a, b) {
-      final roleA = a.role?.toLowerCase() ?? '';
-      final roleB = b.role?.toLowerCase() ?? '';
-      
-      // Prioridade para capitão
-      if (roleA.contains('capitão') || roleA.contains('capitao') || roleA.contains('captain')) return -1;
-      if (roleB.contains('capitão') || roleB.contains('capitao') || roleB.contains('captain')) return 1;
-      
-      // Prioridade para vice-capitão
-      if (roleA.contains('vice')) return -1;
-      if (roleB.contains('vice')) return 1;
-      
-      // Ordem alfabética para os demais
-      return roleA.compareTo(roleB);
-    });
+    return List.from(members)
+      ..sort((a, b) {
+        final roleA = a.role?.toLowerCase() ?? '';
+        final roleB = b.role?.toLowerCase() ?? '';
+
+        // Prioridade para capitão
+        if (roleA.contains('capitão') ||
+            roleA.contains('capitao') ||
+            roleA.contains('captain')) return -1;
+        if (roleB.contains('capitão') ||
+            roleB.contains('capitao') ||
+            roleB.contains('captain')) return 1;
+
+        // Prioridade para vice-capitão
+        if (roleA.contains('vice')) return -1;
+        if (roleB.contains('vice')) return 1;
+
+        // Ordem alfabética para os demais
+        return roleA.compareTo(roleB);
+      });
   }
 
   String _formatMemberName(CrewMember member) {
     final nickname = member.nickname?.trim();
     final name = member.name.trim();
-    
+
     if (nickname != null && nickname.isNotEmpty) {
       return '"$nickname" $name';
     } else {
@@ -243,4 +252,4 @@ class CrewMembersList extends StatelessWidget {
   String _formatBounty(String bounty) {
     return Constants.formatBounty(bounty);
   }
-} 
+}

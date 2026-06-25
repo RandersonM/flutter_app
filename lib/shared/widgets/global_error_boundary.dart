@@ -1,3 +1,5 @@
+import 'package:opfan/shared/widgets/atoms/app_icon.dart';
+import 'package:phosphor_flutter/phosphor_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:opfan/l10n/app_localizations.dart';
 import 'package:opfan/shared/utils/app_routes.dart';
@@ -65,8 +67,8 @@ class _GlobalErrorBoundaryState extends State<GlobalErrorBoundary> {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      const Icon(
-                        Icons.bug_report_outlined,
+                      const AppIcon(
+                        PhosphorIconsRegular.bug,
                         color: Color(0xFFE94560),
                         size: 80,
                       ),
@@ -116,7 +118,8 @@ class _GlobalErrorBoundaryState extends State<GlobalErrorBoundary> {
                         style: ElevatedButton.styleFrom(
                           backgroundColor: const Color(0xFFE94560),
                           foregroundColor: Colors.white,
-                          padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 24, vertical: 12),
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(8),
                           ),
@@ -127,7 +130,8 @@ class _GlobalErrorBoundaryState extends State<GlobalErrorBoundary> {
                             _errorDetails = null;
                           });
                         },
-                        icon: const Icon(Icons.refresh),
+                        icon: const AppIcon(
+                            PhosphorIconsRegular.arrowsClockwise),
                         label: Text(AppLocalizations.of(context)!.tryAgain),
                       ),
                       const SizedBox(height: 16),
@@ -135,7 +139,8 @@ class _GlobalErrorBoundaryState extends State<GlobalErrorBoundary> {
                         style: ElevatedButton.styleFrom(
                           backgroundColor: Theme.of(context).primaryColor,
                           foregroundColor: Colors.white,
-                          padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 24, vertical: 12),
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(8),
                           ),
@@ -145,9 +150,10 @@ class _GlobalErrorBoundaryState extends State<GlobalErrorBoundary> {
                             _hasError = false;
                             _errorDetails = null;
                           });
-                          Navigator.pushNamedAndRemoveUntil(context, AppRoutes.home, (route) => false);
+                          Navigator.pushNamedAndRemoveUntil(
+                              context, AppRoutes.home, (route) => false);
                         },
-                        icon: const Icon(Icons.home),
+                        icon: const AppIcon(PhosphorIconsRegular.house),
                         label: Text(AppLocalizations.of(context)!.goHomeAction),
                       ),
                     ],

@@ -102,19 +102,20 @@ class CrewModel {
     };
   }
 
-  factory CrewModel.fromFirestore(Map<String, dynamic> data, String documentId) {
+  factory CrewModel.fromFirestore(
+      Map<String, dynamic> data, String documentId) {
     return CrewModel(
       id: documentId,
       name: data['name'] ?? '',
-      userId: data['userId'] ?? data['ownerId'] ?? '', 
+      userId: data['userId'] ?? data['ownerId'] ?? '',
       captain: data['captain'],
       viceCaptain: data['viceCaptain'],
       rolesFilled: List<String>.from(data['rolesFilled'] ?? []),
-      createdAt: data['createdAt'] != null 
-          ? (data['createdAt'] as Timestamp).toDate() 
+      createdAt: data['createdAt'] != null
+          ? (data['createdAt'] as Timestamp).toDate()
           : null,
-      updatedAt: data['updatedAt'] != null 
-          ? (data['updatedAt'] as Timestamp).toDate() 
+      updatedAt: data['updatedAt'] != null
+          ? (data['updatedAt'] as Timestamp).toDate()
           : null,
       jollyRogerUrl: data['jollyRogerUrl'],
       boatImageUrl: data['boatImageUrl'],
@@ -160,4 +161,4 @@ class CrewModel {
       tags: tags ?? this.tags,
     );
   }
-} 
+}

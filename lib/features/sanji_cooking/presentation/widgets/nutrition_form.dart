@@ -5,6 +5,7 @@ import 'package:opfan/shared/widgets/atoms/custom_dropdown.dart';
 import 'package:opfan/shared/widgets/atoms/custom_text_field.dart';
 import 'package:opfan/app/di/injection.dart';
 import 'package:opfan/shared/utils/gender_mapper.dart';
+import 'package:opfan/shared/widgets/atoms/app_button.dart';
 import '../../bloc/index.dart';
 
 class NutritionForm extends StatefulWidget {
@@ -27,7 +28,7 @@ class _NutritionFormState extends State<NutritionForm> {
   final _weightController = TextEditingController();
   final _heightController = TextEditingController();
   final _waistController = TextEditingController();
-  
+
   String? _selectedGender;
   String? _selectedActivityLevel;
   String? _selectedGoal;
@@ -77,7 +78,7 @@ class _NutritionFormState extends State<NutritionForm> {
   void _fillWithExistingData() {
     if (widget.existingData != null) {
       final data = widget.existingData!;
-      
+
       if (data['age'] != null) {
         _ageController.text = data['age'].toString();
       }
@@ -109,7 +110,8 @@ class _NutritionFormState extends State<NutritionForm> {
     if (_formKey.currentState!.validate()) {
       final data = {
         'age': int.parse(_ageController.text),
-        'gender': GenderMapper.getInternalValue(_selectedGender!, AppLocalizations.of(context)!),
+        'gender': GenderMapper.getInternalValue(
+            _selectedGender!, AppLocalizations.of(context)!),
         'weight': double.parse(_weightController.text),
         'height': double.parse(_heightController.text),
         'waist': double.parse(_waistController.text),
@@ -118,7 +120,7 @@ class _NutritionFormState extends State<NutritionForm> {
       };
 
       _bloc.add(SaveNutritionData(nutritionData: data));
-      
+
       widget.onCalculate(data);
     }
   }
@@ -137,24 +139,24 @@ class _NutritionFormState extends State<NutritionForm> {
                 ),
           ),
           const SizedBox(height: 16),
-          
           CustomDropdown<String>(
             value: _selectedGender,
             label: AppLocalizations.of(context)!.gender,
-            items: GenderMapper.getLocalizedOptions(AppLocalizations.of(context)!),
+            items:
+                GenderMapper.getLocalizedOptions(AppLocalizations.of(context)!),
             onChanged: (value) {
               setState(() {
                 _selectedGender = value;
               });
             },
             validator: (value) {
-              if (value == null) return AppLocalizations.of(context)!.selectGender;
+              if (value == null)
+                return AppLocalizations.of(context)!.selectGender;
               return null;
             },
             itemToString: (gender) => gender,
           ),
           const SizedBox(height: 16),
-          
           CustomTextField(
             controller: _ageController,
             label: AppLocalizations.of(context)!.age,
@@ -170,7 +172,6 @@ class _NutritionFormState extends State<NutritionForm> {
             },
           ),
           const SizedBox(height: 16),
-          
           CustomTextField(
             controller: _weightController,
             label: AppLocalizations.of(context)!.weight,
@@ -186,7 +187,6 @@ class _NutritionFormState extends State<NutritionForm> {
             },
           ),
           const SizedBox(height: 16),
-          
           CustomTextField(
             controller: _heightController,
             label: AppLocalizations.of(context)!.height,
@@ -202,7 +202,6 @@ class _NutritionFormState extends State<NutritionForm> {
             },
           ),
           const SizedBox(height: 16),
-          
           CustomTextField(
             controller: _waistController,
             label: AppLocalizations.of(context)!.waistCircumference,
@@ -218,7 +217,6 @@ class _NutritionFormState extends State<NutritionForm> {
             },
           ),
           const SizedBox(height: 24),
-          
           Text(
             AppLocalizations.of(context)!.activityLevel,
             style: Theme.of(context).textTheme.titleLarge?.copyWith(
@@ -226,7 +224,6 @@ class _NutritionFormState extends State<NutritionForm> {
                 ),
           ),
           const SizedBox(height: 16),
-          
           CustomDropdown<String>(
             value: _selectedActivityLevel,
             label: AppLocalizations.of(context)!.selectActivityLevel,
@@ -237,25 +234,33 @@ class _NutritionFormState extends State<NutritionForm> {
               });
             },
             validator: (value) {
-              if (value == null) return AppLocalizations.of(context)!.selectActivityLevelValidation;
+              if (value == null)
+                return AppLocalizations.of(context)!
+                    .selectActivityLevelValidation;
               return null;
             },
-            itemToString: (level) => NutritionCalculationService.getActivityLevelDisplayName(
+            itemToString: (level) =>
+                NutritionCalculationService.getActivityLevelDisplayName(
               level,
               (key) {
                 switch (key) {
-                  case 'sedentary': return AppLocalizations.of(context)!.sedentary;
-                  case 'light': return AppLocalizations.of(context)!.light;
-                  case 'moderate': return AppLocalizations.of(context)!.moderate;
-                  case 'active': return AppLocalizations.of(context)!.active;
-                  case 'veryActive': return AppLocalizations.of(context)!.veryActive;
-                  default: return key;
+                  case 'sedentary':
+                    return AppLocalizations.of(context)!.sedentary;
+                  case 'light':
+                    return AppLocalizations.of(context)!.light;
+                  case 'moderate':
+                    return AppLocalizations.of(context)!.moderate;
+                  case 'active':
+                    return AppLocalizations.of(context)!.active;
+                  case 'veryActive':
+                    return AppLocalizations.of(context)!.veryActive;
+                  default:
+                    return key;
                 }
               },
             ),
           ),
           const SizedBox(height: 24),
-          
           Text(
             AppLocalizations.of(context)!.goal,
             style: Theme.of(context).textTheme.titleLarge?.copyWith(
@@ -263,7 +268,6 @@ class _NutritionFormState extends State<NutritionForm> {
                 ),
           ),
           const SizedBox(height: 16),
-          
           CustomDropdown<String>(
             value: _selectedGoal,
             label: AppLocalizations.of(context)!.selectGoal,
@@ -274,32 +278,32 @@ class _NutritionFormState extends State<NutritionForm> {
               });
             },
             validator: (value) {
-              if (value == null) return AppLocalizations.of(context)!.selectGoalValidation;
+              if (value == null)
+                return AppLocalizations.of(context)!.selectGoalValidation;
               return null;
             },
-            itemToString: (goal) => NutritionCalculationService.getGoalDisplayName(
+            itemToString: (goal) =>
+                NutritionCalculationService.getGoalDisplayName(
               goal,
               (key) {
                 switch (key) {
-                  case 'weightLoss': return AppLocalizations.of(context)!.weightLoss;
-                  case 'maintenance': return AppLocalizations.of(context)!.maintenance;
-                  case 'muscleGain': return AppLocalizations.of(context)!.muscleGain;
-                  default: return key;
+                  case 'weightLoss':
+                    return AppLocalizations.of(context)!.weightLoss;
+                  case 'maintenance':
+                    return AppLocalizations.of(context)!.maintenance;
+                  case 'muscleGain':
+                    return AppLocalizations.of(context)!.muscleGain;
+                  default:
+                    return key;
                 }
               },
             ),
           ),
           const SizedBox(height: 32),
-          
-          SizedBox(
-            width: double.infinity,
-            child: ElevatedButton(
-              onPressed: _calculateNutrition,
-              style: ElevatedButton.styleFrom(
-                padding: const EdgeInsets.symmetric(vertical: 16),
-              ),
-              child: Text(AppLocalizations.of(context)!.calculateNutrition),
-            ),
+          AppButton(
+            onPressed: _calculateNutrition,
+            label: AppLocalizations.of(context)!.calculateNutrition,
+            isFullWidth: true,
           ),
         ],
       ),

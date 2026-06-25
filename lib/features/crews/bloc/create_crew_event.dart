@@ -29,4 +29,4 @@ class CreateCrewSubmitted extends CreateCrewEvent {
       [name, description, jollyRogerUrl, boatImageUrl, tags, boatName];
 }
 
-class CreateCrewReset extends CreateCrewEvent {} 
+class CreateCrewReset extends CreateCrewEvent {}

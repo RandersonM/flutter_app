@@ -1,3 +1,5 @@
+import 'package:opfan/shared/widgets/atoms/app_icon.dart';
+import 'package:phosphor_flutter/phosphor_flutter.dart';
 // Developed by Randerson Mayllon
 // Copyright © 2022.
 
@@ -58,7 +60,7 @@ class _CrewListState extends State<CrewList> {
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
-    
+
     return Column(
       children: [
         CrewSearchHeader(
@@ -79,8 +81,8 @@ class _CrewListState extends State<CrewList> {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Icon(
-                        Icons.error_outline,
+                      AppIcon(
+                        PhosphorIconsRegular.warningCircle,
                         size: 64,
                         color: Colors.grey[600],
                       ),
@@ -118,8 +120,8 @@ class _CrewListState extends State<CrewList> {
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Icon(
-                          Icons.sailing,
+                        AppIcon(
+                          PhosphorIconsRegular.sailboat,
                           size: 64,
                           color: Colors.grey[600],
                         ),
@@ -141,7 +143,8 @@ class _CrewListState extends State<CrewList> {
                 }
 
                 return ListView.builder(
-                  padding: const EdgeInsets.symmetric(vertical: Constants.margin),
+                  padding:
+                      const EdgeInsets.symmetric(vertical: Constants.margin),
                   itemCount: state.crews.length,
                   itemBuilder: (context, index) {
                     final crew = state.crews[index];
@@ -195,7 +198,7 @@ class _CrewListState extends State<CrewList> {
 
   void _showDeleteConfirmation(CrewModel crew) {
     final l10n = AppLocalizations.of(context)!;
-    
+
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
@@ -223,4 +226,4 @@ class _CrewListState extends State<CrewList> {
       ),
     );
   }
-} 
+}

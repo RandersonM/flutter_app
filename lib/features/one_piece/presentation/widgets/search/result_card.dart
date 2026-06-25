@@ -1,3 +1,5 @@
+import 'package:opfan/shared/widgets/atoms/app_icon.dart';
+import 'package:phosphor_flutter/phosphor_flutter.dart';
 // Developed by Randerson Mayllon
 // Copyright © 2022.
 
@@ -40,8 +42,8 @@ class _ResultCardState extends State<ResultCard> {
       radius: 24,
       backgroundColor: Colors.grey[300],
       child: _imageLoadError
-          ? Icon(
-              Icons.person,
+          ? AppIcon(
+              PhosphorIconsRegular.user,
               size: 28,
               color: Colors.grey[600],
             )
@@ -69,8 +71,8 @@ class _ResultCardState extends State<ResultCard> {
                       });
                     }
                   });
-                  return Icon(
-                    Icons.person,
+                  return AppIcon(
+                    PhosphorIconsRegular.user,
                     size: 28,
                     color: Colors.grey[600],
                   );

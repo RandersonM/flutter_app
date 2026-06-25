@@ -1,3 +1,5 @@
+import 'package:opfan/shared/widgets/atoms/app_icon.dart';
+import 'package:phosphor_flutter/phosphor_flutter.dart';
 // Developed by Randerson Mayllon
 // Copyright © 2022.
 
@@ -61,7 +63,7 @@ class _CharacterSelectionGridState extends State<CharacterSelectionGrid> {
       child: TextField(
         decoration: InputDecoration(
           hintText: AppLocalizations.of(context)!.search,
-          prefixIcon: const Icon(Icons.search),
+          prefixIcon: const AppIcon(PhosphorIconsRegular.magnifyingGlass),
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(12),
           ),
@@ -89,8 +91,8 @@ class _CharacterSelectionGridState extends State<CharacterSelectionGrid> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Icon(
-                  Icons.error_outline,
+                AppIcon(
+                  PhosphorIconsRegular.warningCircle,
                   size: 64,
                   color: Colors.grey[600],
                 ),
@@ -117,8 +119,8 @@ class _CharacterSelectionGridState extends State<CharacterSelectionGrid> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Icon(
-                    Icons.search_off,
+                  AppIcon(
+                    PhosphorIconsRegular.magnifyingGlassMinus,
                     size: 64,
                     color: Colors.grey[600],
                   ),
@@ -206,8 +208,8 @@ class _CharacterSelectionGridState extends State<CharacterSelectionGrid> {
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            Icon(
-                              Icons.person,
+                            AppIcon(
+                              PhosphorIconsRegular.user,
                               size: 48,
                               color: Colors.grey[600],
                             ),

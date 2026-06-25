@@ -31,7 +31,7 @@ class _ListContentState extends State<ListContent> {
   void initState() {
     super.initState();
     controller = ScrollController()..addListener(_scrollListener);
-    
+
     WidgetsBinding.instance.addPostFrameCallback((_) {
       final cubit = context.read<CharactersCubit>();
       if (cubit.state is CharactersInitial) {
@@ -90,4 +90,3 @@ class _ListContentState extends State<ListContent> {
     );
   }
 }
-

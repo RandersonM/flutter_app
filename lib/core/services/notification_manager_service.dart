@@ -3,7 +3,8 @@ import 'package:flutter/foundation.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 class NotificationManagerService {
-  static final NotificationManagerService _instance = NotificationManagerService._internal();
+  static final NotificationManagerService _instance =
+      NotificationManagerService._internal();
   factory NotificationManagerService() => _instance;
   NotificationManagerService._internal();
 
@@ -19,14 +20,14 @@ class NotificationManagerService {
   }) async {
     try {
       final callable = _functions.httpsCallable('sendCustomNotification');
-      
+
       final result = await callable.call({
         'title': title,
         'body': body,
         'type': type ?? 'custom',
         'screen': screen ?? 'home',
       });
-      
+
       debugPrint('NotificationManagerService: Notificação enviada com sucesso');
       return result.data as Map<String, dynamic>;
     } catch (e) {
@@ -45,7 +46,7 @@ class NotificationManagerService {
   }) async {
     try {
       final callable = _functions.httpsCallable('sendCustomNotification');
-      
+
       final result = await callable.call({
         'title': title,
         'body': body,
@@ -53,8 +54,9 @@ class NotificationManagerService {
         'screen': screen ?? 'home',
         'userIds': userIds,
       });
-      
-      debugPrint('NotificationManagerService: Notificação enviada para usuários específicos');
+
+      debugPrint(
+          'NotificationManagerService: Notificação enviada para usuários específicos');
       return result.data as Map<String, dynamic>;
     } catch (e) {
       debugPrint('NotificationManagerService: Erro ao enviar notificação: $e');
@@ -69,16 +71,17 @@ class NotificationManagerService {
   }) async {
     try {
       final callable = _functions.httpsCallable('testNotification');
-      
+
       final result = await callable.call({
         'title': title,
         'body': body,
       });
-      
+
       debugPrint('NotificationManagerService: Teste de notificação enviado');
       return result.data as Map<String, dynamic>;
     } catch (e) {
-      debugPrint('NotificationManagerService: Erro no teste de notificação: $e');
+      debugPrint(
+          'NotificationManagerService: Erro no teste de notificação: $e');
       rethrow;
     }
   }
@@ -87,7 +90,8 @@ class NotificationManagerService {
   Future<Map<String, dynamic>> sendNamiMonthlyReportNotification() async {
     return await sendCustomNotificationToAll(
       title: '💰 Relatório Mensal - Nami Finances',
-      body: 'Chegou a hora de revisar suas finanças do mês! Acesse o app para ver seu relatório completo.',
+      body:
+          'Chegou a hora de revisar suas finanças do mês! Acesse o app para ver seu relatório completo.',
       type: 'nami_monthly_report',
       screen: 'nami_finances',
     );
@@ -107,13 +111,12 @@ class NotificationManagerService {
   Future<Map<String, dynamic>> sendSanjiCookingNotification() async {
     return await sendCustomNotificationToAll(
       title: '👨‍🍳 Dica do Sanji',
-      body: 'Hora do almoço! Que tal preparar uma refeição nutritiva e deliciosa?',
+      body:
+          'Hora do almoço! Que tal preparar uma refeição nutritiva e deliciosa?',
       type: 'sanji_cooking',
       screen: 'sanji_cooking',
     );
   }
-
- 
 
   // Enviar notificação de personagem em destaque
   Future<Map<String, dynamic>> sendFeaturedCharacterNotification() async {

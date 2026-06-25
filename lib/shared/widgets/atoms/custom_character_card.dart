@@ -1,3 +1,5 @@
+import 'package:opfan/shared/widgets/atoms/app_icon.dart';
+import 'package:phosphor_flutter/phosphor_flutter.dart';
 // Developed by Randerson Mayllon
 // Copyright © 2022.
 
@@ -55,7 +57,8 @@ class CustomCharacterCard extends StatelessWidget {
                               if (loadingProgress == null) return child;
                               return Center(
                                 child: CircularProgressIndicator(
-                                  value: loadingProgress.expectedTotalBytes != null
+                                  value: loadingProgress.expectedTotalBytes !=
+                                          null
                                       ? loadingProgress.cumulativeBytesLoaded /
                                           loadingProgress.expectedTotalBytes!
                                       : null,
@@ -93,7 +96,8 @@ class CustomCharacterCard extends StatelessWidget {
                             ),
                       ),
                     ),
-                    if (character.nickname != null && character.nickname!.isNotEmpty)
+                    if (character.nickname != null &&
+                        character.nickname!.isNotEmpty)
                       FittedBox(
                         fit: BoxFit.scaleDown,
                         child: Text(
@@ -109,7 +113,6 @@ class CustomCharacterCard extends StatelessWidget {
                               ),
                         ),
                       ),
-                  
                   ],
                 ),
               ),
@@ -120,7 +123,8 @@ class CustomCharacterCard extends StatelessWidget {
                     if (onEdit != null)
                       IconButton(
                         onPressed: onEdit,
-                        icon: const Icon(Icons.edit, size: 16),
+                        icon: const AppIcon(PhosphorIconsRegular.pencil,
+                            size: 16),
                         tooltip: AppLocalizations.of(context)!.edit,
                         padding: EdgeInsets.zero,
                         constraints: const BoxConstraints(),
@@ -128,7 +132,8 @@ class CustomCharacterCard extends StatelessWidget {
                     if (onDelete != null)
                       IconButton(
                         onPressed: onDelete,
-                        icon: const Icon(Icons.delete, size: 16, color: Colors.red),
+                        icon: const AppIcon(PhosphorIconsRegular.trash,
+                            size: 16, color: Colors.red),
                         tooltip: AppLocalizations.of(context)!.delete,
                         padding: EdgeInsets.zero,
                         constraints: const BoxConstraints(),
@@ -150,8 +155,8 @@ class CustomCharacterCard extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Icon(
-            Icons.person,
+          AppIcon(
+            PhosphorIconsRegular.user,
             size: 48,
             color: Colors.grey[600],
           ),
@@ -169,4 +174,4 @@ class CustomCharacterCard extends StatelessWidget {
       ),
     );
   }
-} 
+}

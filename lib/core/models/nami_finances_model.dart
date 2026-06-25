@@ -74,12 +74,12 @@ class NamiFinancesModel extends HiveObject {
 
   Map<ExpenseCategory, double> get expensesByCategory {
     final Map<ExpenseCategory, double> categoryTotals = {};
-    
+
     for (final expense in expenses) {
-      categoryTotals[expense.category] = 
+      categoryTotals[expense.category] =
           (categoryTotals[expense.category] ?? 0) + expense.amount;
     }
-    
+
     return categoryTotals;
   }
 }

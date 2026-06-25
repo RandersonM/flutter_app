@@ -1,3 +1,5 @@
+import 'package:opfan/shared/widgets/atoms/app_icon.dart';
+import 'package:phosphor_flutter/phosphor_flutter.dart';
 // Developed by Randerson Mayllon
 // Copyright © 2022.
 
@@ -49,8 +51,8 @@ class StatisticItem extends StatelessWidget {
         color: iconColor ?? Theme.of(context).colorScheme.primary,
       );
     } else {
-      return Icon(
-        Icons.help_outline,
+      return AppIcon(
+        PhosphorIconsRegular.question,
         size: iconSize,
         color: iconColor ?? Theme.of(context).colorScheme.primary,
       );

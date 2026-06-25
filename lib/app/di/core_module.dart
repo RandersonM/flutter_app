@@ -32,7 +32,8 @@ void registerCoreModule(GetIt getIt) {
   getIt.registerLazySingleton<DevilFruitService>(() => DevilFruitService());
   getIt.registerLazySingleton<YouTubeService>(() => YouTubeService());
   getIt.registerLazySingleton<GeminiService>(() => GeminiService());
-  getIt.registerLazySingleton<CharacterImageService>(() => CharacterImageService());
+  getIt.registerLazySingleton<CharacterImageService>(
+      () => CharacterImageService());
 
   getIt.registerLazySingleton<ICookingRepository>(() => CookingRepository());
   getIt.registerLazySingleton<IFeaturedCharacterRepository>(
@@ -68,18 +69,23 @@ extension CoreModuleExtensions on GetIt {
   EnvironmentService get environmentService => get<EnvironmentService>();
   IStorageService get storageService => get<IStorageService>();
   NotificationService get notificationService => get<NotificationService>();
-  IFeaturedCharacterRepository get featuredCharacterRepository => get<IFeaturedCharacterRepository>();
+  IFeaturedCharacterRepository get featuredCharacterRepository =>
+      get<IFeaturedCharacterRepository>();
   DevilFruitService get devilFruitService => get<DevilFruitService>();
   YouTubeService get youTubeService => get<YouTubeService>();
   GeminiService get geminiService => get<GeminiService>();
-  CharacterImageService get characterImageService => get<CharacterImageService>();
+  CharacterImageService get characterImageService =>
+      get<CharacterImageService>();
   ICookingRepository get cookingRepository => get<ICookingRepository>();
-  IUserProfileRepository get userProfileRepository => get<IUserProfileRepository>();
+  IUserProfileRepository get userProfileRepository =>
+      get<IUserProfileRepository>();
   AuthService get authService => get<AuthService>();
   FirestoreService get firestoreService => get<FirestoreService>();
-  ICustomCharacterRepository get customCharacterRepository => get<ICustomCharacterRepository>();
+  ICustomCharacterRepository get customCharacterRepository =>
+      get<ICustomCharacterRepository>();
   ICrewRepository get crewRepository => get<ICrewRepository>();
-  PlannerRepositoryInterface get plannerRepository => get<PlannerRepositoryInterface>();
+  PlannerRepositoryInterface get plannerRepository =>
+      get<PlannerRepositoryInterface>();
   NamiFinancesService get namiFinancesService => get<NamiFinancesService>();
   AuthBloc get authBloc => get<AuthBloc>();
 }

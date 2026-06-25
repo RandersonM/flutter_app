@@ -36,4 +36,4 @@ class DeleteCrew extends ListCrewsEvent {
 
   @override
   List<Object?> get props => [crewId];
-} 
+}

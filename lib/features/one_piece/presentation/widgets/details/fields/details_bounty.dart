@@ -1,3 +1,5 @@
+import 'package:opfan/shared/widgets/atoms/app_icon.dart';
+import 'package:phosphor_flutter/phosphor_flutter.dart';
 // Developed by Randerson Mayllon
 // Copyright © 2022.
 
@@ -24,8 +26,8 @@ class DetailsBounty extends StatelessWidget {
               spacing: Constants.margin / 2,
               children: [
                 const SizedBox.shrink(),
-                Icon(
-                  Icons.monetization_on,
+                AppIcon(
+                  PhosphorIconsRegular.coin,
                   size: 28,
                   color: Colors.amber[700],
                 ),
@@ -41,10 +43,8 @@ class DetailsBounty extends StatelessWidget {
             ),
             Padding(
               padding: const EdgeInsets.only(right: Constants.margin),
-              child: Text(
-                '฿${Constants.formatBounty(bounty)}',
-                style: Theme.of(context).textTheme.headlineSmall
-              ),
+              child: Text('฿${Constants.formatBounty(bounty)}',
+                  style: Theme.of(context).textTheme.headlineSmall),
             )
           ],
         ),

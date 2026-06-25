@@ -1,3 +1,5 @@
+import 'package:opfan/shared/widgets/atoms/app_icon.dart';
+import 'package:phosphor_flutter/phosphor_flutter.dart';
 import 'dart:math' as math;
 
 import 'package:fl_chart/fl_chart.dart';
@@ -6,6 +8,7 @@ import 'package:opfan/core/models/nami_finances_model.dart';
 import 'package:opfan/features/nami_finances/presentation/widgets/finances_history_widget.dart';
 import 'package:opfan/l10n/app_localizations.dart';
 import 'package:opfan/shared/utils/constants.dart';
+import 'package:opfan/shared/widgets/atoms/app_button.dart';
 
 // ─── Design tokens ──────────────────────────────────────────────────────────
 const _purple = Color(0xFF8B5CF6);
@@ -113,14 +116,14 @@ class _HeroBalanceCard extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               _BalancePill(
-                icon: Icons.arrow_upward_rounded,
+                icon: PhosphorIconsRegular.arrowUp,
                 color: _successGreen,
                 label: AppLocalizations.of(context)!.incomesLabel,
                 value: finances.totalIncome,
               ),
               const SizedBox(width: Constants.margin * 2),
               _BalancePill(
-                icon: Icons.arrow_downward_rounded,
+                icon: PhosphorIconsRegular.arrowDown,
                 color: _errorRed,
                 label: AppLocalizations.of(context)!.expensesLabel,
                 value: finances.totalExpenses,
@@ -215,7 +218,7 @@ class _MonthlyBalanceDonutState extends State<_MonthlyBalanceDonut> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           _CardHeader(
-            icon: Icons.donut_large_rounded,
+            icon: PhosphorIconsRegular.circle,
             iconColor: _purple,
             title: AppLocalizations.of(context)!.monthBalance,
           ),
@@ -236,8 +239,8 @@ class _MonthlyBalanceDonutState extends State<_MonthlyBalanceDonut> {
                               _touchedIndex = -1;
                               return;
                             }
-                            _touchedIndex = response
-                                .touchedSection!.touchedSectionIndex;
+                            _touchedIndex =
+                                response.touchedSection!.touchedSectionIndex;
                           });
                         },
                       ),
@@ -379,7 +382,7 @@ class _IncomesCard extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           _CardHeader(
-            icon: Icons.account_balance_wallet_rounded,
+            icon: PhosphorIconsRegular.bank,
             iconColor: _successGreen,
             title: AppLocalizations.of(context)!.incomes,
           ),
@@ -394,7 +397,8 @@ class _IncomesCard extends StatelessWidget {
             ),
           ),
           if (finances.monthlyIncomes.isEmpty)
-            _EmptyListHint(text: AppLocalizations.of(context)!.noIncomesRegistered),
+            _EmptyListHint(
+                text: AppLocalizations.of(context)!.noIncomesRegistered),
           const SizedBox(height: Constants.margin),
           _TotalRow(
             label: AppLocalizations.of(context)!.totalReceived,
@@ -421,7 +425,7 @@ class _ExpensesCard extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           _CardHeader(
-            icon: Icons.payments_rounded,
+            icon: PhosphorIconsRegular.money,
             iconColor: _errorRed,
             title: AppLocalizations.of(context)!.expenses,
           ),
@@ -436,7 +440,8 @@ class _ExpensesCard extends StatelessWidget {
             ),
           ),
           if (finances.expenses.isEmpty)
-            _EmptyListHint(text: AppLocalizations.of(context)!.noExpensesRegistered),
+            _EmptyListHint(
+                text: AppLocalizations.of(context)!.noExpensesRegistered),
           const SizedBox(height: Constants.margin),
           _TotalRow(
             label: AppLocalizations.of(context)!.totalSpent,
@@ -484,7 +489,7 @@ class _SavingsGoalCard extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           _CardHeader(
-            icon: Icons.savings_rounded,
+            icon: PhosphorIconsRegular.piggyBank,
             iconColor: _purple,
             title: AppLocalizations.of(context)!.reserves,
           ),
@@ -594,7 +599,7 @@ class _SpendingCategoriesCard extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           _CardHeader(
-            icon: Icons.pie_chart_rounded,
+            icon: PhosphorIconsRegular.chartPieSlice,
             iconColor: _gold,
             title: AppLocalizations.of(context)!.categories,
           ),
@@ -699,18 +704,15 @@ class _DashboardActions extends StatelessWidget {
     return Row(
       children: [
         Expanded(
-          child: OutlinedButton.icon(
+          child: AppButton(
             onPressed: onEdit,
-            icon: const Icon(Icons.edit_rounded, size: 16),
-            label: Text(AppLocalizations.of(context)!.editData),
-            style: OutlinedButton.styleFrom(
-              foregroundColor: _purple,
-              side: const BorderSide(color: _purple, width: 1),
-              padding: const EdgeInsets.symmetric(vertical: 12),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(12),
-              ),
-            ),
+            variant: AppButtonVariant.outline,
+            icon: const AppIcon(PhosphorIconsRegular.pencil, size: 16),
+            label: AppLocalizations.of(context)!.editData,
+            foregroundColor: _purple,
+            padding: const EdgeInsets.symmetric(vertical: 12),
+            borderRadius: 12,
+            isFullWidth: true,
           ),
         ),
       ],

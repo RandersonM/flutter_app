@@ -67,4 +67,4 @@ class FilterCustomCharactersByCrew extends CustomCharacterEvent {
 
   @override
   List<Object?> get props => [crew];
-} 
+}

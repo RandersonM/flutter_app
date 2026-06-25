@@ -1,3 +1,5 @@
+import 'package:opfan/shared/widgets/atoms/app_icon.dart';
+import 'package:phosphor_flutter/phosphor_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:opfan/l10n/app_localizations.dart';
 import 'package:opfan/shared/utils/constants.dart';
@@ -54,7 +56,7 @@ class ExpenseItemWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
-    
+
     return Container(
       padding: const EdgeInsets.all(Constants.margin),
       decoration: BoxDecoration(
@@ -78,32 +80,31 @@ class ExpenseItemWidget extends StatelessWidget {
                 child: Text(
                   _getCategoryLabel(expenseItem.category, l10n),
                   style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                    color: _getCategoryColor(expenseItem.category),
-                  ),
+                        color: _getCategoryColor(expenseItem.category),
+                      ),
                 ),
               ),
               IconButton(
                 onPressed: onRemove,
-                icon: const Icon(Icons.remove_circle_outline_rounded, color: Colors.red),
+                icon: const AppIcon(PhosphorIconsRegular.minusCircle,
+                    color: Colors.red),
                 tooltip: l10n.remove,
               ),
             ],
           ),
-          
           const SizedBox(height: Constants.margin),
           FinanceCurrencyTextField(
             label: l10n.value,
             controller: expenseItem.controller,
           ),
-          
           if (expenseItem.description.isNotEmpty) ...[
             const SizedBox(height: Constants.margin),
             Text(
               expenseItem.description,
               style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                color: Colors.grey[600],
-                fontStyle: FontStyle.italic,
-              ),
+                    color: Colors.grey[600],
+                    fontStyle: FontStyle.italic,
+                  ),
             ),
           ],
         ],

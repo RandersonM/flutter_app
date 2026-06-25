@@ -2,6 +2,7 @@
 // Copyright © 2022.
 
 import 'package:flutter/material.dart';
+import 'dart:ui' as ui;
 import 'package:opfan/shared/utils/constants.dart';
 import 'statistic_item.dart';
 
@@ -95,29 +96,43 @@ class StatisticsGrid extends StatelessWidget {
       ),
     );
 
+    final Widget blurredContent = ClipRRect(
+      borderRadius: BorderRadius.circular(borderRadius),
+      child: BackdropFilter(
+        filter: ui.ImageFilter.blur(sigmaX: 12.0, sigmaY: 12.0),
+        child: Container(
+          decoration: BoxDecoration(
+            color: backgroundColor ??
+                theme.colorScheme.surfaceContainerHigh.withValues(alpha: 0.6),
+            borderRadius: BorderRadius.circular(borderRadius),
+            border: Border.all(
+              color: theme.colorScheme.outline.withValues(alpha: 0.2),
+              width: 1.0,
+            ),
+          ),
+          child: Padding(
+            padding: const EdgeInsets.all(0),
+            child: content,
+          ),
+        ),
+      ),
+    );
+
     if (isCard) {
       return Card(
         elevation: elevation,
-        color: backgroundColor,
+        color: Colors.transparent,
+        shadowColor: Colors.black26,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(borderRadius),
         ),
-        child: Padding(
-          padding: const EdgeInsets.all(0),
-          child: content,
-        ),
+        child: blurredContent,
       );
     }
 
     return Container(
       padding: padding,
-      decoration: backgroundColor != null
-          ? BoxDecoration(
-              color: backgroundColor,
-              borderRadius: BorderRadius.circular(borderRadius),
-            )
-          : null,
-      child: content,
+      child: blurredContent,
     );
   }
 }

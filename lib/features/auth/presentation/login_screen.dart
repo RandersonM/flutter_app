@@ -1,3 +1,5 @@
+import 'package:opfan/shared/widgets/atoms/app_icon.dart';
+import 'package:phosphor_flutter/phosphor_flutter.dart';
 // Developed by Randerson Mayllon
 // Copyright © 2025.
 
@@ -8,8 +10,8 @@ import 'package:opfan/app/di/injection.dart';
 import 'package:opfan/l10n/app_localizations.dart';
 import 'package:opfan/shared/utils/app_routes.dart';
 import 'package:opfan/shared/utils/constants.dart';
-import 'package:opfan/shared/utils/theme.dart';
 import 'package:opfan/shared/widgets/atoms/circle_indicator.dart';
+import 'package:opfan/shared/widgets/atoms/app_button.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -186,67 +188,33 @@ class _LoginScreenState extends State<LoginScreen> {
       builder: (context, state) {
         final isLoading = state is AuthLoading;
 
-        return SizedBox(
-          width: double.infinity,
-          height: 56,
-          child: ElevatedButton.icon(
-            onPressed: isLoading
-                ? null
-                : () {
-                    context.read<AuthBloc>().add(const AuthSignInRequested());
-                  },
-            style: ElevatedButton.styleFrom(
-              backgroundColor: Colors.white,
-              foregroundColor: AppColors.purple[600],
-              elevation: 8,
-              shadowColor: Colors.black.withValues(alpha: 0.3),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(28),
-              ),
-            ),
-            icon: isLoading
-                ? SizedBox(
-                    width: 20,
-                    height: 20,
-                    child: CircularProgressIndicator(
-                      strokeWidth: 2,
-                      valueColor:
-                          AlwaysStoppedAnimation<Color>(AppColors.purple[600]!),
-                    ),
-                  )
-                : const Icon(
-                    Icons.login,
-                    size: 24,
-                  ),
-            label: Text(
-              isLoading ? AppLocalizations.of(context)!.signingIn : AppLocalizations.of(context)!.signInWithGoogle,
-              style: const TextStyle(
-                fontSize: 16,
-                fontWeight: FontWeight.w600,
-              ),
-            ),
-          ),
+        return AppButton(
+          label: isLoading
+              ? AppLocalizations.of(context)!.signingIn
+              : AppLocalizations.of(context)!.signInWithGoogle,
+          icon: const AppIcon(PhosphorIconsRegular.signIn),
+          variant: AppButtonVariant.primary,
+          isLoading: isLoading,
+          isFullWidth: true,
+          borderRadius: 28,
+          onPressed: () {
+            context.read<AuthBloc>().add(const AuthSignInRequested());
+          },
         );
       },
     );
   }
 
   Widget _buildSkipButton() {
-    return TextButton(
+    return AppButton(
+      label: AppLocalizations.of(context)!.skipForNow,
+      variant: AppButtonVariant.text,
       onPressed: () {
         Navigator.of(context).pushNamedAndRemoveUntil(
           AppRoutes.home,
           (route) => false,
         );
       },
-      child: Text(
-        AppLocalizations.of(context)!.skipForNow,
-        style: TextStyle(
-          color: Colors.white.withValues(alpha: 0.8),
-          fontSize: 16,
-          fontWeight: FontWeight.bold,
-        ),
-      ),
     );
   }
 

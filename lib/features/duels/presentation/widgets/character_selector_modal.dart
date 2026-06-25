@@ -1,16 +1,20 @@
-
+import 'package:opfan/shared/widgets/atoms/app_icon.dart';
+import 'package:phosphor_flutter/phosphor_flutter.dart';
 
 import 'package:flutter/material.dart';
-import 'package:opfan/core/models/one_piece/custom_character_model.dart' show CustomCharacterModel;
+import 'package:opfan/core/models/one_piece/custom_character_model.dart'
+    show CustomCharacterModel;
 import 'package:opfan/l10n/app_localizations.dart';
-import 'package:opfan/shared/widgets/atoms/clickable_image.dart' show ClickableImage;
+import 'package:opfan/shared/widgets/atoms/clickable_image.dart'
+    show ClickableImage;
 
 class CharacterSelectionModal extends StatefulWidget {
   final List<CustomCharacterModel> availableCharacters;
   final Function(CustomCharacterModel) onCharacterSelected;
   final String title;
 
-  const CharacterSelectionModal({super.key, 
+  const CharacterSelectionModal({
+    super.key,
     required this.availableCharacters,
     required this.onCharacterSelected,
     required this.title,
@@ -88,7 +92,6 @@ class CharacterSelectionModalState extends State<CharacterSelectionModal> {
               borderRadius: BorderRadius.circular(2),
             ),
           ),
-
           Padding(
             padding: const EdgeInsets.all(16),
             child: Column(
@@ -108,7 +111,8 @@ class CharacterSelectionModalState extends State<CharacterSelectionModal> {
                   decoration: InputDecoration(
                     hintText: l10n.searchPlaceholder,
                     hintStyle: Theme.of(context).textTheme.bodyMedium,
-                    prefixIcon: const Icon(Icons.search),
+                    prefixIcon:
+                        const AppIcon(PhosphorIconsRegular.magnifyingGlass),
                     filled: true,
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(12),
@@ -119,7 +123,6 @@ class CharacterSelectionModalState extends State<CharacterSelectionModal> {
               ],
             ),
           ),
-
           Expanded(
             child: filteredCharacters.isEmpty
                 ? Center(
@@ -132,13 +135,12 @@ class CharacterSelectionModalState extends State<CharacterSelectionModal> {
                     padding: const EdgeInsets.symmetric(horizontal: 16),
                     children: [
                       if (customCharacters.isNotEmpty) ...[
-                        _buildSectionHeader(
-                            l10n.customCharacters, Icons.person_add),
+                        _buildSectionHeader(l10n.customCharacters,
+                            PhosphorIconsRegular.userPlus),
                         const SizedBox(height: 8),
                         _buildCharacterGrid(customCharacters),
                         const SizedBox(height: 16),
                       ],
-
                       if (customCharacters.isNotEmpty &&
                           onePieceCharacters.isNotEmpty) ...[
                         Container(
@@ -148,10 +150,9 @@ class CharacterSelectionModalState extends State<CharacterSelectionModal> {
                         ),
                         const SizedBox(height: 8),
                       ],
-
                       if (onePieceCharacters.isNotEmpty) ...[
-                        _buildSectionHeader(
-                            l10n.onePieceCharacters, Icons.star),
+                        _buildSectionHeader(l10n.onePieceCharacters,
+                            PhosphorIconsRegular.star),
                         const SizedBox(height: 8),
                         _buildCharacterGrid(onePieceCharacters),
                       ],
@@ -174,9 +175,9 @@ class CharacterSelectionModalState extends State<CharacterSelectionModal> {
         Text(
           title,
           style: Theme.of(context).textTheme.titleMedium?.copyWith(
-            fontSize: 16,
-            fontWeight: FontWeight.w600,
-          ),
+                fontSize: 16,
+                fontWeight: FontWeight.w600,
+              ),
         ),
       ],
     );

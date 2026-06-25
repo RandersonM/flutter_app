@@ -1,6 +1,7 @@
+import 'package:opfan/shared/widgets/atoms/app_icon.dart';
+import 'package:phosphor_flutter/phosphor_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:opfan/app/di/injection.dart';
 import 'package:opfan/core/models/goal_model.dart';
 import 'package:opfan/features/robin_knowledge/bloc/robin_knowledge_bloc.dart';
@@ -29,8 +30,8 @@ class TimelineContent extends StatelessWidget {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Icon(
-                  FontAwesomeIcons.triangleExclamation,
+                AppIcon(
+                  PhosphorIconsRegular.warning,
                   size: 48,
                   color: Theme.of(context).colorScheme.error,
                 ),
@@ -42,8 +43,7 @@ class TimelineContent extends StatelessWidget {
                 const SizedBox(height: Constants.margin),
                 Text(
                   state.message,
-                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                  ),
+                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(),
                   textAlign: TextAlign.center,
                 ),
               ],

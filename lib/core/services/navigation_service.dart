@@ -16,7 +16,8 @@ class NavigationService {
     debugPrint('NavigationService: Navigator não disponível');
   }
 
-  Future<dynamic> navigateToReplacement(String routeName, {Object? arguments}) async {
+  Future<dynamic> navigateToReplacement(String routeName,
+      {Object? arguments}) async {
     if (navigator != null) {
       return navigator!.pushReplacementNamed(routeName, arguments: arguments);
     }
@@ -46,8 +47,8 @@ class NavigationService {
   }
 
   Route<dynamic>? getCurrentRoute() {
-    return navigator?.widget.initialRoute != null 
-        ? null 
+    return navigator?.widget.initialRoute != null
+        ? null
         : ModalRoute.of(navigator!.context);
   }
 

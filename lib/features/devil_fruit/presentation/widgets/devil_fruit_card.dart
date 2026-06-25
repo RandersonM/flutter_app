@@ -1,3 +1,4 @@
+import 'package:phosphor_flutter/phosphor_flutter.dart';
 // Developed by Randerson Mayllon
 // Copyright © 2022.
 
@@ -72,9 +73,7 @@ class DevilFruitCard extends StatelessWidget {
                           ],
                         ),
                       ),
-
                       const SizedBox(height: Constants.margin),
-
                       Expanded(
                         child: Container(
                           width: double.infinity,
@@ -122,7 +121,6 @@ class DevilFruitCard extends StatelessWidget {
                   ),
                 ),
               ),
-
               Expanded(
                 flex: 2,
                 child: Container(
@@ -250,13 +248,13 @@ class DevilFruitCard extends StatelessWidget {
   IconData _getTypeIcon() {
     switch (devilFruit.type.toLowerCase()) {
       case 'logia':
-        return Icons.water_drop;
+        return PhosphorIconsRegular.drop;
       case 'paramecia':
-        return Icons.auto_fix_high;
+        return PhosphorIconsRegular.magicWand;
       case 'zoan':
-        return Icons.pets;
+        return PhosphorIconsRegular.pawPrint;
       default:
-        return Icons.help;
+        return PhosphorIconsRegular.question;
     }
   }
 }

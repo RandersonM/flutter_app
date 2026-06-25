@@ -1,9 +1,12 @@
+import 'package:opfan/shared/widgets/atoms/app_icon.dart';
+import 'package:phosphor_flutter/phosphor_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:opfan/core/models/nutrition_calculation_model.dart';
 import 'package:opfan/l10n/app_localizations.dart';
 import 'package:opfan/shared/utils/constants.dart';
 import 'package:opfan/shared/utils/app_routes.dart';
+import 'package:opfan/shared/widgets/atoms/app_button.dart';
 
 // ─── Design tokens ────────────────────────────────────────────────────────────
 // 90% neutral + 8% violet + 2% amber
@@ -49,7 +52,8 @@ class NutritionResults extends StatelessWidget {
         _buildMetricCard(
           context,
           AppLocalizations.of(context)!.bmrTitle,
-          AppLocalizations.of(context)!.kcalPerDay(results.bmr.toStringAsFixed(0)),
+          AppLocalizations.of(context)!
+              .kcalPerDay(results.bmr.toStringAsFixed(0)),
           AppLocalizations.of(context)!.bmrSubtitle,
           valueColor: null,
           cardColor: cardColor,
@@ -58,7 +62,8 @@ class NutritionResults extends StatelessWidget {
         _buildMetricCard(
           context,
           AppLocalizations.of(context)!.tdeeTitle,
-          AppLocalizations.of(context)!.kcalPerDay(results.tdee.toStringAsFixed(0)),
+          AppLocalizations.of(context)!
+              .kcalPerDay(results.tdee.toStringAsFixed(0)),
           AppLocalizations.of(context)!.tdeeSubtitle,
           valueColor: _kAmber,
           cardColor: cardColor,
@@ -80,19 +85,22 @@ class NutritionResults extends StatelessWidget {
         _buildCalorieCard(
           context,
           AppLocalizations.of(context)!.maintainWeight,
-          AppLocalizations.of(context)!.kcalPerDay(results.maintenanceCalories.toStringAsFixed(0)),
+          AppLocalizations.of(context)!
+              .kcalPerDay(results.maintenanceCalories.toStringAsFixed(0)),
           cardColor: cardColor,
         ),
         _buildCalorieCard(
           context,
           AppLocalizations.of(context)!.loseWeight,
-          AppLocalizations.of(context)!.kcalPerDay(results.weightLossCalories.toStringAsFixed(0)),
+          AppLocalizations.of(context)!
+              .kcalPerDay(results.weightLossCalories.toStringAsFixed(0)),
           cardColor: cardColor,
         ),
         _buildCalorieCard(
           context,
           AppLocalizations.of(context)!.gainMuscle,
-          AppLocalizations.of(context)!.kcalPerDay(results.muscleGainCalories.toStringAsFixed(0)),
+          AppLocalizations.of(context)!
+              .kcalPerDay(results.muscleGainCalories.toStringAsFixed(0)),
           cardColor: cardColor,
         ),
 
@@ -204,10 +212,8 @@ class NutritionResults extends StatelessWidget {
               if (isSelected) ...[
                 Transform.rotate(
                   angle: -30 * 3.14159 / 180,
-                  child: SvgPicture.asset(
-                    'assets/svg/sanji-jolly-roger.svg',
-                      width: 20, height: 20
-                  ),
+                  child: SvgPicture.asset('assets/svg/sanji-jolly-roger.svg',
+                      width: 20, height: 20),
                 ),
                 const SizedBox(width: 8),
               ],
@@ -334,7 +340,8 @@ class NutritionResults extends StatelessWidget {
         children: [
           Row(
             children: [
-              const Icon(Icons.restaurant_menu, color: _kAmber, size: 22),
+              const AppIcon(PhosphorIconsRegular.bookOpenText,
+                  color: _kAmber, size: 22),
               const SizedBox(width: 10),
               Text(
                 AppLocalizations.of(context)!.sanjiTipTitle,
@@ -354,35 +361,18 @@ class NutritionResults extends StatelessWidget {
                 ),
           ),
           const SizedBox(height: 16),
-          SizedBox(
-            width: double.infinity,
-            child: ElevatedButton(
-              onPressed: () {
-                Navigator.of(context).pushNamed(
-                  AppRoutes.cookingTips,
-                  arguments: {
-                    'targetCalories': _getTargetCalories(),
-                    'goal': results.goal,
-                  },
-                );
-              },
-              style: ElevatedButton.styleFrom(
-                backgroundColor: _kViolet,
-                foregroundColor: Colors.white,
-                elevation: 0,
-                padding: const EdgeInsets.symmetric(vertical: 14),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(14),
-                ),
-              ),
-              child: Text(
-                AppLocalizations.of(context)!.sanjiTipTitle,
-                style: Theme.of(context).textTheme.labelLarge?.copyWith(
-                      color: Colors.white,
-                      fontWeight: FontWeight.w600,
-                    ),
-              ),
-            ),
+          AppButton(
+            onPressed: () {
+              Navigator.of(context).pushNamed(
+                AppRoutes.cookingTips,
+                arguments: {
+                  'targetCalories': _getTargetCalories(),
+                  'goal': results.goal,
+                },
+              );
+            },
+            label: AppLocalizations.of(context)!.sanjiTipTitle,
+            isFullWidth: true,
           ),
         ],
       ),
@@ -405,7 +395,8 @@ class NutritionResults extends StatelessWidget {
         children: [
           Row(
             children: [
-              const Icon(Icons.restaurant_menu, color: _kViolet, size: 22),
+              const AppIcon(PhosphorIconsRegular.bookOpenText,
+                  color: _kViolet, size: 22),
               const SizedBox(width: 10),
               Expanded(
                 child: Text(
@@ -426,24 +417,13 @@ class NutritionResults extends StatelessWidget {
                 ),
           ),
           const SizedBox(height: 16),
-          SizedBox(
-            width: double.infinity,
-            child: ElevatedButton.icon(
-              onPressed: () {
-                Navigator.of(context).pushNamed(AppRoutes.plateGuide);
-              },
-              icon: const Icon(Icons.visibility, size: 18),
-              label: Text(AppLocalizations.of(context)!.viewPlateGuide),
-              style: ElevatedButton.styleFrom(
-                backgroundColor: _kViolet,
-                foregroundColor: Colors.white,
-                elevation: 0,
-                padding: const EdgeInsets.symmetric(vertical: 12),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(14),
-                ),
-              ),
-            ),
+          AppButton(
+            onPressed: () {
+              Navigator.of(context).pushNamed(AppRoutes.plateGuide);
+            },
+            icon: const AppIcon(PhosphorIconsRegular.eye, size: 18),
+            label: AppLocalizations.of(context)!.viewPlateGuide,
+            isFullWidth: true,
           ),
         ],
       ),
@@ -513,7 +493,8 @@ class NutritionResults extends StatelessWidget {
     }
   }
 
-  String _getLocalizedWaistToHeightCategory(String category, BuildContext context) {
+  String _getLocalizedWaistToHeightCategory(
+      String category, BuildContext context) {
     switch (category) {
       case 'excellent':
         return AppLocalizations.of(context)!.excellent;

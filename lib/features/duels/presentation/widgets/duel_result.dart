@@ -1,3 +1,5 @@
+import 'package:opfan/shared/widgets/atoms/app_icon.dart';
+import 'package:phosphor_flutter/phosphor_flutter.dart';
 // Developed by Randerson Mayllon
 // Copyright © 2022.
 
@@ -23,7 +25,7 @@ class DuelResult extends StatelessWidget {
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
     final theme = Theme.of(context);
-    
+
     return Container(
       padding: const EdgeInsets.all(Constants.margin * 3),
       decoration: BoxDecoration(
@@ -58,17 +60,10 @@ class DuelResult extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Icon(
-                Icons.emoji_events,
+              AppIcon(
+                PhosphorIconsRegular.trophy,
                 color: AppColors.orange[700],
                 size: 40,
-                shadows: [
-                  Shadow(
-                    color: Theme.of(context).colorScheme.tertiary.withValues(alpha: 0.8),
-                    offset: const Offset(2, 2),
-                    blurRadius: 6,
-                  ),
-                ],
               ),
               const SizedBox(width: Constants.margin),
               Text(
@@ -79,7 +74,9 @@ class DuelResult extends StatelessWidget {
                   fontSize: 36,
                   shadows: [
                     Shadow(
-                      color: Theme.of(context).colorScheme.onTertiaryContainer
+                      color: Theme.of(context)
+                          .colorScheme
+                          .onTertiaryContainer
                           .withValues(alpha: 0.8),
                       offset: const Offset(2, 2),
                       blurRadius: 6,
@@ -88,31 +85,25 @@ class DuelResult extends StatelessWidget {
                 ),
               ),
               const SizedBox(width: Constants.margin),
-              Icon(
-                Icons.emoji_events,
+              AppIcon(PhosphorIconsRegular.trophy,
                 color: AppColors.orange[700],
-                size: 40,
-                shadows: [
-                  Shadow(
-                    color: Theme.of(context).colorScheme.onTertiaryContainer
-                        .withValues(alpha: 0.8),
-                    offset: const Offset(2, 2),
-                    blurRadius: 6,
-                  ),
-                ],
+                size: 40
               ),
             ],
           ),
-          
+
           const SizedBox(height: Constants.margin * 2),
-          
+
           Container(
             padding: const EdgeInsets.all(Constants.margin * 2),
             decoration: BoxDecoration(
               color: Colors.white.withValues(alpha: 0.1),
               borderRadius: BorderRadius.circular(Constants.margin * 2),
               border: Border.all(
-                color: Theme.of(context).colorScheme.tertiary.withValues(alpha: 0.5),
+                color: Theme.of(context)
+                    .colorScheme
+                    .tertiary
+                    .withValues(alpha: 0.5),
                 width: 2,
               ),
             ),
@@ -130,7 +121,10 @@ class DuelResult extends StatelessWidget {
                     ),
                     boxShadow: [
                       BoxShadow(
-                        color: Theme.of(context).colorScheme.tertiary.withValues(alpha: 0.6),
+                        color: Theme.of(context)
+                            .colorScheme
+                            .tertiary
+                            .withValues(alpha: 0.6),
                         blurRadius: 20,
                         spreadRadius: 5,
                       ),
@@ -146,9 +140,9 @@ class DuelResult extends StatelessWidget {
                     ),
                   ),
                 ),
-                
+
                 const SizedBox(height: Constants.margin * 1.5),
-                
+
                 // Winner name
                 Text(
                   winner.name,
@@ -165,7 +159,7 @@ class DuelResult extends StatelessWidget {
                   ),
                   textAlign: TextAlign.center,
                 ),
-                
+
                 if (winner.nickname != null) ...[
                   const SizedBox(height: Constants.margin * 0.5),
                   Text(
@@ -187,9 +181,9 @@ class DuelResult extends StatelessWidget {
               ],
             ),
           ),
-          
+
           const SizedBox(height: Constants.margin * 2),
-          
+
           const Text(
             '🎉 🎊 ⭐ 🎊 🎉',
             style: TextStyle(
@@ -197,16 +191,19 @@ class DuelResult extends StatelessWidget {
               letterSpacing: 8,
             ),
           ),
-          
+
           const SizedBox(height: Constants.margin * 2),
-          
+
           Container(
             padding: const EdgeInsets.all(Constants.margin * 1.5),
             decoration: BoxDecoration(
               color: Colors.black.withValues(alpha: 0.3),
               borderRadius: BorderRadius.circular(Constants.margin * 1.5),
               border: Border.all(
-                color: Theme.of(context).colorScheme.tertiary.withValues(alpha: 0.3),
+                color: Theme.of(context)
+                    .colorScheme
+                    .tertiary
+                    .withValues(alpha: 0.3),
               ),
             ),
             child: Text(
@@ -219,9 +216,9 @@ class DuelResult extends StatelessWidget {
               textAlign: TextAlign.center,
             ),
           ),
-          
+
           const SizedBox(height: Constants.margin * 3),
-          
+
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
@@ -233,7 +230,7 @@ class DuelResult extends StatelessWidget {
                     arguments: winner,
                   );
                 },
-                icon: const Icon(Icons.info_outline, size: 20),
+                icon: const AppIcon(PhosphorIconsRegular.info, size: 20),
                 label: Text(l10n.statistics),
                 style: ElevatedButton.styleFrom(
                   backgroundColor: AppColors.blue[500],
@@ -247,10 +244,10 @@ class DuelResult extends StatelessWidget {
                   ),
                 ),
               ),
-              
               ElevatedButton.icon(
                 onPressed: onNewDuel,
-                icon: const Icon(Icons.refresh, size: 20),
+                icon: const AppIcon(PhosphorIconsRegular.arrowsClockwise,
+                    size: 20),
                 label: Text(l10n.newDuel),
                 style: ElevatedButton.styleFrom(
                   backgroundColor: AppColors.green[500],
@@ -279,8 +276,8 @@ class DuelResult extends StatelessWidget {
       "Que batalha épica! ${winner.name} emergiu como o vencedor!",
       "O poder de ${winner.name} foi decisivo nesta luta!",
     ];
-    
+
     final messageIndex = (winner.id?.hashCode ?? 0).abs() % messages.length;
     return messages[messageIndex];
   }
-} 
+}

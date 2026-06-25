@@ -1,3 +1,5 @@
+import 'package:opfan/shared/widgets/atoms/app_icon.dart';
+import 'package:phosphor_flutter/phosphor_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:opfan/l10n/app_localizations.dart';
 import 'package:opfan/core/models/youtube_video_model.dart';
@@ -61,11 +63,12 @@ class _YouTubePlayerScreenState extends State<YouTubePlayerScreen> {
         ),
         actions: [
           IconButton(
-            icon: const Icon(Icons.share),
+            icon: const AppIcon(PhosphorIconsRegular.shareNetwork),
             onPressed: () {
               ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(
-                  content: Text(AppLocalizations.of(context)!.linkLabel(widget.video.youTubeUrl)),
+                  content: Text(AppLocalizations.of(context)!
+                      .linkLabel(widget.video.youTubeUrl)),
                   action: SnackBarAction(
                     label: AppLocalizations.of(context)!.copyAction,
                     onPressed: () {
@@ -122,9 +125,7 @@ class _YouTubePlayerScreenState extends State<YouTubePlayerScreen> {
                         fontWeight: FontWeight.bold,
                       ),
                     ),
-
                     const SizedBox(height: 8),
-
                     Text(
                       'Por: ${widget.video.channelTitle}',
                       style: const TextStyle(
@@ -132,9 +133,7 @@ class _YouTubePlayerScreenState extends State<YouTubePlayerScreen> {
                         fontSize: 14,
                       ),
                     ),
-
                     const SizedBox(height: 16),
-
                     if (widget.video.description.isNotEmpty) ...[
                       const Text(
                         'Descrição:',
@@ -154,9 +153,7 @@ class _YouTubePlayerScreenState extends State<YouTubePlayerScreen> {
                         ),
                       ),
                     ],
-
                     const SizedBox(height: 24),
-
                     Row(
                       children: [
                         Expanded(
@@ -169,7 +166,8 @@ class _YouTubePlayerScreenState extends State<YouTubePlayerScreen> {
                                 ),
                               );
                             },
-                            icon: const Icon(Icons.open_in_new,
+                            icon: const AppIcon(
+                                PhosphorIconsRegular.arrowSquareOut,
                                 color: Colors.red),
                             label: const Text(
                               'Abrir no YouTube',

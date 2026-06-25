@@ -57,7 +57,7 @@ class FuturisticBackground extends StatelessWidget {
                   ),
           ),
         ),
-        
+
         Positioned.fill(
           child: Opacity(
             opacity: opacity,
@@ -71,14 +71,14 @@ class FuturisticBackground extends StatelessWidget {
             ),
           ),
         ),
-        
+
         if (overlayColor != null)
           Container(
             decoration: BoxDecoration(
               color: overlayColor!.withValues(alpha: 0.1),
             ),
           ),
-        
+
         // Conteúdo principal
         child,
       ],
@@ -105,11 +105,12 @@ class AnimatedFuturisticBackground extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  State<AnimatedFuturisticBackground> createState() => _AnimatedFuturisticBackgroundState();
+  State<AnimatedFuturisticBackground> createState() =>
+      _AnimatedFuturisticBackgroundState();
 }
 
-class _AnimatedFuturisticBackgroundState extends State<AnimatedFuturisticBackground>
-    with TickerProviderStateMixin {
+class _AnimatedFuturisticBackgroundState
+    extends State<AnimatedFuturisticBackground> with TickerProviderStateMixin {
   late AnimationController _animationController;
   late Animation<double> _rotationAnimation;
 
@@ -120,7 +121,7 @@ class _AnimatedFuturisticBackgroundState extends State<AnimatedFuturisticBackgro
       duration: widget.animationDuration,
       vsync: this,
     );
-    
+
     _rotationAnimation = Tween<double>(
       begin: 0,
       end: 2 * 3.14159,
@@ -128,7 +129,7 @@ class _AnimatedFuturisticBackgroundState extends State<AnimatedFuturisticBackgro
       parent: _animationController,
       curve: Curves.linear,
     ));
-    
+
     _animationController.repeat();
   }
 
@@ -154,7 +155,6 @@ class _AnimatedFuturisticBackgroundState extends State<AnimatedFuturisticBackgro
       colorScheme.surfaceContainer.withValues(alpha: 0.7),
       colorScheme.surfaceContainer,
     ];
-    
 
     return Stack(
       children: [
@@ -175,8 +175,7 @@ class _AnimatedFuturisticBackgroundState extends State<AnimatedFuturisticBackgro
             );
           },
         ),
-        
-        
+
         // Overlay adicional para melhorar legibilidade
         if (widget.overlayColor != null)
           Container(
@@ -184,10 +183,10 @@ class _AnimatedFuturisticBackgroundState extends State<AnimatedFuturisticBackgro
               color: widget.overlayColor!.withValues(alpha: 0.1),
             ),
           ),
-        
+
         // Conteúdo principal
         widget.child,
       ],
     );
   }
-} 
+}

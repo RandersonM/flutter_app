@@ -36,7 +36,7 @@ class HiveStorageService implements IStorageService {
     Hive.registerAdapter(TodayCharacterAdapter());
     Hive.registerAdapter(UserModelAdapter());
     Hive.registerAdapter(ThemeSettingsAdapter());
-    
+
     Hive.registerAdapter(NamiFinancesModelAdapter());
     Hive.registerAdapter(MonthlyIncomeModelAdapter());
     Hive.registerAdapter(ExpenseModelAdapter());

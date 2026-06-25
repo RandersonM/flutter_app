@@ -1,3 +1,5 @@
+import 'package:opfan/shared/widgets/atoms/app_icon.dart';
+import 'package:phosphor_flutter/phosphor_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:opfan/core/models/one_piece/crew_model.dart';
 import 'package:opfan/shared/utils/constants.dart';
@@ -32,8 +34,8 @@ class CrewBoatSection extends StatelessWidget {
         children: [
           Row(
             children: [
-              Icon(
-                Icons.directions_boat,
+              AppIcon(
+                PhosphorIconsRegular.boat,
                 color: theme.colorScheme.primary,
                 size: 20,
               ),
@@ -48,7 +50,6 @@ class CrewBoatSection extends StatelessWidget {
             ],
           ),
           const SizedBox(height: Constants.margin),
-          
           ClickableImage(
             imageUrl: crew.boatImageUrl!,
             width: double.infinity,
@@ -65,7 +66,6 @@ class CrewBoatSection extends StatelessWidget {
             title: crew.boatName,
             showTitleInDialog: true,
           ),
-          
           if (crew.boatName != null && crew.boatName!.isNotEmpty) ...[
             const SizedBox(height: Constants.margin),
             Container(
@@ -79,8 +79,8 @@ class CrewBoatSection extends StatelessWidget {
               ),
               child: Row(
                 children: [
-                  const Icon(
-                    Icons.label,
+                  const AppIcon(
+                    PhosphorIconsRegular.tag,
                     size: 16,
                   ),
                   const SizedBox(width: 8),
@@ -100,5 +100,4 @@ class CrewBoatSection extends StatelessWidget {
       ),
     );
   }
-
-} 
+}

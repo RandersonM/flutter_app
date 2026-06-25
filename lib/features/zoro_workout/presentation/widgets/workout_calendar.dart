@@ -1,10 +1,11 @@
+import 'package:opfan/shared/widgets/atoms/app_icon.dart';
+import 'package:phosphor_flutter/phosphor_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:opfan/l10n/app_localizations.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:opfan/shared/utils/theme.dart';
 import 'package:opfan/app/di/injection.dart';
 import '../../bloc/index.dart';
-
 
 class WorkoutCalendar extends StatefulWidget {
   const WorkoutCalendar({super.key});
@@ -25,7 +26,7 @@ class _WorkoutCalendarState extends State<WorkoutCalendar> {
     _currentMonth = DateTime.now();
     _bloc = getIt.zoroWorkoutBloc;
     _loadWorkoutDays();
-    
+
     final currentState = _bloc.state;
     if (currentState is ZoroWorkoutLoaded) {
       _loadAssessmentData(currentState);
@@ -37,7 +38,7 @@ class _WorkoutCalendarState extends State<WorkoutCalendar> {
   void _loadAssessmentData(ZoroWorkoutLoaded state) {
     setState(() {
       _monthlyWorkoutDays.clear();
-      
+
       if (state.currentAssessment?.workoutDays != null) {
         final monthKey = state.currentAssessment!.monthYear;
         _monthlyWorkoutDays[monthKey] = state.currentAssessment!.workoutDays!;
@@ -49,7 +50,7 @@ class _WorkoutCalendarState extends State<WorkoutCalendar> {
           _monthlyWorkoutDays[monthKey] = assessment.workoutDays!;
         }
       }
-      
+
       _updateCurrentMonthDays();
     });
   }
@@ -73,7 +74,8 @@ class _WorkoutCalendarState extends State<WorkoutCalendar> {
   }
 
   void _updateCurrentMonthDays() {
-    final monthKey = '${_currentMonth.year}-${_currentMonth.month.toString().padLeft(2, '0')}';
+    final monthKey =
+        '${_currentMonth.year}-${_currentMonth.month.toString().padLeft(2, '0')}';
     setState(() {
       _workoutDays.clear();
       if (_monthlyWorkoutDays.containsKey(monthKey)) {
@@ -84,96 +86,101 @@ class _WorkoutCalendarState extends State<WorkoutCalendar> {
   }
 
   Widget _buildCalendarGrid(BuildContext context) {
-    final daysInMonth = DateTime(_currentMonth.year, _currentMonth.month + 1, 0).day;
-    final firstDayOfMonth = DateTime(_currentMonth.year, _currentMonth.month, 1);
+    final daysInMonth =
+        DateTime(_currentMonth.year, _currentMonth.month + 1, 0).day;
+    final firstDayOfMonth =
+        DateTime(_currentMonth.year, _currentMonth.month, 1);
     final firstWeekday = firstDayOfMonth.weekday;
-    
+
     final List<Widget> calendarDays = [];
-    
+
     final adjustedFirstWeekday = firstWeekday == 7 ? 0 : firstWeekday;
-    
+
     for (int i = 0; i < adjustedFirstWeekday; i++) {
       calendarDays.add(const SizedBox(height: 35));
     }
-    
+
     for (int day = 1; day <= daysInMonth; day++) {
       final isWorkoutDay = _workoutDays.contains(day);
 
-      final isToday = day == DateTime.now().day && 
-                     _currentMonth.month == DateTime.now().month && 
-                     _currentMonth.year == DateTime.now().year;
-      
-      final now = DateTime.now();
-      final isCurrentMonth = _currentMonth.month == now.month && 
-                           _currentMonth.year == now.year;
-      final isEditable = isCurrentMonth && day <= now.day;
-      
+      final isToday = day == DateTime.now().day &&
+          _currentMonth.month == DateTime.now().month &&
+          _currentMonth.year == DateTime.now().year;
 
-      
+      final now = DateTime.now();
+      final isCurrentMonth =
+          _currentMonth.month == now.month && _currentMonth.year == now.year;
+      final isEditable = isCurrentMonth && day <= now.day;
+
       calendarDays.add(
         GestureDetector(
           onTap: isEditable
               ? () {
-            setState(() {
-              if (isWorkoutDay) {
-                _workoutDays.remove(day);
-              } else {
-                _workoutDays.add(day);
-              }
-            });
-            
-            final monthKey = '${_currentMonth.year}-${_currentMonth.month.toString().padLeft(2, '0')}';
-            _monthlyWorkoutDays[monthKey] = _workoutDays.toList();
-            
-            if (_isCurrentMonth()) {
-              _bloc.add(UpdateWorkoutDays(workoutDays: _workoutDays.toList()));
-            }
-          } : null,
-                      child: Container(
-              width: 35,
-              height: 35,
-              margin: const EdgeInsets.all(1),
-              decoration: BoxDecoration(
-                color: isWorkoutDay 
-                  ? Colors.green.shade600 
-                  : isToday 
-                    ? Theme.of(context).colorScheme.primary.withValues(alpha: 0.1)
-                    : isEditable
-                      ? Colors.transparent
-                      : AppColors.grey[700]!,
-                borderRadius: BorderRadius.circular(6),
-                border: Border.all(
-                  color: isToday 
-                    ? Theme.of(context).colorScheme.primary 
-                    : isEditable
-                      ? AppColors.grey[300]!
-                      : AppColors.grey[200]!,
-                  width: isToday ? 2 : 1,
-                ),
-              ),
-            child: Center(
-              child: isWorkoutDay 
-                ? SvgPicture.asset(
-                    'assets/svg/zoro-jolly-roger.svg',
-                    width: 24,
-                    height: 24,
-                  )
-                : Icon(
-                    Icons.fitness_center,
-                    weight: 24,
-                    color: isToday 
-                      ? Theme.of(context).colorScheme.primary
+                  setState(() {
+                    if (isWorkoutDay) {
+                      _workoutDays.remove(day);
+                    } else {
+                      _workoutDays.add(day);
+                    }
+                  });
+
+                  final monthKey =
+                      '${_currentMonth.year}-${_currentMonth.month.toString().padLeft(2, '0')}';
+                  _monthlyWorkoutDays[monthKey] = _workoutDays.toList();
+
+                  if (_isCurrentMonth()) {
+                    _bloc.add(
+                        UpdateWorkoutDays(workoutDays: _workoutDays.toList()));
+                  }
+                }
+              : null,
+          child: Container(
+            width: 35,
+            height: 35,
+            margin: const EdgeInsets.all(1),
+            decoration: BoxDecoration(
+              color: isWorkoutDay
+                  ? Colors.green.shade600
+                  : isToday
+                      ? Theme.of(context)
+                          .colorScheme
+                          .primary
+                          .withValues(alpha: 0.1)
                       : isEditable
-                        ? Theme.of(context).colorScheme.onSecondary
-                        : Colors.grey.shade400,
-                    size: 12,
-                  ),
+                          ? Colors.transparent
+                          : AppColors.grey[700]!,
+              borderRadius: BorderRadius.circular(6),
+              border: Border.all(
+                color: isToday
+                    ? Theme.of(context).colorScheme.primary
+                    : isEditable
+                        ? AppColors.grey[300]!
+                        : AppColors.grey[200]!,
+                width: isToday ? 2 : 1,
+              ),
+            ),
+            child: Center(
+              child: isWorkoutDay
+                  ? SvgPicture.asset(
+                      'assets/svg/zoro-jolly-roger.svg',
+                      width: 24,
+                      height: 24,
+                    )
+                  : AppIcon(
+                      PhosphorIconsRegular.barbell,
+                      size: 24,
+                      color: isToday
+                          ? Theme.of(context).colorScheme.primary
+                          : isEditable
+                              ? Theme.of(context).colorScheme.onSecondary
+                              : Colors.grey.shade400,
+                    ),
             ),
           ),
         ),
       );
     }
-    
+
     return Column(
       children: [
         Row(
@@ -193,10 +200,10 @@ class _WorkoutCalendarState extends State<WorkoutCalendar> {
                       day,
                       textAlign: TextAlign.center,
                       style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                        fontWeight: FontWeight.bold,
-                        color: Colors.grey.shade600,
-                        fontSize: 10,
-                      ),
+                            fontWeight: FontWeight.bold,
+                            color: Colors.grey.shade600,
+                            fontSize: 10,
+                          ),
                     ),
                   ))
               .toList(),
@@ -216,10 +223,9 @@ class _WorkoutCalendarState extends State<WorkoutCalendar> {
   }
 
   bool _isCurrentMonth() {
-    return _currentMonth.month == DateTime.now().month && 
-           _currentMonth.year == DateTime.now().year;
+    return _currentMonth.month == DateTime.now().month &&
+        _currentMonth.year == DateTime.now().year;
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -240,8 +246,8 @@ class _WorkoutCalendarState extends State<WorkoutCalendar> {
                 child: Text(
                   AppLocalizations.of(context)!.workout_calendar_title,
                   style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                    fontWeight: FontWeight.bold,
-                  ),
+                        fontWeight: FontWeight.bold,
+                      ),
                 ),
               ),
               Row(
@@ -250,11 +256,12 @@ class _WorkoutCalendarState extends State<WorkoutCalendar> {
                   IconButton(
                     onPressed: () {
                       setState(() {
-                        _currentMonth = DateTime(_currentMonth.year, _currentMonth.month - 1);
+                        _currentMonth = DateTime(
+                            _currentMonth.year, _currentMonth.month - 1);
                       });
                       _updateCurrentMonthDays();
                     },
-                    icon: const Icon(Icons.chevron_left),
+                    icon: const AppIcon(PhosphorIconsRegular.caretLeft),
                     iconSize: 20,
                   ),
                   Text(
@@ -264,11 +271,12 @@ class _WorkoutCalendarState extends State<WorkoutCalendar> {
                   IconButton(
                     onPressed: () {
                       setState(() {
-                        _currentMonth = DateTime(_currentMonth.year, _currentMonth.month + 1);
+                        _currentMonth = DateTime(
+                            _currentMonth.year, _currentMonth.month + 1);
                       });
                       _updateCurrentMonthDays();
                     },
-                    icon: const Icon(Icons.chevron_right),
+                    icon: const AppIcon(PhosphorIconsRegular.caretRight),
                     iconSize: 20,
                   ),
                 ],
@@ -288,15 +296,16 @@ class _WorkoutCalendarState extends State<WorkoutCalendar> {
               ),
               child: Row(
                 children: [
-                  Icon(Icons.info_outline, color: Colors.orange.shade600, size: 16),
+                  AppIcon(PhosphorIconsRegular.info,
+                      color: Colors.orange.shade600, size: 16),
                   const SizedBox(width: 8),
                   Expanded(
                     child: Text(
                       'Apenas o mês atual permite edição dos dias de exercício',
                       style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                        color: Colors.orange.shade700,
-                        fontSize: 11,
-                      ),
+                            color: Colors.orange.shade700,
+                            fontSize: 11,
+                          ),
                     ),
                   ),
                 ],

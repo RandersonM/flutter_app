@@ -6,9 +6,6 @@ import 'package:equatable/equatable.dart';
 import 'package:opfan/core/models/one_piece/custom_character_model.dart';
 import 'package:opfan/features/home/data/repository/featured_character_repository_interface.dart';
 
-
-
-
 abstract class SearchState extends Equatable {
   const SearchState();
 
@@ -181,13 +178,13 @@ class SearchCubit extends Cubit<SearchState> {
         character.crew!.toLowerCase().contains('straw hat pirates')) {
       return true;
     }
-    
+
     for (String affiliation in character.affiliations) {
       if (affiliation.toLowerCase().contains('straw hat pirates')) {
         return true;
       }
     }
-    
+
     return false;
   }
 

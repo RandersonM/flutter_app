@@ -31,10 +31,10 @@ class SanjiCookingBloc extends Bloc<SanjiCookingEvent, SanjiCookingState> {
     Emitter<SanjiCookingState> emit,
   ) async {
     emit(const SanjiCookingLoading());
-    
+
     try {
       final user = getIt<AuthService>().currentUser;
-      
+
       if (user != null && user.isProfileComplete) {
         final nutritionResults = NutritionCalculationService.calculateNutrition(
           age: user.age!,
@@ -45,23 +45,25 @@ class SanjiCookingBloc extends Bloc<SanjiCookingEvent, SanjiCookingState> {
           activityLevel: user.activityLevel!,
           goal: user.goal!,
         );
-        
+
         emit(SanjiCookingLoaded(
           nutritionResults: nutritionResults,
           hasExistingData: true,
           showForm: false,
         ));
       } else {
-        final existingData = user != null ? {
-          'age': user.age,
-          'gender': user.gender,
-          'weight': user.weightKg,
-          'height': user.heightCm,
-          'waist': user.waistCm,
-          'activityLevel': user.activityLevel,
-          'goal': user.goal,
-        } : <String, dynamic>{};
-        
+        final existingData = user != null
+            ? {
+                'age': user.age,
+                'gender': user.gender,
+                'weight': user.weightKg,
+                'height': user.heightCm,
+                'waist': user.waistCm,
+                'activityLevel': user.activityLevel,
+                'goal': user.goal,
+              }
+            : <String, dynamic>{};
+
         emit(SanjiCookingFormWithData(existingData: existingData));
       }
     } catch (e) {
@@ -74,7 +76,7 @@ class SanjiCookingBloc extends Bloc<SanjiCookingEvent, SanjiCookingState> {
     Emitter<SanjiCookingState> emit,
   ) async {
     emit(const SanjiCookingLoading());
-    
+
     try {
       final nutritionResults = NutritionCalculationService.calculateNutrition(
         age: event.nutritionData['age'],
@@ -85,7 +87,7 @@ class SanjiCookingBloc extends Bloc<SanjiCookingEvent, SanjiCookingState> {
         activityLevel: event.nutritionData['activityLevel'],
         goal: event.nutritionData['goal'],
       );
-      
+
       // Auto-save global profile when calculating
       final user = getIt<AuthService>().currentUser;
       if (user != null) {
@@ -100,7 +102,7 @@ class SanjiCookingBloc extends Bloc<SanjiCookingEvent, SanjiCookingState> {
         );
         getIt<AuthBloc>().add(AuthProfileBodyUpdated(updatedUser: updatedUser));
       }
-      
+
       emit(SanjiCookingLoaded(
         nutritionResults: nutritionResults,
         hasExistingData: false,
@@ -117,7 +119,7 @@ class SanjiCookingBloc extends Bloc<SanjiCookingEvent, SanjiCookingState> {
   ) async {
     try {
       debugPrint('SanjiCookingBloc: Starting _onSaveNutritionData');
-      
+
       final user = getIt<AuthService>().currentUser;
       if (user != null) {
         final updatedUser = user.copyWith(
@@ -131,7 +133,7 @@ class SanjiCookingBloc extends Bloc<SanjiCookingEvent, SanjiCookingState> {
         );
         getIt<AuthBloc>().add(AuthProfileBodyUpdated(updatedUser: updatedUser));
       }
-      
+
       await _workoutService.updateNutritionData(
         gender: event.nutritionData['gender'],
         age: event.nutritionData['age'],
@@ -141,9 +143,9 @@ class SanjiCookingBloc extends Bloc<SanjiCookingEvent, SanjiCookingState> {
         activityLevel: event.nutritionData['activityLevel'],
         goal: event.nutritionData['goal'],
       );
-      
+
       debugPrint('SanjiCookingBloc: Successfully saved nutrition data');
-      
+
       emit(const SanjiCookingLoaded(
         hasExistingData: false,
         showForm: true,
@@ -161,7 +163,7 @@ class SanjiCookingBloc extends Bloc<SanjiCookingEvent, SanjiCookingState> {
   ) async {
     try {
       final user = getIt<AuthService>().currentUser;
-      
+
       if (user != null && user.isProfileComplete) {
         final existingData = {
           'age': user.age,
@@ -172,7 +174,7 @@ class SanjiCookingBloc extends Bloc<SanjiCookingEvent, SanjiCookingState> {
           'activityLevel': user.activityLevel,
           'goal': user.goal,
         };
-        
+
         emit(SanjiCookingFormWithData(existingData: existingData));
       } else {
         emit(const SanjiCookingLoaded(

@@ -28,8 +28,8 @@ class CustomChipSelector extends StatelessWidget {
           Text(
             label,
             style: Theme.of(context).textTheme.titleMedium?.copyWith(
-              fontWeight: FontWeight.w500,
-            ),
+                  fontWeight: FontWeight.w500,
+                ),
           ),
           const SizedBox(height: 8),
           Wrap(
@@ -42,7 +42,8 @@ class CustomChipSelector extends StatelessWidget {
                 selected: isSelected,
                 onSelected: (selected) {
                   if (selected) {
-                    if (maxSelections == null || selectedOptions.length < maxSelections!) {
+                    if (maxSelections == null ||
+                        selectedOptions.length < maxSelections!) {
                       onOptionSelected(option);
                     }
                   } else {
@@ -58,4 +59,4 @@ class CustomChipSelector extends StatelessWidget {
       ),
     );
   }
-} 
+}

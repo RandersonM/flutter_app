@@ -31,8 +31,7 @@ class CalculatorCubit extends Cubit<CalculatorState> {
     }
   }
 
-  bool isOperator(String button) =>
-      ['/', 'x', '-', '+', '='].contains(button);
+  bool isOperator(String button) => ['/', 'x', '-', '+', '='].contains(button);
 
   Color getButtonTextColor(String button) =>
       isOperator(button) ? Colors.white : Colors.black;

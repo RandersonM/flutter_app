@@ -25,8 +25,6 @@ class EnvironmentService {
   String get devilFruitApiUrl => _getString(
       'DEVIL_FRUIT_API_URL', 'https://api.api-onepiece.com/v2/fruits/en');
 
-
-
   String get geminiApiKey => _getString('GEMINI_API_KEY', 'dev_mode');
 
   String get appName => _getString('APP_NAME', 'One Piece Simple App');

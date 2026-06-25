@@ -1,11 +1,16 @@
+import 'package:opfan/shared/widgets/atoms/app_icon.dart';
+import 'package:phosphor_flutter/phosphor_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:opfan/l10n/app_localizations.dart';
 import 'package:opfan/shared/utils/constants.dart';
 import 'package:opfan/shared/widgets/atoms/finance_currency_text_field.dart';
-import 'package:opfan/features/nami_finances/presentation/widgets/add_expense_dialog.dart' as dialog;
+import 'package:opfan/features/nami_finances/presentation/widgets/add_expense_dialog.dart'
+    as dialog;
 import 'package:opfan/features/nami_finances/presentation/widgets/expense_item_widget.dart';
 import 'package:opfan/core/models/nami_finances_model.dart';
 import 'package:uuid/uuid.dart';
+import 'package:opfan/shared/widgets/atoms/app_button.dart';
+
 const _purple = Color(0xFF8B5CF6);
 const _cardBg = Color(0xFF16161C);
 const _errorRed = Color(0xFFEF4444);
@@ -46,44 +51,46 @@ class _FinancesSetupFormState extends State<FinancesSetupForm> {
 
   void _loadExistingData() {
     final finances = widget.existingFinances!;
-    
+
     for (final income in finances.monthlyIncomes) {
-      final controller = TextEditingController(text: _formatCurrencyForDisplay(income.amount));
+      final controller =
+          TextEditingController(text: _formatCurrencyForDisplay(income.amount));
       controller.addListener(_validateForm);
-      
+
       _incomeItems.add(IncomeItem(
         controller: controller,
         description: income.description,
       ));
     }
-    
+
     for (final expense in finances.expenses) {
-      final controller = TextEditingController(text: _formatCurrencyForDisplay(expense.amount));
+      final controller = TextEditingController(
+          text: _formatCurrencyForDisplay(expense.amount));
       controller.addListener(_validateForm);
-      
+
       _expenseItems.add(dialog.ExpenseItem(
         controller: controller,
         category: _mapModelCategoryToDialog(expense.category),
         description: expense.description,
       ));
     }
-    
+
     _savingsController.text = _formatCurrencyForDisplay(finances.savings);
-    
+
     setState(() {});
   }
 
   String _formatCurrencyForDisplay(double amount) {
     final reais = amount.toInt();
     final centavos = ((amount - reais) * 100).round();
-    
+
     if (reais == 0) {
       return '0,${centavos.toString().padLeft(2, '0')}';
     }
-    
+
     final reaisStr = reais.toString();
     final formattedReais = _addThousandSeparator(reaisStr);
-    
+
     return '$formattedReais,${centavos.toString().padLeft(2, '0')}';
   }
 
@@ -98,7 +105,8 @@ class _FinancesSetupFormState extends State<FinancesSetupForm> {
     return buffer.toString();
   }
 
-  dialog.ExpenseCategory _mapModelCategoryToDialog(ExpenseCategory modelCategory) {
+  dialog.ExpenseCategory _mapModelCategoryToDialog(
+      ExpenseCategory modelCategory) {
     switch (modelCategory) {
       case ExpenseCategory.fixed:
         return dialog.ExpenseCategory.fixed;
@@ -118,7 +126,7 @@ class _FinancesSetupFormState extends State<FinancesSetupForm> {
   void _addIncomeItem() {
     final controller = TextEditingController();
     controller.addListener(_validateForm);
-    
+
     setState(() {
       _incomeItems.add(IncomeItem(
         controller: controller,
@@ -166,14 +174,23 @@ class _FinancesSetupFormState extends State<FinancesSetupForm> {
   }
 
   bool get _isFormValid {
-    final hasIncome = _incomeItems.any((item) => 
-        (double.tryParse(item.controller.text.replaceAll(RegExp(r'[^\d]'), '')) ?? 0) > 0);
-    
-    final hasExpense = _expenseItems.any((item) => 
-        (double.tryParse(item.controller.text.replaceAll(RegExp(r'[^\d]'), '')) ?? 0) > 0);
-    
-    final hasSavings = (double.tryParse(_savingsController.text.replaceAll(RegExp(r'[^\d]'), '')) ?? 0) >= 0;
-    
+    final hasIncome = _incomeItems.any((item) =>
+        (double.tryParse(
+                item.controller.text.replaceAll(RegExp(r'[^\d]'), '')) ??
+            0) >
+        0);
+
+    final hasExpense = _expenseItems.any((item) =>
+        (double.tryParse(
+                item.controller.text.replaceAll(RegExp(r'[^\d]'), '')) ??
+            0) >
+        0);
+
+    final hasSavings = (double.tryParse(
+                _savingsController.text.replaceAll(RegExp(r'[^\d]'), '')) ??
+            0) >=
+        0;
+
     return hasIncome && hasExpense && hasSavings;
   }
 
@@ -181,33 +198,46 @@ class _FinancesSetupFormState extends State<FinancesSetupForm> {
     if (!_isFormValid) return;
 
     final incomes = _incomeItems
-        .where((item) => 
-            (double.tryParse(item.controller.text.replaceAll(RegExp(r'[^\d]'), '')) ?? 0) > 0)
+        .where((item) =>
+            (double.tryParse(
+                    item.controller.text.replaceAll(RegExp(r'[^\d]'), '')) ??
+                0) >
+            0)
         .map((item) => MonthlyIncomeModel(
               id: const Uuid().v4(),
-              amount: double.parse(item.controller.text.replaceAll(RegExp(r'[^\d]'), '')) / 100,
+              amount: double.parse(
+                      item.controller.text.replaceAll(RegExp(r'[^\d]'), '')) /
+                  100,
               description: item.description,
             ))
         .toList();
 
     final expenses = _expenseItems
-        .where((item) => 
-            (double.tryParse(item.controller.text.replaceAll(RegExp(r'[^\d]'), '')) ?? 0) > 0)
+        .where((item) =>
+            (double.tryParse(
+                    item.controller.text.replaceAll(RegExp(r'[^\d]'), '')) ??
+                0) >
+            0)
         .map((item) => ExpenseModel(
               id: const Uuid().v4(),
-              amount: double.parse(item.controller.text.replaceAll(RegExp(r'[^\d]'), '')) / 100,
+              amount: double.parse(
+                      item.controller.text.replaceAll(RegExp(r'[^\d]'), '')) /
+                  100,
               category: _mapDialogCategoryToModel(item.category),
               description: item.description,
             ))
         .toList();
 
-    final savings = double.tryParse(_savingsController.text.replaceAll(RegExp(r'[^\d]'), '')) ?? 0.0;
+    final savings = double.tryParse(
+            _savingsController.text.replaceAll(RegExp(r'[^\d]'), '')) ??
+        0.0;
     final savingsAmount = savings / 100;
 
     widget.onSave(incomes, expenses, savingsAmount);
   }
 
-  ExpenseCategory _mapDialogCategoryToModel(dialog.ExpenseCategory dialogCategory) {
+  ExpenseCategory _mapDialogCategoryToModel(
+      dialog.ExpenseCategory dialogCategory) {
     switch (dialogCategory) {
       case dialog.ExpenseCategory.fixed:
         return ExpenseCategory.fixed;
@@ -239,7 +269,7 @@ class _FinancesSetupFormState extends State<FinancesSetupForm> {
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
-    
+
     return Form(
       key: _formKey,
       child: Column(
@@ -259,24 +289,18 @@ class _FinancesSetupFormState extends State<FinancesSetupForm> {
   Widget _buildIncomeSection(AppLocalizations l10n) {
     return _buildSection(
       title: l10n.monthlyIncome,
-      icon: Icons.account_balance_wallet_rounded,
+      icon: PhosphorIconsRegular.bank,
       color: _successGreen,
       children: [
-        SizedBox(
-          width: double.infinity,
-          child: OutlinedButton.icon(
-            onPressed: _addIncomeItem,
-            icon: const Icon(Icons.add_rounded, size: 16),
-            label: Text(l10n.addIncome),
-            style: OutlinedButton.styleFrom(
-              foregroundColor: _successGreen,
-              side: const BorderSide(color: _successGreen, width: 1),
-              padding: const EdgeInsets.symmetric(vertical: 12),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(12),
-              ),
-            ),
-          ),
+        AppButton(
+          onPressed: _addIncomeItem,
+          variant: AppButtonVariant.outline,
+          icon: const AppIcon(PhosphorIconsRegular.plus, size: 16),
+          label: l10n.addIncome,
+          foregroundColor: _successGreen,
+          padding: const EdgeInsets.symmetric(vertical: 12),
+          borderRadius: 12,
+          isFullWidth: true,
         ),
         const SizedBox(height: Constants.margin),
         ..._incomeItems.asMap().entries.map((entry) {
@@ -284,8 +308,7 @@ class _FinancesSetupFormState extends State<FinancesSetupForm> {
           final item = entry.value;
           return Padding(
             padding: EdgeInsets.only(
-                bottom:
-                    index < _incomeItems.length - 1 ? Constants.margin : 0),
+                bottom: index < _incomeItems.length - 1 ? Constants.margin : 0),
             child: Row(
               children: [
                 Expanded(
@@ -296,7 +319,8 @@ class _FinancesSetupFormState extends State<FinancesSetupForm> {
                       if (value == null || value.isEmpty) {
                         return 'Por favor, insira um valor';
                       }
-                      final amount = double.tryParse(value.replaceAll(RegExp(r'[^\d]'), ''));
+                      final amount = double.tryParse(
+                          value.replaceAll(RegExp(r'[^\d]'), ''));
                       if (amount == null || amount <= 0) {
                         return 'Por favor, insira um valor válido';
                       }
@@ -308,7 +332,8 @@ class _FinancesSetupFormState extends State<FinancesSetupForm> {
                   const SizedBox(width: Constants.margin),
                   IconButton(
                     onPressed: () => _removeIncomeItem(index),
-                    icon: const Icon(Icons.remove_circle_outline_rounded, color: _errorRed),
+                    icon: const AppIcon(PhosphorIconsRegular.minusCircle,
+                        color: _errorRed),
                     tooltip: l10n.remove,
                   ),
                 ],
@@ -324,7 +349,7 @@ class _FinancesSetupFormState extends State<FinancesSetupForm> {
   Widget _buildSavingsSection(AppLocalizations l10n) {
     return _buildSection(
       title: l10n.savings,
-      icon: Icons.savings_rounded,
+      icon: PhosphorIconsRegular.piggyBank,
       color: _purple,
       children: [
         FinanceCurrencyTextField(
@@ -334,7 +359,8 @@ class _FinancesSetupFormState extends State<FinancesSetupForm> {
             if (value == null || value.isEmpty) {
               return 'Por favor, insira um valor';
             }
-            final amount = double.tryParse(value.replaceAll(RegExp(r'[^\d]'), ''));
+            final amount =
+                double.tryParse(value.replaceAll(RegExp(r'[^\d]'), ''));
             if (amount == null || amount < 0) {
               return 'Por favor, insira um valor válido';
             }
@@ -348,24 +374,18 @@ class _FinancesSetupFormState extends State<FinancesSetupForm> {
   Widget _buildExpensesSection(AppLocalizations l10n) {
     return _buildSection(
       title: l10n.expenses,
-      icon: Icons.payments_rounded,
+      icon: PhosphorIconsRegular.money,
       color: _errorRed,
       children: [
-                SizedBox(
-          width: double.infinity,
-          child: OutlinedButton.icon(
-            onPressed: _showAddExpenseDialog,
-            icon: const Icon(Icons.add_rounded, size: 16),
-            label: Text(l10n.addExpense),
-            style: OutlinedButton.styleFrom(
-              foregroundColor: _errorRed,
-              side: const BorderSide(color: _errorRed, width: 1),
-              padding: const EdgeInsets.symmetric(vertical: 12),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(12),
-              ),
-            ),
-          ),
+        AppButton(
+          onPressed: _showAddExpenseDialog,
+          variant: AppButtonVariant.outline,
+          icon: const AppIcon(PhosphorIconsRegular.plus, size: 16),
+          label: l10n.addExpense,
+          foregroundColor: _errorRed,
+          padding: const EdgeInsets.symmetric(vertical: 12),
+          borderRadius: 12,
+          isFullWidth: true,
         ),
         const SizedBox(height: Constants.margin),
         ..._expenseItems.asMap().entries.map((entry) {
@@ -388,21 +408,15 @@ class _FinancesSetupFormState extends State<FinancesSetupForm> {
   }
 
   Widget _buildSaveButton(AppLocalizations l10n) {
-    return SizedBox(
-      width: double.infinity,
-      child: FilledButton.icon(
-        onPressed: _isFormValid ? _saveFinances : null,
-        icon: const Icon(Icons.save_rounded, size: 18),
-        label: Text(l10n.save),
-        style: FilledButton.styleFrom(
-          backgroundColor: _purple,
-          foregroundColor: Colors.white,
-          padding: const EdgeInsets.symmetric(vertical: 16),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(16),
-          ),
-        ),
-      ),
+    return AppButton(
+      onPressed: _isFormValid ? _saveFinances : null,
+      icon: const AppIcon(PhosphorIconsRegular.floppyDisk, size: 18),
+      label: l10n.save,
+      backgroundColor: _purple,
+      foregroundColor: Colors.white,
+      padding: const EdgeInsets.symmetric(vertical: 16),
+      borderRadius: 16,
+      isFullWidth: true,
     );
   }
 
@@ -459,5 +473,3 @@ class IncomeItem {
     required this.description,
   });
 }
-
-

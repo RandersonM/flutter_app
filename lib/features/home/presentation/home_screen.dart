@@ -1,14 +1,16 @@
+import 'package:opfan/shared/widgets/atoms/app_icon.dart';
+import 'package:phosphor_flutter/phosphor_flutter.dart';
 // Developed by Randerson Mayllon
 // Copyright © 2022.
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:opfan/core/models/one_piece/custom_character_model.dart';
 import 'package:opfan/app/di/injection.dart';
 import 'package:opfan/l10n/app_localizations.dart';
 import 'package:opfan/shared/widgets/molecules/statistics_grid.dart';
 import 'package:opfan/shared/widgets/organisms/bottom_navigation.dart';
+import 'package:opfan/shared/widgets/atoms/app_button.dart';
 import 'package:opfan/features/home/presentation/widgets/dynamic_banner.dart';
 import 'package:opfan/features/home/presentation/widgets/character_info_card.dart';
 import 'package:opfan/features/home/presentation/widgets/home_app_bar.dart';
@@ -27,7 +29,7 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   final double videoBannerHeight = 250;
-  
+
   @override
   Widget build(BuildContext context) {
     return MultiBlocProvider(
@@ -90,8 +92,8 @@ class _HomeScreenState extends State<HomeScreen> {
                           padding: const EdgeInsets.all(Constants.margin),
                           child: Row(
                             children: [
-                              Icon(
-                                Icons.login,
+                              AppIcon(
+                                PhosphorIconsRegular.signIn,
                                 color: Theme.of(context).colorScheme.primary,
                                 size: 20,
                               ),
@@ -130,8 +132,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                   ],
                                 ),
                               ),
-                              Icon(
-                                Icons.arrow_forward_ios,
+                              AppIcon(
+                                PhosphorIconsRegular.caretRight,
                                 color: Theme.of(context).colorScheme.primary,
                                 size: 16,
                               ),
@@ -172,7 +174,12 @@ class _HomeScreenState extends State<HomeScreen> {
                               spacing: Constants.margin,
                               children: [
                                 Expanded(
-                                  child: OutlinedButton.icon(
+                                  child: AppButton(
+                                    label: AppLocalizations.of(context)!
+                                        .selectCharacter,
+                                    icon: const AppIcon(
+                                        PhosphorIconsRegular.magnifyingGlass),
+                                    variant: AppButtonVariant.tertiary,
                                     onPressed: state is HomeLoading
                                         ? null
                                         : () async {
@@ -182,7 +189,6 @@ class _HomeScreenState extends State<HomeScreen> {
                                               context,
                                               AppRoutes.characterSelection,
                                             );
-
                                             if (selectedCharacter != null &&
                                                 context.mounted) {
                                               context.read<HomeBloc>().add(
@@ -190,29 +196,22 @@ class _HomeScreenState extends State<HomeScreen> {
                                                       selectedCharacter));
                                             }
                                           },
-                                    icon: const Icon(Icons.person_search),
-                                    label: Text(AppLocalizations.of(context)!
-                                        .selectCharacter),
                                   ),
                                 ),
                                 Expanded(
-                                  child: ElevatedButton.icon(
+                                  child: AppButton(
+                                    label: AppLocalizations.of(context)!
+                                        .randomCharacter,
+                                    icon: const AppIcon(
+                                        PhosphorIconsRegular.shuffle),
+                                    variant: AppButtonVariant.primary,
+                                    isLoading: state is HomeLoading,
                                     onPressed: state is HomeLoading
                                         ? null
                                         : () {
                                             context.read<HomeBloc>().add(
                                                 const LoadRandomCharacter());
                                           },
-                                    icon: state is HomeLoading
-                                        ? const SizedBox(
-                                            width: 16,
-                                            height: 16,
-                                            child: CircularProgressIndicator(
-                                                strokeWidth: 2),
-                                          )
-                                        : const Icon(Icons.shuffle),
-                                    label: Text(AppLocalizations.of(context)!
-                                        .randomCharacter),
                                   ),
                                 ),
                               ],
@@ -253,8 +252,8 @@ class _HomeScreenState extends State<HomeScreen> {
           padding: const EdgeInsets.all(Constants.margin),
           child: Column(
             children: [
-              const Icon(
-                Icons.error_outline,
+              const AppIcon(
+                PhosphorIconsRegular.warningCircle,
                 size: 48,
                 color: Colors.red,
               ),
@@ -282,13 +281,14 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
       );
     }
-    
+
     if (state is HomeLoaded) {
       final character = state.featuredCharacter;
       return CharacterInfoCard(
         characterName: character.name,
         characterBounty: '฿${Constants.formatBounty(character.bounty)}',
         characterImage: character.image,
+        characterDescription: character.description,
         onTap: () => Navigator.pushNamed(
           context,
           AppRoutes.characterDetails,
@@ -317,7 +317,7 @@ class _HomeScreenState extends State<HomeScreen> {
           StatisticData(
             label: AppLocalizations.of(context)!.crew(0),
             value: character.crew ?? 'N/A',
-            icon: FontAwesomeIcons.ship,
+            icon: PhosphorIconsRegular.boat,
           ),
           StatisticData(
             label:
@@ -335,7 +335,7 @@ class _HomeScreenState extends State<HomeScreen> {
             icon:
                 character.devilFruit != null && character.devilFruit!.isNotEmpty
                     ? null
-                    : FontAwesomeIcons.personSwimming,
+                    : PhosphorIconsRegular.swimmingPool,
           ),
           StatisticData(
             label: AppLocalizations.of(context)!.signo,
@@ -343,7 +343,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 ? ZodiacIcons.getLocalizedZodiacSign(context, character.signo!)
                 : 'N/A',
             svgPath: zodiacIconPath,
-            icon: zodiacIconPath == null ? Icons.star : null,
+            icon: zodiacIconPath == null ? PhosphorIconsRegular.star : null,
           ),
         ],
       );
@@ -355,7 +355,7 @@ class _HomeScreenState extends State<HomeScreen> {
         StatisticData(
           label: AppLocalizations.of(context)!.status,
           value: '...',
-          icon: Icons.flag,
+          icon: PhosphorIconsRegular.flag,
         ),
         StatisticData(
           label: AppLocalizations.of(context)!.crew(0),
@@ -365,7 +365,7 @@ class _HomeScreenState extends State<HomeScreen> {
         StatisticData(
           label: AppLocalizations.of(context)!.signo,
           value: '...',
-          icon: Icons.star,
+          icon: PhosphorIconsRegular.star,
         ),
       ],
     );

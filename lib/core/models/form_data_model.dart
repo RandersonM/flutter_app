@@ -22,7 +22,8 @@ class FormDataModel {
   });
 
   // Create from Firestore document
-  factory FormDataModel.fromFirestore(Map<String, dynamic> data, String documentId) {
+  factory FormDataModel.fromFirestore(
+      Map<String, dynamic> data, String documentId) {
     return FormDataModel(
       id: documentId,
       userId: data['userId'] as String?,
@@ -30,11 +31,11 @@ class FormDataModel {
       email: data['email'] as String,
       phone: data['phone'] as String?,
       description: data['description'] as String?,
-      createdAt: data['createdAt'] != null 
-          ? (data['createdAt'] as Timestamp).toDate() 
+      createdAt: data['createdAt'] != null
+          ? (data['createdAt'] as Timestamp).toDate()
           : null,
-      updatedAt: data['updatedAt'] != null 
-          ? (data['updatedAt'] as Timestamp).toDate() 
+      updatedAt: data['updatedAt'] != null
+          ? (data['updatedAt'] as Timestamp).toDate()
           : null,
     );
   }
@@ -97,4 +98,4 @@ class FormDataModel {
         phone.hashCode ^
         description.hashCode;
   }
-} 
+}

@@ -25,11 +25,11 @@ class ZoroWorkoutBloc extends Bloc<ZoroWorkoutEvent, ZoroWorkoutState> {
     Emitter<ZoroWorkoutState> emit,
   ) async {
     emit(const ZoroWorkoutLoading());
-    
+
     try {
       final currentAssessment = await _service.getCurrentUserAssessment();
       final assessmentHistory = await _service.getUserAssessmentHistory();
-      
+
       emit(ZoroWorkoutLoaded(
         currentAssessment: currentAssessment,
         assessmentHistory: assessmentHistory,
@@ -66,7 +66,8 @@ class ZoroWorkoutBloc extends Bloc<ZoroWorkoutEvent, ZoroWorkoutState> {
           heightCm: event.healthResults['height'] as double?,
           weightKg: event.healthResults['weight'] as double?,
           waistCm: event.healthResults['waist'] as double?,
-          activityLevel: event.healthResults['activity_level'] as String? ?? user.activityLevel,
+          activityLevel: event.healthResults['activity_level'] as String? ??
+              user.activityLevel,
           goal: event.healthResults['goal'] as String? ?? user.goal,
         );
         getIt<AuthBloc>().add(AuthProfileBodyUpdated(updatedUser: updatedUser));
@@ -86,7 +87,8 @@ class ZoroWorkoutBloc extends Bloc<ZoroWorkoutEvent, ZoroWorkoutState> {
         healthScore: event.healthResults['health_score'] as double?,
         workoutDaysGoal: event.healthResults['workout_days_goal'] as int?,
         workoutDays: event.healthResults['workout_days'] as List<int>?,
-        activityLevel: event.healthResults['activity_level'] as String? ?? user?.activityLevel,
+        activityLevel: event.healthResults['activity_level'] as String? ??
+            user?.activityLevel,
         goal: event.healthResults['goal'] as String? ?? user?.goal,
       );
 
@@ -134,15 +136,14 @@ class ZoroWorkoutBloc extends Bloc<ZoroWorkoutEvent, ZoroWorkoutState> {
     try {
       final currentAssessment = await _service.getCurrentUserAssessment();
       if (currentAssessment == null) {
-        emit(const ZoroWorkoutError(
-            message: 'noAssessmentFound'));
+        emit(const ZoroWorkoutError(message: 'noAssessmentFound'));
         return;
       }
 
       await _service.updateWorkoutDays(event.workoutDays);
-      
+
       final updatedAssessment = await _service.getCurrentUserAssessment();
-      
+
       emit(ZoroWorkoutLoaded(
         currentAssessment: updatedAssessment,
         assessmentHistory: await _service.getUserAssessmentHistory(),
@@ -155,8 +156,6 @@ class ZoroWorkoutBloc extends Bloc<ZoroWorkoutEvent, ZoroWorkoutState> {
       emit(ZoroWorkoutError(message: 'Error updating workout days: $e'));
     }
   }
-
-
 
   Future<void> _onSaveWorkoutPlan(
     SaveWorkoutPlan event,
@@ -190,13 +189,13 @@ class ZoroWorkoutBloc extends Bloc<ZoroWorkoutEvent, ZoroWorkoutState> {
 
   double _calculateProgress(WorkoutAssessmentModel? assessment) {
     if (assessment == null || assessment.workoutDaysGoal == null) return 0.0;
-    
-    return 0.0; 
+
+    return 0.0;
   }
 
   int _calculateRemainingDays(WorkoutAssessmentModel? assessment) {
     if (assessment == null || assessment.workoutDaysGoal == null) return 0;
-    
-    return 0; 
+
+    return 0;
   }
 }

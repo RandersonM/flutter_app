@@ -1,3 +1,5 @@
+import 'package:opfan/shared/widgets/atoms/app_icon.dart';
+import 'package:phosphor_flutter/phosphor_flutter.dart';
 // Developed by Randerson Mayllon
 // Copyright © 2022.
 
@@ -16,7 +18,7 @@ class CharacterSelectionScreen extends StatelessWidget {
       appBar: DefaultAppBar(
         title: Text(AppLocalizations.of(context)!.selectCharacter),
         leading: IconButton(
-          icon: const Icon(Icons.close),
+          icon: const AppIcon(PhosphorIconsRegular.x),
           onPressed: () => Navigator.of(context).pop(),
         ),
       ),

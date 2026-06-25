@@ -27,4 +27,4 @@ class EditCrewFailure extends EditCrewState {
 
   @override
   List<Object?> get props => [error];
-} 
+}

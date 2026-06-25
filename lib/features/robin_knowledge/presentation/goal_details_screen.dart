@@ -1,5 +1,6 @@
+import 'package:opfan/shared/widgets/atoms/app_icon.dart';
+import 'package:phosphor_flutter/phosphor_flutter.dart';
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:intl/intl.dart';
 import 'package:opfan/core/models/goal_model.dart';
 import 'package:opfan/app/di/injection.dart';
@@ -8,7 +9,6 @@ import 'package:opfan/shared/utils/theme.dart';
 import 'package:opfan/features/robin_knowledge/presentation/widgets/update_progress_dialog.dart';
 import 'package:opfan/shared/widgets/molecules/default_app_bar.dart';
 import 'package:opfan/l10n/app_localizations.dart';
-
 
 class GoalDetailsScreen extends StatelessWidget {
   final GoalModel goal;
@@ -65,9 +65,10 @@ class GoalDetailsScreen extends StatelessWidget {
                     children: [
                       Text(
                         goal.title,
-                        style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                          fontWeight: FontWeight.bold,
-                        ),
+                        style:
+                            Theme.of(context).textTheme.headlineSmall?.copyWith(
+                                  fontWeight: FontWeight.bold,
+                                ),
                       ),
                       const SizedBox(height: 4),
                       _buildStatusChip(context),
@@ -153,18 +154,18 @@ class GoalDetailsScreen extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                            Text(
-              AppLocalizations.of(context)!.progress,
-              style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                fontWeight: FontWeight.bold,
-              ),
-            ),
+                Text(
+                  AppLocalizations.of(context)!.progress,
+                  style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                        fontWeight: FontWeight.bold,
+                      ),
+                ),
                 Text(
                   '${goal.progress.toInt()}%',
                   style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                    fontWeight: FontWeight.bold,
-                    color: Theme.of(context).colorScheme.primary,
-                  ),
+                        fontWeight: FontWeight.bold,
+                        color: Theme.of(context).colorScheme.primary,
+                      ),
                 ),
               ],
             ),
@@ -200,7 +201,9 @@ class GoalDetailsScreen extends StatelessWidget {
     final isDisabled = newProgress == goal.progress;
 
     return ElevatedButton(
-      onPressed: isDisabled ? null : () => _showUpdateProgressDialog(context, increment),
+      onPressed: isDisabled
+          ? null
+          : () => _showUpdateProgressDialog(context, increment),
       style: ElevatedButton.styleFrom(
         padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
         minimumSize: const Size(60, 36),
@@ -224,8 +227,9 @@ class GoalDetailsScreen extends StatelessWidget {
     if (result != null) {
       final newProgress = result['progress'] as double;
       final notes = result['notes'] as String;
-      
-      getIt.robinKnowledgeBloc.add(UpdateGoalProgress(goal.id, newProgress, notes: notes));
+
+      getIt.robinKnowledgeBloc
+          .add(UpdateGoalProgress(goal.id, newProgress, notes: notes));
       if (context.mounted) {
         Navigator.pop(context);
       }
@@ -244,20 +248,20 @@ class GoalDetailsScreen extends StatelessWidget {
             Text(
               AppLocalizations.of(context)!.details,
               style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                fontWeight: FontWeight.bold,
-              ),
+                    fontWeight: FontWeight.bold,
+                  ),
             ),
             const SizedBox(height: 16),
             _buildDetailRow(
               context,
-              FontAwesomeIcons.calendar,
+              PhosphorIconsRegular.calendar,
               AppLocalizations.of(context)!.creationDate,
               dateFormat.format(goal.createdAt),
             ),
             const SizedBox(height: 8),
             _buildDetailRow(
               context,
-              FontAwesomeIcons.clock,
+              PhosphorIconsRegular.clock,
               AppLocalizations.of(context)!.deadline,
               dateFormat.format(goal.deadline),
               isOverdue: goal.isOverdue,
@@ -265,7 +269,7 @@ class GoalDetailsScreen extends StatelessWidget {
             const SizedBox(height: 8),
             _buildDetailRow(
               context,
-              FontAwesomeIcons.tag,
+              PhosphorIconsRegular.tag,
               AppLocalizations.of(context)!.category,
               _getCategoryName(context, goal.category),
             ),
@@ -293,17 +297,17 @@ class GoalDetailsScreen extends StatelessWidget {
         Text(
           '$label: ',
           style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-            color: Colors.grey[600],
-            fontWeight: FontWeight.w500,
-          ),
+                color: Colors.grey[600],
+                fontWeight: FontWeight.w500,
+              ),
         ),
         Expanded(
           child: Text(
             value,
             style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-              color: isOverdue ? Colors.red : null,
-              fontWeight: FontWeight.w500,
-            ),
+                  color: isOverdue ? Colors.red : null,
+                  fontWeight: FontWeight.w500,
+                ),
           ),
         ),
       ],
@@ -319,8 +323,8 @@ class GoalDetailsScreen extends StatelessWidget {
           children: [
             Row(
               children: [
-                Icon(
-                  FontAwesomeIcons.noteSticky,
+                AppIcon(
+                  PhosphorIconsRegular.note,
                   size: 16,
                   color: Colors.grey[600],
                 ),
@@ -328,8 +332,8 @@ class GoalDetailsScreen extends StatelessWidget {
                 Text(
                   AppLocalizations.of(context)!.notes,
                   style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                    fontWeight: FontWeight.bold,
-                  ),
+                        fontWeight: FontWeight.bold,
+                      ),
                 ),
               ],
             ),
@@ -353,8 +357,8 @@ class GoalDetailsScreen extends StatelessWidget {
           children: [
             Row(
               children: [
-                Icon(
-                  FontAwesomeIcons.tags,
+                AppIcon(
+                  PhosphorIconsRegular.tag,
                   size: 16,
                   color: Colors.grey[600],
                 ),
@@ -362,8 +366,8 @@ class GoalDetailsScreen extends StatelessWidget {
                 Text(
                   AppLocalizations.of(context)!.tags,
                   style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                    fontWeight: FontWeight.bold,
-                  ),
+                        fontWeight: FontWeight.bold,
+                      ),
                 ),
               ],
             ),
@@ -374,7 +378,10 @@ class GoalDetailsScreen extends StatelessWidget {
               children: goal.tags.map((tag) {
                 return Chip(
                   label: Text(tag),
-                  backgroundColor: Theme.of(context).colorScheme.primary.withValues(alpha: 0.1),
+                  backgroundColor: Theme.of(context)
+                      .colorScheme
+                      .primary
+                      .withValues(alpha: 0.1),
                   labelStyle: TextStyle(
                     color: Theme.of(context).colorScheme.primary,
                     fontSize: 12,
@@ -391,17 +398,17 @@ class GoalDetailsScreen extends StatelessWidget {
   IconData _getCategoryIcon(GoalCategory category) {
     switch (category) {
       case GoalCategory.study:
-        return FontAwesomeIcons.book;
+        return PhosphorIconsRegular.book;
       case GoalCategory.work:
-        return FontAwesomeIcons.briefcase;
+        return PhosphorIconsRegular.briefcase;
       case GoalCategory.personal:
-        return FontAwesomeIcons.user;
+        return PhosphorIconsRegular.user;
       case GoalCategory.health:
-        return FontAwesomeIcons.heart;
+        return PhosphorIconsRegular.heart;
       case GoalCategory.finance:
-        return FontAwesomeIcons.coins;
+        return PhosphorIconsRegular.coins;
       case GoalCategory.other:
-        return FontAwesomeIcons.star;
+        return PhosphorIconsRegular.star;
     }
   }
 

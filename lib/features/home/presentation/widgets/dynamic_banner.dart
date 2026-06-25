@@ -23,7 +23,7 @@ class DynamicBanner extends StatelessWidget {
     if (state is HomeLoaded) {
       final homeState = state as HomeLoaded;
       final character = homeState.featuredCharacter;
-      
+
       if (homeState.isPlayingVideo && homeState.currentVideo != null) {
         return InlineYouTubePlayer(
           video: homeState.currentVideo!,
@@ -91,4 +91,4 @@ class DynamicBanner extends StatelessWidget {
       ),
     );
   }
-} 
+}

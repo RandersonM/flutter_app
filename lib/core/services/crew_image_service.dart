@@ -36,7 +36,8 @@ class CrewImageService {
       description: description,
     );
 
-    debugPrint('Crew Image Service: Generating Jolly Roger with prompt: $enhancedPrompt');
+    debugPrint(
+        'Crew Image Service: Generating Jolly Roger with prompt: $enhancedPrompt');
 
     final imageUrl = await _geminiService.generateImage(prompt: enhancedPrompt);
 
@@ -45,8 +46,10 @@ class CrewImageService {
       return imageUrl;
     }
 
-    debugPrint('Crew Image Service: Jolly Roger generation failed or in dev mode, returning fallback');
-    return await _getJollyRogerFallbackImage(crewName, prompt, tags, description);
+    debugPrint(
+        'Crew Image Service: Jolly Roger generation failed or in dev mode, returning fallback');
+    return await _getJollyRogerFallbackImage(
+        crewName, prompt, tags, description);
   }
 
   Future<String?> generateBoatImage({
@@ -67,7 +70,8 @@ class CrewImageService {
       description: description,
     );
 
-    debugPrint('Crew Image Service: Generating Boat with prompt: $enhancedPrompt');
+    debugPrint(
+        'Crew Image Service: Generating Boat with prompt: $enhancedPrompt');
 
     final imageUrl = await _geminiService.generateImage(prompt: enhancedPrompt);
 
@@ -76,7 +80,8 @@ class CrewImageService {
       return imageUrl;
     }
 
-    debugPrint('Crew Image Service: Boat generation failed or in dev mode, returning fallback');
+    debugPrint(
+        'Crew Image Service: Boat generation failed or in dev mode, returning fallback');
     return await _getBoatFallbackImage(crewName, prompt, tags, description);
   }
 
@@ -87,7 +92,7 @@ class CrewImageService {
     String? description,
   }) {
     final basePrompt = prompt.isNotEmpty ? prompt : 'pirate flag';
-    
+
     final List<String> promptParts = [
       basePrompt,
       'crew name: $crewName',
@@ -125,7 +130,7 @@ class CrewImageService {
     String? description,
   }) {
     final basePrompt = prompt.isNotEmpty ? prompt : 'pirate ship';
-    
+
     final List<String> promptParts = [
       basePrompt,
       'crew name: $crewName',
@@ -165,9 +170,9 @@ class CrewImageService {
     String? description,
   ) async {
     await Future.delayed(const Duration(milliseconds: 800));
-    
+
     final random = Random();
-    
+
     final colors = [
       ['000000', 'FFFFFF'], // Preto e branco - Clássico
       ['8B0000', 'FFFFFF'], // Vermelho escuro - Sangue
@@ -178,26 +183,27 @@ class CrewImageService {
       ['8B4513', 'FFFFFF'], // Marrom - Madeira
       ['191970', 'FFFFFF'], // Azul marinho - Oceano
     ];
-    
+
     int colorIndex = 0;
     final promptLower = prompt.toLowerCase();
-    
+
     if (promptLower.contains('sangue') || promptLower.contains('blood')) {
-      colorIndex = 1; 
+      colorIndex = 1;
     } else if (promptLower.contains('mar') || promptLower.contains('sea')) {
-      colorIndex = 2; 
-    } else if (promptLower.contains('mistério') || promptLower.contains('mystery')) {
-      colorIndex = 3; 
+      colorIndex = 2;
+    } else if (promptLower.contains('mistério') ||
+        promptLower.contains('mystery')) {
+      colorIndex = 3;
     } else if (promptLower.contains('fogo') || promptLower.contains('fire')) {
-      colorIndex = 4; 
+      colorIndex = 4;
     } else {
       colorIndex = random.nextInt(colors.length);
     }
-    
+
     final colorPair = colors[colorIndex];
     final bgColor = colorPair[0];
     final textColor = colorPair[1];
-    
+
     final skullElements = [
       '💀', // Caveira
       '☠️', // Caveira e ossos cruzados
@@ -206,45 +212,49 @@ class CrewImageService {
       '🗡️', // Espada
       '⚔️', // Espadas cruzadas
     ];
-    
+
     List<String> selectedElements = [];
-    
+
     if (promptLower.contains('caveira') || promptLower.contains('skull')) {
       selectedElements.addAll(['💀', '☠️']);
-    } else if (promptLower.contains('espada') || promptLower.contains('sword')) {
+    } else if (promptLower.contains('espada') ||
+        promptLower.contains('sword')) {
       selectedElements.addAll(['🗡️', '⚔️']);
-    } else if (promptLower.contains('âncora') || promptLower.contains('anchor')) {
+    } else if (promptLower.contains('âncora') ||
+        promptLower.contains('anchor')) {
       selectedElements.addAll(['⚓', '🏴‍☠️']);
     } else {
       selectedElements = skullElements;
     }
-    
+
     if (tags != null && tags.isNotEmpty) {
       for (final tag in tags) {
         final tagLower = tag.toLowerCase();
         if (tagLower.contains('pirata') || tagLower.contains('pirate')) {
           selectedElements.add('🏴‍☠️');
-        } else if (tagLower.contains('guerreiro') || tagLower.contains('warrior')) {
+        } else if (tagLower.contains('guerreiro') ||
+            tagLower.contains('warrior')) {
           selectedElements.add('⚔️');
-        } else if (tagLower.contains('navegador') || tagLower.contains('navigator')) {
+        } else if (tagLower.contains('navegador') ||
+            tagLower.contains('navigator')) {
           selectedElements.add('⚓');
         }
       }
     }
-    
+
     selectedElements.shuffle();
     final finalElements = selectedElements.take(2 + random.nextInt(2)).toList();
-    
+
     final displayName = crewName.isNotEmpty ? crewName : 'Tripulação';
     final elementText = finalElements.join(' ');
-    
+
     String extraInfo = '';
     if (tags != null && tags.isNotEmpty) {
       extraInfo += ' | ${tags.join(', ')}';
     }
-    
+
     final fullText = '$elementText $displayName$extraInfo $elementText';
-    
+
     return 'https://via.placeholder.com/512x512/$bgColor/$textColor?text=${Uri.encodeComponent(fullText)}';
   }
 
@@ -255,9 +265,9 @@ class CrewImageService {
     String? description,
   ) async {
     await Future.delayed(const Duration(milliseconds: 800));
-    
+
     final random = Random();
-    
+
     final colors = [
       ['8B4513', 'FFFFFF'], // Marrom - Madeira
       ['2F4F4F', 'FFFFFF'], // Cinza escuro - Tempestade
@@ -268,26 +278,28 @@ class CrewImageService {
       ['FF4500', 'FFFFFF'], // Laranja-avermelhado - Fogo
       ['000000', 'FFFFFF'], // Preto - Pirata
     ];
-    
+
     int colorIndex = 0;
     final promptLower = prompt.toLowerCase();
-    
+
     if (promptLower.contains('madeira') || promptLower.contains('wood')) {
-      colorIndex = 0; 
-    } else if (promptLower.contains('tempestade') || promptLower.contains('storm')) {
-      colorIndex = 1; 
-    } else if (promptLower.contains('oceano') || promptLower.contains('ocean')) {
-      colorIndex = 2; 
+      colorIndex = 0;
+    } else if (promptLower.contains('tempestade') ||
+        promptLower.contains('storm')) {
+      colorIndex = 1;
+    } else if (promptLower.contains('oceano') ||
+        promptLower.contains('ocean')) {
+      colorIndex = 2;
     } else if (promptLower.contains('mar') || promptLower.contains('sea')) {
-      colorIndex = 3; 
+      colorIndex = 3;
     } else {
       colorIndex = random.nextInt(colors.length);
     }
-    
+
     final colorPair = colors[colorIndex];
     final bgColor = colorPair[0];
     final textColor = colorPair[1];
-    
+
     final boatElements = [
       '🚢', // Navio
       '⛵', // Barco à vela
@@ -298,45 +310,48 @@ class CrewImageService {
       '🗺️', // Mapa
       '🧭', // Bússola
     ];
-    
+
     List<String> selectedElements = [];
-    
+
     if (promptLower.contains('navio') || promptLower.contains('ship')) {
       selectedElements.addAll(['🚢', '⛵']);
     } else if (promptLower.contains('lancha') || promptLower.contains('boat')) {
       selectedElements.addAll(['🛥️', '⛵']);
-    } else if (promptLower.contains('pirata') || promptLower.contains('pirate')) {
+    } else if (promptLower.contains('pirata') ||
+        promptLower.contains('pirate')) {
       selectedElements.addAll(['🏴‍☠️', '🚢']);
     } else {
       selectedElements = boatElements;
     }
-    
+
     if (tags != null && tags.isNotEmpty) {
       for (final tag in tags) {
         final tagLower = tag.toLowerCase();
         if (tagLower.contains('navegador') || tagLower.contains('navigator')) {
           selectedElements.add('🧭');
-        } else if (tagLower.contains('explorador') || tagLower.contains('explorer')) {
+        } else if (tagLower.contains('explorador') ||
+            tagLower.contains('explorer')) {
           selectedElements.add('🗺️');
-        } else if (tagLower.contains('marinheiro') || tagLower.contains('sailor')) {
+        } else if (tagLower.contains('marinheiro') ||
+            tagLower.contains('sailor')) {
           selectedElements.add('⚓');
         }
       }
     }
-    
+
     selectedElements.shuffle();
     final finalElements = selectedElements.take(2 + random.nextInt(2)).toList();
-    
+
     final displayName = crewName.isNotEmpty ? crewName : 'Tripulação';
     final elementText = finalElements.join(' ');
-    
+
     String extraInfo = '';
     if (tags != null && tags.isNotEmpty) {
       extraInfo += ' | ${tags.join(', ')}';
     }
-    
+
     final fullText = '$elementText $displayName$extraInfo $elementText';
-    
+
     return 'https://via.placeholder.com/768x512/$bgColor/$textColor?text=${Uri.encodeComponent(fullText)}';
   }
 }

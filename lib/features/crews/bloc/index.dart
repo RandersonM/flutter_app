@@ -6,4 +6,4 @@ export 'edit_crew_event.dart';
 export 'edit_crew_state.dart';
 export 'list_crews_bloc.dart';
 export 'list_crews_event.dart';
-export 'list_crews_state.dart'; 
+export 'list_crews_state.dart';

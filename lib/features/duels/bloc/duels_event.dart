@@ -52,4 +52,4 @@ class ResetDuel extends DuelsEvent {
 
 class RandomizeCharacters extends DuelsEvent {
   const RandomizeCharacters();
-} 
+}

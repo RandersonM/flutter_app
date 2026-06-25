@@ -55,7 +55,7 @@ class CharacterBackgroundSection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
-    
+
     final statusOptions =
         CharacterLocalizationMapper.getLocalizedStatusOptions(l10n);
     final affiliationOptions =
@@ -69,8 +69,8 @@ class CharacterBackgroundSection extends StatelessWidget {
         Text(
           l10n.background,
           style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-            fontWeight: FontWeight.bold,
-          ),
+                fontWeight: FontWeight.bold,
+              ),
         ),
         const SizedBox(height: 16),
         CustomDropdown<String>(
@@ -209,4 +209,4 @@ class CharacterBackgroundSection extends StatelessWidget {
       ],
     );
   }
-} 
+}

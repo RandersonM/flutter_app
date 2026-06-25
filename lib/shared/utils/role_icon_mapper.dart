@@ -1,10 +1,10 @@
+import 'package:phosphor_flutter/phosphor_flutter.dart';
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class RoleIconMapper {
   static IconData getIconForRole(String? role) {
     if (role == null || role.isEmpty) {
-      return Icons.person;
+      return PhosphorIconsRegular.user;
     }
 
     final normalizedRole = role.toLowerCase().trim();
@@ -12,67 +12,67 @@ class RoleIconMapper {
       case 'capitão':
       case 'capitao':
       case 'captain':
-        return Icons.emoji_events;
+        return PhosphorIconsRegular.trophy;
       case 'vice-capitão':
       case 'vice capitao':
       case 'vice-captain':
       case 'viceCaptain':
       case 'vicecaptain':
-        return Icons.star;
+        return PhosphorIconsRegular.star;
       case 'navegador':
       case 'navigator':
-        return FontAwesomeIcons.compass;
+        return PhosphorIconsRegular.compass;
       case 'médico':
       case 'medico':
       case 'doctor':
-        return FontAwesomeIcons.kitMedical;
+        return PhosphorIconsRegular.firstAidKit;
       case 'cozinheiro':
       case 'cook':
-        return Icons.restaurant;
+        return PhosphorIconsRegular.forkKnife;
       case 'sharpshooter':
       case 'sniper':
-        return FontAwesomeIcons.personRifle;
+        return PhosphorIconsRegular.crosshair;
       case 'lutador':
       case 'fighter':
-        return Icons.sports_martial_arts;
+        return PhosphorIconsRegular.personSimpleWalk;
       case 'arqueólogo':
       case 'arqueologo':
       case 'archaeologist':
-        return Icons.history_edu;
+        return PhosphorIconsRegular.scroll;
       case 'músico':
       case 'musico':
       case 'musician':
-        return Icons.music_note;
+        return PhosphorIconsRegular.musicNote;
       case 'carpenter':
       case 'shipwright':
-        return Icons.handyman;
+        return PhosphorIconsRegular.wrench;
       case 'cientista':
       case 'scientist':
-        return Icons.science;
+        return PhosphorIconsRegular.flask;
       case 'espadachim':
       case 'swordsman':
-        return FontAwesomeIcons.fan;
+        return PhosphorIconsRegular.fan;
       case 'guardião':
       case 'guardian':
-        return Icons.shield_outlined;
+        return PhosphorIconsRegular.shield;
       case 'observador':
       case 'lookout':
-        return Icons.visibility;
+        return PhosphorIconsRegular.eye;
       case 'comerciante':
       case 'merchant':
-        return Icons.store;
+        return PhosphorIconsRegular.storefront;
       case 'cartógrafo':
       case 'cartografo':
       case 'cartographer':
-        return Icons.map;
+        return PhosphorIconsRegular.mapTrifold;
       case 'inventor':
-        return FontAwesomeIcons.microscope;
+        return PhosphorIconsRegular.microscope;
       case 'mecânico':
       case 'mecanico':
       case 'mechanic':
-        return Icons.precision_manufacturing;
+        return PhosphorIconsRegular.factory;
       default:
-        return Icons.person;
+        return PhosphorIconsRegular.user;
     }
   }
 
@@ -149,4 +149,4 @@ class RoleIconMapper {
         return colorScheme.primary;
     }
   }
-} 
+}

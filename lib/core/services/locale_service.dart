@@ -21,4 +21,4 @@ class LocaleService {
     await box.put(_localeKey, locale.languageCode);
     _locale = locale;
   }
-} 
+}

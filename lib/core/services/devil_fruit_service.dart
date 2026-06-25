@@ -42,7 +42,6 @@ class DevilFruitService {
             jsonData.map((json) => DevilFruit.fromJson(json)).toList();
         _isLoaded = true;
 
-        
         return _cachedFruits;
       } else {
         throw Exception('Failed to load devil fruits: ${response.statusCode}');

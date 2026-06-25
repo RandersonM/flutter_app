@@ -1,3 +1,5 @@
+import 'package:opfan/shared/widgets/atoms/app_icon.dart';
+import 'package:phosphor_flutter/phosphor_flutter.dart';
 // Developed by Randerson Mayllon
 // Copyright © 2022.
 
@@ -61,17 +63,22 @@ class _InlineYouTubePlayerState extends State<InlineYouTubePlayer> {
       width: double.infinity,
       decoration: BoxDecoration(
         color: Colors.black,
-        borderRadius: BorderRadius.circular(12),
+        borderRadius: BorderRadius.circular(16),
+        border: Border.all(
+          color: Theme.of(context).colorScheme.surfaceContainerHigh,
+          width: 2,
+        ),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withValues(alpha: 0.3),
-            blurRadius: 8,
-            offset: const Offset(0, 4),
+            color: Colors.black.withValues(alpha: 0.5),
+            blurRadius: 24,
+            spreadRadius: 4,
+            offset: const Offset(0, 8),
           ),
         ],
       ),
       child: ClipRRect(
-        borderRadius: BorderRadius.circular(12),
+        borderRadius: BorderRadius.circular(14),
         child: Stack(
           children: [
             YoutubePlayerBuilder(
@@ -98,8 +105,8 @@ class _InlineYouTubePlayerState extends State<InlineYouTubePlayer> {
                   shape: BoxShape.circle,
                 ),
                 child: IconButton(
-                  icon: const Icon(
-                    Icons.close,
+                  icon: const AppIcon(
+                    PhosphorIconsRegular.x,
                     color: Colors.white,
                     size: 20,
                   ),
@@ -117,7 +124,8 @@ class _InlineYouTubePlayerState extends State<InlineYouTubePlayer> {
               left: 8,
               right: 8,
               child: Container(
-                padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
                 decoration: BoxDecoration(
                   color: Colors.black.withValues(alpha: 0.7),
                   borderRadius: BorderRadius.circular(8),
@@ -139,4 +147,4 @@ class _InlineYouTubePlayerState extends State<InlineYouTubePlayer> {
       ),
     );
   }
-} 
+}

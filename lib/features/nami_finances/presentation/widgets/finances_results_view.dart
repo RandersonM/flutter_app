@@ -1,3 +1,5 @@
+import 'package:opfan/shared/widgets/atoms/app_icon.dart';
+import 'package:phosphor_flutter/phosphor_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:opfan/l10n/app_localizations.dart';
 import 'package:opfan/shared/utils/app_routes.dart' show AppRoutes;
@@ -7,6 +9,7 @@ import 'package:opfan/core/models/nami_finances_model.dart';
 import 'package:opfan/core/services/nami_finances_service.dart';
 import 'package:opfan/shared/widgets/atoms/gomu_gomu_divider.dart';
 import 'package:opfan/features/nami_finances/presentation/widgets/finances_history_widget.dart';
+import 'package:opfan/shared/widgets/atoms/app_button.dart';
 
 class FinancesResultsView extends StatefulWidget {
   final NamiFinancesModel finances;
@@ -55,7 +58,7 @@ class _FinancesResultsViewState extends State<FinancesResultsView> {
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
-    
+
     return Column(
       children: [
         _buildSummaryCard(l10n),
@@ -98,7 +101,7 @@ class _FinancesResultsViewState extends State<FinancesResultsView> {
                 child: _buildSummaryItem(
                   l10n.totalIncome,
                   widget.finances.totalIncome,
-                  Icons.account_balance_wallet,
+                  PhosphorIconsRegular.bank,
                 ),
               ),
               const SizedBox(width: Constants.margin),
@@ -106,7 +109,7 @@ class _FinancesResultsViewState extends State<FinancesResultsView> {
                 child: _buildSummaryItem(
                   l10n.totalExpenses,
                   widget.finances.totalExpenses,
-                  Icons.payments,
+                  PhosphorIconsRegular.money,
                 ),
               ),
             ],
@@ -118,7 +121,7 @@ class _FinancesResultsViewState extends State<FinancesResultsView> {
                 child: _buildSummaryItem(
                   l10n.availableAmount,
                   widget.finances.availableAmount,
-                  Icons.account_balance,
+                  PhosphorIconsRegular.bank,
                 ),
               ),
               const SizedBox(width: Constants.margin),
@@ -126,7 +129,7 @@ class _FinancesResultsViewState extends State<FinancesResultsView> {
                 child: _buildSummaryItem(
                   l10n.dailyAmount,
                   widget.finances.dailyAmount,
-                  Icons.today,
+                  PhosphorIconsRegular.calendarStar,
                 ),
               ),
             ],
@@ -174,8 +177,7 @@ class _FinancesResultsViewState extends State<FinancesResultsView> {
   Widget _buildExpensesBreakdown(AppLocalizations l10n) {
     return Padding(
       padding: const EdgeInsets.symmetric(
-        vertical: Constants.margin * 3 ,
-        horizontal: Constants.margin),
+          vertical: Constants.margin * 3, horizontal: Constants.margin),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -187,13 +189,13 @@ class _FinancesResultsViewState extends State<FinancesResultsView> {
           const SizedBox(height: Constants.margin * 3),
           Row(
             children: [
-              Icon(Icons.pie_chart, color: AppColors.red[500], size: 24),
+              AppIcon(PhosphorIconsRegular.chartPieSlice,
+                  color: AppColors.red[500], size: 24),
               const SizedBox(width: Constants.margin),
-                             Text(
-                 l10n.expensesByCategory,
-                 style: TextTheme.of(context).titleLarge,
-                 
-               ),
+              Text(
+                l10n.expensesByCategory,
+                style: TextTheme.of(context).titleLarge,
+              ),
             ],
           ),
           const SizedBox(height: Constants.margin * 2),
@@ -201,7 +203,7 @@ class _FinancesResultsViewState extends State<FinancesResultsView> {
             final category = entry.key;
             final amount = entry.value;
             final percentage = (amount / widget.finances.totalExpenses * 100);
-            
+
             return Padding(
               padding: const EdgeInsets.only(bottom: 8),
               child: Row(
@@ -243,14 +245,17 @@ class _FinancesResultsViewState extends State<FinancesResultsView> {
     return Container(
       padding: const EdgeInsets.all(Constants.margin),
       decoration: BoxDecoration(
-        color: Theme.of(context).colorScheme.primaryContainer.withValues(alpha: 0.3),
+        color: Theme.of(context)
+            .colorScheme
+            .primaryContainer
+            .withValues(alpha: 0.3),
         borderRadius: BorderRadius.circular(Constants.margin * 2),
       ),
       child: Column(
         children: [
           Row(
             children: [
-              const Icon(Icons.savings, size: 24),
+              const AppIcon(PhosphorIconsRegular.piggyBank, size: 24),
               const SizedBox(width: Constants.margin),
               Text(
                 l10n.savings,
@@ -265,7 +270,7 @@ class _FinancesResultsViewState extends State<FinancesResultsView> {
                 child: _buildSavingsItem(
                   l10n.monthlySavings,
                   'R\$ ${widget.finances.savings.toStringAsFixed(2)}',
-                  Icons.savings,
+                  PhosphorIconsRegular.piggyBank,
                 ),
               ),
               const SizedBox(width: Constants.margin),
@@ -273,7 +278,7 @@ class _FinancesResultsViewState extends State<FinancesResultsView> {
                 child: _buildSavingsItem(
                   l10n.savingsPercentage,
                   '${widget.finances.savingsPercentage.toStringAsFixed(1)}%',
-                  Icons.percent,
+                  PhosphorIconsRegular.percent,
                 ),
               ),
             ],
@@ -291,7 +296,7 @@ class _FinancesResultsViewState extends State<FinancesResultsView> {
                           _accumulatedInfo!['totalSavings'] > 0
                       ? '${l10n.currency} ${_accumulatedInfo!['totalSavings'].toStringAsFixed(2)}'
                       : '${l10n.currency} ${widget.finances.yearlySavings.toStringAsFixed(2)}',
-                  Icons.trending_up,
+                  PhosphorIconsRegular.trendUp,
                 ),
               ),
               const SizedBox(width: Constants.margin),
@@ -307,23 +312,23 @@ class _FinancesResultsViewState extends State<FinancesResultsView> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Image.asset(
-                        widget.finances.savingsPercentage >= 10 
-                          ? 'assets/logo/nami-icon.png'
-                          : 'assets/logo/luffy-approve.png',
+                        widget.finances.savingsPercentage >= 10
+                            ? 'assets/logo/nami-icon.png'
+                            : 'assets/logo/luffy-approve.png',
                         width: 52,
                         height: 52,
                       ),
                       const SizedBox(height: Constants.margin),
                       Text(
-                        widget.finances.savingsPercentage >= 10 
-                          ? l10n.namiApproves
-                          : l10n.namiNeedsReview,
+                        widget.finances.savingsPercentage >= 10
+                            ? l10n.namiApproves
+                            : l10n.namiNeedsReview,
                         style: TextTheme.of(context).bodySmall?.copyWith(
-                          fontWeight: FontWeight.bold,
-                          color: widget.finances.savingsPercentage >= 10 
+                              fontWeight: FontWeight.bold,
+                              color: widget.finances.savingsPercentage >= 10
                                   ? AppColors.yellow[500]!
-                            : AppColors.red[500]!,
-                        ),
+                                  : AppColors.red[500]!,
+                            ),
                         textAlign: TextAlign.center,
                         maxLines: 2,
                         overflow: TextOverflow.ellipsis,
@@ -363,8 +368,8 @@ class _FinancesResultsViewState extends State<FinancesResultsView> {
           Text(
             value,
             style: TextTheme.of(context).titleMedium?.copyWith(
-              fontWeight: FontWeight.bold,
-            ),
+                  fontWeight: FontWeight.bold,
+                ),
             textAlign: TextAlign.center,
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
@@ -378,30 +383,22 @@ class _FinancesResultsViewState extends State<FinancesResultsView> {
     return Column(
       spacing: Constants.margin,
       children: [
-        SizedBox(
-          width: double.infinity,
-          child: OutlinedButton.icon(
-            onPressed: () => _navigateToDetailedView(context),
-            icon: const Icon(Icons.analytics),
-            label: Text(AppLocalizations.of(context)!.viewDetails),
-            style: OutlinedButton.styleFrom(
-              side: BorderSide(color: Theme.of(context).colorScheme.surface),
-              padding: const EdgeInsets.symmetric(vertical: 16),
-            ),
-          ),
+        AppButton(
+          onPressed: () => _navigateToDetailedView(context),
+          variant: AppButtonVariant.outline,
+          icon: const AppIcon(PhosphorIconsRegular.chartLineUp),
+          label: AppLocalizations.of(context)!.viewDetails,
+          padding: const EdgeInsets.symmetric(vertical: 16),
+          isFullWidth: true,
         ),
-        SizedBox(
-          width: double.infinity,
-          child: ElevatedButton.icon(
-            onPressed: widget.onEdit,
-            icon: const Icon(Icons.edit),
-            label: Text(l10n.edit),
-            style: ElevatedButton.styleFrom(
-              backgroundColor: Theme.of(context).colorScheme.primary,
-              foregroundColor: Colors.white,
-              padding: const EdgeInsets.symmetric(vertical: 16),
-            ),
-          ),
+        AppButton(
+          onPressed: widget.onEdit,
+          icon: const AppIcon(PhosphorIconsRegular.pencil),
+          label: l10n.edit,
+          backgroundColor: Theme.of(context).colorScheme.primary,
+          foregroundColor: Colors.white,
+          padding: const EdgeInsets.symmetric(vertical: 16),
+          isFullWidth: true,
         ),
       ],
     );

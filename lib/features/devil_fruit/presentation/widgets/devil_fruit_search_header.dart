@@ -1,3 +1,5 @@
+import 'package:opfan/shared/widgets/atoms/app_icon.dart';
+import 'package:phosphor_flutter/phosphor_flutter.dart';
 // Developed by Randerson Mayllon
 // Copyright © 2022.
 
@@ -51,7 +53,6 @@ class _DevilFruitSearchHeaderState extends State<DevilFruitSearchHeader> {
                 ),
           ),
           const SizedBox(height: Constants.margin * 2),
-
           Container(
             decoration: BoxDecoration(
               color: Colors.grey[100],
@@ -66,14 +67,14 @@ class _DevilFruitSearchHeaderState extends State<DevilFruitSearchHeader> {
               decoration: InputDecoration(
                 hintText: AppLocalizations.of(context)!.searchPlaceholder,
                 hintStyle: TextStyle(color: Colors.grey[600]),
-                prefixIcon: Icon(
-                  Icons.search,
+                prefixIcon: AppIcon(
+                  PhosphorIconsRegular.magnifyingGlass,
                   color: Colors.grey[600],
                 ),
                 suffixIcon: _searchController.text.isNotEmpty
                     ? IconButton(
-                        icon: Icon(
-                          Icons.clear,
+                        icon: AppIcon(
+                          PhosphorIconsRegular.x,
                           color: Colors.grey[600],
                         ),
                         onPressed: () {
@@ -98,7 +99,6 @@ class _DevilFruitSearchHeaderState extends State<DevilFruitSearchHeader> {
               },
             ),
           ),
-
           if (_isSearching)
             Padding(
               padding: const EdgeInsets.only(top: Constants.margin),

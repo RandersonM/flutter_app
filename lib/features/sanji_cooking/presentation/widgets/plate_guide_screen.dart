@@ -1,3 +1,5 @@
+import 'package:opfan/shared/widgets/atoms/app_icon.dart';
+import 'package:phosphor_flutter/phosphor_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:opfan/l10n/app_localizations.dart';
@@ -18,7 +20,7 @@ class _PlateGuideScreenState extends State<PlateGuideScreen> {
 
   List<PlateSection> _buildPlateSections(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
-    
+
     return [
       PlateSection(
         title: l10n.vegetablesTitle,
@@ -83,7 +85,6 @@ class _PlateGuideScreenState extends State<PlateGuideScreen> {
             AppLocalizations.of(context)!.plateGuideHeader,
             textAlign: TextAlign.center,
             style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                  
                   fontWeight: FontWeight.bold,
                   color: AppColors.yellow[500],
                 ),
@@ -127,7 +128,8 @@ class _PlateGuideScreenState extends State<PlateGuideScreen> {
                   touchCallback: (FlTouchEvent event, pieTouchResponse) {
                     setState(() {
                       if (pieTouchResponse?.touchedSection != null) {
-                        _touchedIndex = pieTouchResponse!.touchedSection!.touchedSectionIndex;
+                        _touchedIndex = pieTouchResponse!
+                            .touchedSection!.touchedSectionIndex;
                       } else {
                         _touchedIndex = -1;
                       }
@@ -137,7 +139,8 @@ class _PlateGuideScreenState extends State<PlateGuideScreen> {
                 borderData: FlBorderData(show: false),
                 sectionsSpace: 3,
                 centerSpaceRadius: 0,
-                sections: _buildPlateSections(context).asMap().entries.map((entry) {
+                sections:
+                    _buildPlateSections(context).asMap().entries.map((entry) {
                   final isTouched = entry.key == _touchedIndex;
                   final section = entry.value;
                   final fontSize = isTouched ? 18.0 : 14.0;
@@ -169,7 +172,6 @@ class _PlateGuideScreenState extends State<PlateGuideScreen> {
     );
   }
 
-
   Widget _buildLegend() {
     return Column(
       children: _buildPlateSections(context).asMap().entries.map((entry) {
@@ -188,73 +190,86 @@ class _PlateGuideScreenState extends State<PlateGuideScreen> {
             margin: const EdgeInsets.symmetric(vertical: 4),
             padding: const EdgeInsets.all(12),
             decoration: BoxDecoration(
-              color: isTouched ? section.color.withValues(alpha: 0.1) : Colors.transparent,
+              color: isTouched
+                  ? section.color.withValues(alpha: 0.1)
+                  : Colors.transparent,
               borderRadius: BorderRadius.circular(8),
               border: isTouched ? Border.all(color: section.color) : null,
             ),
             child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Row(
-                children: [
-                  Container(
-                    width: 12,
-                    height: 12,
-                    decoration: BoxDecoration(
-                      color: section.color,
-                      shape: BoxShape.circle,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  children: [
+                    Container(
+                      width: 12,
+                      height: 12,
+                      decoration: BoxDecoration(
+                        color: section.color,
+                        shape: BoxShape.circle,
+                      ),
                     ),
+                    const SizedBox(width: 12),
+                    Expanded(
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            section.title,
+                            style: Theme.of(context)
+                                .textTheme
+                                .bodyMedium
+                                ?.copyWith(
+                                  fontWeight: FontWeight.bold,
+                                  color: isTouched ? section.color : null,
+                                ),
+                          ),
+                          Text(
+                            section.subtitle,
+                            style:
+                                Theme.of(context).textTheme.bodySmall?.copyWith(
+                                      color: Theme.of(context)
+                                          .colorScheme
+                                          .onSurface
+                                          .withValues(alpha: 0.7),
+                                    ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+                if (isTouched) ...[
+                  const SizedBox(height: 12),
+                  Text(
+                    section.description,
+                    style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                          color: Theme.of(context)
+                              .colorScheme
+                              .onSurface
+                              .withValues(alpha: 0.8),
+                        ),
                   ),
-                  const SizedBox(width: 12),
-                  Expanded(
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          section.title,
-                          style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                                fontWeight: FontWeight.bold,
-                                color: isTouched ? section.color : null,
-                              ),
+                  const SizedBox(height: 8),
+                  Text(
+                    AppLocalizations.of(context)!.examples(section.examples),
+                    style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                          fontStyle: FontStyle.italic,
+                          color: Theme.of(context)
+                              .colorScheme
+                              .onSurface
+                              .withValues(alpha: 0.7),
                         ),
-                        Text(
-                          section.subtitle,
-                          style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                                color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.7),
-                              ),
-                        ),
-                      ],
-                    ),
                   ),
                 ],
-              ),
-              if (isTouched) ...[
-                const SizedBox(height: 12),
-                Text(
-                  section.description,
-                  style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                        color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.8),
-                      ),
-                ),
-                const SizedBox(height: 8),
-                Text(
-                  AppLocalizations.of(context)!.examples(section.examples),
-                  style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                        fontStyle: FontStyle.italic,
-                        color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.7),
-                      ),
-                ),
               ],
-            ],
             ),
           ),
         );
       }).toList(),
     );
   }
-
-
 
   Widget _buildTips() {
     return Container(
@@ -269,8 +284,8 @@ class _PlateGuideScreenState extends State<PlateGuideScreen> {
         children: [
           Row(
             children: [
-              Icon(
-                Icons.lightbulb_outline,
+              AppIcon(
+                PhosphorIconsRegular.lightbulb,
                 color: AppColors.yellow[500],
                 size: 24,
               ),
@@ -287,29 +302,30 @@ class _PlateGuideScreenState extends State<PlateGuideScreen> {
           const SizedBox(height: 16),
           _buildTipItem(
             AppLocalizations.of(context)!.sanjiTip1,
-            Icons.eco,
+            PhosphorIconsRegular.leaf,
           ),
           _buildTipItem(
             AppLocalizations.of(context)!.sanjiTip2,
-            Icons.restaurant,
+            PhosphorIconsRegular.forkKnife,
           ),
           _buildTipItem(
             AppLocalizations.of(context)!.sanjiTip3,
-            Icons.color_lens,
+            PhosphorIconsRegular.palette,
           ),
           _buildTipItem(
             AppLocalizations.of(context)!.sanjiTip4,
-            Icons.local_dining,
+            PhosphorIconsRegular.forkKnife,
           ),
           _buildTipItem(
             AppLocalizations.of(context)!.sanjiTip5,
-            Icons.apple,
+            PhosphorIconsRegular.appleLogo,
           ),
           const SizedBox(height: 12),
           GestureDetector(
             onTap: () async {
               try {
-                final url = Uri.parse('https://bvsms.saude.gov.br/bvs/publicacoes/guia_alimentar_populacao_brasileira_2ed.pdf');
+                final url = Uri.parse(
+                    'https://bvsms.saude.gov.br/bvs/publicacoes/guia_alimentar_populacao_brasileira_2ed.pdf');
                 final canLaunch = await canLaunchUrl(url);
                 if (canLaunch) {
                   await launchUrl(url, mode: LaunchMode.externalApplication);
@@ -317,7 +333,8 @@ class _PlateGuideScreenState extends State<PlateGuideScreen> {
                   if (mounted) {
                     ScaffoldMessenger.of(context).showSnackBar(
                       SnackBar(
-                        content: Text(AppLocalizations.of(context)!.couldNotOpenLink),
+                        content: Text(
+                            AppLocalizations.of(context)!.couldNotOpenLink),
                         backgroundColor: Colors.red,
                       ),
                     );
@@ -327,7 +344,8 @@ class _PlateGuideScreenState extends State<PlateGuideScreen> {
                 if (mounted) {
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(
-                      content: Text(AppLocalizations.of(context)!.errorPrefix(e.toString())),
+                      content: Text(AppLocalizations.of(context)!
+                          .errorPrefix(e.toString())),
                       backgroundColor: Colors.red,
                     ),
                   );
@@ -343,8 +361,8 @@ class _PlateGuideScreenState extends State<PlateGuideScreen> {
               ),
               child: Row(
                 children: [
-                  const Icon(
-                    Icons.book_outlined,
+                  const AppIcon(
+                    PhosphorIconsRegular.book,
                     size: 20,
                   ),
                   const SizedBox(width: 8),
@@ -356,8 +374,8 @@ class _PlateGuideScreenState extends State<PlateGuideScreen> {
                           ),
                     ),
                   ),
-                  const Icon(
-                    Icons.open_in_new,
+                  const AppIcon(
+                    PhosphorIconsRegular.arrowSquareOut,
                     size: 16,
                     color: Colors.grey,
                   ),
@@ -385,8 +403,7 @@ class _PlateGuideScreenState extends State<PlateGuideScreen> {
           Expanded(
             child: Text(
               text,
-              style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                  ),
+              style: Theme.of(context).textTheme.bodyMedium?.copyWith(),
             ),
           ),
         ],

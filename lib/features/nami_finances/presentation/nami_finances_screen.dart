@@ -74,8 +74,7 @@ class _NamiFinancesScreenState extends State<NamiFinancesScreen> {
                     padding: const EdgeInsets.all(Constants.margin),
                     child: FinancesDashboardView(
                       finances: state.finances!,
-                      onEdit: () =>
-                          _onEditFinances(context, state.finances!),
+                      onEdit: () => _onEditFinances(context, state.finances!),
                     ),
                   );
                 }
@@ -93,7 +92,9 @@ class _NamiFinancesScreenState extends State<NamiFinancesScreen> {
               }
 
               if (state is NamiFinancesError) {
-                return Center(child: Text(AppLocalizations.of(context)!.errorPrefix(state.message)));
+                return Center(
+                    child: Text(AppLocalizations.of(context)!
+                        .errorPrefix(state.message)));
               }
 
               return const SizedBox.shrink();

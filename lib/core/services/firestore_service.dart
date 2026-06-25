@@ -10,9 +10,8 @@ class FirestoreService {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
-
   String? get currentUserId => _auth.currentUser?.uid;
-  
+
   bool get isUserAuthenticated => _auth.currentUser != null;
 
   String? get currentUserEmail => _auth.currentUser?.email;
@@ -63,14 +62,12 @@ class FirestoreService {
     int? limit,
   }) async {
     try {
-    
-      
       Query query = _firestore.collection(collection);
-      
+
       if (orderBy != null) {
         query = query.orderBy(orderBy, descending: descending);
       }
-      
+
       if (limit != null) {
         query = query.limit(limit);
       }
@@ -79,7 +76,7 @@ class FirestoreService {
       final result = querySnapshot.docs
           .map((doc) => {'id': doc.id, ...doc.data() as Map<String, dynamic>})
           .toList();
-      
+
       return result;
     } catch (e) {
       if (e.toString().contains('permission-denied')) {
@@ -89,7 +86,6 @@ class FirestoreService {
       throw Exception('Erro ao buscar documentos: $e');
     }
   }
-
 
   Future<void> updateDocument({
     required String collection,
@@ -122,24 +118,24 @@ class FirestoreService {
     bool descending = false,
     int? limit,
   }) async {
-    
     try {
-      Query query = _firestore.collection(collection).where(field, isEqualTo: value);
-      
+      Query query =
+          _firestore.collection(collection).where(field, isEqualTo: value);
+
       if (orderBy != null) {
         query = query.orderBy(orderBy, descending: descending);
       }
-      
+
       if (limit != null) {
         query = query.limit(limit);
       }
 
       final querySnapshot = await query.get();
-      
+
       final result = querySnapshot.docs
           .map((doc) => {'id': doc.id, ...doc.data() as Map<String, dynamic>})
           .toList();
-      
+
       return result;
     } catch (e) {
       throw Exception('Erro ao consultar documentos: $e');
@@ -152,9 +148,8 @@ class FirestoreService {
     bool descending = false,
     int? limit,
   }) async {
-    
     final userId = currentUserId;
-    
+
     if (userId == null) {
       throw Exception('Usuário não autenticado');
     }
@@ -217,11 +212,11 @@ class FirestoreService {
     int? limit,
   }) {
     Query query = _firestore.collection(collection);
-    
+
     if (orderBy != null) {
       query = query.orderBy(orderBy, descending: descending);
     }
-    
+
     if (limit != null) {
       query = query.limit(limit);
     }
@@ -242,12 +237,13 @@ class FirestoreService {
       return Stream.value([]);
     }
 
-    Query query = _firestore.collection(collection).where('userId', isEqualTo: userId);
-    
+    Query query =
+        _firestore.collection(collection).where('userId', isEqualTo: userId);
+
     if (orderBy != null) {
       query = query.orderBy(orderBy, descending: descending);
     }
-    
+
     if (limit != null) {
       query = query.limit(limit);
     }
@@ -256,4 +252,4 @@ class FirestoreService {
         .map((doc) => {'id': doc.id, ...doc.data() as Map<String, dynamic>})
         .toList());
   }
-} 
+}

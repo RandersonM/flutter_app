@@ -28,16 +28,14 @@ class CharacterImageService {
     List<String>? occupations,
   }) async {
     final isForcedRegeneration = prompt.contains('[regeneration_');
-    
+
     final cacheKey = _getCacheKey(characterName, prompt);
     if (!isForcedRegeneration && _imageCache.containsKey(cacheKey)) {
       return _imageCache[cacheKey];
     }
 
     final cleanPrompt = isForcedRegeneration
-        ? prompt
-            .replaceAll(RegExp(r'\[regeneration_\d+_\d+_\d+\]'), '')
-            .trim()
+        ? prompt.replaceAll(RegExp(r'\[regeneration_\d+_\d+_\d+\]'), '').trim()
         : prompt;
 
     final enhancedPrompt = _buildEnhancedPrompt(
@@ -48,7 +46,8 @@ class CharacterImageService {
       occupations: occupations,
     );
 
-    debugPrint('Character Image Service: Requesting image from Gemini with prompt: $enhancedPrompt');
+    debugPrint(
+        'Character Image Service: Requesting image from Gemini with prompt: $enhancedPrompt');
 
     final imageUrl = await _geminiService.generateImage(
       prompt: enhancedPrompt,
@@ -62,7 +61,8 @@ class CharacterImageService {
       return imageUrl;
     }
 
-    debugPrint('Character Image Service: Image generation failed or in dev mode, returning fallback');
+    debugPrint(
+        'Character Image Service: Image generation failed or in dev mode, returning fallback');
     return await _getEnhancedFallbackImage(
       characterName: characterName,
       prompt: prompt,
@@ -81,7 +81,7 @@ class CharacterImageService {
     List<String>? occupations,
   }) {
     final basePrompt = prompt.isNotEmpty ? prompt : 'One Piece character';
-    
+
     final List<String> promptParts = [
       basePrompt,
       'race: $race',
@@ -117,7 +117,7 @@ class CharacterImageService {
     List<String>? occupations,
   }) async {
     await Future.delayed(const Duration(milliseconds: 800));
-    
+
     final random = Random();
     final isForcedRegeneration = prompt.contains('[regeneration_');
 
@@ -133,7 +133,7 @@ class CharacterImageService {
         variationOffset = (count + timestamp + randomSuffix) % 1000;
       }
     }
-    
+
     final colors = [
       ['FF6B6B', 'FFFFFF'], // Vermelho - Piratas
       ['4ECDC4', 'FFFFFF'], // Turquesa - Marinha
@@ -146,61 +146,65 @@ class CharacterImageService {
       ['20B2AA', 'FFFFFF'], // Verde-azulado - Marinha
       ['FF4500', 'FFFFFF'], // Laranja-avermelhado - Agressivo
     ];
-    
+
     int colorIndex = 0;
     final promptLower = prompt.toLowerCase();
-    
+
     if (promptLower.contains('pirata') || promptLower.contains('pirate')) {
-      colorIndex = 0; 
-    } else if (promptLower.contains('marinha') || promptLower.contains('marine')) {
-      colorIndex = 1; 
+      colorIndex = 0;
+    } else if (promptLower.contains('marinha') ||
+        promptLower.contains('marine')) {
+      colorIndex = 1;
     } else if (promptLower.contains('água') || promptLower.contains('water')) {
-      colorIndex = 2; 
-    } else if (promptLower.contains('natureza') || promptLower.contains('nature')) {
-      colorIndex = 3; 
+      colorIndex = 2;
+    } else if (promptLower.contains('natureza') ||
+        promptLower.contains('nature')) {
+      colorIndex = 3;
     } else if (promptLower.contains('ouro') || promptLower.contains('gold')) {
-      colorIndex = 4; 
+      colorIndex = 4;
     } else {
       colorIndex = random.nextInt(colors.length);
     }
-    
+
     if (isForcedRegeneration) {
       colorIndex = (colorIndex + variationOffset) % colors.length;
     }
-    
+
     final colorPair = colors[colorIndex];
     final bgColor = colorPair[0];
     final textColor = colorPair[1];
-    
+
     final elements = [
-      'PIRATA', 
-      'CAPITAO', 
-      'ESPADA', 
-      'PODER', 
-      'MAR', 
-      'ILHA', 
-      'TESOURO', 
-      'COROA', 
-      'NAVIO', 
-      'BANDEIRA', 
-      'LUTA', 
-      'AVENTURA', 
+      'PIRATA',
+      'CAPITAO',
+      'ESPADA',
+      'PODER',
+      'MAR',
+      'ILHA',
+      'TESOURO',
+      'COROA',
+      'NAVIO',
+      'BANDEIRA',
+      'LUTA',
+      'AVENTURA',
     ];
-    
+
     List<String> selectedElements = [];
-    
+
     if (promptLower.contains('pirata') || promptLower.contains('pirate')) {
       selectedElements.addAll(['PIRATA', 'MAR', 'ESPADA']);
-    } else if (promptLower.contains('capitão') || promptLower.contains('captain')) {
+    } else if (promptLower.contains('capitão') ||
+        promptLower.contains('captain')) {
       selectedElements.addAll(['COROA', 'CAPITAO', 'PODER']);
-    } else if (promptLower.contains('espada') || promptLower.contains('sword')) {
+    } else if (promptLower.contains('espada') ||
+        promptLower.contains('sword')) {
       selectedElements.addAll(['ESPADA', 'PIRATA', 'LUTA']);
     } else if (promptLower.contains('poder') || promptLower.contains('power')) {
       selectedElements.addAll(['PODER', 'TESOURO', 'COROA']);
     } else {
       selectedElements = elements;
     }
-    
+
     if (devilFruit != null && devilFruit.isNotEmpty) {
       selectedElements.add('PODER');
     }
@@ -210,10 +214,10 @@ class CharacterImageService {
     if (status == 'dead') {
       selectedElements.add('PIRATA');
     }
-    
+
     selectedElements.shuffle();
     final finalElements = selectedElements.take(2 + random.nextInt(2)).toList();
-    
+
     if (isForcedRegeneration) {
       final tempElements = List<String>.from(finalElements);
       for (int i = 0; i < tempElements.length; i++) {
@@ -221,10 +225,10 @@ class CharacterImageService {
         finalElements[i] = tempElements[newIndex];
       }
     }
-    
+
     final displayName = characterName.isNotEmpty ? characterName : 'Personagem';
     final elementText = finalElements.join(' ');
-    
+
     String extraInfo = '';
     if (devilFruit != null && devilFruit.isNotEmpty) {
       extraInfo += ' | $devilFruit';
@@ -232,16 +236,17 @@ class CharacterImageService {
     if (haki != null && haki.isNotEmpty) {
       extraInfo += ' | ${haki.join(', ')}';
     }
-    
+
     final fullText = '$elementText $displayName$extraInfo $elementText';
-    
+
     final cacheBuster = isForcedRegeneration
         ? '&v=${DateTime.now().millisecondsSinceEpoch}'
         : '';
 
     final encodedText = Uri.encodeComponent(fullText);
-    final imageUrl = 'https://dummyimage.com/512x768/$bgColor/$textColor&text=$encodedText$cacheBuster';
-    
+    final imageUrl =
+        'https://dummyimage.com/512x768/$bgColor/$textColor&text=$encodedText$cacheBuster';
+
     debugPrint('Character Image Service: Generated fallback image URL');
     return imageUrl;
   }

@@ -34,8 +34,6 @@ class DevilFruitBloc extends Bloc<DevilFruitEvent, DevilFruitState> {
         filteredFruits: fruits,
         availableTypes: types,
       ));
-
-    
     } catch (e) {
       debugPrint('DevilFruitBloc: Error loading devil fruits - $e');
       emit(DevilFruitError('Erro ao carregar Akuma no Mi: $e'));
@@ -58,7 +56,6 @@ class DevilFruitBloc extends Bloc<DevilFruitEvent, DevilFruitState> {
         filteredFruits: fruits,
         availableTypes: types,
       ));
-
     } catch (e) {
       debugPrint('DevilFruitBloc: Error refreshing devil fruits - $e');
       emit(DevilFruitError('Erro ao atualizar Akuma no Mi: $e'));
@@ -92,7 +89,6 @@ class DevilFruitBloc extends Bloc<DevilFruitEvent, DevilFruitState> {
         searchQuery: event.query,
         isSearching: false,
       ));
-
     } catch (e) {
       debugPrint('DevilFruitBloc: Error searching devil fruits - $e');
       emit(currentState.copyWith(
@@ -135,7 +131,6 @@ class DevilFruitBloc extends Bloc<DevilFruitEvent, DevilFruitState> {
         selectedType: event.type.isNotEmpty ? event.type : null,
         isSearching: false,
       ));
-
     } catch (e) {
       debugPrint('DevilFruitBloc: Error filtering devil fruits - $e');
       emit(currentState.copyWith(

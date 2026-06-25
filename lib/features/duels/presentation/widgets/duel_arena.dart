@@ -1,8 +1,9 @@
+import 'package:opfan/shared/widgets/atoms/app_icon.dart';
+import 'package:phosphor_flutter/phosphor_flutter.dart';
 // Developed by Randerson Mayllon
 // Copyright © 2022.
 
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:opfan/core/models/one_piece/custom_character_model.dart';
 import 'package:opfan/l10n/app_localizations.dart';
 import 'package:opfan/shared/utils/constants.dart';
@@ -31,7 +32,7 @@ class DuelArena extends StatelessWidget {
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
     final theme = Theme.of(context);
-    
+
     return Container(
       padding: const EdgeInsets.all(Constants.margin * 2),
       decoration: BoxDecoration(
@@ -55,21 +56,24 @@ class DuelArena extends StatelessWidget {
           Text(
             l10n.versus,
             style: theme.textTheme.headlineLarge?.copyWith(
-              color:
-                  Theme.of(context).colorScheme.onPrimary.withValues(alpha: 0.8),
+              color: Theme.of(context)
+                  .colorScheme
+                  .onPrimary
+                  .withValues(alpha: 0.8),
               fontWeight: FontWeight.bold,
               fontSize: 48,
               shadows: [
                 Shadow(
-                  color: Theme.of(context).colorScheme.primary.withValues(alpha: 0.8),
+                  color: Theme.of(context)
+                      .colorScheme
+                      .primary
+                      .withValues(alpha: 0.8),
                   offset: const Offset(2, 2),
                   blurRadius: 8,
                 ),
               ],
             ),
           ),
-          
-          
           Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -81,7 +85,7 @@ class DuelArena extends StatelessWidget {
                   isLeft: true,
                 ),
               ),
-              
+
               Container(
                 margin: const EdgeInsets.only(top: Constants.margin * 2),
                 width: 80,
@@ -95,7 +99,7 @@ class DuelArena extends StatelessWidget {
                   ),
                   boxShadow: [
                     BoxShadow(
-                      color:  Theme.of(context)
+                      color: Theme.of(context)
                           .colorScheme
                           .error
                           .withValues(alpha: 0.5),
@@ -104,13 +108,13 @@ class DuelArena extends StatelessWidget {
                     ),
                   ],
                 ),
-                child: Icon(
-                  FontAwesomeIcons.bolt,
+                child: AppIcon(
+                  PhosphorIconsRegular.lightning,
                   color: Theme.of(context).colorScheme.onErrorContainer,
                   size: 40,
                 ),
               ),
-              
+
               Expanded(
                 child: _buildCharacterArenaDisplay(
                   context,
@@ -120,7 +124,6 @@ class DuelArena extends StatelessWidget {
               ),
             ],
           ),
-          
           if (isDuelInProgress)
             _buildDuelProgress(context)
           else if (winner != null)
@@ -133,13 +136,11 @@ class DuelArena extends StatelessWidget {
   }
 
   Widget _buildCharacterArenaDisplay(
-    BuildContext context,
-    CustomCharacterModel character,
-    {required bool isLeft}
-  ) {
+      BuildContext context, CustomCharacterModel character,
+      {required bool isLeft}) {
     final theme = Theme.of(context);
     final isWinner = winner?.id == character.id;
-    
+
     return Column(
       spacing: Constants.margin,
       children: [
@@ -149,15 +150,21 @@ class DuelArena extends StatelessWidget {
           decoration: BoxDecoration(
             shape: BoxShape.circle,
             border: Border.all(
-              color: isWinner 
+              color: isWinner
                   ? Theme.of(context).colorScheme.tertiary
-                  : Theme.of(context).colorScheme.primary.withValues(alpha: 0.7),
+                  : Theme.of(context)
+                      .colorScheme
+                      .primary
+                      .withValues(alpha: 0.7),
               width: isWinner ? 4 : 2,
             ),
             boxShadow: isWinner
                 ? [
                     BoxShadow(
-                      color: Theme.of(context).colorScheme.tertiary.withValues(alpha: 0.6),
+                      color: Theme.of(context)
+                          .colorScheme
+                          .tertiary
+                          .withValues(alpha: 0.6),
                       blurRadius: 20,
                       spreadRadius: 5,
                     ),
@@ -174,16 +181,20 @@ class DuelArena extends StatelessWidget {
             ),
           ),
         ),
-        
         Text(
           character.name,
           style: theme.textTheme.titleMedium?.copyWith(
-            color: isWinner ? Theme.of(context).colorScheme.tertiary : Theme.of(context).colorScheme.primary,
+            color: isWinner
+                ? Theme.of(context).colorScheme.tertiary
+                : Theme.of(context).colorScheme.primary,
             fontWeight: FontWeight.bold,
             shadows: isWinner
                 ? [
                     Shadow(
-                      color: Theme.of(context).colorScheme.tertiary.withValues(alpha: 0.8),
+                      color: Theme.of(context)
+                          .colorScheme
+                          .tertiary
+                          .withValues(alpha: 0.8),
                       offset: const Offset(1, 1),
                       blurRadius: 4,
                     ),
@@ -192,20 +203,12 @@ class DuelArena extends StatelessWidget {
           ),
           textAlign: TextAlign.center,
         ),
-        
         if (isWinner) ...[
           const SizedBox(height: Constants.margin * 0.5),
-          Icon(
-            Icons.emoji_events,
+          AppIcon(
+            PhosphorIconsRegular.trophy,
             color: Theme.of(context).colorScheme.onTertiaryContainer,
             size: 24,
-            shadows: [
-              Shadow(
-                color: Theme.of(context).colorScheme.tertiary.withValues(alpha: 0.8),
-                offset: const Offset(1, 1),
-                blurRadius: 4,
-              ),
-            ],
           ),
         ],
       ],
@@ -215,15 +218,15 @@ class DuelArena extends StatelessWidget {
   Widget _buildDuelProgress(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
     final theme = Theme.of(context);
-    
+
     return Column(
       spacing: Constants.margin,
       children: [
-         CircularProgressIndicator(
-          valueColor: AlwaysStoppedAnimation<Color>(Theme.of(context).colorScheme.tertiary),
+        CircularProgressIndicator(
+          valueColor: AlwaysStoppedAnimation<Color>(
+              Theme.of(context).colorScheme.tertiary),
           strokeWidth: 3,
         ),
-
         Text(
           l10n.duelInProgress,
           style: theme.textTheme.titleMedium?.copyWith(
@@ -231,7 +234,6 @@ class DuelArena extends StatelessWidget {
             fontWeight: FontWeight.bold,
           ),
         ),
-        
         const Text(
           '⚔️ ⚡ 💥',
           style: TextStyle(
@@ -246,7 +248,7 @@ class DuelArena extends StatelessWidget {
   Widget _buildWinnerDisplay(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
     final theme = Theme.of(context);
-    
+
     return Column(
       children: [
         Container(
@@ -255,7 +257,8 @@ class DuelArena extends StatelessWidget {
             vertical: Constants.margin,
           ),
           decoration: BoxDecoration(
-            color: Theme.of(context).colorScheme.tertiary.withValues(alpha: 0.2),
+            color:
+                Theme.of(context).colorScheme.tertiary.withValues(alpha: 0.2),
             borderRadius: BorderRadius.circular(Constants.margin * 2),
             border: Border.all(
               color: Theme.of(context).colorScheme.tertiary,
@@ -281,10 +284,8 @@ class DuelArena extends StatelessWidget {
             ],
           ),
         ),
-        
         const SizedBox(height: Constants.margin),
-        
-       const  Text(
+        const Text(
           '🪙 🏴‍☠️ 👑 🏴‍☠️ 🪙',
           style: TextStyle(
             fontSize: 32,
@@ -297,15 +298,14 @@ class DuelArena extends StatelessWidget {
 
   Widget _buildDuelControls(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
-    
+
     return Column(
       spacing: Constants.margin,
       children: [
         _buildStatsComparison(context),
-
         ElevatedButton.icon(
           onPressed: canStartDuel ? onStartDuel : null,
-          icon: const Icon(Icons.sports_martial_arts, size: 24),
+          icon: const AppIcon(PhosphorIconsRegular.personSimpleWalk, size: 24),
           label: Text(
             l10n.startDuel,
             style: const TextStyle(
@@ -314,7 +314,7 @@ class DuelArena extends StatelessWidget {
             ),
           ),
           style: ElevatedButton.styleFrom(
-            backgroundColor: canStartDuel 
+            backgroundColor: canStartDuel
                 ? Theme.of(context).colorScheme.error
                 : Theme.of(context).colorScheme.primary.withValues(alpha: 0.5),
             foregroundColor: Colors.white,
@@ -353,27 +353,23 @@ class DuelArena extends StatelessWidget {
               fontWeight: FontWeight.bold,
             ),
           ),
-          
           const SizedBox(height: Constants.margin),
-          
           _buildStatRow(
             context,
             l10n.bounty,
-            firstCharacter.bounty.isNotEmpty 
-                ? Constants.formatBounty(firstCharacter.bounty) 
+            firstCharacter.bounty.isNotEmpty
+                ? Constants.formatBounty(firstCharacter.bounty)
                 : l10n.unknown,
-            secondCharacter.bounty.isNotEmpty 
-                ? Constants.formatBounty(secondCharacter.bounty) 
+            secondCharacter.bounty.isNotEmpty
+                ? Constants.formatBounty(secondCharacter.bounty)
                 : l10n.unknown,
           ),
-          
           _buildStatRow(
             context,
             l10n.haki,
             '${firstCharacter.haki?.length ?? 0} ${l10n.hakiType(firstCharacter.haki?.length ?? 0)}',
             '${secondCharacter.haki?.length ?? 0} ${l10n.hakiType(secondCharacter.haki?.length ?? 0)}',
           ),
-          
           _buildStatRow(
             context,
             l10n.devilFruit,
@@ -396,7 +392,7 @@ class DuelArena extends StatelessWidget {
     String secondValue,
   ) {
     final theme = Theme.of(context);
-    
+
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: Constants.margin * 0.5),
       child: Row(
@@ -411,7 +407,7 @@ class DuelArena extends StatelessWidget {
               textAlign: TextAlign.center,
             ),
           ),
-          
+
           Expanded(
             child: Text(
               label,
@@ -419,11 +415,10 @@ class DuelArena extends StatelessWidget {
                 color: Theme.of(context).colorScheme.primary,
                 fontWeight: FontWeight.bold,
               ),
-
               textAlign: TextAlign.center,
             ),
           ),
-          
+
           // Second character stat
           Expanded(
             child: Text(
@@ -439,4 +434,4 @@ class DuelArena extends StatelessWidget {
       ),
     );
   }
-} 
+}

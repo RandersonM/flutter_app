@@ -31,4 +31,4 @@ class EditCrewSubmitted extends EditCrewEvent {
       [crewId, name, description, jollyRogerUrl, boatImageUrl, tags, boatName];
 }
 
-class EditCrewReset extends EditCrewEvent {} 
+class EditCrewReset extends EditCrewEvent {}

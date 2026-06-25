@@ -27,4 +27,4 @@ class CreateCrewFailure extends CreateCrewState {
 
   @override
   List<Object?> get props => [error];
-} 
+}

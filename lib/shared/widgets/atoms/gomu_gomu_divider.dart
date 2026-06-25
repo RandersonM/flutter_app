@@ -75,8 +75,7 @@ class GomuGomuDividerPainter extends CustomPainter {
     final availableWidth = size.width - (spiralRadius * 2);
     final actualSpacing =
         spiralCount > 1 ? availableWidth / (spiralCount - 1) : 0;
-    
-    
+
     for (int i = 0; i < spiralCount; i++) {
       final spiralCenterX = spiralRadius + (i * actualSpacing);
 
@@ -96,8 +95,8 @@ class GomuGomuDividerPainter extends CustomPainter {
     final points = <Offset>[];
 
     final totalAngle = spiralTurns * 2 * math.pi;
-    final angleStep = totalAngle / 50; 
-    
+    final angleStep = totalAngle / 50;
+
     for (int i = 0; i <= 50; i++) {
       final angle = i * angleStep;
       final radius = spiralRadius * (1 - (angle / totalAngle));
@@ -105,14 +104,14 @@ class GomuGomuDividerPainter extends CustomPainter {
       final y = centerY + radius * math.sin(angle);
       points.add(Offset(x, y));
     }
-    
+
     if (points.isNotEmpty) {
       path.moveTo(points.first.dx, points.first.dy);
       for (int i = 1; i < points.length; i++) {
         path.lineTo(points[i].dx, points[i].dy);
       }
     }
-    
+
     canvas.drawPath(path, glowPaint);
     canvas.drawPath(path, paint);
   }
@@ -135,7 +134,7 @@ class GomuGomuDividerPainter extends CustomPainter {
       final x = startPoint.dx + (distance * progress);
       final wave = math.sin(progress * math.pi * waveCount) * waveHeight;
       final y = startPoint.dy + wave;
-      
+
       if (i == 0) {
         path.moveTo(x, y);
       } else {
@@ -149,4 +148,4 @@ class GomuGomuDividerPainter extends CustomPainter {
 
   @override
   bool shouldRepaint(covariant CustomPainter oldDelegate) => false;
-} 
+}

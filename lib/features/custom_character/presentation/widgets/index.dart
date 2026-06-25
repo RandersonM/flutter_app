@@ -11,4 +11,4 @@ export 'character_description_section.dart';
 
 // Organisms
 export 'package:opfan/shared/widgets/organisms/character_form.dart';
-export 'package:opfan/shared/widgets/organisms/form_actions.dart'; 
+export 'package:opfan/shared/widgets/organisms/form_actions.dart';

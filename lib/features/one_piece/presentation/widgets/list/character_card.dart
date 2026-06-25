@@ -1,3 +1,5 @@
+import 'package:opfan/shared/widgets/atoms/app_icon.dart';
+import 'package:phosphor_flutter/phosphor_flutter.dart';
 // Developed by Randerson Mayllon
 // Copyright © 2022.
 
@@ -117,8 +119,8 @@ class _CharacterCardState extends State<CharacterCard> {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Icon(
-            Icons.person,
+          AppIcon(
+            PhosphorIconsRegular.user,
             size: 48,
             color: Colors.grey[600],
           ),

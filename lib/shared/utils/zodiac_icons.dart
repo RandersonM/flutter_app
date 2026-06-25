@@ -174,7 +174,7 @@ class ZodiacIcons {
 
   static DateTime? parseDateFromString(String dateString) {
     final parts = dateString.split('/');
-    
+
     if (parts.length == 3) {
       try {
         final day = int.parse(parts[0]);
@@ -193,7 +193,7 @@ class ZodiacIcons {
         // Silently handle parsing errors
       }
     }
-    
+
     return null;
   }
 

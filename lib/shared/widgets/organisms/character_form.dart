@@ -134,4 +134,4 @@ class CharacterForm extends StatelessWidget {
       ),
     );
   }
-} 
+}

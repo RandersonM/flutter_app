@@ -1,3 +1,5 @@
+import 'package:opfan/shared/widgets/atoms/app_icon.dart';
+import 'package:phosphor_flutter/phosphor_flutter.dart';
 // Developed by Randerson Mayllon
 // Copyright © 2022.
 
@@ -25,7 +27,8 @@ class CustomCharacterGridList extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  State<CustomCharacterGridList> createState() => _CustomCharacterGridListState();
+  State<CustomCharacterGridList> createState() =>
+      _CustomCharacterGridListState();
 }
 
 class _CustomCharacterGridListState extends State<CustomCharacterGridList> {
@@ -58,7 +61,6 @@ class _CustomCharacterGridListState extends State<CustomCharacterGridList> {
         Expanded(
           child: BlocBuilder<CustomCharacterBloc, CustomCharacterState>(
             builder: (context, state) {
-              
               if (state is CustomCharacterLoading) {
                 return const Center(
                   child: CircularProgressIndicator(),
@@ -70,8 +72,8 @@ class _CustomCharacterGridListState extends State<CustomCharacterGridList> {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Icon(
-                        Icons.error_outline,
+                      AppIcon(
+                        PhosphorIconsRegular.warningCircle,
                         size: 64,
                         color: Colors.grey[600],
                       ),
@@ -90,7 +92,9 @@ class _CustomCharacterGridListState extends State<CustomCharacterGridList> {
                       const SizedBox(height: Constants.margin),
                       ElevatedButton(
                         onPressed: () {
-                          context.read<CustomCharacterBloc>().add(const LoadCustomCharacters());
+                          context
+                              .read<CustomCharacterBloc>()
+                              .add(const LoadCustomCharacters());
                         },
                         child: Text(AppLocalizations.of(context)!.tryAgain),
                       ),
@@ -105,8 +109,8 @@ class _CustomCharacterGridListState extends State<CustomCharacterGridList> {
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Icon(
-                          Icons.person_add,
+                        AppIcon(
+                          PhosphorIconsRegular.userPlus,
                           size: 64,
                           color: Colors.grey[600],
                         ),
@@ -180,7 +184,7 @@ class _CustomCharacterGridListState extends State<CustomCharacterGridList> {
           mainAxisSize: MainAxisSize.min,
           children: [
             ListTile(
-              leading: const Icon(Icons.local_fire_department),
+              leading: const AppIcon(PhosphorIconsRegular.fire),
               title: Text(AppLocalizations.of(context)!.devilFruit),
               onTap: () {
                 Navigator.pop(context);
@@ -188,7 +192,7 @@ class _CustomCharacterGridListState extends State<CustomCharacterGridList> {
               },
             ),
             ListTile(
-              leading: const Icon(Icons.group),
+              leading: const AppIcon(PhosphorIconsRegular.users),
               title: Text(AppLocalizations.of(context)!.crews),
               onTap: () {
                 Navigator.pop(context);
@@ -224,8 +228,8 @@ class _CustomCharacterGridListState extends State<CustomCharacterGridList> {
                 Navigator.pop(context);
                 if (value.isNotEmpty) {
                   context.read<CustomCharacterBloc>().add(
-                    FilterCustomCharactersByDevilFruit(value),
-                  );
+                        FilterCustomCharactersByDevilFruit(value),
+                      );
                 }
               },
             ),
@@ -239,7 +243,9 @@ class _CustomCharacterGridListState extends State<CustomCharacterGridList> {
           TextButton(
             onPressed: () {
               Navigator.pop(context);
-              context.read<CustomCharacterBloc>().add(const LoadCustomCharacters());
+              context
+                  .read<CustomCharacterBloc>()
+                  .add(const LoadCustomCharacters());
             },
             child: Text(AppLocalizations.of(context)!.clearFilters),
           ),
@@ -265,8 +271,8 @@ class _CustomCharacterGridListState extends State<CustomCharacterGridList> {
                 Navigator.pop(context);
                 if (value.isNotEmpty) {
                   context.read<CustomCharacterBloc>().add(
-                    FilterCustomCharactersByCrew(value),
-                  );
+                        FilterCustomCharactersByCrew(value),
+                      );
                 }
               },
             ),
@@ -280,7 +286,9 @@ class _CustomCharacterGridListState extends State<CustomCharacterGridList> {
           TextButton(
             onPressed: () {
               Navigator.pop(context);
-              context.read<CustomCharacterBloc>().add(const LoadCustomCharacters());
+              context
+                  .read<CustomCharacterBloc>()
+                  .add(const LoadCustomCharacters());
             },
             child: Text(AppLocalizations.of(context)!.clearFilters),
           ),
@@ -291,7 +299,7 @@ class _CustomCharacterGridListState extends State<CustomCharacterGridList> {
 
   void _showDeleteConfirmation(CustomCharacterModel character) {
     final l10n = AppLocalizations.of(context)!;
-    
+
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
@@ -319,4 +327,4 @@ class _CustomCharacterGridListState extends State<CustomCharacterGridList> {
       ),
     );
   }
-} 
+}

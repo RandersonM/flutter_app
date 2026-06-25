@@ -1,3 +1,5 @@
+import 'package:opfan/shared/widgets/atoms/app_icon.dart';
+import 'package:phosphor_flutter/phosphor_flutter.dart';
 // Developed by Randerson Mayllon
 // Copyright © 2022.
 
@@ -71,14 +73,14 @@ class _ListCrewsScreenContentState extends State<_ListCrewsScreenContent>
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
     final currentUser = FirebaseAuth.instance.currentUser;
-    
+
     return Scaffold(
       appBar: DefaultAppBar(
         title: Text(l10n.crew(2)),
         actions: [
           IconButton(
             onPressed: () => _navigateToCreateCrew(context),
-            icon: const Icon(Icons.add),
+            icon: const AppIcon(PhosphorIconsRegular.plus),
             tooltip: l10n.createCrew,
           ),
         ],
@@ -136,7 +138,7 @@ class _ListCrewsScreenContentState extends State<_ListCrewsScreenContent>
 
   Future<void> _navigateToCreateCrew(BuildContext context) async {
     final result = await Navigator.pushNamed(context, AppRoutes.createCrew);
-    
+
     if (result != null &&
         result is Map<String, dynamic> &&
         result['action'] == 'created') {
@@ -168,13 +170,14 @@ class _ListCrewsScreenContentState extends State<_ListCrewsScreenContent>
   void _onCrewDelete(BuildContext context, CrewModel crew) {
     context.read<ListCrewsBloc>().add(DeleteCrew(crew.id!));
     _loadCrewsForTab(_currentTabIndex);
-    
+
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
-        content: Text(AppLocalizations.of(context)!.crewDeletedMessage(crew.name)),
+        content:
+            Text(AppLocalizations.of(context)!.crewDeletedMessage(crew.name)),
         backgroundColor: Colors.red,
         duration: const Duration(seconds: 2),
       ),
     );
   }
-} 
+}

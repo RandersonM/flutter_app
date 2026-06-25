@@ -1,3 +1,5 @@
+import 'package:opfan/shared/widgets/atoms/app_icon.dart';
+import 'package:phosphor_flutter/phosphor_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:opfan/l10n/app_localizations.dart';
 import 'package:opfan/core/models/one_piece/devil_fruit.dart';
@@ -21,7 +23,8 @@ class DevilFruitSearchDropdown extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  State<DevilFruitSearchDropdown> createState() => _DevilFruitSearchDropdownState();
+  State<DevilFruitSearchDropdown> createState() =>
+      _DevilFruitSearchDropdownState();
 }
 
 class _DevilFruitSearchDropdownState extends State<DevilFruitSearchDropdown> {
@@ -51,8 +54,8 @@ class _DevilFruitSearchDropdownState extends State<DevilFruitSearchDropdown> {
       } else {
         _filteredItems = widget.items.where((fruit) {
           return fruit.romanName.toLowerCase().contains(query) ||
-                 fruit.name.toLowerCase().contains(query) ||
-                 fruit.type.toLowerCase().contains(query);
+              fruit.name.toLowerCase().contains(query) ||
+              fruit.type.toLowerCase().contains(query);
         }).toList();
       }
     });
@@ -88,11 +91,11 @@ class _DevilFruitSearchDropdownState extends State<DevilFruitSearchDropdown> {
                     child: widget.value != null
                         ? _buildSelectedDevilFruitItem(widget.value!)
                         : Text(
-                            AppLocalizations.of(context)!.selectDevilFruitPlaceholder,
-                            
+                            AppLocalizations.of(context)!
+                                .selectDevilFruitPlaceholder,
                           ),
                   ),
-                  const Icon(Icons.arrow_drop_down),
+                  const AppIcon(PhosphorIconsRegular.caretDown),
                 ],
               ),
             ),
@@ -105,7 +108,7 @@ class _DevilFruitSearchDropdownState extends State<DevilFruitSearchDropdown> {
   void _showDevilFruitDialog() {
     _searchController.clear();
     _filteredItems = widget.items;
-    
+
     showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -122,11 +125,13 @@ class _DevilFruitSearchDropdownState extends State<DevilFruitSearchDropdown> {
                     TextField(
                       controller: _searchController,
                       decoration: InputDecoration(
-                        hintText: AppLocalizations.of(context)!.searchDevilFruit,
-                        prefixIcon: const Icon(Icons.search),
+                        hintText:
+                            AppLocalizations.of(context)!.searchDevilFruit,
+                        prefixIcon: const AppIcon(
+                            PhosphorIconsRegular.magnifyingGlass),
                         suffixIcon: _searchController.text.isNotEmpty
                             ? IconButton(
-                                icon: const Icon(Icons.clear),
+                                icon: const AppIcon(PhosphorIconsRegular.x),
                                 onPressed: () {
                                   _searchController.clear();
                                   setDialogState(() {
@@ -152,7 +157,8 @@ class _DevilFruitSearchDropdownState extends State<DevilFruitSearchDropdown> {
                         constraints: const BoxConstraints(maxHeight: 300),
                         child: _filteredItems.isEmpty
                             ? Center(
-                                child: Text(AppLocalizations.of(context)!.noDevilFruitFound),
+                                child: Text(AppLocalizations.of(context)!
+                                    .noDevilFruitFound),
                               )
                             : ListView.builder(
                                 shrinkWrap: true,
@@ -174,11 +180,15 @@ class _DevilFruitSearchDropdownState extends State<DevilFruitSearchDropdown> {
                                       ),
                                     ),
                                     title: Text(
-                                      fruit.romanName.isNotEmpty ? fruit.romanName : fruit.name,
-                                      style: const TextStyle(fontWeight: FontWeight.bold),
+                                      fruit.romanName.isNotEmpty
+                                          ? fruit.romanName
+                                          : fruit.name,
+                                      style: const TextStyle(
+                                          fontWeight: FontWeight.bold),
                                     ),
                                     subtitle: Column(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
                                       children: [
                                         Container(
                                           padding: const EdgeInsets.symmetric(
@@ -186,8 +196,10 @@ class _DevilFruitSearchDropdownState extends State<DevilFruitSearchDropdown> {
                                             vertical: 2,
                                           ),
                                           decoration: BoxDecoration(
-                                            color: _getTypeColor(fruit.type).withValues(alpha: 0.1),
-                                            borderRadius: BorderRadius.circular(4),
+                                            color: _getTypeColor(fruit.type)
+                                                .withValues(alpha: 0.1),
+                                            borderRadius:
+                                                BorderRadius.circular(4),
                                           ),
                                           child: Text(
                                             fruit.type,
@@ -198,7 +210,8 @@ class _DevilFruitSearchDropdownState extends State<DevilFruitSearchDropdown> {
                                             ),
                                           ),
                                         ),
-                                        if (fruit.name != fruit.romanName && fruit.romanName.isNotEmpty)
+                                        if (fruit.name != fruit.romanName &&
+                                            fruit.romanName.isNotEmpty)
                                           Text(
                                             fruit.name,
                                             style: TextStyle(
@@ -233,8 +246,6 @@ class _DevilFruitSearchDropdownState extends State<DevilFruitSearchDropdown> {
       },
     );
   }
-
-
 
   Widget _buildSelectedDevilFruitItem(DevilFruit fruit) {
     return Row(
@@ -284,13 +295,13 @@ class _DevilFruitSearchDropdownState extends State<DevilFruitSearchDropdown> {
   IconData _getTypeIcon(String type) {
     switch (type.toLowerCase()) {
       case 'logia':
-        return Icons.water_drop;
+        return PhosphorIconsRegular.drop;
       case 'paramecia':
-        return Icons.auto_fix_high;
+        return PhosphorIconsRegular.magicWand;
       case 'zoan':
-        return Icons.pets;
+        return PhosphorIconsRegular.pawPrint;
       default:
-        return Icons.help;
+        return PhosphorIconsRegular.question;
     }
   }
-} 
+}

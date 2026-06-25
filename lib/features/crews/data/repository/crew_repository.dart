@@ -30,7 +30,7 @@ class CrewRepository implements ICrewRepository {
         collection: _collection,
         documentId: documentId,
       );
-      
+
       if (data != null) {
         return CrewModel.fromFirestore(data, documentId);
       }
@@ -53,19 +53,18 @@ class CrewRepository implements ICrewRepository {
         descending: false,
         limit: limit,
       );
-      
-      var crews = documents
-          .map((doc) {
+
+      var crews = documents.map((doc) {
         return CrewModel.fromFirestore(doc, doc['id'] as String);
-      })
-          .toList();
-      
+      }).toList();
+
       if (orderBy != null) {
         crews.sort((a, b) {
           int comparison = 0;
           switch (orderBy) {
             case 'createdAt':
-              comparison = (a.createdAt ?? DateTime.now()).compareTo(b.createdAt ?? DateTime.now());
+              comparison = (a.createdAt ?? DateTime.now())
+                  .compareTo(b.createdAt ?? DateTime.now());
               break;
             case 'name':
               comparison = a.name.compareTo(b.name);
@@ -184,7 +183,8 @@ class CrewRepository implements ICrewRepository {
           int comparison = 0;
           switch (orderBy) {
             case 'createdAt':
-              comparison = (a.createdAt ?? DateTime.now()).compareTo(b.createdAt ?? DateTime.now());
+              comparison = (a.createdAt ?? DateTime.now())
+                  .compareTo(b.createdAt ?? DateTime.now());
               break;
             case 'name':
               comparison = a.name.compareTo(b.name);
@@ -205,18 +205,20 @@ class CrewRepository implements ICrewRepository {
     }
   }
 
-    @override
+  @override
   Stream<List<CrewModel>> streamUserCrews({
     String? orderBy,
     bool descending = false,
     int? limit,
   }) {
-    return _firestoreService.streamUserDocuments(
+    return _firestoreService
+        .streamUserDocuments(
       collection: _collection,
       orderBy: null, // Remove ordenação temporariamente
       descending: false,
       limit: limit,
-    ).map((documents) {
+    )
+        .map((documents) {
       var crews = documents
           .map((doc) => CrewModel.fromFirestore(doc, doc['id'] as String))
           .toList();
@@ -226,7 +228,8 @@ class CrewRepository implements ICrewRepository {
           int comparison = 0;
           switch (orderBy) {
             case 'createdAt':
-              comparison = (a.createdAt ?? DateTime.now()).compareTo(b.createdAt ?? DateTime.now());
+              comparison = (a.createdAt ?? DateTime.now())
+                  .compareTo(b.createdAt ?? DateTime.now());
               break;
             case 'name':
               comparison = a.name.compareTo(b.name);
@@ -250,8 +253,7 @@ class CrewRepository implements ICrewRepository {
     try {
       final allCrews = await getUserCrews();
       return allCrews
-          .where((crew) => 
-              crew.name.toLowerCase().contains(name.toLowerCase()))
+          .where((crew) => crew.name.toLowerCase().contains(name.toLowerCase()))
           .toList();
     } catch (e) {
       throw Exception('Erro ao buscar tripulações por nome: $e');
@@ -272,9 +274,7 @@ class CrewRepository implements ICrewRepository {
   Future<List<CrewModel>> getCrewsByTag(String tag) async {
     try {
       final allCrews = await getUserCrews();
-      return allCrews
-          .where((crew) => crew.tags.contains(tag))
-          .toList();
+      return allCrews.where((crew) => crew.tags.contains(tag)).toList();
     } catch (e) {
       throw Exception('Erro ao buscar tripulações por tag: $e');
     }
@@ -284,9 +284,7 @@ class CrewRepository implements ICrewRepository {
   Future<List<CrewModel>> getCrewsWithMembers() async {
     try {
       final allCrews = await getUserCrews();
-      return allCrews
-          .where((crew) => crew.members.isNotEmpty)
-          .toList();
+      return allCrews.where((crew) => crew.members.isNotEmpty).toList();
     } catch (e) {
       throw Exception('Erro ao buscar tripulações com membros: $e');
     }
@@ -299,14 +297,13 @@ class CrewRepository implements ICrewRepository {
   }) async {
     try {
       final allCrews = await getUserCrews();
-      return allCrews
-          .where((crew) {
-            final memberCount = crew.members.length;
-            return memberCount >= minMembers && memberCount <= maxMembers;
-          })
-          .toList();
+      return allCrews.where((crew) {
+        final memberCount = crew.members.length;
+        return memberCount >= minMembers && memberCount <= maxMembers;
+      }).toList();
     } catch (e) {
-      throw Exception('Erro ao buscar tripulações por quantidade de membros: $e');
+      throw Exception(
+          'Erro ao buscar tripulações por quantidade de membros: $e');
     }
   }
 
@@ -332,11 +329,11 @@ class CrewRepository implements ICrewRepository {
       }
 
       final updatedMembers = List<CrewMember>.from(crew.members)..add(member);
-      
+
       List<String> updatedRolesFilled = List<String>.from(crew.rolesFilled);
       String? updatedCaptain = crew.captain;
       String? updatedViceCaptain = crew.viceCaptain;
-      
+
       if (member.role != null && member.role!.isNotEmpty) {
         if (!updatedRolesFilled.contains(member.role)) {
           updatedRolesFilled.add(member.role!);
@@ -344,19 +341,19 @@ class CrewRepository implements ICrewRepository {
         debugPrint('member.role: ${member.role}');
         if (member.role!.toLowerCase() == 'captain') {
           updatedCaptain = member.name;
-        } else if (member.role!.toLowerCase() == 'vice-captain' || 
+        } else if (member.role!.toLowerCase() == 'vice-captain' ||
             member.role!.toLowerCase() == 'vicecaptain') {
           updatedViceCaptain = member.name;
         }
       }
-      
+
       final updatedCrew = crew.copyWith(
         members: updatedMembers,
         rolesFilled: updatedRolesFilled,
         captain: updatedCaptain,
         viceCaptain: updatedViceCaptain,
       );
-      
+
       await updateCrew(crewId, updatedCrew);
     } catch (e) {
       throw Exception('Erro ao adicionar membro à tripulação: $e');
@@ -374,7 +371,7 @@ class CrewRepository implements ICrewRepository {
       final updatedMembers = crew.members
           .where((member) => member.characterId != characterId)
           .toList();
-      
+
       final updatedCrew = crew.copyWith(members: updatedMembers);
       await updateCrew(crewId, updatedCrew);
     } catch (e) {
@@ -383,7 +380,8 @@ class CrewRepository implements ICrewRepository {
   }
 
   @override
-  Future<void> updateCrewMember(String crewId, String characterId, CrewMember updatedMember) async {
+  Future<void> updateCrewMember(
+      String crewId, String characterId, CrewMember updatedMember) async {
     try {
       final crew = await getCrew(crewId);
       if (crew == null) {
@@ -396,25 +394,25 @@ class CrewRepository implements ICrewRepository {
         }
         return member;
       }).toList();
-      
+
       List<String> updatedRolesFilled = List<String>.from(crew.rolesFilled);
       String? updatedCaptain = crew.captain;
       String? updatedViceCaptain = crew.viceCaptain;
-      
+
       if (updatedMember.role != null && updatedMember.role!.isNotEmpty) {
         if (!updatedRolesFilled.contains(updatedMember.role)) {
           updatedRolesFilled.add(updatedMember.role!);
         }
-        
+
         // Atualiza captain ou viceCaptain se o role corresponder
         if (updatedMember.role!.toLowerCase() == 'captain') {
           updatedCaptain = updatedMember.name;
-        } else if (updatedMember.role!.toLowerCase() == 'vice-captain' || 
-                   updatedMember.role!.toLowerCase() == 'vice captain') {
+        } else if (updatedMember.role!.toLowerCase() == 'vice-captain' ||
+            updatedMember.role!.toLowerCase() == 'vice captain') {
           updatedViceCaptain = updatedMember.name;
         }
       }
-      
+
       final updatedCrew = crew.copyWith(
         members: updatedMembers,
         rolesFilled: updatedRolesFilled,
@@ -486,7 +484,7 @@ class CrewRepository implements ICrewRepository {
       final updatedRoles = crew.rolesFilled
           .where((existingRole) => existingRole != role)
           .toList();
-      
+
       final updatedCrew = crew.copyWith(rolesFilled: updatedRoles);
       await updateCrew(crewId, updatedCrew);
     } catch (e) {
@@ -494,5 +492,3 @@ class CrewRepository implements ICrewRepository {
     }
   }
 }
-
-

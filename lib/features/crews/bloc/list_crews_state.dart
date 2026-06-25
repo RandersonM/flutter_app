@@ -28,4 +28,4 @@ class ListCrewsError extends ListCrewsState {
 
   @override
   List<Object?> get props => [message];
-} 
+}
