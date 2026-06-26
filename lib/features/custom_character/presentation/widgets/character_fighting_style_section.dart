@@ -9,10 +9,10 @@ class CharacterFightingStyleSection extends StatefulWidget {
   final void Function(FightingStyleModel?) onFightingStyleChanged;
 
   const CharacterFightingStyleSection({
-    Key? key,
+    super.key,
     this.fightingStyle,
     required this.onFightingStyleChanged,
-  }) : super(key: key);
+  });
 
   @override
   State<CharacterFightingStyleSection> createState() =>
@@ -132,7 +132,7 @@ class _CharacterFightingStyleSectionState
 
             // Tipo do estilo (obrigatório)
             DropdownButtonFormField<String>(
-              value: _selectedType,
+              initialValue: _selectedType,
               decoration: InputDecoration(
                 labelText: l10n.fightingType,
                 border: const OutlineInputBorder(),

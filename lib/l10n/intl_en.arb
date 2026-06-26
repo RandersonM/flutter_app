@@ -4149,5 +4149,165 @@
         "type": "int"
       }
     }
-  }
+  },
+
+  "vegapunk": "Vegapunk",
+  "@vegapunk": {
+    "description": "Vegapunk feature name shown in bottom navigation"
+  },
+  "vegapunkChatTitle": "Ask Vegapunk",
+  "@vegapunkChatTitle": {
+    "description": "Title of the Ask Vegapunk chat screen"
+  },
+  "vegapunkChatHint": "Ask anything...",
+  "@vegapunkChatHint": {
+    "description": "Placeholder text in the chat input field"
+  },
+  "vegapunkModelDownloadTitle": "Downloading Vegapunk's brain",
+  "@vegapunkModelDownloadTitle": {
+    "description": "Title shown while the on-device LLM model is downloading"
+  },
+  "vegapunkModelDownloadSubtitle": "One-time download (~2.4 GB). The model runs fully on your device.",
+  "@vegapunkModelDownloadSubtitle": {
+    "description": "Subtitle explaining the model download size and privacy"
+  },
+  "vegapunkModelLoadingTitle": "Activating Vegapunk...",
+  "@vegapunkModelLoadingTitle": {
+    "description": "Message shown while the model is loading into memory"
+  },
+  "vegapunkModelErrorTitle": "Vegapunk failed to initialize",
+  "@vegapunkModelErrorTitle": {
+    "description": "Error message shown when the model fails to load"
+  },
+  "vegapunkRetry": "Retry",
+  "@vegapunkRetry": {
+    "description": "Button label to retry model download or initialization"
+  },
+  "vegapunkCancel": "Cancel",
+  "@vegapunkCancel": {
+    "description": "Button label to cancel model download"
+  },
+  "vegapunkChatEmpty": "Vegapunk is ready. Ask me anything.",
+  "@vegapunkChatEmpty": {
+    "description": "Prompt shown when the chat has no messages yet"
+  },
+  "vegapunkStopGeneration": "Stop",
+  "@vegapunkStopGeneration": {
+    "description": "Button label to stop the current generation"
+  },
+  "vegapunkSatelliteStella": "Stella (Original)",
+  "@vegapunkSatelliteStella": {
+    "description": "Vegapunk Satellite Stella"
+  },
+  "vegapunkSatelliteShaka": "Shaka (Good)",
+  "@vegapunkSatelliteShaka": {
+    "description": "Vegapunk Satellite Shaka"
+  },
+  "vegapunkSatelliteLilith": "Lilith (Evil)",
+  "@vegapunkSatelliteLilith": {
+    "description": "Vegapunk Satellite Lilith"
+  },
+  "vegapunkSatelliteEdison": "Edison (Thinking)",
+  "@vegapunkSatelliteEdison": {
+    "description": "Vegapunk Satellite Edison"
+  },
+  "vegapunkSatellitePythagoras": "Pythagoras (Wisdom)",
+  "@vegapunkSatellitePythagoras": {
+    "description": "Vegapunk Satellite Pythagoras"
+  },
+  "vegapunkSatelliteAtlas": "Atlas (Violence)",
+  "@vegapunkSatelliteAtlas": {
+    "description": "Vegapunk Satellite Atlas"
+  },
+  "vegapunkSatelliteYork": "York (Greed)",
+  "@vegapunkSatelliteYork": {
+    "description": "Vegapunk Satellite York"
+  },
+  "vegapunkThinkingMode": "Thinking Mode",
+  "@vegapunkThinkingMode": {
+    "description": "Label for Vegapunk Thinking Mode toggle switch"
+  },
+  "vegapunkThinkingModeDesc": "Enable reasoning trace (increases memory and latency)",
+  "@vegapunkThinkingModeDesc": {
+    "description": "Description text for Vegapunk Thinking Mode toggle switch"
+  },
+  "cookingPersonalizedMealTitle": "Personalized Meal with Sanji",
+  "@cookingPersonalizedMealTitle": {
+    "description": "Header card title on the cooking tips screen"
+  },
+  "cookingPersonalizedMealSubtitle": "Add the ingredients you have and receive a personalized recipe based on your nutritional data!",
+  "@cookingPersonalizedMealSubtitle": {
+    "description": "Header card subtitle on the cooking tips screen"
+  },
+  "cookingAvailableIngredients": "Available Ingredients",
+  "@cookingAvailableIngredients": {
+    "description": "Section title for the ingredient input area"
+  },
+  "cookingPersonalizedMeal": "Personalized Meal",
+  "@cookingPersonalizedMeal": {
+    "description": "Card title for the personalized meal section"
+  },
+  "cookingTargetCaloriesInfo": "Target calories: {calories} kcal | Goal: {goal}",
+  "@cookingTargetCaloriesInfo": {
+    "description": "Info line showing target calories and goal",
+    "placeholders": {
+      "calories": { "type": "String" },
+      "goal": { "type": "String" }
+    }
+  },
+  "cookingGeneratingMeal": "Generating meal...",
+  "@cookingGeneratingMeal": {
+    "description": "Loading label on the generate meal button"
+  },
+  "cookingGenerateMeal": "Generate Meal",
+  "@cookingGenerateMeal": {
+    "description": "Label on the generate meal button"
+  },
+  "cookingPersonalizedRecipeTitle": "Personalized Recipe - {mealType}",
+  "@cookingPersonalizedRecipeTitle": {
+    "description": "Title of the result card showing the personalized recipe",
+    "placeholders": {
+      "mealType": { "type": "String" }
+    }
+  },
+  "cookingGoalMaintenance": "Maintain weight",
+  "@cookingGoalMaintenance": {
+    "description": "Display label for the maintenance goal"
+  },
+  "cookingGoalWeightLoss": "Lose weight",
+  "@cookingGoalWeightLoss": {
+    "description": "Display label for the weight-loss goal"
+  },
+  "cookingGoalMuscleGain": "Gain muscle",
+  "@cookingGoalMuscleGain": {
+    "description": "Display label for the muscle-gain goal"
+  },
+  "mealTypeBreakfast": "Breakfast",
+  "@mealTypeBreakfast": { "description": "Meal type option" },
+  "mealTypeMorningSnack": "Morning Snack",
+  "@mealTypeMorningSnack": { "description": "Meal type option" },
+  "mealTypeLunch": "Lunch",
+  "@mealTypeLunch": { "description": "Meal type option" },
+  "mealTypeAfternoonSnack": "Afternoon Snack",
+  "@mealTypeAfternoonSnack": { "description": "Meal type option" },
+  "mealTypeDinner": "Dinner",
+  "@mealTypeDinner": { "description": "Meal type option" },
+  "mealTypeDessert": "Dessert",
+  "@mealTypeDessert": { "description": "Meal type option" },
+  "mealTypeNightSnack": "Night Snack",
+  "@mealTypeNightSnack": { "description": "Meal type option" },
+  "dietaryRestrictionNone": "No restrictions",
+  "@dietaryRestrictionNone": { "description": "Dietary restriction option — no restrictions" },
+  "dietaryRestrictionVegetarian": "Vegetarian",
+  "@dietaryRestrictionVegetarian": { "description": "Dietary restriction option" },
+  "dietaryRestrictionVegan": "Vegan",
+  "@dietaryRestrictionVegan": { "description": "Dietary restriction option" },
+  "dietaryRestrictionGlutenFree": "Gluten-free",
+  "@dietaryRestrictionGlutenFree": { "description": "Dietary restriction option" },
+  "dietaryRestrictionLactoseFree": "Lactose-free",
+  "@dietaryRestrictionLactoseFree": { "description": "Dietary restriction option" },
+  "dietaryRestrictionLowCarb": "Low carb",
+  "@dietaryRestrictionLowCarb": { "description": "Dietary restriction option" },
+  "dietaryRestrictionHighProtein": "High protein",
+  "@dietaryRestrictionHighProtein": { "description": "Dietary restriction option" }
 }

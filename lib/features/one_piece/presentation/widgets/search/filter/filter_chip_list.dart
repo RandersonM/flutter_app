@@ -8,7 +8,7 @@ import 'package:opfan/features/one_piece/presentation/widgets/search/filter/sear
 import 'package:opfan/shared/utils/constants.dart';
 
 class FilterChipList extends StatelessWidget {
-  const FilterChipList({Key? key}) : super(key: key);
+  const FilterChipList({super.key});
   @override
   Widget build(BuildContext context) => SingleChildScrollView(
         physics: const ClampingScrollPhysics(),

@@ -4,7 +4,7 @@ import 'dart:math';
 import 'package:opfan/shared/utils/theme.dart';
 
 class RobinKnowledgeHeader extends StatefulWidget {
-  const RobinKnowledgeHeader({Key? key}) : super(key: key);
+  const RobinKnowledgeHeader({super.key});
 
   @override
   State<RobinKnowledgeHeader> createState() => _RobinKnowledgeHeaderState();

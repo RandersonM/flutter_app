@@ -13,7 +13,7 @@ enum AppButtonVariant {
 
 class AppButton extends StatelessWidget {
   const AppButton({
-    Key? key,
+    super.key,
     required this.label,
     required this.onPressed,
     this.icon,
@@ -24,7 +24,7 @@ class AppButton extends StatelessWidget {
     this.borderRadius = 16.0,
     this.backgroundColor,
     this.foregroundColor,
-  }) : super(key: key);
+  });
 
   final String label;
   final VoidCallback? onPressed;

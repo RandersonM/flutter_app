@@ -1,5 +1,5 @@
 import 'package:opfan/shared/widgets/atoms/app_icon.dart';
-import 'package:phosphor_flutter/phosphor_flutter.dart';
+import 'package:phosphoricons_flutter/phosphoricons_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:opfan/l10n/app_localizations.dart';
 import 'package:opfan/shared/utils/constants.dart';
@@ -13,11 +13,11 @@ class ExpenseItemWidget extends StatelessWidget {
   final VoidCallback onUpdateTotal;
 
   const ExpenseItemWidget({
-    Key? key,
+    super.key,
     required this.expenseItem,
     required this.onRemove,
     required this.onUpdateTotal,
-  }) : super(key: key);
+  });
 
   Color _getCategoryColor(ExpenseCategory category) {
     switch (category) {

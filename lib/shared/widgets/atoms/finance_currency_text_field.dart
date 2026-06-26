@@ -10,14 +10,14 @@ class FinanceCurrencyTextField extends StatelessWidget {
   final String currencySymbol;
 
   const FinanceCurrencyTextField({
-    Key? key,
+    super.key,
     required this.label,
     this.hint,
     required this.controller,
     this.validator,
     this.enabled = true,
     this.currencySymbol = 'R\$',
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

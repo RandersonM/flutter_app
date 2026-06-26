@@ -4,8 +4,7 @@ import 'package:opfan/l10n/app_localizations.dart';
 import 'package:opfan/shared/utils/constants.dart';
 
 class CalculatorHeader extends StatelessWidget {
-  const CalculatorHeader({Key? key, required this.result, required this.input})
-      : super(key: key);
+  const CalculatorHeader({super.key, required this.result, required this.input});
 
   final String result;
   final String input;

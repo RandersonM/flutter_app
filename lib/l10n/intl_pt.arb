@@ -3746,5 +3746,204 @@
   "zoroStatusProud": "Zoro está orgulhoso!",
   "workoutsRemaining": "{count, plural, =1{Falta 1 treino esta semana} other{Faltam {count} treinos esta semana}}",
   "weeklyGoalCompleted": "Meta semanal concluída! 🎯",
-  "workoutDaysCount": "{done} / {total} dias"
+  "workoutDaysCount": "{done} / {total} dias",
+  "vegapunk": "Vegapunk",
+  "@vegapunk": {
+    "description": "Name/label for the Vegapunk chat feature",
+    "type": "text",
+    "placeholders": {}
+  },
+  "vegapunkChatTitle": "Perguntar ao Vegapunk",
+  "@vegapunkChatTitle": {
+    "description": "Title for the Ask Vegapunk chat screen",
+    "type": "text",
+    "placeholders": {}
+  },
+  "vegapunkChatHint": "Pergunte qualquer coisa...",
+  "@vegapunkChatHint": {
+    "description": "Hint text for the chat input field",
+    "type": "text",
+    "placeholders": {}
+  },
+  "vegapunkModelDownloadTitle": "Baixando o cérebro do Vegapunk",
+  "@vegapunkModelDownloadTitle": {
+    "description": "Title shown during model download",
+    "type": "text",
+    "placeholders": {}
+  },
+  "vegapunkModelDownloadSubtitle": "Download único (~2,4 GB). O modelo roda totalmente no seu dispositivo.",
+  "@vegapunkModelDownloadSubtitle": {
+    "description": "Subtitle shown during model download",
+    "type": "text",
+    "placeholders": {}
+  },
+  "vegapunkModelLoadingTitle": "Ativando Vegapunk...",
+  "@vegapunkModelLoadingTitle": {
+    "description": "Title shown while loading the model",
+    "type": "text",
+    "placeholders": {}
+  },
+  "vegapunkModelErrorTitle": "Vegapunk falhou ao inicializar",
+  "@vegapunkModelErrorTitle": {
+    "description": "Title shown when model initialization fails",
+    "type": "text",
+    "placeholders": {}
+  },
+  "vegapunkRetry": "Tentar novamente",
+  "@vegapunkRetry": {
+    "description": "Retry button label",
+    "type": "text",
+    "placeholders": {}
+  },
+  "vegapunkCancel": "Cancelar",
+  "@vegapunkCancel": {
+    "description": "Cancel button label",
+    "type": "text",
+    "placeholders": {}
+  },
+  "vegapunkChatEmpty": "Vegapunk está pronto. Me pergunte qualquer coisa.",
+  "@vegapunkChatEmpty": {
+    "description": "Empty state message when chat has no messages",
+    "type": "text",
+    "placeholders": {}
+  },
+  "vegapunkStopGeneration": "Parar",
+  "@vegapunkStopGeneration": {
+    "description": "Stop generation button label",
+    "type": "text",
+    "placeholders": {}
+  },
+  "vegapunkSatelliteStella": "Stella (Original)",
+  "@vegapunkSatelliteStella": {
+    "description": "Vegapunk Satellite Stella",
+    "type": "text",
+    "placeholders": {}
+  },
+  "vegapunkSatelliteShaka": "Shaka (Bondade)",
+  "@vegapunkSatelliteShaka": {
+    "description": "Vegapunk Satellite Shaka",
+    "type": "text",
+    "placeholders": {}
+  },
+  "vegapunkSatelliteLilith": "Lilith (Maldade)",
+  "@vegapunkSatelliteLilith": {
+    "description": "Vegapunk Satellite Lilith",
+    "type": "text",
+    "placeholders": {}
+  },
+  "vegapunkSatelliteEdison": "Edison (Pensamento)",
+  "@vegapunkSatelliteEdison": {
+    "description": "Vegapunk Satellite Edison",
+    "type": "text",
+    "placeholders": {}
+  },
+  "vegapunkSatellitePythagoras": "Pythagoras (Sabedoria)",
+  "@vegapunkSatellitePythagoras": {
+    "description": "Vegapunk Satellite Pythagoras",
+    "type": "text",
+    "placeholders": {}
+  },
+  "vegapunkSatelliteAtlas": "Atlas (Violência)",
+  "@vegapunkSatelliteAtlas": {
+    "description": "Vegapunk Satellite Atlas",
+    "type": "text",
+    "placeholders": {}
+  },
+  "vegapunkSatelliteYork": "York (Ganância)",
+  "@vegapunkSatelliteYork": {
+    "description": "Vegapunk Satellite York",
+    "type": "text",
+    "placeholders": {}
+  },
+  "vegapunkThinkingMode": "Modo Pensamento",
+  "@vegapunkThinkingMode": {
+    "description": "Label for Vegapunk Thinking Mode toggle switch",
+    "type": "text",
+    "placeholders": {}
+  },
+  "vegapunkThinkingModeDesc": "Ativa o raciocínio lógico (aumenta memória e latência)",
+  "@vegapunkThinkingModeDesc": {
+    "description": "Description text for Vegapunk Thinking Mode toggle switch",
+    "type": "text",
+    "placeholders": {}
+  },
+  "cookingPersonalizedMealTitle": "Refeição Personalizada com o Sanji",
+  "@cookingPersonalizedMealTitle": {
+    "description": "Header card title on the cooking tips screen"
+  },
+  "cookingPersonalizedMealSubtitle": "Adicione os ingredientes que você tem e receba uma receita personalizada baseada nos seus dados nutricionais!",
+  "@cookingPersonalizedMealSubtitle": {
+    "description": "Header card subtitle on the cooking tips screen"
+  },
+  "cookingAvailableIngredients": "Ingredientes Disponíveis",
+  "@cookingAvailableIngredients": {
+    "description": "Section title for the ingredient input area"
+  },
+  "cookingPersonalizedMeal": "Refeição Personalizada",
+  "@cookingPersonalizedMeal": {
+    "description": "Card title for the personalized meal section"
+  },
+  "cookingTargetCaloriesInfo": "Calorias alvo: {calories} kcal | Objetivo: {goal}",
+  "@cookingTargetCaloriesInfo": {
+    "description": "Info line showing target calories and goal",
+    "placeholders": {
+      "calories": { "type": "String" },
+      "goal": { "type": "String" }
+    }
+  },
+  "cookingGeneratingMeal": "Gerando refeição...",
+  "@cookingGeneratingMeal": {
+    "description": "Loading label on the generate meal button"
+  },
+  "cookingGenerateMeal": "Gerar Refeição",
+  "@cookingGenerateMeal": {
+    "description": "Label on the generate meal button"
+  },
+  "cookingPersonalizedRecipeTitle": "Receita Personalizada - {mealType}",
+  "@cookingPersonalizedRecipeTitle": {
+    "description": "Title of the result card showing the personalized recipe",
+    "placeholders": {
+      "mealType": { "type": "String" }
+    }
+  },
+  "cookingGoalMaintenance": "Manter peso",
+  "@cookingGoalMaintenance": {
+    "description": "Display label for the maintenance goal"
+  },
+  "cookingGoalWeightLoss": "Perder peso",
+  "@cookingGoalWeightLoss": {
+    "description": "Display label for the weight-loss goal"
+  },
+  "cookingGoalMuscleGain": "Ganhar massa muscular",
+  "@cookingGoalMuscleGain": {
+    "description": "Display label for the muscle-gain goal"
+  },
+  "mealTypeBreakfast": "Café da manhã",
+  "@mealTypeBreakfast": { "description": "Meal type option" },
+  "mealTypeMorningSnack": "Lanche da manhã",
+  "@mealTypeMorningSnack": { "description": "Meal type option" },
+  "mealTypeLunch": "Almoço",
+  "@mealTypeLunch": { "description": "Meal type option" },
+  "mealTypeAfternoonSnack": "Café da tarde",
+  "@mealTypeAfternoonSnack": { "description": "Meal type option" },
+  "mealTypeDinner": "Jantar",
+  "@mealTypeDinner": { "description": "Meal type option" },
+  "mealTypeDessert": "Sobremesa",
+  "@mealTypeDessert": { "description": "Meal type option" },
+  "mealTypeNightSnack": "Lanche noturno",
+  "@mealTypeNightSnack": { "description": "Meal type option" },
+  "dietaryRestrictionNone": "Sem restrições",
+  "@dietaryRestrictionNone": { "description": "Dietary restriction option — no restrictions" },
+  "dietaryRestrictionVegetarian": "Vegetariano",
+  "@dietaryRestrictionVegetarian": { "description": "Dietary restriction option" },
+  "dietaryRestrictionVegan": "Vegano",
+  "@dietaryRestrictionVegan": { "description": "Dietary restriction option" },
+  "dietaryRestrictionGlutenFree": "Sem glúten",
+  "@dietaryRestrictionGlutenFree": { "description": "Dietary restriction option" },
+  "dietaryRestrictionLactoseFree": "Sem lactose",
+  "@dietaryRestrictionLactoseFree": { "description": "Dietary restriction option" },
+  "dietaryRestrictionLowCarb": "Baixo carboidrato",
+  "@dietaryRestrictionLowCarb": { "description": "Dietary restriction option" },
+  "dietaryRestrictionHighProtein": "Alto teor proteico",
+  "@dietaryRestrictionHighProtein": { "description": "Dietary restriction option" }
 }

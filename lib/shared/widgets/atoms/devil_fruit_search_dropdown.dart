@@ -1,5 +1,5 @@
 import 'package:opfan/shared/widgets/atoms/app_icon.dart';
-import 'package:phosphor_flutter/phosphor_flutter.dart';
+import 'package:phosphoricons_flutter/phosphoricons_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:opfan/l10n/app_localizations.dart';
 import 'package:opfan/core/models/one_piece/devil_fruit.dart';
@@ -13,14 +13,14 @@ class DevilFruitSearchDropdown extends StatefulWidget {
   final bool enabled;
 
   const DevilFruitSearchDropdown({
-    Key? key,
+    super.key,
     required this.label,
     required this.value,
     required this.items,
     required this.onChanged,
     this.validator,
     this.enabled = true,
-  }) : super(key: key);
+  });
 
   @override
   State<DevilFruitSearchDropdown> createState() =>

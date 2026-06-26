@@ -1,5 +1,5 @@
 import 'package:opfan/shared/widgets/atoms/app_icon.dart';
-import 'package:phosphor_flutter/phosphor_flutter.dart';
+import 'package:phosphoricons_flutter/phosphoricons_flutter.dart';
 // Developed by Randerson Mayllon
 // Copyright © 2022.
 
@@ -15,7 +15,7 @@ enum SimpleBannerType {
 
 class SimpleVideoBanner extends StatelessWidget {
   const SimpleVideoBanner({
-    Key? key,
+    super.key,
     this.url,
     this.bannerType = SimpleBannerType.image,
     this.height = 250.0,
@@ -24,7 +24,7 @@ class SimpleVideoBanner extends StatelessWidget {
     this.fallbackUrl,
     this.youTubeVideo,
     this.onTap,
-  }) : super(key: key);
+  });
 
   final String? url;
   final SimpleBannerType bannerType;

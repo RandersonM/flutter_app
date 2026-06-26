@@ -1,5 +1,5 @@
 import 'package:opfan/shared/widgets/atoms/app_icon.dart';
-import 'package:phosphor_flutter/phosphor_flutter.dart';
+import 'package:phosphoricons_flutter/phosphoricons_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:opfan/core/models/workout_assessment_model.dart';
@@ -50,11 +50,14 @@ class WorkoutResults extends StatelessWidget {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Text(
-              AppLocalizations.of(context)!.topRecommendationsTitle,
-              style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                    fontWeight: FontWeight.bold,
-                  ),
+            Expanded(
+              child: Text(
+                AppLocalizations.of(context)!.topRecommendationsTitle,
+                maxLines: 2,
+                style: Theme.of(
+                  context,
+                ).textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold),
+              ),
             ),
             AppButton(
               onPressed: () => Navigator.push(

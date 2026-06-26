@@ -1,5 +1,5 @@
 import 'package:opfan/shared/widgets/atoms/app_icon.dart';
-import 'package:phosphor_flutter/phosphor_flutter.dart';
+import 'package:phosphoricons_flutter/phosphoricons_flutter.dart';
 // Developed by Randerson Mayllon
 // Copyright © 2022.
 
@@ -23,14 +23,14 @@ class CrewList extends StatefulWidget {
   final void Function(String query)? onSearch;
 
   const CrewList({
-    Key? key,
+    super.key,
     this.onCrewTap,
     this.onCrewEdit,
     this.onCrewDelete,
     this.showEditDeleteButtons,
     this.isUserCrews = false,
     this.onSearch,
-  }) : super(key: key);
+  });
 
   @override
   State<CrewList> createState() => _CrewListState();

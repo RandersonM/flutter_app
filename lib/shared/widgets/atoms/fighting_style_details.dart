@@ -1,5 +1,5 @@
 import 'package:opfan/shared/widgets/atoms/app_icon.dart';
-import 'package:phosphor_flutter/phosphor_flutter.dart';
+import 'package:phosphoricons_flutter/phosphoricons_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:opfan/core/models/one_piece/fighting_style_model.dart';
 import 'package:opfan/core/utils/character_localization_mapper.dart';
@@ -10,9 +10,9 @@ class FightingStyleDetails extends StatelessWidget {
   final FightingStyleModel? fightingStyle;
 
   const FightingStyleDetails({
-    Key? key,
+    super.key,
     this.fightingStyle,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

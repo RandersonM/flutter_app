@@ -63,7 +63,7 @@ import 'app_localizations_pt.dart';
 /// property.
 abstract class AppLocalizations {
   AppLocalizations(String locale)
-      : localeName = intl.Intl.canonicalizedLocale(locale.toString());
+    : localeName = intl.Intl.canonicalizedLocale(locale.toString());
 
   final String localeName;
 
@@ -86,16 +86,16 @@ abstract class AppLocalizations {
   /// of delegates is preferred or required.
   static const List<LocalizationsDelegate<dynamic>> localizationsDelegates =
       <LocalizationsDelegate<dynamic>>[
-    delegate,
-    GlobalMaterialLocalizations.delegate,
-    GlobalCupertinoLocalizations.delegate,
-    GlobalWidgetsLocalizations.delegate,
-  ];
+        delegate,
+        GlobalMaterialLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+      ];
 
   /// A list of this localizations delegate's supported locales.
   static const List<Locale> supportedLocales = <Locale>[
     Locale('en'),
-    Locale('pt')
+    Locale('pt'),
   ];
 
   /// Text show at bounty section on character detail screen with pluralization
@@ -4675,6 +4675,276 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'{done} / {total} days'**
   String workoutDaysCount(int done, int total);
+
+  /// Vegapunk feature name shown in bottom navigation
+  ///
+  /// In en, this message translates to:
+  /// **'Vegapunk'**
+  String get vegapunk;
+
+  /// Title of the Ask Vegapunk chat screen
+  ///
+  /// In en, this message translates to:
+  /// **'Ask Vegapunk'**
+  String get vegapunkChatTitle;
+
+  /// Placeholder text in the chat input field
+  ///
+  /// In en, this message translates to:
+  /// **'Ask anything...'**
+  String get vegapunkChatHint;
+
+  /// Title shown while the on-device LLM model is downloading
+  ///
+  /// In en, this message translates to:
+  /// **'Downloading Vegapunk\'s brain'**
+  String get vegapunkModelDownloadTitle;
+
+  /// Subtitle explaining the model download size and privacy
+  ///
+  /// In en, this message translates to:
+  /// **'One-time download (~2.4 GB). The model runs fully on your device.'**
+  String get vegapunkModelDownloadSubtitle;
+
+  /// Message shown while the model is loading into memory
+  ///
+  /// In en, this message translates to:
+  /// **'Activating Vegapunk...'**
+  String get vegapunkModelLoadingTitle;
+
+  /// Error message shown when the model fails to load
+  ///
+  /// In en, this message translates to:
+  /// **'Vegapunk failed to initialize'**
+  String get vegapunkModelErrorTitle;
+
+  /// Button label to retry model download or initialization
+  ///
+  /// In en, this message translates to:
+  /// **'Retry'**
+  String get vegapunkRetry;
+
+  /// Button label to cancel model download
+  ///
+  /// In en, this message translates to:
+  /// **'Cancel'**
+  String get vegapunkCancel;
+
+  /// Prompt shown when the chat has no messages yet
+  ///
+  /// In en, this message translates to:
+  /// **'Vegapunk is ready. Ask me anything.'**
+  String get vegapunkChatEmpty;
+
+  /// Button label to stop the current generation
+  ///
+  /// In en, this message translates to:
+  /// **'Stop'**
+  String get vegapunkStopGeneration;
+
+  /// Vegapunk Satellite Stella
+  ///
+  /// In en, this message translates to:
+  /// **'Stella (Original)'**
+  String get vegapunkSatelliteStella;
+
+  /// Vegapunk Satellite Shaka
+  ///
+  /// In en, this message translates to:
+  /// **'Shaka (Good)'**
+  String get vegapunkSatelliteShaka;
+
+  /// Vegapunk Satellite Lilith
+  ///
+  /// In en, this message translates to:
+  /// **'Lilith (Evil)'**
+  String get vegapunkSatelliteLilith;
+
+  /// Vegapunk Satellite Edison
+  ///
+  /// In en, this message translates to:
+  /// **'Edison (Thinking)'**
+  String get vegapunkSatelliteEdison;
+
+  /// Vegapunk Satellite Pythagoras
+  ///
+  /// In en, this message translates to:
+  /// **'Pythagoras (Wisdom)'**
+  String get vegapunkSatellitePythagoras;
+
+  /// Vegapunk Satellite Atlas
+  ///
+  /// In en, this message translates to:
+  /// **'Atlas (Violence)'**
+  String get vegapunkSatelliteAtlas;
+
+  /// Vegapunk Satellite York
+  ///
+  /// In en, this message translates to:
+  /// **'York (Greed)'**
+  String get vegapunkSatelliteYork;
+
+  /// Label for Vegapunk Thinking Mode toggle switch
+  ///
+  /// In en, this message translates to:
+  /// **'Thinking Mode'**
+  String get vegapunkThinkingMode;
+
+  /// Description text for Vegapunk Thinking Mode toggle switch
+  ///
+  /// In en, this message translates to:
+  /// **'Enable reasoning trace (increases memory and latency)'**
+  String get vegapunkThinkingModeDesc;
+
+  /// Header card title on the cooking tips screen
+  ///
+  /// In en, this message translates to:
+  /// **'Personalized Meal with Sanji'**
+  String get cookingPersonalizedMealTitle;
+
+  /// Header card subtitle on the cooking tips screen
+  ///
+  /// In en, this message translates to:
+  /// **'Add the ingredients you have and receive a personalized recipe based on your nutritional data!'**
+  String get cookingPersonalizedMealSubtitle;
+
+  /// Section title for the ingredient input area
+  ///
+  /// In en, this message translates to:
+  /// **'Available Ingredients'**
+  String get cookingAvailableIngredients;
+
+  /// Card title for the personalized meal section
+  ///
+  /// In en, this message translates to:
+  /// **'Personalized Meal'**
+  String get cookingPersonalizedMeal;
+
+  /// Info line showing target calories and goal
+  ///
+  /// In en, this message translates to:
+  /// **'Target calories: {calories} kcal | Goal: {goal}'**
+  String cookingTargetCaloriesInfo(String calories, String goal);
+
+  /// Loading label on the generate meal button
+  ///
+  /// In en, this message translates to:
+  /// **'Generating meal...'**
+  String get cookingGeneratingMeal;
+
+  /// Label on the generate meal button
+  ///
+  /// In en, this message translates to:
+  /// **'Generate Meal'**
+  String get cookingGenerateMeal;
+
+  /// Title of the result card showing the personalized recipe
+  ///
+  /// In en, this message translates to:
+  /// **'Personalized Recipe - {mealType}'**
+  String cookingPersonalizedRecipeTitle(String mealType);
+
+  /// Display label for the maintenance goal
+  ///
+  /// In en, this message translates to:
+  /// **'Maintain weight'**
+  String get cookingGoalMaintenance;
+
+  /// Display label for the weight-loss goal
+  ///
+  /// In en, this message translates to:
+  /// **'Lose weight'**
+  String get cookingGoalWeightLoss;
+
+  /// Display label for the muscle-gain goal
+  ///
+  /// In en, this message translates to:
+  /// **'Gain muscle'**
+  String get cookingGoalMuscleGain;
+
+  /// Meal type option
+  ///
+  /// In en, this message translates to:
+  /// **'Breakfast'**
+  String get mealTypeBreakfast;
+
+  /// Meal type option
+  ///
+  /// In en, this message translates to:
+  /// **'Morning Snack'**
+  String get mealTypeMorningSnack;
+
+  /// Meal type option
+  ///
+  /// In en, this message translates to:
+  /// **'Lunch'**
+  String get mealTypeLunch;
+
+  /// Meal type option
+  ///
+  /// In en, this message translates to:
+  /// **'Afternoon Snack'**
+  String get mealTypeAfternoonSnack;
+
+  /// Meal type option
+  ///
+  /// In en, this message translates to:
+  /// **'Dinner'**
+  String get mealTypeDinner;
+
+  /// Meal type option
+  ///
+  /// In en, this message translates to:
+  /// **'Dessert'**
+  String get mealTypeDessert;
+
+  /// Meal type option
+  ///
+  /// In en, this message translates to:
+  /// **'Night Snack'**
+  String get mealTypeNightSnack;
+
+  /// Dietary restriction option — no restrictions
+  ///
+  /// In en, this message translates to:
+  /// **'No restrictions'**
+  String get dietaryRestrictionNone;
+
+  /// Dietary restriction option
+  ///
+  /// In en, this message translates to:
+  /// **'Vegetarian'**
+  String get dietaryRestrictionVegetarian;
+
+  /// Dietary restriction option
+  ///
+  /// In en, this message translates to:
+  /// **'Vegan'**
+  String get dietaryRestrictionVegan;
+
+  /// Dietary restriction option
+  ///
+  /// In en, this message translates to:
+  /// **'Gluten-free'**
+  String get dietaryRestrictionGlutenFree;
+
+  /// Dietary restriction option
+  ///
+  /// In en, this message translates to:
+  /// **'Lactose-free'**
+  String get dietaryRestrictionLactoseFree;
+
+  /// Dietary restriction option
+  ///
+  /// In en, this message translates to:
+  /// **'Low carb'**
+  String get dietaryRestrictionLowCarb;
+
+  /// Dietary restriction option
+  ///
+  /// In en, this message translates to:
+  /// **'High protein'**
+  String get dietaryRestrictionHighProtein;
 }
 
 class _AppLocalizationsDelegate
@@ -4704,8 +4974,9 @@ AppLocalizations lookupAppLocalizations(Locale locale) {
   }
 
   throw FlutterError(
-      'AppLocalizations.delegate failed to load unsupported locale "$locale". This is likely '
-      'an issue with the localizations generation tool. Please file an issue '
-      'on GitHub with a reproducible sample app and the gen-l10n configuration '
-      'that was used.');
+    'AppLocalizations.delegate failed to load unsupported locale "$locale". This is likely '
+    'an issue with the localizations generation tool. Please file an issue '
+    'on GitHub with a reproducible sample app and the gen-l10n configuration '
+    'that was used.',
+  );
 }

@@ -1,5 +1,5 @@
 import 'package:opfan/shared/widgets/atoms/app_icon.dart';
-import 'package:phosphor_flutter/phosphor_flutter.dart';
+import 'package:phosphoricons_flutter/phosphoricons_flutter.dart';
 // Developed by Randerson Mayllon
 // Copyright © 2022.
 
@@ -16,12 +16,12 @@ class CustomCharacterCard extends StatelessWidget {
   final VoidCallback? onDelete;
 
   const CustomCharacterCard({
-    Key? key,
+    super.key,
     required this.character,
     this.onTap,
     this.onEdit,
     this.onDelete,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

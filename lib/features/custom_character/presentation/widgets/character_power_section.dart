@@ -14,14 +14,14 @@ class CharacterPowerSection extends StatelessWidget {
   final void Function(String) onHakiDeselected;
 
   const CharacterPowerSection({
-    Key? key,
+    super.key,
     required this.devilFruits,
     required this.selectedDevilFruit,
     required this.onDevilFruitChanged,
     required this.selectedHaki,
     required this.onHakiSelected,
     required this.onHakiDeselected,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

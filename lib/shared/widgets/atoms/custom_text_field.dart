@@ -13,7 +13,7 @@ class CustomTextField extends StatelessWidget {
   final Widget? suffixIcon;
 
   const CustomTextField({
-    Key? key,
+    super.key,
     required this.label,
     this.hint,
     required this.controller,
@@ -23,7 +23,7 @@ class CustomTextField extends StatelessWidget {
     this.maxLength,
     this.enabled = true,
     this.suffixIcon,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -58,13 +58,13 @@ class DateTextField extends StatelessWidget {
   final bool enabled;
 
   const DateTextField({
-    Key? key,
+    super.key,
     required this.label,
     this.hint,
     required this.controller,
     this.validator,
     this.enabled = true,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -102,7 +102,7 @@ class CurrencyTextField extends StatelessWidget {
   final bool enabled;
 
   const CurrencyTextField({
-    Key? key,
+    super.key,
     required this.label,
     this.hint,
     required this.controller,
@@ -110,7 +110,7 @@ class CurrencyTextField extends StatelessWidget {
     this.enabled = true,
     this.suffixText = 'Berries',
     this.prefixText,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

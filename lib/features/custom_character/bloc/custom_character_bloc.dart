@@ -12,11 +12,9 @@ class CustomCharacterBloc
   final ICrewRepository _crewRepository;
 
   CustomCharacterBloc({
-    required ICustomCharacterRepository customCharacterService,
-    required ICrewRepository crewRepository,
-  })  : _customCharacterService = customCharacterService,
-        _crewRepository = crewRepository,
-        super(CustomCharacterInitial()) {
+    required this._customCharacterService,
+    required this._crewRepository,
+  }) : super(CustomCharacterInitial()) {
     on<LoadCustomCharacters>(_onLoadCustomCharacters);
     on<CreateCustomCharacter>(_onCreateCustomCharacter);
     on<UpdateCustomCharacter>(_onUpdateCustomCharacter);

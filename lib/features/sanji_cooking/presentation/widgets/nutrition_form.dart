@@ -1,5 +1,6 @@
+import 'package:get_it/get_it.dart';
 import 'package:flutter/material.dart';
-import 'package:opfan/core/services/nutrition_calculation_service.dart';
+import 'package:opfan/core/services/index.dart';
 import 'package:opfan/l10n/app_localizations.dart';
 import 'package:opfan/shared/widgets/atoms/custom_dropdown.dart';
 import 'package:opfan/shared/widgets/atoms/custom_text_field.dart';
@@ -228,7 +229,7 @@ class _NutritionFormState extends State<NutritionForm> {
           CustomDropdown<String>(
             value: _selectedActivityLevel,
             label: AppLocalizations.of(context)!.selectActivityLevel,
-            items: NutritionCalculationService.getActivityLevels(),
+            items: GetIt.I.get<INutritionCalculationService>().getActivityLevels(),
             onChanged: (value) {
               setState(() {
                 _selectedActivityLevel = value;
@@ -242,7 +243,7 @@ class _NutritionFormState extends State<NutritionForm> {
               return null;
             },
             itemToString: (level) =>
-                NutritionCalculationService.getActivityLevelDisplayName(
+                GetIt.I.get<INutritionCalculationService>().getActivityLevelDisplayName(
               level,
               (key) {
                 switch (key) {
@@ -273,7 +274,7 @@ class _NutritionFormState extends State<NutritionForm> {
           CustomDropdown<String>(
             value: _selectedGoal,
             label: AppLocalizations.of(context)!.selectGoal,
-            items: NutritionCalculationService.getGoals(),
+            items: GetIt.I.get<INutritionCalculationService>().getGoals(),
             onChanged: (value) {
               setState(() {
                 _selectedGoal = value;
@@ -286,7 +287,7 @@ class _NutritionFormState extends State<NutritionForm> {
               return null;
             },
             itemToString: (goal) =>
-                NutritionCalculationService.getGoalDisplayName(
+                GetIt.I.get<INutritionCalculationService>().getGoalDisplayName(
               goal,
               (key) {
                 switch (key) {

@@ -4,20 +4,20 @@
 import 'dart:async';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:opfan/core/services/auth_service.dart';
+import 'package:opfan/core/services/index.dart';
 import 'package:opfan/core/middleware/user_name_middleware.dart';
 import 'package:opfan/core/auth/models/user_model.dart';
 import 'auth_event.dart';
 import 'auth_state.dart';
 
 class AuthBloc extends Bloc<AuthEvent, AuthState> {
-  final AuthService _authService;
+  final IAuthService _authService;
   StreamSubscription<AuthStatus>? _authStatusSubscription;
 
   AuthBloc({
-    required AuthService authService,
-  })  : _authService = authService,
-        super(const AuthInitial()) {
+    required this._authService}) : super(const AuthInitial()) {
+    //
+  
     on<AuthStarted>(_onAuthStarted);
     on<AuthSignInRequested>(_onAuthSignInRequested);
     on<AuthSignOutRequested>(_onAuthSignOutRequested);

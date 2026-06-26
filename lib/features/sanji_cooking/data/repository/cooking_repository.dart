@@ -1,13 +1,13 @@
-import 'package:opfan/core/services/gemini_service.dart';
+import 'package:get_it/get_it.dart';
+import 'package:opfan/core/services/index.dart';
 import 'package:opfan/app/di/injection.dart';
-import 'package:opfan/core/services/locale_service.dart';
 import 'package:opfan/features/sanji_cooking/data/repository/cooking_repository_interface.dart';
 
 class CookingRepository implements ICookingRepository {
-  final GeminiService _geminiService = getIt<GeminiService>();
+  final IGeminiService _geminiService = getIt<IGeminiService>();
 
   String get _currentLanguage {
-    final locale = LocaleService.locale;
+    final locale = GetIt.I.get<ILocaleService>().locale;
     return locale?.languageCode ?? 'en';
   }
 

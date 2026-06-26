@@ -1,4 +1,4 @@
-import 'package:phosphor_flutter/phosphor_flutter.dart';
+import 'package:phosphoricons_flutter/phosphoricons_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:opfan/core/auth/models/user_model.dart';
 
@@ -14,8 +14,7 @@ class UserDrawerContent extends StatelessWidget {
   final UserModel user;
   final AuthBloc authBloc;
   const UserDrawerContent(
-      {Key? key, required this.user, required this.authBloc})
-      : super(key: key);
+      {super.key, required this.user, required this.authBloc});
 
   @override
   Widget build(BuildContext context) {
@@ -142,6 +141,15 @@ class UserDrawerContent extends StatelessWidget {
                           context,
                           AppRoutes.devilFruit,
                         );
+                      },
+                    ),
+                    _buildFuturisticListTile(
+                      context,
+                      icon: PhosphorIconsRegular.book,
+                      title: AppLocalizations.of(context)!.planner,
+                      onTap: () {
+                        Navigator.pop(context);
+                        Navigator.pushNamed(context, AppRoutes.knowledge);
                       },
                     ),
                     _buildFuturisticListTile(

@@ -30,7 +30,7 @@ class CharacterBackgroundSection extends StatelessWidget {
   final bool showAiGenerator;
 
   const CharacterBackgroundSection({
-    Key? key,
+    super.key,
     required this.bountyController,
     required this.imageUrlController,
     required this.selectedStatus,
@@ -50,7 +50,7 @@ class CharacterBackgroundSection extends StatelessWidget {
     this.race,
     this.haki,
     this.showAiGenerator = true,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

@@ -10,7 +10,7 @@ import 'package:opfan/features/calculator/presentation/widgets/calculator_conten
 import 'package:opfan/shared/widgets/molecules/default_app_bar.dart';
 
 class CalculatorScreen extends StatelessWidget {
-  const CalculatorScreen({Key? key}) : super(key: key);
+  const CalculatorScreen({super.key});
 
   @override
   Widget build(BuildContext context) => BlocProvider<CalculatorCubit>(

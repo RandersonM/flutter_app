@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:opfan/core/models/one_piece/crew_model.dart';
-import 'package:opfan/core/services/firestore_service.dart';
+import 'package:opfan/core/services/index.dart';
 import 'package:opfan/features/crews/data/repository/crew_repository_interface.dart';
 
 class CrewRepository implements ICrewRepository {
   CrewRepository();
 
-  final FirestoreService _firestoreService = FirestoreService();
+  final IFirestoreService _firestoreService = FirestoreService();
   static const String _collection = 'crews';
 
   @override

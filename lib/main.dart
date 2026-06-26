@@ -2,12 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:opfan/features/one_piece/bloc/search_cubit.dart';
-import 'package:opfan/core/services/environment_service.dart';
+import 'package:opfan/core/services/index.dart';
 import 'package:opfan/app/di/injection.dart';
-import 'package:opfan/core/services/notification_service.dart';
-import 'package:opfan/core/services/navigation_service.dart';
-import 'package:opfan/core/services/theme_service.dart';
-import 'package:opfan/core/services/storage_service.dart';
 import 'package:opfan/core/theme/cubit/theme_cubit.dart';
 import 'package:opfan/core/theme/cubit/theme_state.dart';
 import 'package:opfan/core/locale/cubit/locale_cubit.dart';
@@ -23,9 +19,14 @@ import 'package:opfan/core/auth/blocs/index.dart';
 import 'package:opfan/shared/utils/app_routes.dart';
 
 import 'package:opfan/shared/utils/theme.dart';
-import 'core/services/locale_service.dart';
+
 import 'package:opfan/app/app_bloc_observer.dart';
 import 'package:opfan/shared/widgets/global_error_boundary.dart';
+import 'package:flutter_gemma/flutter_gemma.dart';
+import 'package:flutter_gemma_litertlm/flutter_gemma_litertlm.dart';
+import 'package:flutter_gemma_mediapipe/flutter_gemma_mediapipe.dart';
+import 'package:flutter_gemma_embeddings/flutter_gemma_embeddings.dart';
+import 'package:flutter_gemma_rag_sqlite/flutter_gemma_rag_sqlite.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -35,18 +36,31 @@ void main() async {
   await setupDependencies();
   await getIt<IStorageService>().initialize();
 
-  await LocaleService.loadLocale();
+  await getIt<ILocaleService>().loadLocale();
 
   try {
+    debugPrint('MAIN: Starting Firebase, Env, Theme initialize...');
     await Future.wait([
       Firebase.initializeApp(
         options: DefaultFirebaseOptions.currentPlatform,
       ),
-      EnvironmentService.initialize(),
-      ThemeService.initialize(),
+      getIt<IEnvironmentService>().initialize(),
+      getIt<IThemeService>().initialize(),
     ]);
+    debugPrint('MAIN: Firebase, Env, Theme initialized.');
 
-    await getIt<NotificationService>().initialize();
+    // debugPrint('MAIN: Initializing NotificationService...');
+    // await getIt<INotificationService>().initialize();
+    // debugPrint('MAIN: INotificationService initialized.');
+
+    debugPrint('MAIN: Initializing FlutterGemma...');
+    await FlutterGemma.initialize(
+      huggingFaceToken: getIt<IEnvironmentService>().huggingFaceApiKey,
+      inferenceEngines: [LiteRtLmEngine(), MediaPipeEngine()],
+      embeddingBackends: [LiteRtEmbeddingBackend()],
+      vectorStore: SqliteVectorStore(),
+    );
+    debugPrint('MAIN: FlutterGemma initialized.');
   } catch (e, stackTrace) {
     debugPrint('MAIN: Initialization error: $e');
     debugPrint('MAIN: Stack trace: $stackTrace');
@@ -61,7 +75,7 @@ void main() async {
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
+  const MyApp({super.key});
 
   @override
   Widget build(BuildContext context) => MultiBlocProvider(
@@ -90,7 +104,7 @@ class MyApp extends StatelessWidget {
               BlocBuilder<LocaleCubit, LocaleState>(
             builder: (context, localeState) => BlocBuilder<AuthBloc, AuthState>(
               builder: (context, authState) => MaterialApp(
-                title: EnvironmentService.instance.appName,
+                title: getIt<IEnvironmentService>().appName,
                 locale: localeState.locale,
                 localizationsDelegates: AppLocalizations.localizationsDelegates,
                 supportedLocales: const <Locale>[

@@ -9,14 +9,14 @@ class CustomChipSelector extends StatelessWidget {
   final int? maxSelections;
 
   const CustomChipSelector({
-    Key? key,
+    super.key,
     required this.label,
     required this.options,
     required this.selectedOptions,
     required this.onOptionSelected,
     required this.onOptionDeselected,
     this.maxSelections,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

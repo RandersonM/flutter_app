@@ -1,5 +1,5 @@
 import 'package:opfan/shared/widgets/atoms/app_icon.dart';
-import 'package:phosphor_flutter/phosphor_flutter.dart';
+import 'package:phosphoricons_flutter/phosphoricons_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:opfan/l10n/app_localizations.dart';
 import 'package:opfan/shared/utils/app_routes.dart';
@@ -7,7 +7,7 @@ import 'package:opfan/shared/utils/app_routes.dart';
 class GlobalErrorBoundary extends StatefulWidget {
   final Widget child;
 
-  const GlobalErrorBoundary({Key? key, required this.child}) : super(key: key);
+  const GlobalErrorBoundary({super.key, required this.child});
 
   @override
   State<GlobalErrorBoundary> createState() => _GlobalErrorBoundaryState();

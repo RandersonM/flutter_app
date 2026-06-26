@@ -1,5 +1,5 @@
 import 'package:opfan/shared/widgets/atoms/app_icon.dart';
-import 'package:phosphor_flutter/phosphor_flutter.dart';
+import 'package:phosphoricons_flutter/phosphoricons_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:opfan/core/models/one_piece/crew_model.dart';
@@ -8,16 +8,16 @@ import 'package:opfan/features/crews/bloc/index.dart';
 import 'package:opfan/shared/widgets/molecules/default_app_bar.dart';
 import 'package:opfan/shared/widgets/organisms/form_actions.dart';
 import 'package:opfan/shared/utils/theme.dart';
-import 'package:opfan/core/services/crew_image_service.dart';
+import 'package:opfan/core/services/index.dart';
 import 'package:opfan/shared/widgets/atoms/clickable_image.dart';
 
 class EditCrewScreen extends StatefulWidget {
   final CrewModel crew;
 
   const EditCrewScreen({
-    Key? key,
+    super.key,
     required this.crew,
-  }) : super(key: key);
+  });
 
   @override
   State<EditCrewScreen> createState() => _EditCrewScreenState();
@@ -32,7 +32,7 @@ class _EditCrewScreenState extends State<EditCrewScreen> {
   final _boatNameController = TextEditingController();
   List<String> _tags = [];
 
-  final CrewImageService _crewImageService = CrewImageService();
+  final ICrewImageService _crewImageService = CrewImageService();
   String? _generatedJollyRogerUrl;
   String? _generatedBoatUrl;
   bool _isGeneratingJollyRoger = false;

@@ -44,7 +44,7 @@ class CharacterForm extends StatelessWidget {
   final bool showAiGenerator;
 
   const CharacterForm({
-    Key? key,
+    super.key,
     required this.formKey,
     required this.nameController,
     required this.nicknameController,
@@ -76,7 +76,7 @@ class CharacterForm extends StatelessWidget {
     this.selectedRace,
     required this.onRaceChanged,
     this.showAiGenerator = true,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

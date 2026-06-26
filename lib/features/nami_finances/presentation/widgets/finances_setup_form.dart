@@ -1,5 +1,5 @@
 import 'package:opfan/shared/widgets/atoms/app_icon.dart';
-import 'package:phosphor_flutter/phosphor_flutter.dart';
+import 'package:phosphoricons_flutter/phosphoricons_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:opfan/l10n/app_localizations.dart';
 import 'package:opfan/shared/utils/constants.dart';
@@ -21,10 +21,10 @@ class FinancesSetupForm extends StatefulWidget {
   final NamiFinancesModel? existingFinances;
 
   const FinancesSetupForm({
-    Key? key,
+    super.key,
     required this.onSave,
     this.existingFinances,
-  }) : super(key: key);
+  });
 
   @override
   State<FinancesSetupForm> createState() => _FinancesSetupFormState();
@@ -340,7 +340,7 @@ class _FinancesSetupFormState extends State<FinancesSetupForm> {
               ],
             ),
           );
-        }).toList(),
+        }),
         const SizedBox(height: Constants.margin),
       ],
     );
@@ -401,7 +401,7 @@ class _FinancesSetupFormState extends State<FinancesSetupForm> {
               onUpdateTotal: _validateForm,
             ),
           );
-        }).toList(),
+        }),
         const SizedBox(height: Constants.margin),
       ],
     );

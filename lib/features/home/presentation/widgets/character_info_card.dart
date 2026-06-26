@@ -1,5 +1,5 @@
 import 'package:opfan/shared/widgets/atoms/app_icon.dart';
-import 'package:phosphor_flutter/phosphor_flutter.dart';
+import 'package:phosphoricons_flutter/phosphoricons_flutter.dart';
 // Developed by Randerson Mayllon
 // Copyright © 2022.
 
@@ -9,14 +9,14 @@ import 'package:opfan/shared/utils/constants.dart';
 
 class CharacterInfoCard extends StatelessWidget {
   const CharacterInfoCard({
-    Key? key,
+    super.key,
     this.characterName = "Monkey D. Luffy",
     this.characterBounty = "฿3,000,000,000",
     this.characterImage =
         "https://static.wikia.nocookie.net/onepiece/images/6/6d/Monkey_D._Luffy_Anime_Post_Timeskip_Infobox.png",
     this.characterDescription,
     this.onTap,
-  }) : super(key: key);
+  });
 
   final String characterName;
   final String characterBounty;

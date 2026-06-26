@@ -9,13 +9,13 @@ class FuturisticBackground extends StatelessWidget {
   final Color? customBackgroundColor;
 
   const FuturisticBackground({
-    Key? key,
+    super.key,
     required this.child,
     this.overlayColor,
     this.opacity = 0.1,
     this.useThemeColors = false,
     this.customBackgroundColor,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -95,14 +95,14 @@ class AnimatedFuturisticBackground extends StatefulWidget {
   final Color? customBackgroundColor;
 
   const AnimatedFuturisticBackground({
-    Key? key,
+    super.key,
     required this.child,
     this.overlayColor,
     this.opacity = 0.1,
     this.animationDuration = const Duration(seconds: 3),
     this.useThemeColors = false,
     this.customBackgroundColor,
-  }) : super(key: key);
+  });
 
   @override
   State<AnimatedFuturisticBackground> createState() =>

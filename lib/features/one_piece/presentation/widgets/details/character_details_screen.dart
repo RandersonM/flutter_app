@@ -14,13 +14,13 @@ import 'package:opfan/shared/widgets/atoms/app_icon.dart';
 import 'package:opfan/shared/widgets/atoms/clickable_image.dart';
 import 'package:opfan/shared/widgets/atoms/fighting_style_details.dart';
 import 'package:opfan/shared/utils/constants.dart';
-import 'package:phosphor_flutter/phosphor_flutter.dart';
+import 'package:phosphoricons_flutter/phosphoricons_flutter.dart';
 
 class CharacterDetailsScreen extends StatelessWidget {
   const CharacterDetailsScreen({
-    Key? key,
+    super.key,
     required this.character,
-  }) : super(key: key);
+  });
 
   final CustomCharacterModel character;
 

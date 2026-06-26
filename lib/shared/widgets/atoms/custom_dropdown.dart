@@ -11,7 +11,7 @@ class CustomDropdown<T> extends StatelessWidget {
   final bool enabled;
 
   const CustomDropdown({
-    Key? key,
+    super.key,
     required this.label,
     required this.value,
     required this.items,
@@ -20,14 +20,14 @@ class CustomDropdown<T> extends StatelessWidget {
     required this.onChanged,
     this.validator,
     this.enabled = true,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 8.0),
       child: DropdownButtonFormField<T>(
-        value: value,
+        initialValue: value,
         isExpanded: true,
         borderRadius: BorderRadius.circular(16),
         items: items.map((T item) {

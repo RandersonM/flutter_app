@@ -1,5 +1,5 @@
 import 'package:opfan/shared/widgets/atoms/app_icon.dart';
-import 'package:phosphor_flutter/phosphor_flutter.dart';
+import 'package:phosphoricons_flutter/phosphoricons_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:opfan/l10n/app_localizations.dart';
 import 'package:opfan/core/models/youtube_video_model.dart';
@@ -9,9 +9,9 @@ class YouTubePlayerScreen extends StatefulWidget {
   final YouTubeVideo video;
 
   const YouTubePlayerScreen({
-    Key? key,
+    super.key,
     required this.video,
-  }) : super(key: key);
+  });
 
   @override
   State<YouTubePlayerScreen> createState() => _YouTubePlayerScreenState();

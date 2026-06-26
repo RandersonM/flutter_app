@@ -1,5 +1,5 @@
 import 'package:opfan/shared/widgets/atoms/app_icon.dart';
-import 'package:phosphor_flutter/phosphor_flutter.dart';
+import 'package:phosphoricons_flutter/phosphoricons_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:opfan/shared/utils/constants.dart';
@@ -11,7 +11,7 @@ import 'package:opfan/app/di/injection.dart';
 import 'package:opfan/l10n/app_localizations.dart';
 
 class FinancesHistoryWidget extends StatefulWidget {
-  const FinancesHistoryWidget({Key? key}) : super(key: key);
+  const FinancesHistoryWidget({super.key});
 
   @override
   State<FinancesHistoryWidget> createState() => _FinancesHistoryWidgetState();

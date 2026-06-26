@@ -9,10 +9,10 @@ import 'package:opfan/shared/utils/constants.dart';
 
 class CharacterGridList extends StatelessWidget {
   const CharacterGridList({
-    Key? key,
+    super.key,
     required this.characters,
     this.controller,
-  }) : super(key: key);
+  });
 
   final List<CustomCharacterModel> characters;
   final ScrollController? controller;

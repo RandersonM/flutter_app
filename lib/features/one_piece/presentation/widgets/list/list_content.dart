@@ -9,7 +9,7 @@ import 'package:opfan/core/models/one_piece/custom_character_model.dart';
 import 'package:opfan/features/one_piece/presentation/widgets/list/character_grid_list.dart';
 
 class ListContent extends StatefulWidget {
-  const ListContent({Key? key}) : super(key: key);
+  const ListContent({super.key});
 
   @override
   State<ListContent> createState() => _ListContentState();

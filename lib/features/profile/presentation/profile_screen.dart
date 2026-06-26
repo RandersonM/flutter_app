@@ -1,5 +1,5 @@
 import 'package:opfan/shared/widgets/atoms/app_icon.dart';
-import 'package:phosphor_flutter/phosphor_flutter.dart';
+import 'package:phosphoricons_flutter/phosphoricons_flutter.dart';
 // Developed by Randerson Mayllon
 // Copyright © 2025.
 
@@ -273,7 +273,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
         trailing: Switch(
           value: themeState.isDarkMode,
           onChanged: (_) => _toggleTheme(),
-          activeColor: Theme.of(context).colorScheme.primary,
+          activeThumbColor: Theme.of(context).colorScheme.primary,
         ),
         onTap: _toggleTheme,
       ),

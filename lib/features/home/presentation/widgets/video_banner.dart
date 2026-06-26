@@ -1,5 +1,5 @@
 import 'package:opfan/shared/widgets/atoms/app_icon.dart';
-import 'package:phosphor_flutter/phosphor_flutter.dart';
+import 'package:phosphoricons_flutter/phosphoricons_flutter.dart';
 // Developed by Randerson Mayllon
 // Copyright © 2022.
 
@@ -16,13 +16,13 @@ enum BannerType {
 
 class VideoBanner extends StatefulWidget {
   const VideoBanner({
-    Key? key,
+    super.key,
     required this.url,
     required this.bannerType,
     this.height = 200.0,
     this.autoPlay = true,
     this.showControls = false,
-  }) : super(key: key);
+  });
 
   final String url;
   final BannerType bannerType;

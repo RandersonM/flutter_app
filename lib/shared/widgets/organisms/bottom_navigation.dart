@@ -1,4 +1,4 @@
-import 'package:phosphor_flutter/phosphor_flutter.dart';
+import 'package:phosphoricons_flutter/phosphoricons_flutter.dart';
 // Developed by Randerson Mayllon
 // Copyright © 2022.
 
@@ -18,7 +18,7 @@ enum BottomNavigationPages {
   finances,
   workout,
   cooking,
-  knowledge,
+  vegapunkChat,
 }
 
 class BottomNavigation extends StatefulWidget {
@@ -39,7 +39,7 @@ class BottomNavigationState extends State<BottomNavigation> {
     BottomNavigationPages.workout,
     BottomNavigationPages.home,
     BottomNavigationPages.cooking,
-    BottomNavigationPages.knowledge,
+    BottomNavigationPages.vegapunkChat,
   ];
 
   Future<void> _navigateToPage(BottomNavigationPages page) async {
@@ -77,11 +77,12 @@ class BottomNavigationState extends State<BottomNavigation> {
           ModalRoute.withName(AppRoutes.cooking),
         );
         break;
-      case BottomNavigationPages.knowledge:
+      case BottomNavigationPages.vegapunkChat:
         await Navigator.pushNamedAndRemoveUntil(
           context,
-          AppRoutes.knowledge,
-          ModalRoute.withName(AppRoutes.knowledge),
+          AppRoutes.vegapunkChat,
+          ModalRoute.withName(AppRoutes.vegapunkChat),
+          arguments: [],
         );
         break;
     }
@@ -118,9 +119,9 @@ class BottomNavigationState extends State<BottomNavigation> {
           localizations.cooking,
           PhosphorIconsRegular.forkKnife,
         ),
-      BottomNavigationPages.knowledge => (
-          localizations.planner,
-          PhosphorIconsRegular.book,
+      BottomNavigationPages.vegapunkChat => (
+        localizations.vegapunk,
+        PhosphorIconsRegular.robot,
         ),
     };
 

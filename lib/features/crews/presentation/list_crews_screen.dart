@@ -1,5 +1,5 @@
 import 'package:opfan/shared/widgets/atoms/app_icon.dart';
-import 'package:phosphor_flutter/phosphor_flutter.dart';
+import 'package:phosphoricons_flutter/phosphoricons_flutter.dart';
 // Developed by Randerson Mayllon
 // Copyright © 2022.
 
@@ -15,7 +15,7 @@ import 'package:opfan/shared/widgets/molecules/default_app_bar.dart';
 import 'package:opfan/shared/widgets/organisms/crew_list.dart';
 
 class ListCrewsScreen extends StatelessWidget {
-  const ListCrewsScreen({Key? key}) : super(key: key);
+  const ListCrewsScreen({super.key});
 
   @override
   Widget build(BuildContext context) {

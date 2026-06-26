@@ -10,9 +10,8 @@ class RobinKnowledgeBloc
     extends Bloc<RobinKnowledgeEvent, RobinKnowledgeState> {
   final PlannerRepositoryInterface _plannerRepository;
 
-  RobinKnowledgeBloc({required PlannerRepositoryInterface plannerRepository})
-      : _plannerRepository = plannerRepository,
-        super(RobinKnowledgeInitial()) {
+  RobinKnowledgeBloc({required this._plannerRepository})
+    : super(RobinKnowledgeInitial()) {
     on<LoadGoals>(_onLoadGoals);
     on<AddGoal>(_onAddGoal);
     on<UpdateGoal>(_onUpdateGoal);

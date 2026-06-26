@@ -334,17 +334,17 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
               runSpacing: 8.0,
               children: [
                 _buildChoiceChip(
-                    'lose_weight',
+                    'weight_loss',
                     AppLocalizations.of(context)!.goalLoseWeight,
                     _goal,
                     (v) => setState(() => _goal = v)),
                 _buildChoiceChip(
-                    'maintain',
+                    'maintenance',
                     AppLocalizations.of(context)!.goalMaintain,
                     _goal,
                     (v) => setState(() => _goal = v)),
                 _buildChoiceChip(
-                    'gain_muscle',
+                    'muscle_gain',
                     AppLocalizations.of(context)!.goalGainMuscle,
                     _goal,
                     (v) => setState(() => _goal = v)),

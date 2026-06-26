@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:phosphor_flutter/phosphor_flutter.dart';
+import 'package:phosphoricons_flutter/phosphoricons_flutter.dart';
 
 import 'package:opfan/core/models/one_piece/custom_character_model.dart';
 import 'package:opfan/core/utils/character_localization_mapper.dart';
@@ -9,10 +9,10 @@ import 'package:opfan/shared/widgets/atoms/app_icon.dart';
 
 class DetailsCompactTags extends StatelessWidget {
   const DetailsCompactTags({
-    Key? key,
+    super.key,
     required this.character,
     required this.l10n,
-  }) : super(key: key);
+  });
 
   final CustomCharacterModel character;
   final AppLocalizations l10n;

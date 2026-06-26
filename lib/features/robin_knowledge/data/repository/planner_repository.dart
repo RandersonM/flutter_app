@@ -1,14 +1,13 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:opfan/core/models/goal_model.dart';
 import 'package:opfan/features/robin_knowledge/data/repository/planner_repository_interface.dart';
-import 'package:opfan/core/services/firestore_service.dart';
+import 'package:opfan/core/services/index.dart';
 
 class PlannerRepository implements PlannerRepositoryInterface {
-  final FirestoreService _firestoreService;
+  final IFirestoreService _firestoreService;
   static const String _collection = 'planner';
 
-  PlannerRepository({required FirestoreService firestoreService})
-      : _firestoreService = firestoreService;
+  PlannerRepository({required this._firestoreService});
 
   @override
   Future<List<GoalModel>> getGoals() async {

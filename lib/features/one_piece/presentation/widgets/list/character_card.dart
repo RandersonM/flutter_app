@@ -1,5 +1,5 @@
 import 'package:opfan/shared/widgets/atoms/app_icon.dart';
-import 'package:phosphor_flutter/phosphor_flutter.dart';
+import 'package:phosphoricons_flutter/phosphoricons_flutter.dart';
 // Developed by Randerson Mayllon
 // Copyright © 2022.
 
@@ -12,7 +12,7 @@ import 'package:opfan/shared/utils/constants.dart';
 class CharacterCard extends StatefulWidget {
   final CustomCharacterModel character;
 
-  const CharacterCard({Key? key, required this.character}) : super(key: key);
+  const CharacterCard({super.key, required this.character});
 
   @override
   State<CharacterCard> createState() => _CharacterCardState();

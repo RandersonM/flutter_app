@@ -8,7 +8,7 @@ import 'package:opfan/features/calculator/presentation/widgets/calculator_header
 import 'package:opfan/shared/utils/constants.dart';
 
 class CalculatorContent extends StatelessWidget {
-  const CalculatorContent({Key? key}) : super(key: key);
+  const CalculatorContent({super.key});
 
   @override
   Widget build(BuildContext context) =>

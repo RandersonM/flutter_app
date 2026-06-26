@@ -1,4 +1,4 @@
-import 'package:phosphor_flutter/phosphor_flutter.dart';
+import 'package:phosphoricons_flutter/phosphoricons_flutter.dart';
 // Developed by Randerson Mayllon
 // Copyright © 2022.
 
@@ -13,10 +13,10 @@ class CrewHeader extends StatelessWidget {
   final VoidCallback? onEdit;
 
   const CrewHeader({
-    Key? key,
+    super.key,
     required this.crew,
     this.onEdit,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

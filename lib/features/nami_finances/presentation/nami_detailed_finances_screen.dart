@@ -1,5 +1,5 @@
 import 'package:opfan/shared/widgets/atoms/app_icon.dart';
-import 'package:phosphor_flutter/phosphor_flutter.dart';
+import 'package:phosphoricons_flutter/phosphoricons_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:opfan/shared/widgets/molecules/default_app_bar.dart';
@@ -286,7 +286,7 @@ class _NamiDetailedFinancesScreenState
             if (finances.monthlyIncomes.isNotEmpty)
               ...finances.monthlyIncomes
                   .map((income) => _buildIncomeItem(income))
-                  .toList()
+                  
             else
               Padding(
                 padding: const EdgeInsets.all(Constants.margin),
@@ -377,7 +377,7 @@ class _NamiDetailedFinancesScreenState
             if (finances.expenses.isNotEmpty) ...[
               ...finances.expenses
                   .map((expense) => _buildExpenseItem(expense))
-                  .toList(),
+                  ,
               const SizedBox(height: Constants.margin * 2),
               Container(
                 padding: const EdgeInsets.all(Constants.margin * 1.5),

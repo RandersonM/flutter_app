@@ -1,5 +1,5 @@
 import 'package:opfan/shared/widgets/atoms/app_icon.dart';
-import 'package:phosphor_flutter/phosphor_flutter.dart';
+import 'package:phosphoricons_flutter/phosphoricons_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:opfan/core/utils/character_localization_mapper.dart';
 import 'package:opfan/l10n/app_localizations.dart';
@@ -10,10 +10,10 @@ class CharacterRaceSection extends StatelessWidget {
   final void Function(String?) onRaceChanged;
 
   const CharacterRaceSection({
-    Key? key,
+    super.key,
     this.selectedRace,
     required this.onRaceChanged,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -42,7 +42,7 @@ class CharacterRaceSection extends StatelessWidget {
             ),
             const SizedBox(height: Constants.margin * 2),
             DropdownButtonFormField<String>(
-              value: selectedRace,
+              initialValue: selectedRace,
               decoration: InputDecoration(
                 labelText: l10n.selectRace,
                 border: const OutlineInputBorder(),

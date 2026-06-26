@@ -8,11 +8,11 @@ class CharacterBasicInfoSection extends StatelessWidget {
   final TextEditingController birthDateController;
 
   const CharacterBasicInfoSection({
-    Key? key,
+    super.key,
     required this.nameController,
     required this.nicknameController,
     required this.birthDateController,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

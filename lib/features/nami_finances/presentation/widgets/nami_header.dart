@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'dart:math';
 
 class NamiHeader extends StatefulWidget {
-  const NamiHeader({Key? key}) : super(key: key);
+  const NamiHeader({super.key});
 
   @override
   State<NamiHeader> createState() => _NamiHeaderState();

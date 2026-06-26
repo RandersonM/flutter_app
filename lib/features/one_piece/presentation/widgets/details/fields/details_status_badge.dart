@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:phosphor_flutter/phosphor_flutter.dart';
+import 'package:phosphoricons_flutter/phosphoricons_flutter.dart';
 
 import 'package:opfan/l10n/app_localizations.dart';
 
 class DetailsStatusBadge extends StatelessWidget {
-  const DetailsStatusBadge({Key? key, required this.status}) : super(key: key);
+  const DetailsStatusBadge({super.key, required this.status});
 
   final String? status;
 

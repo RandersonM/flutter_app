@@ -1,17 +1,16 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:opfan/core/models/one_piece/devil_fruit.dart';
-import 'package:opfan/core/services/devil_fruit_service.dart';
+import 'package:opfan/core/services/index.dart';
 import 'devil_fruit_event.dart';
 import 'devil_fruit_state.dart';
 
 class DevilFruitBloc extends Bloc<DevilFruitEvent, DevilFruitState> {
-  final DevilFruitService _devilFruitService;
+  final IDevilFruitService _devilFruitService;
 
   DevilFruitBloc({
-    required DevilFruitService devilFruitService,
-  })  : _devilFruitService = devilFruitService,
-        super(const DevilFruitInitial()) {
+    required this._devilFruitService})
+    : super(const DevilFruitInitial()) {
     on<LoadDevilFruits>(_onLoadDevilFruits);
     on<RefreshDevilFruits>(_onRefreshDevilFruits);
     on<SearchDevilFruits>(_onSearchDevilFruits);

@@ -3,13 +3,13 @@ import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:opfan/core/models/one_piece/today_character.dart';
 import 'package:opfan/core/models/one_piece/custom_character_model.dart';
-import 'package:opfan/core/services/firestore_service.dart';
+import 'package:opfan/core/services/index.dart';
 import 'package:opfan/features/home/data/repository/featured_character_repository_interface.dart';
 
 class FeaturedCharacterRepository implements IFeaturedCharacterRepository {
   FeaturedCharacterRepository();
 
-  final FirestoreService _firestoreService = FirestoreService();
+  final IFirestoreService _firestoreService = FirestoreService();
 
   static const String _collection = 'featuredCharacters';
   static const String _hiveBoxName = 'featured_character_box';

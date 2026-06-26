@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:opfan/core/models/one_piece/custom_character_model.dart';
-import 'package:opfan/core/services/firestore_service.dart';
+import 'package:opfan/core/services/index.dart';
 import 'package:opfan/features/custom_character/data/repository/custom_character_repository_interface.dart';
 import 'package:opfan/features/crews/data/repository/crew_repository_interface.dart';
 
@@ -9,7 +9,7 @@ class CustomCharacterRepository implements ICustomCharacterRepository {
 
   CustomCharacterRepository(this._crewRepository);
 
-  final FirestoreService _firestoreService = FirestoreService();
+  final IFirestoreService _firestoreService = FirestoreService();
   static const String _collection = 'custom_characters';
 
   @override

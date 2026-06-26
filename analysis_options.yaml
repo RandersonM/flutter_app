@@ -30,4 +30,5 @@ linter:
 
 analyzer:
   exclude:
+    - "build/**"
     - lib/core/one_piece/models/character.g.dart

@@ -13,10 +13,10 @@ class DynamicBanner extends StatelessWidget {
   final double height;
 
   const DynamicBanner({
-    Key? key,
+    super.key,
     required this.state,
     this.height = 250.0,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

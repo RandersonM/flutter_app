@@ -6,8 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:opfan/shared/utils/constants.dart';
 
 class DetailsName extends StatelessWidget {
-  const DetailsName({Key? key, required this.name, this.nickname})
-      : super(key: key);
+  const DetailsName({super.key, required this.name, this.nickname});
 
   final String name;
   final String? nickname;

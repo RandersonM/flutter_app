@@ -1,12 +1,12 @@
 import 'package:opfan/shared/widgets/atoms/app_icon.dart';
-import 'package:phosphor_flutter/phosphor_flutter.dart';
+import 'package:phosphoricons_flutter/phosphoricons_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:opfan/l10n/app_localizations.dart';
 import 'package:opfan/shared/utils/app_routes.dart' show AppRoutes;
 import 'package:opfan/shared/utils/constants.dart';
 import 'package:opfan/shared/utils/theme.dart';
 import 'package:opfan/core/models/nami_finances_model.dart';
-import 'package:opfan/core/services/nami_finances_service.dart';
+import 'package:opfan/core/services/index.dart';
 import 'package:opfan/shared/widgets/atoms/gomu_gomu_divider.dart';
 import 'package:opfan/features/nami_finances/presentation/widgets/finances_history_widget.dart';
 import 'package:opfan/shared/widgets/atoms/app_button.dart';
@@ -16,10 +16,10 @@ class FinancesResultsView extends StatefulWidget {
   final VoidCallback onEdit;
 
   const FinancesResultsView({
-    Key? key,
+    super.key,
     required this.finances,
     required this.onEdit,
-  }) : super(key: key);
+  });
 
   @override
   State<FinancesResultsView> createState() => _FinancesResultsViewState();
@@ -235,7 +235,7 @@ class _FinancesResultsViewState extends State<FinancesResultsView> {
                 ],
               ),
             );
-          }).toList(),
+          }),
         ],
       ),
     );

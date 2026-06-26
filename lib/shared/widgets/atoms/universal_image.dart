@@ -1,5 +1,5 @@
 import 'package:opfan/shared/widgets/atoms/app_icon.dart';
-import 'package:phosphor_flutter/phosphor_flutter.dart';
+import 'package:phosphoricons_flutter/phosphoricons_flutter.dart';
 import 'dart:convert';
 import 'package:flutter/material.dart';
 
@@ -13,7 +13,7 @@ class UniversalImage extends StatelessWidget {
   final Widget? placeholder;
 
   const UniversalImage({
-    Key? key,
+    super.key,
     required this.imageUrl,
     this.width,
     this.height,
@@ -21,7 +21,7 @@ class UniversalImage extends StatelessWidget {
     this.errorBuilder,
     this.loadingBuilder,
     this.placeholder,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

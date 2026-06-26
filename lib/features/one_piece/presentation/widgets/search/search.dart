@@ -12,7 +12,7 @@ import 'package:opfan/features/one_piece/presentation/widgets/search/search_head
 import 'package:opfan/shared/utils/constants.dart';
 
 class Search extends StatelessWidget {
-  const Search({Key? key}) : super(key: key);
+  const Search({super.key});
 
   @override
   Widget build(BuildContext context) => BlocBuilder<SearchCubit, SearchState>(
@@ -42,7 +42,7 @@ class Search extends StatelessWidget {
                           character: character,
                         ),
                       ))
-                  .toList()
+                  
             else
               UnexistentSearch(query: query),
           ],

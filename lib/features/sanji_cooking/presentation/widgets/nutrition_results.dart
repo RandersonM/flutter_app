@@ -1,5 +1,5 @@
 import 'package:opfan/shared/widgets/atoms/app_icon.dart';
-import 'package:phosphor_flutter/phosphor_flutter.dart';
+import 'package:phosphoricons_flutter/phosphoricons_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:opfan/core/models/nutrition_calculation_model.dart';
@@ -434,12 +434,12 @@ class NutritionResults extends StatelessWidget {
 
   bool _isUserGoal(BuildContext context, String title) {
     final l10n = AppLocalizations.of(context)!;
-    final goalMapping = {
-      l10n.maintainWeight: 'maintenance',
-      l10n.loseWeight: 'weight_loss',
-      l10n.gainMuscle: 'muscle_gain',
+    final goalMapping = <String, List<String>>{
+      l10n.maintainWeight: ['maintenance', 'maintain'],
+      l10n.loseWeight: ['weight_loss', 'lose_weight'],
+      l10n.gainMuscle: ['muscle_gain', 'gain_muscle'],
     };
-    return goalMapping[title] == results.goal;
+    return goalMapping[title]?.contains(results.goal) ?? false;
   }
 
   Color _getBMIColor(String category) {

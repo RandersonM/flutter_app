@@ -8,13 +8,13 @@ class WavyDivider extends StatelessWidget {
   final double waveLength;
 
   const WavyDivider({
-    Key? key,
+    super.key,
     this.height = 1.0,
     this.color = Colors.blue,
     this.thickness = 1.0,
     this.waveHeight = 4.0,
     this.waveLength = 20.0,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

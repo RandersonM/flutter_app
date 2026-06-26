@@ -6,9 +6,9 @@ class CharacterDescriptionSection extends StatelessWidget {
   final TextEditingController descriptionController;
 
   const CharacterDescriptionSection({
-    Key? key,
+    super.key,
     required this.descriptionController,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

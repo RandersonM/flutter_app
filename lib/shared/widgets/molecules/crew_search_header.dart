@@ -1,5 +1,5 @@
 import 'package:opfan/shared/widgets/atoms/app_icon.dart';
-import 'package:phosphor_flutter/phosphor_flutter.dart';
+import 'package:phosphoricons_flutter/phosphoricons_flutter.dart';
 // Developed by Randerson Mayllon
 // Copyright © 2022.
 
@@ -14,12 +14,12 @@ class CrewSearchHeader extends StatelessWidget {
   final String? filterLabel;
 
   const CrewSearchHeader({
-    Key? key,
+    super.key,
     required this.searchController,
     required this.onSearch,
     this.onFilter,
     this.filterLabel,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

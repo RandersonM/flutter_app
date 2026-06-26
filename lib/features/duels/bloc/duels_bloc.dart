@@ -16,11 +16,9 @@ class DuelsBloc extends Bloc<DuelsEvent, DuelsState> {
   final Random _random = Random();
 
   DuelsBloc({
-    required IFeaturedCharacterRepository featuredCharacterRepository,
-    required ICustomCharacterRepository customCharacterRepository,
-  })  : _featuredCharacterRepository = featuredCharacterRepository,
-        _customCharacterRepository = customCharacterRepository,
-        super(const DuelsInitial()) {
+    required this._featuredCharacterRepository,
+    required this._customCharacterRepository,
+  }) : super(const DuelsInitial()) {
     on<LoadDuelsScreen>(_onLoadDuelsScreen);
     on<SelectFirstCharacter>(_onSelectFirstCharacter);
     on<SelectSecondCharacter>(_onSelectSecondCharacter);

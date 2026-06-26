@@ -1,5 +1,5 @@
 import 'package:opfan/shared/widgets/atoms/app_icon.dart';
-import 'package:phosphor_flutter/phosphor_flutter.dart';
+import 'package:phosphoricons_flutter/phosphoricons_flutter.dart';
 // Developed by Randerson Mayllon
 // Copyright © 2022.
 
@@ -28,9 +28,9 @@ class CrewDetailsScreen extends StatefulWidget {
   final CrewModel crew;
 
   const CrewDetailsScreen({
-    Key? key,
+    super.key,
     required this.crew,
-  }) : super(key: key);
+  });
 
   @override
   State<CrewDetailsScreen> createState() => _CrewDetailsScreenState();
@@ -289,7 +289,7 @@ class _CrewDetailsScreenState extends State<CrewDetailsScreen> {
                     return Padding(
                       padding: const EdgeInsets.symmetric(vertical: 8.0),
                       child: DropdownButtonFormField<CustomCharacterModel>(
-                        value: selectedCharacter,
+                        initialValue: selectedCharacter,
                         isExpanded: true,
                         menuMaxHeight: 300,
                         items: availableCharacters.map((character) {

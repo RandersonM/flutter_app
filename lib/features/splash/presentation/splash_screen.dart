@@ -7,7 +7,7 @@ import 'package:opfan/shared/utils/app_routes.dart';
 import 'package:opfan/shared/utils/decorations/gradient.dart';
 
 class SplashScreen extends StatefulWidget {
-  const SplashScreen({Key? key}) : super(key: key);
+  const SplashScreen({super.key});
 
   @override
   State<SplashScreen> createState() => _SplashScreenState();

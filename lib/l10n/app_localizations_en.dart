@@ -2490,4 +2490,146 @@ class AppLocalizationsEn extends AppLocalizations {
   String workoutDaysCount(int done, int total) {
     return '$done / $total days';
   }
+
+  @override
+  String get vegapunk => 'Vegapunk';
+
+  @override
+  String get vegapunkChatTitle => 'Ask Vegapunk';
+
+  @override
+  String get vegapunkChatHint => 'Ask anything...';
+
+  @override
+  String get vegapunkModelDownloadTitle => 'Downloading Vegapunk\'s brain';
+
+  @override
+  String get vegapunkModelDownloadSubtitle =>
+      'One-time download (~2.4 GB). The model runs fully on your device.';
+
+  @override
+  String get vegapunkModelLoadingTitle => 'Activating Vegapunk...';
+
+  @override
+  String get vegapunkModelErrorTitle => 'Vegapunk failed to initialize';
+
+  @override
+  String get vegapunkRetry => 'Retry';
+
+  @override
+  String get vegapunkCancel => 'Cancel';
+
+  @override
+  String get vegapunkChatEmpty => 'Vegapunk is ready. Ask me anything.';
+
+  @override
+  String get vegapunkStopGeneration => 'Stop';
+
+  @override
+  String get vegapunkSatelliteStella => 'Stella (Original)';
+
+  @override
+  String get vegapunkSatelliteShaka => 'Shaka (Good)';
+
+  @override
+  String get vegapunkSatelliteLilith => 'Lilith (Evil)';
+
+  @override
+  String get vegapunkSatelliteEdison => 'Edison (Thinking)';
+
+  @override
+  String get vegapunkSatellitePythagoras => 'Pythagoras (Wisdom)';
+
+  @override
+  String get vegapunkSatelliteAtlas => 'Atlas (Violence)';
+
+  @override
+  String get vegapunkSatelliteYork => 'York (Greed)';
+
+  @override
+  String get vegapunkThinkingMode => 'Thinking Mode';
+
+  @override
+  String get vegapunkThinkingModeDesc =>
+      'Enable reasoning trace (increases memory and latency)';
+
+  @override
+  String get cookingPersonalizedMealTitle => 'Personalized Meal with Sanji';
+
+  @override
+  String get cookingPersonalizedMealSubtitle =>
+      'Add the ingredients you have and receive a personalized recipe based on your nutritional data!';
+
+  @override
+  String get cookingAvailableIngredients => 'Available Ingredients';
+
+  @override
+  String get cookingPersonalizedMeal => 'Personalized Meal';
+
+  @override
+  String cookingTargetCaloriesInfo(String calories, String goal) {
+    return 'Target calories: $calories kcal | Goal: $goal';
+  }
+
+  @override
+  String get cookingGeneratingMeal => 'Generating meal...';
+
+  @override
+  String get cookingGenerateMeal => 'Generate Meal';
+
+  @override
+  String cookingPersonalizedRecipeTitle(String mealType) {
+    return 'Personalized Recipe - $mealType';
+  }
+
+  @override
+  String get cookingGoalMaintenance => 'Maintain weight';
+
+  @override
+  String get cookingGoalWeightLoss => 'Lose weight';
+
+  @override
+  String get cookingGoalMuscleGain => 'Gain muscle';
+
+  @override
+  String get mealTypeBreakfast => 'Breakfast';
+
+  @override
+  String get mealTypeMorningSnack => 'Morning Snack';
+
+  @override
+  String get mealTypeLunch => 'Lunch';
+
+  @override
+  String get mealTypeAfternoonSnack => 'Afternoon Snack';
+
+  @override
+  String get mealTypeDinner => 'Dinner';
+
+  @override
+  String get mealTypeDessert => 'Dessert';
+
+  @override
+  String get mealTypeNightSnack => 'Night Snack';
+
+  @override
+  String get dietaryRestrictionNone => 'No restrictions';
+
+  @override
+  String get dietaryRestrictionVegetarian => 'Vegetarian';
+
+  @override
+  String get dietaryRestrictionVegan => 'Vegan';
+
+  @override
+  String get dietaryRestrictionGlutenFree => 'Gluten-free';
+
+  @override
+  String get dietaryRestrictionLactoseFree => 'Lactose-free';
+
+  @override
+  String get dietaryRestrictionLowCarb => 'Low carb';
+
+  @override
+  String get dietaryRestrictionHighProtein => 'High protein';
 }

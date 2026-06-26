@@ -23,6 +23,7 @@ import 'package:opfan/features/profile/profile_routes.dart';
 import 'package:opfan/features/custom_character/custom_character_routes.dart';
 import 'package:opfan/features/crews/crews_routes.dart';
 import 'package:opfan/features/onboarding/onboarding_routes.dart';
+import 'package:opfan/features/vegapunk_chat/vegapunk_chat_routes.dart';
 
 class AppRoutes {
   // Auth routes
@@ -35,6 +36,7 @@ class AppRoutes {
   static const String finances = NamiFinancesRoutes.finances;
   static const String devilFruit = DevilFruitRoutes.devilFruit;
   static const String knowledge = RobinKnowledgeRoutes.knowledge;
+  static const String vegapunkChat = VegapunkChatRoutes.vegapunkChat;
 
   // Additional screen routes (public)
   static const String youtubePlayer = YouTubeRoutes.youtubePlayer;
@@ -82,6 +84,7 @@ class AppRoutes {
     CustomCharacterRoutes(),
     CrewsRoutes(),
     OnboardingRoutes(),
+    VegapunkChatRoutes(),
   ];
 
   /// Check if a route requires authentication

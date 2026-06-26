@@ -1,5 +1,5 @@
 import 'package:opfan/shared/widgets/atoms/app_icon.dart';
-import 'package:phosphor_flutter/phosphor_flutter.dart';
+import 'package:phosphoricons_flutter/phosphoricons_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:opfan/l10n/app_localizations.dart';
@@ -12,7 +12,7 @@ import 'package:opfan/shared/utils/constants.dart';
 import 'package:opfan/shared/widgets/molecules/default_app_bar.dart';
 import 'package:opfan/shared/widgets/organisms/bottom_navigation.dart';
 import 'package:opfan/shared/utils/app_routes.dart';
-import 'package:opfan/core/services/auth_service.dart';
+import 'package:opfan/core/services/index.dart';
 import 'package:opfan/shared/widgets/atoms/app_button.dart';
 
 class SanjiCookingScreen extends StatefulWidget {
@@ -37,7 +37,7 @@ class _SanjiCookingScreenState extends State<SanjiCookingScreen> {
   }
 
   void _onNewCalculation() {
-    final user = getIt<AuthService>().currentUser;
+    final user = getIt<IAuthService>().currentUser;
     Navigator.of(context)
         .pushNamed(
       AppRoutes.onboarding,

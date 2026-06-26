@@ -11,7 +11,7 @@ class GomuGomuDivider extends StatelessWidget {
   final double spiralTurns;
 
   const GomuGomuDivider({
-    Key? key,
+    super.key,
     this.height = 40.0,
     this.color = const Color(0xFFE91E63),
     this.thickness = 2.0,
@@ -19,7 +19,7 @@ class GomuGomuDivider extends StatelessWidget {
     this.spiralSpacing = 30.0,
     this.spiralCount = 6,
     this.spiralTurns = 2.5,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

@@ -6,11 +6,7 @@ import 'package:flutter/material.dart';
 ///
 class MaterialPageRouteWithoutTransition<T> extends MaterialPageRoute<T> {
   MaterialPageRouteWithoutTransition(
-      {required Widget Function(BuildContext) builder, RouteSettings? settings})
-      : super(
-          builder: builder,
-          settings: settings,
-        );
+      {required super.builder, super.settings});
 
   @override
   Widget buildTransitions(BuildContext context, Animation<double> animation,

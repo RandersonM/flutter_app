@@ -1,5 +1,5 @@
 import 'package:opfan/shared/widgets/atoms/app_icon.dart';
-import 'package:phosphor_flutter/phosphor_flutter.dart';
+import 'package:phosphoricons_flutter/phosphoricons_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:opfan/l10n/app_localizations.dart';
@@ -7,6 +7,8 @@ import 'package:opfan/shared/utils/constants.dart';
 import 'package:opfan/shared/utils/theme.dart';
 import 'package:opfan/shared/widgets/molecules/default_app_bar.dart';
 import 'package:url_launcher/url_launcher.dart';
+
+
 
 class PlateGuideScreen extends StatefulWidget {
   const PlateGuideScreen({super.key});
@@ -72,22 +74,42 @@ class _PlateGuideScreenState extends State<PlateGuideScreen> {
 
   Widget _buildHeader() {
     return Container(
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: AppColors.yellow[200]!),
+        color: Theme.of(context).cardColor,
+        borderRadius: BorderRadius.circular(20),
+        boxShadow: [
+          BoxShadow(
+            color: AppColors.purple[600]!.withValues(alpha: 0.12),
+            blurRadius: 20,
+            offset: const Offset(0, 4),
+          ),
+        ],
       ),
       child: Column(
         spacing: Constants.margin,
-        crossAxisAlignment: CrossAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          Text(
-            AppLocalizations.of(context)!.plateGuideHeader,
-            textAlign: TextAlign.center,
-            style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                  fontWeight: FontWeight.bold,
-                  color: AppColors.yellow[500],
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              AppIcon(
+                PhosphorIconsRegular.info,
+                color: AppColors.purple[600]!,
+                size: 24,
+              ),
+              const SizedBox(width: 8),
+              Expanded(
+                child: Text(
+                  AppLocalizations.of(context)!.plateGuideHeader,
+                  textAlign: TextAlign.center,
+                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                        fontWeight: FontWeight.bold,
+                        color: AppColors.purple[600]!,
+                      ),
                 ),
+              ),
+            ],
           ),
         ],
       ),
@@ -95,20 +117,14 @@ class _PlateGuideScreenState extends State<PlateGuideScreen> {
   }
 
   Widget _buildPieChart() {
+    final textPrimary = Theme.of(context).colorScheme.onSurface;
+
     return Container(
       margin: const EdgeInsets.symmetric(vertical: 16),
-      padding: const EdgeInsets.all(20),
+      padding: const EdgeInsets.all(24),
       decoration: BoxDecoration(
-        color: Theme.of(context).colorScheme.surface,
-        borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: AppColors.yellow[200]!),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withValues(alpha: 0.05),
-            blurRadius: 8,
-            offset: const Offset(0, 2),
-          ),
-        ],
+        color: Theme.of(context).cardColor,
+        borderRadius: BorderRadius.circular(20),
       ),
       child: Column(
         children: [
@@ -116,7 +132,7 @@ class _PlateGuideScreenState extends State<PlateGuideScreen> {
             AppLocalizations.of(context)!.plateDivision,
             style: Theme.of(context).textTheme.titleLarge?.copyWith(
                   fontWeight: FontWeight.bold,
-                  color: Theme.of(context).colorScheme.onSurface,
+                  color: textPrimary,
                 ),
           ),
           const SizedBox(height: 24),
@@ -188,12 +204,12 @@ class _PlateGuideScreenState extends State<PlateGuideScreen> {
           child: AnimatedContainer(
             duration: const Duration(milliseconds: 200),
             margin: const EdgeInsets.symmetric(vertical: 4),
-            padding: const EdgeInsets.all(12),
+            padding: const EdgeInsets.all(14),
             decoration: BoxDecoration(
               color: isTouched
                   ? section.color.withValues(alpha: 0.1)
                   : Colors.transparent,
-              borderRadius: BorderRadius.circular(8),
+              borderRadius: BorderRadius.circular(12),
               border: isTouched ? Border.all(color: section.color) : null,
             ),
             child: Column(
@@ -219,7 +235,7 @@ class _PlateGuideScreenState extends State<PlateGuideScreen> {
                             section.title,
                             style: Theme.of(context)
                                 .textTheme
-                                .bodyMedium
+                                .titleSmall
                                 ?.copyWith(
                                   fontWeight: FontWeight.bold,
                                   color: isTouched ? section.color : null,
@@ -229,10 +245,7 @@ class _PlateGuideScreenState extends State<PlateGuideScreen> {
                             section.subtitle,
                             style:
                                 Theme.of(context).textTheme.bodySmall?.copyWith(
-                                      color: Theme.of(context)
-                                          .colorScheme
-                                          .onSurface
-                                          .withValues(alpha: 0.7),
+                                      color: AppColors.grey[400],
                                     ),
                           ),
                         ],
@@ -245,10 +258,7 @@ class _PlateGuideScreenState extends State<PlateGuideScreen> {
                   Text(
                     section.description,
                     style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                          color: Theme.of(context)
-                              .colorScheme
-                              .onSurface
-                              .withValues(alpha: 0.8),
+                          color: AppColors.grey[400],
                         ),
                   ),
                   const SizedBox(height: 8),
@@ -256,10 +266,7 @@ class _PlateGuideScreenState extends State<PlateGuideScreen> {
                     AppLocalizations.of(context)!.examples(section.examples),
                     style: Theme.of(context).textTheme.bodySmall?.copyWith(
                           fontStyle: FontStyle.italic,
-                          color: Theme.of(context)
-                              .colorScheme
-                              .onSurface
-                              .withValues(alpha: 0.7),
+                          color: AppColors.grey[400],
                         ),
                   ),
                 ],
@@ -276,8 +283,9 @@ class _PlateGuideScreenState extends State<PlateGuideScreen> {
       margin: const EdgeInsets.only(bottom: Constants.margin * 2),
       padding: const EdgeInsets.all(Constants.margin * 2),
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: AppColors.yellow[200]!),
+        color: Theme.of(context).cardColor,
+        borderRadius: BorderRadius.circular(20),
+        border: Border.all(color: AppColors.yellow[500]!.withValues(alpha: 0.5), width: 1.5),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -286,7 +294,7 @@ class _PlateGuideScreenState extends State<PlateGuideScreen> {
             children: [
               AppIcon(
                 PhosphorIconsRegular.lightbulb,
-                color: AppColors.yellow[500],
+                color: AppColors.yellow[500]!,
                 size: 24,
               ),
               const SizedBox(width: 8),
@@ -294,7 +302,7 @@ class _PlateGuideScreenState extends State<PlateGuideScreen> {
                 AppLocalizations.of(context)!.sanjiTipsTitle,
                 style: Theme.of(context).textTheme.titleMedium?.copyWith(
                       fontWeight: FontWeight.bold,
-                      color: AppColors.yellow[500],
+                      color: AppColors.yellow[500]!,
                     ),
               ),
             ],
@@ -353,11 +361,11 @@ class _PlateGuideScreenState extends State<PlateGuideScreen> {
               }
             },
             child: Container(
-              padding: const EdgeInsets.all(12),
+              padding: const EdgeInsets.all(14),
               decoration: BoxDecoration(
-                color: AppColors.yellow[200]?.withValues(alpha: 0.2),
-                borderRadius: BorderRadius.circular(8),
-                border: Border.all(color: AppColors.yellow[200]!),
+                color: AppColors.yellow[500]!.withValues(alpha: 0.1),
+                borderRadius: BorderRadius.circular(12),
+                border: Border.all(color: AppColors.yellow[500]!.withValues(alpha: 0.3)),
               ),
               child: Row(
                 children: [
@@ -396,7 +404,7 @@ class _PlateGuideScreenState extends State<PlateGuideScreen> {
         children: [
           Icon(
             icon,
-            color: AppColors.yellow[500],
+            color: AppColors.yellow[500]!,
             size: 20,
           ),
           const SizedBox(width: 8),

@@ -1,5 +1,5 @@
 import 'package:opfan/shared/widgets/atoms/app_icon.dart';
-import 'package:phosphor_flutter/phosphor_flutter.dart';
+import 'package:phosphoricons_flutter/phosphoricons_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:opfan/l10n/app_localizations.dart';
@@ -7,7 +7,6 @@ import 'package:opfan/features/robin_knowledge/bloc/robin_knowledge_bloc.dart';
 import 'package:opfan/shared/utils/constants.dart';
 import 'package:opfan/shared/utils/theme.dart';
 import 'package:opfan/shared/widgets/molecules/default_app_bar.dart';
-import 'package:opfan/shared/widgets/organisms/bottom_navigation.dart';
 import 'package:opfan/app/di/injection.dart';
 
 import 'widgets/index.dart';
@@ -26,8 +25,6 @@ class RobinKnowledgeScreen extends StatelessWidget {
       appBar: DefaultAppBar(
         title: Text(AppLocalizations.of(context)!.knowledgeTitleScreen),
       ),
-      bottomNavigationBar:
-          const BottomNavigation(BottomNavigationPages.knowledge),
       body: SingleChildScrollView(
         child: Column(
           children: [

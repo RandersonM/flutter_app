@@ -1,4 +1,4 @@
-import 'package:phosphor_flutter/phosphor_flutter.dart';
+import 'package:phosphoricons_flutter/phosphoricons_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:opfan/l10n/app_localizations.dart';
 import 'package:opfan/shared/utils/constants.dart';
@@ -10,11 +10,11 @@ class FinancialResults extends StatelessWidget {
   final double dailyAmount;
 
   const FinancialResults({
-    Key? key,
+    super.key,
     required this.totalExpenses,
     required this.availableAmount,
     required this.dailyAmount,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

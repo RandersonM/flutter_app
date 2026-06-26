@@ -6,8 +6,7 @@ import 'package:flutter/material.dart';
 class MaterialPageRouteWithSlideRightTransition
     extends MaterialPageRoute<dynamic> {
   MaterialPageRouteWithSlideRightTransition(
-      {required Widget Function(BuildContext) builder, RouteSettings? settings})
-      : super(builder: builder, settings: settings);
+      {required super.builder, super.settings});
 
   @override
   Widget buildTransitions(BuildContext context, Animation<double> animation,

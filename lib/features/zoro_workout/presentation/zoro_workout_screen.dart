@@ -1,4 +1,4 @@
-import 'package:phosphor_flutter/phosphor_flutter.dart';
+import 'package:phosphoricons_flutter/phosphoricons_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:opfan/l10n/app_localizations.dart';
@@ -8,7 +8,7 @@ import 'package:opfan/shared/widgets/organisms/bottom_navigation.dart';
 import 'package:opfan/features/zoro_workout/presentation/widgets/index.dart';
 import 'package:opfan/app/di/injection.dart';
 import 'package:opfan/core/models/workout_assessment_model.dart';
-import 'package:opfan/core/services/auth_service.dart';
+import 'package:opfan/core/services/index.dart';
 import 'package:opfan/core/auth/blocs/index.dart';
 import '../bloc/index.dart';
 import 'workout_constants.dart';
@@ -43,7 +43,7 @@ class _WorkoutScreenState extends State<WorkoutScreen> {
   }
 
   Future<void> _initializeAssessment() async {
-    final user = getIt<AuthService>().currentUser;
+    final user = getIt<IAuthService>().currentUser;
 
     if (user != null) {
       _existingData = {
@@ -90,7 +90,7 @@ class _WorkoutScreenState extends State<WorkoutScreen> {
     });
 
     // Auto-save global profile when calculating
-    final user = getIt<AuthService>().currentUser;
+    final user = getIt<IAuthService>().currentUser;
     if (user != null) {
       final updatedUser = user.copyWith(
         gender: results['gender'] as String?,

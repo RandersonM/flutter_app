@@ -1,5 +1,5 @@
 import 'package:opfan/shared/widgets/atoms/app_icon.dart';
-import 'package:phosphor_flutter/phosphor_flutter.dart';
+import 'package:phosphoricons_flutter/phosphoricons_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:opfan/app/di/injection.dart';
 import 'package:opfan/l10n/app_localizations.dart';
@@ -19,7 +19,7 @@ class AiImageGenerator extends StatefulWidget {
   final String? currentImageUrl;
 
   const AiImageGenerator({
-    Key? key,
+    super.key,
     this.initialPrompt,
     this.characterName,
     this.haki,
@@ -29,7 +29,7 @@ class AiImageGenerator extends StatefulWidget {
     required this.onImageGenerated,
     this.isLoading = false,
     this.currentImageUrl,
-  }) : super(key: key);
+  });
 
   @override
   State<AiImageGenerator> createState() => _AiImageGeneratorState();

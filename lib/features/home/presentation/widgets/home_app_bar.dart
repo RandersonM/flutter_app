@@ -1,5 +1,5 @@
 import 'package:opfan/shared/widgets/atoms/app_icon.dart';
-import 'package:phosphor_flutter/phosphor_flutter.dart';
+import 'package:phosphoricons_flutter/phosphoricons_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:opfan/l10n/app_localizations.dart';
@@ -9,7 +9,7 @@ import 'package:opfan/core/auth/models/user_model.dart';
 import 'user_drawer_content.dart';
 
 class HomeAppBar extends StatelessWidget implements PreferredSizeWidget {
-  const HomeAppBar({Key? key}) : super(key: key);
+  const HomeAppBar({super.key});
 
   @override
   Widget build(BuildContext context) {

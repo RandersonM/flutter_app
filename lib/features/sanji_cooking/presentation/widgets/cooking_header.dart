@@ -82,14 +82,26 @@ class _CookingHeaderState extends State<CookingHeader>
     return Column(
       children: [
         // GIF hero — no border radius change, keep full bleed
-        SizedBox(
-          width: double.infinity,
-          height: 250,
-          child: Image.asset(
-            'assets/logo/sanji-cooking.gif',
-            fit: BoxFit.fill,
+        // SizedBox(
+        //   width: double.infinity,
+        //   height: 250,
+        //   child: Image.asset(
+        //     'assets/logo/sanji-cooking.gif',
+        //     fit: BoxFit.fill,
+        //   ),
+        // ),
+        ClipRRect(
+          borderRadius: BorderRadius.circular(20),
+          child: SizedBox(
+            width: double.infinity,
+            height: 220,
+            child: Image.asset(
+              'assets/logo/sanji-cooking.gif',
+              fit: BoxFit.cover,
+            ),
           ),
         ),
+
         const SizedBox(height: 12),
 
         // Quote section — subtle violet glow shadow, no colored border (COOK-02)

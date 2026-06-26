@@ -8,12 +8,12 @@ class FormActions extends StatelessWidget {
   final String? saveButtonText;
 
   const FormActions({
-    Key? key,
+    super.key,
     required this.onSave,
     required this.onCancel,
     this.isLoading = false,
     this.saveButtonText,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

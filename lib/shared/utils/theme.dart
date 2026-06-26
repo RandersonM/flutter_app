@@ -236,7 +236,7 @@ ThemeData getLightTheme() {
   return ThemeData(
     brightness: Brightness.light,
     appBarTheme: AppBarTheme(
-      color: Colors.white,
+      backgroundColor: Colors.white,
       centerTitle: true,
       titleTextStyle: _Typography.headlineSmall
           .merge(TextStyle(color: AppColors.grey[900])),
@@ -359,7 +359,7 @@ ThemeData getDarkTheme() {
   return ThemeData(
     brightness: Brightness.dark,
     appBarTheme: const AppBarTheme(
-      color: Color(0xFF151419),
+      backgroundColor: Color(0xFF151419),
       centerTitle: true,
       titleTextStyle: _Typography.headlineSmall,
       iconTheme: IconThemeData(color: Colors.white70),

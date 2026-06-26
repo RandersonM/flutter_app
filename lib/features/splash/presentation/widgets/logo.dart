@@ -5,8 +5,8 @@ import 'package:flutter/material.dart';
 
 class SplashLogo extends StatelessWidget {
   const SplashLogo({
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {

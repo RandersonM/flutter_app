@@ -8,7 +8,7 @@ import 'package:opfan/features/one_piece/bloc/search_cubit.dart';
 import 'package:opfan/shared/utils/constants.dart';
 
 class SearchFilter extends StatelessWidget {
-  const SearchFilter({required this.label, Key? key}) : super(key: key);
+  const SearchFilter({required this.label, super.key});
 
   final String label;
 

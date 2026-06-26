@@ -70,7 +70,7 @@ class UserModel extends Equatable {
   @JsonKey(name: 'activity_level')
   final String? activityLevel;
 
-  /// Objetivo: 'lose_weight' | 'maintain' | 'gain_muscle'
+  /// Objetivo: 'weight_loss' | 'maintenance' | 'muscle_gain'
   @HiveField(13)
   @JsonKey(name: 'goal')
   final String? goal;

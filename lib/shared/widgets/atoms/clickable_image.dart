@@ -1,5 +1,5 @@
 import 'package:opfan/shared/widgets/atoms/app_icon.dart';
-import 'package:phosphor_flutter/phosphor_flutter.dart';
+import 'package:phosphoricons_flutter/phosphoricons_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:opfan/shared/widgets/atoms/universal_image.dart';
 
@@ -15,7 +15,7 @@ class ClickableImage extends StatelessWidget {
   final bool enableClick;
 
   const ClickableImage({
-    Key? key,
+    super.key,
     required this.imageUrl,
     this.width,
     this.height = 300,
@@ -25,7 +25,7 @@ class ClickableImage extends StatelessWidget {
     this.title,
     this.showTitleInDialog = true,
     this.enableClick = true,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
