@@ -1,4 +1,4 @@
-import 'package:opfan/core/models/nutrition_calculation_model.dart';
+import 'package:opfan/features/sanji_cooking/data/models/nutrition_calculation_model.dart';
 
 abstract class INutritionCalculationService {
   NutritionCalculationModel calculateNutrition({

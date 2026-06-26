@@ -4,7 +4,7 @@ import 'package:phosphoricons_flutter/phosphoricons_flutter.dart';
 // Copyright © 2022.
 
 import 'package:flutter/material.dart';
-import 'package:opfan/core/models/one_piece/custom_character_model.dart';
+import 'package:opfan/features/custom_character/data/models/custom_character_model.dart';
 
 import 'package:opfan/shared/utils/app_routes.dart';
 import 'package:opfan/shared/utils/constants.dart';

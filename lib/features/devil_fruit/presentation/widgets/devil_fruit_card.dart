@@ -3,7 +3,7 @@ import 'package:phosphoricons_flutter/phosphoricons_flutter.dart';
 // Copyright © 2022.
 
 import 'package:flutter/material.dart';
-import 'package:opfan/core/models/one_piece/devil_fruit.dart';
+import 'package:opfan/features/devil_fruit/data/models/devil_fruit.dart';
 import 'package:opfan/l10n/app_localizations.dart';
 import 'package:opfan/shared/utils/constants.dart';
 

@@ -1,4 +1,4 @@
-import 'package:opfan/core/models/one_piece/devil_fruit.dart';
+import 'package:opfan/features/devil_fruit/data/models/devil_fruit.dart';
 
 abstract class IDevilFruitService {
   Future<List<DevilFruit>> fetchAll();

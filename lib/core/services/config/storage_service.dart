@@ -1,9 +1,10 @@
+import 'package:opfan/features/nami_finances/data/models/nami_finances_model.dart';
+import 'package:opfan/features/one_piece/data/models/today_character.dart';
+
 import 'i_storage_service.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:opfan/core/auth/models/user_model.dart';
-import 'package:opfan/core/models/theme_model.dart';
-import 'package:opfan/core/models/nami_finances_model.dart';
-import 'package:opfan/core/models/one_piece/today_character.dart';
+import 'package:opfan/core/models/theme/theme_model.dart';
 
 
 class HiveStorageService implements IStorageService {

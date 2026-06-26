@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:opfan/core/models/one_piece/crew_model.dart';
+import 'package:opfan/features/crews/data/models/crew_model.dart';
 import 'package:opfan/features/crews/presentation/create_crew_screen.dart';
 import 'package:opfan/features/crews/presentation/edit_crew_screen.dart';
 import 'package:opfan/features/crews/presentation/list_crews_screen.dart';

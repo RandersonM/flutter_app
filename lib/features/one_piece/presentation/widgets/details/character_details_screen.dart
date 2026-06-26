@@ -3,7 +3,7 @@
 
 import 'package:flutter/material.dart';
 
-import 'package:opfan/core/models/one_piece/custom_character_model.dart';
+import 'package:opfan/features/custom_character/data/models/custom_character_model.dart';
 import 'package:opfan/l10n/app_localizations.dart';
 import 'package:opfan/features/one_piece/presentation/widgets/details/fields/details_bounty.dart';
 import 'package:opfan/features/one_piece/presentation/widgets/details/fields/details_compact_tags.dart';

@@ -97,7 +97,7 @@ class NotificationService implements INotificationService {
     );
 
     await _localNotifications.initialize(
-      initializationSettings,
+      settings: initializationSettings,
       onDidReceiveNotificationResponse: _onNotificationTapped,
     );
   }
@@ -174,10 +174,10 @@ class NotificationService implements INotificationService {
     );
 
     await _localNotifications.show(
-      DateTime.now().millisecond,
-      message.notification?.title ?? 'Nova notificação',
-      message.notification?.body ?? '',
-      details,
+      id: DateTime.now().millisecond,
+      title: message.notification?.title ?? 'Nova notificação',
+      body: message.notification?.body ?? '',
+      notificationDetails: details,
       payload: json.encode(message.data),
     );
   }

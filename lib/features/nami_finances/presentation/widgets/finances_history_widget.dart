@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:opfan/shared/utils/constants.dart';
 import 'package:opfan/shared/utils/theme.dart';
-import 'package:opfan/core/models/nami_finances_model.dart';
+import 'package:opfan/features/nami_finances/data/models/nami_finances_model.dart';
 import 'package:opfan/features/nami_finances/bloc/index.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:opfan/app/di/injection.dart';

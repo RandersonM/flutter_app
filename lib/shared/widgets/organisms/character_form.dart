@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:opfan/core/models/one_piece/devil_fruit.dart';
-import 'package:opfan/core/models/one_piece/crew_model.dart';
-import 'package:opfan/core/models/one_piece/fighting_style_model.dart';
+import 'package:opfan/features/devil_fruit/data/models/devil_fruit.dart';
+import 'package:opfan/features/crews/data/models/crew_model.dart';
+import 'package:opfan/features/duels/data/models/fighting_style_model.dart';
 import 'package:opfan/shared/utils/constants.dart';
 import 'package:opfan/features/custom_character/presentation/widgets/character_basic_info_section.dart';
 import 'package:opfan/features/custom_character/presentation/widgets/character_power_section.dart';

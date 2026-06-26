@@ -1,5 +1,5 @@
 import 'package:equatable/equatable.dart';
-import '../../../core/models/nutrition_calculation_model.dart';
+import 'package:opfan/features/sanji_cooking/data/models/nutrition_calculation_model.dart';
 
 abstract class SanjiCookingState extends Equatable {
   const SanjiCookingState();

@@ -3,7 +3,7 @@ import 'package:phosphoricons_flutter/phosphoricons_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:opfan/l10n/app_localizations.dart';
-import 'package:opfan/core/models/one_piece/custom_character_model.dart';
+import 'package:opfan/features/custom_character/data/models/custom_character_model.dart';
 import 'package:opfan/app/di/injection.dart';
 import 'package:opfan/features/custom_character/data/repository/custom_character_repository_interface.dart';
 import 'package:opfan/features/crews/data/repository/crew_repository_interface.dart';

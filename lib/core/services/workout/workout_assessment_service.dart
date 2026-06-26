@@ -1,8 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
-import 'package:opfan/core/models/workout_assessment_model.dart';
-import 'package:opfan/core/models/workout_plan_model.dart';
+import 'package:opfan/features/zoro_workout/data/models/workout_assessment_model.dart';
+import 'package:opfan/features/zoro_workout/data/models/workout_plan_model.dart';
 
 import 'i_workout_assessment_service.dart';
 

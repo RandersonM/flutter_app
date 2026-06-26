@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:opfan/core/models/youtube_video_model.dart';
+import 'package:opfan/features/youtube/data/models/youtube_video_model.dart';
 import 'package:opfan/features/youtube/presentation/youtube_player_screen.dart';
 import 'package:opfan/shared/utils/feature_route_module.dart';
 

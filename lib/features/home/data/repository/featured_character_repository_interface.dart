@@ -1,5 +1,5 @@
-import 'package:opfan/core/models/one_piece/today_character.dart';
-import 'package:opfan/core/models/one_piece/custom_character_model.dart';
+import 'package:opfan/features/one_piece/data/models/today_character.dart';
+import 'package:opfan/features/custom_character/data/models/custom_character_model.dart';
 
 abstract class IFeaturedCharacterRepository {
   Future<String> createFeaturedCharacter(TodayCharacter character);

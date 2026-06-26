@@ -1,4 +1,4 @@
-import 'package:opfan/core/models/one_piece/custom_character_model.dart';
+import 'package:opfan/features/custom_character/data/models/custom_character_model.dart';
 
 abstract class ICustomCharacterRepository {
   Future<String> createCustomCharacter(CustomCharacterModel character);

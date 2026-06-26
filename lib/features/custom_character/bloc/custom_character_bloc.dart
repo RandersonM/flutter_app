@@ -2,7 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:opfan/features/custom_character/data/repository/custom_character_repository_interface.dart';
 import 'package:opfan/features/crews/data/repository/crew_repository_interface.dart';
-import 'package:opfan/core/models/one_piece/crew_model.dart';
+import 'package:opfan/features/crews/data/models/crew_model.dart';
 import 'custom_character_event.dart';
 import 'custom_character_state.dart';
 

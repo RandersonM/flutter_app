@@ -7,7 +7,7 @@ import 'package:opfan/shared/widgets/atoms/finance_currency_text_field.dart';
 import 'package:opfan/features/nami_finances/presentation/widgets/add_expense_dialog.dart'
     as dialog;
 import 'package:opfan/features/nami_finances/presentation/widgets/expense_item_widget.dart';
-import 'package:opfan/core/models/nami_finances_model.dart';
+import 'package:opfan/features/nami_finances/data/models/nami_finances_model.dart';
 import 'package:uuid/uuid.dart';
 import 'package:opfan/shared/widgets/atoms/app_button.dart';
 

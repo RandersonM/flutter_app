@@ -1,6 +1,6 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import '../../../core/models/workout_assessment_model.dart';
 import 'package:opfan/core/services/index.dart';
+import 'package:opfan/features/zoro_workout/data/models/workout_assessment_model.dart';
 import '../../../app/di/injection.dart';
 import '../../../core/auth/blocs/index.dart';
 import 'zoro_workout_event.dart';

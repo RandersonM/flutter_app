@@ -1,5 +1,6 @@
 import 'package:equatable/equatable.dart';
-import '../../../core/models/workout_assessment_model.dart';
+import 'package:opfan/features/zoro_workout/data/models/workout_assessment_model.dart';
+
 
 abstract class ZoroWorkoutState extends Equatable {
   const ZoroWorkoutState();

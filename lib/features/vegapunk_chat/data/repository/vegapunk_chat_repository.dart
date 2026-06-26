@@ -5,6 +5,7 @@ import 'package:opfan/core/services/gemma/i_gemma_service.dart';
 import 'package:opfan/core/services/rag/i_rag_service.dart';
 import 'package:opfan/features/vegapunk_chat/tools/function_executor.dart';
 import 'package:opfan/features/vegapunk_chat/tools/function_registry.dart';
+import 'package:opfan/features/vegapunk_chat/tools/models/tool_call.dart';
 
 import 'i_vegapunk_chat_repository.dart';
 
@@ -64,7 +65,9 @@ class VegapunkChatRepository implements IVegapunkChatRepository {
 
     // ── Step 2: First Gemma pass ─────────────────────────────────────────────
     final buffer = StringBuffer();
-    bool functionCallDetected = false;
+    ToolCall? detectedCall;
+    bool isFunctionCallLikely = false;
+    bool hasDecided = false;
 
     await for (final token in _gemma.sendMessage(
       text,
@@ -72,57 +75,79 @@ class VegapunkChatRepository implements IVegapunkChatRepository {
       ragContext: ragContext,
     )) {
       buffer.write(token);
+      final currentText = buffer.toString().trimLeft();
 
-      // Try parsing a function call as soon as we have enough text.
-      if (!functionCallDetected && buffer.length > 10) {
-        final call = _executor.tryParse(buffer.toString());
-        if (call != null && _registry.has(call.name)) {
-          functionCallDetected = true;
-          debugPrint(
-              'VegapunkChatRepository: function call detected — ${call.name}');
-
-          // Yield a sentinel so the cubit can flip isSearchingWeb = true.
-          yield _searchingWebSentinel;
-
-          // ── Step 3: Execute the tool ───────────────────────────────────────
-          final result = await _registry.execute(call);
-
-          debugPrint(
-              'VegapunkChatRepository: tool result (isError=${result.isError})');
-
-          // ── Step 4: Second Gemma pass with tool result ─────────────────────
-          final argsStr = call.arguments.entries.map((e) => '${e.key}="${e.value}"').join(', ');
-          final toolContext = '[SEARCH RESULTS for "${call.name}($argsStr)"]\n'
-              '${result.content}\n'
-              '[END SEARCH RESULTS]';
-
-          // Yield end-of-search sentinel before streaming final response.
-          yield _searchingDoneSentinel;
-
-          await for (final finalToken in _gemma.sendMessage(
-            text,
-            styleInstruction: styleInstruction,
-            ragContext: [
-              if (ragContext != null) ...ragContext,
-              toolContext,
-            ],
-          )) {
-            yield finalToken;
+      if (!hasDecided) {
+        if (currentText.startsWith('{')) {
+          isFunctionCallLikely = true;
+          if (currentText.length > 5) {
+            hasDecided = true;
+            // Yield a sentinel so the cubit can flip isSearchingWeb = true early!
+            yield _searchingWebSentinel;
           }
-
-          return; // Function call flow complete.
+        } else if (currentText.isNotEmpty && !'{'.startsWith(currentText)) {
+          isFunctionCallLikely = false;
+          hasDecided = true;
+          // Not a function call, yield the buffered text so far
+          yield currentText;
+        }
+      } else {
+        if (!isFunctionCallLikely) {
+          // Stream directly to the UI
+          yield token;
         }
       }
     }
 
-    // ── Step 5: Normal response (no function call) ────────────────────────────
-    if (!functionCallDetected) {
-      // Stream the buffered tokens to the UI.
-      final fullText = buffer.toString();
-      if (fullText.isNotEmpty) {
-        yield fullText;
+    // Always try to parse at the end, even if the model hallucinated text before the JSON.
+    detectedCall = _executor.tryParse(buffer.toString());
+
+    if (detectedCall != null) {
+      debugPrint(
+        'VegapunkChatRepository: function call detected — ${detectedCall.name}',
+      );
+
+      // If we didn't yield the sentinel early (because the model output text first), do it now.
+      if (!isFunctionCallLikely) {
+        yield _searchingWebSentinel;
       }
+
+      // ── Step 3: Execute the tool ───────────────────────────────────────
+      final result = await _registry.execute(detectedCall);
+      debugPrint(
+        'VegapunkChatRepository: tool result (isError=${result.isError})',
+      );
+
+      // ── Step 4: Second Gemma pass with tool result ─────────────────────
+      final argsStr = detectedCall.arguments.entries
+          .map((e) => '${e.key}="${e.value}"')
+          .join(', ');
+      
+      // Truncate result to avoid blowing up context window limit
+      String safeContent = result.content;
+      if (safeContent.length > 1500) {
+        safeContent = '${safeContent.substring(0, 1500)}\n...[TRUNCATED]';
+      }
+
+      final toolContext =
+          '[SEARCH RESULTS for "${detectedCall.name}($argsStr)"]\n'
+          '$safeContent\n'
+          '[END SEARCH RESULTS]';
+
+      // Yield end-of-search sentinel before streaming final response.
+      yield _searchingDoneSentinel;
+
+      await for (final finalToken in _gemma.sendMessage(
+        text,
+        styleInstruction: styleInstruction,
+        ragContext: [if (ragContext != null) ...ragContext, toolContext],
+      )) {
+        yield finalToken;
+      }
+      return;
     }
+
+    // Step 5: Normal response is already streamed directly above!
   }
 
   // ── Sentinel tokens (not displayed to user) ──────────────────────────────

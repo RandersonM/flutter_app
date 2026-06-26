@@ -1,6 +1,6 @@
 import 'package:flutter/foundation.dart';
-import 'package:opfan/core/models/workout_assessment_model.dart';
-import 'package:opfan/core/models/workout_plan_model.dart';
+import 'package:opfan/features/zoro_workout/data/models/workout_assessment_model.dart';
+import 'package:opfan/features/zoro_workout/data/models/workout_plan_model.dart';
 import 'package:opfan/l10n/app_localizations.dart';
 
 /// Resolves which workout split to show for today based on a rotation

@@ -1,7 +1,7 @@
 import 'package:opfan/shared/widgets/atoms/app_icon.dart';
 import 'package:phosphoricons_flutter/phosphoricons_flutter.dart';
 import 'package:flutter/material.dart';
-import 'package:opfan/core/models/one_piece/crew_model.dart';
+import 'package:opfan/features/crews/data/models/crew_model.dart';
 import 'package:opfan/shared/utils/constants.dart';
 import 'package:opfan/l10n/app_localizations.dart';
 import 'package:opfan/shared/widgets/atoms/clickable_image.dart';

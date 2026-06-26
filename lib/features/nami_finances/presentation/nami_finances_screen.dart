@@ -4,7 +4,7 @@ import 'package:opfan/shared/widgets/molecules/default_app_bar.dart';
 import 'package:opfan/shared/widgets/organisms/bottom_navigation.dart';
 import 'package:opfan/shared/utils/constants.dart';
 import 'package:opfan/l10n/app_localizations.dart';
-import 'package:opfan/core/models/nami_finances_model.dart';
+import 'package:opfan/features/nami_finances/data/models/nami_finances_model.dart';
 import 'package:opfan/features/nami_finances/bloc/index.dart';
 import 'package:opfan/app/di/injection.dart';
 import 'widgets/finances_setup_form.dart';

@@ -5,7 +5,7 @@ import 'package:opfan/l10n/app_localizations.dart';
 import 'package:opfan/shared/utils/app_routes.dart' show AppRoutes;
 import 'package:opfan/shared/utils/constants.dart';
 import 'package:opfan/shared/utils/theme.dart';
-import 'package:opfan/core/models/nami_finances_model.dart';
+import 'package:opfan/features/nami_finances/data/models/nami_finances_model.dart';
 import 'package:opfan/core/services/index.dart';
 import 'package:opfan/shared/widgets/atoms/gomu_gomu_divider.dart';
 import 'package:opfan/features/nami_finances/presentation/widgets/finances_history_widget.dart';

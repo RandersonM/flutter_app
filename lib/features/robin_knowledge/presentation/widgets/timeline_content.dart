@@ -3,7 +3,7 @@ import 'package:phosphoricons_flutter/phosphoricons_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:opfan/app/di/injection.dart';
-import 'package:opfan/core/models/goal_model.dart';
+import 'package:opfan/features/robin_knowledge/data/models/goal_model.dart';
 import 'package:opfan/features/robin_knowledge/bloc/robin_knowledge_bloc.dart';
 
 import 'package:opfan/shared/utils/constants.dart';

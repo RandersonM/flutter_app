@@ -26,26 +26,27 @@ class FunctionExecutor {
     r'```(?:json)?\s*(\{[\s\S]*?\})\s*```',
   );
 
-  /// Try to parse a [ToolCall] from [text].
-  ///
-  /// Returns `null` if no valid function call is found.
   ToolCall? tryParse(String text) {
-    // First try to extract from a code fence block.
-    final fenceMatch = _codeFencePattern.firstMatch(text);
-    if (fenceMatch != null) {
-      final extracted = fenceMatch.group(1);
-      if (extracted != null) {
-        final call = _parseJson(extracted);
-        if (call != null) return call;
+    // Find the first '{' and try to parse JSON
+    int startIndex = text.indexOf('{');
+    while (startIndex != -1) {
+      // We found a '{', now try to find the matching '}'
+      int openCount = 0;
+      for (int i = startIndex; i < text.length; i++) {
+        if (text[i] == '{') openCount++;
+        if (text[i] == '}') {
+          openCount--;
+          if (openCount == 0) {
+            // Potential JSON object
+            final candidate = text.substring(startIndex, i + 1);
+            final call = _parseJson(candidate);
+            if (call != null) return call;
+          }
+        }
       }
+      // If not found or invalid, try the next '{'
+      startIndex = text.indexOf('{', startIndex + 1);
     }
-
-    // Then try raw JSON pattern.
-    final match = _jsonPattern.firstMatch(text);
-    if (match != null) {
-      return _parseJson(match.group(0)!);
-    }
-
     return null;
   }
 

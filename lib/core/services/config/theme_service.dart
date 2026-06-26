@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
-import 'package:opfan/core/models/theme_model.dart';
+import 'package:opfan/core/models/theme/theme_model.dart';
 
 import 'i_theme_service.dart';
 

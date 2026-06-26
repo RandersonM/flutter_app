@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:opfan/core/models/workout_assessment_model.dart';
+import 'package:opfan/features/zoro_workout/data/models/workout_assessment_model.dart';
 import 'package:opfan/l10n/app_localizations.dart';
 
 class WorkoutHeader extends StatelessWidget {

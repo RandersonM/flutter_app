@@ -1,5 +1,5 @@
 import 'package:equatable/equatable.dart';
-import 'package:opfan/core/models/one_piece/crew_model.dart';
+import 'package:opfan/features/crews/data/models/crew_model.dart';
 
 abstract class ListCrewsState extends Equatable {
   const ListCrewsState();

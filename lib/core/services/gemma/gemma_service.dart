@@ -147,7 +147,15 @@ class GemmaService implements IGemmaService {
       );
     }
 
-    final controller = StreamController<String>();
+    bool isCancelled = false;
+    late final StreamController<String> controller;
+    
+    controller = StreamController<String>(
+      onCancel: () {
+        isCancelled = true;
+        chat.stopGeneration();
+      },
+    );
 
     () async {
       try {
@@ -162,14 +170,15 @@ class GemmaService implements IGemmaService {
         debugPrint('GemmaService: prompt context=${ragContext?.length ?? 0} docs');
         await chat.addQueryChunk(Message(text: promptText, isUser: true));
         await for (final response in chat.generateChatResponseAsync()) {
+          if (isCancelled) break;
           if (response is TextResponse) {
             controller.add(response.token);
           }
         }
       } catch (e) {
-        controller.addError(e);
+        if (!controller.isClosed) controller.addError(e);
       } finally {
-        await controller.close();
+        if (!controller.isClosed) await controller.close();
       }
     }();
 
@@ -229,8 +238,8 @@ FUNCTION CALLING:
 You have access to several tools/functions. If the user's request requires using one of the available functions (e.g. searching the web for current events, retrieving the user's personal profile, getting workout history, etc.), you MUST respond ONLY with a function call in this exact JSON format (nothing else):
 {"name": "<function_name>", "arguments": {"<param_name>": "<value>"}}
 
-Do NOT add any text before or after the JSON when calling a function.
-If the question can be answered from your own knowledge without using a function, answer normally WITHOUT calling any function.
+NÃO adicione texto antes ou depois do JSON ao chamar uma função. Se precisar usar uma função, retorne EXCLUSIVAMENTE o JSON. Guarde sua explicação para depois de receber os resultados.
+Se a pergunta pode ser respondida com seu próprio conhecimento sem usar uma função, responda normalmente SEM chamar nenhuma função.
 
 BREVITY RULES (always follow these):
 - For yes/no or "do you know X" questions: answer in 1-2 sentences MAX.
@@ -238,6 +247,7 @@ BREVITY RULES (always follow these):
 - Never repeat the question back. No preamble. Go straight to the answer.
 - For One Piece lore: use only facts you are certain about.
 - Never write lists with more than 3 items. Never write more than 2 paragraphs.
+- As a scientist, you are endlessly curious about the user's world. If asked about real-world current events or sports, DO NOT refuse. IMMEDIATELY use the searchInternet function (returning ONLY the JSON).
 ''';
 
   static const _promptPt = '''
@@ -256,7 +266,7 @@ FUNCTION CALLING:
 Você tem acesso a várias ferramentas/funções. Se o pedido do usuário exigir o uso de uma das funções disponíveis (por exemplo, buscar na internet por eventos atuais, recuperar o perfil pessoal do usuário, obter histórico de treinos, etc.), você DEVE responder APENAS com uma chamada de função neste formato JSON exato (nada mais):
 {"name": "<nome_da_funcao>", "arguments": {"<nome_do_parametro>": "<valor>"}}
 
-NÃO adicione texto antes ou depois do JSON ao chamar uma função.
+NÃO adicione texto antes ou depois do JSON ao chamar uma função. Se precisar usar uma função, retorne EXCLUSIVAMENTE o JSON. Guarde sua explicação para depois de receber os resultados.
 Se a pergunta pode ser respondida com seu próprio conhecimento sem usar uma função, responda normalmente SEM chamar nenhuma função.
 
 REGRAS DE BREVIDADE (sempre siga estas regras):
@@ -265,5 +275,6 @@ REGRAS DE BREVIDADE (sempre siga estas regras):
 - Nunca repita a pergunta. Sem introdução. Vá direto ao ponto.
 - Para lore de One Piece: use apenas fatos que você tem certeza.
 - Nunca escreva listas com mais de 3 itens. Nunca escreva mais de 2 parágrafos.
+- Como cientista, você é infinitamente curioso sobre o mundo do usuário. Se perguntarem sobre eventos atuais ou esportes, NÃO recuse. Use IMEDIATAMENTE a função searchInternet (retornando APENAS o JSON).
 ''';
 }

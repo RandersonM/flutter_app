@@ -5,7 +5,7 @@ import 'package:phosphoricons_flutter/phosphoricons_flutter.dart';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:opfan/core/models/one_piece/custom_character_model.dart';
+import 'package:opfan/features/custom_character/data/models/custom_character_model.dart';
 import 'package:opfan/app/di/injection.dart';
 import 'package:opfan/l10n/app_localizations.dart';
 import 'package:opfan/shared/widgets/molecules/statistics_grid.dart';

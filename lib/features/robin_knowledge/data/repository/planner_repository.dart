@@ -1,5 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:opfan/core/models/goal_model.dart';
+import 'package:opfan/features/robin_knowledge/data/models/goal_model.dart';
 import 'package:opfan/features/robin_knowledge/data/repository/planner_repository_interface.dart';
 import 'package:opfan/core/services/index.dart';
 

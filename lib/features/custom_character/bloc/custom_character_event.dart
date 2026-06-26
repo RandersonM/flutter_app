@@ -1,5 +1,5 @@
 import 'package:equatable/equatable.dart';
-import 'package:opfan/core/models/one_piece/custom_character_model.dart';
+import 'package:opfan/features/custom_character/data/models/custom_character_model.dart';
 
 abstract class CustomCharacterEvent extends Equatable {
   const CustomCharacterEvent();

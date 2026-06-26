@@ -1,4 +1,4 @@
-import 'package:opfan/core/models/one_piece/crew_model.dart';
+import 'package:opfan/features/crews/data/models/crew_model.dart';
 
 abstract class ICrewRepository {
   Future<String> createCrew(CrewModel crew);

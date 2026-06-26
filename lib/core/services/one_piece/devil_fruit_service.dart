@@ -4,7 +4,7 @@ import 'package:get_it/get_it.dart';
 
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
-import 'package:opfan/core/models/one_piece/devil_fruit.dart';
+import 'package:opfan/features/devil_fruit/data/models/devil_fruit.dart';
 import 'package:opfan/core/services/index.dart';
 
 

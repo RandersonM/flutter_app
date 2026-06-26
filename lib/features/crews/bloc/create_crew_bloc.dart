@@ -1,5 +1,5 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:opfan/core/models/one_piece/crew_model.dart';
+import 'package:opfan/features/crews/data/models/crew_model.dart';
 import 'package:opfan/features/crews/data/repository/crew_repository_interface.dart';
 import 'package:opfan/app/di/injection.dart';
 import 'package:opfan/features/crews/bloc/create_crew_event.dart';

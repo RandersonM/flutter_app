@@ -2,7 +2,7 @@ import 'package:opfan/shared/widgets/atoms/app_icon.dart';
 import 'package:phosphoricons_flutter/phosphoricons_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:opfan/core/models/workout_plan_model.dart';
+import 'package:opfan/features/zoro_workout/data/models/workout_plan_model.dart';
 import 'package:opfan/features/zoro_workout/bloc/zoro_workout_bloc.dart';
 import 'package:opfan/features/zoro_workout/bloc/zoro_workout_event.dart';
 import 'package:opfan/features/zoro_workout/bloc/zoro_workout_state.dart';

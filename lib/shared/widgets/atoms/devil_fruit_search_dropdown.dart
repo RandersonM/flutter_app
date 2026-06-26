@@ -2,7 +2,7 @@ import 'package:opfan/shared/widgets/atoms/app_icon.dart';
 import 'package:phosphoricons_flutter/phosphoricons_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:opfan/l10n/app_localizations.dart';
-import 'package:opfan/core/models/one_piece/devil_fruit.dart';
+import 'package:opfan/features/devil_fruit/data/models/devil_fruit.dart';
 
 class DevilFruitSearchDropdown extends StatefulWidget {
   final String label;

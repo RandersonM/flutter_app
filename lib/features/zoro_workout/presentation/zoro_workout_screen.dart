@@ -7,7 +7,7 @@ import 'package:opfan/shared/widgets/molecules/default_app_bar.dart';
 import 'package:opfan/shared/widgets/organisms/bottom_navigation.dart';
 import 'package:opfan/features/zoro_workout/presentation/widgets/index.dart';
 import 'package:opfan/app/di/injection.dart';
-import 'package:opfan/core/models/workout_assessment_model.dart';
+import 'package:opfan/features/zoro_workout/data/models/workout_assessment_model.dart';
 import 'package:opfan/core/services/index.dart';
 import 'package:opfan/core/auth/blocs/index.dart';
 import '../bloc/index.dart';

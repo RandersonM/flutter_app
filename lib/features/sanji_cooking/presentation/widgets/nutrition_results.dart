@@ -2,7 +2,7 @@ import 'package:opfan/shared/widgets/atoms/app_icon.dart';
 import 'package:phosphoricons_flutter/phosphoricons_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:opfan/core/models/nutrition_calculation_model.dart';
+import 'package:opfan/features/sanji_cooking/data/models/nutrition_calculation_model.dart';
 import 'package:opfan/l10n/app_localizations.dart';
 import 'package:opfan/shared/utils/constants.dart';
 import 'package:opfan/shared/utils/app_routes.dart';

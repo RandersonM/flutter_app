@@ -12,8 +12,7 @@ import '../tool_handler.dart';
 /// {"name": "searchInternet", "arguments": {"query": "..."}}
 /// ```
 class SearchInternetHandler implements ToolHandler {
-  const SearchInternetHandler({required IWebSearchService webSearch})
-      : _webSearch = webSearch;
+  const SearchInternetHandler({required this._webSearch});
 
   final IWebSearchService _webSearch;
 

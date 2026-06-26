@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import 'package:opfan/core/models/one_piece/custom_character_model.dart';
-import 'package:opfan/core/models/one_piece/devil_fruit.dart';
-import 'package:opfan/core/models/one_piece/crew_model.dart';
-import 'package:opfan/core/models/one_piece/fighting_style_model.dart';
+import 'package:opfan/features/custom_character/data/models/custom_character_model.dart';
+import 'package:opfan/features/devil_fruit/data/models/devil_fruit.dart';
+import 'package:opfan/features/crews/data/models/crew_model.dart';
+import 'package:opfan/features/duels/data/models/fighting_style_model.dart';
 import 'package:opfan/app/di/injection.dart';
 import 'package:opfan/features/custom_character/data/repository/custom_character_repository_interface.dart';
 import 'package:opfan/features/crews/data/repository/crew_repository_interface.dart';

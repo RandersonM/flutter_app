@@ -4,7 +4,7 @@ import 'package:phosphoricons_flutter/phosphoricons_flutter.dart';
 // Copyright © 2022.
 
 import 'package:flutter/material.dart';
-import 'package:opfan/core/models/youtube_video_model.dart';
+import 'package:opfan/features/youtube/data/models/youtube_video_model.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 
 class InlineYouTubePlayer extends StatefulWidget {

@@ -2,7 +2,7 @@ import 'package:opfan/shared/widgets/atoms/app_icon.dart';
 import 'package:phosphoricons_flutter/phosphoricons_flutter.dart';
 
 import 'package:flutter/material.dart';
-import 'package:opfan/core/models/one_piece/custom_character_model.dart'
+import 'package:opfan/features/custom_character/data/models/custom_character_model.dart'
     show CustomCharacterModel;
 import 'package:opfan/l10n/app_localizations.dart';
 import 'package:opfan/shared/widgets/atoms/clickable_image.dart'

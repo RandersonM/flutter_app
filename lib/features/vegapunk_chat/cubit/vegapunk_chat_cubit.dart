@@ -6,7 +6,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:uuid/uuid.dart';
 
 import 'package:opfan/app/di/injection.dart';
-import 'package:opfan/core/models/rag_document.dart';
+import 'package:opfan/core/models/rag/rag_document.dart';
 import 'package:opfan/core/services/index.dart';
 import 'package:opfan/core/services/rag/i_rag_service.dart';
 import '../data/knowledge/one_piece_knowledge_base.dart';
@@ -125,7 +125,10 @@ class VegapunkChatCubit extends Cubit<VegapunkChatState> {
 
         // Handle sentinel tokens from the repository's function calling loop.
         if (token == VegapunkChatRepository.searchingWebSentinel) {
-          emit(current.copyWith(isSearchingWeb: true));
+          emit(current.copyWith(
+            isSearchingWeb: true,
+            streamingToken: '', // Clear any hallucinated text or raw JSON
+          ));
           return;
         }
         if (token == VegapunkChatRepository.searchingDoneSentinel) {

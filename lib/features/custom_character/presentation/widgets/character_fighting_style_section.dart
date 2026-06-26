@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:opfan/core/utils/character_localization_mapper.dart';
 import 'package:opfan/l10n/app_localizations.dart';
-import 'package:opfan/core/models/one_piece/fighting_style_model.dart';
+import 'package:opfan/features/duels/data/models/fighting_style_model.dart';
 import 'package:opfan/shared/utils/constants.dart';
 
 class CharacterFightingStyleSection extends StatefulWidget {

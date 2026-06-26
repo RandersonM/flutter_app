@@ -1,4 +1,4 @@
-import 'package:opfan/core/models/goal_model.dart';
+import 'package:opfan/features/robin_knowledge/data/models/goal_model.dart';
 
 abstract class PlannerRepositoryInterface {
   Future<List<GoalModel>> getGoals();

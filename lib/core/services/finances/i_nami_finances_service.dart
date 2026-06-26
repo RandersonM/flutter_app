@@ -1,4 +1,4 @@
-import 'package:opfan/core/models/nami_finances_model.dart';
+import 'package:opfan/features/nami_finances/data/models/nami_finances_model.dart';
 import 'package:opfan/l10n/app_localizations.dart';
 
 abstract class INamiFinancesService {

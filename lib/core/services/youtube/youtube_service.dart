@@ -6,7 +6,7 @@ import 'dart:math';
 
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
-import 'package:opfan/core/models/youtube_video_model.dart';
+import 'package:opfan/features/youtube/data/models/youtube_video_model.dart';
 import 'package:opfan/core/services/index.dart';
 
 class YouTubeService implements IYouTubeService {

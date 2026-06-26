@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'fighting_style_model.dart';
+import 'package:opfan/features/duels/data/models/fighting_style_model.dart';
+
 
 class CustomCharacterModel {
   final String? id;

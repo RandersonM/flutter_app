@@ -1,4 +1,4 @@
-import 'package:opfan/core/models/rag_document.dart';
+import 'package:opfan/core/models/rag/rag_document.dart';
 
 abstract class IRAGService {
   Future<void> initialize();

@@ -2,7 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter_gemma/flutter_gemma.dart';
 import 'package:path_provider/path_provider.dart';
 
-import 'package:opfan/core/models/rag_document.dart';
+import 'package:opfan/core/models/rag/rag_document.dart';
 import 'package:opfan/core/services/rag/i_rag_service.dart';
 
 class RAGService implements IRAGService {

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:opfan/l10n/app_localizations.dart';
-import 'package:opfan/core/models/one_piece/devil_fruit.dart';
+import 'package:opfan/features/devil_fruit/data/models/devil_fruit.dart';
 import 'package:opfan/core/utils/character_localization_mapper.dart';
 import 'package:opfan/shared/widgets/atoms/devil_fruit_search_dropdown.dart';
 import 'package:opfan/shared/widgets/atoms/custom_chip_selector.dart';

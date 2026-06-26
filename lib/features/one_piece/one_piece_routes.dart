@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:opfan/core/models/one_piece/custom_character_model.dart';
+import 'package:opfan/features/custom_character/data/models/custom_character_model.dart';
 import 'package:opfan/features/one_piece/presentation/characters_list_screen.dart';
 import 'package:opfan/features/one_piece/presentation/widgets/details/character_details_screen.dart';
 import 'package:opfan/shared/utils/feature_route_module.dart';

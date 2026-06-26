@@ -1,4 +1,4 @@
-import 'package:opfan/core/models/youtube_video_model.dart';
+import 'package:opfan/features/youtube/data/models/youtube_video_model.dart';
 
 abstract class IYouTubeService {
   Future<YouTubeVideo?> searchCharacterAMV(String characterName);

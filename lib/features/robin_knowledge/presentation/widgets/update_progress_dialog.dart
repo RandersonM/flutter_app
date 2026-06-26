@@ -1,6 +1,6 @@
 import 'package:phosphoricons_flutter/phosphoricons_flutter.dart';
 import 'package:flutter/material.dart';
-import 'package:opfan/core/models/goal_model.dart';
+import 'package:opfan/features/robin_knowledge/data/models/goal_model.dart';
 import 'package:opfan/shared/utils/theme.dart';
 import 'package:opfan/l10n/app_localizations.dart';
 
