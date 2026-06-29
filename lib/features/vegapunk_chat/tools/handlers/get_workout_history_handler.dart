@@ -25,7 +25,14 @@ class GetWorkoutHistoryHandler implements ToolHandler {
       'Retrieve the user\'s comprehensive workout history and assessment data. Use this tool when asked about the user\'s workout plan or routine, how many days they have trained, which specific days they trained in a given month, body metric history over time (weight, body fat), activity level, and their fitness goals.';
 
   @override
+  String get descriptionPt =>
+      'Recupere o histórico completo de treinos e dados de avaliação do usuário. Use esta ferramenta quando perguntado sobre o plano ou rotina de treino, quantos dias treinou, quais dias específicos treinou em um mês, histórico de métricas corporais (peso, gordura), nível de atividade e objetivos fitness.';
+
+  @override
   Map<String, String> get parameterDescriptions => {};
+
+  @override
+  Map<String, String> get parameterDescriptionsPt => {};
 
   @override
   Future<ToolResult> execute(ToolCall call) async {

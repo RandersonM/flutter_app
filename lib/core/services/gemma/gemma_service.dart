@@ -114,6 +114,9 @@ class GemmaService implements IGemmaService {
     _isThinkingMode = isThinkingMode;
     try {
       _emit(const GemmaLoading());
+      final oldChat = _chat;
+      _chat = null;
+      await oldChat?.close();
       final maxTokens = isThinkingMode ? 4096 : 2048;
       final model = await FlutterGemma.getActiveModel(
         maxTokens: maxTokens,
@@ -121,11 +124,12 @@ class GemmaService implements IGemmaService {
       );
       _chat = await model.createChat(
         systemInstruction: _vegapunkPrompt,
-        temperature: 0.1,
+        // Thinking mode uses lower temperature for structured analytical output.
+        // Normal chat uses 0.35 to allow natural personality while still being
+        // reliable enough for function call JSON emission.
+        temperature: isThinkingMode ? 0.3 : 0.5,
         isThinking: isThinkingMode,
-        // 512 tokens gives the model enough room to emit function call JSON
-        // while still keeping responses concise.
-        maxOutputTokens: 512,
+        maxOutputTokens: isThinkingMode ? 512 : 1024,
       );
       _emit(const GemmaReady());
     } catch (e) {
@@ -151,9 +155,9 @@ class GemmaService implements IGemmaService {
     late final StreamController<String> controller;
     
     controller = StreamController<String>(
-      onCancel: () {
+      onCancel: () async {
         isCancelled = true;
-        chat.stopGeneration();
+        await chat.stopGeneration();
       },
     );
 
@@ -196,13 +200,16 @@ class GemmaService implements IGemmaService {
     try {
       _emit(const GemmaLoading());
       _isThinkingMode = isThinkingMode;
+      final oldChat = _chat;
+      _chat = null;
+      await oldChat?.close();
       final maxTokens = isThinkingMode ? 4096 : 2048;
       final model = await FlutterGemma.getActiveModel(maxTokens: maxTokens);
       _chat = await model.createChat(
         systemInstruction: _vegapunkPrompt,
-        temperature: 0.1,
+        temperature: isThinkingMode ? 0.3 : 0.5,
         isThinking: isThinkingMode,
-        maxOutputTokens: 512,
+        maxOutputTokens: isThinkingMode ? 512 : 1024,
       );
       _emit(const GemmaReady());
     } catch (e) {
@@ -218,7 +225,8 @@ class GemmaService implements IGemmaService {
   String get _vegapunkPrompt {
     final isPortuguese = GetIt.I.get<ILocaleService>().locale?.languageCode == 'pt';
     final base = isPortuguese ? _promptPt : _promptEn;
-    final declarations = _functionRegistry?.systemPromptDeclarations ?? '';
+    final declarations =
+        _functionRegistry?.systemPromptDeclarations(isPortuguese: isPortuguese) ?? '';
     return declarations.isNotEmpty ? '$base\n\n$declarations' : base;
   }
 
@@ -238,8 +246,8 @@ FUNCTION CALLING:
 You have access to several tools/functions. If the user's request requires using one of the available functions (e.g. searching the web for current events, retrieving the user's personal profile, getting workout history, etc.), you MUST respond ONLY with a function call in this exact JSON format (nothing else):
 {"name": "<function_name>", "arguments": {"<param_name>": "<value>"}}
 
-NÃO adicione texto antes ou depois do JSON ao chamar uma função. Se precisar usar uma função, retorne EXCLUSIVAMENTE o JSON. Guarde sua explicação para depois de receber os resultados.
-Se a pergunta pode ser respondida com seu próprio conhecimento sem usar uma função, responda normalmente SEM chamar nenhuma função.
+DO NOT add any text before or after the JSON when calling a function. If you need to use a function, return EXCLUSIVELY the JSON. Save your explanation for after you receive the results.
+If the question can be answered from your own knowledge without a function, respond normally WITHOUT calling any function.
 
 BREVITY RULES (always follow these):
 - For yes/no or "do you know X" questions: answer in 1-2 sentences MAX.

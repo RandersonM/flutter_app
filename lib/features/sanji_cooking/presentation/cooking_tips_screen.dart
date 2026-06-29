@@ -26,8 +26,10 @@ class CookingTipsScreen extends StatefulWidget {
 
 class _CookingTipsScreenState extends State<CookingTipsScreen> {
   final TextEditingController _ingredientController = TextEditingController();
-  String? _mealType;
-  String? _dietaryRestrictions;
+  // Locale-invariant keys — translated only at display time so a locale switch
+  // mid-session never invalidates the stored value against the dropdown items.
+  String? _mealTypeKey;
+  String? _dietaryRestrictionsKey;
   late SanjiCookingBloc _bloc;
 
   @override
@@ -60,26 +62,28 @@ class _CookingTipsScreenState extends State<CookingTipsScreen> {
   }
 
   void _generatePersonalizedMeal(BuildContext context) {
-    final localizations = AppLocalizations.of(context)!;
     final currentState = context.read<SanjiCookingBloc>().state;
     if (currentState is SanjiCookingTipsLoaded ||
-        currentState is SanjiCookingPersonalizedMealLoaded) {
+        currentState is SanjiCookingPersonalizedMealLoaded ||
+        currentState is SanjiCookingPersonalizedMealGenerating) {
       final ingredients = currentState is SanjiCookingTipsLoaded
           ? currentState.ingredients
-          : (currentState as SanjiCookingPersonalizedMealLoaded).ingredients;
+          : currentState is SanjiCookingPersonalizedMealGenerating
+              ? (currentState).ingredients
+              : (currentState as SanjiCookingPersonalizedMealLoaded).ingredients;
 
       if (widget.targetCalories != null &&
           widget.goal != null &&
-          _mealType != null) {
+          _mealTypeKey != null) {
         context.read<SanjiCookingBloc>().add(GeneratePersonalizedMeal(
               ingredients: ingredients,
-              mealType: _mealType!,
+              mealType: _mealTypeKey!,
               targetCalories: widget.targetCalories!,
               goal: widget.goal!,
               dietaryRestrictions:
-                  _dietaryRestrictions == localizations.dietaryRestrictionNone
+                  _dietaryRestrictionsKey == 'none'
                       ? null
-                      : _dietaryRestrictions,
+                      : _dietaryRestrictionsKey,
             ));
       }
     }
@@ -88,8 +92,8 @@ class _CookingTipsScreenState extends State<CookingTipsScreen> {
   void _clearAll(BuildContext context) {
     context.read<SanjiCookingBloc>().add(const ClearCookingTips());
     setState(() {
-      _mealType = null;
-      _dietaryRestrictions = null;
+      _mealTypeKey = null;
+      _dietaryRestrictionsKey = null;
       _ingredientController.clear();
     });
   }
@@ -113,7 +117,16 @@ class _CookingTipsScreenState extends State<CookingTipsScreen> {
     final colorScheme = theme.colorScheme;
     final localizations = AppLocalizations.of(context)!;
 
-    final mealTypes = [
+    const mealTypeKeys = [
+      'breakfast',
+      'morning_snack',
+      'lunch',
+      'afternoon_snack',
+      'dinner',
+      'dessert',
+      'night_snack',
+    ];
+    final mealTypeLabels = [
       localizations.mealTypeBreakfast,
       localizations.mealTypeMorningSnack,
       localizations.mealTypeLunch,
@@ -123,7 +136,16 @@ class _CookingTipsScreenState extends State<CookingTipsScreen> {
       localizations.mealTypeNightSnack,
     ];
 
-    final dietaryRestrictionsList = [
+    const dietaryRestrictionKeys = [
+      'none',
+      'vegetarian',
+      'vegan',
+      'gluten_free',
+      'lactose_free',
+      'low_carb',
+      'high_protein',
+    ];
+    final dietaryRestrictionLabels = [
       localizations.dietaryRestrictionNone,
       localizations.dietaryRestrictionVegetarian,
       localizations.dietaryRestrictionVegan,
@@ -289,22 +311,22 @@ class _CookingTipsScreenState extends State<CookingTipsScreen> {
 
                             // Meal Type Selection
                             DropdownButtonFormField<String>(
-                              initialValue: _mealType,
+                              initialValue: _mealTypeKey,
                               decoration: InputDecoration(
                                 labelText: localizations.mealType,
                                 border: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(8),
                                 ),
                               ),
-                              items: mealTypes.map((type) {
+                              items: List.generate(mealTypeKeys.length, (i) {
                                 return DropdownMenuItem(
-                                  value: type,
-                                  child: Text(type),
+                                  value: mealTypeKeys[i],
+                                  child: Text(mealTypeLabels[i]),
                                 );
-                              }).toList(),
+                              }),
                               onChanged: (value) {
                                 setState(() {
-                                  _mealType = value;
+                                  _mealTypeKey = value;
                                 });
                               },
                             ),
@@ -312,22 +334,22 @@ class _CookingTipsScreenState extends State<CookingTipsScreen> {
 
                             // Dietary Restrictions
                             DropdownButtonFormField<String>(
-                              initialValue: _dietaryRestrictions,
+                              initialValue: _dietaryRestrictionsKey,
                               decoration: InputDecoration(
                                 labelText: localizations.dietaryRestrictions,
                                 border: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(8),
                                 ),
                               ),
-                              items: dietaryRestrictionsList.map((restriction) {
+                              items: List.generate(dietaryRestrictionKeys.length, (i) {
                                 return DropdownMenuItem(
-                                  value: restriction,
-                                  child: Text(restriction),
+                                  value: dietaryRestrictionKeys[i],
+                                  child: Text(dietaryRestrictionLabels[i]),
                                 );
-                              }).toList(),
+                              }),
                               onChanged: (value) {
                                 setState(() {
-                                  _dietaryRestrictions = value;
+                                  _dietaryRestrictionsKey = value;
                                 });
                               },
                             ),
@@ -346,26 +368,21 @@ class _CookingTipsScreenState extends State<CookingTipsScreen> {
                     children: [
                       AppButton(
                         onPressed: (state is SanjiCookingTipsLoaded ||
-                                    state
-                                        is SanjiCookingPersonalizedMealLoaded) &&
+                                    state is SanjiCookingPersonalizedMealLoaded) &&
                                 (state is SanjiCookingTipsLoaded
                                     ? state.ingredients.isNotEmpty
-                                    : (state
-                                            as SanjiCookingPersonalizedMealLoaded)
+                                    : (state as SanjiCookingPersonalizedMealLoaded)
                                         .ingredients
                                         .isNotEmpty) &&
-                                _mealType != null &&
-                                !(state is SanjiCookingPersonalizedMealLoaded &&
-                                    state.isLoading)
+                                _mealTypeKey != null &&
+                                state is! SanjiCookingPersonalizedMealGenerating
                             ? () => _generatePersonalizedMeal(context)
                             : null,
                         icon:
                             const AppIcon(PhosphorIconsRegular.bookOpenText),
                         isLoading:
-                            state is SanjiCookingPersonalizedMealLoaded &&
-                                state.isLoading,
-                        label: (state is SanjiCookingPersonalizedMealLoaded &&
-                                state.isLoading)
+                            state is SanjiCookingPersonalizedMealGenerating,
+                        label: state is SanjiCookingPersonalizedMealGenerating
                             ? localizations.cookingGeneratingMeal
                             : localizations.cookingGenerateMeal,
                         padding: const EdgeInsets.symmetric(

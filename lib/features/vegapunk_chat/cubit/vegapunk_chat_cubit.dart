@@ -36,6 +36,7 @@ class VegapunkChatCubit extends Cubit<VegapunkChatState> {
   String _lastUserMessage = '';
   int _turnCount = 0;
   bool _isSilentReset = false;
+  Future<void>? _pendingReset;
   // After this many complete exchanges, silently reset the model KV-cache to
   // prevent context-window overflow. UI history is untouched.
   static const int _maxTurnsBeforeReset = 5;
@@ -93,7 +94,14 @@ class VegapunkChatCubit extends Cubit<VegapunkChatState> {
   }
 
   Future<void> sendMessage(String text) async {
-    if (state is! VegapunkChatReady || text.trim().isEmpty) return;
+    if (text.trim().isEmpty) return;
+    // If a silent KV-cache reset is in flight, await it before proceeding.
+    // Without this guard, sendMessage sees _chat == null and the user's
+    // message is silently dropped with no response or error shown.
+    // `await null` is a no-op in Dart, so this is safe when no reset is pending.
+    await _pendingReset;
+
+    if (state is! VegapunkChatReady) return;
     final ready = state as VegapunkChatReady;
     if (ready.isGenerating) return;
 
@@ -234,7 +242,10 @@ class VegapunkChatCubit extends Cubit<VegapunkChatState> {
         _isSilentReset = true;
         // Silently reset the model's KV-cache to free context window space.
         // _onModelStatus suppresses the Loading/Ready events so the UI is unaffected.
-        _repository.resetChat(isThinkingMode: _isThinkingMode).ignore();
+        // Track the future so sendMessage can await it if a tap arrives mid-reset.
+        _pendingReset = _repository
+            .resetChat(isThinkingMode: _isThinkingMode)
+            .whenComplete(() => _pendingReset = null);
       }
     }
   }

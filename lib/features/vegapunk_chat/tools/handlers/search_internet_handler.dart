@@ -26,8 +26,19 @@ class SearchInternetHandler implements ToolHandler {
       'facts that may have changed, or information not available in the model.';
 
   @override
+  String get descriptionPt =>
+      'Pesquise na web por informações recentes ou externas. '
+      'Use esta função sempre que a resposta depender de eventos atuais, notícias, '
+      'fatos que possam ter mudado ou informações não disponíveis no modelo.';
+
+  @override
   Map<String, String> get parameterDescriptions => {
         'query': '(string) The search query to send to the web.',
+      };
+
+  @override
+  Map<String, String> get parameterDescriptionsPt => {
+        'query': '(string) A consulta de busca a ser enviada para a web.',
       };
 
   @override

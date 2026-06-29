@@ -9,7 +9,7 @@ import 'sanji_cooking_event.dart';
 import 'sanji_cooking_state.dart';
 
 class SanjiCookingBloc extends Bloc<SanjiCookingEvent, SanjiCookingState> {
-  final IWorkoutAssessmentService _workoutService = WorkoutAssessmentService();
+  final IWorkoutAssessmentService _workoutService = getIt<IWorkoutAssessmentService>();
   final ICookingRepository _cookingRepository = getIt<ICookingRepository>();
 
   SanjiCookingBloc() : super(const SanjiCookingInitial()) {
@@ -156,7 +156,7 @@ class SanjiCookingBloc extends Bloc<SanjiCookingEvent, SanjiCookingState> {
     }
   }
 
-  void _onNewCalculation(
+  Future<void> _onNewCalculation(
     NewCalculation event,
     Emitter<SanjiCookingState> emit,
   ) async {
@@ -211,7 +211,6 @@ class SanjiCookingBloc extends Bloc<SanjiCookingEvent, SanjiCookingState> {
       ingredients: event.ingredients,
       cookingMethod: event.cookingMethod,
       difficulty: event.difficulty,
-      isLoading: true,
     ));
 
     try {
@@ -226,7 +225,6 @@ class SanjiCookingBloc extends Bloc<SanjiCookingEvent, SanjiCookingState> {
         cookingMethod: event.cookingMethod,
         difficulty: event.difficulty,
         cookingTips: response,
-        isLoading: false,
       ));
     } catch (e) {
       emit(SanjiCookingTipsLoaded(
@@ -234,7 +232,6 @@ class SanjiCookingBloc extends Bloc<SanjiCookingEvent, SanjiCookingState> {
         cookingMethod: event.cookingMethod,
         difficulty: event.difficulty,
         errorMessage: 'Erro ao gerar dicas: $e',
-        isLoading: false,
       ));
     }
   }
@@ -290,13 +287,12 @@ class SanjiCookingBloc extends Bloc<SanjiCookingEvent, SanjiCookingState> {
       return;
     }
 
-    emit(SanjiCookingPersonalizedMealLoaded(
+    emit(SanjiCookingPersonalizedMealGenerating(
       ingredients: event.ingredients,
       mealType: event.mealType,
       targetCalories: event.targetCalories,
       goal: event.goal,
       dietaryRestrictions: event.dietaryRestrictions,
-      isLoading: true,
     ));
 
     try {
@@ -308,25 +304,15 @@ class SanjiCookingBloc extends Bloc<SanjiCookingEvent, SanjiCookingState> {
         dietaryRestrictions: event.dietaryRestrictions,
       );
 
-      if (meal != null) {
-        emit(SanjiCookingPersonalizedMealLoaded(
-          ingredients: event.ingredients,
-          mealType: event.mealType,
-          targetCalories: event.targetCalories,
-          goal: event.goal,
-          dietaryRestrictions: event.dietaryRestrictions,
-          personalizedMeal: meal,
-        ));
-      } else {
-        emit(SanjiCookingPersonalizedMealLoaded(
-          ingredients: event.ingredients,
-          mealType: event.mealType,
-          targetCalories: event.targetCalories,
-          goal: event.goal,
-          dietaryRestrictions: event.dietaryRestrictions,
-          errorMessage: 'Não foi possível gerar a refeição. Tente novamente.',
-        ));
-      }
+      emit(SanjiCookingPersonalizedMealLoaded(
+        ingredients: event.ingredients,
+        mealType: event.mealType,
+        targetCalories: event.targetCalories,
+        goal: event.goal,
+        dietaryRestrictions: event.dietaryRestrictions,
+        personalizedMeal: meal,
+        errorMessage: meal == null ? 'Não foi possível gerar a refeição. Tente novamente.' : null,
+      ));
     } catch (e) {
       emit(SanjiCookingPersonalizedMealLoaded(
         ingredients: event.ingredients,

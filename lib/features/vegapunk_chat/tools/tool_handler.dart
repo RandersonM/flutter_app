@@ -13,8 +13,14 @@ abstract class ToolHandler {
   /// knows when and how to use this tool.
   String get description;
 
+  /// Portuguese description. Defaults to [description] if not overridden.
+  String get descriptionPt => description;
+
   /// JSON-schema-like parameter descriptions used in the system prompt.
   Map<String, String> get parameterDescriptions;
+
+  /// Portuguese parameter descriptions. Defaults to [parameterDescriptions].
+  Map<String, String> get parameterDescriptionsPt => parameterDescriptions;
 
   /// Execute the tool with the parsed [args] from the model output.
   Future<ToolResult> execute(ToolCall call);

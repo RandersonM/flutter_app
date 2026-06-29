@@ -24,7 +24,6 @@ import 'package:opfan/app/app_bloc_observer.dart';
 import 'package:opfan/shared/widgets/global_error_boundary.dart';
 import 'package:flutter_gemma/flutter_gemma.dart';
 import 'package:flutter_gemma_litertlm/flutter_gemma_litertlm.dart';
-import 'package:flutter_gemma_mediapipe/flutter_gemma_mediapipe.dart';
 import 'package:flutter_gemma_embeddings/flutter_gemma_embeddings.dart';
 import 'package:flutter_gemma_rag_sqlite/flutter_gemma_rag_sqlite.dart';
 
@@ -49,14 +48,14 @@ void main() async {
     ]);
     debugPrint('MAIN: Firebase, Env, Theme initialized.');
 
-    // debugPrint('MAIN: Initializing NotificationService...');
-    // await getIt<INotificationService>().initialize();
-    // debugPrint('MAIN: INotificationService initialized.');
+    debugPrint('MAIN: Initializing NotificationService...');
+    await getIt<INotificationService>().initialize();
+    debugPrint('MAIN: INotificationService initialized.');
 
     debugPrint('MAIN: Initializing FlutterGemma...');
     await FlutterGemma.initialize(
       huggingFaceToken: getIt<IEnvironmentService>().huggingFaceApiKey,
-      inferenceEngines: [LiteRtLmEngine(), MediaPipeEngine()],
+      inferenceEngines: [LiteRtLmEngine()],
       embeddingBackends: [LiteRtEmbeddingBackend()],
       vectorStore: SqliteVectorStore(),
     );

@@ -68,7 +68,6 @@ class SanjiCookingTipsLoaded extends SanjiCookingState {
   final String? cookingMethod;
   final String? difficulty;
   final String? cookingTips;
-  final bool isLoading;
   final String? errorMessage;
 
   const SanjiCookingTipsLoaded({
@@ -76,7 +75,6 @@ class SanjiCookingTipsLoaded extends SanjiCookingState {
     this.cookingMethod,
     this.difficulty,
     this.cookingTips,
-    this.isLoading = false,
     this.errorMessage,
   });
 
@@ -86,7 +84,6 @@ class SanjiCookingTipsLoaded extends SanjiCookingState {
         cookingMethod,
         difficulty,
         cookingTips,
-        isLoading,
         errorMessage,
       ];
 
@@ -95,7 +92,6 @@ class SanjiCookingTipsLoaded extends SanjiCookingState {
     String? cookingMethod,
     String? difficulty,
     String? cookingTips,
-    bool? isLoading,
     String? errorMessage,
   }) {
     return SanjiCookingTipsLoaded(
@@ -103,10 +99,36 @@ class SanjiCookingTipsLoaded extends SanjiCookingState {
       cookingMethod: cookingMethod ?? this.cookingMethod,
       difficulty: difficulty ?? this.difficulty,
       cookingTips: cookingTips ?? this.cookingTips,
-      isLoading: isLoading ?? this.isLoading,
       errorMessage: errorMessage ?? this.errorMessage,
     );
   }
+}
+
+/// Emitted while the AI is generating a personalized meal (replaces the old
+/// isLoading flag that was incorrectly embedded inside the loaded state).
+class SanjiCookingPersonalizedMealGenerating extends SanjiCookingState {
+  final List<String> ingredients;
+  final String mealType;
+  final double targetCalories;
+  final String goal;
+  final String? dietaryRestrictions;
+
+  const SanjiCookingPersonalizedMealGenerating({
+    required this.ingredients,
+    required this.mealType,
+    required this.targetCalories,
+    required this.goal,
+    this.dietaryRestrictions,
+  });
+
+  @override
+  List<Object?> get props => [
+        ingredients,
+        mealType,
+        targetCalories,
+        goal,
+        dietaryRestrictions,
+      ];
 }
 
 class SanjiCookingPersonalizedMealLoaded extends SanjiCookingState {
@@ -116,7 +138,6 @@ class SanjiCookingPersonalizedMealLoaded extends SanjiCookingState {
   final String goal;
   final String? dietaryRestrictions;
   final String? personalizedMeal;
-  final bool isLoading;
   final String? errorMessage;
 
   const SanjiCookingPersonalizedMealLoaded({
@@ -126,7 +147,6 @@ class SanjiCookingPersonalizedMealLoaded extends SanjiCookingState {
     required this.goal,
     this.dietaryRestrictions,
     this.personalizedMeal,
-    this.isLoading = false,
     this.errorMessage,
   });
 
@@ -138,7 +158,6 @@ class SanjiCookingPersonalizedMealLoaded extends SanjiCookingState {
         goal,
         dietaryRestrictions,
         personalizedMeal,
-        isLoading,
         errorMessage,
       ];
 
@@ -149,7 +168,6 @@ class SanjiCookingPersonalizedMealLoaded extends SanjiCookingState {
     String? goal,
     String? dietaryRestrictions,
     String? personalizedMeal,
-    bool? isLoading,
     String? errorMessage,
   }) {
     return SanjiCookingPersonalizedMealLoaded(
@@ -159,7 +177,6 @@ class SanjiCookingPersonalizedMealLoaded extends SanjiCookingState {
       goal: goal ?? this.goal,
       dietaryRestrictions: dietaryRestrictions ?? this.dietaryRestrictions,
       personalizedMeal: personalizedMeal ?? this.personalizedMeal,
-      isLoading: isLoading ?? this.isLoading,
       errorMessage: errorMessage ?? this.errorMessage,
     );
   }

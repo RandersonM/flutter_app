@@ -46,27 +46,23 @@ class FunctionRegistry {
   }
 
   /// Builds the function declarations block injected into the system prompt.
-  /// Format:
   ///
-  /// ```
-  /// AVAILABLE FUNCTIONS:
-  ///
-  /// Function: searchInternet
-  /// Description: ...
-  /// Parameters:
-  ///   query (string): The search query.
-  /// ```
-  String get systemPromptDeclarations {
+  /// Pass [isPortuguese] to use the handlers' PT descriptions when available.
+  String systemPromptDeclarations({bool isPortuguese = false}) {
     if (_handlers.isEmpty) return '';
 
     final buffer = StringBuffer('AVAILABLE FUNCTIONS:\n');
     for (final handler in _handlers.values) {
+      final desc = isPortuguese ? handler.descriptionPt : handler.description;
+      final params = isPortuguese
+          ? handler.parameterDescriptionsPt
+          : handler.parameterDescriptions;
       buffer.writeln();
       buffer.writeln('Function: ${handler.name}');
-      buffer.writeln('Description: ${handler.description}');
-      if (handler.parameterDescriptions.isNotEmpty) {
+      buffer.writeln('Description: $desc');
+      if (params.isNotEmpty) {
         buffer.writeln('Parameters:');
-        for (final entry in handler.parameterDescriptions.entries) {
+        for (final entry in params.entries) {
           buffer.writeln('  ${entry.key}: ${entry.value}');
         }
       }

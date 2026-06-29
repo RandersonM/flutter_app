@@ -31,8 +31,17 @@ class GetCharacterInfoHandler implements ToolHandler {
       'MUST be called EVERY TIME the user asks for information about a specific One Piece character or a custom character. EVEN IF YOU ALREADY KNOW THE CHARACTER (e.g. Kaidou, Luffy), you MUST call this function to retrieve the character\'s stats, devil fruit, haki, and other data from the database. Do NOT answer from your own knowledge without calling this tool first.';
 
   @override
+  String get descriptionPt =>
+      'DEVE ser chamada SEMPRE que o usuário pedir informações sobre um personagem específico de One Piece ou um personagem customizado. MESMO QUE VOCÊ JÁ CONHEÇA O PERSONAGEM (ex: Kaidou, Luffy), você DEVE chamar esta função para recuperar os atributos, fruta do diabo, haki e outros dados do banco. NÃO responda com seu próprio conhecimento sem chamar esta ferramenta primeiro.';
+
+  @override
   Map<String, String> get parameterDescriptions => {
         'characterName': 'The name of the character to search for (e.g., "Luffy", "Zoro").',
+      };
+
+  @override
+  Map<String, String> get parameterDescriptionsPt => {
+        'characterName': 'O nome do personagem a ser buscado (ex: "Luffy", "Zoro").',
       };
 
   @override

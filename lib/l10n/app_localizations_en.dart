@@ -1610,11 +1610,11 @@ class AppLocalizationsEn extends AppLocalizations {
   String get waistToHeight => 'Waist/Height';
 
   @override
-  String get sanjiTipTitle => 'Receita Personalizada';
+  String get sanjiTipTitle => 'Personalized Recipe';
 
   @override
   String get sanjiTipText =>
-      'Clique para receber uma receita personalizada baseada nos seus dados nutricionais!';
+      'Click to receive a personalized recipe based on your nutritional data!';
 
   @override
   String get plateGuideQuestion => 'How to build a healthy plate?';
@@ -1632,7 +1632,7 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
-  String get financeWithNami => 'Economize com a Nami';
+  String get financeWithNami => 'Save with Nami';
 
   @override
   String get cookingWithSanji => 'Cooking with Sanji';

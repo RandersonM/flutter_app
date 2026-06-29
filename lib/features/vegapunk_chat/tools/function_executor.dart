@@ -15,13 +15,7 @@ import 'models/tool_call.dart';
 /// extracts it, leaving the surrounding text intact (or empty if the
 /// entire output is the function call).
 class FunctionExecutor {
-  // Matches the function call JSON block, optionally wrapped in a code fence.
-  // Handles both raw JSON and ```json ... ``` fences.
-  static final _jsonPattern = RegExp(
-    r'\{[^{}]*"name"\s*:\s*"([^"]+)"[^{}]*"arguments"\s*:\s*\{[^{}]*\}[^{}]*\}',
-    dotAll: true,
-  );
-
+  // Matches JSON wrapped in a ```json ... ``` code fence, used by stripFunctionCall.
   static final _codeFencePattern = RegExp(
     r'```(?:json)?\s*(\{[\s\S]*?\})\s*```',
   );
@@ -69,9 +63,29 @@ class FunctionExecutor {
   /// Returns the [text] with the function call JSON block stripped out,
   /// suitable for display or further injection.
   String stripFunctionCall(String text) {
-    var result = _codeFencePattern.hasMatch(text)
-        ? text.replaceAll(_codeFencePattern, '')
-        : text.replaceAll(_jsonPattern, '');
-    return result.trim();
+    if (_codeFencePattern.hasMatch(text)) {
+      return text.replaceAll(_codeFencePattern, '').trim();
+    }
+    // Strip raw JSON tool call via brace-matching (same logic as tryParse).
+    final call = tryParse(text);
+    if (call == null) return text.trim();
+    int startIndex = text.indexOf('{');
+    while (startIndex != -1) {
+      int openCount = 0;
+      for (int i = startIndex; i < text.length; i++) {
+        if (text[i] == '{') openCount++;
+        if (text[i] == '}') {
+          openCount--;
+          if (openCount == 0) {
+            final candidate = text.substring(startIndex, i + 1);
+            if (_parseJson(candidate) != null) {
+              return (text.substring(0, startIndex) + text.substring(i + 1)).trim();
+            }
+          }
+        }
+      }
+      startIndex = text.indexOf('{', startIndex + 1);
+    }
+    return text.trim();
   }
 }

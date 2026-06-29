@@ -137,10 +137,13 @@ class VegapunkChatRepository implements IVegapunkChatRepository {
       // Yield end-of-search sentinel before streaming final response.
       yield _searchingDoneSentinel;
 
+      // Inject search results directly into the user message so the model
+      // sees [SEARCH RESULTS] as a standalone block — not wrapped inside
+      // [INTERNAL REFERENCE], which would trigger the "never repeat" rule.
       await for (final finalToken in _gemma.sendMessage(
-        text,
+        '$toolContext\n\n$text',
         styleInstruction: styleInstruction,
-        ragContext: [if (ragContext != null) ...ragContext, toolContext],
+        ragContext: ragContext,
       )) {
         yield finalToken;
       }

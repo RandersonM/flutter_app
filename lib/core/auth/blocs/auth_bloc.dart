@@ -72,7 +72,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       );
     } catch (e) {
       debugPrint('AuthBloc: Error initializing authentication - $e');
-      emit(AuthError(message: 'Error checking authentication: $e'));
+      emit(const AuthError(message: 'Authentication failed. Please try again.'));
     }
   }
 
@@ -93,7 +93,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       }
     } catch (e) {
       debugPrint('AuthBloc: Error in sign in - $e');
-      emit(AuthError(message: 'Sign in error: $e'));
+      emit(const AuthError(message: 'Sign in failed. Please try again.'));
     }
   }
 
@@ -109,7 +109,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       emit(const AuthUnauthenticated());
     } catch (e) {
       debugPrint('AuthBloc: Error in sign out - $e');
-      emit(AuthError(message: 'Sign out error: $e'));
+      emit(const AuthError(message: 'Sign out failed. Please try again.'));
     }
   }
 
@@ -148,7 +148,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       }
     } catch (e) {
       debugPrint('AuthBloc: Error updating profile - $e');
-      emit(AuthError(message: 'Profile update error: $e'));
+      emit(const AuthError(message: 'Profile update failed. Please try again.'));
     }
   }
 
@@ -165,7 +165,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       emit(AuthAuthenticated(user: event.updatedUser));
     } catch (e) {
       debugPrint('AuthBloc: Error updating body profile - $e');
-      emit(AuthError(message: 'Body profile update error: $e'));
+      emit(const AuthError(message: 'Profile update failed. Please try again.'));
     }
   }
 
@@ -182,7 +182,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       emit(const AuthUnauthenticated());
     } catch (e) {
       debugPrint('AuthBloc: Error deleting account - $e');
-      emit(AuthError(message: 'Account deletion error: $e'));
+      emit(const AuthError(message: 'Account deletion failed. Please try again.'));
     }
   }
 
@@ -212,7 +212,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       }
     } catch (e) {
       debugPrint('AuthBloc: Error checking status - $e');
-      emit(AuthError(message: 'Status check error: $e'));
+      emit(const AuthError(message: 'Authentication failed. Please try again.'));
     }
   }
 
@@ -225,7 +225,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       emit(const AuthUnauthenticated());
     } catch (e) {
       debugPrint('AuthBloc: Error clearing cache - $e');
-      emit(AuthError(message: 'Cache clear error: $e'));
+      emit(const AuthError(message: 'Session error. Please sign in again.'));
     }
   }
 

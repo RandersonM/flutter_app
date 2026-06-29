@@ -3014,13 +3014,13 @@
     "type": "text",
     "placeholders": {}
   },
-  "sanjiTipTitle": "Receita Personalizada",
+  "sanjiTipTitle": "Personalized Recipe",
   "@sanjiTipTitle": {
     "description": "Title for Sanji's tip section.",
     "type": "text",
     "placeholders": {}
   },
-  "sanjiTipText": "Clique para receber uma receita personalizada baseada nos seus dados nutricionais!",
+  "sanjiTipText": "Click to receive a personalized recipe based on your nutritional data!",
   "@sanjiTipText": {
     "description": "Text for Sanji's tip.",
     "type": "text",
@@ -3055,7 +3055,7 @@
       }
     }
   },
-  "financeWithNami": "Economize com a Nami",
+  "financeWithNami": "Save with Nami",
   "@financeWithNami": {
     "description": "Título da tela de finanças com a Nami.",
     "type": "text",

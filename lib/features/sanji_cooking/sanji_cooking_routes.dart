@@ -14,7 +14,7 @@ class SanjiCookingRoutes implements FeatureRouteModule {
   List<String> get routes => [cooking, cookingTips, plateGuide];
 
   @override
-  Set<String> get privateRoutes => {};
+  Set<String> get privateRoutes => {cooking, cookingTips, plateGuide};
 
   @override
   Route<dynamic>? getRoute(RouteSettings settings) {

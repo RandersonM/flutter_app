@@ -7,7 +7,7 @@ import 'zoro_workout_event.dart';
 import 'zoro_workout_state.dart';
 
 class ZoroWorkoutBloc extends Bloc<ZoroWorkoutEvent, ZoroWorkoutState> {
-  final IWorkoutAssessmentService _service = WorkoutAssessmentService();
+  final IWorkoutAssessmentService _service = getIt<IWorkoutAssessmentService>();
 
   ZoroWorkoutBloc() : super(const ZoroWorkoutInitial()) {
     on<InitializeWorkoutAssessment>(_onInitializeWorkoutAssessment);

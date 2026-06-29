@@ -41,10 +41,12 @@ class WorkoutPlanResolver {
     final today = DateTime.now().day;
     final now = DateTime.now();
 
-    // Only applies to current month
-    final isCurrentMonth = assessment.createdAt.month == now.month &&
-        assessment.createdAt.year == now.year;
-    if (!isCurrentMonth) return false;
+    // Use the canonical monthYear field (e.g. "2025-06") instead of createdAt
+    // so carry-over assessments from the last day of a month are still
+    // recognised as belonging to the month they were created for.
+    final expectedMonthYear =
+        '${now.year}-${now.month.toString().padLeft(2, '0')}';
+    if (assessment.monthYear != expectedMonthYear) return false;
 
     return assessment.workoutDays?.contains(today) ?? false;
   }

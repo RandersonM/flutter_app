@@ -52,7 +52,6 @@ dependencies:
   markdown_widget: ^2.3.2+8
   phosphoricons_flutter: ^1.0.0
   flutter_gemma: ^1.1.1
-  flutter_gemma_mediapipe: ^1.0.2
   flutter_gemma_litertlm: ^1.0.2
   flutter_gemma_embeddings: ^1.0.1
   flutter_gemma_rag_sqlite: ^1.1.0

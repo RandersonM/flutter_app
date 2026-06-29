@@ -1,9 +1,5 @@
 PODS:
   - Flutter (1.0.0)
-  - flutter_gemma_mediapipe (0.1.0):
-    - Flutter
-    - MediaPipeTasksGenAI (= 0.10.33)
-    - MediaPipeTasksGenAIC (= 0.10.33)
   - flutter_inappwebview_ios (0.0.1):
     - Flutter
     - flutter_inappwebview_ios/Core (= 0.0.1)
@@ -11,36 +7,25 @@ PODS:
   - flutter_inappwebview_ios/Core (0.0.1):
     - Flutter
     - OrderedSet (~> 6.0.3)
-  - MediaPipeTasksGenAI (0.10.33):
-    - MediaPipeTasksGenAIC (= 0.10.33)
-  - MediaPipeTasksGenAIC (0.10.33)
   - OrderedSet (6.0.3)
 
 DEPENDENCIES:
   - Flutter (from `Flutter`)
-  - flutter_gemma_mediapipe (from `.symlinks/plugins/flutter_gemma_mediapipe/ios`)
   - flutter_inappwebview_ios (from `.symlinks/plugins/flutter_inappwebview_ios/ios`)
 
 SPEC REPOS:
   trunk:
-    - MediaPipeTasksGenAI
-    - MediaPipeTasksGenAIC
     - OrderedSet
 
 EXTERNAL SOURCES:
   Flutter:
     :path: Flutter
-  flutter_gemma_mediapipe:
-    :path: ".symlinks/plugins/flutter_gemma_mediapipe/ios"
   flutter_inappwebview_ios:
     :path: ".symlinks/plugins/flutter_inappwebview_ios/ios"
 
 SPEC CHECKSUMS:
   Flutter: cabc95a1d2626b1b06e7179b784ebcf0c0cde467
-  flutter_gemma_mediapipe: 4b7c676ab06a0ba2888e926885f451aec10847b2
   flutter_inappwebview_ios: b89ba3482b96fb25e00c967aae065701b66e9b99
-  MediaPipeTasksGenAI: 8eed8e6d03fe26d30c4205cb5295ec7b394432ad
-  MediaPipeTasksGenAIC: cb098ecea44e248efe8fe7e2f62b4cb0df781802
   OrderedSet: e539b66b644ff081c73a262d24ad552a69be3a94
 
 PODFILE CHECKSUM: 767514762bc74eccba3274aa6742455611e45d3a

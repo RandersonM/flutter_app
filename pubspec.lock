@@ -494,14 +494,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.0.2"
-  flutter_gemma_mediapipe:
-    dependency: "direct main"
-    description:
-      name: flutter_gemma_mediapipe
-      sha256: "013dcd69f9d25d090712f385af8e1f8bf24c991388f127a5b44ab9aacfbd8df5"
-      url: "https://pub.dev"
-    source: hosted
-    version: "1.0.2"
   flutter_gemma_rag_sqlite:
     dependency: "direct main"
     description:

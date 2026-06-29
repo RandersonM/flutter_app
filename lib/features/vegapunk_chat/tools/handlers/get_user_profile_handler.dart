@@ -25,7 +25,14 @@ class GetUserProfileHandler implements ToolHandler {
       'MUST be called EVERY TIME the user asks for or references their personal information, profile data, or physical attributes. This includes retrieving their name, weight, height, age, gender, fitness goal, activity level, workout days, or any other data saved in their profile. Use this tool to get accurate user context before answering questions about their specific goals or stats.';
 
   @override
+  String get descriptionPt =>
+      'DEVE ser chamada SEMPRE que o usuário pedir ou fizer referência às suas informações pessoais, dados de perfil ou atributos físicos. Inclui nome, peso, altura, idade, gênero, objetivo fitness, nível de atividade, dias de treino ou quaisquer outros dados do perfil. Use para obter contexto preciso do usuário antes de responder sobre objetivos ou estatísticas específicas.';
+
+  @override
   Map<String, String> get parameterDescriptions => {};
+
+  @override
+  Map<String, String> get parameterDescriptionsPt => {};
 
   @override
   Future<ToolResult> execute(ToolCall call) async {

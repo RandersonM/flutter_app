@@ -6,6 +6,12 @@ import 'package:opfan/features/sanji_cooking/data/repository/cooking_repository_
 class CookingRepository implements ICookingRepository {
   final IGeminiService _geminiService = getIt<IGeminiService>();
 
+  /// Removes control characters and caps length to prevent prompt injection.
+  static String _sanitize(String input, {int maxLength = 200}) {
+    final clean = input.replaceAll(RegExp(r'[\x00-\x1F\x7F]'), ' ').trim();
+    return clean.length > maxLength ? clean.substring(0, maxLength) : clean;
+  }
+
   String get _currentLanguage {
     final locale = GetIt.I.get<ILocaleService>().locale;
     return locale?.languageCode ?? 'en';
@@ -25,11 +31,14 @@ class CookingRepository implements ICookingRepository {
     String? cookingMethod,
     String? difficulty,
   }) async {
+    final safeIngredient = _sanitize(ingredient);
+    final safeCookingMethod = cookingMethod != null ? _sanitize(cookingMethod) : null;
+    final safeDifficulty = difficulty != null ? _sanitize(difficulty) : null;
     final prompt = _isPortuguese
         ? '''
-Gere dicas úteis de culinária para $ingredient.
-${cookingMethod != null ? 'Método de cozimento: $cookingMethod' : ''}
-${difficulty != null ? 'Nível de dificuldade: $difficulty' : ''}
+Gere dicas úteis de culinária para $safeIngredient.
+${safeCookingMethod != null ? 'Método de cozimento: $safeCookingMethod' : ''}
+${safeDifficulty != null ? 'Nível de dificuldade: $safeDifficulty' : ''}
 
 Por favor, forneça:
 1. Dicas de preparação
@@ -38,9 +47,9 @@ Por favor, forneça:
 4. Sugestões de servir
 '''
         : '''
-Generate helpful cooking tips for $ingredient.
-${cookingMethod != null ? 'Cooking method: $cookingMethod' : ''}
-${difficulty != null ? 'Difficulty level: $difficulty' : ''}
+Generate helpful cooking tips for $safeIngredient.
+${safeCookingMethod != null ? 'Cooking method: $safeCookingMethod' : ''}
+${safeDifficulty != null ? 'Difficulty level: $safeDifficulty' : ''}
 
 Please provide:
 1. Preparation tips
@@ -71,7 +80,7 @@ Please provide:
     String? mealType,
     int? servings,
   }) async {
-    final ingredientsList = ingredients.join(', ');
+    final ingredientsList = ingredients.map((i) => _sanitize(i)).join(', ');
 
     final prompt = _isPortuguese
         ? '''
@@ -123,11 +132,12 @@ Please provide:
     String? portion,
     String? cookingMethod,
   }) async {
+    final safeFoodItem = _sanitize(foodItem);
     final prompt = _isPortuguese
         ? '''
-Forneça informações nutricionais para $foodItem.
-${portion != null ? 'Tamanho da porção: $portion' : ''}
-${cookingMethod != null ? 'Método de cozimento: $cookingMethod' : ''}
+Forneça informações nutricionais para $safeFoodItem.
+${portion != null ? 'Tamanho da porção: ${_sanitize(portion)}' : ''}
+${cookingMethod != null ? 'Método de cozimento: ${_sanitize(cookingMethod)}' : ''}
 
 Por favor, inclua:
 1. Calorias por porção
@@ -137,9 +147,9 @@ Por favor, inclua:
 5. Considerações dietéticas
 '''
         : '''
-Provide nutritional information for $foodItem.
-${portion != null ? 'Portion size: $portion' : ''}
-${cookingMethod != null ? 'Cooking method: $cookingMethod' : ''}
+Provide nutritional information for $safeFoodItem.
+${portion != null ? 'Portion size: ${_sanitize(portion)}' : ''}
+${cookingMethod != null ? 'Cooking method: ${_sanitize(cookingMethod)}' : ''}
 
 Please include:
 1. Calories per serving
@@ -170,11 +180,12 @@ Please include:
     String? ingredient,
     String? difficulty,
   }) async {
+    final safeTechnique = _sanitize(technique);
     final prompt = _isPortuguese
         ? '''
-Explique a técnica de cozimento: $technique
-${ingredient != null ? 'Para ingrediente: $ingredient' : ''}
-${difficulty != null ? 'Nível de dificuldade: $difficulty' : ''}
+Explique a técnica de cozimento: $safeTechnique
+${ingredient != null ? 'Para ingrediente: ${_sanitize(ingredient)}' : ''}
+${difficulty != null ? 'Nível de dificuldade: ${_sanitize(difficulty)}' : ''}
 
 Por favor, forneça:
 1. O que esta técnica envolve
@@ -184,9 +195,9 @@ Por favor, forneça:
 5. Quando usar esta técnica
 '''
         : '''
-Explain the cooking technique: $technique
-${ingredient != null ? 'For ingredient: $ingredient' : ''}
-${difficulty != null ? 'Difficulty level: $difficulty' : ''}
+Explain the cooking technique: $safeTechnique
+${ingredient != null ? 'For ingredient: ${_sanitize(ingredient)}' : ''}
+${difficulty != null ? 'Difficulty level: ${_sanitize(difficulty)}' : ''}
 
 Please provide:
 1. What this technique involves
@@ -221,9 +232,9 @@ Please provide:
     final prompt = _isPortuguese
         ? '''
 Crie um plano de refeições de $days dias.
-${dietaryRestrictions != null ? 'Restrições dietéticas: $dietaryRestrictions' : ''}
-${budget != null ? 'Orçamento: $budget' : ''}
-${timeAvailable != null ? 'Tempo disponível: $timeAvailable' : ''}
+${dietaryRestrictions != null ? 'Restrições dietéticas: ${_sanitize(dietaryRestrictions)}' : ''}
+${budget != null ? 'Orçamento: ${_sanitize(budget)}' : ''}
+${timeAvailable != null ? 'Tempo disponível: ${_sanitize(timeAvailable)}' : ''}
 
 Por favor, forneça:
 1. Sugestões de refeições diárias
@@ -234,9 +245,9 @@ Por favor, forneça:
 '''
         : '''
 Create a $days-day meal plan.
-${dietaryRestrictions != null ? 'Dietary restrictions: $dietaryRestrictions' : ''}
-${budget != null ? 'Budget: $budget' : ''}
-${timeAvailable != null ? 'Time available: $timeAvailable' : ''}
+${dietaryRestrictions != null ? 'Dietary restrictions: ${_sanitize(dietaryRestrictions)}' : ''}
+${budget != null ? 'Budget: ${_sanitize(budget)}' : ''}
+${timeAvailable != null ? 'Time available: ${_sanitize(timeAvailable)}' : ''}
 
 Please provide:
 1. Daily meal suggestions
@@ -268,11 +279,12 @@ Please provide:
     String? cuisine,
     String? occasion,
   }) async {
+    final safeMain = _sanitize(mainIngredient);
     final prompt = _isPortuguese
         ? '''
-Sugira combinações de alimentos para $mainIngredient.
-${cuisine != null ? 'Culinária: $cuisine' : ''}
-${occasion != null ? 'Ocasião: $occasion' : ''}
+Sugira combinações de alimentos para $safeMain.
+${cuisine != null ? 'Culinária: ${_sanitize(cuisine)}' : ''}
+${occasion != null ? 'Ocasião: ${_sanitize(occasion)}' : ''}
 
 Por favor, forneça:
 1. Ingredientes complementares
@@ -282,9 +294,9 @@ Por favor, forneça:
 5. Ideias de apresentação
 '''
         : '''
-Suggest food pairings for $mainIngredient.
-${cuisine != null ? 'Cuisine: $cuisine' : ''}
-${occasion != null ? 'Occasion: $occasion' : ''}
+Suggest food pairings for $safeMain.
+${cuisine != null ? 'Cuisine: ${_sanitize(cuisine)}' : ''}
+${occasion != null ? 'Occasion: ${_sanitize(occasion)}' : ''}
 
 Please provide:
 1. Complementary ingredients
@@ -315,11 +327,12 @@ Please provide:
     String? dish,
     String? cookingMethod,
   }) async {
+    final safeProblem = _sanitize(problem);
     final prompt = _isPortuguese
         ? '''
-Ajude a resolver este problema de culinária: $problem
-${dish != null ? 'Prato: $dish' : ''}
-${cookingMethod != null ? 'Método de cozimento: $cookingMethod' : ''}
+Ajude a resolver este problema de culinária: $safeProblem
+${dish != null ? 'Prato: ${_sanitize(dish)}' : ''}
+${cookingMethod != null ? 'Método de cozimento: ${_sanitize(cookingMethod)}' : ''}
 
 Por favor, forneça:
 1. Possíveis causas
@@ -329,9 +342,9 @@ Por favor, forneça:
 5. Quando recomeçar
 '''
         : '''
-Help solve this cooking problem: $problem
-${dish != null ? 'Dish: $dish' : ''}
-${cookingMethod != null ? 'Cooking method: $cookingMethod' : ''}
+Help solve this cooking problem: $safeProblem
+${dish != null ? 'Dish: ${_sanitize(dish)}' : ''}
+${cookingMethod != null ? 'Cooking method: ${_sanitize(cookingMethod)}' : ''}
 
 Please provide:
 1. Possible causes
@@ -364,7 +377,7 @@ Please provide:
     required String goal,
     String? dietaryRestrictions,
   }) async {
-    final ingredientsText = ingredients.join(', ');
+    final ingredientsText = ingredients.map((i) => _sanitize(i)).join(', ');
     final goalText = _getLocalizedGoal(goal);
 
     final prompt = _isPortuguese

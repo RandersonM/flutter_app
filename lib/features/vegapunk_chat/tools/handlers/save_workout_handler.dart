@@ -25,7 +25,14 @@ class SaveWorkoutHandler implements ToolHandler {
       'Save a workout session for the user for today. Use this when the user says they have completed a workout.';
 
   @override
+  String get descriptionPt =>
+      'Salva uma sessão de treino para o usuário para hoje. Use quando o usuário disser que completou um treino.';
+
+  @override
   Map<String, String> get parameterDescriptions => {};
+
+  @override
+  Map<String, String> get parameterDescriptionsPt => {};
 
   @override
   Future<ToolResult> execute(ToolCall call) async {

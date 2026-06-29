@@ -3029,13 +3029,13 @@ abstract class AppLocalizations {
   /// Title for Sanji's tip section.
   ///
   /// In en, this message translates to:
-  /// **'Receita Personalizada'**
+  /// **'Personalized Recipe'**
   String get sanjiTipTitle;
 
   /// Text for Sanji's tip.
   ///
   /// In en, this message translates to:
-  /// **'Clique para receber uma receita personalizada baseada nos seus dados nutricionais!'**
+  /// **'Click to receive a personalized recipe based on your nutritional data!'**
   String get sanjiTipText;
 
   /// Question for plate guide section.
@@ -3065,7 +3065,7 @@ abstract class AppLocalizations {
   /// Título da tela de finanças com a Nami.
   ///
   /// In en, this message translates to:
-  /// **'Economize com a Nami'**
+  /// **'Save with Nami'**
   String get financeWithNami;
 
   /// Title for Sanji cooking screen.
