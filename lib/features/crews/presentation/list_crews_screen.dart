@@ -1,7 +1,5 @@
 import 'package:opfan/shared/widgets/atoms/app_icon.dart';
 import 'package:phosphoricons_flutter/phosphoricons_flutter.dart';
-// Developed by Randerson Mayllon
-// Copyright © 2022.
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -150,8 +148,11 @@ class _ListCrewsScreenContentState extends State<_ListCrewsScreenContent>
   }
 
   Future<void> _onCrewTap(BuildContext context, CrewModel crew) async {
-    final result = await Navigator.pushNamed(context, AppRoutes.crewDetails,
-        arguments: crew);
+    final result = await Navigator.pushNamed(
+      context,
+      AppRoutes.crewDetails,
+      arguments: crew,
+    );
 
     if (result != null &&
         result is Map<String, dynamic> &&
@@ -173,8 +174,9 @@ class _ListCrewsScreenContentState extends State<_ListCrewsScreenContent>
 
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
-        content:
-            Text(AppLocalizations.of(context)!.crewDeletedMessage(crew.name)),
+        content: Text(
+          AppLocalizations.of(context)!.crewDeletedMessage(crew.name),
+        ),
         backgroundColor: Colors.red,
         duration: const Duration(seconds: 2),
       ),
