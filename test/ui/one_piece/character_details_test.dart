@@ -8,7 +8,6 @@ import 'package:opfan/features/custom_character/data/models/custom_character_mod
 
 
 import 'package:opfan/features/one_piece/presentation/widgets/details/character_details_screen.dart';
-import 'package:opfan/shared/widgets/molecules/default_app_bar.dart';
 
 import '../../testable_widget.dart';
 
@@ -30,7 +29,7 @@ void main() {
       await tester.pumpWidget(getTestableWidget(charactersDetails));
       await tester.pump();
       expect(find.byType(Card), findsAtLeastNWidgets(1));
-      expect(find.byType(DefaultAppBar), findsOneWidget);
+      expect(find.byType(SliverAppBar), findsOneWidget);
     });
 
     testWidgets('Assert fields are filled', (WidgetTester tester) async {

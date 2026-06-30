@@ -16,7 +16,7 @@ class OnePieceKnowledgeBase {
     }
     final mappedCategories = categories.map((c) {
       final norm = c.toLowerCase().trim().replaceAll('docs', '').replaceAll('doc', '');
-      if (norm == 'character') return 'character';
+      if (norm == 'character' || norm == 'characters') return 'character';
       if (norm == 'vegapunk') return 'vegapunk';
       if (norm == 'devilfruit' || norm == 'devil_fruit') return 'devil_fruit';
       if (norm == 'arc') return 'arc';
