@@ -3,7 +3,7 @@ description: One Piece Fan App - Explore the world of One Piece characters and D
 
 publish_to: 'none' 
 
-version: 1.0.1
+version: 2.0.0
 
 environment:
   sdk: ">=3.12.0 <4.0.0"
