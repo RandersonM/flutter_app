@@ -45,6 +45,15 @@ class AuthUpdateProfile extends AuthEvent {
   List<Object?> get props => [displayName, photoUrl];
 }
 
+class AuthProfileBodyUpdated extends AuthEvent {
+  final UserModel updatedUser;
+
+  const AuthProfileBodyUpdated({required this.updatedUser});
+
+  @override
+  List<Object?> get props => [updatedUser];
+}
+
 class AuthDeleteAccount extends AuthEvent {
   const AuthDeleteAccount();
 }

@@ -63,7 +63,7 @@ import 'app_localizations_pt.dart';
 /// property.
 abstract class AppLocalizations {
   AppLocalizations(String locale)
-      : localeName = intl.Intl.canonicalizedLocale(locale.toString());
+    : localeName = intl.Intl.canonicalizedLocale(locale.toString());
 
   final String localeName;
 
@@ -86,16 +86,16 @@ abstract class AppLocalizations {
   /// of delegates is preferred or required.
   static const List<LocalizationsDelegate<dynamic>> localizationsDelegates =
       <LocalizationsDelegate<dynamic>>[
-    delegate,
-    GlobalMaterialLocalizations.delegate,
-    GlobalCupertinoLocalizations.delegate,
-    GlobalWidgetsLocalizations.delegate,
-  ];
+        delegate,
+        GlobalMaterialLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+      ];
 
   /// A list of this localizations delegate's supported locales.
   static const List<Locale> supportedLocales = <Locale>[
     Locale('en'),
-    Locale('pt')
+    Locale('pt'),
   ];
 
   /// Text show at bounty section on character detail screen with pluralization
@@ -203,7 +203,7 @@ abstract class AppLocalizations {
   /// Title for expenses breakdown section
   ///
   /// In en, this message translates to:
-  /// **'Expenses by Category'**
+  /// **'Expenses by category'**
   String get expensesByCategory;
 
   /// Title for financial history chart
@@ -1994,7 +1994,7 @@ abstract class AppLocalizations {
   /// **'Crew Pirate Flag'**
   String get pirateFlagTitle;
 
-  /// Label for AI prompt field.
+  /// Label for AI prompt input
   ///
   /// In en, this message translates to:
   /// **'AI Prompt'**
@@ -2090,7 +2090,7 @@ abstract class AppLocalizations {
   /// **'Enter your monthly income'**
   String get monthlyIncomeHint;
 
-  /// Section title for expenses in finances screen.
+  /// Title for expenses
   ///
   /// In en, this message translates to:
   /// **'Expenses'**
@@ -2231,13 +2231,13 @@ abstract class AppLocalizations {
   /// Label for savings percentage of income.
   ///
   /// In en, this message translates to:
-  /// **'of Income'**
+  /// **'Savings Percentage'**
   String get savingsPercentage;
 
   /// Label for accumulated value in one year.
   ///
   /// In en, this message translates to:
-  /// **'Accumulated in 1 Year'**
+  /// **'Yearly Savings'**
   String get yearlySavings;
 
   /// Title for total accumulated savings.
@@ -3029,13 +3029,13 @@ abstract class AppLocalizations {
   /// Title for Sanji's tip section.
   ///
   /// In en, this message translates to:
-  /// **'Sanji\'s Tip'**
+  /// **'Personalized Recipe'**
   String get sanjiTipTitle;
 
   /// Text for Sanji's tip.
   ///
   /// In en, this message translates to:
-  /// **'Consult a nutritionist for a personalized meal plan based on these calculations!'**
+  /// **'Click to receive a personalized recipe based on your nutritional data!'**
   String get sanjiTipText;
 
   /// Question for plate guide section.
@@ -3065,7 +3065,7 @@ abstract class AppLocalizations {
   /// Título da tela de finanças com a Nami.
   ///
   /// In en, this message translates to:
-  /// **'Economize com a Nami'**
+  /// **'Save with Nami'**
   String get financeWithNami;
 
   /// Title for Sanji cooking screen.
@@ -3338,10 +3338,10 @@ abstract class AppLocalizations {
   /// **'Timeline of Objectives'**
   String get timelineOfObjectives;
 
-  /// Button text to see all objectives
+  /// See all button text
   ///
   /// In en, this message translates to:
-  /// **'See All'**
+  /// **'See all'**
   String get seeAll;
 
   /// Message when no objectives are created
@@ -3547,6 +3547,1404 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Enter additional notes'**
   String get enterAdditionalNotes;
+
+  /// Validation message for biological sex
+  ///
+  /// In en, this message translates to:
+  /// **'Please select your biological sex.'**
+  String get onboardingBiologicalSex;
+
+  /// Validation message for required fields
+  ///
+  /// In en, this message translates to:
+  /// **'Please fill in all required fields.'**
+  String get onboardingFillAllFields;
+
+  /// Biological sex male
+  ///
+  /// In en, this message translates to:
+  /// **'Male'**
+  String get male;
+
+  /// Biological sex female
+  ///
+  /// In en, this message translates to:
+  /// **'Female'**
+  String get female;
+
+  /// Title for recommendations
+  ///
+  /// In en, this message translates to:
+  /// **'Recommendations'**
+  String get recommendations;
+
+  /// Edit plan button text
+  ///
+  /// In en, this message translates to:
+  /// **'Edit Plan'**
+  String get editPlan;
+
+  /// Success message for workout plan
+  ///
+  /// In en, this message translates to:
+  /// **'Workout plan saved successfully!'**
+  String get workoutPlanSaved;
+
+  /// Add split button text
+  ///
+  /// In en, this message translates to:
+  /// **'Add Split'**
+  String get addSplit;
+
+  /// Hint for split name
+  ///
+  /// In en, this message translates to:
+  /// **'Split name (e.g., Workout A)'**
+  String get splitNameHint;
+
+  /// Hint for exercise
+  ///
+  /// In en, this message translates to:
+  /// **'Exercise'**
+  String get exerciseHint;
+
+  /// Hint for sets and reps
+  ///
+  /// In en, this message translates to:
+  /// **'3x15'**
+  String get setsRepsHint;
+
+  /// Error message for no assessment
+  ///
+  /// In en, this message translates to:
+  /// **'No assessment found for the current month'**
+  String get noAssessmentFound;
+
+  /// Generic add button text
+  ///
+  /// In en, this message translates to:
+  /// **'Add'**
+  String get addAction;
+
+  /// Label to select race
+  ///
+  /// In en, this message translates to:
+  /// **'Select Race'**
+  String get selectRace;
+
+  /// Label for style name
+  ///
+  /// In en, this message translates to:
+  /// **'Style Name'**
+  String get styleName;
+
+  /// Label for fighting type
+  ///
+  /// In en, this message translates to:
+  /// **'Fighting Type'**
+  String get fightingType;
+
+  /// Add weapon button text
+  ///
+  /// In en, this message translates to:
+  /// **'Add Weapon'**
+  String get addWeapon;
+
+  /// Add attack button text
+  ///
+  /// In en, this message translates to:
+  /// **'Add Attack'**
+  String get addAttack;
+
+  /// Hint for fighting style
+  ///
+  /// In en, this message translates to:
+  /// **'e.g.: Three Swords Style'**
+  String get threeSwordsStyleHint;
+
+  /// English language name
+  ///
+  /// In en, this message translates to:
+  /// **'English'**
+  String get englishLang;
+
+  /// Portuguese language name
+  ///
+  /// In en, this message translates to:
+  /// **'Português'**
+  String get portugueseLang;
+
+  /// Body composition title
+  ///
+  /// In en, this message translates to:
+  /// **'Body Composition'**
+  String get bodyComposition;
+
+  /// Body data title
+  ///
+  /// In en, this message translates to:
+  /// **'Body Data'**
+  String get bodyData;
+
+  /// Create first goal button text
+  ///
+  /// In en, this message translates to:
+  /// **'Create First Goal'**
+  String get createFirstGoal;
+
+  /// Cancel button text
+  ///
+  /// In en, this message translates to:
+  /// **'Cancel'**
+  String get cancelAction;
+
+  /// Save button text
+  ///
+  /// In en, this message translates to:
+  /// **'Save'**
+  String get saveAction;
+
+  /// Clear button text
+  ///
+  /// In en, this message translates to:
+  /// **'Clear'**
+  String get clearAction;
+
+  /// Update body composition button text
+  ///
+  /// In en, this message translates to:
+  /// **'Update Body Composition'**
+  String get updateBodyComposition;
+
+  /// Try again button text
+  ///
+  /// In en, this message translates to:
+  /// **'Try again'**
+  String get tryAgainAction;
+
+  /// Hint for food ingredients
+  ///
+  /// In en, this message translates to:
+  /// **'e.g.: chicken, rice, onion...'**
+  String get foodExampleHint;
+
+  /// Label for meal type
+  ///
+  /// In en, this message translates to:
+  /// **'Meal Type'**
+  String get mealType;
+
+  /// Label for dietary restrictions
+  ///
+  /// In en, this message translates to:
+  /// **'Dietary Restrictions'**
+  String get dietaryRestrictions;
+
+  /// Empty state for incomes
+  ///
+  /// In en, this message translates to:
+  /// **'No income registered'**
+  String get noIncomeRegistered;
+
+  /// Setup finances button text
+  ///
+  /// In en, this message translates to:
+  /// **'Setup finances'**
+  String get setupFinances;
+
+  /// View details button text
+  ///
+  /// In en, this message translates to:
+  /// **'View Details'**
+  String get viewDetails;
+
+  /// Edit data button text
+  ///
+  /// In en, this message translates to:
+  /// **'Edit data'**
+  String get editData;
+
+  /// Title for month balance
+  ///
+  /// In en, this message translates to:
+  /// **'Month Balance'**
+  String get monthBalance;
+
+  /// Title for incomes
+  ///
+  /// In en, this message translates to:
+  /// **'Incomes'**
+  String get incomes;
+
+  /// Title for reserves
+  ///
+  /// In en, this message translates to:
+  /// **'Reserves'**
+  String get reserves;
+
+  /// Title for categories
+  ///
+  /// In en, this message translates to:
+  /// **'Categories'**
+  String get categories;
+
+  /// Instruction to generate pirate flag
+  ///
+  /// In en, this message translates to:
+  /// **'Enter a prompt to generate the pirate flag'**
+  String get promptPirateFlag;
+
+  /// Success message for generated flag
+  ///
+  /// In en, this message translates to:
+  /// **'Pirate flag generated successfully!'**
+  String get flagGeneratedSuccess;
+
+  /// Instruction to generate ship
+  ///
+  /// In en, this message translates to:
+  /// **'Enter a prompt to generate the ship'**
+  String get promptShip;
+
+  /// Success message for generated ship
+  ///
+  /// In en, this message translates to:
+  /// **'Ship generated successfully!'**
+  String get shipGeneratedSuccess;
+
+  /// Title for create crew screen
+  ///
+  /// In en, this message translates to:
+  /// **'Create Crew'**
+  String get createCrewTitle;
+
+  /// Success message for created crew
+  ///
+  /// In en, this message translates to:
+  /// **'Crew created successfully!'**
+  String get crewCreatedSuccess;
+
+  /// Hint for crew tags
+  ///
+  /// In en, this message translates to:
+  /// **'e.g.: Pirates, Adventurers, etc.'**
+  String get crewTagsHint;
+
+  /// Label for required crew name
+  ///
+  /// In en, this message translates to:
+  /// **'Crew Name *'**
+  String get crewNameRequired;
+
+  /// Hint for crew description
+  ///
+  /// In en, this message translates to:
+  /// **'Tell us a bit about your crew...'**
+  String get crewDescriptionHint;
+
+  /// Label for ship name
+  ///
+  /// In en, this message translates to:
+  /// **'Ship Name'**
+  String get shipNameLabel;
+
+  /// Label for pirate flag
+  ///
+  /// In en, this message translates to:
+  /// **'Pirate Flag'**
+  String get pirateFlagLabel;
+
+  /// Label for crew ship
+  ///
+  /// In en, this message translates to:
+  /// **'Crew Ship'**
+  String get crewShipLabel;
+
+  /// Label for tag name
+  ///
+  /// In en, this message translates to:
+  /// **'Tag name'**
+  String get tagNameLabel;
+
+  /// Hint for custom crew
+  ///
+  /// In en, this message translates to:
+  /// **'e.g.: Mugiwaras Custom'**
+  String get customCrewHint;
+
+  /// Hint for merry ship
+  ///
+  /// In en, this message translates to:
+  /// **'e.g.: Going Merry'**
+  String get merryShipHint;
+
+  /// Go home button text
+  ///
+  /// In en, this message translates to:
+  /// **'Go Home'**
+  String get goHomeAction;
+
+  /// Title for AI generated image
+  ///
+  /// In en, this message translates to:
+  /// **'AI Generated Image'**
+  String get aiGeneratedImage;
+
+  /// Notification title for Nami finances
+  ///
+  /// In en, this message translates to:
+  /// **'💰 Monthly Report - Nami Finances'**
+  String get monthlyReportFinances;
+
+  /// Notification title for Zoro workout
+  ///
+  /// In en, this message translates to:
+  /// **'⚔️ Zoro\'s Workout'**
+  String get zoroWorkoutNotif;
+
+  /// Notification title for Sanji tip
+  ///
+  /// In en, this message translates to:
+  /// **'👨‍🍳 Sanji\'s Tip'**
+  String get sanjiTipNotif;
+
+  /// Notification title for featured character
+  ///
+  /// In en, this message translates to:
+  /// **'🏴‍☠️ Featured Character'**
+  String get featuredCharacterNotif;
+
+  /// Notification title for financial tip
+  ///
+  /// In en, this message translates to:
+  /// **'💰 Financial Tip'**
+  String get financialTipNotif;
+
+  /// Notification title for character duel
+  ///
+  /// In en, this message translates to:
+  /// **'🎯 Character Duel'**
+  String get characterDuelNotif;
+
+  /// Auth status message
+  ///
+  /// In en, this message translates to:
+  /// **'Checking authentication status...'**
+  String get checkingAuthStatus;
+
+  /// Auth status message for signing in
+  ///
+  /// In en, this message translates to:
+  /// **'Signing in...'**
+  String get signingInAuth;
+
+  /// Auth status message for signing out
+  ///
+  /// In en, this message translates to:
+  /// **'Signing out...'**
+  String get signingOutAuth;
+
+  /// No description provided for @createWorkoutPlan.
+  ///
+  /// In en, this message translates to:
+  /// **'Create Workout Plan'**
+  String get createWorkoutPlan;
+
+  /// No description provided for @createCustomPlanTap.
+  ///
+  /// In en, this message translates to:
+  /// **'Tap to create your custom plan'**
+  String get createCustomPlanTap;
+
+  /// No description provided for @defaultWorkoutName.
+  ///
+  /// In en, this message translates to:
+  /// **'Workout'**
+  String get defaultWorkoutName;
+
+  /// No description provided for @todayWorkoutCompleted.
+  ///
+  /// In en, this message translates to:
+  /// **'Today\'s Workout (Completed)'**
+  String get todayWorkoutCompleted;
+
+  /// No description provided for @todayWorkout.
+  ///
+  /// In en, this message translates to:
+  /// **'Today\'s Workout'**
+  String get todayWorkout;
+
+  /// No description provided for @exerciseCount.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1 {1 exercise} other {{count} exercises}}'**
+  String exerciseCount(int count);
+
+  /// No description provided for @completedWithCheck.
+  ///
+  /// In en, this message translates to:
+  /// **'✅ Completed'**
+  String get completedWithCheck;
+
+  /// No description provided for @today.
+  ///
+  /// In en, this message translates to:
+  /// **'Today'**
+  String get today;
+
+  /// No description provided for @noExercisesInSplit.
+  ///
+  /// In en, this message translates to:
+  /// **'No exercises in this split.'**
+  String get noExercisesInSplit;
+
+  /// No description provided for @viewProgress.
+  ///
+  /// In en, this message translates to:
+  /// **'View Progress'**
+  String get viewProgress;
+
+  /// No description provided for @startWorkout.
+  ///
+  /// In en, this message translates to:
+  /// **'Start Workout'**
+  String get startWorkout;
+
+  /// No description provided for @increaseProgressTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Increase Progress'**
+  String get increaseProgressTitle;
+
+  /// No description provided for @decreaseProgressTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Decrease Progress'**
+  String get decreaseProgressTitle;
+
+  /// No description provided for @objectiveLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Objective: {title}'**
+  String objectiveLabel(String title);
+
+  /// No description provided for @currentProgressLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Current progress: '**
+  String get currentProgressLabel;
+
+  /// No description provided for @newProgressLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'New progress: '**
+  String get newProgressLabel;
+
+  /// No description provided for @planUpdatesLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Updates on the plan:'**
+  String get planUpdatesLabel;
+
+  /// No description provided for @progressIncreaseHint.
+  ///
+  /// In en, this message translates to:
+  /// **'What did you do to progress? (e.g., studied for 2 hours, completed exercises...)'**
+  String get progressIncreaseHint;
+
+  /// No description provided for @progressDecreaseHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Why did the progress decrease? (e.g., delay, difficulty encountered...)'**
+  String get progressDecreaseHint;
+
+  /// No description provided for @describeWhatHappened.
+  ///
+  /// In en, this message translates to:
+  /// **'Please describe what happened'**
+  String get describeWhatHappened;
+
+  /// No description provided for @increaseAction.
+  ///
+  /// In en, this message translates to:
+  /// **'Increase'**
+  String get increaseAction;
+
+  /// No description provided for @decreaseAction.
+  ///
+  /// In en, this message translates to:
+  /// **'Decrease'**
+  String get decreaseAction;
+
+  /// No description provided for @emptyTimelineSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Start by creating your first objective to organize your study goals and track your progress.'**
+  String get emptyTimelineSubtitle;
+
+  /// No description provided for @biologicalSexLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Biological Sex'**
+  String get biologicalSexLabel;
+
+  /// No description provided for @objectiveTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Objective'**
+  String get objectiveTitle;
+
+  /// No description provided for @activityLevelLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Physical Activity Level'**
+  String get activityLevelLabel;
+
+  /// No description provided for @circumferencesLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Circumferences'**
+  String get circumferencesLabel;
+
+  /// No description provided for @optionalLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Optional'**
+  String get optionalLabel;
+
+  /// No description provided for @ageLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Age'**
+  String get ageLabel;
+
+  /// No description provided for @heightLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Height'**
+  String get heightLabel;
+
+  /// No description provided for @currentWeightLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Current Weight'**
+  String get currentWeightLabel;
+
+  /// No description provided for @waistLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Waist'**
+  String get waistLabel;
+
+  /// No description provided for @chestLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Chest'**
+  String get chestLabel;
+
+  /// No description provided for @armLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Arm'**
+  String get armLabel;
+
+  /// No description provided for @hipLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Hip'**
+  String get hipLabel;
+
+  /// No description provided for @thighLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Thigh'**
+  String get thighLabel;
+
+  /// No description provided for @monthOverview.
+  ///
+  /// In en, this message translates to:
+  /// **'Month overview'**
+  String get monthOverview;
+
+  /// No description provided for @balanceChart.
+  ///
+  /// In en, this message translates to:
+  /// **'Balance chart'**
+  String get balanceChart;
+
+  /// No description provided for @incomesLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Incomes'**
+  String get incomesLabel;
+
+  /// No description provided for @expensesLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Expenses'**
+  String get expensesLabel;
+
+  /// No description provided for @reservesLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Reserves'**
+  String get reservesLabel;
+
+  /// No description provided for @totalReceived.
+  ///
+  /// In en, this message translates to:
+  /// **'Total received'**
+  String get totalReceived;
+
+  /// No description provided for @totalSpent.
+  ///
+  /// In en, this message translates to:
+  /// **'Total spent'**
+  String get totalSpent;
+
+  /// No description provided for @noIncomesRegistered.
+  ///
+  /// In en, this message translates to:
+  /// **'No incomes registered'**
+  String get noIncomesRegistered;
+
+  /// No description provided for @errorPrefix.
+  ///
+  /// In en, this message translates to:
+  /// **'Error: {error}'**
+  String errorPrefix(String error);
+
+  /// No description provided for @errorGeneratingFlag.
+  ///
+  /// In en, this message translates to:
+  /// **'Error generating flag: {error}'**
+  String errorGeneratingFlag(String error);
+
+  /// No description provided for @errorGeneratingShip.
+  ///
+  /// In en, this message translates to:
+  /// **'Error generating ship: {error}'**
+  String errorGeneratingShip(String error);
+
+  /// No description provided for @crewDeletedMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Crew \"{name}\" deleted'**
+  String crewDeletedMessage(String name);
+
+  /// No description provided for @averageBountyLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Average Bounty'**
+  String get averageBountyLabel;
+
+  /// No description provided for @rolesLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Roles'**
+  String get rolesLabel;
+
+  /// No description provided for @updateBodyCompositionLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Update Body Composition'**
+  String get updateBodyCompositionLabel;
+
+  /// No description provided for @linkLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Link: {url}'**
+  String linkLabel(String url);
+
+  /// No description provided for @saveLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Save'**
+  String get saveLabel;
+
+  /// No description provided for @ageValidator.
+  ///
+  /// In en, this message translates to:
+  /// **'Please enter your age'**
+  String get ageValidator;
+
+  /// No description provided for @heightValidator.
+  ///
+  /// In en, this message translates to:
+  /// **'Please enter your height'**
+  String get heightValidator;
+
+  /// No description provided for @weightValidator.
+  ///
+  /// In en, this message translates to:
+  /// **'Please enter your weight'**
+  String get weightValidator;
+
+  /// No description provided for @goalsAndMeasuresTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Goals & Measures'**
+  String get goalsAndMeasuresTitle;
+
+  /// No description provided for @goalsAndMeasuresSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Define your objective and add measures to track your progress with Sanji & Zoro.'**
+  String get goalsAndMeasuresSubtitle;
+
+  /// No description provided for @goalLoseWeight.
+  ///
+  /// In en, this message translates to:
+  /// **'Lose Weight'**
+  String get goalLoseWeight;
+
+  /// No description provided for @goalMaintain.
+  ///
+  /// In en, this message translates to:
+  /// **'Maintain Weight'**
+  String get goalMaintain;
+
+  /// No description provided for @goalGainMuscle.
+  ///
+  /// In en, this message translates to:
+  /// **'Gain Muscle'**
+  String get goalGainMuscle;
+
+  /// No description provided for @activitySedentary.
+  ///
+  /// In en, this message translates to:
+  /// **'Sedentary'**
+  String get activitySedentary;
+
+  /// No description provided for @activityLight.
+  ///
+  /// In en, this message translates to:
+  /// **'Light'**
+  String get activityLight;
+
+  /// No description provided for @activityModerate.
+  ///
+  /// In en, this message translates to:
+  /// **'Moderate'**
+  String get activityModerate;
+
+  /// No description provided for @activityIntense.
+  ///
+  /// In en, this message translates to:
+  /// **'Intense'**
+  String get activityIntense;
+
+  /// No description provided for @activityVeryIntense.
+  ///
+  /// In en, this message translates to:
+  /// **'Very Intense'**
+  String get activityVeryIntense;
+
+  /// No description provided for @expensesDetails.
+  ///
+  /// In en, this message translates to:
+  /// **'Expenses Details'**
+  String get expensesDetails;
+
+  /// No description provided for @totalExpensesLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Total Expenses:'**
+  String get totalExpensesLabel;
+
+  /// No description provided for @copyAction.
+  ///
+  /// In en, this message translates to:
+  /// **'Copy'**
+  String get copyAction;
+
+  /// No description provided for @cookingTipsHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Ex: chicken, rice, onion...'**
+  String get cookingTipsHint;
+
+  /// No description provided for @todayCompleted.
+  ///
+  /// In en, this message translates to:
+  /// **'Today (completed)'**
+  String get todayCompleted;
+
+  /// No description provided for @assessmentResultsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Assessment Results'**
+  String get assessmentResultsTitle;
+
+  /// No description provided for @topRecommendationsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Top Recommendations'**
+  String get topRecommendationsTitle;
+
+  /// No description provided for @weekProgressTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Week Progress'**
+  String get weekProgressTitle;
+
+  /// No description provided for @streakTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Streak'**
+  String get streakTitle;
+
+  /// No description provided for @thisMonthSuffix.
+  ///
+  /// In en, this message translates to:
+  /// **'this month'**
+  String get thisMonthSuffix;
+
+  /// No description provided for @daysSuffix.
+  ///
+  /// In en, this message translates to:
+  /// **'days'**
+  String get daysSuffix;
+
+  /// No description provided for @doneTodayLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Done today'**
+  String get doneTodayLabel;
+
+  /// No description provided for @pendingLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Pending'**
+  String get pendingLabel;
+
+  /// No description provided for @onlyCurrentMonthEditAllowed.
+  ///
+  /// In en, this message translates to:
+  /// **'Only possible to edit finances of the current month'**
+  String get onlyCurrentMonthEditAllowed;
+
+  /// No description provided for @saveWithNami.
+  ///
+  /// In en, this message translates to:
+  /// **'Save with Nami'**
+  String get saveWithNami;
+
+  /// No description provided for @configureYourFinances.
+  ///
+  /// In en, this message translates to:
+  /// **'Configure your finances of the month and track\nyour progress in real time.'**
+  String get configureYourFinances;
+
+  /// No description provided for @incomeLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Income'**
+  String get incomeLabel;
+
+  /// No description provided for @noExpensesRegistered.
+  ///
+  /// In en, this message translates to:
+  /// **'No expenses registered'**
+  String get noExpensesRegistered;
+
+  /// No description provided for @categoryFixed.
+  ///
+  /// In en, this message translates to:
+  /// **'Fixed'**
+  String get categoryFixed;
+
+  /// No description provided for @categoryFood.
+  ///
+  /// In en, this message translates to:
+  /// **'Food'**
+  String get categoryFood;
+
+  /// No description provided for @categoryTransport.
+  ///
+  /// In en, this message translates to:
+  /// **'Transport'**
+  String get categoryTransport;
+
+  /// No description provided for @categoryEntertainment.
+  ///
+  /// In en, this message translates to:
+  /// **'Entertainment'**
+  String get categoryEntertainment;
+
+  /// No description provided for @categoryHealth.
+  ///
+  /// In en, this message translates to:
+  /// **'Health'**
+  String get categoryHealth;
+
+  /// No description provided for @categoryOther.
+  ///
+  /// In en, this message translates to:
+  /// **'Other'**
+  String get categoryOther;
+
+  /// No description provided for @availableLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Available'**
+  String get availableLabel;
+
+  /// No description provided for @savingsLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Savings'**
+  String get savingsLabel;
+
+  /// No description provided for @incomeDetailsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Income Details'**
+  String get incomeDetailsTitle;
+
+  /// No description provided for @savingsDetailsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Savings Details'**
+  String get savingsDetailsTitle;
+
+  /// No description provided for @monthSavings.
+  ///
+  /// In en, this message translates to:
+  /// **'Month Savings'**
+  String get monthSavings;
+
+  /// No description provided for @financialMetricsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Financial Metrics'**
+  String get financialMetricsTitle;
+
+  /// No description provided for @dailyAvailableAmount.
+  ///
+  /// In en, this message translates to:
+  /// **'Daily Available Amount'**
+  String get dailyAvailableAmount;
+
+  /// No description provided for @janAbbr.
+  ///
+  /// In en, this message translates to:
+  /// **'Jan'**
+  String get janAbbr;
+
+  /// No description provided for @febAbbr.
+  ///
+  /// In en, this message translates to:
+  /// **'Feb'**
+  String get febAbbr;
+
+  /// No description provided for @marAbbr.
+  ///
+  /// In en, this message translates to:
+  /// **'Mar'**
+  String get marAbbr;
+
+  /// No description provided for @aprAbbr.
+  ///
+  /// In en, this message translates to:
+  /// **'Apr'**
+  String get aprAbbr;
+
+  /// No description provided for @mayAbbr.
+  ///
+  /// In en, this message translates to:
+  /// **'May'**
+  String get mayAbbr;
+
+  /// No description provided for @junAbbr.
+  ///
+  /// In en, this message translates to:
+  /// **'Jun'**
+  String get junAbbr;
+
+  /// No description provided for @julAbbr.
+  ///
+  /// In en, this message translates to:
+  /// **'Jul'**
+  String get julAbbr;
+
+  /// No description provided for @augAbbr.
+  ///
+  /// In en, this message translates to:
+  /// **'Aug'**
+  String get augAbbr;
+
+  /// No description provided for @sepAbbr.
+  ///
+  /// In en, this message translates to:
+  /// **'Sep'**
+  String get sepAbbr;
+
+  /// No description provided for @octAbbr.
+  ///
+  /// In en, this message translates to:
+  /// **'Oct'**
+  String get octAbbr;
+
+  /// No description provided for @novAbbr.
+  ///
+  /// In en, this message translates to:
+  /// **'Nov'**
+  String get novAbbr;
+
+  /// No description provided for @decAbbr.
+  ///
+  /// In en, this message translates to:
+  /// **'Dec'**
+  String get decAbbr;
+
+  /// No description provided for @availableBalance.
+  ///
+  /// In en, this message translates to:
+  /// **'Available Balance'**
+  String get availableBalance;
+
+  /// No description provided for @currentMonthLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Current Month'**
+  String get currentMonthLabel;
+
+  /// No description provided for @yesLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Yes'**
+  String get yesLabel;
+
+  /// No description provided for @noLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'No'**
+  String get noLabel;
+
+  /// No description provided for @workoutStatusDefeated.
+  ///
+  /// In en, this message translates to:
+  /// **'Defeated'**
+  String get workoutStatusDefeated;
+
+  /// No description provided for @workoutStatusOnTarget.
+  ///
+  /// In en, this message translates to:
+  /// **'On Target!'**
+  String get workoutStatusOnTarget;
+
+  /// No description provided for @zoroQuoteDefeated.
+  ///
+  /// In en, this message translates to:
+  /// **'\"I will never lose again.\"'**
+  String get zoroQuoteDefeated;
+
+  /// No description provided for @zoroQuoteProud.
+  ///
+  /// In en, this message translates to:
+  /// **'\"No matter what happens, I will never lose again.\"'**
+  String get zoroQuoteProud;
+
+  /// No description provided for @zoroStatusDefeated.
+  ///
+  /// In en, this message translates to:
+  /// **'Zoro is defeated...'**
+  String get zoroStatusDefeated;
+
+  /// No description provided for @zoroStatusProud.
+  ///
+  /// In en, this message translates to:
+  /// **'Zoro is proud!'**
+  String get zoroStatusProud;
+
+  /// No description provided for @workoutsRemaining.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{1 workout remaining this week} other{{count} workouts remaining this week}}'**
+  String workoutsRemaining(int count);
+
+  /// No description provided for @weeklyGoalCompleted.
+  ///
+  /// In en, this message translates to:
+  /// **'Weekly goal completed! 🎯'**
+  String get weeklyGoalCompleted;
+
+  /// No description provided for @workoutDaysCount.
+  ///
+  /// In en, this message translates to:
+  /// **'{done} / {total} days'**
+  String workoutDaysCount(int done, int total);
+
+  /// Vegapunk feature name shown in bottom navigation
+  ///
+  /// In en, this message translates to:
+  /// **'Vegapunk'**
+  String get vegapunk;
+
+  /// Title of the Ask Vegapunk chat screen
+  ///
+  /// In en, this message translates to:
+  /// **'Ask Vegapunk'**
+  String get vegapunkChatTitle;
+
+  /// Placeholder text in the chat input field
+  ///
+  /// In en, this message translates to:
+  /// **'Ask anything...'**
+  String get vegapunkChatHint;
+
+  /// Title shown while the on-device LLM model is downloading
+  ///
+  /// In en, this message translates to:
+  /// **'Downloading Vegapunk\'s brain'**
+  String get vegapunkModelDownloadTitle;
+
+  /// Subtitle explaining the model download size and privacy
+  ///
+  /// In en, this message translates to:
+  /// **'One-time download (~2.4 GB). The model runs fully on your device.'**
+  String get vegapunkModelDownloadSubtitle;
+
+  /// Message shown while the model is loading into memory
+  ///
+  /// In en, this message translates to:
+  /// **'Activating Vegapunk...'**
+  String get vegapunkModelLoadingTitle;
+
+  /// Error message shown when the model fails to load
+  ///
+  /// In en, this message translates to:
+  /// **'Vegapunk failed to initialize'**
+  String get vegapunkModelErrorTitle;
+
+  /// Button label to retry model download or initialization
+  ///
+  /// In en, this message translates to:
+  /// **'Retry'**
+  String get vegapunkRetry;
+
+  /// Button label to cancel model download
+  ///
+  /// In en, this message translates to:
+  /// **'Cancel'**
+  String get vegapunkCancel;
+
+  /// Prompt shown when the chat has no messages yet
+  ///
+  /// In en, this message translates to:
+  /// **'Vegapunk is ready. Ask me anything.'**
+  String get vegapunkChatEmpty;
+
+  /// Button label to stop the current generation
+  ///
+  /// In en, this message translates to:
+  /// **'Stop'**
+  String get vegapunkStopGeneration;
+
+  /// Vegapunk Satellite Stella
+  ///
+  /// In en, this message translates to:
+  /// **'Stella (Original)'**
+  String get vegapunkSatelliteStella;
+
+  /// Vegapunk Satellite Shaka
+  ///
+  /// In en, this message translates to:
+  /// **'Shaka (Good)'**
+  String get vegapunkSatelliteShaka;
+
+  /// Vegapunk Satellite Lilith
+  ///
+  /// In en, this message translates to:
+  /// **'Lilith (Evil)'**
+  String get vegapunkSatelliteLilith;
+
+  /// Vegapunk Satellite Edison
+  ///
+  /// In en, this message translates to:
+  /// **'Edison (Thinking)'**
+  String get vegapunkSatelliteEdison;
+
+  /// Vegapunk Satellite Pythagoras
+  ///
+  /// In en, this message translates to:
+  /// **'Pythagoras (Wisdom)'**
+  String get vegapunkSatellitePythagoras;
+
+  /// Vegapunk Satellite Atlas
+  ///
+  /// In en, this message translates to:
+  /// **'Atlas (Violence)'**
+  String get vegapunkSatelliteAtlas;
+
+  /// Vegapunk Satellite York
+  ///
+  /// In en, this message translates to:
+  /// **'York (Greed)'**
+  String get vegapunkSatelliteYork;
+
+  /// Label for Vegapunk Thinking Mode toggle switch
+  ///
+  /// In en, this message translates to:
+  /// **'Thinking Mode'**
+  String get vegapunkThinkingMode;
+
+  /// Description text for Vegapunk Thinking Mode toggle switch
+  ///
+  /// In en, this message translates to:
+  /// **'Enable reasoning trace (increases memory and latency)'**
+  String get vegapunkThinkingModeDesc;
+
+  /// Header card title on the cooking tips screen
+  ///
+  /// In en, this message translates to:
+  /// **'Personalized Meal with Sanji'**
+  String get cookingPersonalizedMealTitle;
+
+  /// Header card subtitle on the cooking tips screen
+  ///
+  /// In en, this message translates to:
+  /// **'Add the ingredients you have and receive a personalized recipe based on your nutritional data!'**
+  String get cookingPersonalizedMealSubtitle;
+
+  /// Section title for the ingredient input area
+  ///
+  /// In en, this message translates to:
+  /// **'Available Ingredients'**
+  String get cookingAvailableIngredients;
+
+  /// Card title for the personalized meal section
+  ///
+  /// In en, this message translates to:
+  /// **'Personalized Meal'**
+  String get cookingPersonalizedMeal;
+
+  /// Info line showing target calories and goal
+  ///
+  /// In en, this message translates to:
+  /// **'Target calories: {calories} kcal | Goal: {goal}'**
+  String cookingTargetCaloriesInfo(String calories, String goal);
+
+  /// Loading label on the generate meal button
+  ///
+  /// In en, this message translates to:
+  /// **'Generating meal...'**
+  String get cookingGeneratingMeal;
+
+  /// Label on the generate meal button
+  ///
+  /// In en, this message translates to:
+  /// **'Generate Meal'**
+  String get cookingGenerateMeal;
+
+  /// Title of the result card showing the personalized recipe
+  ///
+  /// In en, this message translates to:
+  /// **'Personalized Recipe - {mealType}'**
+  String cookingPersonalizedRecipeTitle(String mealType);
+
+  /// Display label for the maintenance goal
+  ///
+  /// In en, this message translates to:
+  /// **'Maintain weight'**
+  String get cookingGoalMaintenance;
+
+  /// Display label for the weight-loss goal
+  ///
+  /// In en, this message translates to:
+  /// **'Lose weight'**
+  String get cookingGoalWeightLoss;
+
+  /// Display label for the muscle-gain goal
+  ///
+  /// In en, this message translates to:
+  /// **'Gain muscle'**
+  String get cookingGoalMuscleGain;
+
+  /// Meal type option
+  ///
+  /// In en, this message translates to:
+  /// **'Breakfast'**
+  String get mealTypeBreakfast;
+
+  /// Meal type option
+  ///
+  /// In en, this message translates to:
+  /// **'Morning Snack'**
+  String get mealTypeMorningSnack;
+
+  /// Meal type option
+  ///
+  /// In en, this message translates to:
+  /// **'Lunch'**
+  String get mealTypeLunch;
+
+  /// Meal type option
+  ///
+  /// In en, this message translates to:
+  /// **'Afternoon Snack'**
+  String get mealTypeAfternoonSnack;
+
+  /// Meal type option
+  ///
+  /// In en, this message translates to:
+  /// **'Dinner'**
+  String get mealTypeDinner;
+
+  /// Meal type option
+  ///
+  /// In en, this message translates to:
+  /// **'Dessert'**
+  String get mealTypeDessert;
+
+  /// Meal type option
+  ///
+  /// In en, this message translates to:
+  /// **'Night Snack'**
+  String get mealTypeNightSnack;
+
+  /// Dietary restriction option — no restrictions
+  ///
+  /// In en, this message translates to:
+  /// **'No restrictions'**
+  String get dietaryRestrictionNone;
+
+  /// Dietary restriction option
+  ///
+  /// In en, this message translates to:
+  /// **'Vegetarian'**
+  String get dietaryRestrictionVegetarian;
+
+  /// Dietary restriction option
+  ///
+  /// In en, this message translates to:
+  /// **'Vegan'**
+  String get dietaryRestrictionVegan;
+
+  /// Dietary restriction option
+  ///
+  /// In en, this message translates to:
+  /// **'Gluten-free'**
+  String get dietaryRestrictionGlutenFree;
+
+  /// Dietary restriction option
+  ///
+  /// In en, this message translates to:
+  /// **'Lactose-free'**
+  String get dietaryRestrictionLactoseFree;
+
+  /// Dietary restriction option
+  ///
+  /// In en, this message translates to:
+  /// **'Low carb'**
+  String get dietaryRestrictionLowCarb;
+
+  /// Dietary restriction option
+  ///
+  /// In en, this message translates to:
+  /// **'High protein'**
+  String get dietaryRestrictionHighProtein;
 }
 
 class _AppLocalizationsDelegate
@@ -3576,8 +4974,9 @@ AppLocalizations lookupAppLocalizations(Locale locale) {
   }
 
   throw FlutterError(
-      'AppLocalizations.delegate failed to load unsupported locale "$locale". This is likely '
-      'an issue with the localizations generation tool. Please file an issue '
-      'on GitHub with a reproducible sample app and the gen-l10n configuration '
-      'that was used.');
+    'AppLocalizations.delegate failed to load unsupported locale "$locale". This is likely '
+    'an issue with the localizations generation tool. Please file an issue '
+    'on GitHub with a reproducible sample app and the gen-l10n configuration '
+    'that was used.',
+  );
 }

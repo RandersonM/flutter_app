@@ -78,7 +78,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get totalIncome => 'Total Income';
 
   @override
-  String get expensesByCategory => 'Expenses by Category';
+  String get expensesByCategory => 'Expenses by category';
 
   @override
   String get historyLast6Months => 'Last 6 Months History';
@@ -1158,10 +1158,10 @@ class AppLocalizationsEn extends AppLocalizations {
   String get savingsHint => 'How much do you save per month?';
 
   @override
-  String get savingsPercentage => 'of Income';
+  String get savingsPercentage => 'Savings Percentage';
 
   @override
-  String get yearlySavings => 'Accumulated in 1 Year';
+  String get yearlySavings => 'Yearly Savings';
 
   @override
   String get accumulatedSavings => 'Accumulated';
@@ -1610,11 +1610,11 @@ class AppLocalizationsEn extends AppLocalizations {
   String get waistToHeight => 'Waist/Height';
 
   @override
-  String get sanjiTipTitle => 'Sanji\'s Tip';
+  String get sanjiTipTitle => 'Personalized Recipe';
 
   @override
   String get sanjiTipText =>
-      'Consult a nutritionist for a personalized meal plan based on these calculations!';
+      'Click to receive a personalized recipe based on your nutritional data!';
 
   @override
   String get plateGuideQuestion => 'How to build a healthy plate?';
@@ -1632,7 +1632,7 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
-  String get financeWithNami => 'Economize com a Nami';
+  String get financeWithNami => 'Save with Nami';
 
   @override
   String get cookingWithSanji => 'Cooking with Sanji';
@@ -1775,7 +1775,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get timelineOfObjectives => 'Timeline of Objectives';
 
   @override
-  String get seeAll => 'See All';
+  String get seeAll => 'See all';
 
   @override
   String get noObjectivesCreated => 'No objectives created';
@@ -1889,4 +1889,747 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get enterAdditionalNotes => 'Enter additional notes';
+
+  @override
+  String get onboardingBiologicalSex => 'Please select your biological sex.';
+
+  @override
+  String get onboardingFillAllFields => 'Please fill in all required fields.';
+
+  @override
+  String get male => 'Male';
+
+  @override
+  String get female => 'Female';
+
+  @override
+  String get recommendations => 'Recommendations';
+
+  @override
+  String get editPlan => 'Edit Plan';
+
+  @override
+  String get workoutPlanSaved => 'Workout plan saved successfully!';
+
+  @override
+  String get addSplit => 'Add Split';
+
+  @override
+  String get splitNameHint => 'Split name (e.g., Workout A)';
+
+  @override
+  String get exerciseHint => 'Exercise';
+
+  @override
+  String get setsRepsHint => '3x15';
+
+  @override
+  String get noAssessmentFound => 'No assessment found for the current month';
+
+  @override
+  String get addAction => 'Add';
+
+  @override
+  String get selectRace => 'Select Race';
+
+  @override
+  String get styleName => 'Style Name';
+
+  @override
+  String get fightingType => 'Fighting Type';
+
+  @override
+  String get addWeapon => 'Add Weapon';
+
+  @override
+  String get addAttack => 'Add Attack';
+
+  @override
+  String get threeSwordsStyleHint => 'e.g.: Three Swords Style';
+
+  @override
+  String get englishLang => 'English';
+
+  @override
+  String get portugueseLang => 'Português';
+
+  @override
+  String get bodyComposition => 'Body Composition';
+
+  @override
+  String get bodyData => 'Body Data';
+
+  @override
+  String get createFirstGoal => 'Create First Goal';
+
+  @override
+  String get cancelAction => 'Cancel';
+
+  @override
+  String get saveAction => 'Save';
+
+  @override
+  String get clearAction => 'Clear';
+
+  @override
+  String get updateBodyComposition => 'Update Body Composition';
+
+  @override
+  String get tryAgainAction => 'Try again';
+
+  @override
+  String get foodExampleHint => 'e.g.: chicken, rice, onion...';
+
+  @override
+  String get mealType => 'Meal Type';
+
+  @override
+  String get dietaryRestrictions => 'Dietary Restrictions';
+
+  @override
+  String get noIncomeRegistered => 'No income registered';
+
+  @override
+  String get setupFinances => 'Setup finances';
+
+  @override
+  String get viewDetails => 'View Details';
+
+  @override
+  String get editData => 'Edit data';
+
+  @override
+  String get monthBalance => 'Month Balance';
+
+  @override
+  String get incomes => 'Incomes';
+
+  @override
+  String get reserves => 'Reserves';
+
+  @override
+  String get categories => 'Categories';
+
+  @override
+  String get promptPirateFlag => 'Enter a prompt to generate the pirate flag';
+
+  @override
+  String get flagGeneratedSuccess => 'Pirate flag generated successfully!';
+
+  @override
+  String get promptShip => 'Enter a prompt to generate the ship';
+
+  @override
+  String get shipGeneratedSuccess => 'Ship generated successfully!';
+
+  @override
+  String get createCrewTitle => 'Create Crew';
+
+  @override
+  String get crewCreatedSuccess => 'Crew created successfully!';
+
+  @override
+  String get crewTagsHint => 'e.g.: Pirates, Adventurers, etc.';
+
+  @override
+  String get crewNameRequired => 'Crew Name *';
+
+  @override
+  String get crewDescriptionHint => 'Tell us a bit about your crew...';
+
+  @override
+  String get shipNameLabel => 'Ship Name';
+
+  @override
+  String get pirateFlagLabel => 'Pirate Flag';
+
+  @override
+  String get crewShipLabel => 'Crew Ship';
+
+  @override
+  String get tagNameLabel => 'Tag name';
+
+  @override
+  String get customCrewHint => 'e.g.: Mugiwaras Custom';
+
+  @override
+  String get merryShipHint => 'e.g.: Going Merry';
+
+  @override
+  String get goHomeAction => 'Go Home';
+
+  @override
+  String get aiGeneratedImage => 'AI Generated Image';
+
+  @override
+  String get monthlyReportFinances => '💰 Monthly Report - Nami Finances';
+
+  @override
+  String get zoroWorkoutNotif => '⚔️ Zoro\'s Workout';
+
+  @override
+  String get sanjiTipNotif => '👨‍🍳 Sanji\'s Tip';
+
+  @override
+  String get featuredCharacterNotif => '🏴‍☠️ Featured Character';
+
+  @override
+  String get financialTipNotif => '💰 Financial Tip';
+
+  @override
+  String get characterDuelNotif => '🎯 Character Duel';
+
+  @override
+  String get checkingAuthStatus => 'Checking authentication status...';
+
+  @override
+  String get signingInAuth => 'Signing in...';
+
+  @override
+  String get signingOutAuth => 'Signing out...';
+
+  @override
+  String get createWorkoutPlan => 'Create Workout Plan';
+
+  @override
+  String get createCustomPlanTap => 'Tap to create your custom plan';
+
+  @override
+  String get defaultWorkoutName => 'Workout';
+
+  @override
+  String get todayWorkoutCompleted => 'Today\'s Workout (Completed)';
+
+  @override
+  String get todayWorkout => 'Today\'s Workout';
+
+  @override
+  String exerciseCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count exercises',
+      one: '1 exercise',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get completedWithCheck => '✅ Completed';
+
+  @override
+  String get today => 'Today';
+
+  @override
+  String get noExercisesInSplit => 'No exercises in this split.';
+
+  @override
+  String get viewProgress => 'View Progress';
+
+  @override
+  String get startWorkout => 'Start Workout';
+
+  @override
+  String get increaseProgressTitle => 'Increase Progress';
+
+  @override
+  String get decreaseProgressTitle => 'Decrease Progress';
+
+  @override
+  String objectiveLabel(String title) {
+    return 'Objective: $title';
+  }
+
+  @override
+  String get currentProgressLabel => 'Current progress: ';
+
+  @override
+  String get newProgressLabel => 'New progress: ';
+
+  @override
+  String get planUpdatesLabel => 'Updates on the plan:';
+
+  @override
+  String get progressIncreaseHint =>
+      'What did you do to progress? (e.g., studied for 2 hours, completed exercises...)';
+
+  @override
+  String get progressDecreaseHint =>
+      'Why did the progress decrease? (e.g., delay, difficulty encountered...)';
+
+  @override
+  String get describeWhatHappened => 'Please describe what happened';
+
+  @override
+  String get increaseAction => 'Increase';
+
+  @override
+  String get decreaseAction => 'Decrease';
+
+  @override
+  String get emptyTimelineSubtitle =>
+      'Start by creating your first objective to organize your study goals and track your progress.';
+
+  @override
+  String get biologicalSexLabel => 'Biological Sex';
+
+  @override
+  String get objectiveTitle => 'Objective';
+
+  @override
+  String get activityLevelLabel => 'Physical Activity Level';
+
+  @override
+  String get circumferencesLabel => 'Circumferences';
+
+  @override
+  String get optionalLabel => 'Optional';
+
+  @override
+  String get ageLabel => 'Age';
+
+  @override
+  String get heightLabel => 'Height';
+
+  @override
+  String get currentWeightLabel => 'Current Weight';
+
+  @override
+  String get waistLabel => 'Waist';
+
+  @override
+  String get chestLabel => 'Chest';
+
+  @override
+  String get armLabel => 'Arm';
+
+  @override
+  String get hipLabel => 'Hip';
+
+  @override
+  String get thighLabel => 'Thigh';
+
+  @override
+  String get monthOverview => 'Month overview';
+
+  @override
+  String get balanceChart => 'Balance chart';
+
+  @override
+  String get incomesLabel => 'Incomes';
+
+  @override
+  String get expensesLabel => 'Expenses';
+
+  @override
+  String get reservesLabel => 'Reserves';
+
+  @override
+  String get totalReceived => 'Total received';
+
+  @override
+  String get totalSpent => 'Total spent';
+
+  @override
+  String get noIncomesRegistered => 'No incomes registered';
+
+  @override
+  String errorPrefix(String error) {
+    return 'Error: $error';
+  }
+
+  @override
+  String errorGeneratingFlag(String error) {
+    return 'Error generating flag: $error';
+  }
+
+  @override
+  String errorGeneratingShip(String error) {
+    return 'Error generating ship: $error';
+  }
+
+  @override
+  String crewDeletedMessage(String name) {
+    return 'Crew \"$name\" deleted';
+  }
+
+  @override
+  String get averageBountyLabel => 'Average Bounty';
+
+  @override
+  String get rolesLabel => 'Roles';
+
+  @override
+  String get updateBodyCompositionLabel => 'Update Body Composition';
+
+  @override
+  String linkLabel(String url) {
+    return 'Link: $url';
+  }
+
+  @override
+  String get saveLabel => 'Save';
+
+  @override
+  String get ageValidator => 'Please enter your age';
+
+  @override
+  String get heightValidator => 'Please enter your height';
+
+  @override
+  String get weightValidator => 'Please enter your weight';
+
+  @override
+  String get goalsAndMeasuresTitle => 'Goals & Measures';
+
+  @override
+  String get goalsAndMeasuresSubtitle =>
+      'Define your objective and add measures to track your progress with Sanji & Zoro.';
+
+  @override
+  String get goalLoseWeight => 'Lose Weight';
+
+  @override
+  String get goalMaintain => 'Maintain Weight';
+
+  @override
+  String get goalGainMuscle => 'Gain Muscle';
+
+  @override
+  String get activitySedentary => 'Sedentary';
+
+  @override
+  String get activityLight => 'Light';
+
+  @override
+  String get activityModerate => 'Moderate';
+
+  @override
+  String get activityIntense => 'Intense';
+
+  @override
+  String get activityVeryIntense => 'Very Intense';
+
+  @override
+  String get expensesDetails => 'Expenses Details';
+
+  @override
+  String get totalExpensesLabel => 'Total Expenses:';
+
+  @override
+  String get copyAction => 'Copy';
+
+  @override
+  String get cookingTipsHint => 'Ex: chicken, rice, onion...';
+
+  @override
+  String get todayCompleted => 'Today (completed)';
+
+  @override
+  String get assessmentResultsTitle => 'Assessment Results';
+
+  @override
+  String get topRecommendationsTitle => 'Top Recommendations';
+
+  @override
+  String get weekProgressTitle => 'Week Progress';
+
+  @override
+  String get streakTitle => 'Streak';
+
+  @override
+  String get thisMonthSuffix => 'this month';
+
+  @override
+  String get daysSuffix => 'days';
+
+  @override
+  String get doneTodayLabel => 'Done today';
+
+  @override
+  String get pendingLabel => 'Pending';
+
+  @override
+  String get onlyCurrentMonthEditAllowed =>
+      'Only possible to edit finances of the current month';
+
+  @override
+  String get saveWithNami => 'Save with Nami';
+
+  @override
+  String get configureYourFinances =>
+      'Configure your finances of the month and track\nyour progress in real time.';
+
+  @override
+  String get incomeLabel => 'Income';
+
+  @override
+  String get noExpensesRegistered => 'No expenses registered';
+
+  @override
+  String get categoryFixed => 'Fixed';
+
+  @override
+  String get categoryFood => 'Food';
+
+  @override
+  String get categoryTransport => 'Transport';
+
+  @override
+  String get categoryEntertainment => 'Entertainment';
+
+  @override
+  String get categoryHealth => 'Health';
+
+  @override
+  String get categoryOther => 'Other';
+
+  @override
+  String get availableLabel => 'Available';
+
+  @override
+  String get savingsLabel => 'Savings';
+
+  @override
+  String get incomeDetailsTitle => 'Income Details';
+
+  @override
+  String get savingsDetailsTitle => 'Savings Details';
+
+  @override
+  String get monthSavings => 'Month Savings';
+
+  @override
+  String get financialMetricsTitle => 'Financial Metrics';
+
+  @override
+  String get dailyAvailableAmount => 'Daily Available Amount';
+
+  @override
+  String get janAbbr => 'Jan';
+
+  @override
+  String get febAbbr => 'Feb';
+
+  @override
+  String get marAbbr => 'Mar';
+
+  @override
+  String get aprAbbr => 'Apr';
+
+  @override
+  String get mayAbbr => 'May';
+
+  @override
+  String get junAbbr => 'Jun';
+
+  @override
+  String get julAbbr => 'Jul';
+
+  @override
+  String get augAbbr => 'Aug';
+
+  @override
+  String get sepAbbr => 'Sep';
+
+  @override
+  String get octAbbr => 'Oct';
+
+  @override
+  String get novAbbr => 'Nov';
+
+  @override
+  String get decAbbr => 'Dec';
+
+  @override
+  String get availableBalance => 'Available Balance';
+
+  @override
+  String get currentMonthLabel => 'Current Month';
+
+  @override
+  String get yesLabel => 'Yes';
+
+  @override
+  String get noLabel => 'No';
+
+  @override
+  String get workoutStatusDefeated => 'Defeated';
+
+  @override
+  String get workoutStatusOnTarget => 'On Target!';
+
+  @override
+  String get zoroQuoteDefeated => '\"I will never lose again.\"';
+
+  @override
+  String get zoroQuoteProud =>
+      '\"No matter what happens, I will never lose again.\"';
+
+  @override
+  String get zoroStatusDefeated => 'Zoro is defeated...';
+
+  @override
+  String get zoroStatusProud => 'Zoro is proud!';
+
+  @override
+  String workoutsRemaining(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count workouts remaining this week',
+      one: '1 workout remaining this week',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get weeklyGoalCompleted => 'Weekly goal completed! 🎯';
+
+  @override
+  String workoutDaysCount(int done, int total) {
+    return '$done / $total days';
+  }
+
+  @override
+  String get vegapunk => 'Vegapunk';
+
+  @override
+  String get vegapunkChatTitle => 'Ask Vegapunk';
+
+  @override
+  String get vegapunkChatHint => 'Ask anything...';
+
+  @override
+  String get vegapunkModelDownloadTitle => 'Downloading Vegapunk\'s brain';
+
+  @override
+  String get vegapunkModelDownloadSubtitle =>
+      'One-time download (~2.4 GB). The model runs fully on your device.';
+
+  @override
+  String get vegapunkModelLoadingTitle => 'Activating Vegapunk...';
+
+  @override
+  String get vegapunkModelErrorTitle => 'Vegapunk failed to initialize';
+
+  @override
+  String get vegapunkRetry => 'Retry';
+
+  @override
+  String get vegapunkCancel => 'Cancel';
+
+  @override
+  String get vegapunkChatEmpty => 'Vegapunk is ready. Ask me anything.';
+
+  @override
+  String get vegapunkStopGeneration => 'Stop';
+
+  @override
+  String get vegapunkSatelliteStella => 'Stella (Original)';
+
+  @override
+  String get vegapunkSatelliteShaka => 'Shaka (Good)';
+
+  @override
+  String get vegapunkSatelliteLilith => 'Lilith (Evil)';
+
+  @override
+  String get vegapunkSatelliteEdison => 'Edison (Thinking)';
+
+  @override
+  String get vegapunkSatellitePythagoras => 'Pythagoras (Wisdom)';
+
+  @override
+  String get vegapunkSatelliteAtlas => 'Atlas (Violence)';
+
+  @override
+  String get vegapunkSatelliteYork => 'York (Greed)';
+
+  @override
+  String get vegapunkThinkingMode => 'Thinking Mode';
+
+  @override
+  String get vegapunkThinkingModeDesc =>
+      'Enable reasoning trace (increases memory and latency)';
+
+  @override
+  String get cookingPersonalizedMealTitle => 'Personalized Meal with Sanji';
+
+  @override
+  String get cookingPersonalizedMealSubtitle =>
+      'Add the ingredients you have and receive a personalized recipe based on your nutritional data!';
+
+  @override
+  String get cookingAvailableIngredients => 'Available Ingredients';
+
+  @override
+  String get cookingPersonalizedMeal => 'Personalized Meal';
+
+  @override
+  String cookingTargetCaloriesInfo(String calories, String goal) {
+    return 'Target calories: $calories kcal | Goal: $goal';
+  }
+
+  @override
+  String get cookingGeneratingMeal => 'Generating meal...';
+
+  @override
+  String get cookingGenerateMeal => 'Generate Meal';
+
+  @override
+  String cookingPersonalizedRecipeTitle(String mealType) {
+    return 'Personalized Recipe - $mealType';
+  }
+
+  @override
+  String get cookingGoalMaintenance => 'Maintain weight';
+
+  @override
+  String get cookingGoalWeightLoss => 'Lose weight';
+
+  @override
+  String get cookingGoalMuscleGain => 'Gain muscle';
+
+  @override
+  String get mealTypeBreakfast => 'Breakfast';
+
+  @override
+  String get mealTypeMorningSnack => 'Morning Snack';
+
+  @override
+  String get mealTypeLunch => 'Lunch';
+
+  @override
+  String get mealTypeAfternoonSnack => 'Afternoon Snack';
+
+  @override
+  String get mealTypeDinner => 'Dinner';
+
+  @override
+  String get mealTypeDessert => 'Dessert';
+
+  @override
+  String get mealTypeNightSnack => 'Night Snack';
+
+  @override
+  String get dietaryRestrictionNone => 'No restrictions';
+
+  @override
+  String get dietaryRestrictionVegetarian => 'Vegetarian';
+
+  @override
+  String get dietaryRestrictionVegan => 'Vegan';
+
+  @override
+  String get dietaryRestrictionGlutenFree => 'Gluten-free';
+
+  @override
+  String get dietaryRestrictionLactoseFree => 'Lactose-free';
+
+  @override
+  String get dietaryRestrictionLowCarb => 'Low carb';
+
+  @override
+  String get dietaryRestrictionHighProtein => 'High protein';
 }

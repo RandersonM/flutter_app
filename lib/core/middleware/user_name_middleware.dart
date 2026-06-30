@@ -15,8 +15,9 @@ class UserNameMiddleware {
       return _specialNameReplacement;
     }
 
-    final words = displayName.trim().split(' ').where((word) => word.isNotEmpty).toList();
-    
+    final words =
+        displayName.trim().split(' ').where((word) => word.isNotEmpty).toList();
+
     if (words.length > _maxWords) {
       return words.take(_maxWords).join(' ');
     }
@@ -26,8 +27,8 @@ class UserNameMiddleware {
 
   /// Verifica se o nome foi processado pelo middleware
   static bool isProcessedName(String displayName) {
-    return displayName == _specialNameReplacement || 
-           displayName.split(' ').length <= _maxWords;
+    return displayName == _specialNameReplacement ||
+        displayName.split(' ').length <= _maxWords;
   }
 
   /// Obtém o nome original (útil para debug ou logs)
@@ -37,4 +38,4 @@ class UserNameMiddleware {
     }
     return processedName;
   }
-} 
+}

@@ -4,25 +4,26 @@
 import 'dart:async';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:opfan/core/services/auth_service.dart';
+import 'package:opfan/core/services/index.dart';
 import 'package:opfan/core/middleware/user_name_middleware.dart';
 import 'package:opfan/core/auth/models/user_model.dart';
 import 'auth_event.dart';
 import 'auth_state.dart';
 
 class AuthBloc extends Bloc<AuthEvent, AuthState> {
-  final AuthService _authService;
+  final IAuthService _authService;
   StreamSubscription<AuthStatus>? _authStatusSubscription;
 
   AuthBloc({
-    required AuthService authService,
-  })  : _authService = authService,
-        super(const AuthInitial()) {
+    required this._authService}) : super(const AuthInitial()) {
+    //
+  
     on<AuthStarted>(_onAuthStarted);
     on<AuthSignInRequested>(_onAuthSignInRequested);
     on<AuthSignOutRequested>(_onAuthSignOutRequested);
     on<AuthStatusChanged>(_onAuthStatusChanged);
     on<AuthUpdateProfile>(_onAuthUpdateProfile);
+    on<AuthProfileBodyUpdated>(_onAuthProfileBodyUpdated);
     on<AuthDeleteAccount>(_onAuthDeleteAccount);
     on<AuthCheckStatus>(_onAuthCheckStatus);
     on<AuthClearCache>(_onAuthClearCache);
@@ -43,7 +44,12 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         final user = await _authService.checkAuthStatus();
         if (user != null) {
           final processedUser = _processUserWithMiddleware(user);
-          emit(AuthAuthenticated(user: processedUser));
+
+          if (processedUser.isProfileComplete) {
+            emit(AuthAuthenticated(user: processedUser));
+          } else {
+            emit(AuthNeedsOnboarding(user: processedUser));
+          }
         } else {
           emit(const AuthUnauthenticated());
         }
@@ -66,7 +72,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       );
     } catch (e) {
       debugPrint('AuthBloc: Error initializing authentication - $e');
-      emit(AuthError(message: 'Error checking authentication: $e'));
+      emit(const AuthError(message: 'Authentication failed. Please try again.'));
     }
   }
 
@@ -87,7 +93,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       }
     } catch (e) {
       debugPrint('AuthBloc: Error in sign in - $e');
-      emit(AuthError(message: 'Sign in error: $e'));
+      emit(const AuthError(message: 'Sign in failed. Please try again.'));
     }
   }
 
@@ -103,7 +109,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       emit(const AuthUnauthenticated());
     } catch (e) {
       debugPrint('AuthBloc: Error in sign out - $e');
-      emit(AuthError(message: 'Sign out error: $e'));
+      emit(const AuthError(message: 'Sign out failed. Please try again.'));
     }
   }
 
@@ -142,7 +148,24 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       }
     } catch (e) {
       debugPrint('AuthBloc: Error updating profile - $e');
-      emit(AuthError(message: 'Profile update error: $e'));
+      emit(const AuthError(message: 'Profile update failed. Please try again.'));
+    }
+  }
+
+  Future<void> _onAuthProfileBodyUpdated(
+    AuthProfileBodyUpdated event,
+    Emitter<AuthState> emit,
+  ) async {
+    try {
+      emit(AuthProfileUpdating(user: event.updatedUser));
+
+      await _authService.updateBodyProfile(event.updatedUser);
+
+      emit(AuthProfileUpdated(user: event.updatedUser));
+      emit(AuthAuthenticated(user: event.updatedUser));
+    } catch (e) {
+      debugPrint('AuthBloc: Error updating body profile - $e');
+      emit(const AuthError(message: 'Profile update failed. Please try again.'));
     }
   }
 
@@ -159,7 +182,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       emit(const AuthUnauthenticated());
     } catch (e) {
       debugPrint('AuthBloc: Error deleting account - $e');
-      emit(AuthError(message: 'Account deletion error: $e'));
+      emit(const AuthError(message: 'Account deletion failed. Please try again.'));
     }
   }
 
@@ -174,7 +197,12 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         final user = await _authService.checkAuthStatus();
         if (user != null) {
           final processedUser = _processUserWithMiddleware(user);
-          emit(AuthAuthenticated(user: processedUser));
+
+          if (processedUser.isProfileComplete) {
+            emit(AuthAuthenticated(user: processedUser));
+          } else {
+            emit(AuthNeedsOnboarding(user: processedUser));
+          }
         } else {
           emit(const AuthUnauthenticated());
         }
@@ -184,7 +212,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       }
     } catch (e) {
       debugPrint('AuthBloc: Error checking status - $e');
-      emit(AuthError(message: 'Status check error: $e'));
+      emit(const AuthError(message: 'Authentication failed. Please try again.'));
     }
   }
 
@@ -197,7 +225,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       emit(const AuthUnauthenticated());
     } catch (e) {
       debugPrint('AuthBloc: Error clearing cache - $e');
-      emit(AuthError(message: 'Cache clear error: $e'));
+      emit(const AuthError(message: 'Session error. Please sign in again.'));
     }
   }
 

@@ -1,14 +1,17 @@
+import 'package:opfan/shared/widgets/atoms/app_icon.dart';
+import 'package:phosphoricons_flutter/phosphoricons_flutter.dart';
 // Developed by Randerson Mayllon
 // Copyright © 2025.
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:opfan/core/auth/blocs/index.dart';
-import 'package:opfan/core/services/service_locator.dart';
+import 'package:opfan/app/di/injection.dart';
 import 'package:opfan/l10n/app_localizations.dart';
-import 'package:opfan/screens/auth/login_screen.dart';
-import 'package:opfan/screens/home/home_screen.dart';
-import 'package:opfan/screens/splash/splash_screen.dart';
+import 'package:opfan/features/auth/presentation/login_screen.dart';
+import 'package:opfan/features/home/presentation/home_screen.dart';
+import 'package:opfan/features/splash/presentation/splash_screen.dart';
+import 'package:opfan/features/onboarding/presentation/onboarding_screen.dart';
 
 class AppWrapper extends StatefulWidget {
   const AppWrapper({super.key});
@@ -41,6 +44,10 @@ class _AppWrapperState extends State<AppWrapper> {
             return const HomeScreen();
           }
 
+          if (state is AuthNeedsOnboarding) {
+            return const OnboardingScreen();
+          }
+
           if (state is AuthUnauthenticated) {
             return const LoginScreen();
           }
@@ -51,8 +58,8 @@ class _AppWrapperState extends State<AppWrapper> {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    const Icon(
-                      Icons.error_outline,
+                    const AppIcon(
+                      PhosphorIconsRegular.warningCircle,
                       size: 64,
                       color: Colors.red,
                     ),
@@ -79,7 +86,8 @@ class _AppWrapperState extends State<AppWrapper> {
                       onPressed: () {
                         _authBloc.add(const AuthClearCache());
                       },
-                      child: Text(AppLocalizations.of(context)!.clearDataAndContinue),
+                      child: Text(
+                          AppLocalizations.of(context)!.clearDataAndContinue),
                     ),
                   ],
                 ),

@@ -1,5 +1,5 @@
 import {onSchedule} from "firebase-functions/v2/scheduler";
-import {onCall, onRequest} from "firebase-functions/v2/https";
+import {onCall, onRequest, HttpsError} from "firebase-functions/v2/https";
 import * as admin from "firebase-admin";
 
 // Initialize Firebase Admin SDK
@@ -336,6 +336,14 @@ export const sendSanjiCookingNotification = onSchedule({
 // This function is called by the Flutter app to send custom notifications
 // Can send to all users or specific users
 export const sendCustomNotification = onCall(async (request) => {
+  if (!request.auth) {
+    throw new HttpsError("unauthenticated", "Must be authenticated");
+  }
+
+  if (!request.auth.token.admin) {
+    throw new HttpsError("permission-denied", "Admin access required");
+  }
+
   try {
     const {title, body, type, screen, userIds} = request.data as {
       title: string;
@@ -458,6 +466,26 @@ async function removeInvalidTokens(failedTokens: string[]) {
 // Useful for manual testing and debugging
 export const testNotification = onRequest(async (req, res) => {
   try {
+    const authHeader = req.headers.authorization;
+    if (!authHeader?.startsWith("Bearer ")) {
+      res.status(401).json({error: "Unauthorized"});
+      return;
+    }
+
+    const idToken = authHeader.split("Bearer ")[1];
+    let decodedToken: admin.auth.DecodedIdToken;
+    try {
+      decodedToken = await admin.auth().verifyIdToken(idToken);
+    } catch {
+      res.status(401).json({error: "Invalid token"});
+      return;
+    }
+
+    if (!decodedToken.admin) {
+      res.status(403).json({error: "Forbidden: admin access required"});
+      return;
+    }
+
     const {title = "Test", body = "This is a test notification"} = req.body;
 
     // Get only 5 tokens for testing

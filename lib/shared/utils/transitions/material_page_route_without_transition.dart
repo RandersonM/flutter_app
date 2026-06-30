@@ -1,0 +1,15 @@
+import 'package:flutter/material.dart';
+
+///
+/// Extends MaterialPageRoute to create e navigation route without transition
+/// animation.
+///
+class MaterialPageRouteWithoutTransition<T> extends MaterialPageRoute<T> {
+  MaterialPageRouteWithoutTransition(
+      {required super.builder, super.settings});
+
+  @override
+  Widget buildTransitions(BuildContext context, Animation<double> animation,
+          Animation<double> secondaryAnimation, Widget child) =>
+      child;
+}

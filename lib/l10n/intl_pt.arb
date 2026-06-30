@@ -9,7 +9,7 @@
         "example": "1"
       }
     }
-  }, 
+  },
   "bounty": "Recompensa",
   "@bounty": {
     "description": "Text show at bounty section on character detail screen",
@@ -63,13 +63,13 @@
     "description": "Text shown at search screen when there were no research done yet at search bar after one or filters have been applied",
     "type": "text",
     "placeholders": {}
-  }, 
+  },
   "noResultsFound": "Nenhum resultado encontrado para",
   "@noResultsFound": {
     "description": "Text shown at search screen when there were no results found at search bar after one or more filters have been applied",
     "type": "text",
     "placeholders": {}
-  },  
+  },
   "occupation": "{count, plural, =0 {Ocupação} =1 {Ocupação} other {Ocupações}}",
   "@occupation": {
     "description": "Text show at occupation section on character detail screen with pluralization",
@@ -99,7 +99,7 @@
     "type": "text",
     "placeholders": {}
   },
-  "expensesByCategory": "Despesas por Categoria",
+  "expensesByCategory": "Gastos por categoria",
   "@expensesByCategory": {
     "description": "Title for expenses breakdown section",
     "type": "text",
@@ -256,9 +256,9 @@
     "type": "text",
     "placeholders": {}
   },
-  "delete": "Deletar",
+  "delete": "Excluir",
   "@delete": {
-    "description": "Button text to delete an item",
+    "description": "Action to delete something",
     "type": "text",
     "placeholders": {}
   },
@@ -275,26 +275,21 @@
   },
   "devilFruit": "Fruta do Diabo",
   "@devilFruit": {
-    "description": "Label for devil fruit",
+    "description": "Label for devil fruit filter",
     "type": "text",
     "placeholders": {}
   },
-  "noDevilFruit": "Sem Fruta do Diabo",
+  "noDevilFruit": "Sem Akuma no Mi",
   "@noDevilFruit": {
-    "description": "Label for devil fruit",
+    "description": "Text shown when character has no devil fruit",
     "type": "text",
     "placeholders": {}
   },
   "crew": "{count, plural, =0 {Tripulação} =1 {Tripulação} other {Tripulações}}",
   "@crew": {
-    "description": "Label for crew with pluralization",
+    "description": "Label for crew filter",
     "type": "text",
-    "placeholders": {
-      "count": {
-        "type": "num",
-        "example": "1"
-      }
-    }
+    "placeholders": {}
   },
   "ariesSign": "Áries",
   "@ariesSign": {
@@ -370,7 +365,7 @@
   },
   "unknown": "Desconhecido",
   "@unknown": {
-    "description": "Unknown value",
+    "description": "Status option for unknown status",
     "type": "text",
     "placeholders": {}
   },
@@ -434,9 +429,9 @@
     "type": "text",
     "placeholders": {}
   },
-  "clearFilters": "Limpar Filtros",
+  "clearFilters": "Limpar filtros",
   "@clearFilters": {
-    "description": "Clear filters button text",
+    "description": "Button text to clear all filters",
     "type": "text",
     "placeholders": {}
   },
@@ -532,7 +527,7 @@
   },
   "description": "Descrição",
   "@description": {
-    "description": "Description label",
+    "description": "Label for description field",
     "type": "text",
     "placeholders": {}
   },
@@ -592,7 +587,7 @@
   },
   "age": "Idade",
   "@age": {
-    "description": "Label for character age field",
+    "description": "Label do campo de idade.",
     "type": "text",
     "placeholders": {}
   },
@@ -698,12 +693,6 @@
     "type": "text",
     "placeholders": {}
   },
-  "unknown": "Desconhecido",
-  "@unknown": {
-    "description": "Status option for unknown status",
-    "type": "text",
-    "placeholders": {}
-  },
   "affiliations": "Afiliações",
   "@affiliations": {
     "description": "Label for affiliations selection",
@@ -740,16 +729,11 @@
     "type": "text",
     "placeholders": {}
   },
-  "pirate": "{count, plural, =0 {Pirata} =1 {Pirata} other {Piratas}}",
+  "pirate": "Pirata",
   "@pirate": {
-    "description": "Affiliation option for pirate with pluralization",
+    "description": "Occupation option for pirate",
     "type": "text",
-    "placeholders": {
-      "count": {
-        "type": "num",
-        "example": "1"
-      }
-    }
+    "placeholders": {}
   },
   "pirateAlliance": "Aliança Pirata",
   "@pirateAlliance": {
@@ -772,12 +756,6 @@
   "viceCaptain": "Vice-Capitão",
   "@viceCaptain": {
     "description": "Occupation option for vice-captain",
-    "type": "text",
-    "placeholders": {}
-  },
-  "pirate": "Pirata",
-  "@pirate": {
-    "description": "Occupation option for pirate",
     "type": "text",
     "placeholders": {}
   },
@@ -871,15 +849,15 @@
     "type": "text",
     "placeholders": {}
   },
-  "createCrew": "Criar nova tripulação",
+  "createCrew": "Criar Tripulação",
   "@createCrew": {
-    "description": "Tooltip for create new crew",
+    "description": "Title for create crew screen",
     "type": "text",
     "placeholders": {}
   },
   "cancel": "Cancelar",
   "@cancel": {
-    "description": "Button text to cancel action",
+    "description": "Cancel button text",
     "type": "text",
     "placeholders": {}
   },
@@ -1232,34 +1210,18 @@
     "type": "text",
     "placeholders": {}
   },
-  "crewUpdateError": "Erro ao atualizar tripulação: {message}",
+  "crewUpdateError": "Erro ao atualizar tripulação",
   "@crewUpdateError": {
     "description": "Error message when crew update fails",
     "type": "text",
-    "placeholders": {
-      "message": {
-        "type": "String",
-        "example": "Erro de rede"
-      }
-    }
+    "placeholders": {}
   },
   "@filterBy": {
     "description": "Title for filter dialog",
     "type": "text",
     "placeholders": {}
   },
-  "devilFruit": "Fruta do Diabo",
-  "@devilFruit": {
-    "description": "Label for devil fruit filter",
-    "type": "text",
-    "placeholders": {}
-  },
   "crewTeam": "Equipe",
-  "@crew": {
-    "description": "Label for crew filter",
-    "type": "text",
-    "placeholders": {}
-  },
   "filterByDevilFruit": "Filtrar por Fruta do Diabo",
   "@filterByDevilFruit": {
     "description": "Title for devil fruit filter dialog",
@@ -1272,21 +1234,9 @@
     "type": "text",
     "placeholders": {}
   },
-  "clearFilters": "Limpar filtros",
-  "@clearFilters": {
-    "description": "Button text to clear all filters",
-    "type": "text",
-    "placeholders": {}
-  },
   "addTag": "Adicionar Tag",
   "@addTag": {
     "description": "Title for add tag dialog",
-    "type": "text",
-    "placeholders": {}
-  },
-  "createCrew": "Criar Tripulação",
-  "@createCrew": {
-    "description": "Title for create crew screen",
     "type": "text",
     "placeholders": {}
   },
@@ -1488,12 +1438,6 @@
     "type": "text",
     "placeholders": {}
   },
-  "crewUpdateError": "Erro ao atualizar tripulação",
-  "@crewUpdateError": {
-    "description": "Error message when crew update fails",
-    "type": "text",
-    "placeholders": {}
-  },
   "loginError": "Erro de login",
   "@loginError": {
     "description": "Error message for login",
@@ -1597,7 +1541,7 @@
   },
   "other": "Outro",
   "@other": {
-    "description": "Fighting type option for other",
+    "description": "Category name for other",
     "type": "text",
     "placeholders": {}
   },
@@ -1675,7 +1619,7 @@
   },
   "add": "Adicionar",
   "@add": {
-    "description": "Button text for add action",
+    "description": "Texto do botão adicionar.",
     "type": "text",
     "placeholders": {}
   },
@@ -1781,12 +1725,6 @@
       }
     }
   },
-  "description": "Descrição",
-  "@description": {
-    "description": "Label for description field",
-    "type": "text",
-    "placeholders": {}
-  },
   "profilePhotoTapped": "Foto do perfil tocada",
   "@profilePhotoTapped": {
     "description": "Snackbar message when profile photo is tapped",
@@ -1881,12 +1819,6 @@
         "example": "1"
       }
     }
-  },
-  "noDevilFruit": "Sem Akuma no Mi",
-  "@noDevilFruit": {
-    "description": "Text shown when character has no devil fruit",
-    "type": "text",
-    "placeholders": {}
   },
   "newDuel": "Novo Duelo",
   "@newDuel": {
@@ -2009,8 +1941,9 @@
   },
   "tags": "Tags",
   "@tags": {
-    "description": "Título da seção de tags.",
-    "type": "text"
+    "description": "Title for tags section",
+    "type": "text",
+    "placeholders": {}
   },
   "noTagsAdded": "Nenhuma tag adicionada",
   "@noTagsAdded": {
@@ -2184,7 +2117,7 @@
   },
   "health": "Saúde",
   "@health": {
-    "description": "Categoria de gastos com saúde.",
+    "description": "Category name for health",
     "type": "text",
     "placeholders": {}
   },
@@ -2196,19 +2129,7 @@
   },
   "category": "Categoria",
   "@category": {
-    "description": "Rótulo para dropdown de categoria no dialog de gastos.",
-    "type": "text",
-    "placeholders": {}
-  },
-  "cancel": "Cancelar",
-  "@cancel": {
-    "description": "Texto do botão cancelar.",
-    "type": "text",
-    "placeholders": {}
-  },
-  "add": "Adicionar",
-  "@add": {
-    "description": "Texto do botão adicionar.",
+    "description": "Label for category",
     "type": "text",
     "placeholders": {}
   },
@@ -2220,7 +2141,7 @@
   },
   "save": "Salvar",
   "@save": {
-    "description": "Rótulo para campo de entrada de valor.",
+    "description": "Save button text",
     "type": "text",
     "placeholders": {}
   },
@@ -2254,13 +2175,13 @@
     "type": "text",
     "placeholders": {}
   },
-  "savingsPercentage": "da Renda",
+  "savingsPercentage": "Percentual de Economia",
   "@savingsPercentage": {
     "description": "Rótulo para porcentagem da poupança em relação à renda.",
     "type": "text",
     "placeholders": {}
   },
-  "yearlySavings": "Acumulado em 1 Ano",
+  "yearlySavings": "Economias Anuais",
   "@yearlySavings": {
     "description": "Rótulo para valor acumulado em um ano.",
     "type": "text",
@@ -2286,16 +2207,11 @@
   },
   "workout": "Treinos",
   "@workout": {
-    "description": "Treino.",
-    "type": "text",
-    "placeholders": {}
-  },
-  "workout_title_screen": "Treinando com o Zoro",
-  "@workout": {
     "description": "Workout title screen.",
     "type": "text",
     "placeholders": {}
   },
+  "workout_title_screen": "Treinando com o Zoro",
   "workout_health_assessment": "Avaliação de Saúde Completa",
   "@workout_health_assessment": {
     "description": "Título principal da tela de avaliação de saúde.",
@@ -3121,13 +3037,13 @@
     "type": "text",
     "placeholders": {}
   },
-  "sanjiTipTitle": "Dica do Sanji",
+  "sanjiTipTitle": "Receita Personalizadas",
   "@sanjiTipTitle": {
     "description": "Título da seção de dica do Sanji.",
     "type": "text",
     "placeholders": {}
   },
-  "sanjiTipText": "Consulte um nutricionista para um plano alimentar personalizado baseado nestes cálculos!",
+  "sanjiTipText": "Clique para receber uma receita personalizada baseada nos seus dados nutricionais!",
   "@sanjiTipText": {
     "description": "Texto da dica do Sanji.",
     "type": "text",
@@ -3234,12 +3150,6 @@
     "type": "text",
     "placeholders": {}
   },
-  "age": "Idade",
-  "@age": {
-    "description": "Label do campo de idade.",
-    "type": "text",
-    "placeholders": {}
-  },
   "enterAge": "Digite sua idade",
   "@enterAge": {
     "description": "Mensagem de validação para campo de idade.",
@@ -3336,12 +3246,6 @@
     "type": "text",
     "placeholders": {}
   },
-  "veryActive": "Muito Ativo",
-  "@veryActive": {
-    "description": "Opção de nível de atividade muito ativo.",
-    "type": "text",
-    "placeholders": {}
-  },
   "underweight": "Abaixo do Peso",
   "@underweight": {
     "description": "Categoria de IMC para abaixo do peso.",
@@ -3420,7 +3324,7 @@
     "type": "text",
     "placeholders": {}
   },
-  "seeAll": "Ver Todos",
+  "seeAll": "Ver todos",
   "@seeAll": {
     "description": "Button text to see all objectives",
     "type": "text",
@@ -3486,27 +3390,15 @@
     "type": "text",
     "placeholders": {}
   },
-  "category": "Categoria",
-  "@category": {
-    "description": "Label for category",
-    "type": "text",
-    "placeholders": {}
-  },
   "notes": "Anotações",
   "@notes": {
     "description": "Title for notes section",
     "type": "text",
     "placeholders": {}
   },
-  "tags": "Tags",
-  "@tags": {
-    "description": "Title for tags section",
-    "type": "text",
-    "placeholders": {}
-  },
-  "completed": "Concluído",
+  "completed": "Concluídos",
   "@completed": {
-    "description": "Status for completed objective",
+    "description": "Label for completed objectives",
     "type": "text",
     "placeholders": {}
   },
@@ -3546,21 +3438,9 @@
     "type": "text",
     "placeholders": {}
   },
-  "health": "Saúde",
-  "@health": {
-    "description": "Category name for health",
-    "type": "text",
-    "placeholders": {}
-  },
   "finance": "Finanças",
   "@finance": {
     "description": "Category name for finance",
-    "type": "text",
-    "placeholders": {}
-  },
-  "other": "Outro",
-  "@other": {
-    "description": "Category name for other",
     "type": "text",
     "placeholders": {}
   },
@@ -3603,12 +3483,6 @@
       }
     }
   },
-  "delete": "Excluir",
-  "@delete": {
-    "description": "Action to delete something",
-    "type": "text",
-    "placeholders": {}
-  },
   "deleteObjective": "Excluir Objetivo",
   "@deleteObjective": {
     "description": "Title for delete objective dialog",
@@ -3625,18 +3499,6 @@
         "example": "Study Flutter"
       }
     }
-  },
-  "cancel": "Cancelar",
-  "@cancel": {
-    "description": "Cancel button text",
-    "type": "text",
-    "placeholders": {}
-  },
-  "completed": "Concluídos",
-  "@completed": {
-    "description": "Label for completed objectives",
-    "type": "text",
-    "placeholders": {}
   },
   "all": "Todos",
   "@all": {
@@ -3665,12 +3527,6 @@
   "enterGoalTitle": "Digite o título do objetivo",
   "@enterGoalTitle": {
     "description": "Hint for goal title field",
-    "type": "text",
-    "placeholders": {}
-  },
-  "description": "Descrição",
-  "@description": {
-    "description": "Label for description field",
     "type": "text",
     "placeholders": {}
   },
@@ -3703,10 +3559,391 @@
     "type": "text",
     "placeholders": {}
   },
-  "save": "Salvar",
-  "@save": {
-    "description": "Save button text",
+  "onboardingBiologicalSex": "Por favor, selecione seu sexo biológico.",
+  "onboardingFillAllFields": "Por favor, preencha todos os campos obrigatórios.",
+  "male": "Masculino",
+  "female": "Feminino",
+  "recommendations": "Recomendações",
+  "editPlan": "Editar Plano",
+  "workoutPlanSaved": "Plano de treino salvo com sucesso!",
+  "addSplit": "Adicionar Split",
+  "splitNameHint": "Nome do split (ex: Treino A)",
+  "exerciseHint": "Exercício",
+  "setsRepsHint": "3x15",
+  "noAssessmentFound": "Nenhuma avaliação encontrada para o mês atual",
+  "addAction": "Adicionar",
+  "selectRace": "Selecione a Raça",
+  "styleName": "Nome do Estilo",
+  "fightingType": "Tipo de Luta",
+  "addWeapon": "Adicionar Arma",
+  "addAttack": "Adicionar Ataque",
+  "threeSwordsStyleHint": "Ex: Estilo das Três Espadas",
+  "englishLang": "English",
+  "portugueseLang": "Português",
+  "bodyComposition": "Composição Corporal",
+  "bodyData": "Dados Corporais",
+  "createFirstGoal": "Criar Primeiro Objetivo",
+  "cancelAction": "Cancelar",
+  "saveAction": "Salvar",
+  "clearAction": "Limpar",
+  "updateBodyComposition": "Atualizar Composição Corporal",
+  "tryAgainAction": "Tentar novamente",
+  "foodExampleHint": "Ex: frango, arroz, cebola...",
+  "mealType": "Tipo de Refeição",
+  "dietaryRestrictions": "Restrições Alimentares",
+  "noIncomeRegistered": "Nenhuma receita registrada",
+  "setupFinances": "Configurar finanças",
+  "viewDetails": "Ver Detalhes",
+  "editData": "Editar dados",
+  "monthBalance": "Balanço do Mês",
+  "incomes": "Receitas",
+  "reserves": "Reserva",
+  "categories": "Categorias",
+  "promptPirateFlag": "Digite um prompt para gerar a bandeira pirata",
+  "flagGeneratedSuccess": "Bandeira pirata gerada com sucesso!",
+  "promptShip": "Digite um prompt para gerar o barco",
+  "shipGeneratedSuccess": "Barco gerado com sucesso!",
+  "createCrewTitle": "Criar Tripulação",
+  "crewCreatedSuccess": "Tripulação criada com sucesso!",
+  "crewTagsHint": "Ex: Piratas, Aventureiros, etc.",
+  "crewNameRequired": "Nome da Tripulação *",
+  "crewDescriptionHint": "Conte um pouco sobre sua tripulação...",
+  "shipNameLabel": "Nome do Barco",
+  "pirateFlagLabel": "Bandeira Pirata",
+  "crewShipLabel": "Barco da Tripulação",
+  "tagNameLabel": "Nome da tag",
+  "customCrewHint": "Ex: Mugiwaras Custom",
+  "merryShipHint": "Ex: Going Merry",
+  "goHomeAction": "Voltar ao Início",
+  "aiGeneratedImage": "Imagem Gerada por IA",
+  "monthlyReportFinances": "💰 Relatório Mensal - Nami Finances",
+  "zoroWorkoutNotif": "⚔️ Treino do Zoro",
+  "sanjiTipNotif": "👨‍🍳 Dica do Sanji",
+  "featuredCharacterNotif": "🏴‍☠️ Personagem em Destaque",
+  "financialTipNotif": "💰 Dica Financeira",
+  "characterDuelNotif": "🎯 Duelo de Personagens",
+  "checkingAuthStatus": "Verificando status de autenticação...",
+  "signingInAuth": "Entrando...",
+  "signingOutAuth": "Saindo...",
+  "createWorkoutPlan": "Criar Plano de Treino",
+  "createCustomPlanTap": "Toque para criar seu plano personalizado",
+  "defaultWorkoutName": "Treino",
+  "todayWorkoutCompleted": "Treino de Hoje (Concluído)",
+  "todayWorkout": "Treino de Hoje",
+  "exerciseCount": "{count, plural, =1 {1 exercício} other {{count} exercícios}}",
+  "completedWithCheck": "✅ Concluído",
+  "today": "Hoje",
+  "noExercisesInSplit": "Nenhum exercício neste split.",
+  "viewProgress": "Ver Progresso",
+  "startWorkout": "Iniciar Treino",
+  "increaseProgressTitle": "Aumentar Progresso",
+  "decreaseProgressTitle": "Diminuir Progresso",
+  "objectiveLabel": "Objetivo: {title}",
+  "currentProgressLabel": "Progresso atual: ",
+  "newProgressLabel": "Novo progresso: ",
+  "planUpdatesLabel": "Atualizações sobre o plano:",
+  "progressIncreaseHint": "O que você fez para progredir? (ex: estudou 2 horas, completou exercícios...)",
+  "progressDecreaseHint": "Por que o progresso diminuiu? (ex: atraso, dificuldade encontrada...)",
+  "describeWhatHappened": "Por favor, descreva o que aconteceu",
+  "increaseAction": "Aumentar",
+  "decreaseAction": "Diminuir",
+  "emptyTimelineSubtitle": "Comece criando seu primeiro objetivo para organizar suas metas de estudo e acompanhar seu progresso.",
+  "biologicalSexLabel": "Sexo Biológico",
+  "objectiveTitle": "Objetivo",
+  "activityLevelLabel": "Nível de Atividade Física",
+  "circumferencesLabel": "Circunferências",
+  "optionalLabel": "Opcional",
+  "ageLabel": "Idade",
+  "heightLabel": "Altura",
+  "currentWeightLabel": "Peso Atual",
+  "waistLabel": "Cintura",
+  "chestLabel": "Peito",
+  "armLabel": "Braço",
+  "hipLabel": "Quadril",
+  "thighLabel": "Coxa",
+  "monthOverview": "Visão geral do mês",
+  "balanceChart": "Gráfico de balanço",
+  "incomesLabel": "Receitas",
+  "expensesLabel": "Despesas",
+  "reservesLabel": "Reserva",
+  "totalReceived": "Total recebido",
+  "totalSpent": "Total gasto",
+  "noIncomesRegistered": "Nenhuma receita registrada",
+  "errorPrefix": "Erro: {error}",
+  "errorGeneratingFlag": "Erro ao gerar bandeira: {error}",
+  "errorGeneratingShip": "Erro ao gerar barco: {error}",
+  "crewDeletedMessage": "Tripulação \"{name}\" excluída",
+  "averageBountyLabel": "Bounty Média",
+  "rolesLabel": "Funções",
+  "updateBodyCompositionLabel": "Atualizar Composição Corporal",
+  "linkLabel": "Link: {url}",
+  "saveLabel": "Salvar",
+  "ageValidator": "Insira sua idade",
+  "heightValidator": "Insira sua altura",
+  "weightValidator": "Insira seu peso",
+  "goalsAndMeasuresTitle": "Metas & Medidas",
+  "goalsAndMeasuresSubtitle": "Defina seu objetivo e adicione medidas para rastrear seu progresso com Sanji & Zoro.",
+  "goalLoseWeight": "Emagrecer",
+  "goalMaintain": "Manter Peso",
+  "goalGainMuscle": "Ganhar Massa",
+  "activitySedentary": "Sedentário",
+  "activityLight": "Leve",
+  "activityModerate": "Moderado",
+  "activityIntense": "Intenso",
+  "activityVeryIntense": "Muito Intenso",
+  "expensesDetails": "Detalhes dos Gastos",
+  "totalExpensesLabel": "Total dos Gastos:",
+  "copyAction": "Copiar",
+  "cookingTipsHint": "Ex: frango, arroz, cebola...",
+  "todayCompleted": "Hoje (concluído)",
+  "assessmentResultsTitle": "Resultados da Avaliação",
+  "topRecommendationsTitle": "Principais Recomendações",
+  "weekProgressTitle": "Progresso da Semana",
+  "streakTitle": "Ofensiva",
+  "thisMonthSuffix": "este mês",
+  "daysSuffix": "dias",
+  "doneTodayLabel": "Feito hoje",
+  "pendingLabel": "Pendente",
+  "onlyCurrentMonthEditAllowed": "Só é possível editar finanças do mês atual",
+  "saveWithNami": "Economize com a Nami",
+  "configureYourFinances": "Configure suas finanças do mês e acompanhe\nseu progresso em tempo real.",
+  "incomeLabel": "Renda",
+  "noExpensesRegistered": "Nenhum gasto cadastrado",
+  "categoryFixed": "Fixo",
+  "categoryFood": "Alimentação",
+  "categoryTransport": "Transporte",
+  "categoryEntertainment": "Lazer",
+  "categoryHealth": "Saúde",
+  "categoryOther": "Outros",
+  "availableLabel": "Disponível",
+  "savingsLabel": "Economias",
+  "incomeDetailsTitle": "Detalhes da Renda",
+  "savingsDetailsTitle": "Detalhes das Economias",
+  "monthSavings": "Economias do Mês",
+  "financialMetricsTitle": "Métricas Financeiras",
+  "dailyAvailableAmount": "Valor Diário Disponível",
+  "janAbbr": "Jan",
+  "febAbbr": "Fev",
+  "marAbbr": "Mar",
+  "aprAbbr": "Abr",
+  "mayAbbr": "Mai",
+  "junAbbr": "Jun",
+  "julAbbr": "Jul",
+  "augAbbr": "Ago",
+  "sepAbbr": "Set",
+  "octAbbr": "Out",
+  "novAbbr": "Nov",
+  "decAbbr": "Dez",
+  "availableBalance": "Saldo Disponível",
+  "currentMonthLabel": "Mês Atual",
+  "yesLabel": "Sim",
+  "noLabel": "Não",
+  "workoutStatusDefeated": "Derrotado",
+  "workoutStatusOnTarget": "Na Meta!",
+  "zoroQuoteDefeated": "\"Eu nunca vou perder novamente.\"",
+  "zoroQuoteProud": "\"Não importa o que aconteça, eu nunca vou perder novamente.\"",
+  "zoroStatusDefeated": "Zoro está derrotado...",
+  "zoroStatusProud": "Zoro está orgulhoso!",
+  "workoutsRemaining": "{count, plural, =1{Falta 1 treino esta semana} other{Faltam {count} treinos esta semana}}",
+  "weeklyGoalCompleted": "Meta semanal concluída! 🎯",
+  "workoutDaysCount": "{done} / {total} dias",
+  "vegapunk": "Vegapunk",
+  "@vegapunk": {
+    "description": "Name/label for the Vegapunk chat feature",
     "type": "text",
     "placeholders": {}
-  }
+  },
+  "vegapunkChatTitle": "Perguntar ao Vegapunk",
+  "@vegapunkChatTitle": {
+    "description": "Title for the Ask Vegapunk chat screen",
+    "type": "text",
+    "placeholders": {}
+  },
+  "vegapunkChatHint": "Pergunte qualquer coisa...",
+  "@vegapunkChatHint": {
+    "description": "Hint text for the chat input field",
+    "type": "text",
+    "placeholders": {}
+  },
+  "vegapunkModelDownloadTitle": "Baixando o cérebro do Vegapunk",
+  "@vegapunkModelDownloadTitle": {
+    "description": "Title shown during model download",
+    "type": "text",
+    "placeholders": {}
+  },
+  "vegapunkModelDownloadSubtitle": "Download único (~2,4 GB). O modelo roda totalmente no seu dispositivo.",
+  "@vegapunkModelDownloadSubtitle": {
+    "description": "Subtitle shown during model download",
+    "type": "text",
+    "placeholders": {}
+  },
+  "vegapunkModelLoadingTitle": "Ativando Vegapunk...",
+  "@vegapunkModelLoadingTitle": {
+    "description": "Title shown while loading the model",
+    "type": "text",
+    "placeholders": {}
+  },
+  "vegapunkModelErrorTitle": "Vegapunk falhou ao inicializar",
+  "@vegapunkModelErrorTitle": {
+    "description": "Title shown when model initialization fails",
+    "type": "text",
+    "placeholders": {}
+  },
+  "vegapunkRetry": "Tentar novamente",
+  "@vegapunkRetry": {
+    "description": "Retry button label",
+    "type": "text",
+    "placeholders": {}
+  },
+  "vegapunkCancel": "Cancelar",
+  "@vegapunkCancel": {
+    "description": "Cancel button label",
+    "type": "text",
+    "placeholders": {}
+  },
+  "vegapunkChatEmpty": "Vegapunk está pronto. Me pergunte qualquer coisa.",
+  "@vegapunkChatEmpty": {
+    "description": "Empty state message when chat has no messages",
+    "type": "text",
+    "placeholders": {}
+  },
+  "vegapunkStopGeneration": "Parar",
+  "@vegapunkStopGeneration": {
+    "description": "Stop generation button label",
+    "type": "text",
+    "placeholders": {}
+  },
+  "vegapunkSatelliteStella": "Stella (Original)",
+  "@vegapunkSatelliteStella": {
+    "description": "Vegapunk Satellite Stella",
+    "type": "text",
+    "placeholders": {}
+  },
+  "vegapunkSatelliteShaka": "Shaka (Bondade)",
+  "@vegapunkSatelliteShaka": {
+    "description": "Vegapunk Satellite Shaka",
+    "type": "text",
+    "placeholders": {}
+  },
+  "vegapunkSatelliteLilith": "Lilith (Maldade)",
+  "@vegapunkSatelliteLilith": {
+    "description": "Vegapunk Satellite Lilith",
+    "type": "text",
+    "placeholders": {}
+  },
+  "vegapunkSatelliteEdison": "Edison (Pensamento)",
+  "@vegapunkSatelliteEdison": {
+    "description": "Vegapunk Satellite Edison",
+    "type": "text",
+    "placeholders": {}
+  },
+  "vegapunkSatellitePythagoras": "Pythagoras (Sabedoria)",
+  "@vegapunkSatellitePythagoras": {
+    "description": "Vegapunk Satellite Pythagoras",
+    "type": "text",
+    "placeholders": {}
+  },
+  "vegapunkSatelliteAtlas": "Atlas (Violência)",
+  "@vegapunkSatelliteAtlas": {
+    "description": "Vegapunk Satellite Atlas",
+    "type": "text",
+    "placeholders": {}
+  },
+  "vegapunkSatelliteYork": "York (Ganância)",
+  "@vegapunkSatelliteYork": {
+    "description": "Vegapunk Satellite York",
+    "type": "text",
+    "placeholders": {}
+  },
+  "vegapunkThinkingMode": "Modo Pensamento",
+  "@vegapunkThinkingMode": {
+    "description": "Label for Vegapunk Thinking Mode toggle switch",
+    "type": "text",
+    "placeholders": {}
+  },
+  "vegapunkThinkingModeDesc": "Ativa o raciocínio lógico (aumenta memória e latência)",
+  "@vegapunkThinkingModeDesc": {
+    "description": "Description text for Vegapunk Thinking Mode toggle switch",
+    "type": "text",
+    "placeholders": {}
+  },
+  "cookingPersonalizedMealTitle": "Refeição Personalizada com o Sanji",
+  "@cookingPersonalizedMealTitle": {
+    "description": "Header card title on the cooking tips screen"
+  },
+  "cookingPersonalizedMealSubtitle": "Adicione os ingredientes que você tem e receba uma receita personalizada baseada nos seus dados nutricionais!",
+  "@cookingPersonalizedMealSubtitle": {
+    "description": "Header card subtitle on the cooking tips screen"
+  },
+  "cookingAvailableIngredients": "Ingredientes Disponíveis",
+  "@cookingAvailableIngredients": {
+    "description": "Section title for the ingredient input area"
+  },
+  "cookingPersonalizedMeal": "Refeição Personalizada",
+  "@cookingPersonalizedMeal": {
+    "description": "Card title for the personalized meal section"
+  },
+  "cookingTargetCaloriesInfo": "Calorias alvo: {calories} kcal | Objetivo: {goal}",
+  "@cookingTargetCaloriesInfo": {
+    "description": "Info line showing target calories and goal",
+    "placeholders": {
+      "calories": { "type": "String" },
+      "goal": { "type": "String" }
+    }
+  },
+  "cookingGeneratingMeal": "Gerando refeição...",
+  "@cookingGeneratingMeal": {
+    "description": "Loading label on the generate meal button"
+  },
+  "cookingGenerateMeal": "Gerar Refeição",
+  "@cookingGenerateMeal": {
+    "description": "Label on the generate meal button"
+  },
+  "cookingPersonalizedRecipeTitle": "Receita Personalizada - {mealType}",
+  "@cookingPersonalizedRecipeTitle": {
+    "description": "Title of the result card showing the personalized recipe",
+    "placeholders": {
+      "mealType": { "type": "String" }
+    }
+  },
+  "cookingGoalMaintenance": "Manter peso",
+  "@cookingGoalMaintenance": {
+    "description": "Display label for the maintenance goal"
+  },
+  "cookingGoalWeightLoss": "Perder peso",
+  "@cookingGoalWeightLoss": {
+    "description": "Display label for the weight-loss goal"
+  },
+  "cookingGoalMuscleGain": "Ganhar massa muscular",
+  "@cookingGoalMuscleGain": {
+    "description": "Display label for the muscle-gain goal"
+  },
+  "mealTypeBreakfast": "Café da manhã",
+  "@mealTypeBreakfast": { "description": "Meal type option" },
+  "mealTypeMorningSnack": "Lanche da manhã",
+  "@mealTypeMorningSnack": { "description": "Meal type option" },
+  "mealTypeLunch": "Almoço",
+  "@mealTypeLunch": { "description": "Meal type option" },
+  "mealTypeAfternoonSnack": "Café da tarde",
+  "@mealTypeAfternoonSnack": { "description": "Meal type option" },
+  "mealTypeDinner": "Jantar",
+  "@mealTypeDinner": { "description": "Meal type option" },
+  "mealTypeDessert": "Sobremesa",
+  "@mealTypeDessert": { "description": "Meal type option" },
+  "mealTypeNightSnack": "Lanche noturno",
+  "@mealTypeNightSnack": { "description": "Meal type option" },
+  "dietaryRestrictionNone": "Sem restrições",
+  "@dietaryRestrictionNone": { "description": "Dietary restriction option — no restrictions" },
+  "dietaryRestrictionVegetarian": "Vegetariano",
+  "@dietaryRestrictionVegetarian": { "description": "Dietary restriction option" },
+  "dietaryRestrictionVegan": "Vegano",
+  "@dietaryRestrictionVegan": { "description": "Dietary restriction option" },
+  "dietaryRestrictionGlutenFree": "Sem glúten",
+  "@dietaryRestrictionGlutenFree": { "description": "Dietary restriction option" },
+  "dietaryRestrictionLactoseFree": "Sem lactose",
+  "@dietaryRestrictionLactoseFree": { "description": "Dietary restriction option" },
+  "dietaryRestrictionLowCarb": "Baixo carboidrato",
+  "@dietaryRestrictionLowCarb": { "description": "Dietary restriction option" },
+  "dietaryRestrictionHighProtein": "Alto teor proteico",
+  "@dietaryRestrictionHighProtein": { "description": "Dietary restriction option" }
 }

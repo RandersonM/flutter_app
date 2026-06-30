@@ -1,7 +1,8 @@
 import 'package:opfan/l10n/app_localizations.dart';
 
 class CharacterLocalizationMapper {
-  static String mapOccupationToLocalized(String occupation, AppLocalizations l10n) {
+  static String mapOccupationToLocalized(
+      String occupation, AppLocalizations l10n) {
     switch (occupation.toLowerCase()) {
       case 'captain':
         return l10n.captain;
@@ -42,9 +43,10 @@ class CharacterLocalizationMapper {
       default:
         return occupation;
     }
-  } 
+  }
 
-  static String mapLocalizedToOccupation(String localizedOccupation, AppLocalizations l10n) {
+  static String mapLocalizedToOccupation(
+      String localizedOccupation, AppLocalizations l10n) {
     if (localizedOccupation == l10n.captain) return 'captain';
     if (localizedOccupation == l10n.viceCaptain) return 'vicecaptain';
     if (localizedOccupation == l10n.admiral) return 'admiral';
@@ -59,7 +61,8 @@ class CharacterLocalizationMapper {
     if (localizedOccupation == l10n.carpenter) return 'carpenter';
     if (localizedOccupation == l10n.archaeologist) return 'archaeologist';
     if (localizedOccupation == l10n.sharpshooter) return 'sharpshooter';
-    return localizedOccupation.toLowerCase(); // Return lowercase if no mapping found
+    return localizedOccupation
+        .toLowerCase(); // Return lowercase if no mapping found
   }
 
   static String mapHakiToLocalized(String haki, AppLocalizations l10n) {
@@ -75,10 +78,17 @@ class CharacterLocalizationMapper {
     }
   }
 
-  static String mapLocalizedToHaki(String localizedHaki, AppLocalizations l10n) {
-    if (localizedHaki == l10n.haoshokuHaki) return 'haoshoku haki (king\'s haki)';
-    if (localizedHaki == l10n.busoshokuHaki) return 'busoshoku haki (armament haki)';
-    if (localizedHaki == l10n.kenbunshokuHaki) return 'kenbunshoku haki (observation haki)';
+  static String mapLocalizedToHaki(
+      String localizedHaki, AppLocalizations l10n) {
+    if (localizedHaki == l10n.haoshokuHaki) {
+      return 'haoshoku haki (king\'s haki)';
+    }
+    if (localizedHaki == l10n.busoshokuHaki) {
+      return 'busoshoku haki (armament haki)';
+    }
+    if (localizedHaki == l10n.kenbunshokuHaki) {
+      return 'kenbunshoku haki (observation haki)';
+    }
     return localizedHaki.toLowerCase(); // Return lowercase if no mapping found
   }
 
@@ -302,4 +312,4 @@ class CharacterLocalizationMapper {
       List<String> hakiList, AppLocalizations l10n) {
     return hakiList.map((haki) => mapHakiToLocalized(haki, l10n)).toList();
   }
-} 
+}

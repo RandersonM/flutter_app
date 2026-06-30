@@ -1,57 +1,65 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:hive_flutter/hive_flutter.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:opfan/core/auth/models/user_model.dart';
-import 'package:opfan/screens/one_piece/blocs/search_cubit.dart';
-import 'package:opfan/core/services/environment_service.dart';
-import 'package:opfan/core/services/service_locator.dart';
-import 'package:opfan/core/services/notification_service.dart';
-import 'package:opfan/core/services/navigation_service.dart';
-import 'package:opfan/core/models/one_piece/today_character.dart';
-import 'package:opfan/core/models/theme_model.dart';
-import 'package:opfan/core/services/theme_service.dart';
+import 'package:opfan/features/one_piece/bloc/search_cubit.dart';
+import 'package:opfan/core/services/index.dart';
+import 'package:opfan/app/di/injection.dart';
+import 'package:opfan/core/theme/cubit/theme_cubit.dart';
+import 'package:opfan/core/theme/cubit/theme_state.dart';
+import 'package:opfan/core/locale/cubit/locale_cubit.dart';
+import 'package:opfan/core/locale/cubit/locale_state.dart';
 import 'l10n/app_localizations.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'firebase_options.dart';
 
-import 'package:opfan/screens/one_piece/blocs/characters_cubit.dart';
+import 'package:opfan/features/one_piece/bloc/characters_cubit.dart';
 import 'package:opfan/core/auth/app_wrapper.dart';
 import 'package:opfan/core/auth/blocs/index.dart';
 
-import 'package:opfan/utils/app_routes.dart';
+import 'package:opfan/shared/utils/app_routes.dart';
 
-import 'package:opfan/utils/theme.dart';
-import 'core/services/locale_service.dart';
-import 'package:opfan/core/models/nami_finances_model.dart';
+import 'package:opfan/shared/utils/theme.dart';
+
+import 'package:opfan/app/app_bloc_observer.dart';
+import 'package:opfan/shared/widgets/global_error_boundary.dart';
+import 'package:flutter_gemma/flutter_gemma.dart';
+import 'package:flutter_gemma_litertlm/flutter_gemma_litertlm.dart';
+import 'package:flutter_gemma_embeddings/flutter_gemma_embeddings.dart';
+import 'package:flutter_gemma_rag_sqlite/flutter_gemma_rag_sqlite.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  
-  await Hive.initFlutter();
 
-  Hive.registerAdapter(TodayCharacterAdapter());
-  Hive.registerAdapter(UserModelAdapter());
-  Hive.registerAdapter(ThemeSettingsAdapter());
-  
-  Hive.registerAdapter(NamiFinancesModelAdapter());
-  Hive.registerAdapter(MonthlyIncomeModelAdapter());
-  Hive.registerAdapter(ExpenseModelAdapter());
-  Hive.registerAdapter(ExpenseCategoryAdapter());
+  Bloc.observer = AppBlocObserver();
 
-  await LocaleService.loadLocale();
+  await setupDependencies();
+  await getIt<IStorageService>().initialize();
+
+  await getIt<ILocaleService>().loadLocale();
 
   try {
+    debugPrint('MAIN: Starting Firebase, Env, Theme initialize...');
     await Future.wait([
       Firebase.initializeApp(
         options: DefaultFirebaseOptions.currentPlatform,
       ),
-      EnvironmentService.initialize(),
-      configureDependencies(),
-      ThemeService.initialize(),
+      getIt<IEnvironmentService>().initialize(),
+      getIt<IThemeService>().initialize(),
     ]);
+    debugPrint('MAIN: Firebase, Env, Theme initialized.');
 
-    await getIt<NotificationService>().initialize();
+    debugPrint('MAIN: Initializing NotificationService...');
+    await getIt<INotificationService>().initialize();
+    debugPrint('MAIN: INotificationService initialized.');
+
+    debugPrint('MAIN: Initializing FlutterGemma...');
+    await FlutterGemma.initialize(
+      huggingFaceToken: getIt<IEnvironmentService>().huggingFaceApiKey,
+      inferenceEngines: [LiteRtLmEngine()],
+      embeddingBackends: [LiteRtEmbeddingBackend()],
+      vectorStore: SqliteVectorStore(),
+    );
+    debugPrint('MAIN: FlutterGemma initialized.');
   } catch (e, stackTrace) {
     debugPrint('MAIN: Initialization error: $e');
     debugPrint('MAIN: Stack trace: $stackTrace');
@@ -62,56 +70,21 @@ void main() async {
     statusBarColor: Colors.white24,
   ));
 
-  runApp(const MyApp());
+  runApp(const GlobalErrorBoundary(child: MyApp()));
 }
 
-class MyApp extends StatefulWidget {
-  const MyApp({Key? key}) : super(key: key);
-
-  @override
-  State<MyApp> createState() => _MyAppState();
-}
-
-class _MyAppState extends State<MyApp> {
-  ThemeMode _currentThemeMode = ThemeMode.light;
-
-  @override
-  void initState() {
-    super.initState();
-    _loadThemeMode();
-    ThemeService().addListener(_onThemeChanged);
-    LocaleService().addListener(_onLocaleChanged);
-  }
-
-  @override
-  void dispose() {
-    ThemeService().removeListener(_onThemeChanged);
-    LocaleService().removeListener(_onLocaleChanged);
-    super.dispose();
-  }
-
-  void _loadThemeMode() {
-    try {
-      final isDarkMode = ThemeService.isDarkMode;
-      setState(() {
-        _currentThemeMode = isDarkMode ? ThemeMode.dark : ThemeMode.light;
-      });
-    } catch (e) {
-      debugPrint('Error loading theme mode: $e');
-    }
-  }
-
-  void _onThemeChanged() {
-    _loadThemeMode();
-  }
-
-  void _onLocaleChanged() {
-    setState(() {});
-  }
+class MyApp extends StatelessWidget {
+  const MyApp({super.key});
 
   @override
   Widget build(BuildContext context) => MultiBlocProvider(
         providers: [
+          BlocProvider<ThemeCubit>(
+            create: (_) => getIt<ThemeCubit>(),
+          ),
+          BlocProvider<LocaleCubit>(
+            create: (_) => getIt<LocaleCubit>(),
+          ),
           BlocProvider<AuthBloc>(
             create: (_) => getIt<AuthBloc>(),
             lazy: false,
@@ -125,28 +98,28 @@ class _MyAppState extends State<MyApp> {
             lazy: true,
           ),
         ],
-        child: BlocBuilder<AuthBloc, AuthState>(
-          builder: (context, authState) {
-            return MaterialApp(
-              title: EnvironmentService.instance.appName,
-              locale: LocaleService.locale,
-              localizationsDelegates: AppLocalizations.localizationsDelegates,
-              supportedLocales: const <Locale>[
-                Locale('en', ''),
-                Locale('pt', ''),
-              ],
-              theme: getLightTheme(),
-              darkTheme: getDarkTheme(),
-              themeMode: _currentThemeMode,
-              navigatorKey: NavigationService().navigatorKey,
-              home: const AppWrapper(),
-              onGenerateRoute: (settings) =>
-                  AuthRouteMiddleware.onGenerateRoute(
-                settings,
-                authState,
+        child: BlocBuilder<ThemeCubit, ThemeState>(
+          builder: (context, themeState) =>
+              BlocBuilder<LocaleCubit, LocaleState>(
+            builder: (context, localeState) => BlocBuilder<AuthBloc, AuthState>(
+              builder: (context, authState) => MaterialApp(
+                title: getIt<IEnvironmentService>().appName,
+                locale: localeState.locale,
+                localizationsDelegates: AppLocalizations.localizationsDelegates,
+                supportedLocales: const <Locale>[
+                  Locale('en', ''),
+                  Locale('pt', ''),
+                ],
+                theme: getLightTheme(),
+                darkTheme: getDarkTheme(),
+                themeMode: themeState.themeMode,
+                navigatorKey: NavigationService().navigatorKey,
+                home: const AppWrapper(),
+                onGenerateRoute: (settings) =>
+                    AuthRouteMiddleware.onGenerateRoute(settings, authState),
               ),
-            );
-          },
+            ),
+          ),
         ),
       );
 }
