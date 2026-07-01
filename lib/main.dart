@@ -48,9 +48,9 @@ void main() async {
     ]);
     debugPrint('MAIN: Firebase, Env, Theme initialized.');
 
-    debugPrint('MAIN: Initializing NotificationService...');
-    await getIt<INotificationService>().initialize();
-    debugPrint('MAIN: INotificationService initialized.');
+    // debugPrint('MAIN: Initializing NotificationService...');
+    // await getIt<INotificationService>().initialize();
+    // debugPrint('MAIN: INotificationService initialized.');
 
     debugPrint('MAIN: Initializing FlutterGemma...');
     await FlutterGemma.initialize(

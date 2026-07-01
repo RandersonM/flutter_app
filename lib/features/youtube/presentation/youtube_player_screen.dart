@@ -19,34 +19,26 @@ class YouTubePlayerScreen extends StatefulWidget {
 
 class _YouTubePlayerScreenState extends State<YouTubePlayerScreen> {
   late YoutubePlayerController _controller;
-  bool _isPlayerReady = false;
+
 
   @override
   void initState() {
     super.initState();
-    _controller = YoutubePlayerController(
-      initialVideoId: widget.video.videoId,
-      flags: const YoutubePlayerFlags(
+    _controller = YoutubePlayerController.fromVideoId(
+      videoId: widget.video.videoId,
+      autoPlay: true,
+      params: const YoutubePlayerParams(
         mute: false,
-        autoPlay: true,
-        disableDragSeek: false,
-        loop: false,
-        isLive: false,
-        forceHD: false,
-        enableCaption: true,
+        showControls: true,
+        showFullscreenButton: true,
       ),
-    )..addListener(_listener);
+    );
   }
 
-  void _listener() {
-    if (_isPlayerReady && mounted && !_controller.value.isFullScreen) {
-      setState(() {});
-    }
-  }
 
   @override
   void dispose() {
-    _controller.dispose();
+    _controller.close();
     super.dispose();
   }
 
@@ -81,36 +73,10 @@ class _YouTubePlayerScreenState extends State<YouTubePlayerScreen> {
           ),
         ],
       ),
-      body: YoutubePlayerBuilder(
-        onExitFullScreen: () => {},
-        player: YoutubePlayer(
-          controller: _controller,
-          showVideoProgressIndicator: true,
-          progressIndicatorColor: Colors.red,
-          topActions: <Widget>[
-            const SizedBox(width: 8.0),
-            Expanded(
-              child: Text(
-                _controller.metadata.title,
-                style: const TextStyle(
-                  color: Colors.white,
-                  fontSize: 18.0,
-                ),
-                overflow: TextOverflow.ellipsis,
-                maxLines: 1,
-              ),
+      body: Column(
+        children: [
+          YoutubePlayer(controller: _controller,
             ),
-          ],
-          onReady: () {
-            _isPlayerReady = true;
-          },
-          onEnded: (data) {
-            Navigator.of(context).pop();
-          },
-        ),
-        builder: (context, player) => Column(
-          children: [
-            player,
             Expanded(
               child: SingleChildScrollView(
                 padding: const EdgeInsets.all(16),
@@ -185,7 +151,6 @@ class _YouTubePlayerScreenState extends State<YouTubePlayerScreen> {
               ),
             ),
           ],
-        ),
       ),
     );
   }

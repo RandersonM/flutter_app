@@ -50,16 +50,15 @@ class _VideoBannerState extends State<VideoBanner> {
     try {
       switch (widget.bannerType) {
         case BannerType.youtube:
-          final videoId = YoutubePlayer.convertUrlToId(widget.url);
+          final videoId = YoutubePlayerController.convertUrlToId(widget.url);
           if (videoId != null) {
-            _youtubeController = YoutubePlayerController(
-              initialVideoId: videoId,
-              flags: YoutubePlayerFlags(
-                autoPlay: widget.autoPlay,
+            _youtubeController = YoutubePlayerController.fromVideoId(
+              videoId: videoId,
+              autoPlay: widget.autoPlay,
+              params: YoutubePlayerParams(
                 mute: false,
-                showLiveFullscreenButton: false,
-                controlsVisibleAtStart: widget.showControls,
-                hideControls: !widget.showControls,
+                showControls: widget.showControls,
+                showFullscreenButton: false,
               ),
             );
           } else {
@@ -99,7 +98,7 @@ class _VideoBannerState extends State<VideoBanner> {
 
   @override
   void dispose() {
-    _youtubeController?.dispose();
+    _youtubeController?.close();
     _videoController?.dispose();
     super.dispose();
   }
@@ -138,12 +137,6 @@ class _VideoBannerState extends State<VideoBanner> {
         return _youtubeController != null
             ? YoutubePlayer(
                 controller: _youtubeController!,
-                showVideoProgressIndicator: true,
-                progressIndicatorColor: Colors.red,
-                progressColors: const ProgressBarColors(
-                  playedColor: Colors.red,
-                  handleColor: Colors.redAccent,
-                ),
               )
             : _buildErrorWidget();
       case BannerType.networkVideo:
