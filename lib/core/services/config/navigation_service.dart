@@ -21,8 +21,10 @@ class NavigationService implements INavigationService {
   }
 
   @override
-  Future<dynamic> navigateToReplacement(String routeName,
-      {Object? arguments}) async {
+  Future<dynamic> navigateToReplacement(
+    String routeName, {
+    Object? arguments,
+  }) async {
     if (navigator != null) {
       return navigator!.pushReplacementNamed(routeName, arguments: arguments);
     }

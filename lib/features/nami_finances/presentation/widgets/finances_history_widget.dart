@@ -26,8 +26,9 @@ class _FinancesHistoryWidgetState extends State<FinancesHistoryWidget> {
       child: Container(
         padding: const EdgeInsets.all(Constants.margin),
         decoration: BoxDecoration(
-          color:
-              Theme.of(context).colorScheme.onSecondary.withValues(alpha: 0.3),
+          color: Theme.of(
+            context,
+          ).colorScheme.onSecondary.withValues(alpha: 0.3),
           borderRadius: BorderRadius.circular(Constants.margin * 2),
         ),
         child: Column(
@@ -35,8 +36,11 @@ class _FinancesHistoryWidgetState extends State<FinancesHistoryWidget> {
           children: [
             Row(
               children: [
-                AppIcon(PhosphorIconsRegular.chartLine,
-                    color: AppColors.blue[500], size: 24),
+                AppIcon(
+                  PhosphorIconsRegular.chartLine,
+                  color: AppColors.blue[500],
+                  size: 24,
+                ),
                 const SizedBox(width: Constants.margin),
                 Text(
                   AppLocalizations.of(context)!.historyLast6Months,
@@ -94,22 +98,25 @@ class _FinancesHistoryWidgetState extends State<FinancesHistoryWidget> {
                         return BarTooltipItem(
                           'Despesas: R\$ ${finance.totalExpenses.toStringAsFixed(0)}',
                           TextStyle(
-                              color: AppColors.red[500],
-                              fontWeight: FontWeight.bold),
+                            color: AppColors.red[500],
+                            fontWeight: FontWeight.bold,
+                          ),
                         );
                       case 1:
                         return BarTooltipItem(
                           'Disponível: R\$ ${finance.availableAmount.toStringAsFixed(0)}',
                           TextStyle(
-                              color: AppColors.green[500],
-                              fontWeight: FontWeight.bold),
+                            color: AppColors.green[500],
+                            fontWeight: FontWeight.bold,
+                          ),
                         );
                       case 2:
                         return BarTooltipItem(
                           'Poupança: R\$ ${finance.savings.toStringAsFixed(0)}',
                           TextStyle(
-                              color: AppColors.orange[500],
-                              fontWeight: FontWeight.bold),
+                            color: AppColors.orange[500],
+                            fontWeight: FontWeight.bold,
+                          ),
                         );
                       default:
                         return BarTooltipItem('', const TextStyle());
@@ -119,10 +126,12 @@ class _FinancesHistoryWidgetState extends State<FinancesHistoryWidget> {
               ),
               titlesData: FlTitlesData(
                 show: true,
-                rightTitles:
-                    const AxisTitles(sideTitles: SideTitles(showTitles: false)),
-                topTitles:
-                    const AxisTitles(sideTitles: SideTitles(showTitles: false)),
+                rightTitles: const AxisTitles(
+                  sideTitles: SideTitles(showTitles: false),
+                ),
+                topTitles: const AxisTitles(
+                  sideTitles: SideTitles(showTitles: false),
+                ),
                 bottomTitles: AxisTitles(
                   sideTitles: SideTitles(
                     showTitles: true,
@@ -130,15 +139,14 @@ class _FinancesHistoryWidgetState extends State<FinancesHistoryWidget> {
                       if (value.toInt() >= 0 &&
                           value.toInt() < sortedHistory.length) {
                         final monthName = _getMonthName(
-                            sortedHistory[value.toInt()].month.month);
+                          sortedHistory[value.toInt()].month.month,
+                        );
                         return Padding(
                           padding: const EdgeInsets.only(top: 8.0),
                           child: Text(
                             monthName,
-                            style:
-                                Theme.of(context).textTheme.bodySmall?.copyWith(
-                                      fontWeight: FontWeight.w500,
-                                    ),
+                            style: Theme.of(context).textTheme.bodySmall
+                                ?.copyWith(fontWeight: FontWeight.w500),
                           ),
                         );
                       }
@@ -154,9 +162,9 @@ class _FinancesHistoryWidgetState extends State<FinancesHistoryWidget> {
                     getTitlesWidget: (value, meta) {
                       return Text(
                         'R\$ ${value.toInt()}',
-                        style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                              fontSize: 10,
-                            ),
+                        style: Theme.of(
+                          context,
+                        ).textTheme.bodySmall?.copyWith(fontSize: 10),
                       );
                     },
                   ),
@@ -166,15 +174,15 @@ class _FinancesHistoryWidgetState extends State<FinancesHistoryWidget> {
                 show: true,
                 border: Border(
                   bottom: BorderSide(
-                      color: Theme.of(context)
-                          .colorScheme
-                          .outline
-                          .withValues(alpha: 0.3)),
+                    color: Theme.of(
+                      context,
+                    ).colorScheme.outline.withValues(alpha: 0.3),
+                  ),
                   left: BorderSide(
-                      color: Theme.of(context)
-                          .colorScheme
-                          .outline
-                          .withValues(alpha: 0.3)),
+                    color: Theme.of(
+                      context,
+                    ).colorScheme.outline.withValues(alpha: 0.3),
+                  ),
                 ),
               ),
               barGroups: _buildBarGroups(sortedHistory),
@@ -183,10 +191,9 @@ class _FinancesHistoryWidgetState extends State<FinancesHistoryWidget> {
                 horizontalInterval: _getMaxValue(sortedHistory) / 5,
                 getDrawingHorizontalLine: (value) {
                   return FlLine(
-                    color: Theme.of(context)
-                        .colorScheme
-                        .outline
-                        .withValues(alpha: 0.1),
+                    color: Theme.of(
+                      context,
+                    ).colorScheme.outline.withValues(alpha: 0.1),
                     strokeWidth: 1,
                   );
                 },
@@ -199,12 +206,18 @@ class _FinancesHistoryWidgetState extends State<FinancesHistoryWidget> {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
-            _buildLegendItem(AppLocalizations.of(context)!.expensesLabel,
-                AppColors.red[500]!),
-            _buildLegendItem(AppLocalizations.of(context)!.availableLabel,
-                AppColors.green[500]!),
-            _buildLegendItem(AppLocalizations.of(context)!.savingsLabel,
-                AppColors.orange[500]!),
+            _buildLegendItem(
+              AppLocalizations.of(context)!.expensesLabel,
+              AppColors.red[500]!,
+            ),
+            _buildLegendItem(
+              AppLocalizations.of(context)!.availableLabel,
+              AppColors.green[500]!,
+            ),
+            _buildLegendItem(
+              AppLocalizations.of(context)!.savingsLabel,
+              AppColors.orange[500]!,
+            ),
           ],
         ),
       ],
@@ -226,16 +239,17 @@ class _FinancesHistoryWidgetState extends State<FinancesHistoryWidget> {
         const SizedBox(width: 8),
         Text(
           label,
-          style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                fontWeight: FontWeight.w500,
-              ),
+          style: Theme.of(
+            context,
+          ).textTheme.bodySmall?.copyWith(fontWeight: FontWeight.w500),
         ),
       ],
     );
   }
 
   List<BarChartGroupData> _buildBarGroups(
-      List<NamiFinancesModel> financesHistory) {
+    List<NamiFinancesModel> financesHistory,
+  ) {
     return List.generate(financesHistory.length, (index) {
       final finance = financesHistory[index];
       final total = finance.totalIncome;
@@ -243,9 +257,7 @@ class _FinancesHistoryWidgetState extends State<FinancesHistoryWidget> {
       if (total == 0) {
         return BarChartGroupData(
           x: index,
-          barRods: [
-            BarChartRodData(toY: 0, color: AppColors.grey[300]),
-          ],
+          barRods: [BarChartRodData(toY: 0, color: AppColors.grey[300])],
         );
       }
 
@@ -289,8 +301,9 @@ class _FinancesHistoryWidgetState extends State<FinancesHistoryWidget> {
   double _getMaxValue(List<NamiFinancesModel> financesHistory) {
     double maxValue = 0;
     for (final finance in financesHistory) {
-      maxValue =
-          maxValue > finance.totalIncome ? maxValue : finance.totalIncome;
+      maxValue = maxValue > finance.totalIncome
+          ? maxValue
+          : finance.totalIncome;
     }
     return maxValue;
   }

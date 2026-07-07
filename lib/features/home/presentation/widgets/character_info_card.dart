@@ -48,9 +48,7 @@ class CharacterInfoCard extends StatelessWidget {
                         width: 2,
                       ),
                     ),
-                    child: ClipOval(
-                      child: _buildImage(),
-                    ),
+                    child: ClipOval(child: _buildImage()),
                   ),
                   const SizedBox(width: Constants.margin),
                   Expanded(
@@ -59,18 +57,20 @@ class CharacterInfoCard extends StatelessWidget {
                       children: [
                         Text(
                           characterName,
-                          style:
-                              Theme.of(context).textTheme.titleMedium?.copyWith(
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 18,
-                                  ),
+                          style: Theme.of(context).textTheme.titleMedium
+                              ?.copyWith(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 18,
+                              ),
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
                         ),
                         const SizedBox(height: 6),
                         Container(
                           padding: const EdgeInsets.symmetric(
-                              horizontal: 8, vertical: 4),
+                            horizontal: 8,
+                            vertical: 4,
+                          ),
                           decoration: BoxDecoration(
                             color: Colors.amber.withValues(alpha: 0.15),
                             borderRadius: BorderRadius.circular(8),
@@ -89,9 +89,7 @@ class CharacterInfoCard extends StatelessWidget {
                               const SizedBox(width: 4),
                               Text(
                                 characterBounty,
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .bodySmall
+                                style: Theme.of(context).textTheme.bodySmall
                                     ?.copyWith(
                                       color: Colors.amber[700],
                                       fontWeight: FontWeight.w700,
@@ -106,10 +104,9 @@ class CharacterInfoCard extends StatelessWidget {
                   AppIcon(
                     PhosphorIconsRegular.caretRight,
                     size: 16,
-                    color: Theme.of(context)
-                        .colorScheme
-                        .onSurface
-                        .withValues(alpha: 0.5),
+                    color: Theme.of(
+                      context,
+                    ).colorScheme.onSurface.withValues(alpha: 0.5),
                   ),
                 ],
               ),
@@ -117,17 +114,17 @@ class CharacterInfoCard extends StatelessWidget {
                   characterDescription!.isNotEmpty) ...[
                 const SizedBox(height: Constants.margin),
                 Divider(
-                    color: Theme.of(context).colorScheme.surfaceContainerHigh),
+                  color: Theme.of(context).colorScheme.surfaceContainerHigh,
+                ),
                 const SizedBox(height: Constants.margin / 2),
                 Text(
                   characterDescription!,
                   style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                        color: Theme.of(context)
-                            .colorScheme
-                            .onSurface
-                            .withValues(alpha: 0.8),
-                        height: 1.5,
-                      ),
+                    color: Theme.of(
+                      context,
+                    ).colorScheme.onSurface.withValues(alpha: 0.8),
+                    height: 1.5,
+                  ),
                   maxLines: 3,
                   overflow: TextOverflow.ellipsis,
                 ),
@@ -160,11 +157,7 @@ class CharacterInfoCard extends StatelessWidget {
       fit: BoxFit.cover,
       placeholder: (context, url) => Container(
         color: Colors.grey[300],
-        child: const Center(
-          child: CircularProgressIndicator(
-            strokeWidth: 2,
-          ),
-        ),
+        child: const Center(child: CircularProgressIndicator(strokeWidth: 2)),
       ),
       errorWidget: (context, url, error) => Container(
         color: Colors.grey[300],

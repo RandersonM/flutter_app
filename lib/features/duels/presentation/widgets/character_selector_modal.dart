@@ -77,9 +77,7 @@ class CharacterSelectionModalState extends State<CharacterSelectionModal> {
       height: MediaQuery.of(context).size.height * 0.8,
       decoration: BoxDecoration(
         color: Theme.of(context).colorScheme.surfaceContainerLow,
-        borderRadius: const BorderRadius.vertical(
-          top: Radius.circular(20),
-        ),
+        borderRadius: const BorderRadius.vertical(top: Radius.circular(20)),
       ),
       child: Column(
         children: [
@@ -98,9 +96,9 @@ class CharacterSelectionModalState extends State<CharacterSelectionModal> {
               children: [
                 Text(
                   widget.title,
-                  style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                        fontWeight: FontWeight.bold,
-                      ),
+                  style: Theme.of(
+                    context,
+                  ).textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold),
                 ),
                 const SizedBox(height: 16),
 
@@ -111,8 +109,9 @@ class CharacterSelectionModalState extends State<CharacterSelectionModal> {
                   decoration: InputDecoration(
                     hintText: l10n.searchPlaceholder,
                     hintStyle: Theme.of(context).textTheme.bodyMedium,
-                    prefixIcon:
-                        const AppIcon(PhosphorIconsRegular.magnifyingGlass),
+                    prefixIcon: const AppIcon(
+                      PhosphorIconsRegular.magnifyingGlass,
+                    ),
                     filled: true,
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(12),
@@ -135,8 +134,10 @@ class CharacterSelectionModalState extends State<CharacterSelectionModal> {
                     padding: const EdgeInsets.symmetric(horizontal: 16),
                     children: [
                       if (customCharacters.isNotEmpty) ...[
-                        _buildSectionHeader(l10n.customCharacters,
-                            PhosphorIconsRegular.userPlus),
+                        _buildSectionHeader(
+                          l10n.customCharacters,
+                          PhosphorIconsRegular.userPlus,
+                        ),
                         const SizedBox(height: 8),
                         _buildCharacterGrid(customCharacters),
                         const SizedBox(height: 16),
@@ -151,8 +152,10 @@ class CharacterSelectionModalState extends State<CharacterSelectionModal> {
                         const SizedBox(height: 8),
                       ],
                       if (onePieceCharacters.isNotEmpty) ...[
-                        _buildSectionHeader(l10n.onePieceCharacters,
-                            PhosphorIconsRegular.star),
+                        _buildSectionHeader(
+                          l10n.onePieceCharacters,
+                          PhosphorIconsRegular.star,
+                        ),
                         const SizedBox(height: 8),
                         _buildCharacterGrid(onePieceCharacters),
                       ],
@@ -167,17 +170,14 @@ class CharacterSelectionModalState extends State<CharacterSelectionModal> {
   Widget _buildSectionHeader(String title, IconData icon) {
     return Row(
       children: [
-        Icon(
-          icon,
-          size: 20,
-        ),
+        Icon(icon, size: 20),
         const SizedBox(width: 8),
         Text(
           title,
           style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                fontSize: 16,
-                fontWeight: FontWeight.w600,
-              ),
+            fontSize: 16,
+            fontWeight: FontWeight.w600,
+          ),
         ),
       ],
     );
@@ -233,9 +233,9 @@ class CharacterSelectionModalState extends State<CharacterSelectionModal> {
                     child: Text(
                       character.name,
                       style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                            fontSize: 12,
-                            fontWeight: FontWeight.w500,
-                          ),
+                        fontSize: 12,
+                        fontWeight: FontWeight.w500,
+                      ),
                       textAlign: TextAlign.center,
                       maxLines: 2,
                       overflow: TextOverflow.ellipsis,

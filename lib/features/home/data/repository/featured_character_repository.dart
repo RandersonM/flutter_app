@@ -61,12 +61,19 @@ class FeaturedCharacterRepository implements IFeaturedCharacterRepository {
       final currentCharacter = await getCurrentCharacter();
 
       if (currentCharacter != null && currentCharacter.isToday) {
-        final allCharacters = await getAllOnePieceCharacters();
-        final foundCharacter = allCharacters
-            .where((c) => c.id == currentCharacter.characterId)
-            .firstOrNull;
-        if (foundCharacter != null) {
-          return foundCharacter;
+        // Fetch this one character by id instead of the whole collection —
+        // this is the common warm-start path (same day, app reopened), so
+        // it must not pay for an unbounded `featuredCharacters` scan just to
+        // find a document whose id is already known.
+        final data = await _firestoreService.getDocument(
+          collection: _collection,
+          documentId: currentCharacter.characterId,
+        );
+        if (data != null) {
+          return CustomCharacterModel.fromFirestore(
+            data,
+            currentCharacter.characterId,
+          );
         }
       }
 
@@ -118,7 +125,9 @@ class FeaturedCharacterRepository implements IFeaturedCharacterRepository {
 
   @override
   Future<void> updateFeaturedCharacter(
-      String documentId, TodayCharacter character) async {
+    String documentId,
+    TodayCharacter character,
+  ) async {
     try {
       await _initHive();
       await _box.put(_currentCharacterKey, character);
@@ -227,8 +236,9 @@ class FeaturedCharacterRepository implements IFeaturedCharacterRepository {
   }
 
   @override
-  Future<List<CustomCharacterModel>> getAllOnePieceCharacters(
-      {int? limit}) async {
+  Future<List<CustomCharacterModel>> getAllOnePieceCharacters({
+    int? limit,
+  }) async {
     try {
       final documents = await _firestoreService.getDocuments(
         collection: _collection,
@@ -236,8 +246,10 @@ class FeaturedCharacterRepository implements IFeaturedCharacterRepository {
       );
 
       return documents
-          .map((doc) =>
-              CustomCharacterModel.fromFirestore(doc, doc['id'] as String))
+          .map(
+            (doc) =>
+                CustomCharacterModel.fromFirestore(doc, doc['id'] as String),
+          )
           .toList();
     } catch (e) {
       debugPrint('Error getting all One Piece characters: $e');
@@ -247,16 +259,19 @@ class FeaturedCharacterRepository implements IFeaturedCharacterRepository {
 
   @override
   Future<List<CustomCharacterModel>> searchOnePieceCharacters(
-      String query) async {
+    String query,
+  ) async {
     try {
       final allCharacters = await getAllOnePieceCharacters();
       return allCharacters
-          .where((character) =>
-              character.name.toLowerCase().contains(query.toLowerCase()) ||
-              (character.nickname
-                      ?.toLowerCase()
-                      .contains(query.toLowerCase()) ??
-                  false))
+          .where(
+            (character) =>
+                character.name.toLowerCase().contains(query.toLowerCase()) ||
+                (character.nickname?.toLowerCase().contains(
+                      query.toLowerCase(),
+                    ) ??
+                    false),
+          )
           .toList();
     } catch (e) {
       debugPrint('Error searching One Piece characters: $e');
@@ -272,8 +287,10 @@ class FeaturedCharacterRepository implements IFeaturedCharacterRepository {
       );
 
       return documents
-          .map((doc) =>
-              CustomCharacterModel.fromFirestore(doc, doc['id'] as String))
+          .map(
+            (doc) =>
+                CustomCharacterModel.fromFirestore(doc, doc['id'] as String),
+          )
           .toList();
     } catch (e) {
       debugPrint('Error getting all featured characters: $e');

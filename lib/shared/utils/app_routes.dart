@@ -179,10 +179,7 @@ class AppNavigation {
         // Redirect to login with return route
         return Navigator.of(context).pushNamed(
           AppRoutes.login,
-          arguments: {
-            'returnRoute': routeName,
-            'returnArguments': arguments,
-          },
+          arguments: {'returnRoute': routeName, 'returnArguments': arguments},
         );
       }
     }
@@ -207,8 +204,9 @@ class AppNavigation {
     }
 
     // Navigate to the requested route
-    return Navigator.of(context)
-        .pushReplacementNamed(routeName, arguments: arguments);
+    return Navigator.of(
+      context,
+    ).pushReplacementNamed(routeName, arguments: arguments);
   }
 
   static void pop(BuildContext context, [dynamic result]) {

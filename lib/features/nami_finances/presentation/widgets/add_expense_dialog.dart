@@ -12,10 +12,7 @@ import 'package:opfan/shared/widgets/atoms/app_button.dart';
 class AddExpenseDialog extends StatefulWidget {
   final Function(ExpenseItem) onExpenseAdded;
 
-  const AddExpenseDialog({
-    super.key,
-    required this.onExpenseAdded,
-  });
+  const AddExpenseDialog({super.key, required this.onExpenseAdded});
 
   @override
   State<AddExpenseDialog> createState() => _AddExpenseDialogState();
@@ -71,9 +68,7 @@ class _AddExpenseDialogState extends State<AddExpenseDialog> {
     return AlertDialog(
       backgroundColor: const Color(0xFF16161C),
       surfaceTintColor: Colors.transparent,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(24),
-      ),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24)),
       title: Row(
         children: [
           AppIcon(PhosphorIconsRegular.plusCircle, color: AppColors.red[500]),
@@ -112,8 +107,9 @@ class _AddExpenseDialogState extends State<AddExpenseDialog> {
                 if (value == null || value.isEmpty) {
                   return 'Por favor, insira um valor';
                 }
-                final amount =
-                    double.tryParse(value.replaceAll(RegExp(r'[^\d]'), ''));
+                final amount = double.tryParse(
+                  value.replaceAll(RegExp(r'[^\d]'), ''),
+                );
                 if (amount == null || amount <= 0) {
                   return 'Por favor, insira um valor válido';
                 }
@@ -161,11 +157,4 @@ class ExpenseItem {
   });
 }
 
-enum ExpenseCategory {
-  fixed,
-  food,
-  transport,
-  entertainment,
-  health,
-  other,
-}
+enum ExpenseCategory { fixed, food, transport, entertainment, health, other }

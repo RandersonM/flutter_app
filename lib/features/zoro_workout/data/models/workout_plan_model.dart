@@ -12,10 +12,7 @@ class WorkoutExerciseModel {
   @JsonKey(name: 'volume')
   final String volume;
 
-  const WorkoutExerciseModel({
-    required this.name,
-    required this.volume,
-  });
+  const WorkoutExerciseModel({required this.name, required this.volume});
 
   factory WorkoutExerciseModel.fromJson(Map<String, dynamic> json) =>
       _$WorkoutExerciseModelFromJson(json);
@@ -38,10 +35,7 @@ class WorkoutSplitModel {
   @JsonKey(name: 'exercises')
   final List<WorkoutExerciseModel> exercises;
 
-  const WorkoutSplitModel({
-    required this.name,
-    required this.exercises,
-  });
+  const WorkoutSplitModel({required this.name, required this.exercises});
 
   factory WorkoutSplitModel.fromJson(Map<String, dynamic> json) =>
       _$WorkoutSplitModelFromJson(json);
@@ -51,11 +45,10 @@ class WorkoutSplitModel {
   WorkoutSplitModel copyWith({
     String? name,
     List<WorkoutExerciseModel>? exercises,
-  }) =>
-      WorkoutSplitModel(
-        name: name ?? this.name,
-        exercises: exercises ?? this.exercises,
-      );
+  }) => WorkoutSplitModel(
+    name: name ?? this.name,
+    exercises: exercises ?? this.exercises,
+  );
 }
 
 /// The user's complete workout plan containing 1–N splits.

@@ -9,10 +9,6 @@ class EnvironmentService implements IEnvironmentService {
     return _instance!;
   }
 
-  
-
-  
-
   @override
   Future<void> initialize() async {
     await dotenv.load(fileName: '.env');
@@ -31,7 +27,9 @@ class EnvironmentService implements IEnvironmentService {
 
   @override
   String get devilFruitApiUrl => _getString(
-      'DEVIL_FRUIT_API_URL', 'https://api.api-onepiece.com/v2/fruits/en');
+    'DEVIL_FRUIT_API_URL',
+    'https://api.api-onepiece.com/v2/fruits/en',
+  );
 
   @override
   String get geminiApiKey => _getString('GEMINI_API_KEY', 'dev_mode');
@@ -113,10 +111,7 @@ class EnvironmentService implements IEnvironmentService {
 
   @override
   bool validateRequiredVariables() {
-    final requiredKeys = [
-      'YOUTUBE_API_KEY',
-      'ONEPIECE_API_URL',
-    ];
+    final requiredKeys = ['YOUTUBE_API_KEY', 'ONEPIECE_API_URL'];
 
     for (final key in requiredKeys) {
       if (!hasKey(key) || getRawValue(key)?.isEmpty == true) {

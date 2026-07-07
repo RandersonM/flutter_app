@@ -1,15 +1,15 @@
 import 'dart:math';
 import 'package:flutter/foundation.dart';
 import 'package:opfan/app/di/injection.dart';
+import 'package:opfan/core/ai/prompts/index.dart';
 import 'package:opfan/core/services/index.dart';
-
 
 class CrewImageService implements ICrewImageService {
   final GeminiService _geminiService;
   final Map<String, String> _imageCache = {};
 
   CrewImageService({GeminiService? geminiService})
-      : _geminiService = geminiService ?? getIt<GeminiService>();
+    : _geminiService = geminiService ?? getIt<GeminiService>();
 
   String _getCacheKey(String prefix, String prompt) {
     return '${prefix}_${prompt.hashCode}';
@@ -40,7 +40,8 @@ class CrewImageService implements ICrewImageService {
     );
 
     debugPrint(
-        'Crew Image Service: Generating Jolly Roger with prompt: $enhancedPrompt');
+      'Crew Image Service: Generating Jolly Roger with prompt: $enhancedPrompt',
+    );
 
     final imageUrl = await _geminiService.generateImage(prompt: enhancedPrompt);
 
@@ -50,9 +51,14 @@ class CrewImageService implements ICrewImageService {
     }
 
     debugPrint(
-        'Crew Image Service: Jolly Roger generation failed or in dev mode, returning fallback');
+      'Crew Image Service: Jolly Roger generation failed or in dev mode, returning fallback',
+    );
     return await _getJollyRogerFallbackImage(
-        crewName, prompt, tags, description);
+      crewName,
+      prompt,
+      tags,
+      description,
+    );
   }
 
   @override
@@ -75,7 +81,8 @@ class CrewImageService implements ICrewImageService {
     );
 
     debugPrint(
-        'Crew Image Service: Generating Boat with prompt: $enhancedPrompt');
+      'Crew Image Service: Generating Boat with prompt: $enhancedPrompt',
+    );
 
     final imageUrl = await _geminiService.generateImage(prompt: enhancedPrompt);
 
@@ -85,7 +92,8 @@ class CrewImageService implements ICrewImageService {
     }
 
     debugPrint(
-        'Crew Image Service: Boat generation failed or in dev mode, returning fallback');
+      'Crew Image Service: Boat generation failed or in dev mode, returning fallback',
+    );
     return await _getBoatFallbackImage(crewName, prompt, tags, description);
   }
 
@@ -95,36 +103,12 @@ class CrewImageService implements ICrewImageService {
     List<String>? tags,
     String? description,
   }) {
-    final basePrompt = prompt.isNotEmpty ? prompt : 'pirate flag';
-
-    final List<String> promptParts = [
-      basePrompt,
-      'crew name: $crewName',
-    ];
-
-    if (description != null && description.isNotEmpty) {
-      promptParts.add('description: $description');
-    }
-
-    if (tags != null && tags.isNotEmpty) {
-      final tagTypes = tags.join(', ');
-      promptParts.add('tags: $tagTypes');
-    }
-
-    promptParts.addAll([
-      'One Piece style',
-      'pirate flag design',
-      'jolly roger',
-      'detailed flag design',
-      'high quality',
-      'professional illustration',
-      'vibrant colors',
-      'symbolic design',
-      'flag waving',
-      'anime style',
-    ]);
-
-    return promptParts.join(', ');
+    return CrewImagePrompt.jollyRoger(
+      crewName: crewName,
+      prompt: prompt,
+      tags: tags,
+      description: description,
+    );
   }
 
   String _buildBoatPrompt({
@@ -133,38 +117,12 @@ class CrewImageService implements ICrewImageService {
     List<String>? tags,
     String? description,
   }) {
-    final basePrompt = prompt.isNotEmpty ? prompt : 'pirate ship';
-
-    final List<String> promptParts = [
-      basePrompt,
-      'crew name: $crewName',
-    ];
-
-    if (description != null && description.isNotEmpty) {
-      promptParts.add('description: $description');
-    }
-
-    if (tags != null && tags.isNotEmpty) {
-      final tagTypes = tags.join(', ');
-      promptParts.add('tags: $tagTypes');
-    }
-
-    promptParts.addAll([
-      'One Piece style',
-      'pirate ship',
-      'sailing vessel',
-      'detailed ship design',
-      'high quality',
-      'professional illustration',
-      'vibrant colors',
-      'ocean background',
-      'sails',
-      'wooden ship',
-      'anime style',
-      'adventure ship',
-    ]);
-
-    return promptParts.join(', ');
+    return CrewImagePrompt.boat(
+      crewName: crewName,
+      prompt: prompt,
+      tags: tags,
+      description: description,
+    );
   }
 
   Future<String> _getJollyRogerFallbackImage(

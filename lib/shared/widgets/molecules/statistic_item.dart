@@ -42,7 +42,9 @@ class StatisticItem extends StatelessWidget {
         colorFilter: iconColor != null
             ? ColorFilter.mode(iconColor!, BlendMode.srcIn)
             : ColorFilter.mode(
-                Theme.of(context).colorScheme.primary, BlendMode.srcIn),
+                Theme.of(context).colorScheme.primary,
+                BlendMode.srcIn,
+              ),
       );
     } else if (icon != null) {
       return Icon(
@@ -80,10 +82,11 @@ class StatisticItem extends StatelessWidget {
           ),
           Text(
             value,
-            style: valueStyle ??
-                Theme.of(context).textTheme.bodySmall?.copyWith(
-                      fontWeight: FontWeight.bold,
-                    ),
+            style:
+                valueStyle ??
+                Theme.of(
+                  context,
+                ).textTheme.bodySmall?.copyWith(fontWeight: FontWeight.bold),
             textAlign: TextAlign.center,
           ),
         ],

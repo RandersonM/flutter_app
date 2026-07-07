@@ -90,7 +90,8 @@ class FirestoreService implements IFirestoreService {
     } catch (e) {
       if (e.toString().contains('permission-denied')) {
         debugPrint(
-            'FirestoreService: Error permission detected. Check the Firestore rules.');
+          'FirestoreService: Error permission detected. Check the Firestore rules.',
+        );
       }
       throw Exception('Erro ao buscar documentos: $e');
     }
@@ -131,8 +132,9 @@ class FirestoreService implements IFirestoreService {
     int? limit,
   }) async {
     try {
-      Query query =
-          _firestore.collection(collection).where(field, isEqualTo: value);
+      Query query = _firestore
+          .collection(collection)
+          .where(field, isEqualTo: value);
 
       if (orderBy != null) {
         query = query.orderBy(orderBy, descending: descending);
@@ -208,10 +210,7 @@ class FirestoreService implements IFirestoreService {
       throw Exception('Usuário não autenticado');
     }
 
-    final updateData = {
-      ...data,
-      'updatedAt': FieldValue.serverTimestamp(),
-    };
+    final updateData = {...data, 'updatedAt': FieldValue.serverTimestamp()};
 
     await updateDocument(
       collection: collection,
@@ -237,9 +236,11 @@ class FirestoreService implements IFirestoreService {
       query = query.limit(limit);
     }
 
-    return query.snapshots().map((snapshot) => snapshot.docs
-        .map((doc) => {'id': doc.id, ...doc.data() as Map<String, dynamic>})
-        .toList());
+    return query.snapshots().map(
+      (snapshot) => snapshot.docs
+          .map((doc) => {'id': doc.id, ...doc.data() as Map<String, dynamic>})
+          .toList(),
+    );
   }
 
   @override
@@ -254,8 +255,9 @@ class FirestoreService implements IFirestoreService {
       return Stream.value([]);
     }
 
-    Query query =
-        _firestore.collection(collection).where('userId', isEqualTo: userId);
+    Query query = _firestore
+        .collection(collection)
+        .where('userId', isEqualTo: userId);
 
     if (orderBy != null) {
       query = query.orderBy(orderBy, descending: descending);
@@ -265,8 +267,10 @@ class FirestoreService implements IFirestoreService {
       query = query.limit(limit);
     }
 
-    return query.snapshots().map((snapshot) => snapshot.docs
-        .map((doc) => {'id': doc.id, ...doc.data() as Map<String, dynamic>})
-        .toList());
+    return query.snapshots().map(
+      (snapshot) => snapshot.docs
+          .map((doc) => {'id': doc.id, ...doc.data() as Map<String, dynamic>})
+          .toList(),
+    );
   }
 }

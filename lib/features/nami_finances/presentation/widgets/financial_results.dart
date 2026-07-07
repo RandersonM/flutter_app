@@ -62,10 +62,7 @@ class FinancialResults extends StatelessWidget {
       padding: const EdgeInsets.all(Constants.margin),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(Constants.margin * 2),
-        border: Border.all(
-          color: color.withValues(alpha: 0.3),
-          width: 2,
-        ),
+        border: Border.all(color: color.withValues(alpha: 0.3), width: 2),
         boxShadow: [
           BoxShadow(
             color: color.withValues(alpha: 0.1),
@@ -119,10 +116,7 @@ class FinancialResults extends StatelessWidget {
               ],
             ),
             borderRadius: BorderRadius.circular(Constants.margin),
-            border: Border.all(
-              color: color.withValues(alpha: 0.3),
-              width: 1,
-            ),
+            border: Border.all(color: color.withValues(alpha: 0.3), width: 1),
           ),
           child: Row(
             children: [
@@ -135,15 +129,15 @@ class FinancialResults extends StatelessWidget {
                     Text(
                       title,
                       style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                            fontWeight: FontWeight.w500,
-                          ),
+                        fontWeight: FontWeight.w500,
+                      ),
                     ),
                     Text(
                       '${_formatCurrency(value)} ${AppLocalizations.of(context)!.currency}${isDaily ? AppLocalizations.of(context)!.perDay : ''}',
                       style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                            fontWeight: FontWeight.bold,
-                            color: color,
-                          ),
+                        fontWeight: FontWeight.bold,
+                        color: color,
+                      ),
                     ),
                   ],
                 ),

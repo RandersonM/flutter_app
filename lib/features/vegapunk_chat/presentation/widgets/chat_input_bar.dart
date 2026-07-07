@@ -169,17 +169,16 @@ class _ActionButton extends StatelessWidget {
     required IconData icon,
     required Color color,
     VoidCallback? onTap,
-  }) =>
-      GestureDetector(
-        onTap: onTap,
-        child: Container(
-          width: Constants.size48,
-          height: Constants.size48,
-          decoration: BoxDecoration(
-            color: color.withValues(alpha: 0.12),
-            shape: BoxShape.circle,
-          ),
-          child: Icon(icon, color: color, size: Constants.size20),
-        ),
-      );
+  }) => GestureDetector(
+    onTap: onTap,
+    child: Container(
+      width: Constants.size48,
+      height: Constants.size48,
+      decoration: BoxDecoration(
+        color: color.withValues(alpha: 0.12),
+        shape: BoxShape.circle,
+      ),
+      child: Icon(icon, color: color, size: Constants.size20),
+    ),
+  );
 }

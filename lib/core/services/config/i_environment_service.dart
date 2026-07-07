@@ -1,6 +1,6 @@
 abstract class IEnvironmentService {
   Future<void> initialize();
-  
+
   String get youtubeApiKey;
   String get youtubeBaseUrl;
   String get onepieceApiUrl;
@@ -16,7 +16,7 @@ abstract class IEnvironmentService {
   int get networkTimeout;
   int get retryCount;
   int get cacheExpiryTime;
-  
+
   bool hasKey(String key);
   String? getRawValue(String key);
   List<String> getAllKeys();

@@ -10,10 +10,7 @@ class NamiFinancesLoaded extends NamiFinancesState {
   final NamiFinancesModel? finances;
   final bool hasData;
 
-  NamiFinancesLoaded({
-    this.finances,
-    required this.hasData,
-  });
+  NamiFinancesLoaded({this.finances, required this.hasData});
 }
 
 class NamiFinancesHistoryLoaded extends NamiFinancesState {

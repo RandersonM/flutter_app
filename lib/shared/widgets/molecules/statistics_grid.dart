@@ -65,7 +65,8 @@ class StatisticsGrid extends StatelessWidget {
           if (title != null) ...[
             Text(
               title!,
-              style: titleStyle ??
+              style:
+                  titleStyle ??
                   theme.textTheme.titleLarge?.copyWith(
                     fontWeight: FontWeight.bold,
                     color: theme.colorScheme.primary,
@@ -102,7 +103,8 @@ class StatisticsGrid extends StatelessWidget {
         filter: ui.ImageFilter.blur(sigmaX: 12.0, sigmaY: 12.0),
         child: Container(
           decoration: BoxDecoration(
-            color: backgroundColor ??
+            color:
+                backgroundColor ??
                 theme.colorScheme.surfaceContainerHigh.withValues(alpha: 0.6),
             borderRadius: BorderRadius.circular(borderRadius),
             border: Border.all(
@@ -110,10 +112,7 @@ class StatisticsGrid extends StatelessWidget {
               width: 1.0,
             ),
           ),
-          child: Padding(
-            padding: const EdgeInsets.all(0),
-            child: content,
-          ),
+          child: Padding(padding: const EdgeInsets.all(0), child: content),
         ),
       ),
     );
@@ -130,9 +129,6 @@ class StatisticsGrid extends StatelessWidget {
       );
     }
 
-    return Container(
-      padding: padding,
-      child: blurredContent,
-    );
+    return Container(padding: padding, child: blurredContent);
   }
 }

@@ -19,9 +19,9 @@ class CharacterDescriptionSection extends StatelessWidget {
       children: [
         Text(
           l10n.description,
-          style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                fontWeight: FontWeight.bold,
-              ),
+          style: Theme.of(
+            context,
+          ).textTheme.headlineSmall?.copyWith(fontWeight: FontWeight.bold),
         ),
         const SizedBox(height: 16),
         CustomTextField(

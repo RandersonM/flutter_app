@@ -20,10 +20,7 @@ import 'package:opfan/core/utils/character_localization_mapper.dart';
 class EditCustomCharacterScreen extends StatefulWidget {
   final CustomCharacterModel character;
 
-  const EditCustomCharacterScreen({
-    super.key,
-    required this.character,
-  });
+  const EditCustomCharacterScreen({super.key, required this.character});
 
   @override
   State<EditCustomCharacterScreen> createState() =>
@@ -100,7 +97,9 @@ class _EditCustomCharacterScreenState extends State<EditCustomCharacterScreen> {
       _selectedHaki.clear();
       for (final haki in widget.character.haki!) {
         final localizedHaki = CharacterLocalizationMapper.mapHakiToLocalized(
-            haki, AppLocalizations.of(context)!);
+          haki,
+          AppLocalizations.of(context)!,
+        );
         if (!_selectedHaki.contains(localizedHaki)) {
           _selectedHaki.add(localizedHaki);
         }
@@ -167,15 +166,17 @@ class _EditCustomCharacterScreenState extends State<EditCustomCharacterScreen> {
         builder: (context) {
           return Scaffold(
             appBar: DefaultAppBar(
-              title:
-                  Text(AppLocalizations.of(context)!.editCustomCharacterTitle),
+              title: Text(
+                AppLocalizations.of(context)!.editCustomCharacterTitle,
+              ),
             ),
             body: BlocListener<CustomCharacterBloc, CustomCharacterState>(
               listenWhen: (previous, current) {
                 return current is CustomCharacterUpdated ||
                     (current is CustomCharacterError &&
                         !current.message.contains(
-                            'mas houve um erro ao atualizar a lista'));
+                          'mas houve um erro ao atualizar a lista',
+                        ));
               },
               listener: (context, state) {
                 if (state is CustomCharacterUpdated) {
@@ -196,20 +197,19 @@ class _EditCustomCharacterScreenState extends State<EditCustomCharacterScreen> {
                           width: double.infinity,
                           padding: const EdgeInsets.all(16),
                           decoration: BoxDecoration(
-                            color: Theme.of(context)
-                                .primaryColor
-                                .withValues(alpha: 0.1),
+                            color: Theme.of(
+                              context,
+                            ).primaryColor.withValues(alpha: 0.1),
                             borderRadius: BorderRadius.circular(8),
                           ),
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                AppLocalizations.of(context)!
-                                    .editCustomCharacterTitle,
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .headlineSmall
+                                AppLocalizations.of(
+                                  context,
+                                )!.editCustomCharacterTitle,
+                                style: Theme.of(context).textTheme.headlineSmall
                                     ?.copyWith(
                                       fontWeight: FontWeight.bold,
                                       color: Theme.of(context).primaryColor,
@@ -217,8 +217,9 @@ class _EditCustomCharacterScreenState extends State<EditCustomCharacterScreen> {
                               ),
                               const SizedBox(height: 8),
                               Text(
-                                AppLocalizations.of(context)!
-                                    .editCustomCharacterSubtitle,
+                                AppLocalizations.of(
+                                  context,
+                                )!.editCustomCharacterSubtitle,
                                 style: Theme.of(context).textTheme.bodyMedium,
                               ),
                             ],
@@ -279,8 +280,9 @@ class _EditCustomCharacterScreenState extends State<EditCustomCharacterScreen> {
                           },
                           onAffiliationSelected: (affiliation) {
                             setState(() {
-                              if (!_selectedAffiliations
-                                  .contains(affiliation)) {
+                              if (!_selectedAffiliations.contains(
+                                affiliation,
+                              )) {
                                 _selectedAffiliations.add(affiliation);
                               }
                             });
@@ -346,7 +348,9 @@ class _EditCustomCharacterScreenState extends State<EditCustomCharacterScreen> {
       // Mapear os dados de Haki do formato localizado para o formato salvo
       final mappedHaki = _selectedHaki.map((localizedHaki) {
         return CharacterLocalizationMapper.mapLocalizedToHaki(
-            localizedHaki, AppLocalizations.of(context)!);
+          localizedHaki,
+          AppLocalizations.of(context)!,
+        );
       }).toList();
 
       final updatedCharacter = CustomCharacterModel(
@@ -369,23 +373,21 @@ class _EditCustomCharacterScreenState extends State<EditCustomCharacterScreen> {
             : null,
         crew: _selectedCrewId != null
             ? _availableCrews
-                .firstWhere((crew) => crew.id == _selectedCrewId)
-                .name
+                  .firstWhere((crew) => crew.id == _selectedCrewId)
+                  .name
             : null,
         status: _selectedStatus,
         race: _selectedRace,
-        age: birthDate != null ? ZodiacIcons.calculateAge(birthDate)
-            : null,
+        age: birthDate != null ? ZodiacIcons.calculateAge(birthDate) : null,
         birthDate: birthDate,
         description: _descriptionController.text.trim().isNotEmpty
             ? _descriptionController.text.trim()
             : null,
       );
 
-      context.read<CustomCharacterBloc>().add(UpdateCustomCharacter(
-            widget.character.id!,
-            updatedCharacter,
-          ));
+      context.read<CustomCharacterBloc>().add(
+        UpdateCustomCharacter(widget.character.id!, updatedCharacter),
+      );
     }
   }
 

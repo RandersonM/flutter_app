@@ -91,8 +91,9 @@ class _DevilFruitSearchDropdownState extends State<DevilFruitSearchDropdown> {
                     child: widget.value != null
                         ? _buildSelectedDevilFruitItem(widget.value!)
                         : Text(
-                            AppLocalizations.of(context)!
-                                .selectDevilFruitPlaceholder,
+                            AppLocalizations.of(
+                              context,
+                            )!.selectDevilFruitPlaceholder,
                           ),
                   ),
                   const AppIcon(PhosphorIconsRegular.caretDown),
@@ -125,10 +126,12 @@ class _DevilFruitSearchDropdownState extends State<DevilFruitSearchDropdown> {
                     TextField(
                       controller: _searchController,
                       decoration: InputDecoration(
-                        hintText:
-                            AppLocalizations.of(context)!.searchDevilFruit,
+                        hintText: AppLocalizations.of(
+                          context,
+                        )!.searchDevilFruit,
                         prefixIcon: const AppIcon(
-                            PhosphorIconsRegular.magnifyingGlass),
+                          PhosphorIconsRegular.magnifyingGlass,
+                        ),
                         suffixIcon: _searchController.text.isNotEmpty
                             ? IconButton(
                                 icon: const AppIcon(PhosphorIconsRegular.x),
@@ -157,8 +160,11 @@ class _DevilFruitSearchDropdownState extends State<DevilFruitSearchDropdown> {
                         constraints: const BoxConstraints(maxHeight: 300),
                         child: _filteredItems.isEmpty
                             ? Center(
-                                child: Text(AppLocalizations.of(context)!
-                                    .noDevilFruitFound),
+                                child: Text(
+                                  AppLocalizations.of(
+                                    context,
+                                  )!.noDevilFruitFound,
+                                ),
                               )
                             : ListView.builder(
                                 shrinkWrap: true,
@@ -184,7 +190,8 @@ class _DevilFruitSearchDropdownState extends State<DevilFruitSearchDropdown> {
                                           ? fruit.romanName
                                           : fruit.name,
                                       style: const TextStyle(
-                                          fontWeight: FontWeight.bold),
+                                        fontWeight: FontWeight.bold,
+                                      ),
                                     ),
                                     subtitle: Column(
                                       crossAxisAlignment:
@@ -196,10 +203,12 @@ class _DevilFruitSearchDropdownState extends State<DevilFruitSearchDropdown> {
                                             vertical: 2,
                                           ),
                                           decoration: BoxDecoration(
-                                            color: _getTypeColor(fruit.type)
-                                                .withValues(alpha: 0.1),
-                                            borderRadius:
-                                                BorderRadius.circular(4),
+                                            color: _getTypeColor(
+                                              fruit.type,
+                                            ).withValues(alpha: 0.1),
+                                            borderRadius: BorderRadius.circular(
+                                              4,
+                                            ),
                                           ),
                                           child: Text(
                                             fruit.type,
@@ -257,20 +266,13 @@ class _DevilFruitSearchDropdownState extends State<DevilFruitSearchDropdown> {
             color: _getTypeColor(fruit.type),
             borderRadius: BorderRadius.circular(12),
           ),
-          child: Icon(
-            _getTypeIcon(fruit.type),
-            color: Colors.white,
-            size: 14,
-          ),
+          child: Icon(_getTypeIcon(fruit.type), color: Colors.white, size: 14),
         ),
         const SizedBox(width: 8),
         Expanded(
           child: Text(
             fruit.romanName.isNotEmpty ? fruit.romanName : fruit.name,
-            style: const TextStyle(
-              fontWeight: FontWeight.bold,
-              fontSize: 14,
-            ),
+            style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
             overflow: TextOverflow.ellipsis,
             maxLines: 1,
           ),

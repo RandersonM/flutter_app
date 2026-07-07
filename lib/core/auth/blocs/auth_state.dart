@@ -28,18 +28,12 @@ class AuthAuthenticated extends AuthState {
   final UserModel user;
   final bool isFirstLogin;
 
-  const AuthAuthenticated({
-    required this.user,
-    this.isFirstLogin = false,
-  });
+  const AuthAuthenticated({required this.user, this.isFirstLogin = false});
 
   @override
   List<Object?> get props => [user, isFirstLogin];
 
-  AuthAuthenticated copyWith({
-    UserModel? user,
-    bool? isFirstLogin,
-  }) {
+  AuthAuthenticated copyWith({UserModel? user, bool? isFirstLogin}) {
     return AuthAuthenticated(
       user: user ?? this.user,
       isFirstLogin: isFirstLogin ?? this.isFirstLogin,
@@ -64,10 +58,7 @@ class AuthError extends AuthState {
   final String message;
   final String? errorCode;
 
-  const AuthError({
-    required this.message,
-    this.errorCode,
-  });
+  const AuthError({required this.message, this.errorCode});
 
   @override
   List<Object?> get props => [message, errorCode];

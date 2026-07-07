@@ -1,20 +1,8 @@
 import 'package:equatable/equatable.dart';
 
-enum GoalCategory {
-  study,
-  work,
-  personal,
-  health,
-  finance,
-  other,
-}
+enum GoalCategory { study, work, personal, health, finance, other }
 
-enum GoalStatus {
-  notStarted,
-  inProgress,
-  completed,
-  overdue,
-}
+enum GoalStatus { notStarted, inProgress, completed, overdue }
 
 class GoalModel extends Equatable {
   final String id;
@@ -80,15 +68,15 @@ class GoalModel extends Equatable {
 
   @override
   List<Object?> get props => [
-        id,
-        title,
-        description,
-        deadline,
-        createdAt,
-        category,
-        status,
-        progress,
-        tags,
-        notes,
-      ];
+    id,
+    title,
+    description,
+    deadline,
+    createdAt,
+    category,
+    status,
+    progress,
+    tags,
+    notes,
+  ];
 }

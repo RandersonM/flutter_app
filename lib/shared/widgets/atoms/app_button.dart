@@ -3,13 +3,7 @@
 
 import 'package:flutter/material.dart';
 
-enum AppButtonVariant {
-  primary,
-  secondary,
-  outline,
-  tertiary,
-  text,
-}
+enum AppButtonVariant { primary, secondary, outline, tertiary, text }
 
 class AppButton extends StatelessWidget {
   const AppButton({
@@ -96,8 +90,9 @@ class AppButton extends StatelessWidget {
     final bool isDisabled = onPressed == null || isLoading;
 
     if (isDisabled) {
-      backgroundColor =
-          colorScheme.surfaceContainerHighest.withValues(alpha: 0.5);
+      backgroundColor = colorScheme.surfaceContainerHighest.withValues(
+        alpha: 0.5,
+      );
       foregroundColor = colorScheme.onSurface.withValues(alpha: 0.4);
       borderSide = BorderSide(
         color: colorScheme.outline.withValues(alpha: 0.1),
@@ -172,10 +167,7 @@ class AppButton extends StatelessWidget {
           borderRadius: BorderRadius.circular(borderRadius),
           splashColor: foregroundColor.withValues(alpha: 0.1),
           highlightColor: foregroundColor.withValues(alpha: 0.05),
-          child: Padding(
-            padding: padding,
-            child: content,
-          ),
+          child: Padding(padding: padding, child: content),
         ),
       ),
     );

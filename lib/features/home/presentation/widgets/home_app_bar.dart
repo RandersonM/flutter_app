@@ -32,8 +32,8 @@ class HomeAppBar extends StatelessWidget implements PreferredSizeWidget {
                       Text(
                         AppLocalizations.of(context)!.welcome,
                         style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                              color: Theme.of(context).colorScheme.onSurface,
-                            ),
+                          color: Theme.of(context).colorScheme.onSurface,
+                        ),
                       ),
                       Text(
                         state.user.displayName.isNotEmpty
@@ -41,9 +41,7 @@ class HomeAppBar extends StatelessWidget implements PreferredSizeWidget {
                             : AppLocalizations.of(context)!.home,
                         maxLines: 2,
                         overflow: TextOverflow.ellipsis,
-                        style: Theme.of(context)
-                            .textTheme
-                            .titleMedium
+                        style: Theme.of(context).textTheme.titleMedium
                             ?.copyWith(
                               color: Theme.of(context).colorScheme.onSurface,
                               fontWeight: FontWeight.bold,

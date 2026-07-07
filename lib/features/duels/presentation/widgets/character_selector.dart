@@ -37,10 +37,7 @@ class CharacterSelector extends StatelessWidget {
     return Center(
       child: Container(
         width: double.infinity,
-        constraints: const BoxConstraints(
-          minHeight: 200,
-          maxWidth: 350,
-        ),
+        constraints: const BoxConstraints(minHeight: 200, maxWidth: 350),
         padding: const EdgeInsets.all(Constants.margin * 2),
         decoration: BoxDecoration(
           color: Colors.black.withValues(alpha: 0.3),
@@ -85,10 +82,7 @@ class CharacterSelector extends StatelessWidget {
           height: 120,
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(Constants.margin * 2),
-            border: Border.all(
-              color: Colors.white,
-              width: 2,
-            ),
+            border: Border.all(color: Colors.white, width: 2),
           ),
           child: ClipRRect(
             borderRadius: BorderRadius.circular(Constants.margin * 2),
@@ -127,8 +121,9 @@ class CharacterSelector extends StatelessWidget {
               vertical: Constants.margin * 0.5,
             ),
             decoration: BoxDecoration(
-              color:
-                  Theme.of(context).colorScheme.tertiary.withValues(alpha: 0.3),
+              color: Theme.of(
+                context,
+              ).colorScheme.tertiary.withValues(alpha: 0.3),
               borderRadius: BorderRadius.circular(Constants.margin),
             ),
             child: Text(
@@ -152,8 +147,7 @@ class CharacterSelector extends StatelessWidget {
                     arguments: selectedCharacter,
                   );
                 },
-                icon:
-                    const AppIcon(PhosphorIconsRegular.info, size: 16),
+                icon: const AppIcon(PhosphorIconsRegular.info, size: 16),
                 label: Text(l10n.statistics),
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.blue.withValues(alpha: 0.7),
@@ -172,10 +166,9 @@ class CharacterSelector extends StatelessWidget {
                 icon: const AppIcon(PhosphorIconsRegular.x, size: 16),
                 label: Text(l10n.clear),
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: Theme.of(context)
-                      .colorScheme
-                      .error
-                      .withValues(alpha: 0.7),
+                  backgroundColor: Theme.of(
+                    context,
+                  ).colorScheme.error.withValues(alpha: 0.7),
                   foregroundColor: Colors.white,
                   padding: const EdgeInsets.symmetric(
                     horizontal: Constants.margin,
@@ -206,9 +199,7 @@ class CharacterSelector extends StatelessWidget {
           const SizedBox(height: Constants.margin),
           Text(
             l10n.noCharactersAvailable,
-            style: theme.textTheme.bodyMedium?.copyWith(
-              color: Colors.white54,
-            ),
+            style: theme.textTheme.bodyMedium?.copyWith(color: Colors.white54),
             textAlign: TextAlign.center,
           ),
         ],
@@ -224,15 +215,9 @@ class CharacterSelector extends StatelessWidget {
           height: 120,
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(Constants.margin * 2),
-            border: Border.all(
-              width: 2,
-              style: BorderStyle.solid,
-            ),
+            border: Border.all(width: 2, style: BorderStyle.solid),
           ),
-          child: const AppIcon(
-            PhosphorIconsRegular.userPlus,
-            size: 48,
-          ),
+          child: const AppIcon(PhosphorIconsRegular.userPlus, size: 48),
         ),
         const SizedBox(height: Constants.margin),
         Text(
@@ -245,12 +230,12 @@ class CharacterSelector extends StatelessWidget {
           width: double.infinity,
           child: ElevatedButton.icon(
             onPressed: () => _showCharacterSelectionModal(context),
-            icon:
-                const AppIcon(PhosphorIconsRegular.magnifyingGlass, size: 18),
+            icon: const AppIcon(PhosphorIconsRegular.magnifyingGlass, size: 18),
             label: Text(l10n.selectCharacter),
             style: ElevatedButton.styleFrom(
-              backgroundColor:
-                  Theme.of(context).colorScheme.primary.withValues(alpha: 0.7),
+              backgroundColor: Theme.of(
+                context,
+              ).colorScheme.primary.withValues(alpha: 0.7),
               foregroundColor: Theme.of(context).colorScheme.surface,
               padding: const EdgeInsets.symmetric(
                 horizontal: Constants.margin * 2,

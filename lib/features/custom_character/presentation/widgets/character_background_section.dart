@@ -56,8 +56,9 @@ class CharacterBackgroundSection extends StatelessWidget {
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
 
-    final statusOptions =
-        CharacterLocalizationMapper.getLocalizedStatusOptions(l10n);
+    final statusOptions = CharacterLocalizationMapper.getLocalizedStatusOptions(
+      l10n,
+    );
     final affiliationOptions =
         CharacterLocalizationMapper.getLocalizedAffiliationOptions(l10n);
     final occupationOptions =
@@ -68,18 +69,20 @@ class CharacterBackgroundSection extends StatelessWidget {
       children: [
         Text(
           l10n.background,
-          style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                fontWeight: FontWeight.bold,
-              ),
+          style: Theme.of(
+            context,
+          ).textTheme.headlineSmall?.copyWith(fontWeight: FontWeight.bold),
         ),
         const SizedBox(height: 16),
         CustomDropdown<String>(
           label: l10n.crew(0),
           value: selectedCrewId != null
               ? availableCrews
-                  .firstWhere((crew) => crew.id == selectedCrewId,
-                      orElse: () => CrewModel(name: '', userId: ''))
-                  .name
+                    .firstWhere(
+                      (crew) => crew.id == selectedCrewId,
+                      orElse: () => CrewModel(name: '', userId: ''),
+                    )
+                    .name
               : null,
           items: availableCrews.map((crew) => crew.name).toList(),
           itemToString: (crewName) => crewName,
@@ -89,7 +92,8 @@ class CharacterBackgroundSection extends StatelessWidget {
               orElse: () => CrewModel(name: '', userId: ''),
             );
             onCrewChanged(
-                selectedCrew.name.isNotEmpty ? selectedCrew.id : null);
+              selectedCrew.name.isNotEmpty ? selectedCrew.id : null,
+            );
           },
         ),
         if (selectedCrewId != null) ...[
@@ -98,14 +102,18 @@ class CharacterBackgroundSection extends StatelessWidget {
             label: l10n.crewRole,
             value: selectedCrewRole != null
                 ? CharacterLocalizationMapper.mapOccupationToLocalized(
-                    selectedCrewRole!, l10n)
+                    selectedCrewRole!,
+                    l10n,
+                  )
                 : null,
             items: occupationOptions,
             itemToString: (role) => role,
             onChanged: (translatedRole) {
               if (translatedRole == null) return;
               final key = CharacterLocalizationMapper.mapLocalizedToOccupation(
-                  translatedRole, l10n);
+                translatedRole,
+                l10n,
+              );
               onCrewRoleChanged(key);
             },
           ),
@@ -156,14 +164,18 @@ class CharacterBackgroundSection extends StatelessWidget {
           label: l10n.status,
           value: selectedStatus != null
               ? CharacterLocalizationMapper.mapStatusToLocalized(
-                  selectedStatus, l10n)
+                  selectedStatus,
+                  l10n,
+                )
               : null,
           items: statusOptions,
           itemToString: (status) => status,
           onChanged: (translatedStatus) {
             if (translatedStatus == null) return;
             final key = CharacterLocalizationMapper.mapLocalizedToStatus(
-                translatedStatus, l10n);
+              translatedStatus,
+              l10n,
+            );
             onStatusChanged(key);
           },
         ),
@@ -171,18 +183,25 @@ class CharacterBackgroundSection extends StatelessWidget {
           label: l10n.occupations,
           options: occupationOptions,
           selectedOptions: selectedOccupations
-              .map((key) =>
-                  CharacterLocalizationMapper.mapOccupationToLocalized(
-                      key, l10n))
+              .map(
+                (key) => CharacterLocalizationMapper.mapOccupationToLocalized(
+                  key,
+                  l10n,
+                ),
+              )
               .toList(),
           onOptionSelected: (translatedOccupation) {
             final key = CharacterLocalizationMapper.mapLocalizedToOccupation(
-                translatedOccupation, l10n);
+              translatedOccupation,
+              l10n,
+            );
             onOccupationSelected(key);
           },
           onOptionDeselected: (translatedOccupation) {
             final key = CharacterLocalizationMapper.mapLocalizedToOccupation(
-                translatedOccupation, l10n);
+              translatedOccupation,
+              l10n,
+            );
             onOccupationDeselected(key);
           },
           maxSelections: 3,
@@ -191,18 +210,25 @@ class CharacterBackgroundSection extends StatelessWidget {
           label: l10n.affiliations,
           options: affiliationOptions,
           selectedOptions: selectedAffiliations
-              .map((key) =>
-                  CharacterLocalizationMapper.mapAffiliationToLocalized(
-                      key, l10n))
+              .map(
+                (key) => CharacterLocalizationMapper.mapAffiliationToLocalized(
+                  key,
+                  l10n,
+                ),
+              )
               .toList(),
           onOptionSelected: (translatedAffiliation) {
             final key = CharacterLocalizationMapper.mapLocalizedToAffiliation(
-                translatedAffiliation, l10n);
+              translatedAffiliation,
+              l10n,
+            );
             onAffiliationSelected(key);
           },
           onOptionDeselected: (translatedAffiliation) {
             final key = CharacterLocalizationMapper.mapLocalizedToAffiliation(
-                translatedAffiliation, l10n);
+              translatedAffiliation,
+              l10n,
+            );
             onAffiliationDeselected(key);
           },
         ),

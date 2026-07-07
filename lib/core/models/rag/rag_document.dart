@@ -18,9 +18,9 @@ class RagDocument {
   });
 
   String get metadataJson => jsonEncode({
-        'category': category,
-        'lang': language,
-        'topic': topic,
-        'isSession': isSession,
-      });
+    'category': category,
+    'lang': language,
+    'topic': topic,
+    'isSession': isSession,
+  });
 }

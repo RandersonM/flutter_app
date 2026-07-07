@@ -19,11 +19,6 @@ class AppIcon extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Icon(
-      icon,
-      size: size,
-      color: color,
-      semanticLabel: semanticLabel,
-    );
+    return Icon(icon, size: size, color: color, semanticLabel: semanticLabel);
   }
 }

@@ -45,8 +45,8 @@ class FuturisticBackground extends StatelessWidget {
             color: customBackgroundColor != null
                 ? customBackgroundColor!.withValues(alpha: 0.9)
                 : (useThemeColors
-                    ? colorScheme.primaryContainer.withValues(alpha: 0.9)
-                    : null),
+                      ? colorScheme.primaryContainer.withValues(alpha: 0.9)
+                      : null),
             gradient: (customBackgroundColor != null || useThemeColors)
                 ? null
                 : LinearGradient(
@@ -110,7 +110,8 @@ class AnimatedFuturisticBackground extends StatefulWidget {
 }
 
 class _AnimatedFuturisticBackgroundState
-    extends State<AnimatedFuturisticBackground> with TickerProviderStateMixin {
+    extends State<AnimatedFuturisticBackground>
+    with TickerProviderStateMixin {
   late AnimationController _animationController;
   late Animation<double> _rotationAnimation;
 
@@ -122,13 +123,9 @@ class _AnimatedFuturisticBackgroundState
       vsync: this,
     );
 
-    _rotationAnimation = Tween<double>(
-      begin: 0,
-      end: 2 * 3.14159,
-    ).animate(CurvedAnimation(
-      parent: _animationController,
-      curve: Curves.linear,
-    ));
+    _rotationAnimation = Tween<double>(begin: 0, end: 2 * 3.14159).animate(
+      CurvedAnimation(parent: _animationController, curve: Curves.linear),
+    );
 
     _animationController.repeat();
   }

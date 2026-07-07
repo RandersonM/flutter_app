@@ -14,10 +14,7 @@ import 'package:opfan/shared/widgets/atoms/clickable_image.dart';
 class EditCrewScreen extends StatefulWidget {
   final CrewModel crew;
 
-  const EditCrewScreen({
-    super.key,
-    required this.crew,
-  });
+  const EditCrewScreen({super.key, required this.crew});
 
   @override
   State<EditCrewScreen> createState() => _EditCrewScreenState();
@@ -241,7 +238,8 @@ class _EditCrewScreenState extends State<EditCrewScreen> {
                 return current is EditCrewSuccess ||
                     (current is EditCrewFailure &&
                         !current.error.contains(
-                            'mas houve um erro ao atualizar a lista'));
+                          'mas houve um erro ao atualizar a lista',
+                        ));
               },
               listener: (context, state) {
                 if (state is EditCrewSuccess) {
@@ -273,8 +271,9 @@ class _EditCrewScreenState extends State<EditCrewScreen> {
                                 children: [
                                   const SizedBox(height: 8),
                                   Text(
-                                    AppLocalizations.of(context)!
-                                        .editCrewSubtitle,
+                                    AppLocalizations.of(
+                                      context,
+                                    )!.editCrewSubtitle,
                                     style: theme.textTheme.titleLarge?.copyWith(
                                       fontWeight: FontWeight.bold,
                                     ),
@@ -286,12 +285,15 @@ class _EditCrewScreenState extends State<EditCrewScreen> {
                             TextFormField(
                               controller: _nameController,
                               decoration: InputDecoration(
-                                labelText:
-                                    AppLocalizations.of(context)!.crewName,
-                                hintText:
-                                    AppLocalizations.of(context)!.crewNameHint,
-                                prefixIcon:
-                                    const AppIcon(PhosphorIconsRegular.flag),
+                                labelText: AppLocalizations.of(
+                                  context,
+                                )!.crewName,
+                                hintText: AppLocalizations.of(
+                                  context,
+                                )!.crewNameHint,
+                                prefixIcon: const AppIcon(
+                                  PhosphorIconsRegular.flag,
+                                ),
                                 border: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(12),
                                 ),
@@ -300,12 +302,14 @@ class _EditCrewScreenState extends State<EditCrewScreen> {
                               style: theme.textTheme.bodyMedium,
                               validator: (value) {
                                 if (value == null || value.trim().isEmpty) {
-                                  return AppLocalizations.of(context)!
-                                      .nameRequired;
+                                  return AppLocalizations.of(
+                                    context,
+                                  )!.nameRequired;
                                 }
                                 if (value.trim().length < 3) {
-                                  return AppLocalizations.of(context)!
-                                      .nameMinLength;
+                                  return AppLocalizations.of(
+                                    context,
+                                  )!.nameMinLength;
                                 }
                                 return null;
                               },
@@ -315,12 +319,15 @@ class _EditCrewScreenState extends State<EditCrewScreen> {
                               controller: _descriptionController,
                               maxLines: 3,
                               decoration: InputDecoration(
-                                labelText:
-                                    AppLocalizations.of(context)!.description,
-                                hintText: AppLocalizations.of(context)!
-                                    .descriptionHint,
+                                labelText: AppLocalizations.of(
+                                  context,
+                                )!.description,
+                                hintText: AppLocalizations.of(
+                                  context,
+                                )!.descriptionHint,
                                 prefixIcon: const AppIcon(
-                                    PhosphorIconsRegular.fileText),
+                                  PhosphorIconsRegular.fileText,
+                                ),
                                 border: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(12),
                                 ),
@@ -348,8 +355,8 @@ class _EditCrewScreenState extends State<EditCrewScreen> {
                                         AppLocalizations.of(context)!.tags,
                                         style: theme.textTheme.titleLarge
                                             ?.copyWith(
-                                          fontWeight: FontWeight.bold,
-                                        ),
+                                              fontWeight: FontWeight.bold,
+                                            ),
                                       ),
                                       IconButton(
                                         onPressed: _showAddTagDialog,
@@ -363,8 +370,9 @@ class _EditCrewScreenState extends State<EditCrewScreen> {
                                     Padding(
                                       padding: const EdgeInsets.only(top: 8),
                                       child: Text(
-                                        AppLocalizations.of(context)!
-                                            .noTagsAdded,
+                                        AppLocalizations.of(
+                                          context,
+                                        )!.noTagsAdded,
                                         style: const TextStyle(
                                           color: Colors.white54,
                                           fontSize: 14,
@@ -378,11 +386,13 @@ class _EditCrewScreenState extends State<EditCrewScreen> {
                                       runSpacing: 8,
                                       children: _tags.map((tag) {
                                         return Chip(
-                                          label: Text(tag,
-                                              style:
-                                                  theme.textTheme.bodyMedium),
+                                          label: Text(
+                                            tag,
+                                            style: theme.textTheme.bodyMedium,
+                                          ),
                                           deleteIcon: const AppIcon(
-                                              PhosphorIconsRegular.x),
+                                            PhosphorIconsRegular.x,
+                                          ),
                                           onDeleted: () => _removeTag(tag),
                                         );
                                       }).toList(),
@@ -404,8 +414,9 @@ class _EditCrewScreenState extends State<EditCrewScreen> {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Text(
-                                    AppLocalizations.of(context)!
-                                        .pirateFlagSectionTitle,
+                                    AppLocalizations.of(
+                                      context,
+                                    )!.pirateFlagSectionTitle,
                                     style: const TextStyle(
                                       fontSize: 16,
                                       fontWeight: FontWeight.bold,
@@ -418,9 +429,10 @@ class _EditCrewScreenState extends State<EditCrewScreen> {
                                       decoration: BoxDecoration(
                                         borderRadius: BorderRadius.circular(8),
                                         border: Border.all(
-                                            color: Theme.of(context)
-                                                .colorScheme
-                                                .primary),
+                                          color: Theme.of(
+                                            context,
+                                          ).colorScheme.primary,
+                                        ),
                                       ),
                                       child: ClipRRect(
                                         borderRadius: BorderRadius.circular(8),
@@ -428,10 +440,12 @@ class _EditCrewScreenState extends State<EditCrewScreen> {
                                           imageUrl: _generatedJollyRogerUrl!,
                                           height: 120,
                                           fit: BoxFit.cover,
-                                          borderRadius:
-                                              BorderRadius.circular(8),
-                                          title: AppLocalizations.of(context)!
-                                              .pirateFlagTitle,
+                                          borderRadius: BorderRadius.circular(
+                                            8,
+                                          ),
+                                          title: AppLocalizations.of(
+                                            context,
+                                          )!.pirateFlagTitle,
                                         ),
                                       ),
                                     ),
@@ -440,10 +454,12 @@ class _EditCrewScreenState extends State<EditCrewScreen> {
                                   TextFormField(
                                     controller: _jollyRogerPromptController,
                                     decoration: InputDecoration(
-                                      labelText: AppLocalizations.of(context)!
-                                          .aiPromptLabel,
-                                      hintText: AppLocalizations.of(context)!
-                                          .pirateFlagPromptHint,
+                                      labelText: AppLocalizations.of(
+                                        context,
+                                      )!.aiPromptLabel,
+                                      hintText: AppLocalizations.of(
+                                        context,
+                                      )!.pirateFlagPromptHint,
                                       border: OutlineInputBorder(
                                         borderRadius: BorderRadius.circular(8),
                                       ),
@@ -463,23 +479,27 @@ class _EditCrewScreenState extends State<EditCrewScreen> {
                                               ? const SizedBox(
                                                   width: 16,
                                                   height: 16,
-                                                  child:
-                                                      CircularProgressIndicator(
+                                                  child: CircularProgressIndicator(
                                                     strokeWidth: 2,
                                                     valueColor:
                                                         AlwaysStoppedAnimation<
-                                                                Color>(
-                                                            Colors.white),
+                                                          Color
+                                                        >(Colors.white),
                                                   ),
                                                 )
                                               : const AppIcon(
                                                   PhosphorIconsRegular
-                                                      .magicWand),
-                                          label: Text(_isGeneratingJollyRoger
-                                              ? AppLocalizations.of(context)!
-                                                  .generatingImage
-                                              : AppLocalizations.of(context)!
-                                                  .generateFlag),
+                                                      .magicWand,
+                                                ),
+                                          label: Text(
+                                            _isGeneratingJollyRoger
+                                                ? AppLocalizations.of(
+                                                    context,
+                                                  )!.generatingImage
+                                                : AppLocalizations.of(
+                                                    context,
+                                                  )!.generateFlag,
+                                          ),
                                           style: ElevatedButton.styleFrom(),
                                         ),
                                       ),
@@ -501,8 +521,9 @@ class _EditCrewScreenState extends State<EditCrewScreen> {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Text(
-                                    AppLocalizations.of(context)!
-                                        .crewBoatSectionTitle,
+                                    AppLocalizations.of(
+                                      context,
+                                    )!.crewBoatSectionTitle,
                                     style: theme.textTheme.bodyMedium!.copyWith(
                                       fontSize: 16,
                                       fontWeight: FontWeight.w500,
@@ -512,12 +533,15 @@ class _EditCrewScreenState extends State<EditCrewScreen> {
                                   TextFormField(
                                     controller: _boatNameController,
                                     decoration: InputDecoration(
-                                      labelText: AppLocalizations.of(context)!
-                                          .crewBoatName,
-                                      hintText: AppLocalizations.of(context)!
-                                          .boatNameHint,
+                                      labelText: AppLocalizations.of(
+                                        context,
+                                      )!.crewBoatName,
+                                      hintText: AppLocalizations.of(
+                                        context,
+                                      )!.boatNameHint,
                                       prefixIcon: const AppIcon(
-                                          PhosphorIconsRegular.boat),
+                                        PhosphorIconsRegular.boat,
+                                      ),
                                       border: OutlineInputBorder(
                                         borderRadius: BorderRadius.circular(12),
                                       ),
@@ -529,10 +553,12 @@ class _EditCrewScreenState extends State<EditCrewScreen> {
                                   TextFormField(
                                     controller: _boatPromptController,
                                     decoration: InputDecoration(
-                                      labelText: AppLocalizations.of(context)!
-                                          .aiPromptLabel,
-                                      hintText: AppLocalizations.of(context)!
-                                          .pirateFlagPromptHint,
+                                      labelText: AppLocalizations.of(
+                                        context,
+                                      )!.aiPromptLabel,
+                                      hintText: AppLocalizations.of(
+                                        context,
+                                      )!.pirateFlagPromptHint,
                                       border: OutlineInputBorder(
                                         borderRadius: BorderRadius.circular(8),
                                       ),
@@ -552,23 +578,27 @@ class _EditCrewScreenState extends State<EditCrewScreen> {
                                               ? const SizedBox(
                                                   width: 16,
                                                   height: 16,
-                                                  child:
-                                                      CircularProgressIndicator(
+                                                  child: CircularProgressIndicator(
                                                     strokeWidth: 2,
                                                     valueColor:
                                                         AlwaysStoppedAnimation<
-                                                                Color>(
-                                                            Colors.white),
+                                                          Color
+                                                        >(Colors.white),
                                                   ),
                                                 )
                                               : const AppIcon(
                                                   PhosphorIconsRegular
-                                                      .magicWand),
-                                          label: Text(_isGeneratingBoat
-                                              ? AppLocalizations.of(context)!
-                                                  .generatingImage
-                                              : AppLocalizations.of(context)!
-                                                  .generateBoat),
+                                                      .magicWand,
+                                                ),
+                                          label: Text(
+                                            _isGeneratingBoat
+                                                ? AppLocalizations.of(
+                                                    context,
+                                                  )!.generatingImage
+                                                : AppLocalizations.of(
+                                                    context,
+                                                  )!.generateBoat,
+                                          ),
                                           style: ElevatedButton.styleFrom(),
                                         ),
                                       ),
@@ -581,7 +611,8 @@ class _EditCrewScreenState extends State<EditCrewScreen> {
                                       decoration: BoxDecoration(
                                         borderRadius: BorderRadius.circular(8),
                                         border: Border.all(
-                                            color: AppColors.purple[600]!),
+                                          color: AppColors.purple[600]!,
+                                        ),
                                       ),
                                       child: ClipRRect(
                                         borderRadius: BorderRadius.circular(8),
@@ -589,10 +620,12 @@ class _EditCrewScreenState extends State<EditCrewScreen> {
                                           imageUrl: _generatedBoatUrl!,
                                           height: 120,
                                           fit: BoxFit.cover,
-                                          borderRadius:
-                                              BorderRadius.circular(8),
-                                          title: AppLocalizations.of(context)!
-                                              .boatTitle,
+                                          borderRadius: BorderRadius.circular(
+                                            8,
+                                          ),
+                                          title: AppLocalizations.of(
+                                            context,
+                                          )!.boatTitle,
                                         ),
                                       ),
                                     ),
@@ -618,8 +651,9 @@ class _EditCrewScreenState extends State<EditCrewScreen> {
                                   const SizedBox(width: 12),
                                   Expanded(
                                     child: Text(
-                                      AppLocalizations.of(context)!
-                                          .aiPromptInfo,
+                                      AppLocalizations.of(
+                                        context,
+                                      )!.aiPromptInfo,
                                       style: TextStyle(
                                         color: AppColors.purple[400]!,
                                         fontSize: 14,
@@ -634,8 +668,9 @@ class _EditCrewScreenState extends State<EditCrewScreen> {
                               onSave: () => _submitForm(context),
                               onCancel: _cancelForm,
                               isLoading: isLoading,
-                              saveButtonText:
-                                  AppLocalizations.of(context)!.update,
+                              saveButtonText: AppLocalizations.of(
+                                context,
+                              )!.update,
                             ),
                             const SizedBox(height: 24),
                           ],
@@ -655,20 +690,20 @@ class _EditCrewScreenState extends State<EditCrewScreen> {
   void _submitForm(BuildContext context) {
     if (_formKey.currentState!.validate()) {
       context.read<EditCrewBloc>().add(
-            EditCrewSubmitted(
-              crewId: widget.crew.id!,
-              name: _nameController.text,
-              description: _descriptionController.text.isEmpty
-                  ? null
-                  : _descriptionController.text,
-              jollyRogerUrl: _generatedJollyRogerUrl,
-              boatImageUrl: _generatedBoatUrl,
-              tags: _tags,
-              boatName: _boatNameController.text.isEmpty
-                  ? null
-                  : _boatNameController.text,
-            ),
-          );
+        EditCrewSubmitted(
+          crewId: widget.crew.id!,
+          name: _nameController.text,
+          description: _descriptionController.text.isEmpty
+              ? null
+              : _descriptionController.text,
+          jollyRogerUrl: _generatedJollyRogerUrl,
+          boatImageUrl: _generatedBoatUrl,
+          tags: _tags,
+          boatName: _boatNameController.text.isEmpty
+              ? null
+              : _boatNameController.text,
+        ),
+      );
     }
   }
 

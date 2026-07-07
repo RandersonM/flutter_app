@@ -1,7 +1,7 @@
 class FightingStyleModel {
   final String? name;
   final String
-      type; // obrigatório: espadachim, atirador, lutador, boxeador, etc.
+  type; // obrigatório: espadachim, atirador, lutador, boxeador, etc.
   final List<String>? weapons; // opcional: lista de armas
   final List<String>? attacks; // opcional: lista de ataques
 
@@ -26,12 +26,7 @@ class FightingStyleModel {
   }
 
   Map<String, dynamic> toMap() {
-    return {
-      'name': name,
-      'type': type,
-      'weapons': weapons,
-      'attacks': attacks,
-    };
+    return {'name': name, 'type': type, 'weapons': weapons, 'attacks': attacks};
   }
 
   FightingStyleModel copyWith({

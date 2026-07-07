@@ -56,7 +56,10 @@ abstract class ICrewRepository {
   Future<void> removeMemberFromCrew(String crewId, String characterId);
 
   Future<void> updateCrewMember(
-      String crewId, String characterId, CrewMember updatedMember);
+    String crewId,
+    String characterId,
+    CrewMember updatedMember,
+  );
 
   Future<void> setCaptain(String crewId, String captainName);
 

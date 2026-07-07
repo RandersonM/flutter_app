@@ -25,10 +25,7 @@ class GenderMapper {
   }
 
   static List<String> getLocalizedOptions(AppLocalizations loc) {
-    return [
-      loc.workout_gender_male,
-      loc.workout_gender_female,
-    ];
+    return [loc.workout_gender_male, loc.workout_gender_female];
   }
 
   static List<String> getInternalOptions() {

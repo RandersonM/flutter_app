@@ -51,7 +51,7 @@ class ClickableImage extends StatelessWidget {
                 child: CircularProgressIndicator(
                   value: loadingProgress.expectedTotalBytes != null
                       ? loadingProgress.cumulativeBytesLoaded /
-                          loadingProgress.expectedTotalBytes!
+                            loadingProgress.expectedTotalBytes!
                       : null,
                   color: theme.colorScheme.primary,
                 ),
@@ -115,9 +115,7 @@ class ClickableImage extends StatelessWidget {
               Positioned.fill(
                 child: GestureDetector(
                   onTap: () => Navigator.of(context).pop(),
-                  child: Container(
-                    color: Colors.transparent,
-                  ),
+                  child: Container(color: Colors.transparent),
                 ),
               ),
               Center(
@@ -141,10 +139,10 @@ class ClickableImage extends StatelessWidget {
                               color: Colors.transparent,
                               child: Center(
                                 child: CircularProgressIndicator(
-                                  value: loadingProgress.expectedTotalBytes !=
-                                          null
+                                  value:
+                                      loadingProgress.expectedTotalBytes != null
                                       ? loadingProgress.cumulativeBytesLoaded /
-                                          loadingProgress.expectedTotalBytes!
+                                            loadingProgress.expectedTotalBytes!
                                       : null,
                                   color: Colors.white,
                                 ),
@@ -166,10 +164,8 @@ class ClickableImage extends StatelessWidget {
                                     const SizedBox(height: 8),
                                     Text(
                                       'Erro ao carregar imagem',
-                                      style:
-                                          theme.textTheme.bodyMedium?.copyWith(
-                                        color: Colors.white,
-                                      ),
+                                      style: theme.textTheme.bodyMedium
+                                          ?.copyWith(color: Colors.white),
                                     ),
                                   ],
                                 ),

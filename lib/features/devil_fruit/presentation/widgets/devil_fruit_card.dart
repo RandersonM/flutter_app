@@ -11,11 +11,7 @@ class DevilFruitCard extends StatelessWidget {
   final DevilFruit devilFruit;
   final VoidCallback? onTap;
 
-  const DevilFruitCard({
-    super.key,
-    required this.devilFruit,
-    this.onTap,
-  });
+  const DevilFruitCard({super.key, required this.devilFruit, this.onTap});
 
   @override
   Widget build(BuildContext context) {
@@ -62,9 +58,7 @@ class DevilFruitCard extends StatelessWidget {
                             const SizedBox(width: Constants.margin / 2),
                             Text(
                               devilFruit.type,
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .bodySmall
+                              style: Theme.of(context).textTheme.bodySmall
                                   ?.copyWith(
                                     fontWeight: FontWeight.bold,
                                     color: _getTypeColor(),
@@ -79,36 +73,43 @@ class DevilFruitCard extends StatelessWidget {
                           width: double.infinity,
                           decoration: BoxDecoration(
                             color: Colors.white.withValues(alpha: 0.1),
-                            borderRadius:
-                                BorderRadius.circular(Constants.margin),
+                            borderRadius: BorderRadius.circular(
+                              Constants.margin,
+                            ),
                           ),
-                          child: devilFruit.filename != null &&
+                          child:
+                              devilFruit.filename != null &&
                                   devilFruit.filename!.isNotEmpty
                               ? ClipRRect(
-                                  borderRadius:
-                                      BorderRadius.circular(Constants.margin),
+                                  borderRadius: BorderRadius.circular(
+                                    Constants.margin,
+                                  ),
                                   child: Image.network(
                                     devilFruit.filename!,
                                     fit: BoxFit.contain,
                                     loadingBuilder:
                                         (context, child, loadingProgress) {
-                                      if (loadingProgress == null) return child;
-                                      return Center(
-                                        child: CircularProgressIndicator(
-                                          value: loadingProgress
-                                                      .expectedTotalBytes !=
-                                                  null
-                                              ? loadingProgress
-                                                      .cumulativeBytesLoaded /
+                                          if (loadingProgress == null) {
+                                            return child;
+                                          }
+                                          return Center(
+                                            child: CircularProgressIndicator(
+                                              value:
                                                   loadingProgress
-                                                      .expectedTotalBytes!
-                                              : null,
-                                          strokeWidth: 2,
-                                          color: Colors.white
-                                              .withValues(alpha: 0.7),
-                                        ),
-                                      );
-                                    },
+                                                          .expectedTotalBytes !=
+                                                      null
+                                                  ? loadingProgress
+                                                            .cumulativeBytesLoaded /
+                                                        loadingProgress
+                                                            .expectedTotalBytes!
+                                                  : null,
+                                              strokeWidth: 2,
+                                              color: Colors.white.withValues(
+                                                alpha: 0.7,
+                                              ),
+                                            ),
+                                          );
+                                        },
                                     errorBuilder: (context, error, stackTrace) {
                                       return _buildPlaceholderImage(context);
                                     },
@@ -133,9 +134,9 @@ class DevilFruitCard extends StatelessWidget {
                       Text(
                         devilFruit.romanName,
                         style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                              fontWeight: FontWeight.bold,
-                              color: Colors.white,
-                            ),
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white,
+                        ),
                         maxLines: 2,
                         overflow: TextOverflow.ellipsis,
                       ),
@@ -143,9 +144,9 @@ class DevilFruitCard extends StatelessWidget {
                       Text(
                         devilFruit.name,
                         style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                              color: Colors.white.withValues(alpha: 0.8),
-                              fontStyle: FontStyle.italic,
-                            ),
+                          color: Colors.white.withValues(alpha: 0.8),
+                          fontStyle: FontStyle.italic,
+                        ),
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
                       ),
@@ -197,37 +198,25 @@ class DevilFruitCard extends StatelessWidget {
         return const LinearGradient(
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
-          colors: [
-            Color(0xFF667eea),
-            Color(0xFF764ba2),
-          ],
+          colors: [Color(0xFF667eea), Color(0xFF764ba2)],
         );
       case 'paramecia':
         return const LinearGradient(
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
-          colors: [
-            Color(0xFF11998e),
-            Color(0xFF38ef7d),
-          ],
+          colors: [Color(0xFF11998e), Color(0xFF38ef7d)],
         );
       case 'zoan':
         return const LinearGradient(
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
-          colors: [
-            Color(0xFFf093fb),
-            Color(0xFFf5576c),
-          ],
+          colors: [Color(0xFFf093fb), Color(0xFFf5576c)],
         );
       default:
         return const LinearGradient(
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
-          colors: [
-            Color(0xFF667eea),
-            Color(0xFF764ba2),
-          ],
+          colors: [Color(0xFF667eea), Color(0xFF764ba2)],
         );
     }
   }

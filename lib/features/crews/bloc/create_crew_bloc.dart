@@ -9,13 +9,10 @@ class CreateCrewBloc extends Bloc<CreateCrewEvent, CreateCrewState> {
   final ICrewRepository _crewRepository;
   final String? _userId;
 
-  CreateCrewBloc({
-    ICrewRepository? crewRepository,
-    this._userId,
-  })
+  CreateCrewBloc({ICrewRepository? crewRepository, this._userId})
     : _crewRepository = crewRepository ?? getIt<ICrewRepository>(),
-        super(CreateCrewInitial()) {
-//
+      super(CreateCrewInitial()) {
+    //
 
     on<CreateCrewSubmitted>(_onCreateCrewSubmitted);
     on<CreateCrewReset>(_onCreateCrewReset);

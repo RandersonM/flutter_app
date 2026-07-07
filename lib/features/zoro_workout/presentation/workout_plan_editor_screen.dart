@@ -40,7 +40,7 @@ class _WorkoutPlanEditorScreenState extends State<WorkoutPlanEditorScreen> {
       }).toList();
     } else {
       _splits = [
-        _SplitDraft(name: 'Treino A', exercises: [_ExerciseDraft()])
+        _SplitDraft(name: 'Treino A', exercises: [_ExerciseDraft()]),
       ];
     }
   }
@@ -49,7 +49,8 @@ class _WorkoutPlanEditorScreenState extends State<WorkoutPlanEditorScreen> {
     setState(() {
       final letter = String.fromCharCode('A'.codeUnitAt(0) + _splits.length);
       _splits.add(
-          _SplitDraft(name: 'Treino $letter', exercises: [_ExerciseDraft()]));
+        _SplitDraft(name: 'Treino $letter', exercises: [_ExerciseDraft()]),
+      );
     });
   }
 
@@ -98,7 +99,8 @@ class _WorkoutPlanEditorScreenState extends State<WorkoutPlanEditorScreen> {
 
   void _showError(String msg) {
     ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(msg), behavior: SnackBarBehavior.floating));
+      SnackBar(content: Text(msg), behavior: SnackBarBehavior.floating),
+    );
   }
 
   @override
@@ -139,18 +141,21 @@ class _WorkoutPlanEditorScreenState extends State<WorkoutPlanEditorScreen> {
       },
       child: Scaffold(
         appBar: AppBar(
-          title:
-              Text(isEdit ? 'Editar Plano de Treino' : 'Criar Plano de Treino'),
+          title: Text(
+            isEdit ? 'Editar Plano de Treino' : 'Criar Plano de Treino',
+          ),
           centerTitle: true,
           actions: [
             if (_saving)
               const Padding(
                 padding: EdgeInsets.only(right: 16),
                 child: Center(
-                    child: SizedBox(
-                        width: 20,
-                        height: 20,
-                        child: CircularProgressIndicator(strokeWidth: 2))),
+                  child: SizedBox(
+                    width: 20,
+                    height: 20,
+                    child: CircularProgressIndicator(strokeWidth: 2),
+                  ),
+                ),
               )
             else
               AppButton(
@@ -172,8 +177,7 @@ class _WorkoutPlanEditorScreenState extends State<WorkoutPlanEditorScreen> {
               ),
               child: Row(
                 children: [
-                  AppIcon(PhosphorIconsRegular.info,
-                      color: primary, size: 18),
+                  AppIcon(PhosphorIconsRegular.info, color: primary, size: 18),
                   const SizedBox(width: 10),
                   Expanded(
                     child: Text(
@@ -225,7 +229,10 @@ class _WorkoutPlanEditorScreenState extends State<WorkoutPlanEditorScreen> {
                   width: 18,
                   height: 18,
                   child: CircularProgressIndicator(
-                      strokeWidth: 2, color: Colors.white))
+                    strokeWidth: 2,
+                    color: Colors.white,
+                  ),
+                )
               : const AppIcon(PhosphorIconsRegular.check),
           label: Text(_saving ? 'Salvando…' : 'Salvar Plano'),
         ),
@@ -241,7 +248,7 @@ class _SplitDraft {
   final List<_ExerciseDraft> exercises;
 
   _SplitDraft({required String name, required this.exercises})
-      : nameController = TextEditingController(text: name);
+    : nameController = TextEditingController(text: name);
 }
 
 class _ExerciseDraft {
@@ -249,8 +256,8 @@ class _ExerciseDraft {
   final TextEditingController volumeController;
 
   _ExerciseDraft({String name = '', String volume = ''})
-      : nameController = TextEditingController(text: name),
-        volumeController = TextEditingController(text: volume);
+    : nameController = TextEditingController(text: name),
+      volumeController = TextEditingController(text: volume);
 }
 
 // ─── Split Card Widget ────────────────────────────────────────────────────────
@@ -283,9 +290,7 @@ class _SplitCard extends StatelessWidget {
       decoration: BoxDecoration(
         color: Theme.of(context).colorScheme.surface,
         borderRadius: BorderRadius.circular(16),
-        border: Border.all(
-          color: primaryColor.withValues(alpha: 0.3),
-        ),
+        border: Border.all(color: primaryColor.withValues(alpha: 0.3)),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -295,8 +300,9 @@ class _SplitCard extends StatelessWidget {
             padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
             decoration: BoxDecoration(
               color: primaryColor.withValues(alpha: 0.08),
-              borderRadius:
-                  const BorderRadius.vertical(top: Radius.circular(16)),
+              borderRadius: const BorderRadius.vertical(
+                top: Radius.circular(16),
+              ),
             ),
             child: Row(
               children: [
@@ -311,9 +317,10 @@ class _SplitCard extends StatelessWidget {
                   child: Text(
                     String.fromCharCode('A'.codeUnitAt(0) + splitIndex),
                     style: const TextStyle(
-                        color: Colors.white,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 16),
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 16,
+                    ),
                   ),
                 ),
                 const SizedBox(width: 12),
@@ -321,10 +328,9 @@ class _SplitCard extends StatelessWidget {
                   child: TextField(
                     controller: split.nameController,
                     onChanged: (_) => onChanged(),
-                    style: Theme.of(context)
-                        .textTheme
-                        .titleSmall
-                        ?.copyWith(fontWeight: FontWeight.bold),
+                    style: Theme.of(context).textTheme.titleSmall?.copyWith(
+                      fontWeight: FontWeight.bold,
+                    ),
                     decoration: InputDecoration(
                       hintText: AppLocalizations.of(context)!.splitNameHint,
                       border: InputBorder.none,
@@ -336,8 +342,11 @@ class _SplitCard extends StatelessWidget {
                 if (totalSplits > 1)
                   IconButton(
                     onPressed: onRemove,
-                    icon: AppIcon(PhosphorIconsRegular.trash,
-                        color: Theme.of(context).colorScheme.error, size: 20),
+                    icon: AppIcon(
+                      PhosphorIconsRegular.trash,
+                      color: Theme.of(context).colorScheme.error,
+                      size: 20,
+                    ),
                     padding: EdgeInsets.zero,
                     constraints: const BoxConstraints(),
                   ),
@@ -368,9 +377,10 @@ class _SplitCard extends StatelessWidget {
                           child: Text(
                             '${exIndex + 1}',
                             style: TextStyle(
-                                color: primaryColor,
-                                fontWeight: FontWeight.bold,
-                                fontSize: 12),
+                              color: primaryColor,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 12,
+                            ),
                           ),
                         ),
                         const SizedBox(width: 10),
@@ -381,34 +391,34 @@ class _SplitCard extends StatelessWidget {
                             controller: ex.nameController,
                             onChanged: (_) => onChanged(),
                             decoration: InputDecoration(
-                              hintText:
-                                  AppLocalizations.of(context)!.exerciseHint,
-                              hintStyle: Theme.of(context)
-                                  .textTheme
-                                  .bodySmall
+                              hintText: AppLocalizations.of(
+                                context,
+                              )!.exerciseHint,
+                              hintStyle: Theme.of(context).textTheme.bodySmall
                                   ?.copyWith(
-                                      color: Theme.of(context)
-                                          .colorScheme
-                                          .onSurface
-                                          .withValues(alpha: 0.4)),
-                              isDense: true,
-                              contentPadding: const EdgeInsets.symmetric(
-                                  horizontal: 10, vertical: 10),
-                              border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(8),
-                                borderSide: BorderSide(
                                     color: Theme.of(context)
                                         .colorScheme
                                         .onSurface
-                                        .withValues(alpha: 0.2)),
+                                        .withValues(alpha: 0.4),
+                                  ),
+                              isDense: true,
+                              contentPadding: const EdgeInsets.symmetric(
+                                horizontal: 10,
+                                vertical: 10,
+                              ),
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(8),
+                                borderSide: BorderSide(
+                                  color: Theme.of(context).colorScheme.onSurface
+                                      .withValues(alpha: 0.2),
+                                ),
                               ),
                               enabledBorder: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(8),
                                 borderSide: BorderSide(
-                                    color: Theme.of(context)
-                                        .colorScheme
-                                        .onSurface
-                                        .withValues(alpha: 0.2)),
+                                  color: Theme.of(context).colorScheme.onSurface
+                                      .withValues(alpha: 0.2),
+                                ),
                               ),
                             ),
                           ),
@@ -421,34 +431,34 @@ class _SplitCard extends StatelessWidget {
                             controller: ex.volumeController,
                             onChanged: (_) => onChanged(),
                             decoration: InputDecoration(
-                              hintText:
-                                  AppLocalizations.of(context)!.setsRepsHint,
-                              hintStyle: Theme.of(context)
-                                  .textTheme
-                                  .bodySmall
+                              hintText: AppLocalizations.of(
+                                context,
+                              )!.setsRepsHint,
+                              hintStyle: Theme.of(context).textTheme.bodySmall
                                   ?.copyWith(
-                                      color: Theme.of(context)
-                                          .colorScheme
-                                          .onSurface
-                                          .withValues(alpha: 0.4)),
-                              isDense: true,
-                              contentPadding: const EdgeInsets.symmetric(
-                                  horizontal: 10, vertical: 10),
-                              border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(8),
-                                borderSide: BorderSide(
                                     color: Theme.of(context)
                                         .colorScheme
                                         .onSurface
-                                        .withValues(alpha: 0.2)),
+                                        .withValues(alpha: 0.4),
+                                  ),
+                              isDense: true,
+                              contentPadding: const EdgeInsets.symmetric(
+                                horizontal: 10,
+                                vertical: 10,
+                              ),
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(8),
+                                borderSide: BorderSide(
+                                  color: Theme.of(context).colorScheme.onSurface
+                                      .withValues(alpha: 0.2),
+                                ),
                               ),
                               enabledBorder: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(8),
                                 borderSide: BorderSide(
-                                    color: Theme.of(context)
-                                        .colorScheme
-                                        .onSurface
-                                        .withValues(alpha: 0.2)),
+                                  color: Theme.of(context).colorScheme.onSurface
+                                      .withValues(alpha: 0.2),
+                                ),
                               ),
                             ),
                           ),
@@ -458,12 +468,13 @@ class _SplitCard extends StatelessWidget {
                         if (split.exercises.length > 1)
                           GestureDetector(
                             onTap: () => onRemoveExercise(exIndex),
-                            child: AppIcon(PhosphorIconsRegular.x,
-                                size: 18,
-                                color: Theme.of(context)
-                                    .colorScheme
-                                    .onSurface
-                                    .withValues(alpha: 0.3)),
+                            child: AppIcon(
+                              PhosphorIconsRegular.x,
+                              size: 18,
+                              color: Theme.of(
+                                context,
+                              ).colorScheme.onSurface.withValues(alpha: 0.3),
+                            ),
                           )
                         else
                           const SizedBox(width: 18),
@@ -477,15 +488,18 @@ class _SplitCard extends StatelessWidget {
                   onTap: onAddExercise,
                   child: Row(
                     children: [
-                      AppIcon(PhosphorIconsRegular.plusCircle,
-                          size: 18, color: primaryColor.withValues(alpha: 0.7)),
+                      AppIcon(
+                        PhosphorIconsRegular.plusCircle,
+                        size: 18,
+                        color: primaryColor.withValues(alpha: 0.7),
+                      ),
                       const SizedBox(width: 6),
                       Text(
                         'Adicionar exercício',
                         style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                              color: primaryColor.withValues(alpha: 0.8),
-                              fontWeight: FontWeight.w600,
-                            ),
+                          color: primaryColor.withValues(alpha: 0.8),
+                          fontWeight: FontWeight.w600,
+                        ),
                       ),
                     ],
                   ),

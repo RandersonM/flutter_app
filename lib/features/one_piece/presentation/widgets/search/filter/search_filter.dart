@@ -13,7 +13,10 @@ class SearchFilter extends StatelessWidget {
   final String label;
 
   void filterChipCallback(
-      BuildContext context, bool isSelected, String filter) {
+    BuildContext context,
+    bool isSelected,
+    String filter,
+  ) {
     final cubit = context.read<SearchCubit>();
     if (isSelected) {
       cubit.removeStatusFilter(filter);
@@ -24,36 +27,39 @@ class SearchFilter extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => BlocBuilder<SearchCubit, SearchState>(
-        builder: (context, state) {
-          List<String> statusFilters = [];
+    builder: (context, state) {
+      List<String> statusFilters = [];
 
-          if (state is SearchLoaded) {
-            statusFilters = state.statusFilters;
-          } else if (state is SearchLoading) {
-            statusFilters = state.statusFilters;
-          } else if (state is SearchInitial) {
-            statusFilters = state.statusFilters;
-          } else if (state is SearchError) {
-            statusFilters = state.statusFilters;
-          }
+      if (state is SearchLoaded) {
+        statusFilters = state.statusFilters;
+      } else if (state is SearchLoading) {
+        statusFilters = state.statusFilters;
+      } else if (state is SearchInitial) {
+        statusFilters = state.statusFilters;
+      } else if (state is SearchError) {
+        statusFilters = state.statusFilters;
+      }
 
-          return FilterChip(
-            labelPadding: EdgeInsets.zero,
-            visualDensity: const VisualDensity(vertical: -4.0),
-            label: Text(
-              label,
-              style: Theme.of(context).textTheme.bodyMedium!.merge(TextStyle(
-                  color: statusFilters.contains(label)
-                      ? Colors.white
-                      : Theme.of(context).colorScheme.onPrimary)),
+      return FilterChip(
+        labelPadding: EdgeInsets.zero,
+        visualDensity: const VisualDensity(vertical: -4.0),
+        label: Text(
+          label,
+          style: Theme.of(context).textTheme.bodyMedium!.merge(
+            TextStyle(
+              color: statusFilters.contains(label)
+                  ? Colors.white
+                  : Theme.of(context).colorScheme.onPrimary,
             ),
-            padding: const EdgeInsets.symmetric(horizontal: Constants.margin),
-            selected: statusFilters.contains(label),
-            selectedColor: Theme.of(context).colorScheme.onPrimary,
-            showCheckmark: false,
-            onSelected: (bool isSelected) => filterChipCallback(
-                context, statusFilters.contains(label), label),
-          );
-        },
+          ),
+        ),
+        padding: const EdgeInsets.symmetric(horizontal: Constants.margin),
+        selected: statusFilters.contains(label),
+        selectedColor: Theme.of(context).colorScheme.onPrimary,
+        showCheckmark: false,
+        onSelected: (bool isSelected) =>
+            filterChipCallback(context, statusFilters.contains(label), label),
       );
+    },
+  );
 }

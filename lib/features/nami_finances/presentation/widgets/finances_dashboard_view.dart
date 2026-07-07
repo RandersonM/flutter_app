@@ -91,25 +91,25 @@ class _HeroBalanceCard extends StatelessWidget {
           Text(
             AppLocalizations.of(context)!.saveWithNami,
             style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                  color: Colors.white70,
-                  letterSpacing: 0.5,
-                ),
+              color: Colors.white70,
+              letterSpacing: 0.5,
+            ),
           ),
           const SizedBox(height: 8),
           Text(
             l10n.financialSummary,
-            style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                  color: Colors.white60,
-                ),
+            style: Theme.of(
+              context,
+            ).textTheme.titleMedium?.copyWith(color: Colors.white60),
           ),
           const SizedBox(height: Constants.margin),
           Text(
             'R\$ ${balance.abs().toStringAsFixed(2)}',
             style: Theme.of(context).textTheme.displaySmall?.copyWith(
-                  color: isPositive ? _successGreen : _errorRed,
-                  fontWeight: FontWeight.bold,
-                  letterSpacing: -0.5,
-                ),
+              color: isPositive ? _successGreen : _errorRed,
+              fontWeight: FontWeight.bold,
+              letterSpacing: -0.5,
+            ),
           ),
           const SizedBox(height: Constants.margin * 2),
           Row(
@@ -168,16 +168,16 @@ class _BalancePill extends StatelessWidget {
           children: [
             Text(
               label,
-              style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                    color: Colors.white54,
-                  ),
+              style: Theme.of(
+                context,
+              ).textTheme.labelSmall?.copyWith(color: Colors.white54),
             ),
             Text(
               'R\$ ${value.toStringAsFixed(2)}',
               style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                    color: color,
-                    fontWeight: FontWeight.w600,
-                  ),
+                color: color,
+                fontWeight: FontWeight.w600,
+              ),
             ),
           ],
         ),
@@ -350,16 +350,16 @@ class _DonutLegend extends StatelessWidget {
           children: [
             Text(
               label,
-              style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                    color: Colors.white54,
-                  ),
+              style: Theme.of(
+                context,
+              ).textTheme.labelSmall?.copyWith(color: Colors.white54),
             ),
             Text(
               value,
               style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                    color: Colors.white,
-                    fontWeight: FontWeight.w600,
-                  ),
+                color: Colors.white,
+                fontWeight: FontWeight.w600,
+              ),
             ),
           ],
         ),
@@ -398,7 +398,8 @@ class _IncomesCard extends StatelessWidget {
           ),
           if (finances.monthlyIncomes.isEmpty)
             _EmptyListHint(
-                text: AppLocalizations.of(context)!.noIncomesRegistered),
+              text: AppLocalizations.of(context)!.noIncomesRegistered,
+            ),
           const SizedBox(height: Constants.margin),
           _TotalRow(
             label: AppLocalizations.of(context)!.totalReceived,
@@ -441,7 +442,8 @@ class _ExpensesCard extends StatelessWidget {
           ),
           if (finances.expenses.isEmpty)
             _EmptyListHint(
-                text: AppLocalizations.of(context)!.noExpensesRegistered),
+              text: AppLocalizations.of(context)!.noExpensesRegistered,
+            ),
           const SizedBox(height: Constants.margin),
           _TotalRow(
             label: AppLocalizations.of(context)!.totalSpent,
@@ -497,16 +499,16 @@ class _SavingsGoalCard extends StatelessWidget {
           Text(
             'R\$ ${finances.savings.toStringAsFixed(2)}',
             style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                  color: _purple,
-                  fontWeight: FontWeight.bold,
-                ),
+              color: _purple,
+              fontWeight: FontWeight.bold,
+            ),
           ),
           const SizedBox(height: 4),
           Text(
             'Meta: R\$ ${_goalAmount.toStringAsFixed(0)}',
-            style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                  color: Colors.white54,
-                ),
+            style: Theme.of(
+              context,
+            ).textTheme.bodySmall?.copyWith(color: Colors.white54),
           ),
           const SizedBox(height: Constants.margin),
           ClipRRect(
@@ -525,15 +527,15 @@ class _SavingsGoalCard extends StatelessWidget {
               Text(
                 '$pct% da meta',
                 style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                      color: _purple,
-                      fontWeight: FontWeight.w600,
-                    ),
+                  color: _purple,
+                  fontWeight: FontWeight.w600,
+                ),
               ),
               Text(
                 'Faltam R\$ ${math.max(_goalAmount - finances.savings, 0).toStringAsFixed(0)}',
-                style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                      color: Colors.white38,
-                    ),
+                style: Theme.of(
+                  context,
+                ).textTheme.bodySmall?.copyWith(color: Colors.white38),
               ),
             ],
           ),
@@ -652,26 +654,26 @@ class _CategoryBar extends StatelessWidget {
             Expanded(
               child: Text(
                 name,
-                style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                      color: Colors.white70,
-                    ),
+                style: Theme.of(
+                  context,
+                ).textTheme.bodySmall?.copyWith(color: Colors.white70),
               ),
             ),
             Text(
               'R\$ ${amount.toStringAsFixed(0)}',
               style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                    color: Colors.white,
-                    fontWeight: FontWeight.w600,
-                  ),
+                color: Colors.white,
+                fontWeight: FontWeight.w600,
+              ),
             ),
             const SizedBox(width: 8),
             SizedBox(
               width: 36,
               child: Text(
                 pctText,
-                style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                      color: color,
-                    ),
+                style: Theme.of(
+                  context,
+                ).textTheme.labelSmall?.copyWith(color: color),
                 textAlign: TextAlign.end,
               ),
             ),
@@ -768,9 +770,9 @@ class _CardHeader extends StatelessWidget {
         Text(
           title,
           style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                color: Colors.white,
-                fontWeight: FontWeight.w600,
-              ),
+            color: Colors.white,
+            fontWeight: FontWeight.w600,
+          ),
         ),
       ],
     );
@@ -797,18 +799,18 @@ class _FinanceLineItem extends StatelessWidget {
           Expanded(
             child: Text(
               label,
-              style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                    color: Colors.white70,
-                  ),
+              style: Theme.of(
+                context,
+              ).textTheme.bodyMedium?.copyWith(color: Colors.white70),
               overflow: TextOverflow.ellipsis,
             ),
           ),
           Text(
             'R\$ ${value.toStringAsFixed(2)}',
             style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                  color: valueColor,
-                  fontWeight: FontWeight.w600,
-                ),
+              color: valueColor,
+              fontWeight: FontWeight.w600,
+            ),
           ),
         ],
       ),
@@ -844,16 +846,16 @@ class _TotalRow extends StatelessWidget {
           Text(
             label,
             style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                  color: color.withValues(alpha: 0.8),
-                  fontWeight: FontWeight.w600,
-                ),
+              color: color.withValues(alpha: 0.8),
+              fontWeight: FontWeight.w600,
+            ),
           ),
           Text(
             'R\$ ${value.toStringAsFixed(2)}',
             style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                  color: color,
-                  fontWeight: FontWeight.bold,
-                ),
+              color: color,
+              fontWeight: FontWeight.bold,
+            ),
           ),
         ],
       ),
@@ -873,9 +875,9 @@ class _EmptyListHint extends StatelessWidget {
       child: Text(
         text,
         style: Theme.of(context).textTheme.bodySmall?.copyWith(
-              color: Colors.white30,
-              fontStyle: FontStyle.italic,
-            ),
+          color: Colors.white30,
+          fontStyle: FontStyle.italic,
+        ),
       ),
     );
   }

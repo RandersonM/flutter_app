@@ -33,8 +33,9 @@ class TimelineHeader extends StatelessWidget {
 
   Widget _buildStatsRow(BuildContext context, List<GoalModel> goals) {
     final completed = goals.where((g) => g.isCompleted).length;
-    final inProgress =
-        goals.where((g) => g.status == GoalStatus.inProgress).length;
+    final inProgress = goals
+        .where((g) => g.status == GoalStatus.inProgress)
+        .length;
     final overdue = goals.where((g) => g.isOverdue).length;
 
     return Row(
@@ -77,10 +78,7 @@ class TimelineHeader extends StatelessWidget {
       decoration: BoxDecoration(
         color: color.withValues(alpha: 0.1),
         borderRadius: BorderRadius.circular(12),
-        border: Border.all(
-          color: color.withValues(alpha: 0.3),
-          width: 1,
-        ),
+        border: Border.all(color: color.withValues(alpha: 0.3), width: 1),
       ),
       child: Column(
         children: [
@@ -89,15 +87,15 @@ class TimelineHeader extends StatelessWidget {
           Text(
             value,
             style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                  color: color,
-                  fontWeight: FontWeight.bold,
-                ),
+              color: color,
+              fontWeight: FontWeight.bold,
+            ),
           ),
           Text(
             title,
-            style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                  color: color,
-                ),
+            style: Theme.of(
+              context,
+            ).textTheme.bodySmall?.copyWith(color: color),
             textAlign: TextAlign.center,
           ),
         ],
@@ -112,22 +110,40 @@ class TimelineHeader extends StatelessWidget {
         children: [
           _buildFilterChip(context, AppLocalizations.of(context)!.all, null),
           _buildFilterChip(
-              context, AppLocalizations.of(context)!.study, GoalCategory.study),
+            context,
+            AppLocalizations.of(context)!.study,
+            GoalCategory.study,
+          ),
           _buildFilterChip(
-              context, AppLocalizations.of(context)!.work, GoalCategory.work),
-          _buildFilterChip(context, AppLocalizations.of(context)!.personal,
-              GoalCategory.personal),
-          _buildFilterChip(context, AppLocalizations.of(context)!.health,
-              GoalCategory.health),
-          _buildFilterChip(context, AppLocalizations.of(context)!.finance,
-              GoalCategory.finance),
+            context,
+            AppLocalizations.of(context)!.work,
+            GoalCategory.work,
+          ),
+          _buildFilterChip(
+            context,
+            AppLocalizations.of(context)!.personal,
+            GoalCategory.personal,
+          ),
+          _buildFilterChip(
+            context,
+            AppLocalizations.of(context)!.health,
+            GoalCategory.health,
+          ),
+          _buildFilterChip(
+            context,
+            AppLocalizations.of(context)!.finance,
+            GoalCategory.finance,
+          ),
         ],
       ),
     );
   }
 
   Widget _buildFilterChip(
-      BuildContext context, String label, GoalCategory? category) {
+    BuildContext context,
+    String label,
+    GoalCategory? category,
+  ) {
     return Padding(
       padding: const EdgeInsets.only(right: 8),
       child: FilterChip(
@@ -137,8 +153,9 @@ class TimelineHeader extends StatelessWidget {
           // TODO: Implementar filtro
         },
         backgroundColor: Colors.grey[200],
-        selectedColor:
-            Theme.of(context).colorScheme.primary.withValues(alpha: 0.2),
+        selectedColor: Theme.of(
+          context,
+        ).colorScheme.primary.withValues(alpha: 0.2),
       ),
     );
   }

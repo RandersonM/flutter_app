@@ -12,10 +12,7 @@ import 'package:opfan/l10n/app_localizations.dart';
 class AddGoalDialog extends StatefulWidget {
   final RobinKnowledgeBloc robinKnowledgeBloc;
 
-  const AddGoalDialog({
-    super.key,
-    required this.robinKnowledgeBloc,
-  });
+  const AddGoalDialog({super.key, required this.robinKnowledgeBloc});
 
   @override
   State<AddGoalDialog> createState() => _AddGoalDialogState();
@@ -95,17 +92,14 @@ class _AddGoalDialogState extends State<AddGoalDialog> {
       ),
       child: Row(
         children: [
-          AppIcon(
-            PhosphorIconsRegular.book,
-            color: AppColors.purple[350],
-          ),
+          AppIcon(PhosphorIconsRegular.book, color: AppColors.purple[350]),
           const SizedBox(width: 12),
           Text(
             AppLocalizations.of(context)!.newGoal,
             style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                  fontWeight: FontWeight.bold,
-                  color: AppColors.purple[350],
-                ),
+              fontWeight: FontWeight.bold,
+              color: AppColors.purple[350],
+            ),
           ),
         ],
       ),
@@ -181,9 +175,9 @@ class _AddGoalDialogState extends State<AddGoalDialog> {
       children: [
         Text(
           AppLocalizations.of(context)!.initialProgress(_progress.toInt()),
-          style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                fontWeight: FontWeight.w500,
-              ),
+          style: Theme.of(
+            context,
+          ).textTheme.bodyMedium?.copyWith(fontWeight: FontWeight.w500),
         ),
         const SizedBox(height: 8),
         Slider(

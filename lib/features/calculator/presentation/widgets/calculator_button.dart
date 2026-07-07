@@ -4,12 +4,13 @@
 import 'package:flutter/material.dart';
 
 class CalculatorButton extends StatelessWidget {
-  const CalculatorButton(
-      {super.key,
-      required this.color,
-      required this.textColor,
-      required this.buttonText,
-      required this.buttontapped});
+  const CalculatorButton({
+    super.key,
+    required this.color,
+    required this.textColor,
+    required this.buttonText,
+    required this.buttontapped,
+  });
 
   final Color color;
   final Color textColor;
@@ -29,7 +30,8 @@ class CalculatorButton extends StatelessWidget {
               child: Text(
                 buttonText,
                 style: Theme.of(context).textTheme.headlineSmall!.merge(
-                    TextStyle(fontWeight: FontWeight.bold, color: textColor)),
+                  TextStyle(fontWeight: FontWeight.bold, color: textColor),
+                ),
               ),
             ),
           ),

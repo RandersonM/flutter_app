@@ -112,9 +112,9 @@ class _CharacterFightingStyleSectionState
           children: [
             Text(
               'Estilo de Luta',
-              style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                    fontWeight: FontWeight.bold,
-                  ),
+              style: Theme.of(
+                context,
+              ).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: Constants.margin * 2),
 
@@ -140,8 +140,12 @@ class _CharacterFightingStyleSectionState
               items: CharacterLocalizationMapper.getFightingTypes().map((type) {
                 return DropdownMenuItem(
                   value: type,
-                  child: Text(CharacterLocalizationMapper.getFightingTypeLabel(
-                      type, l10n)),
+                  child: Text(
+                    CharacterLocalizationMapper.getFightingTypeLabel(
+                      type,
+                      l10n,
+                    ),
+                  ),
                 );
               }).toList(),
               onChanged: (value) {
@@ -162,9 +166,9 @@ class _CharacterFightingStyleSectionState
             // Armas
             Text(
               'Armas',
-              style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                    fontWeight: FontWeight.bold,
-                  ),
+              style: Theme.of(
+                context,
+              ).textTheme.titleSmall?.copyWith(fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: Constants.margin),
 
@@ -181,10 +185,7 @@ class _CharacterFightingStyleSectionState
                   ),
                 ),
                 const SizedBox(width: Constants.margin),
-                ElevatedButton(
-                  onPressed: _addWeapon,
-                  child: Text(l10n.addTag),
-                ),
+                ElevatedButton(onPressed: _addWeapon, child: Text(l10n.addTag)),
               ],
             ),
 
@@ -207,9 +208,9 @@ class _CharacterFightingStyleSectionState
             // Ataques
             Text(
               'Ataques',
-              style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                    fontWeight: FontWeight.bold,
-                  ),
+              style: Theme.of(
+                context,
+              ).textTheme.titleSmall?.copyWith(fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: Constants.margin),
 

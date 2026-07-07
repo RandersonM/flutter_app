@@ -44,9 +44,9 @@ class EmptyDevilFruitList extends StatelessWidget {
                 ? AppLocalizations.of(context)!.noFruitFound
                 : AppLocalizations.of(context)!.noDevilFruitAvailable,
             style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                  fontWeight: FontWeight.bold,
-                  color: Colors.grey[700],
-                ),
+              fontWeight: FontWeight.bold,
+              color: Colors.grey[700],
+            ),
             textAlign: TextAlign.center,
           ),
           const SizedBox(height: Constants.margin),
@@ -54,9 +54,9 @@ class EmptyDevilFruitList extends StatelessWidget {
             hasFilters
                 ? AppLocalizations.of(context)!.adjustFiltersOrSearch
                 : 'No devil fruits to display at the moment',
-            style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                  color: Colors.grey[600],
-                ),
+            style: Theme.of(
+              context,
+            ).textTheme.bodyMedium?.copyWith(color: Colors.grey[600]),
             textAlign: TextAlign.center,
           ),
           const SizedBox(height: Constants.margin * 2),

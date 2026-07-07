@@ -9,9 +9,7 @@ class OnboardingRoutes implements FeatureRouteModule {
   static const String onboarding = '/onboarding';
 
   @override
-  List<String> get routes => [
-        onboarding,
-      ];
+  List<String> get routes => [onboarding];
 
   @override
   Set<String> get privateRoutes => {}; // É acessada durante o setup inicial

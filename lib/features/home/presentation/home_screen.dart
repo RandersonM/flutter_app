@@ -5,6 +5,8 @@ import 'package:phosphoricons_flutter/phosphoricons_flutter.dart';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:opfan/core/connectivity/connectivity_cubit.dart';
+import 'package:opfan/core/connectivity/connectivity_state.dart';
 import 'package:opfan/features/custom_character/data/models/custom_character_model.dart';
 import 'package:opfan/app/di/injection.dart';
 import 'package:opfan/l10n/app_localizations.dart';
@@ -38,198 +40,216 @@ class _HomeScreenState extends State<HomeScreen> {
           create: (context) =>
               getIt<HomeBloc>()..add(const LoadFeaturedCharacter()),
         ),
-        BlocProvider.value(
-          value: getIt<AuthBloc>(),
-        ),
+        BlocProvider.value(value: getIt<AuthBloc>()),
+        BlocProvider.value(value: getIt<ConnectivityCubit>()),
       ],
-      child: BlocBuilder<AuthBloc, AuthState>(
-        builder: (context, authState) {
-          return Scaffold(
-            appBar: const HomeAppBar(),
-            body: Column(
-              children: [
-                if (authState is! AuthAuthenticated)
-                  Container(
-                    width: double.infinity,
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: Constants.margin,
-                      vertical: Constants.margin / 2,
-                    ),
-                    decoration: BoxDecoration(
-                      gradient: LinearGradient(
-                        colors: [
-                          Theme.of(context)
-                              .colorScheme
-                              .primary
-                              .withValues(alpha: 0.1),
-                          Theme.of(context)
-                              .colorScheme
-                              .primary
-                              .withValues(alpha: 0.05),
-                        ],
-                        begin: Alignment.topLeft,
-                        end: Alignment.bottomRight,
+      child: BlocListener<ConnectivityCubit, ConnectivityState>(
+        listener: (context, state) {
+          if (state is ConnectivityOnline) {
+            context.read<HomeBloc>().add(const ConnectivityRestored());
+          }
+        },
+        child: BlocBuilder<AuthBloc, AuthState>(
+          builder: (context, authState) {
+            return Scaffold(
+              appBar: const HomeAppBar(),
+              body: Column(
+                children: [
+                  if (authState is! AuthAuthenticated)
+                    Container(
+                      width: double.infinity,
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: Constants.margin,
+                        vertical: Constants.margin / 2,
                       ),
-                      border: Border(
-                        bottom: BorderSide(
-                          color: Theme.of(context)
-                              .colorScheme
-                              .primary
-                              .withValues(alpha: 0.2),
-                          width: 1,
+                      decoration: BoxDecoration(
+                        gradient: LinearGradient(
+                          colors: [
+                            Theme.of(
+                              context,
+                            ).colorScheme.primary.withValues(alpha: 0.1),
+                            Theme.of(
+                              context,
+                            ).colorScheme.primary.withValues(alpha: 0.05),
+                          ],
+                          begin: Alignment.topLeft,
+                          end: Alignment.bottomRight,
+                        ),
+                        border: Border(
+                          bottom: BorderSide(
+                            color: Theme.of(
+                              context,
+                            ).colorScheme.primary.withValues(alpha: 0.2),
+                            width: 1,
+                          ),
                         ),
                       ),
-                    ),
-                    child: Material(
-                      color: Colors.transparent,
-                      child: InkWell(
-                        onTap: () {
-                          Navigator.pushNamedAndRemoveUntil(
-                              context, AppRoutes.login, (route) => false);
-                        },
-                        borderRadius: BorderRadius.circular(8),
-                        child: Padding(
-                          padding: const EdgeInsets.all(Constants.margin),
-                          child: Row(
-                            children: [
-                              AppIcon(
-                                PhosphorIconsRegular.signIn,
-                                color: Theme.of(context).colorScheme.primary,
-                                size: 20,
-                              ),
-                              const SizedBox(width: Constants.margin),
-                              Expanded(
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      AppLocalizations.of(context)!
-                                          .loginBannerTitle,
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .bodyMedium
-                                          ?.copyWith(
-                                            fontWeight: FontWeight.w600,
-                                            color: Theme.of(context)
-                                                .colorScheme
-                                                .primary,
-                                          ),
-                                    ),
-                                    const SizedBox(height: 2),
-                                    Text(
-                                      AppLocalizations.of(context)!
-                                          .loginBannerSubtitle,
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .bodySmall
-                                          ?.copyWith(
-                                            color: Theme.of(context)
-                                                .colorScheme
-                                                .onSurface
-                                                .withValues(alpha: 0.7),
-                                          ),
-                                    ),
-                                  ],
+                      child: Material(
+                        color: Colors.transparent,
+                        child: InkWell(
+                          onTap: () {
+                            Navigator.pushNamedAndRemoveUntil(
+                              context,
+                              AppRoutes.login,
+                              (route) => false,
+                            );
+                          },
+                          borderRadius: BorderRadius.circular(8),
+                          child: Padding(
+                            padding: const EdgeInsets.all(Constants.margin),
+                            child: Row(
+                              children: [
+                                AppIcon(
+                                  PhosphorIconsRegular.signIn,
+                                  color: Theme.of(context).colorScheme.primary,
+                                  size: 20,
                                 ),
-                              ),
-                              AppIcon(
-                                PhosphorIconsRegular.caretRight,
-                                color: Theme.of(context).colorScheme.primary,
-                                size: 16,
-                              ),
-                            ],
+                                const SizedBox(width: Constants.margin),
+                                Expanded(
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        AppLocalizations.of(
+                                          context,
+                                        )!.loginBannerTitle,
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .bodyMedium
+                                            ?.copyWith(
+                                              fontWeight: FontWeight.w600,
+                                              color: Theme.of(
+                                                context,
+                                              ).colorScheme.primary,
+                                            ),
+                                      ),
+                                      const SizedBox(height: 2),
+                                      Text(
+                                        AppLocalizations.of(
+                                          context,
+                                        )!.loginBannerSubtitle,
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .bodySmall
+                                            ?.copyWith(
+                                              color: Theme.of(context)
+                                                  .colorScheme
+                                                  .onSurface
+                                                  .withValues(alpha: 0.7),
+                                            ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                AppIcon(
+                                  PhosphorIconsRegular.caretRight,
+                                  color: Theme.of(context).colorScheme.primary,
+                                  size: 16,
+                                ),
+                              ],
+                            ),
                           ),
                         ),
                       ),
                     ),
-                  ),
-                // Conteúdo principal da tela
-                Expanded(
-                  child: BlocBuilder<HomeBloc, HomeState>(
-                    builder: (context, state) {
-                      return SingleChildScrollView(
-                        padding: const EdgeInsets.all(Constants.margin),
-                        child: Column(
-                          spacing: Constants.margin,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            DynamicBanner(
-                              state: state,
-                              height: videoBannerHeight,
-                            ),
-                            const SizedBox.shrink(),
-                            Text(
-                              AppLocalizations.of(context)!.featuredCharacter,
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .headlineSmall
-                                  ?.copyWith(
-                                    fontWeight: FontWeight.bold,
-                                    color:
-                                        Theme.of(context).colorScheme.primary,
-                                  ),
-                            ),
-                            _buildCharacterCard(context, state),
-                            Row(
-                              spacing: Constants.margin,
-                              children: [
-                                Expanded(
-                                  child: AppButton(
-                                    label: AppLocalizations.of(context)!
-                                        .selectCharacter,
-                                    icon: const AppIcon(
-                                        PhosphorIconsRegular.magnifyingGlass),
-                                    variant: AppButtonVariant.tertiary,
-                                    onPressed: state is HomeLoading
-                                        ? null
-                                        : () async {
-                                            final selectedCharacter =
-                                                await Navigator.pushNamed<
-                                                    CustomCharacterModel>(
-                                              context,
-                                              AppRoutes.characterSelection,
-                                            );
-                                            if (selectedCharacter != null &&
-                                                context.mounted) {
-                                              context.read<HomeBloc>().add(
+                  // Conteúdo principal da tela
+                  Expanded(
+                    child: BlocBuilder<HomeBloc, HomeState>(
+                      builder: (context, state) {
+                        return SingleChildScrollView(
+                          padding: const EdgeInsets.all(Constants.margin),
+                          child: Column(
+                            spacing: Constants.margin,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              DynamicBanner(
+                                state: state,
+                                height: videoBannerHeight,
+                              ),
+                              const SizedBox.shrink(),
+                              Text(
+                                AppLocalizations.of(context)!.featuredCharacter,
+                                style: Theme.of(context).textTheme.headlineSmall
+                                    ?.copyWith(
+                                      fontWeight: FontWeight.bold,
+                                      color: Theme.of(
+                                        context,
+                                      ).colorScheme.primary,
+                                    ),
+                              ),
+                              _buildCharacterCard(context, state),
+                              Row(
+                                spacing: Constants.margin,
+                                children: [
+                                  Expanded(
+                                    child: AppButton(
+                                      label: AppLocalizations.of(
+                                        context,
+                                      )!.selectCharacter,
+                                      icon: const AppIcon(
+                                        PhosphorIconsRegular.magnifyingGlass,
+                                      ),
+                                      variant: AppButtonVariant.tertiary,
+                                      onPressed: state is HomeLoading
+                                          ? null
+                                          : () async {
+                                              final selectedCharacter =
+                                                  await Navigator.pushNamed<
+                                                    CustomCharacterModel
+                                                  >(
+                                                    context,
+                                                    AppRoutes
+                                                        .characterSelection,
+                                                  );
+                                              if (selectedCharacter != null &&
+                                                  context.mounted) {
+                                                context.read<HomeBloc>().add(
                                                   SelectCharacter(
-                                                      selectedCharacter));
-                                            }
-                                          },
+                                                    selectedCharacter,
+                                                  ),
+                                                );
+                                              }
+                                            },
+                                    ),
                                   ),
-                                ),
-                                Expanded(
-                                  child: AppButton(
-                                    label: AppLocalizations.of(context)!
-                                        .randomCharacter,
-                                    icon: const AppIcon(
-                                        PhosphorIconsRegular.shuffle),
-                                    variant: AppButtonVariant.primary,
-                                    isLoading: state is HomeLoading,
-                                    onPressed: state is HomeLoading
-                                        ? null
-                                        : () {
-                                            context.read<HomeBloc>().add(
-                                                const LoadRandomCharacter());
-                                          },
+                                  Expanded(
+                                    child: AppButton(
+                                      label: AppLocalizations.of(
+                                        context,
+                                      )!.randomCharacter,
+                                      icon: const AppIcon(
+                                        PhosphorIconsRegular.shuffle,
+                                      ),
+                                      variant: AppButtonVariant.primary,
+                                      isLoading: state is HomeLoading,
+                                      onPressed: state is HomeLoading
+                                          ? null
+                                          : () {
+                                              context.read<HomeBloc>().add(
+                                                const LoadRandomCharacter(),
+                                              );
+                                            },
+                                    ),
                                   ),
-                                ),
-                              ],
-                            ),
-                            const SizedBox(height: Constants.margin),
-                            _buildCharacterStatistics(context, state),
-                          ],
-                        ),
-                      );
-                    },
+                                ],
+                              ),
+                              const SizedBox(height: Constants.margin),
+                              _buildCharacterStatistics(context, state),
+                            ],
+                          ),
+                        );
+                      },
+                    ),
                   ),
-                ),
-              ],
-            ),
-            bottomNavigationBar:
-                const BottomNavigation(BottomNavigationPages.home),
-          );
-        },
+                ],
+              ),
+              bottomNavigationBar: const BottomNavigation(
+                BottomNavigationPages.home,
+              ),
+            );
+          },
+        ),
       ),
     );
   }
@@ -239,10 +259,18 @@ class _HomeScreenState extends State<HomeScreen> {
       return const Card(
         child: Padding(
           padding: EdgeInsets.all(Constants.margin * 2),
-          child: Center(
-            child: CircularProgressIndicator(),
-          ),
+          child: Center(child: CircularProgressIndicator()),
         ),
+      );
+    }
+
+    // Offline: show static placeholder so the home doesn't get stuck loading.
+    if (state is HomeOffline) {
+      return CharacterInfoCard(
+        characterName: 'Monkey D. Luffy',
+        characterBounty: '฿1.500.000.000',
+        characterImage: 'assets/logo/splash_logo.png',
+        onTap: () {},
       );
     }
 
@@ -306,6 +334,30 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   Widget _buildCharacterStatistics(BuildContext context, HomeState state) {
+    // Offline placeholder statistics
+    if (state is HomeOffline) {
+      return StatisticsGrid(
+        title: AppLocalizations.of(context)!.statistics,
+        statistics: [
+          StatisticData(
+            label: AppLocalizations.of(context)!.status,
+            value: '—',
+            icon: PhosphorIconsRegular.flag,
+          ),
+          StatisticData(
+            label: AppLocalizations.of(context)!.crew(0),
+            value: '—',
+            svgPath: 'assets/logo/ship-crew.svg',
+          ),
+          StatisticData(
+            label: AppLocalizations.of(context)!.signo,
+            value: '—',
+            icon: PhosphorIconsRegular.star,
+          ),
+        ],
+      );
+    }
+
     if (state is HomeLoaded) {
       final character = state.featuredCharacter;
 
@@ -322,20 +374,20 @@ class _HomeScreenState extends State<HomeScreen> {
           StatisticData(
             label:
                 character.devilFruit != null && character.devilFruit!.isNotEmpty
-                    ? AppLocalizations.of(context)!.devilFruit
-                    : AppLocalizations.of(context)!.noDevilFruit,
+                ? AppLocalizations.of(context)!.devilFruit
+                : AppLocalizations.of(context)!.noDevilFruit,
             value:
                 character.devilFruit != null && character.devilFruit!.isNotEmpty
-                    ? character.devilFruit!
-                    : '',
+                ? character.devilFruit!
+                : '',
             svgPath:
                 character.devilFruit != null && character.devilFruit!.isNotEmpty
-                    ? 'assets/svg/gomu-gomu.svg'
-                    : null,
+                ? 'assets/svg/gomu-gomu.svg'
+                : null,
             icon:
                 character.devilFruit != null && character.devilFruit!.isNotEmpty
-                    ? null
-                    : PhosphorIconsRegular.personSimpleSwim,
+                ? null
+                : PhosphorIconsRegular.personSimpleSwim,
           ),
           StatisticData(
             label: AppLocalizations.of(context)!.signo,

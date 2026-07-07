@@ -25,34 +25,24 @@ class InlineYouTubePlayer extends StatefulWidget {
 
 class _InlineYouTubePlayerState extends State<InlineYouTubePlayer> {
   late YoutubePlayerController _controller;
-  bool _isPlayerReady = false;
 
   @override
   void initState() {
     super.initState();
-    _controller = YoutubePlayerController(
-      initialVideoId: widget.video.videoId,
-      flags: const YoutubePlayerFlags(
+    _controller = YoutubePlayerController.fromVideoId(
+      videoId: widget.video.videoId,
+      autoPlay: true,
+      params: const YoutubePlayerParams(
         mute: false,
-        autoPlay: true,
-        disableDragSeek: false,
-        loop: false,
-        isLive: false,
-        forceHD: false,
-        enableCaption: true,
+        showControls: true,
+        showFullscreenButton: true,
       ),
-    )..addListener(_listener);
-  }
-
-  void _listener() {
-    if (_isPlayerReady && mounted && !_controller.value.isFullScreen) {
-      setState(() {});
-    }
+    );
   }
 
   @override
   void dispose() {
-    _controller.dispose();
+    _controller.close();
     super.dispose();
   }
 
@@ -81,21 +71,7 @@ class _InlineYouTubePlayerState extends State<InlineYouTubePlayer> {
         borderRadius: BorderRadius.circular(14),
         child: Stack(
           children: [
-            YoutubePlayerBuilder(
-              onExitFullScreen: () => {},
-              player: YoutubePlayer(
-                controller: _controller,
-                showVideoProgressIndicator: true,
-                progressIndicatorColor: Colors.red,
-                onReady: () {
-                  _isPlayerReady = true;
-                },
-                onEnded: (data) {
-                  widget.onClose?.call();
-                },
-              ),
-              builder: (context, player) => player,
-            ),
+            YoutubePlayer(controller: _controller),
             Positioned(
               top: 8,
               right: 8,
@@ -124,8 +100,10 @@ class _InlineYouTubePlayerState extends State<InlineYouTubePlayer> {
               left: 8,
               right: 8,
               child: Container(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 12,
+                  vertical: 6,
+                ),
                 decoration: BoxDecoration(
                   color: Colors.black.withValues(alpha: 0.7),
                   borderRadius: BorderRadius.circular(8),

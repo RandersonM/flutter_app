@@ -9,10 +9,7 @@ import 'package:opfan/shared/utils/constants.dart';
 class FightingStyleDetails extends StatelessWidget {
   final FightingStyleModel? fightingStyle;
 
-  const FightingStyleDetails({
-    super.key,
-    this.fightingStyle,
-  });
+  const FightingStyleDetails({super.key, this.fightingStyle});
 
   @override
   Widget build(BuildContext context) {
@@ -23,7 +20,9 @@ class FightingStyleDetails extends StatelessWidget {
 
     return Card(
       margin: const EdgeInsets.symmetric(
-          horizontal: Constants.margin * 2, vertical: Constants.margin),
+        horizontal: Constants.margin * 2,
+        vertical: Constants.margin,
+      ),
       child: Padding(
         padding: const EdgeInsets.all(Constants.margin * 2),
         child: Column(
@@ -32,8 +31,10 @@ class FightingStyleDetails extends StatelessWidget {
             // Header
             Row(
               children: [
-                AppIcon(PhosphorIconsRegular.handFist,
-                    color: theme.colorScheme.primary),
+                AppIcon(
+                  PhosphorIconsRegular.handFist,
+                  color: theme.colorScheme.primary,
+                ),
                 const SizedBox(width: Constants.margin),
                 Text(
                   l10n.fightingStyleSectionTitle,
@@ -45,9 +46,10 @@ class FightingStyleDetails extends StatelessWidget {
             ),
             const SizedBox(height: Constants.margin * 1.5),
             Divider(
-                height: 1,
-                thickness: 0.5,
-                color: theme.colorScheme.outline.withValues(alpha: 0.3)),
+              height: 1,
+              thickness: 0.5,
+              color: theme.colorScheme.outline.withValues(alpha: 0.3),
+            ),
             const SizedBox(height: Constants.margin * 1.5),
 
             // Info chips row
@@ -66,7 +68,9 @@ class FightingStyleDetails extends StatelessWidget {
                   icon: PhosphorIconsRegular.handFist,
                   label: l10n.fightingStyleTypeLabel,
                   value: CharacterLocalizationMapper.getFightingTypeLabel(
-                      fightingStyle!.type, l10n),
+                    fightingStyle!.type,
+                    l10n,
+                  ),
                 ),
                 if (fightingStyle!.weapons != null &&
                     fightingStyle!.weapons!.isNotEmpty)
@@ -84,8 +88,11 @@ class FightingStyleDetails extends StatelessWidget {
               const SizedBox(height: Constants.margin * 2),
               Row(
                 children: [
-                  AppIcon(PhosphorIconsRegular.lightning,
-                      size: 16, color: theme.colorScheme.primary),
+                  AppIcon(
+                    PhosphorIconsRegular.lightning,
+                    size: 16,
+                    color: theme.colorScheme.primary,
+                  ),
                   const SizedBox(width: 6),
                   Text(
                     l10n.fightingStyleAttacksLabel,
@@ -132,7 +139,8 @@ class _InfoChip extends StatelessWidget {
         color: theme.colorScheme.surfaceContainerHigh.withValues(alpha: 0.5),
         borderRadius: BorderRadius.circular(10),
         border: Border.all(
-            color: theme.colorScheme.outline.withValues(alpha: 0.15)),
+          color: theme.colorScheme.outline.withValues(alpha: 0.15),
+        ),
       ),
       child: Row(
         mainAxisSize: MainAxisSize.min,

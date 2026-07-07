@@ -8,10 +8,12 @@ import 'web_search_result.dart';
 
 class WebSearchService implements IWebSearchService {
   WebSearchService() : _env = GetIt.I.get<IEnvironmentService>() {
-    _dio = Dio(BaseOptions(
-      connectTimeout: const Duration(seconds: 5),
-      receiveTimeout: const Duration(seconds: 10),
-    ));
+    _dio = Dio(
+      BaseOptions(
+        connectTimeout: const Duration(seconds: 5),
+        receiveTimeout: const Duration(seconds: 10),
+      ),
+    );
   }
 
   final IEnvironmentService _env;
@@ -25,9 +27,10 @@ class WebSearchService implements IWebSearchService {
   @override
   Future<List<WebSearchResult>> search(
     String query, {
-    int maxResults = 2,
-    String searchDepth = 'basic',
-    bool includeAnswer = false,
+    int maxResults = 5,
+    String searchDepth = 'advanced',
+    String includeAnswer = 'advanced',
+    SearchTopic searchTopic = SearchTopic.general,
   }) async {
     if (!isConfigured) return [];
 
@@ -39,6 +42,7 @@ class WebSearchService implements IWebSearchService {
           'query': query,
           'search_depth': searchDepth,
           'max_results': maxResults,
+          'search_topic': searchTopic.value,
           'include_answer': includeAnswer,
           'include_raw_content': false,
         },
@@ -54,12 +58,14 @@ class WebSearchService implements IWebSearchService {
         final topAnswer = data['answer'] as String?;
 
         final results = raw
-            .map((r) => WebSearchResult(
-                  title: r['title'] as String? ?? '',
-                  url: r['url'] as String? ?? '',
-                  content: r['content'] as String? ?? '',
-                  score: (r['score'] as num?)?.toDouble() ?? 0.0,
-                ))
+            .map(
+              (r) => WebSearchResult(
+                title: r['title'] as String? ?? '',
+                url: r['url'] as String? ?? '',
+                content: r['content'] as String? ?? '',
+                score: (r['score'] as num?)?.toDouble() ?? 0.0,
+              ),
+            )
             .where((r) => r.content.isNotEmpty)
             .toList();
 
@@ -83,4 +89,3 @@ class WebSearchService implements IWebSearchService {
     }
   }
 }
-

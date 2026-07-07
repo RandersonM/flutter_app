@@ -1,6 +1,8 @@
 // Developed by Randerson Mayllon
 // Copyright © 2025.
 
+import 'dart:io';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:google_sign_in/google_sign_in.dart';
@@ -10,7 +12,6 @@ import 'package:opfan/core/services/index.dart';
 import 'package:opfan/core/user_profile/repository/user_profile_repository_interface.dart';
 
 enum AuthStatus { unknown, authenticated, unauthenticated }
-
 
 class AuthService implements IAuthService {
   static const String _boxName = 'auth_cache';
@@ -25,8 +26,8 @@ class AuthService implements IAuthService {
     FirebaseAuth? firebaseAuth,
     GoogleSignIn? googleSignIn,
     required this._userProfileRepository,
-  })  : _firebaseAuth = firebaseAuth ?? FirebaseAuth.instance,
-        _googleSignIn = googleSignIn ?? GoogleSignIn();
+  }) : _firebaseAuth = firebaseAuth ?? FirebaseAuth.instance,
+       _googleSignIn = googleSignIn ?? GoogleSignIn();
 
   @override
   Future<void> init() async {
@@ -42,7 +43,8 @@ class AuthService implements IAuthService {
             debugPrint('AuthService: Valid cached session found');
           } catch (e) {
             debugPrint(
-                'AuthService: Cached session expired, clearing cache - $e');
+              'AuthService: Cached session expired, clearing cache - $e',
+            );
             await _clearUser();
           }
         } else {
@@ -80,18 +82,50 @@ class AuthService implements IAuthService {
       final firebaseUser = _firebaseAuth.currentUser;
       if (firebaseUser == null) return false;
 
+      // Attempt a forced token refresh (requires network).
       await firebaseUser.getIdToken(true);
 
       final cachedUser = currentUser;
       if (cachedUser == null || cachedUser.uid != firebaseUser.uid) {
         return false;
       }
-
       return true;
+    } on SocketException catch (_) {
+      // Device is offline — fall back to the cached session.
+      debugPrint('AuthService: Offline — validating session from local cache');
+      return _isLocalSessionValid();
     } catch (e) {
+      if (_isNetworkError(e)) {
+        debugPrint(
+          'AuthService: Network error — validating session from local cache',
+        );
+        return _isLocalSessionValid();
+      }
       debugPrint('AuthService: Session validation error - $e');
       return false;
     }
+  }
+
+  /// Validates the session using only local state (no network call).
+  ///
+  /// Returns true if both the Firebase SDK has a current user AND the Hive
+  /// cache has a matching [UserModel]. This covers the offline startup case.
+  bool _isLocalSessionValid() {
+    final firebaseUser = _firebaseAuth.currentUser;
+    final cachedUser = currentUser; // reads from Hive
+    return firebaseUser != null &&
+        cachedUser != null &&
+        firebaseUser.uid == cachedUser.uid;
+  }
+
+  /// Heuristic to detect network-related exceptions from Firebase.
+  bool _isNetworkError(Object e) {
+    final msg = e.toString().toLowerCase();
+    return msg.contains('network') ||
+        msg.contains('socket') ||
+        msg.contains('failed host lookup') ||
+        msg.contains('connection') ||
+        msg.contains('unavailable');
   }
 
   @override
@@ -140,8 +174,8 @@ class AuthService implements IAuthService {
         idToken: googleAuth.idToken,
       );
 
-      final UserCredential userCredential =
-          await _firebaseAuth.signInWithCredential(credential);
+      final UserCredential userCredential = await _firebaseAuth
+          .signInWithCredential(credential);
 
       final User? user = userCredential.user;
       if (user != null) {
@@ -158,8 +192,9 @@ class AuthService implements IAuthService {
           lastSignIn: user.metadata.lastSignInTime ?? DateTime.now(),
         );
 
-        final firestoreProfile =
-            await _userProfileRepository.fetchProfile(user.uid);
+        final firestoreProfile = await _userProfileRepository.fetchProfile(
+          user.uid,
+        );
         final finalUser = firestoreProfile != null
             ? userModel.copyWith(
                 gender: firestoreProfile.gender,
@@ -210,10 +245,7 @@ class AuthService implements IAuthService {
         debugPrint('AuthService: Erro ao limpar token FCM: $e');
       }
 
-      await Future.wait([
-        _firebaseAuth.signOut(),
-        _googleSignIn.signOut(),
-      ]);
+      await Future.wait([_firebaseAuth.signOut(), _googleSignIn.signOut()]);
 
       await _clearUser();
     } catch (e) {
@@ -236,8 +268,9 @@ class AuthService implements IAuthService {
           return null;
         }
 
-        final isGoogleProvider = firebaseUser.providerData
-            .any((provider) => provider.providerId == 'google.com');
+        final isGoogleProvider = firebaseUser.providerData.any(
+          (provider) => provider.providerId == 'google.com',
+        );
 
         if (isGoogleProvider) {
           try {
@@ -259,9 +292,7 @@ class AuthService implements IAuthService {
         UserModel baseUser;
 
         if (cachedUser != null && cachedUser.uid == firebaseUser.uid) {
-          baseUser = cachedUser.copyWith(
-            lastSignIn: DateTime.now(),
-          );
+          baseUser = cachedUser.copyWith(lastSignIn: DateTime.now());
         } else {
           baseUser = UserModel(
             uid: firebaseUser.uid,
@@ -275,8 +306,9 @@ class AuthService implements IAuthService {
           );
         }
 
-        final firestoreProfile =
-            await _userProfileRepository.fetchProfile(firebaseUser.uid);
+        final firestoreProfile = await _userProfileRepository.fetchProfile(
+          firebaseUser.uid,
+        );
         final finalUser = firestoreProfile != null
             ? baseUser.copyWith(
                 gender: firestoreProfile.gender,

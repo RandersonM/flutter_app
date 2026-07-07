@@ -1,4 +1,3 @@
-
 import 'package:flutter/foundation.dart';
 import 'package:opfan/core/services/index.dart';
 
@@ -12,8 +11,8 @@ import '../tool_handler.dart';
 /// ```json
 /// {"name": "saveWorkout", "arguments": {}}
 /// ```
-class SaveWorkoutHandler implements ToolHandler {
-  const SaveWorkoutHandler({required this._workoutService});
+class SaveWorkoutHandler extends ToolHandler {
+  SaveWorkoutHandler({required this._workoutService});
 
   final IWorkoutAssessmentService _workoutService;
 
@@ -39,12 +38,14 @@ class SaveWorkoutHandler implements ToolHandler {
     debugPrint('SaveWorkoutHandler: saving workout session');
 
     try {
-      final currentAssessment = await _workoutService.getCurrentUserAssessment();
-      
+      final currentAssessment = await _workoutService
+          .getCurrentUserAssessment();
+
       if (currentAssessment == null) {
         return ToolResult.error(
           toolName: name,
-          reason: 'No active workout assessment found for the current month. The user needs to setup their workout goal first.',
+          reason:
+              'No active workout assessment found for the current month. The user needs to setup their workout goal first.',
         );
       }
 
@@ -63,7 +64,8 @@ class SaveWorkoutHandler implements ToolHandler {
 
       return ToolResult.success(
         toolName: name,
-        content: 'Workout session saved successfully for today. Total workouts this month: ${currentDays.length}.',
+        content:
+            'Workout session saved successfully for today. Total workouts this month: ${currentDays.length}.',
       );
     } catch (e) {
       debugPrint('SaveWorkoutHandler: error — $e');

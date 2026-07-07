@@ -23,17 +23,19 @@ class AppColors {
   );
 
   static const int _greyPrimaryValue = 0xFF888888;
-  static const MaterialColor grey =
-      MaterialColor(_greyPrimaryValue, <int, Color>{
-    100: Color(0xFFF5F5F5),
-    200: Color(0xFFEEEEEE),
-    300: Color(0xFFCCCCCC),
-    400: Color(0xFFBDBDBD),
-    500: Color(_greyPrimaryValue), // Default color used
-    700: Color(0xFF666666),
-    800: Color(0xFF424242),
-    900: Color(0xFF222222),
-  });
+  static const MaterialColor grey = MaterialColor(
+    _greyPrimaryValue,
+    <int, Color>{
+      100: Color(0xFFF5F5F5),
+      200: Color(0xFFEEEEEE),
+      300: Color(0xFFCCCCCC),
+      400: Color(0xFFBDBDBD),
+      500: Color(_greyPrimaryValue), // Default color used
+      700: Color(0xFF666666),
+      800: Color(0xFF424242),
+      900: Color(0xFF222222),
+    },
+  );
 
   static const int _redPrimaryValue = 0xFFE1140A;
   static const MaterialColor red = MaterialColor(_redPrimaryValue, <int, Color>{
@@ -48,18 +50,18 @@ class AppColors {
   static const int _purplePrimaryValue = 0xFF7C3AED;
   static const MaterialColor purple =
       MaterialColor(_purplePrimaryValue, <int, Color>{
-    50: Color(0xFFF5F3FF),
-    100: Color(0xFFEDE9FE),
-    200: Color(0xFFDDD6FE),
-    300: Color(0xFFC4B5FD),
-    350: Color(0xFFA78BFA),
-    400: Color(0xFFA78BFA),
-    500: Color(_purplePrimaryValue),
-    600: Color(0xFF7C3AED),
-    700: Color(0xFF6D28D9),
-    800: Color(0xFF5B21B6),
-    900: Color(0xFF4C1D95),
-  });
+        50: Color(0xFFF5F3FF),
+        100: Color(0xFFEDE9FE),
+        200: Color(0xFFDDD6FE),
+        300: Color(0xFFC4B5FD),
+        350: Color(0xFFA78BFA),
+        400: Color(0xFFA78BFA),
+        500: Color(_purplePrimaryValue),
+        600: Color(0xFF7C3AED),
+        700: Color(0xFF6D28D9),
+        800: Color(0xFF5B21B6),
+        900: Color(0xFF4C1D95),
+      });
 
   static const int _bluePrimaryValue = 0xFF1976D2;
 
@@ -102,25 +104,23 @@ class AppColors {
   static const int _gradientPurplePrimaryValue = 0xFFFF0099;
   static const MaterialColor gradientPurple =
       MaterialColor(_gradientPurplePrimaryValue, <int, Color>{
-    200: Color(0xFFF953C6),
-    500: Color(_gradientPurplePrimaryValue),
-    800: Color(0xFF493240)
-  });
+        200: Color(0xFFF953C6),
+        500: Color(_gradientPurplePrimaryValue),
+        800: Color(0xFF493240),
+      });
 
   static const int _yellowPrimaryValue = 0xFFFFD700;
-  static const MaterialColor yellow = MaterialColor(
-    _yellowPrimaryValue,
-    <int, Color>{
-      100: Color(0xFFFFF3E5),
-      200: Color(0xFFFFE0CC),
-      300: Color(0xFFFFC2A3),
-      400: Color(0xFFFFA47A),
-      500: Color(_yellowPrimaryValue),
-      600: Color(0xFFE65F18),
-      700: Color(0xFFCC5315),
-      800: Color(0xFF654900),
-    },
-  );
+  static const MaterialColor yellow =
+      MaterialColor(_yellowPrimaryValue, <int, Color>{
+        100: Color(0xFFFFF3E5),
+        200: Color(0xFFFFE0CC),
+        300: Color(0xFFFFC2A3),
+        400: Color(0xFFFFA47A),
+        500: Color(_yellowPrimaryValue),
+        600: Color(0xFFE65F18),
+        700: Color(0xFFCC5315),
+        800: Color(0xFF654900),
+      });
 
   static const int _orangePrimaryValue = 0xFFFF6D1B;
 
@@ -238,8 +238,9 @@ ThemeData getLightTheme() {
     appBarTheme: AppBarTheme(
       backgroundColor: Colors.white,
       centerTitle: true,
-      titleTextStyle: _Typography.headlineSmall
-          .merge(TextStyle(color: AppColors.grey[900])),
+      titleTextStyle: _Typography.headlineSmall.merge(
+        TextStyle(color: AppColors.grey[900]),
+      ),
       iconTheme: IconThemeData(color: AppColors.grey[700]),
       actionsIconTheme: IconThemeData(color: AppColors.grey[700]),
       toolbarTextStyle: _Typography.headlineSmall.merge(
@@ -247,46 +248,48 @@ ThemeData getLightTheme() {
       ),
       elevation: 0,
     ),
-    colorScheme: ColorScheme.fromSwatch(
-      primarySwatch: AppColors.purple,
-      brightness: Brightness.light,
-    ).copyWith(
-      primary: AppColors.purple[600]!,
-      onPrimary: Colors.white,
-      onPrimaryContainer: AppColors.purple[900]!,
-      primaryContainer: AppColors.purple[100]!,
-      secondary: AppColors.purple[700]!,
-      onSecondary: Colors.white,
-      secondaryContainer: AppColors.purple[50]!,
-      onSecondaryContainer: AppColors.purple[900]!,
-      tertiary: AppColors.orange[700]!,
-      tertiaryContainer: AppColors.orange[100]!,
-      onTertiaryContainer: AppColors.orange[300]!,
-      onTertiary: AppColors.orange[1000]!,
-      error: AppColors.red[500]!,
-      errorContainer: AppColors.red[100]!,
-      onError: Colors.white,
-      surfaceContainer: Colors.white,
-      surface: const Color(0xFFF3F4F6),
-      onSurface: const Color(0xFF1F2937),
-      surfaceContainerLow: AppColors.purple[50]!,
-      surfaceContainerHigh: const Color(0xFFF9FAFB),
-    ),
+    colorScheme:
+        ColorScheme.fromSwatch(
+          primarySwatch: AppColors.purple,
+          brightness: Brightness.light,
+        ).copyWith(
+          primary: AppColors.purple[600]!,
+          onPrimary: Colors.white,
+          onPrimaryContainer: AppColors.purple[900]!,
+          primaryContainer: AppColors.purple[100]!,
+          secondary: AppColors.purple[700]!,
+          onSecondary: Colors.white,
+          secondaryContainer: AppColors.purple[50]!,
+          onSecondaryContainer: AppColors.purple[900]!,
+          tertiary: AppColors.orange[700]!,
+          tertiaryContainer: AppColors.orange[100]!,
+          onTertiaryContainer: AppColors.orange[300]!,
+          onTertiary: AppColors.orange[1000]!,
+          error: AppColors.red[500]!,
+          errorContainer: AppColors.red[100]!,
+          onError: Colors.white,
+          surfaceContainer: Colors.white,
+          surface: const Color(0xFFF3F4F6),
+          onSurface: const Color(0xFF1F2937),
+          surfaceContainerLow: AppColors.purple[50]!,
+          surfaceContainerHigh: const Color(0xFFF9FAFB),
+        ),
     dividerColor: AppColors.grey[200],
     textTheme: const TextTheme(
-        displayLarge: _Typography.headline1,
-        displayMedium: _Typography.headline2,
-        displaySmall: _Typography.headline3,
-        headlineLarge: _Typography.headlineLarge,
-        headlineMedium: _Typography.headline5,
-        headlineSmall: _Typography.headlineSmall,
-        titleMedium: _Typography.titleMedium,
-        titleSmall: _Typography.subtitle2,
-        bodyLarge: _Typography.bodyText1,
-        bodyMedium: _Typography.bodyMedium,
-        labelLarge: _Typography.labelLarge,
-        bodySmall: _Typography.bodySmall,
-        labelSmall: _Typography.overline),
+      displayLarge: _Typography.headline1,
+      displayMedium: _Typography.headline2,
+      displaySmall: _Typography.headline3,
+      headlineLarge: _Typography.headlineLarge,
+      headlineMedium: _Typography.headline5,
+      headlineSmall: _Typography.headlineSmall,
+      titleMedium: _Typography.titleMedium,
+      titleSmall: _Typography.subtitle2,
+      bodyLarge: _Typography.bodyText1,
+      bodyMedium: _Typography.bodyMedium,
+      labelLarge: _Typography.labelLarge,
+      bodySmall: _Typography.bodySmall,
+      labelSmall: _Typography.overline,
+    ),
     fontFamily: 'Lato',
     chipTheme: ChipThemeData(
       backgroundColor: AppColors.grey[50],
@@ -295,8 +298,9 @@ ThemeData getLightTheme() {
     ),
     cardTheme: CardThemeData(
       shape: RoundedRectangleBorder(
-          side: BorderSide(color: AppColors.purple[100]!, width: 1),
-          borderRadius: BorderRadius.circular(Constants.margin * 2)),
+        side: BorderSide(color: AppColors.purple[100]!, width: 1),
+        borderRadius: BorderRadius.circular(Constants.margin * 2),
+      ),
       margin: EdgeInsets.zero,
       shadowColor: AppColors.purple[900]!.withValues(alpha: 0.04),
       color: Colors.white,
@@ -390,19 +394,20 @@ ThemeData getDarkTheme() {
     ),
     dividerColor: const Color(0xFF2E2D38),
     textTheme: const TextTheme(
-        displayLarge: _Typography.headline1,
-        displayMedium: _Typography.headline2,
-        displaySmall: _Typography.headline3,
-        headlineLarge: _Typography.headlineLarge,
-        headlineMedium: _Typography.headline5,
-        headlineSmall: _Typography.headlineSmall,
-        titleMedium: _Typography.titleMedium,
-        titleSmall: _Typography.subtitle2,
-        bodyLarge: _Typography.bodyText1,
-        bodyMedium: _Typography.bodyMedium,
-        labelLarge: _Typography.labelLarge,
-        bodySmall: _Typography.bodySmall,
-        labelSmall: _Typography.overline),
+      displayLarge: _Typography.headline1,
+      displayMedium: _Typography.headline2,
+      displaySmall: _Typography.headline3,
+      headlineLarge: _Typography.headlineLarge,
+      headlineMedium: _Typography.headline5,
+      headlineSmall: _Typography.headlineSmall,
+      titleMedium: _Typography.titleMedium,
+      titleSmall: _Typography.subtitle2,
+      bodyLarge: _Typography.bodyText1,
+      bodyMedium: _Typography.bodyMedium,
+      labelLarge: _Typography.labelLarge,
+      bodySmall: _Typography.bodySmall,
+      labelSmall: _Typography.overline,
+    ),
     fontFamily: 'Lato',
     chipTheme: ChipThemeData(
       backgroundColor: const Color(0xFF1E1D24),
@@ -411,9 +416,12 @@ ThemeData getDarkTheme() {
     ),
     cardTheme: CardThemeData(
       shape: RoundedRectangleBorder(
-          side: BorderSide(
-              color: AppColors.purple[900]!.withValues(alpha: 0.3), width: 1),
-          borderRadius: const BorderRadius.all(Radius.circular(16))),
+        side: BorderSide(
+          color: AppColors.purple[900]!.withValues(alpha: 0.3),
+          width: 1,
+        ),
+        borderRadius: const BorderRadius.all(Radius.circular(16)),
+      ),
       margin: EdgeInsets.zero,
       shadowColor: Colors.black.withValues(alpha: 0.5),
       color: const Color(0xFF1E1D24),
@@ -421,8 +429,9 @@ ThemeData getDarkTheme() {
     scaffoldBackgroundColor: const Color(0xFF0F0E13),
     inputDecorationTheme: InputDecorationTheme(
       border: OutlineInputBorder(
-        borderSide:
-            BorderSide(color: AppColors.purple[900]!.withValues(alpha: 0.5)),
+        borderSide: BorderSide(
+          color: AppColors.purple[900]!.withValues(alpha: 0.5),
+        ),
         borderRadius: const BorderRadius.all(Radius.circular(16)),
       ),
       disabledBorder: const OutlineInputBorder(
@@ -430,8 +439,9 @@ ThemeData getDarkTheme() {
         borderRadius: BorderRadius.all(Radius.circular(16)),
       ),
       enabledBorder: OutlineInputBorder(
-        borderSide:
-            BorderSide(color: AppColors.purple[900]!.withValues(alpha: 0.5)),
+        borderSide: BorderSide(
+          color: AppColors.purple[900]!.withValues(alpha: 0.5),
+        ),
         borderRadius: const BorderRadius.all(Radius.circular(16)),
       ),
       focusedBorder: OutlineInputBorder(
@@ -451,8 +461,9 @@ ThemeData getDarkTheme() {
           borderRadius: BorderRadius.all(Radius.circular(16)),
         ),
         enabledBorder: OutlineInputBorder(
-          borderSide:
-              BorderSide(color: AppColors.purple[900]!.withValues(alpha: 0.5)),
+          borderSide: BorderSide(
+            color: AppColors.purple[900]!.withValues(alpha: 0.5),
+          ),
           borderRadius: const BorderRadius.all(Radius.circular(16)),
         ),
         focusedBorder: OutlineInputBorder(
@@ -467,9 +478,7 @@ ThemeData getDarkTheme() {
       style: OutlinedButton.styleFrom(
         foregroundColor: AppColors.purple[300],
         side: BorderSide(color: AppColors.purple[300]!),
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(16),
-        ),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
       ),
     ),
   );

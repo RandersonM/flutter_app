@@ -52,8 +52,14 @@ class VegapunkChatReady extends VegapunkChatState {
   final bool isSearchingWeb;
 
   @override
-  List<Object?> get props =>
-      [messages, streamingToken, isGenerating, selectedSatellite, isThinkingMode, isSearchingWeb];
+  List<Object?> get props => [
+    messages,
+    streamingToken,
+    isGenerating,
+    selectedSatellite,
+    isThinkingMode,
+    isSearchingWeb,
+  ];
 
   VegapunkChatReady copyWith({
     List<ChatMessage>? messages,
@@ -62,22 +68,18 @@ class VegapunkChatReady extends VegapunkChatState {
     VegapunkSatellite? selectedSatellite,
     bool? isThinkingMode,
     bool? isSearchingWeb,
-  }) =>
-      VegapunkChatReady(
-        messages: messages ?? this.messages,
-        streamingToken: streamingToken ?? this.streamingToken,
-        isGenerating: isGenerating ?? this.isGenerating,
-        selectedSatellite: selectedSatellite ?? this.selectedSatellite,
-        isThinkingMode: isThinkingMode ?? this.isThinkingMode,
-        isSearchingWeb: isSearchingWeb ?? this.isSearchingWeb,
-      );
+  }) => VegapunkChatReady(
+    messages: messages ?? this.messages,
+    streamingToken: streamingToken ?? this.streamingToken,
+    isGenerating: isGenerating ?? this.isGenerating,
+    selectedSatellite: selectedSatellite ?? this.selectedSatellite,
+    isThinkingMode: isThinkingMode ?? this.isThinkingMode,
+    isSearchingWeb: isSearchingWeb ?? this.isSearchingWeb,
+  );
 }
 
 class VegapunkChatError extends VegapunkChatState {
-  const VegapunkChatError({
-    required this.message,
-    this.isInstallError = false,
-  });
+  const VegapunkChatError({required this.message, this.isInstallError = false});
 
   final String message;
 

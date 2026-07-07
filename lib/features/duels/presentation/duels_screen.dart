@@ -61,9 +61,7 @@ class _DuelsScreenState extends State<DuelsScreen> {
               builder: (context, state) {
                 if (state is DuelsReady) {
                   return IconButton(
-                    icon: const Icon(
-                      PhosphorIconsRegular.shuffle,
-                    ),
+                    icon: const Icon(PhosphorIconsRegular.shuffle),
                     onPressed: () {
                       _duelsBloc.add(const RandomizeCharacters());
                     },
@@ -77,9 +75,7 @@ class _DuelsScreenState extends State<DuelsScreen> {
               builder: (context, state) {
                 if (state is DuelsReady && state.hasCharactersSelected) {
                   return IconButton(
-                    icon: const AppIcon(
-                      PhosphorIconsRegular.arrowsClockwise,
-                    ),
+                    icon: const AppIcon(PhosphorIconsRegular.arrowsClockwise),
                     onPressed: () {
                       _duelsBloc.add(const ResetDuel());
                     },
@@ -137,17 +133,17 @@ class _DuelsScreenState extends State<DuelsScreen> {
             Text(
               l10n.error,
               style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                    color: Colors.white,
-                    fontWeight: FontWeight.bold,
-                  ),
+                color: Colors.white,
+                fontWeight: FontWeight.bold,
+              ),
             ),
             const SizedBox(height: Constants.margin),
             Text(
               message,
               textAlign: TextAlign.center,
-              style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                    color: Colors.white70,
-                  ),
+              style: Theme.of(
+                context,
+              ).textTheme.bodyMedium?.copyWith(color: Colors.white70),
             ),
             const SizedBox(height: Constants.margin * 2),
             ElevatedButton(

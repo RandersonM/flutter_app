@@ -11,14 +11,20 @@ import 'package:firebase_auth/firebase_auth.dart';
 
 import 'package:opfan/shared/widgets/molecules/default_app_bar.dart';
 import 'package:opfan/shared/widgets/organisms/crew_list.dart';
+import 'package:opfan/shared/widgets/organisms/offline_blocker_overlay.dart';
+import 'package:opfan/core/connectivity/connectivity_cubit.dart';
+import 'package:opfan/app/di/injection.dart';
 
 class ListCrewsScreen extends StatelessWidget {
   const ListCrewsScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => ListCrewsBloc(),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(create: (context) => ListCrewsBloc()),
+        BlocProvider.value(value: getIt<ConnectivityCubit>()),
+      ],
       child: const _ListCrewsScreenContent(),
     );
   }
@@ -90,42 +96,44 @@ class _ListCrewsScreenContentState extends State<_ListCrewsScreenContent>
           ],
         ),
       ),
-      body: TabBarView(
-        controller: _tabController,
-        children: [
-          // Tab 1: Minhas Tripulações
-          CrewList(
-            onCrewTap: (crew) => _onCrewTap(context, crew),
-            onCrewEdit: (crew) => _onCrewEdit(context, crew),
-            onCrewDelete: (crew) => _onCrewDelete(context, crew),
-            showEditDeleteButtons: (crew) =>
-                _canEditCrew(crew, currentUser?.uid),
-            isUserCrews: true,
-            onSearch: (query) {
-              if (query.isEmpty) {
-                context.read<ListCrewsBloc>().add(LoadUserCrews());
-              } else {
-                context.read<ListCrewsBloc>().add(SearchUserCrews(query));
-              }
-            },
-          ),
-          // Tab 2: Todas as Tripulações
-          CrewList(
-            onCrewTap: (crew) => _onCrewTap(context, crew),
-            onCrewEdit: (crew) => _onCrewEdit(context, crew),
-            onCrewDelete: (crew) => _onCrewDelete(context, crew),
-            showEditDeleteButtons: (crew) =>
-                _canEditCrew(crew, currentUser?.uid),
-            isUserCrews: false,
-            onSearch: (query) {
-              if (query.isEmpty) {
-                context.read<ListCrewsBloc>().add(LoadCrews());
-              } else {
-                context.read<ListCrewsBloc>().add(SearchCrews(query));
-              }
-            },
-          ),
-        ],
+      body: OfflineBlockerOverlay(
+        child: TabBarView(
+          controller: _tabController,
+          children: [
+            // Tab 1: Minhas Tripulações
+            CrewList(
+              onCrewTap: (crew) => _onCrewTap(context, crew),
+              onCrewEdit: (crew) => _onCrewEdit(context, crew),
+              onCrewDelete: (crew) => _onCrewDelete(context, crew),
+              showEditDeleteButtons: (crew) =>
+                  _canEditCrew(crew, currentUser?.uid),
+              isUserCrews: true,
+              onSearch: (query) {
+                if (query.isEmpty) {
+                  context.read<ListCrewsBloc>().add(LoadUserCrews());
+                } else {
+                  context.read<ListCrewsBloc>().add(SearchUserCrews(query));
+                }
+              },
+            ),
+            // Tab 2: Todas as Tripulações
+            CrewList(
+              onCrewTap: (crew) => _onCrewTap(context, crew),
+              onCrewEdit: (crew) => _onCrewEdit(context, crew),
+              onCrewDelete: (crew) => _onCrewDelete(context, crew),
+              showEditDeleteButtons: (crew) =>
+                  _canEditCrew(crew, currentUser?.uid),
+              isUserCrews: false,
+              onSearch: (query) {
+                if (query.isEmpty) {
+                  context.read<ListCrewsBloc>().add(LoadCrews());
+                } else {
+                  context.read<ListCrewsBloc>().add(SearchCrews(query));
+                }
+              },
+            ),
+          ],
+        ),
       ),
     );
   }

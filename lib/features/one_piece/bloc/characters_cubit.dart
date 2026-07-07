@@ -21,8 +21,10 @@ class CharactersLoading extends CharactersState {
   final List<CustomCharacterModel> characters;
   final bool isLoadingMore;
 
-  const CharactersLoading(
-      {required this.characters, required this.isLoadingMore});
+  const CharactersLoading({
+    required this.characters,
+    required this.isLoadingMore,
+  });
 
   @override
   List<Object?> get props => [characters, isLoadingMore];
@@ -32,10 +34,7 @@ class CharactersLoaded extends CharactersState {
   final List<CustomCharacterModel> characters;
   final bool hasMoreData;
 
-  const CharactersLoaded({
-    required this.characters,
-    required this.hasMoreData,
-  });
+  const CharactersLoaded({required this.characters, required this.hasMoreData});
 
   @override
   List<Object?> get props => [characters, hasMoreData];
@@ -45,10 +44,7 @@ class CharactersError extends CharactersState {
   final String message;
   final List<CustomCharacterModel> characters;
 
-  const CharactersError({
-    required this.message,
-    required this.characters,
-  });
+  const CharactersError({required this.message, required this.characters});
 
   @override
   List<Object?> get props => [message, characters];
@@ -80,10 +76,12 @@ class CharactersCubit extends Cubit<CharactersState> {
 
     final isInitialFetch = _characters.isEmpty;
 
-    emit(CharactersLoading(
-      characters: _characters,
-      isLoadingMore: !isInitialFetch,
-    ));
+    emit(
+      CharactersLoading(
+        characters: _characters,
+        isLoadingMore: !isInitialFetch,
+      ),
+    );
 
     try {
       // Get all One Piece characters from global collection
@@ -93,16 +91,12 @@ class CharactersCubit extends Cubit<CharactersState> {
 
       final newHasMoreData = hasMoreData;
 
-      emit(CharactersLoaded(
-        characters: _characters,
-        hasMoreData: newHasMoreData,
-      ));
+      emit(
+        CharactersLoaded(characters: _characters, hasMoreData: newHasMoreData),
+      );
     } catch (e) {
       debugPrint('CharactersCubit: Error - $e');
-      emit(CharactersError(
-        message: e.toString(),
-        characters: _characters,
-      ));
+      emit(CharactersError(message: e.toString(), characters: _characters));
     }
   }
 

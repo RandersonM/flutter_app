@@ -27,8 +27,15 @@ class EditCrewSubmitted extends EditCrewEvent {
   });
 
   @override
-  List<Object?> get props =>
-      [crewId, name, description, jollyRogerUrl, boatImageUrl, tags, boatName];
+  List<Object?> get props => [
+    crewId,
+    name,
+    description,
+    jollyRogerUrl,
+    boatImageUrl,
+    tags,
+    boatName,
+  ];
 }
 
 class EditCrewReset extends EditCrewEvent {}

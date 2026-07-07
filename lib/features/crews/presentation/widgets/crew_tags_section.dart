@@ -10,10 +10,7 @@ import 'package:opfan/shared/utils/constants.dart';
 class CrewTagsSection extends StatelessWidget {
   final CrewModel crew;
 
-  const CrewTagsSection({
-    super.key,
-    required this.crew,
-  });
+  const CrewTagsSection({super.key, required this.crew});
 
   @override
   Widget build(BuildContext context) {
@@ -25,9 +22,7 @@ class CrewTagsSection extends StatelessWidget {
 
     return Card(
       elevation: 2.0,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(16.0),
-      ),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16.0)),
       child: Padding(
         padding: const EdgeInsets.all(Constants.margin * 2),
         child: Column(
@@ -53,8 +48,9 @@ class CrewTagsSection extends StatelessWidget {
             Wrap(
               spacing: Constants.margin,
               runSpacing: Constants.margin,
-              children:
-                  crew.tags.map((tag) => _buildTagChip(context, tag)).toList(),
+              children: crew.tags
+                  .map((tag) => _buildTagChip(context, tag))
+                  .toList(),
             ),
           ],
         ),

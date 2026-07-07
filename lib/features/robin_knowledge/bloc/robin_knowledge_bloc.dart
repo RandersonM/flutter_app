@@ -20,7 +20,9 @@ class RobinKnowledgeBloc
   }
 
   Future<void> _onLoadGoals(
-      LoadGoals event, Emitter<RobinKnowledgeState> emit) async {
+    LoadGoals event,
+    Emitter<RobinKnowledgeState> emit,
+  ) async {
     emit(RobinKnowledgeLoading());
     try {
       final goals = await _plannerRepository.getGoals();
@@ -31,7 +33,9 @@ class RobinKnowledgeBloc
   }
 
   Future<void> _onAddGoal(
-      AddGoal event, Emitter<RobinKnowledgeState> emit) async {
+    AddGoal event,
+    Emitter<RobinKnowledgeState> emit,
+  ) async {
     try {
       await _plannerRepository.createGoal(event.goal);
       final goals = await _plannerRepository.getGoals();
@@ -42,7 +46,9 @@ class RobinKnowledgeBloc
   }
 
   Future<void> _onUpdateGoal(
-      UpdateGoal event, Emitter<RobinKnowledgeState> emit) async {
+    UpdateGoal event,
+    Emitter<RobinKnowledgeState> emit,
+  ) async {
     try {
       await _plannerRepository.updateGoal(event.goal);
       final goals = await _plannerRepository.getGoals();
@@ -53,7 +59,9 @@ class RobinKnowledgeBloc
   }
 
   Future<void> _onDeleteGoal(
-      DeleteGoal event, Emitter<RobinKnowledgeState> emit) async {
+    DeleteGoal event,
+    Emitter<RobinKnowledgeState> emit,
+  ) async {
     try {
       await _plannerRepository.deleteGoal(event.goalId);
       final goals = await _plannerRepository.getGoals();
@@ -64,10 +72,15 @@ class RobinKnowledgeBloc
   }
 
   Future<void> _onUpdateGoalProgress(
-      UpdateGoalProgress event, Emitter<RobinKnowledgeState> emit) async {
+    UpdateGoalProgress event,
+    Emitter<RobinKnowledgeState> emit,
+  ) async {
     try {
-      await _plannerRepository.updateGoalProgress(event.goalId, event.progress,
-          notes: event.notes);
+      await _plannerRepository.updateGoalProgress(
+        event.goalId,
+        event.progress,
+        notes: event.notes,
+      );
       final goals = await _plannerRepository.getGoals();
       emit(RobinKnowledgeLoaded(goals: goals));
     } catch (e) {

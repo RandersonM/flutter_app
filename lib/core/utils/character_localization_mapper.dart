@@ -2,7 +2,9 @@ import 'package:opfan/l10n/app_localizations.dart';
 
 class CharacterLocalizationMapper {
   static String mapOccupationToLocalized(
-      String occupation, AppLocalizations l10n) {
+    String occupation,
+    AppLocalizations l10n,
+  ) {
     switch (occupation.toLowerCase()) {
       case 'captain':
         return l10n.captain;
@@ -46,7 +48,9 @@ class CharacterLocalizationMapper {
   }
 
   static String mapLocalizedToOccupation(
-      String localizedOccupation, AppLocalizations l10n) {
+    String localizedOccupation,
+    AppLocalizations l10n,
+  ) {
     if (localizedOccupation == l10n.captain) return 'captain';
     if (localizedOccupation == l10n.viceCaptain) return 'vicecaptain';
     if (localizedOccupation == l10n.admiral) return 'admiral';
@@ -79,7 +83,9 @@ class CharacterLocalizationMapper {
   }
 
   static String mapLocalizedToHaki(
-      String localizedHaki, AppLocalizations l10n) {
+    String localizedHaki,
+    AppLocalizations l10n,
+  ) {
     if (localizedHaki == l10n.haoshokuHaki) {
       return 'haoshoku haki (king\'s haki)';
     }
@@ -160,11 +166,7 @@ class CharacterLocalizationMapper {
   }
 
   static List<String> getLocalizedHakiOptions(AppLocalizations l10n) {
-    return [
-      l10n.haoshokuHaki,
-      l10n.busoshokuHaki,
-      l10n.kenbunshokuHaki,
-    ];
+    return [l10n.haoshokuHaki, l10n.busoshokuHaki, l10n.kenbunshokuHaki];
   }
 
   static List<String> getLocalizedRaceOptions(AppLocalizations l10n) {
@@ -252,7 +254,9 @@ class CharacterLocalizationMapper {
   }
 
   static String mapLocalizedToStatus(
-      String localizedStatus, AppLocalizations l10n) {
+    String localizedStatus,
+    AppLocalizations l10n,
+  ) {
     if (localizedStatus == l10n.alive) return 'alive';
     if (localizedStatus == l10n.dead) return 'dead';
     if (localizedStatus == l10n.captured) return 'captured';
@@ -261,14 +265,18 @@ class CharacterLocalizationMapper {
   }
 
   static List<String> mapAffiliationsToLocalized(
-      List<String> affiliationKeys, AppLocalizations l10n) {
+    List<String> affiliationKeys,
+    AppLocalizations l10n,
+  ) {
     return affiliationKeys
         .map((key) => mapAffiliationToLocalized(key, l10n))
         .toList();
   }
 
   static String mapAffiliationToLocalized(
-      String affiliationKey, AppLocalizations l10n) {
+    String affiliationKey,
+    AppLocalizations l10n,
+  ) {
     switch (affiliationKey.toLowerCase()) {
       case 'marines':
         return l10n.marines;
@@ -290,7 +298,9 @@ class CharacterLocalizationMapper {
   }
 
   static String mapLocalizedToAffiliation(
-      String localizedAffiliation, AppLocalizations l10n) {
+    String localizedAffiliation,
+    AppLocalizations l10n,
+  ) {
     if (localizedAffiliation == l10n.marines) return 'marines';
     if (localizedAffiliation == l10n.revolutionaries) return 'revolutionaries';
     if (localizedAffiliation == l10n.yonkou) return 'yonkou';
@@ -302,14 +312,18 @@ class CharacterLocalizationMapper {
   }
 
   static List<String> mapOccupationsToLocalized(
-      List<String> occupationKeys, AppLocalizations l10n) {
+    List<String> occupationKeys,
+    AppLocalizations l10n,
+  ) {
     return occupationKeys
         .map((key) => mapOccupationToLocalized(key, l10n))
         .toList();
   }
 
   static List<String> mapHakiListToLocalized(
-      List<String> hakiList, AppLocalizations l10n) {
+    List<String> hakiList,
+    AppLocalizations l10n,
+  ) {
     return hakiList.map((haki) => mapHakiToLocalized(haki, l10n)).toList();
   }
 }

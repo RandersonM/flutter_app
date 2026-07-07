@@ -43,18 +43,18 @@ class FinancesEmptyState extends StatelessWidget {
             Text(
               AppLocalizations.of(context)!.saveWithNami,
               style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                    color: Colors.white,
-                    fontWeight: FontWeight.bold,
-                  ),
+                color: Colors.white,
+                fontWeight: FontWeight.bold,
+              ),
               textAlign: TextAlign.center,
             ),
             const SizedBox(height: Constants.margin),
             Text(
               AppLocalizations.of(context)!.configureYourFinances,
               style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                    color: Colors.white54,
-                    height: 1.5,
-                  ),
+                color: Colors.white54,
+                height: 1.5,
+              ),
               textAlign: TextAlign.center,
             ),
             const SizedBox(height: Constants.margin * 3),
@@ -101,9 +101,9 @@ class _FeaturePill extends StatelessWidget {
         const SizedBox(width: 8),
         Text(
           label,
-          style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                color: Colors.white54,
-              ),
+          style: Theme.of(
+            context,
+          ).textTheme.bodySmall?.copyWith(color: Colors.white54),
         ),
       ],
     );

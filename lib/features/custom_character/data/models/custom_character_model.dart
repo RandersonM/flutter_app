@@ -1,7 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:opfan/features/duels/data/models/fighting_style_model.dart';
 
-
 class CustomCharacterModel {
   final String? id;
   final String? userId;
@@ -48,15 +47,18 @@ class CustomCharacterModel {
   });
 
   factory CustomCharacterModel.fromFirestore(
-      Map<String, dynamic> data, String documentId) {
+    Map<String, dynamic> data,
+    String documentId,
+  ) {
     return CustomCharacterModel(
       id: documentId,
       userId: data['userId'] as String?,
       name: data['name'] as String? ?? 'Unknown Character',
       nickname: data['nickname'] as String?,
       devilFruit: data['devilFruit'] as String?,
-      haki:
-          data['haki'] != null ? List<String>.from(data['haki'] as List) : null,
+      haki: data['haki'] != null
+          ? List<String>.from(data['haki'] as List)
+          : null,
       affiliations: data['affiliations'] != null
           ? List<String>.from(data['affiliations'] as List)
           : ['Unknown'],
@@ -66,7 +68,8 @@ class CustomCharacterModel {
           : ['Unknown'],
       fightingStyle: data['fightingStyle'] != null
           ? FightingStyleModel.fromMap(
-              data['fightingStyle'] as Map<String, dynamic>)
+              data['fightingStyle'] as Map<String, dynamic>,
+            )
           : null,
       bounty: data['bounty'] as String? ?? '0',
       signo: data['signo'] as String?,
@@ -94,14 +97,16 @@ class CustomCharacterModel {
       name: json['name'] as String,
       nickname: json['nickname'] as String?,
       devilFruit: json['devilFruit'] as String?,
-      haki:
-          json['haki'] != null ? List<String>.from(json['haki'] as List) : null,
+      haki: json['haki'] != null
+          ? List<String>.from(json['haki'] as List)
+          : null,
       affiliations: List<String>.from(json['affiliations'] as List),
       image: json['image'] as String,
       occupation: List<String>.from(json['occupation'] as List),
       fightingStyle: json['fightingStyle'] != null
           ? FightingStyleModel.fromMap(
-              json['fightingStyle'] as Map<String, dynamic>)
+              json['fightingStyle'] as Map<String, dynamic>,
+            )
           : null,
       bounty: json['bounty'] as String,
       signo: json['signo'] as String?,

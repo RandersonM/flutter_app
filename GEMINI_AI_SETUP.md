@@ -33,9 +33,6 @@ DEVIL_FRUIT_API_URL=https://api.api-onepiece.com/v2/fruits/en
 HUGGING_FACE_API_KEY=dev_mode
 HUGGING_FACE_BASE_URL=https://api-inference.huggingface.co
 
-# Configurações da API do Stability AI
-STABILITY_API_KEY=dev_mode
-STABILITY_BASE_URL=https://api.stability.ai/v1/generation
 
 # Configurações da API do Gemini AI (Google)
 GEMINI_API_KEY=sua_api_key_aqui

@@ -1,9 +1,6 @@
 /// Represents a function call emitted by the model.
 class ToolCall {
-  const ToolCall({
-    required this.name,
-    required this.arguments,
-  });
+  const ToolCall({required this.name, required this.arguments});
 
   /// The registered function name (e.g. "searchInternet").
   final String name;

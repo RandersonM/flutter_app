@@ -1,15 +1,15 @@
 import 'dart:math';
 import 'package:flutter/foundation.dart';
 import 'package:opfan/app/di/injection.dart';
+import 'package:opfan/core/ai/prompts/index.dart';
 import 'package:opfan/core/services/index.dart';
-
 
 class CharacterImageService implements ICharacterImageService {
   final GeminiService _geminiService;
   final Map<String, String> _imageCache = {};
 
   CharacterImageService({GeminiService? geminiService})
-      : _geminiService = geminiService ?? getIt<GeminiService>();
+    : _geminiService = geminiService ?? getIt<GeminiService>();
 
   String _getCacheKey(String characterName, String prompt) {
     return '${characterName}_${prompt.hashCode}';
@@ -50,7 +50,8 @@ class CharacterImageService implements ICharacterImageService {
     );
 
     debugPrint(
-        'Character Image Service: Requesting image from Gemini with prompt: $enhancedPrompt');
+      'Character Image Service: Requesting image from Gemini with prompt: $enhancedPrompt',
+    );
 
     final imageUrl = await _geminiService.generateImage(
       prompt: enhancedPrompt,
@@ -65,7 +66,8 @@ class CharacterImageService implements ICharacterImageService {
     }
 
     debugPrint(
-        'Character Image Service: Image generation failed or in dev mode, returning fallback');
+      'Character Image Service: Image generation failed or in dev mode, returning fallback',
+    );
     return await _getEnhancedFallbackImage(
       characterName: characterName,
       prompt: prompt,
@@ -83,32 +85,12 @@ class CharacterImageService implements ICharacterImageService {
     String? status,
     List<String>? occupations,
   }) {
-    final basePrompt = prompt.isNotEmpty ? prompt : 'One Piece character';
-
-    final List<String> promptParts = [
-      basePrompt,
-      'race: $race',
-    ];
-
-    if (status != null && status.isNotEmpty) {
-      promptParts.add('status: $status');
-    }
-
-    if (occupations != null && occupations.isNotEmpty) {
-      final occupationTypes = occupations.join(', ');
-      promptParts.add('occupations: $occupationTypes');
-    }
-
-    promptParts.addAll([
-      'anime style',
-      'One Piece universe',
-      'detailed character design',
-      'high quality',
-      'professional illustration',
-      'vibrant colors',
-    ]);
-
-    return promptParts.join(', ');
+    return CharacterImagePrompt.build(
+      prompt: prompt,
+      race: race,
+      status: status,
+      occupations: occupations,
+    );
   }
 
   Future<String> _getEnhancedFallbackImage({
@@ -126,8 +108,9 @@ class CharacterImageService implements ICharacterImageService {
 
     int variationOffset = 0;
     if (isForcedRegeneration) {
-      final regenerationMatch =
-          RegExp(r'\[regeneration_(\d+)_(\d+)_(\d+)\]').firstMatch(prompt);
+      final regenerationMatch = RegExp(
+        r'\[regeneration_(\d+)_(\d+)_(\d+)\]',
+      ).firstMatch(prompt);
       if (regenerationMatch != null) {
         final count = int.parse(regenerationMatch.group(1)!);
         final timestamp = int.parse(regenerationMatch.group(2)!);

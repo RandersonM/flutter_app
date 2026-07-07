@@ -32,17 +32,17 @@ class EmptyTimeline extends StatelessWidget {
             Text(
               AppLocalizations.of(context)!.noObjectivesCreated,
               style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                    fontWeight: FontWeight.bold,
-                    color: Colors.grey[700],
-                  ),
+                fontWeight: FontWeight.bold,
+                color: Colors.grey[700],
+              ),
               textAlign: TextAlign.center,
             ),
             const SizedBox(height: 12),
             Text(
               AppLocalizations.of(context)!.emptyTimelineSubtitle,
-              style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                    color: Colors.grey[600],
-                  ),
+              style: Theme.of(
+                context,
+              ).textTheme.bodyMedium?.copyWith(color: Colors.grey[600]),
               textAlign: TextAlign.center,
             ),
             const SizedBox(height: 32),

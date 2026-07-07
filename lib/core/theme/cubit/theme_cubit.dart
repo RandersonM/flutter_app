@@ -4,7 +4,8 @@ import 'package:opfan/core/services/index.dart';
 import 'package:opfan/core/theme/cubit/theme_state.dart';
 
 class ThemeCubit extends Cubit<ThemeState> {
-  ThemeCubit() : super(ThemeState(isDarkMode: GetIt.I.get<IThemeService>().isDarkMode));
+  ThemeCubit()
+    : super(ThemeState(isDarkMode: GetIt.I.get<IThemeService>().isDarkMode));
 
   Future<void> toggleTheme() async {
     await GetIt.I.get<IThemeService>().persistToggle();

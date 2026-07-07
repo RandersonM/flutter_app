@@ -3945,5 +3945,8 @@
   "dietaryRestrictionLowCarb": "Baixo carboidrato",
   "@dietaryRestrictionLowCarb": { "description": "Dietary restriction option" },
   "dietaryRestrictionHighProtein": "Alto teor proteico",
-  "@dietaryRestrictionHighProtein": { "description": "Dietary restriction option" }
+  "@dietaryRestrictionHighProtein": { "description": "Dietary restriction option" },
+  "offlineBannerMessage": "Você está offline. Algumas funções estão indisponíveis.",
+  "offlineScreenTitle": "Sem Conexão com a Internet",
+  "offlineScreenSubtitle": "Esta função requer conexão com a internet.\nReconecte-se para continuar."
 }

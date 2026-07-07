@@ -46,9 +46,7 @@ class SanjiCookingLoaded extends SanjiCookingState {
 class SanjiCookingFormWithData extends SanjiCookingState {
   final Map<String, dynamic> existingData;
 
-  const SanjiCookingFormWithData({
-    required this.existingData,
-  });
+  const SanjiCookingFormWithData({required this.existingData});
 
   @override
   List<Object?> get props => [existingData];
@@ -80,12 +78,12 @@ class SanjiCookingTipsLoaded extends SanjiCookingState {
 
   @override
   List<Object?> get props => [
-        ingredients,
-        cookingMethod,
-        difficulty,
-        cookingTips,
-        errorMessage,
-      ];
+    ingredients,
+    cookingMethod,
+    difficulty,
+    cookingTips,
+    errorMessage,
+  ];
 
   SanjiCookingTipsLoaded copyWith({
     List<String>? ingredients,
@@ -123,12 +121,12 @@ class SanjiCookingPersonalizedMealGenerating extends SanjiCookingState {
 
   @override
   List<Object?> get props => [
-        ingredients,
-        mealType,
-        targetCalories,
-        goal,
-        dietaryRestrictions,
-      ];
+    ingredients,
+    mealType,
+    targetCalories,
+    goal,
+    dietaryRestrictions,
+  ];
 }
 
 class SanjiCookingPersonalizedMealLoaded extends SanjiCookingState {
@@ -152,14 +150,14 @@ class SanjiCookingPersonalizedMealLoaded extends SanjiCookingState {
 
   @override
   List<Object?> get props => [
-        ingredients,
-        mealType,
-        targetCalories,
-        goal,
-        dietaryRestrictions,
-        personalizedMeal,
-        errorMessage,
-      ];
+    ingredients,
+    mealType,
+    targetCalories,
+    goal,
+    dietaryRestrictions,
+    personalizedMeal,
+    errorMessage,
+  ];
 
   SanjiCookingPersonalizedMealLoaded copyWith({
     List<String>? ingredients,

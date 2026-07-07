@@ -1,11 +1,13 @@
 import 'package:opfan/shared/widgets/atoms/app_icon.dart';
 import 'package:phosphoricons_flutter/phosphoricons_flutter.dart';
+import 'package:opfan/core/connectivity/connectivity_cubit.dart';
+import 'package:opfan/app/di/injection.dart';
+import 'package:opfan/shared/widgets/organisms/offline_blocker_overlay.dart';
 // Developed by Randerson Mayllon
 // Copyright © 2022.
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:opfan/app/di/injection.dart';
 import 'package:opfan/l10n/app_localizations.dart';
 
 import 'package:opfan/features/devil_fruit/bloc/index.dart';
@@ -29,9 +31,7 @@ class _DevilFruitListScreenState extends State<DevilFruitListScreen> {
   @override
   void initState() {
     super.initState();
-    _devilFruitBloc = DevilFruitBloc(
-      devilFruitService: getIt(),
-    );
+    _devilFruitBloc = DevilFruitBloc(devilFruitService: getIt());
     _devilFruitBloc.add(const LoadDevilFruits());
   }
 
@@ -43,15 +43,18 @@ class _DevilFruitListScreenState extends State<DevilFruitListScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider.value(
-      value: _devilFruitBloc,
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider.value(value: _devilFruitBloc),
+        BlocProvider.value(value: getIt<ConnectivityCubit>()),
+      ],
       child: Scaffold(
         appBar: DefaultAppBar(
           title: Text(
             AppLocalizations.of(context)!.devilFruit,
-            style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                  fontWeight: FontWeight.bold,
-                ),
+            style: Theme.of(
+              context,
+            ).textTheme.headlineSmall?.copyWith(fontWeight: FontWeight.bold),
           ),
           actions: [
             BlocBuilder<DevilFruitBloc, DevilFruitState>(
@@ -66,24 +69,23 @@ class _DevilFruitListScreenState extends State<DevilFruitListScreen> {
             ),
           ],
         ),
-        body: BlocBuilder<DevilFruitBloc, DevilFruitState>(
-          builder: (context, state) {
-            if (state is DevilFruitInitial || state is DevilFruitLoading) {
-              return const Center(
-                child: CircularProgressIndicator(),
-              );
-            }
+        body: OfflineBlockerOverlay(
+          child: BlocBuilder<DevilFruitBloc, DevilFruitState>(
+            builder: (context, state) {
+              if (state is DevilFruitInitial || state is DevilFruitLoading) {
+                return const Center(child: CircularProgressIndicator());
+              }
 
-            if (state is DevilFruitError) {
-              return _buildErrorState(state.message);
-            }
+              if (state is DevilFruitError) {
+                return _buildErrorState(state.message);
+              }
 
-            if (state is DevilFruitLoaded) {
-              return _buildLoadedState(state);
-            }
-
-            return const SizedBox.shrink();
-          },
+              if (state is DevilFruitLoaded) {
+                return _buildLoadedState(state);
+              }
+              return const SizedBox();
+            },
+          ),
         ),
       ),
     );
@@ -104,9 +106,9 @@ class _DevilFruitListScreenState extends State<DevilFruitListScreen> {
             const SizedBox(height: Constants.margin * 2),
             Text(
               'Error loading Devil Fruits',
-              style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                    fontWeight: FontWeight.bold,
-                  ),
+              style: Theme.of(
+                context,
+              ).textTheme.headlineSmall?.copyWith(fontWeight: FontWeight.bold),
               textAlign: TextAlign.center,
             ),
             const SizedBox(height: Constants.margin),
@@ -140,16 +142,12 @@ class _DevilFruitListScreenState extends State<DevilFruitListScreen> {
               child: DevilFruitSearchHeader(),
             ),
           ),
-          SliverToBoxAdapter(
-            child: _buildFiltersSection(state),
-          ),
+          SliverToBoxAdapter(child: _buildFiltersSection(state)),
           if (state.isSearching)
             const SliverToBoxAdapter(
               child: Padding(
                 padding: EdgeInsets.all(Constants.margin),
-                child: Center(
-                  child: CircularProgressIndicator(),
-                ),
+                child: Center(child: CircularProgressIndicator()),
               ),
             ),
           if (state.filteredFruits.isEmpty && !state.isSearching)
@@ -172,16 +170,13 @@ class _DevilFruitListScreenState extends State<DevilFruitListScreen> {
                   crossAxisSpacing: Constants.margin,
                   mainAxisSpacing: Constants.margin,
                 ),
-                delegate: SliverChildBuilderDelegate(
-                  (context, index) {
-                    final fruit = state.filteredFruits[index];
-                    return DevilFruitCard(
-                      devilFruit: fruit,
-                      onTap: () => _showDevilFruitDetails(fruit),
-                    );
-                  },
-                  childCount: state.filteredFruits.length,
-                ),
+                delegate: SliverChildBuilderDelegate((context, index) {
+                  final fruit = state.filteredFruits[index];
+                  return DevilFruitCard(
+                    devilFruit: fruit,
+                    onTap: () => _showDevilFruitDetails(fruit),
+                  );
+                }, childCount: state.filteredFruits.length),
               ),
             ),
           const SliverToBoxAdapter(
@@ -206,16 +201,16 @@ class _DevilFruitListScreenState extends State<DevilFruitListScreen> {
               Text(
                 '${AppLocalizations.of(context)!.type}: ${fruit.type}',
                 style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                      color: Theme.of(context).primaryColor,
-                      fontWeight: FontWeight.bold,
-                    ),
+                  color: Theme.of(context).primaryColor,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
               const SizedBox.shrink(),
               Text(
                 '${AppLocalizations.of(context)!.description}:',
-                style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                      fontWeight: FontWeight.bold,
-                    ),
+                style: Theme.of(
+                  context,
+                ).textTheme.bodyMedium?.copyWith(fontWeight: FontWeight.bold),
               ),
               Text(
                 fruit.description,
@@ -249,9 +244,9 @@ class _DevilFruitListScreenState extends State<DevilFruitListScreen> {
             children: [
               Text(
                 AppLocalizations.of(context)!.filterByType,
-                style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                      fontWeight: FontWeight.bold,
-                    ),
+                style: Theme.of(
+                  context,
+                ).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
               ),
               if (state.selectedType != null)
                 TextButton(

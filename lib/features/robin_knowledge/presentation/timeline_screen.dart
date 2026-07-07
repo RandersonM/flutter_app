@@ -34,9 +34,7 @@ class TimelineScreen extends StatelessWidget {
         child: const Column(
           children: [
             TimelineHeader(),
-            Expanded(
-              child: TimelineContent(),
-            ),
+            Expanded(child: TimelineContent()),
           ],
         ),
       ),

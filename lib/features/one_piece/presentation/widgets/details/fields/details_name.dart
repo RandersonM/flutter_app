@@ -12,23 +12,22 @@ class DetailsName extends StatelessWidget {
   final String? nickname;
   @override
   Widget build(BuildContext context) => Column(
-        children: <Widget>[
-          Padding(
-            padding: const EdgeInsets.only(
-                top: Constants.margin * 2, bottom: Constants.margin),
-            child: Text(
-              name,
-              style: Theme.of(context).textTheme.headlineSmall,
-            ),
+    children: <Widget>[
+      Padding(
+        padding: const EdgeInsets.only(
+          top: Constants.margin * 2,
+          bottom: Constants.margin,
+        ),
+        child: Text(name, style: Theme.of(context).textTheme.headlineSmall),
+      ),
+      if (nickname != null)
+        Padding(
+          padding: const EdgeInsets.only(bottom: Constants.margin / 2),
+          child: Text(
+            nickname!,
+            style: Theme.of(context).textTheme.titleMedium,
           ),
-          if (nickname != null)
-            Padding(
-              padding: const EdgeInsets.only(bottom: Constants.margin / 2),
-              child: Text(
-                nickname!,
-                style: Theme.of(context).textTheme.titleMedium,
-              ),
-            ),
-        ],
-      );
+        ),
+    ],
+  );
 }

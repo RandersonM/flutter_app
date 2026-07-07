@@ -80,8 +80,11 @@ class PlannerRepository implements PlannerRepositoryInterface {
   }
 
   @override
-  Future<void> updateGoalProgress(String id, double progress,
-      {String? notes}) async {
+  Future<void> updateGoalProgress(
+    String id,
+    double progress, {
+    String? notes,
+  }) async {
     try {
       final goal = await getGoalById(id);
       if (goal == null) {
@@ -111,8 +114,8 @@ class PlannerRepository implements PlannerRepositoryInterface {
           'status': progress == 0.0
               ? GoalStatus.notStarted.name
               : progress >= 100.0
-                  ? GoalStatus.completed.name
-                  : GoalStatus.inProgress.name,
+              ? GoalStatus.completed.name
+              : GoalStatus.inProgress.name,
         },
       );
     } catch (e) {
@@ -123,16 +126,15 @@ class PlannerRepository implements PlannerRepositoryInterface {
   @override
   Stream<List<GoalModel>> streamGoals() {
     try {
-      return _firestoreService
-          .streamUserDocuments(
-        collection: _collection,
-      )
-          .map((documents) {
-        final goals =
-            documents.map((doc) => _documentToGoalModel(doc)).toList();
-        goals.sort((a, b) => b.createdAt.compareTo(a.createdAt));
-        return goals;
-      });
+      return _firestoreService.streamUserDocuments(collection: _collection).map(
+        (documents) {
+          final goals = documents
+              .map((doc) => _documentToGoalModel(doc))
+              .toList();
+          goals.sort((a, b) => b.createdAt.compareTo(a.createdAt));
+          return goals;
+        },
+      );
     } catch (e) {
       throw Exception('Failed to stream goals: $e');
     }

@@ -14,11 +14,7 @@ class CookingTipsScreen extends StatefulWidget {
   final double? targetCalories;
   final String? goal;
 
-  const CookingTipsScreen({
-    super.key,
-    this.targetCalories,
-    this.goal,
-  });
+  const CookingTipsScreen({super.key, this.targetCalories, this.goal});
 
   @override
   State<CookingTipsScreen> createState() => _CookingTipsScreenState();
@@ -48,17 +44,17 @@ class _CookingTipsScreenState extends State<CookingTipsScreen> {
   void _addIngredient(BuildContext context) {
     final ingredient = _ingredientController.text.trim();
     if (ingredient.isNotEmpty) {
-      context
-          .read<SanjiCookingBloc>()
-          .add(AddIngredient(ingredient: ingredient));
+      context.read<SanjiCookingBloc>().add(
+        AddIngredient(ingredient: ingredient),
+      );
       _ingredientController.clear();
     }
   }
 
   void _removeIngredient(BuildContext context, String ingredient) {
-    context
-        .read<SanjiCookingBloc>()
-        .add(RemoveIngredient(ingredient: ingredient));
+    context.read<SanjiCookingBloc>().add(
+      RemoveIngredient(ingredient: ingredient),
+    );
   }
 
   void _generatePersonalizedMeal(BuildContext context) {
@@ -69,22 +65,23 @@ class _CookingTipsScreenState extends State<CookingTipsScreen> {
       final ingredients = currentState is SanjiCookingTipsLoaded
           ? currentState.ingredients
           : currentState is SanjiCookingPersonalizedMealGenerating
-              ? (currentState).ingredients
-              : (currentState as SanjiCookingPersonalizedMealLoaded).ingredients;
+          ? (currentState).ingredients
+          : (currentState as SanjiCookingPersonalizedMealLoaded).ingredients;
 
       if (widget.targetCalories != null &&
           widget.goal != null &&
           _mealTypeKey != null) {
-        context.read<SanjiCookingBloc>().add(GeneratePersonalizedMeal(
-              ingredients: ingredients,
-              mealType: _mealTypeKey!,
-              targetCalories: widget.targetCalories!,
-              goal: widget.goal!,
-              dietaryRestrictions:
-                  _dietaryRestrictionsKey == 'none'
-                      ? null
-                      : _dietaryRestrictionsKey,
-            ));
+        context.read<SanjiCookingBloc>().add(
+          GeneratePersonalizedMeal(
+            ingredients: ingredients,
+            mealType: _mealTypeKey!,
+            targetCalories: widget.targetCalories!,
+            goal: widget.goal!,
+            dietaryRestrictions: _dietaryRestrictionsKey == 'none'
+                ? null
+                : _dietaryRestrictionsKey,
+          ),
+        );
       }
     }
   }
@@ -160,9 +157,7 @@ class _CookingTipsScreenState extends State<CookingTipsScreen> {
       child: BlocBuilder<SanjiCookingBloc, SanjiCookingState>(
         builder: (context, state) {
           return Scaffold(
-            appBar: DefaultAppBar(
-              title: Text(localizations.cookingWithSanji),
-            ),
+            appBar: DefaultAppBar(title: Text(localizations.cookingWithSanji)),
             body: SingleChildScrollView(
               padding: const EdgeInsets.all(Constants.margin),
               child: Column(
@@ -197,8 +192,9 @@ class _CookingTipsScreenState extends State<CookingTipsScreen> {
                           Text(
                             localizations.cookingPersonalizedMealSubtitle,
                             style: theme.textTheme.bodyMedium?.copyWith(
-                              color:
-                                  colorScheme.onSurface.withValues(alpha: 0.7),
+                              color: colorScheme.onSurface.withValues(
+                                alpha: 0.7,
+                              ),
                             ),
                           ),
                         ],
@@ -243,7 +239,9 @@ class _CookingTipsScreenState extends State<CookingTipsScreen> {
                               AppButton(
                                 onPressed: () => _addIngredient(context),
                                 padding: const EdgeInsets.symmetric(
-                                    horizontal: 16, vertical: 12),
+                                  horizontal: 16,
+                                  vertical: 12,
+                                ),
                                 label: localizations.addAction,
                               ),
                             ],
@@ -260,8 +258,9 @@ class _CookingTipsScreenState extends State<CookingTipsScreen> {
                                   onDeleted: () =>
                                       _removeIngredient(context, ingredient),
                                   deleteIcon: const AppIcon(
-                                      PhosphorIconsRegular.x,
-                                      size: 18),
+                                    PhosphorIconsRegular.x,
+                                    size: 18,
+                                  ),
                                 );
                               }).toList(),
                             ),
@@ -303,8 +302,9 @@ class _CookingTipsScreenState extends State<CookingTipsScreen> {
                                 _getLocalizedGoal(localizations, widget.goal!),
                               ),
                               style: theme.textTheme.bodySmall?.copyWith(
-                                color: colorScheme.onSurface
-                                    .withValues(alpha: 0.7),
+                                color: colorScheme.onSurface.withValues(
+                                  alpha: 0.7,
+                                ),
                               ),
                             ),
                             const SizedBox(height: 16),
@@ -341,12 +341,15 @@ class _CookingTipsScreenState extends State<CookingTipsScreen> {
                                   borderRadius: BorderRadius.circular(8),
                                 ),
                               ),
-                              items: List.generate(dietaryRestrictionKeys.length, (i) {
-                                return DropdownMenuItem(
-                                  value: dietaryRestrictionKeys[i],
-                                  child: Text(dietaryRestrictionLabels[i]),
-                                );
-                              }),
+                              items: List.generate(
+                                dietaryRestrictionKeys.length,
+                                (i) {
+                                  return DropdownMenuItem(
+                                    value: dietaryRestrictionKeys[i],
+                                    child: Text(dietaryRestrictionLabels[i]),
+                                  );
+                                },
+                              ),
                               onChanged: (value) {
                                 setState(() {
                                   _dietaryRestrictionsKey = value;
@@ -367,27 +370,29 @@ class _CookingTipsScreenState extends State<CookingTipsScreen> {
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
                       AppButton(
-                        onPressed: (state is SanjiCookingTipsLoaded ||
-                                    state is SanjiCookingPersonalizedMealLoaded) &&
+                        onPressed:
+                            (state is SanjiCookingTipsLoaded ||
+                                    state
+                                        is SanjiCookingPersonalizedMealLoaded) &&
                                 (state is SanjiCookingTipsLoaded
                                     ? state.ingredients.isNotEmpty
                                     : (state as SanjiCookingPersonalizedMealLoaded)
-                                        .ingredients
-                                        .isNotEmpty) &&
+                                          .ingredients
+                                          .isNotEmpty) &&
                                 _mealTypeKey != null &&
                                 state is! SanjiCookingPersonalizedMealGenerating
                             ? () => _generatePersonalizedMeal(context)
                             : null,
-                        icon:
-                            const AppIcon(PhosphorIconsRegular.bookOpenText),
+                        icon: const AppIcon(PhosphorIconsRegular.bookOpenText),
                         isLoading:
                             state is SanjiCookingPersonalizedMealGenerating,
                         label: state is SanjiCookingPersonalizedMealGenerating
                             ? localizations.cookingGeneratingMeal
                             : localizations.cookingGenerateMeal,
                         padding: const EdgeInsets.symmetric(
-                            vertical: Constants.margin * 2,
-                            horizontal: Constants.margin * 4),
+                          vertical: Constants.margin * 2,
+                          horizontal: Constants.margin * 4,
+                        ),
                       ),
                       AppButton(
                         onPressed: () => _clearAll(context),
@@ -395,7 +400,9 @@ class _CookingTipsScreenState extends State<CookingTipsScreen> {
                         icon: const AppIcon(PhosphorIconsRegular.x),
                         label: localizations.clearAction,
                         padding: const EdgeInsets.symmetric(
-                            horizontal: 16, vertical: 12),
+                          horizontal: 16,
+                          vertical: 12,
+                        ),
                       ),
                     ],
                   ),
@@ -410,14 +417,17 @@ class _CookingTipsScreenState extends State<CookingTipsScreen> {
                         padding: const EdgeInsets.all(16),
                         child: Row(
                           children: [
-                            AppIcon(PhosphorIconsRegular.warningCircle,
-                                color: colorScheme.error),
+                            AppIcon(
+                              PhosphorIconsRegular.warningCircle,
+                              color: colorScheme.error,
+                            ),
                             const SizedBox(width: 8),
                             Expanded(
                               child: Text(
                                 state.errorMessage!,
                                 style: TextStyle(
-                                    color: colorScheme.onErrorContainer),
+                                  color: colorScheme.onErrorContainer,
+                                ),
                               ),
                             ),
                           ],
@@ -446,7 +456,8 @@ class _CookingTipsScreenState extends State<CookingTipsScreen> {
                                 const SizedBox(width: 8),
                                 Text(
                                   localizations.cookingPersonalizedRecipeTitle(
-                                      state.mealType),
+                                    state.mealType,
+                                  ),
                                   style: theme.textTheme.titleMedium?.copyWith(
                                     fontWeight: FontWeight.bold,
                                   ),
@@ -457,8 +468,9 @@ class _CookingTipsScreenState extends State<CookingTipsScreen> {
                             Text(
                               '${state.targetCalories.toStringAsFixed(0)} kcal | ${_getLocalizedGoal(localizations, state.goal)}',
                               style: theme.textTheme.bodySmall?.copyWith(
-                                color: colorScheme.onSurface
-                                    .withValues(alpha: 0.7),
+                                color: colorScheme.onSurface.withValues(
+                                  alpha: 0.7,
+                                ),
                               ),
                             ),
                             const SizedBox(height: 16),
@@ -466,12 +478,14 @@ class _CookingTipsScreenState extends State<CookingTipsScreen> {
                               width: double.infinity,
                               padding: const EdgeInsets.all(16),
                               decoration: BoxDecoration(
-                                color:
-                                    colorScheme.surface.withValues(alpha: 0.3),
+                                color: colorScheme.surface.withValues(
+                                  alpha: 0.3,
+                                ),
                                 borderRadius: BorderRadius.circular(8),
                                 border: Border.all(
-                                  color: colorScheme.outline
-                                      .withValues(alpha: 0.2),
+                                  color: colorScheme.outline.withValues(
+                                    alpha: 0.2,
+                                  ),
                                 ),
                               ),
                               child: MarkdownBlock(

@@ -13,8 +13,11 @@ import 'package:opfan/shared/utils/app_routes.dart' show AppRoutes;
 class UserDrawerContent extends StatelessWidget {
   final UserModel user;
   final AuthBloc authBloc;
-  const UserDrawerContent(
-      {super.key, required this.user, required this.authBloc});
+  const UserDrawerContent({
+    super.key,
+    required this.user,
+    required this.authBloc,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -70,11 +73,10 @@ class UserDrawerContent extends StatelessWidget {
                     Text(
                       user.email,
                       style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                            color: Theme.of(context)
-                                .colorScheme
-                                .onSecondary
-                                .withValues(alpha: 0.8),
-                          ),
+                        color: Theme.of(
+                          context,
+                        ).colorScheme.onSecondary.withValues(alpha: 0.8),
+                      ),
                       textAlign: TextAlign.center,
                     ),
                   ],
@@ -95,8 +97,9 @@ class UserDrawerContent extends StatelessWidget {
                       icon: PhosphorIconsRegular.alien,
                       title: AppLocalizations.of(context)!.myCharacters,
                       onTap: () {
-                        Navigator.of(context)
-                            .pushNamed(AppRoutes.customCharacterList);
+                        Navigator.of(
+                          context,
+                        ).pushNamed(AppRoutes.customCharacterList);
                       },
                     ),
                     _buildFuturisticListTile(
@@ -104,10 +107,7 @@ class UserDrawerContent extends StatelessWidget {
                       icon: PhosphorIconsRegular.skull,
                       title: AppLocalizations.of(context)!.pirate,
                       onTap: () {
-                        Navigator.pushNamed(
-                          context,
-                          AppRoutes.onePiece,
-                        );
+                        Navigator.pushNamed(context, AppRoutes.onePiece);
                       },
                     ),
                     _buildFuturisticListTile(
@@ -115,10 +115,7 @@ class UserDrawerContent extends StatelessWidget {
                       icon: PhosphorIconsRegular.sparkle,
                       title: AppLocalizations.of(context)!.duels,
                       onTap: () {
-                        Navigator.pushNamed(
-                          context,
-                          AppRoutes.duels,
-                        );
+                        Navigator.pushNamed(context, AppRoutes.duels);
                       },
                     ),
                     _buildFuturisticListTile(
@@ -126,10 +123,7 @@ class UserDrawerContent extends StatelessWidget {
                       icon: PhosphorIconsRegular.boat,
                       title: AppLocalizations.of(context)!.crew(2),
                       onTap: () {
-                        Navigator.pushNamed(
-                          context,
-                          AppRoutes.listCrews,
-                        );
+                        Navigator.pushNamed(context, AppRoutes.listCrews);
                       },
                     ),
                     _buildFuturisticListTile(
@@ -137,10 +131,7 @@ class UserDrawerContent extends StatelessWidget {
                       icon: PhosphorIconsRegular.orange,
                       title: AppLocalizations.of(context)!.devilFruit,
                       onTap: () {
-                        Navigator.pushNamed(
-                          context,
-                          AppRoutes.devilFruit,
-                        );
+                        Navigator.pushNamed(context, AppRoutes.devilFruit);
                       },
                     ),
                     _buildFuturisticListTile(
@@ -163,7 +154,8 @@ class UserDrawerContent extends StatelessWidget {
                     ),
                     Padding(
                       padding: const EdgeInsets.symmetric(
-                          vertical: Constants.margin),
+                        vertical: Constants.margin,
+                      ),
                       child: GomuGomuDivider(
                         color: Theme.of(context).colorScheme.onPrimary,
                         height: 12,
@@ -211,15 +203,9 @@ class UserDrawerContent extends StatelessWidget {
         gradient: LinearGradient(
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
-          colors: [
-            color.withValues(alpha: 0.1),
-            color.withValues(alpha: 0.05),
-          ],
+          colors: [color.withValues(alpha: 0.1), color.withValues(alpha: 0.05)],
         ),
-        border: Border.all(
-          color: color.withValues(alpha: 0.3),
-          width: 1,
-        ),
+        border: Border.all(color: color.withValues(alpha: 0.3), width: 1),
         boxShadow: [
           BoxShadow(
             color: color.withValues(alpha: 0.1),
@@ -234,10 +220,7 @@ class UserDrawerContent extends StatelessWidget {
           decoration: BoxDecoration(
             shape: BoxShape.circle,
             color: color.withValues(alpha: 0.1),
-            border: Border.all(
-              color: color.withValues(alpha: 0.3),
-              width: 1,
-            ),
+            border: Border.all(color: color.withValues(alpha: 0.3), width: 1),
           ),
           child: Icon(
             icon,
@@ -248,14 +231,12 @@ class UserDrawerContent extends StatelessWidget {
         title: Text(
           title,
           style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                color: Theme.of(context).colorScheme.primary,
-                fontWeight: FontWeight.w500,
-              ),
+            color: Theme.of(context).colorScheme.primary,
+            fontWeight: FontWeight.w500,
+          ),
         ),
         onTap: onTap,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(12),
-        ),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
       ),
     );
   }

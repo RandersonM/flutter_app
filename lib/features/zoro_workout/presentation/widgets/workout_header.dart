@@ -5,10 +5,7 @@ import 'package:opfan/l10n/app_localizations.dart';
 class WorkoutHeader extends StatelessWidget {
   final WorkoutAssessmentModel? currentAssessment;
 
-  const WorkoutHeader({
-    super.key,
-    this.currentAssessment,
-  });
+  const WorkoutHeader({super.key, this.currentAssessment});
 
   @override
   Widget build(BuildContext context) {
@@ -37,10 +34,7 @@ class WorkoutHeader extends StatelessWidget {
       child: SizedBox(
         width: double.infinity,
         height: 180,
-        child: Image.asset(
-          'assets/logo/zoro-workout.gif',
-          fit: BoxFit.cover,
-        ),
+        child: Image.asset('assets/logo/zoro-workout.gif', fit: BoxFit.cover),
       ),
     );
   }
@@ -165,9 +159,9 @@ class WorkoutHeader extends StatelessWidget {
           Text(
             titleText,
             style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                  fontWeight: FontWeight.bold,
-                  color: accentColor,
-                ),
+              fontWeight: FontWeight.bold,
+              color: accentColor,
+            ),
           ),
 
           const SizedBox(height: 10),
@@ -175,9 +169,9 @@ class WorkoutHeader extends StatelessWidget {
           Text(
             quoteText,
             style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                  color: accentColor,
-                  fontStyle: FontStyle.italic,
-                ),
+              color: accentColor,
+              fontStyle: FontStyle.italic,
+            ),
           ),
           const SizedBox(height: 16),
           Row(
@@ -188,32 +182,34 @@ class WorkoutHeader extends StatelessWidget {
                   children: [
                     Text(
                       isDefeated
-                          ? AppLocalizations.of(context)!
-                              .workoutsRemaining(remaining)
+                          ? AppLocalizations.of(
+                              context,
+                            )!.workoutsRemaining(remaining)
                           : AppLocalizations.of(context)!.weeklyGoalCompleted,
                       style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                            fontWeight: FontWeight.w600,
-                          ),
+                        fontWeight: FontWeight.w600,
+                      ),
                     ),
                     const SizedBox(height: 6),
                     LinearProgressIndicator(
                       value: goal > 0 ? (workouts / goal).clamp(0.0, 1.0) : 0.0,
                       minHeight: 6,
                       borderRadius: BorderRadius.circular(3),
-                      backgroundColor:
-                          Theme.of(context).colorScheme.surfaceContainerHighest,
+                      backgroundColor: Theme.of(
+                        context,
+                      ).colorScheme.surfaceContainerHighest,
                       valueColor: AlwaysStoppedAnimation<Color>(accentColor),
                     ),
                     const SizedBox(height: 4),
                     Text(
-                      AppLocalizations.of(context)!
-                          .workoutDaysCount(workouts, goal),
+                      AppLocalizations.of(
+                        context,
+                      )!.workoutDaysCount(workouts, goal),
                       style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                            color: Theme.of(context)
-                                .colorScheme
-                                .onSurface
-                                .withValues(alpha: 0.6),
-                          ),
+                        color: Theme.of(
+                          context,
+                        ).colorScheme.onSurface.withValues(alpha: 0.6),
+                      ),
                     ),
                   ],
                 ),
@@ -245,9 +241,6 @@ class WorkoutHeader extends StatelessWidget {
       }
     }
 
-    return {
-      'workouts': workoutsThisWeek,
-      'goal': goal,
-    };
+    return {'workouts': workoutsThisWeek, 'goal': goal};
   }
 }

@@ -85,10 +85,7 @@ class _GlobalErrorBoundaryState extends State<GlobalErrorBoundary> {
                       const SizedBox(height: 12),
                       const Text(
                         'An unexpected error occurred in the user interface. Don\'t worry, the Straw Hats are on it!',
-                        style: TextStyle(
-                          color: Colors.white70,
-                          fontSize: 16,
-                        ),
+                        style: TextStyle(color: Colors.white70, fontSize: 16),
                         textAlign: TextAlign.center,
                       ),
                       const SizedBox(height: 24),
@@ -119,7 +116,9 @@ class _GlobalErrorBoundaryState extends State<GlobalErrorBoundary> {
                           backgroundColor: const Color(0xFFE94560),
                           foregroundColor: Colors.white,
                           padding: const EdgeInsets.symmetric(
-                              horizontal: 24, vertical: 12),
+                            horizontal: 24,
+                            vertical: 12,
+                          ),
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(8),
                           ),
@@ -131,7 +130,8 @@ class _GlobalErrorBoundaryState extends State<GlobalErrorBoundary> {
                           });
                         },
                         icon: const AppIcon(
-                            PhosphorIconsRegular.arrowsClockwise),
+                          PhosphorIconsRegular.arrowsClockwise,
+                        ),
                         label: Text(AppLocalizations.of(context)!.tryAgain),
                       ),
                       const SizedBox(height: 16),
@@ -140,7 +140,9 @@ class _GlobalErrorBoundaryState extends State<GlobalErrorBoundary> {
                           backgroundColor: Theme.of(context).primaryColor,
                           foregroundColor: Colors.white,
                           padding: const EdgeInsets.symmetric(
-                              horizontal: 24, vertical: 12),
+                            horizontal: 24,
+                            vertical: 12,
+                          ),
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(8),
                           ),
@@ -151,7 +153,10 @@ class _GlobalErrorBoundaryState extends State<GlobalErrorBoundary> {
                             _errorDetails = null;
                           });
                           Navigator.pushNamedAndRemoveUntil(
-                              context, AppRoutes.home, (route) => false);
+                            context,
+                            AppRoutes.home,
+                            (route) => false,
+                          );
                         },
                         icon: const AppIcon(PhosphorIconsRegular.house),
                         label: Text(AppLocalizations.of(context)!.goHomeAction),

@@ -23,93 +23,92 @@ class _CharacterCardState extends State<CharacterCard> {
 
   @override
   Widget build(BuildContext context) => InkWell(
-        onTap: () => Navigator.pushNamed(
-          context,
-          AppRoutes.characterDetails,
-          arguments: widget.character,
-        ),
-        child: Card(
-          shape: RoundedRectangleBorder(
-              side: const BorderSide(color: Colors.white),
-              borderRadius: BorderRadius.circular(Constants.margin * 2)),
-          child: Padding(
-            padding: const EdgeInsets.all(Constants.margin),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: <Widget>[
-                Expanded(
-                  flex: 3,
-                  child: Container(
-                    width: double.infinity,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(Constants.margin * 2),
-                      color: Colors.grey[200],
-                    ),
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(Constants.margin * 2),
-                      child: _imageLoadError
-                          ? _buildPlaceholder()
-                          : Image.network(
-                              widget.character.image,
-                              fit: BoxFit.cover,
-                              loadingBuilder:
-                                  (context, child, loadingProgress) {
-                                if (loadingProgress == null) return child;
-                                return Center(
-                                  child: CircularProgressIndicator(
-                                    value: loadingProgress.expectedTotalBytes !=
-                                            null
-                                        ? loadingProgress
-                                                .cumulativeBytesLoaded /
-                                            loadingProgress.expectedTotalBytes!
-                                        : null,
-                                  ),
-                                );
-                              },
-                              errorBuilder: (context, error, stackTrace) {
-                                WidgetsBinding.instance
-                                    .addPostFrameCallback((_) {
-                                  if (mounted) {
-                                    setState(() {
-                                      _imageLoadError = true;
-                                    });
-                                  }
-                                });
-                                return _buildPlaceholder();
-                              },
-                            ),
-                    ),
-                  ),
+    onTap: () => Navigator.pushNamed(
+      context,
+      AppRoutes.characterDetails,
+      arguments: widget.character,
+    ),
+    child: Card(
+      shape: RoundedRectangleBorder(
+        side: const BorderSide(color: Colors.white),
+        borderRadius: BorderRadius.circular(Constants.margin * 2),
+      ),
+      child: Padding(
+        padding: const EdgeInsets.all(Constants.margin),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: <Widget>[
+            Expanded(
+              flex: 3,
+              child: Container(
+                width: double.infinity,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(Constants.margin * 2),
+                  color: Colors.grey[200],
                 ),
-                const SizedBox(height: Constants.margin),
-                Expanded(
-                  flex: 1,
-                  child: SizedBox(
-                    width: double.infinity,
-                    child: FittedBox(
-                      fit: BoxFit.scaleDown,
-                      child: Text(
-                        widget.character.name,
-                        textAlign: TextAlign.center,
-                        maxLines: 2,
-                        overflow: TextOverflow.ellipsis,
-                        style: Theme.of(context).textTheme.bodySmall!.merge(
-                            TextStyle(
-                                fontWeight: FontWeight.bold,
-                                color: Theme.of(context)
-                                    .appBarTheme
-                                    .titleTextStyle!
-                                    .color)),
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(Constants.margin * 2),
+                  child: _imageLoadError
+                      ? _buildPlaceholder()
+                      : Image.network(
+                          widget.character.image,
+                          fit: BoxFit.cover,
+                          loadingBuilder: (context, child, loadingProgress) {
+                            if (loadingProgress == null) return child;
+                            return Center(
+                              child: CircularProgressIndicator(
+                                value:
+                                    loadingProgress.expectedTotalBytes != null
+                                    ? loadingProgress.cumulativeBytesLoaded /
+                                          loadingProgress.expectedTotalBytes!
+                                    : null,
+                              ),
+                            );
+                          },
+                          errorBuilder: (context, error, stackTrace) {
+                            WidgetsBinding.instance.addPostFrameCallback((_) {
+                              if (mounted) {
+                                setState(() {
+                                  _imageLoadError = true;
+                                });
+                              }
+                            });
+                            return _buildPlaceholder();
+                          },
+                        ),
+                ),
+              ),
+            ),
+            const SizedBox(height: Constants.margin),
+            Expanded(
+              flex: 1,
+              child: SizedBox(
+                width: double.infinity,
+                child: FittedBox(
+                  fit: BoxFit.scaleDown,
+                  child: Text(
+                    widget.character.name,
+                    textAlign: TextAlign.center,
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                    style: Theme.of(context).textTheme.bodySmall!.merge(
+                      TextStyle(
+                        fontWeight: FontWeight.bold,
+                        color: Theme.of(
+                          context,
+                        ).appBarTheme.titleTextStyle!.color,
                       ),
                     ),
                   ),
                 ),
-              ],
+              ),
             ),
-          ),
+          ],
         ),
-      );
+      ),
+    ),
+  );
 
   Widget _buildPlaceholder() {
     return Container(
@@ -119,11 +118,7 @@ class _CharacterCardState extends State<CharacterCard> {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          AppIcon(
-            PhosphorIconsRegular.user,
-            size: 48,
-            color: Colors.grey[600],
-          ),
+          AppIcon(PhosphorIconsRegular.user, size: 48, color: Colors.grey[600]),
           const SizedBox(height: 8),
           Text(
             AppLocalizations.of(context)!.imageUnavailable,

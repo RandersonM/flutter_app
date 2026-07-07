@@ -7,10 +7,9 @@ import 'package:opfan/features/crews/bloc/edit_crew_state.dart';
 class EditCrewBloc extends Bloc<EditCrewEvent, EditCrewState> {
   final ICrewRepository _crewRepository;
 
-  EditCrewBloc({
-    ICrewRepository? crewRepository,
-  })  : _crewRepository = crewRepository ?? getIt<ICrewRepository>(),
-        super(EditCrewInitial()) {
+  EditCrewBloc({ICrewRepository? crewRepository})
+    : _crewRepository = crewRepository ?? getIt<ICrewRepository>(),
+      super(EditCrewInitial()) {
     on<EditCrewSubmitted>(_onEditCrewSubmitted);
     on<EditCrewReset>(_onEditCrewReset);
   }
@@ -44,10 +43,7 @@ class EditCrewBloc extends Bloc<EditCrewEvent, EditCrewState> {
     }
   }
 
-  void _onEditCrewReset(
-    EditCrewReset event,
-    Emitter<EditCrewState> emit,
-  ) {
+  void _onEditCrewReset(EditCrewReset event, Emitter<EditCrewState> emit) {
     emit(EditCrewInitial());
   }
 }

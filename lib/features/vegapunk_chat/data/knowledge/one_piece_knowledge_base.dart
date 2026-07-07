@@ -4,18 +4,22 @@ class OnePieceKnowledgeBase {
   OnePieceKnowledgeBase._();
 
   static List<RagDocument> get documents => [
-        ..._vegapunkDocs,
-        ..._characterDocs,
-        ..._devilFruitDocs,
-        ..._arcDocs,
-      ];
+    ..._vegapunkDocs,
+    ..._characterDocs,
+    ..._devilFruitDocs,
+    ..._arcDocs,
+  ];
 
   static List<RagDocument> getDocumentsForCategories(List<String>? categories) {
     if (categories == null || categories.isEmpty) {
       return documents;
     }
     final mappedCategories = categories.map((c) {
-      final norm = c.toLowerCase().trim().replaceAll('docs', '').replaceAll('doc', '');
+      final norm = c
+          .toLowerCase()
+          .trim()
+          .replaceAll('docs', '')
+          .replaceAll('doc', '');
       if (norm == 'character' || norm == 'characters') return 'character';
       if (norm == 'vegapunk') return 'vegapunk';
       if (norm == 'devilfruit' || norm == 'devil_fruit') return 'devil_fruit';
@@ -23,7 +27,9 @@ class OnePieceKnowledgeBase {
       return norm;
     }).toList();
 
-    return documents.where((doc) => mappedCategories.contains(doc.category)).toList();
+    return documents
+        .where((doc) => mappedCategories.contains(doc.category))
+        .toList();
   }
 
   // ─── Vegapunk & Satellites ───────────────────────────────────────────────

@@ -8,8 +8,7 @@ import 'devil_fruit_state.dart';
 class DevilFruitBloc extends Bloc<DevilFruitEvent, DevilFruitState> {
   final IDevilFruitService _devilFruitService;
 
-  DevilFruitBloc({
-    required this._devilFruitService})
+  DevilFruitBloc({required this._devilFruitService})
     : super(const DevilFruitInitial()) {
     on<LoadDevilFruits>(_onLoadDevilFruits);
     on<RefreshDevilFruits>(_onRefreshDevilFruits);
@@ -28,11 +27,13 @@ class DevilFruitBloc extends Bloc<DevilFruitEvent, DevilFruitState> {
       final fruits = await _devilFruitService.fetchAll();
       final types = _devilFruitService.availableTypes;
 
-      emit(DevilFruitLoaded(
-        fruits: fruits,
-        filteredFruits: fruits,
-        availableTypes: types,
-      ));
+      emit(
+        DevilFruitLoaded(
+          fruits: fruits,
+          filteredFruits: fruits,
+          availableTypes: types,
+        ),
+      );
     } catch (e) {
       debugPrint('DevilFruitBloc: Error loading devil fruits - $e');
       emit(DevilFruitError('Erro ao carregar Akuma no Mi: $e'));
@@ -50,11 +51,13 @@ class DevilFruitBloc extends Bloc<DevilFruitEvent, DevilFruitState> {
       final fruits = await _devilFruitService.fetchAll();
       final types = _devilFruitService.availableTypes;
 
-      emit(DevilFruitLoaded(
-        fruits: fruits,
-        filteredFruits: fruits,
-        availableTypes: types,
-      ));
+      emit(
+        DevilFruitLoaded(
+          fruits: fruits,
+          filteredFruits: fruits,
+          availableTypes: types,
+        ),
+      );
     } catch (e) {
       debugPrint('DevilFruitBloc: Error refreshing devil fruits - $e');
       emit(DevilFruitError('Erro ao atualizar Akuma no Mi: $e'));
@@ -83,17 +86,21 @@ class DevilFruitBloc extends Bloc<DevilFruitEvent, DevilFruitState> {
             .toList();
       }
 
-      emit(currentState.copyWith(
-        filteredFruits: filteredFruits,
-        searchQuery: event.query,
-        isSearching: false,
-      ));
+      emit(
+        currentState.copyWith(
+          filteredFruits: filteredFruits,
+          searchQuery: event.query,
+          isSearching: false,
+        ),
+      );
     } catch (e) {
       debugPrint('DevilFruitBloc: Error searching devil fruits - $e');
-      emit(currentState.copyWith(
-        isSearching: false,
-        error: 'Erro ao buscar Akuma no Mi: $e',
-      ));
+      emit(
+        currentState.copyWith(
+          isSearching: false,
+          error: 'Erro ao buscar Akuma no Mi: $e',
+        ),
+      );
     }
   }
 
@@ -115,27 +122,33 @@ class DevilFruitBloc extends Bloc<DevilFruitEvent, DevilFruitState> {
 
       if (currentState.searchQuery.isNotEmpty) {
         filteredFruits = filteredFruits
-            .where((fruit) =>
-                fruit.name
-                    .toLowerCase()
-                    .contains(currentState.searchQuery.toLowerCase()) ||
-                fruit.romanName
-                    .toLowerCase()
-                    .contains(currentState.searchQuery.toLowerCase()))
+            .where(
+              (fruit) =>
+                  fruit.name.toLowerCase().contains(
+                    currentState.searchQuery.toLowerCase(),
+                  ) ||
+                  fruit.romanName.toLowerCase().contains(
+                    currentState.searchQuery.toLowerCase(),
+                  ),
+            )
             .toList();
       }
 
-      emit(currentState.copyWith(
-        filteredFruits: filteredFruits,
-        selectedType: event.type.isNotEmpty ? event.type : null,
-        isSearching: false,
-      ));
+      emit(
+        currentState.copyWith(
+          filteredFruits: filteredFruits,
+          selectedType: event.type.isNotEmpty ? event.type : null,
+          isSearching: false,
+        ),
+      );
     } catch (e) {
       debugPrint('DevilFruitBloc: Error filtering devil fruits - $e');
-      emit(currentState.copyWith(
-        isSearching: false,
-        error: 'Error filtering Devil Fruits: $e',
-      ));
+      emit(
+        currentState.copyWith(
+          isSearching: false,
+          error: 'Error filtering Devil Fruits: $e',
+        ),
+      );
     }
   }
 
@@ -146,11 +159,13 @@ class DevilFruitBloc extends Bloc<DevilFruitEvent, DevilFruitState> {
     final currentState = state;
     if (currentState is! DevilFruitLoaded) return;
 
-    emit(currentState.copyWith(
-      filteredFruits: currentState.fruits,
-      searchQuery: '',
-      selectedType: null,
-      isSearching: false,
-    ));
+    emit(
+      currentState.copyWith(
+        filteredFruits: currentState.fruits,
+        searchQuery: '',
+        selectedType: null,
+        isSearching: false,
+      ),
+    );
   }
 }

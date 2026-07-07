@@ -8,6 +8,8 @@ import 'package:opfan/shared/utils/constants.dart';
 import 'package:opfan/shared/utils/theme.dart';
 import 'package:opfan/shared/widgets/molecules/default_app_bar.dart';
 import 'package:opfan/app/di/injection.dart';
+import 'package:opfan/core/connectivity/connectivity_cubit.dart';
+import 'package:opfan/shared/widgets/organisms/offline_blocker_overlay.dart';
 
 import 'widgets/index.dart';
 import 'timeline_screen.dart';
@@ -25,13 +27,18 @@ class RobinKnowledgeScreen extends StatelessWidget {
       appBar: DefaultAppBar(
         title: Text(AppLocalizations.of(context)!.knowledgeTitleScreen),
       ),
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            const RobinKnowledgeHeader(),
-            const SizedBox(height: 24),
-            _buildTimelineSection(context),
-          ],
+      body: BlocProvider.value(
+        value: getIt<ConnectivityCubit>(),
+        child: OfflineBlockerOverlay(
+          child: SingleChildScrollView(
+            child: Column(
+              children: [
+                const RobinKnowledgeHeader(),
+                const SizedBox(height: 24),
+                _buildTimelineSection(context),
+              ],
+            ),
+          ),
         ),
       ),
     );
@@ -51,9 +58,9 @@ class RobinKnowledgeScreen extends StatelessWidget {
                 child: Text(
                   AppLocalizations.of(context)!.timelineOfObjectives,
                   maxLines: 2,
-                  style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                        fontWeight: FontWeight.bold,
-                      ),
+                  style: Theme.of(
+                    context,
+                  ).textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold),
                 ),
               ),
               Flexible(
@@ -90,9 +97,7 @@ class RobinKnowledgeScreen extends StatelessWidget {
                     borderRadius: BorderRadius.circular(12),
                     border: Border.all(color: Colors.grey[300]!),
                   ),
-                  child: const Center(
-                    child: CircularProgressIndicator(),
-                  ),
+                  child: const Center(child: CircularProgressIndicator()),
                 );
               }
 
@@ -124,8 +129,9 @@ class RobinKnowledgeScreen extends StatelessWidget {
                           ),
                           const SizedBox(height: 4),
                           Text(
-                            AppLocalizations.of(context)!
-                                .startCreatingFirstObjective,
+                            AppLocalizations.of(
+                              context,
+                            )!.startCreatingFirstObjective,
                             style: const TextStyle(
                               fontSize: 14,
                               color: Colors.grey,
@@ -160,21 +166,13 @@ class RobinKnowledgeScreen extends StatelessWidget {
                           children: [
                             Text(
                               AppLocalizations.of(context)!.recentObjectives,
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .titleMedium
-                                  ?.copyWith(
-                                    fontWeight: FontWeight.bold,
-                                  ),
+                              style: Theme.of(context).textTheme.titleMedium
+                                  ?.copyWith(fontWeight: FontWeight.bold),
                             ),
                             Text(
                               '${state.goals.length} ${AppLocalizations.of(context)!.total}',
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .bodySmall
-                                  ?.copyWith(
-                                    color: Colors.grey[600],
-                                  ),
+                              style: Theme.of(context).textTheme.bodySmall
+                                  ?.copyWith(color: Colors.grey[600]),
                             ),
                           ],
                         ),
@@ -188,7 +186,8 @@ class RobinKnowledgeScreen extends StatelessWidget {
                             return Container(
                               width: MediaQuery.of(context).size.width * 0.9,
                               margin: const EdgeInsets.only(
-                                  right: Constants.margin * 2),
+                                right: Constants.margin * 2,
+                              ),
                               child: GoalCard(goal: goal),
                             );
                           },

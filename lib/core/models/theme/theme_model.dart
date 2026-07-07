@@ -3,16 +3,10 @@ import 'package:hive/hive.dart';
 class ThemeSettings extends HiveObject {
   bool isDarkMode;
 
-  ThemeSettings({
-    this.isDarkMode = false,
-  });
+  ThemeSettings({this.isDarkMode = false});
 
-  ThemeSettings copyWith({
-    bool? isDarkMode,
-  }) {
-    return ThemeSettings(
-      isDarkMode: isDarkMode ?? this.isDarkMode,
-    );
+  ThemeSettings copyWith({bool? isDarkMode}) {
+    return ThemeSettings(isDarkMode: isDarkMode ?? this.isDarkMode);
   }
 }
 

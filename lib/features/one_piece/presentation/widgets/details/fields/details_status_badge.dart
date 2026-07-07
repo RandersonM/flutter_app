@@ -11,7 +11,8 @@ class DetailsStatusBadge extends StatelessWidget {
   Map<String, dynamic> _statusTheme(AppLocalizations l10n) {
     final statusLower = status?.toLowerCase() ?? '';
 
-    if (statusLower.contains('captured') || statusLower.contains('imprisoned')) {
+    if (statusLower.contains('captured') ||
+        statusLower.contains('imprisoned')) {
       return {
         'backgroundColor': Colors.grey,
         'textColor': Colors.white,
@@ -67,18 +68,14 @@ class DetailsStatusBadge extends StatelessWidget {
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Icon(
-            theme['icon'],
-            size: 16,
-            color: theme['textColor'],
-          ),
+          Icon(theme['icon'], size: 16, color: theme['textColor']),
           const SizedBox(width: 6),
           Text(
             theme['displayText'],
             style: Theme.of(context).textTheme.labelLarge?.copyWith(
-                  color: theme['textColor'],
-                  fontWeight: FontWeight.bold,
-                ),
+              color: theme['textColor'],
+              fontWeight: FontWeight.bold,
+            ),
           ),
         ],
       ),

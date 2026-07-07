@@ -6,6 +6,9 @@ class OnePieceIcons {
   static const _kFontFam = 'OnePieceIcons';
   static const String? _kFontPkg = null;
 
-  static const IconData jollyRoger =
-      IconData(0xe801, fontFamily: _kFontFam, fontPackage: _kFontPkg);
+  static const IconData jollyRoger = IconData(
+    0xe801,
+    fontFamily: _kFontFam,
+    fontPackage: _kFontPkg,
+  );
 }

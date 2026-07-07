@@ -23,7 +23,9 @@ class FormDataModel {
 
   // Create from Firestore document
   factory FormDataModel.fromFirestore(
-      Map<String, dynamic> data, String documentId) {
+    Map<String, dynamic> data,
+    String documentId,
+  ) {
     return FormDataModel(
       id: documentId,
       userId: data['userId'] as String?,

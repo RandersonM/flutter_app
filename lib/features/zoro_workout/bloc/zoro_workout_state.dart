@@ -1,7 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:opfan/features/zoro_workout/data/models/workout_assessment_model.dart';
 
-
 abstract class ZoroWorkoutState extends Equatable {
   const ZoroWorkoutState();
 
@@ -36,13 +35,13 @@ class ZoroWorkoutLoaded extends ZoroWorkoutState {
 
   @override
   List<Object?> get props => [
-        currentAssessment,
-        assessmentHistory,
-        hasCurrentAssessment,
-        canEditCurrentAssessment,
-        currentMonthProgress,
-        remainingDaysToGoal,
-      ];
+    currentAssessment,
+    assessmentHistory,
+    hasCurrentAssessment,
+    canEditCurrentAssessment,
+    currentMonthProgress,
+    remainingDaysToGoal,
+  ];
 
   ZoroWorkoutLoaded copyWith({
     WorkoutAssessmentModel? currentAssessment,

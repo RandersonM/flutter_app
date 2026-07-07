@@ -20,9 +20,7 @@ class TimelineContent extends StatelessWidget {
       bloc: getIt.robinKnowledgeBloc,
       builder: (context, state) {
         if (state is RobinKnowledgeLoading) {
-          return const Center(
-            child: CircularProgressIndicator(),
-          );
+          return const Center(child: CircularProgressIndicator());
         }
 
         if (state is RobinKnowledgeError) {

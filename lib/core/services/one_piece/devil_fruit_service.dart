@@ -7,7 +7,6 @@ import 'package:flutter/foundation.dart';
 import 'package:opfan/features/devil_fruit/data/models/devil_fruit.dart';
 import 'package:opfan/core/services/index.dart';
 
-
 class DevilFruitService implements IDevilFruitService {
   late final Dio _dio;
   final IEnvironmentService _env = GetIt.I.get<IEnvironmentService>();
@@ -15,16 +14,17 @@ class DevilFruitService implements IDevilFruitService {
   bool _isLoaded = false;
 
   DevilFruitService() {
-    _dio = Dio(BaseOptions(
-      connectTimeout: Duration(milliseconds: _env.networkTimeout),
-      receiveTimeout: Duration(milliseconds: _env.networkTimeout),
-    ));
+    _dio = Dio(
+      BaseOptions(
+        connectTimeout: Duration(milliseconds: _env.networkTimeout),
+        receiveTimeout: Duration(milliseconds: _env.networkTimeout),
+      ),
+    );
 
     if (kDebugMode) {
-      _dio.interceptors.add(LogInterceptor(
-        requestBody: true,
-        responseBody: true,
-      ));
+      _dio.interceptors.add(
+        LogInterceptor(requestBody: true, responseBody: true),
+      );
     }
   }
 
@@ -41,8 +41,9 @@ class DevilFruitService implements IDevilFruitService {
 
       if (response.statusCode == 200) {
         final List<dynamic> jsonData = response.data;
-        _cachedFruits =
-            jsonData.map((json) => DevilFruit.fromJson(json)).toList();
+        _cachedFruits = jsonData
+            .map((json) => DevilFruit.fromJson(json))
+            .toList();
         _isLoaded = true;
 
         return _cachedFruits;
@@ -90,9 +91,11 @@ class DevilFruitService implements IDevilFruitService {
     }
 
     return _cachedFruits
-        .where((fruit) =>
-            fruit.name.toLowerCase().contains(name.toLowerCase()) ||
-            fruit.romanName.toLowerCase().contains(name.toLowerCase()))
+        .where(
+          (fruit) =>
+              fruit.name.toLowerCase().contains(name.toLowerCase()) ||
+              fruit.romanName.toLowerCase().contains(name.toLowerCase()),
+        )
         .toList();
   }
 

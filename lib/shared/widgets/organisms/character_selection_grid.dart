@@ -14,10 +14,7 @@ import 'package:opfan/shared/utils/constants.dart';
 import 'package:opfan/shared/widgets/atoms/universal_image.dart';
 
 class CharacterSelectionGrid extends StatefulWidget {
-  const CharacterSelectionGrid({
-    super.key,
-    required this.onCharacterSelected,
-  });
+  const CharacterSelectionGrid({super.key, required this.onCharacterSelected});
 
   final Function(CustomCharacterModel) onCharacterSelected;
 
@@ -49,9 +46,7 @@ class _CharacterSelectionGridState extends State<CharacterSelectionGrid> {
         children: [
           _buildSearchHeader(),
           const SizedBox(height: Constants.margin),
-          Expanded(
-            child: _buildCharacterList(),
-          ),
+          Expanded(child: _buildCharacterList()),
         ],
       ),
     );
@@ -64,9 +59,7 @@ class _CharacterSelectionGridState extends State<CharacterSelectionGrid> {
         decoration: InputDecoration(
           hintText: AppLocalizations.of(context)!.search,
           prefixIcon: const AppIcon(PhosphorIconsRegular.magnifyingGlass),
-          border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(12),
-          ),
+          border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
           filled: true,
           fillColor: Theme.of(context).colorScheme.surface,
         ),
@@ -81,9 +74,7 @@ class _CharacterSelectionGridState extends State<CharacterSelectionGrid> {
     return BlocBuilder<SearchCubit, SearchState>(
       builder: (context, state) {
         if (state is SearchLoading) {
-          return const Center(
-            child: CircularProgressIndicator(),
-          );
+          return const Center(child: CircularProgressIndicator());
         }
 
         if (state is SearchError) {
@@ -195,7 +186,7 @@ class _CharacterSelectionGridState extends State<CharacterSelectionGrid> {
                         child: CircularProgressIndicator(
                           value: loadingProgress.expectedTotalBytes != null
                               ? loadingProgress.cumulativeBytesLoaded /
-                                  loadingProgress.expectedTotalBytes!
+                                    loadingProgress.expectedTotalBytes!
                               : null,
                         ),
                       );
@@ -242,14 +233,13 @@ class _CharacterSelectionGridState extends State<CharacterSelectionGrid> {
                   maxLines: 2,
                   overflow: TextOverflow.ellipsis,
                   style: Theme.of(context).textTheme.bodySmall!.merge(
-                        TextStyle(
-                          fontWeight: FontWeight.bold,
-                          color: Theme.of(context)
-                              .appBarTheme
-                              .titleTextStyle!
-                              .color,
-                        ),
-                      ),
+                    TextStyle(
+                      fontWeight: FontWeight.bold,
+                      color: Theme.of(
+                        context,
+                      ).appBarTheme.titleTextStyle!.color,
+                    ),
+                  ),
                 ),
               ),
             ),

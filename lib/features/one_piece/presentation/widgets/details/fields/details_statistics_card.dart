@@ -31,7 +31,9 @@ class DetailsStatisticsCard extends StatelessWidget {
   String? _raceDisplayValue(BuildContext context) {
     if (character.race?.isNotEmpty == true) {
       return CharacterLocalizationMapper.getRaceLabel(
-          character.race!, AppLocalizations.of(context)!);
+        character.race!,
+        AppLocalizations.of(context)!,
+      );
     }
     return null;
   }
@@ -40,19 +42,23 @@ class DetailsStatisticsCard extends StatelessWidget {
   Widget build(BuildContext context) {
     var hakiList = character.haki;
     if (character.isCustomCharacter && hakiList != null) {
-      hakiList =
-          CharacterLocalizationMapper.mapHakiListToLocalized(hakiList, l10n);
+      hakiList = CharacterLocalizationMapper.mapHakiListToLocalized(
+        hakiList,
+        l10n,
+      );
     }
 
     final hasHaki = hakiList != null && hakiList.isNotEmpty;
     final raceVal = _raceDisplayValue(context);
     final theme = Theme.of(context);
 
-    final hasRow2 = character.calculatedAge != null ||
+    final hasRow2 =
+        character.calculatedAge != null ||
         character.signo != null ||
         raceVal != null;
 
-    final hasRow3 = (character.crew != null && character.crew!.isNotEmpty) ||
+    final hasRow3 =
+        (character.crew != null && character.crew!.isNotEmpty) ||
         character.devilFruit != null ||
         character.birthDate != null;
 
@@ -60,14 +66,18 @@ class DetailsStatisticsCard extends StatelessWidget {
 
     return Padding(
       padding: const EdgeInsets.symmetric(
-          horizontal: Constants.margin * 2, vertical: Constants.margin),
+        horizontal: Constants.margin * 2,
+        vertical: Constants.margin,
+      ),
       child: ClipRRect(
         borderRadius: BorderRadius.circular(16),
         child: BackdropFilter(
           filter: ui.ImageFilter.blur(sigmaX: 12.0, sigmaY: 12.0),
           child: Container(
             decoration: BoxDecoration(
-              color: theme.colorScheme.surfaceContainerHigh.withValues(alpha: 0.6),
+              color: theme.colorScheme.surfaceContainerHigh.withValues(
+                alpha: 0.6,
+              ),
               borderRadius: BorderRadius.circular(16),
               border: Border.all(
                 color: theme.colorScheme.outline.withValues(alpha: 0.2),
@@ -84,24 +94,27 @@ class DetailsStatisticsCard extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: hakiList
-                          .map((haki) => Expanded(
-                                child: Center(
-                                  child: StatisticItem(
-                                    label: l10n.haki,
-                                    value: haki.split(' (').first,
-                                    icon: _hakiIcon(haki),
-                                  ),
+                          .map(
+                            (haki) => Expanded(
+                              child: Center(
+                                child: StatisticItem(
+                                  label: l10n.haki,
+                                  value: haki.split(' (').first,
+                                  icon: _hakiIcon(haki),
                                 ),
-                              ))
+                              ),
+                            ),
+                          )
                           .toList(),
                     ),
                   ),
                 ],
                 if (hasHaki && (hasRow2 || hasRow3))
                   Divider(
-                      height: 1,
-                      thickness: 1,
-                      color: theme.colorScheme.outline.withValues(alpha: 0.1)),
+                    height: 1,
+                    thickness: 1,
+                    color: theme.colorScheme.outline.withValues(alpha: 0.1),
+                  ),
                 if (hasRow2) ...[
                   Padding(
                     padding: const EdgeInsets.all(Constants.margin),
@@ -111,42 +124,56 @@ class DetailsStatisticsCard extends StatelessWidget {
                       children: [
                         if (character.calculatedAge != null)
                           Expanded(
-                              child: Center(
-                                  child: StatisticItem(
-                                      label: l10n.age,
-                                      value: character.calculatedAge!.toString(),
-                                      icon: PhosphorIconsRegular.cake))),
+                            child: Center(
+                              child: StatisticItem(
+                                label: l10n.age,
+                                value: character.calculatedAge!.toString(),
+                                icon: PhosphorIconsRegular.cake,
+                              ),
+                            ),
+                          ),
                         if (character.signo != null)
                           Expanded(
-                              child: Center(
-                                  child: StatisticItem(
-                            label: l10n.signo,
-                            value: ZodiacIcons.getLocalizedZodiacSign(
-                                context, character.signo!),
-                            svgPath:
-                                ZodiacIcons.getZodiacIconPath(character.signo),
-                            icon: ZodiacIcons.getZodiacIconPath(
-                                        character.signo) ==
-                                    null
-                                ? PhosphorIconsRegular.star
-                                : null,
-                          ))),
+                            child: Center(
+                              child: StatisticItem(
+                                label: l10n.signo,
+                                value: ZodiacIcons.getLocalizedZodiacSign(
+                                  context,
+                                  character.signo!,
+                                ),
+                                svgPath: ZodiacIcons.getZodiacIconPath(
+                                  character.signo,
+                                ),
+                                icon:
+                                    ZodiacIcons.getZodiacIconPath(
+                                          character.signo,
+                                        ) ==
+                                        null
+                                    ? PhosphorIconsRegular.star
+                                    : null,
+                              ),
+                            ),
+                          ),
                         if (raceVal != null)
                           Expanded(
-                              child: Center(
-                                  child: StatisticItem(
-                                      label: l10n.race,
-                                      value: raceVal,
-                                      icon: PhosphorIconsRegular.users))),
+                            child: Center(
+                              child: StatisticItem(
+                                label: l10n.race,
+                                value: raceVal,
+                                icon: PhosphorIconsRegular.users,
+                              ),
+                            ),
+                          ),
                       ],
                     ),
                   ),
                 ],
                 if (hasRow2 && hasRow3)
                   Divider(
-                      height: 1,
-                      thickness: 1,
-                      color: theme.colorScheme.outline.withValues(alpha: 0.1)),
+                    height: 1,
+                    thickness: 1,
+                    color: theme.colorScheme.outline.withValues(alpha: 0.1),
+                  ),
                 if (hasRow3) ...[
                   Padding(
                     padding: const EdgeInsets.all(Constants.margin),
@@ -154,30 +181,39 @@ class DetailsStatisticsCard extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                                                if (character.devilFruit != null &&
+                        if (character.devilFruit != null &&
                             character.devilFruit!.isNotEmpty)
                           Expanded(
-                              child: Center(
-                                  child: StatisticItem(
-                                      label: 'Akuma no Mi',
-                                      value: character.devilFruit!,
-                                      icon: PhosphorIconsRegular.plant))),
-                        if (character.crew != null && character.crew!.isNotEmpty)
+                            child: Center(
+                              child: StatisticItem(
+                                label: 'Akuma no Mi',
+                                value: character.devilFruit!,
+                                icon: PhosphorIconsRegular.plant,
+                              ),
+                            ),
+                          ),
+                        if (character.crew != null &&
+                            character.crew!.isNotEmpty)
                           Expanded(
-                              child: Center(
-                                  child: StatisticItem(
-                                      label: l10n.crew(0),
-                                      value: character.crew!,
-                                      icon: PhosphorIconsRegular.sailboat))),
+                            child: Center(
+                              child: StatisticItem(
+                                label: l10n.crew(0),
+                                value: character.crew!,
+                                icon: PhosphorIconsRegular.sailboat,
+                              ),
+                            ),
+                          ),
                         if (character.birthDate != null)
                           Expanded(
-                              child: Center(
-                                  child: StatisticItem(
-                            label: l10n.birthDate,
-                            value:
-                                '${character.birthDate!.day.toString().padLeft(2, '0')}/${character.birthDate!.month.toString().padLeft(2, '0')}/${character.birthDate!.year}',
-                            icon: PhosphorIconsRegular.calendar,
-                          ))),
+                            child: Center(
+                              child: StatisticItem(
+                                label: l10n.birthDate,
+                                value:
+                                    '${character.birthDate!.day.toString().padLeft(2, '0')}/${character.birthDate!.month.toString().padLeft(2, '0')}/${character.birthDate!.year}',
+                                icon: PhosphorIconsRegular.calendar,
+                              ),
+                            ),
+                          ),
                       ],
                     ),
                   ),

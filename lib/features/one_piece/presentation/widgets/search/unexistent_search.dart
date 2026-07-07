@@ -11,14 +11,15 @@ class UnexistentSearch extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => SizedBox(
-        height: MediaQuery.of(context).size.height / 2,
-        child: Center(
-          child: Text(
-              query.isEmpty
-                  ? AppLocalizations.of(context)!.noResearchYet
-                  : '${AppLocalizations.of(context)!.noResultsFound} "$query".',
-              textAlign: TextAlign.center,
-              style: Theme.of(context).textTheme.bodyMedium!),
-        ),
-      );
+    height: MediaQuery.of(context).size.height / 2,
+    child: Center(
+      child: Text(
+        query.isEmpty
+            ? AppLocalizations.of(context)!.noResearchYet
+            : '${AppLocalizations.of(context)!.noResultsFound} "$query".',
+        textAlign: TextAlign.center,
+        style: Theme.of(context).textTheme.bodyMedium!,
+      ),
+    ),
+  );
 }

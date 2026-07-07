@@ -40,9 +40,7 @@ class CustomTextField extends StatelessWidget {
           labelText: label,
           hintText: hint,
           suffixIcon: suffixIcon,
-          border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(8),
-          ),
+          border: OutlineInputBorder(borderRadius: BorderRadius.circular(8)),
           filled: true,
         ),
       ),
@@ -82,9 +80,7 @@ class DateTextField extends StatelessWidget {
         decoration: InputDecoration(
           labelText: label,
           hintText: hint ?? 'DD/MM/AAAA',
-          border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(8),
-          ),
+          border: OutlineInputBorder(borderRadius: BorderRadius.circular(8)),
           filled: true,
         ),
       ),
@@ -121,17 +117,13 @@ class CurrencyTextField extends StatelessWidget {
         validator: validator,
         keyboardType: TextInputType.number,
         enabled: enabled,
-        inputFormatters: [
-          FilteringTextInputFormatter.digitsOnly,
-        ],
+        inputFormatters: [FilteringTextInputFormatter.digitsOnly],
         decoration: InputDecoration(
           labelText: label,
           hintText: hint ?? '0',
           prefixText: prefixText,
           suffixText: prefixText != null ? null : suffixText,
-          border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(8),
-          ),
+          border: OutlineInputBorder(borderRadius: BorderRadius.circular(8)),
           filled: true,
         ),
       ),

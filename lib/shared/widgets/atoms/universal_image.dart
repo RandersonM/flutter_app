@@ -42,7 +42,8 @@ class UniversalImage extends StatelessWidget {
           width: width,
           height: height,
           fit: fit,
-          errorBuilder: errorBuilder ??
+          errorBuilder:
+              errorBuilder ??
               (context, error, stackTrace) =>
                   placeholder ?? _buildDefaultPlaceholder(),
         );
@@ -59,7 +60,8 @@ class UniversalImage extends StatelessWidget {
         width: width,
         height: height,
         fit: fit,
-        errorBuilder: errorBuilder ??
+        errorBuilder:
+            errorBuilder ??
             (context, error, stackTrace) =>
                 placeholder ?? _buildDefaultPlaceholder(),
       );
@@ -72,7 +74,8 @@ class UniversalImage extends StatelessWidget {
       height: height,
       fit: fit,
       loadingBuilder: loadingBuilder,
-      errorBuilder: errorBuilder ??
+      errorBuilder:
+          errorBuilder ??
           (context, error, stackTrace) =>
               placeholder ?? _buildDefaultPlaceholder(),
     );
@@ -84,10 +87,7 @@ class UniversalImage extends StatelessWidget {
       height: height,
       color: Colors.grey[300],
       child: const Center(
-        child: AppIcon(
-          PhosphorIconsRegular.image,
-          color: Colors.grey,
-        ),
+        child: AppIcon(PhosphorIconsRegular.image, color: Colors.grey),
       ),
     );
   }

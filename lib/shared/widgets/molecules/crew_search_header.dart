@@ -44,8 +44,7 @@ class CrewSearchHeader extends StatelessWidget {
               controller: searchController,
               decoration: InputDecoration(
                 hintText: l10n.searchCrews,
-                prefixIcon:
-                    const AppIcon(PhosphorIconsRegular.magnifyingGlass),
+                prefixIcon: const AppIcon(PhosphorIconsRegular.magnifyingGlass),
                 suffixIcon: searchController.text.isNotEmpty
                     ? IconButton(
                         icon: const AppIcon(PhosphorIconsRegular.x),

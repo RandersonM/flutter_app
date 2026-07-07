@@ -17,10 +17,7 @@ class SearchInitial extends SearchState {
   final String query;
   final List<String> statusFilters;
 
-  const SearchInitial({
-    this.query = '',
-    this.statusFilters = const [],
-  });
+  const SearchInitial({this.query = '', this.statusFilters = const []});
 
   @override
   List<Object?> get props => [query, statusFilters];
@@ -30,10 +27,7 @@ class SearchLoading extends SearchState {
   final String query;
   final List<String> statusFilters;
 
-  const SearchLoading({
-    required this.query,
-    required this.statusFilters,
-  });
+  const SearchLoading({required this.query, required this.statusFilters});
 
   @override
   List<Object?> get props => [query, statusFilters];
@@ -71,7 +65,7 @@ class SearchError extends SearchState {
 
 class SearchCubit extends Cubit<SearchState> {
   SearchCubit(this.backend, [String initialQuery = ''])
-      : super(SearchInitial(query: initialQuery)) {
+    : super(SearchInitial(query: initialQuery)) {
     _query = initialQuery;
     if (initialQuery.isNotEmpty) {
       filter();
@@ -94,14 +88,11 @@ class SearchCubit extends Cubit<SearchState> {
   }
 
   Future<void> filter() async {
-    emit(SearchLoading(
-      query: _query,
-      statusFilters: _statusFilters,
-    ));
+    emit(SearchLoading(query: _query, statusFilters: _statusFilters));
 
     try {
-      List<CustomCharacterModel> partialResults =
-          await backend.getAllOnePieceCharacters();
+      List<CustomCharacterModel> partialResults = await backend
+          .getAllOnePieceCharacters();
 
       if (_query.isNotEmpty) {
         partialResults = _applySearch(partialResults);
@@ -110,22 +101,27 @@ class SearchCubit extends Cubit<SearchState> {
       partialResults = _applyFilters(partialResults);
       _queryResults = partialResults;
 
-      emit(SearchLoaded(
-        query: _query,
-        queryResults: _queryResults,
-        statusFilters: _statusFilters,
-      ));
+      emit(
+        SearchLoaded(
+          query: _query,
+          queryResults: _queryResults,
+          statusFilters: _statusFilters,
+        ),
+      );
     } catch (e) {
-      emit(SearchError(
-        message: e.toString(),
-        query: _query,
-        statusFilters: _statusFilters,
-      ));
+      emit(
+        SearchError(
+          message: e.toString(),
+          query: _query,
+          statusFilters: _statusFilters,
+        ),
+      );
     }
   }
 
   List<CustomCharacterModel> _applyFilters(
-      List<CustomCharacterModel> characters) {
+    List<CustomCharacterModel> characters,
+  ) {
     List<CustomCharacterModel> result = [];
     if (_statusFilters.isNotEmpty) {
       for (CustomCharacterModel character in characters) {
@@ -200,8 +196,9 @@ class SearchCubit extends Cubit<SearchState> {
   }
 
   bool _matches(String subject) {
-    return subject
-        .contains(RegExp(_query, caseSensitive: false, unicode: true));
+    return subject.contains(
+      RegExp(_query, caseSensitive: false, unicode: true),
+    );
   }
 
   List<CustomCharacterModel> _applySearch(List<CustomCharacterModel> logs) {

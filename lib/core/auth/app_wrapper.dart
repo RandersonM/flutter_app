@@ -87,7 +87,8 @@ class _AppWrapperState extends State<AppWrapper> {
                         _authBloc.add(const AuthClearCache());
                       },
                       child: Text(
-                          AppLocalizations.of(context)!.clearDataAndContinue),
+                        AppLocalizations.of(context)!.clearDataAndContinue,
+                      ),
                     ),
                   ],
                 ),

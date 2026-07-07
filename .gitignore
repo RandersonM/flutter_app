@@ -41,6 +41,7 @@ untranslatedMessages.json
 .pub-cache/
 .pub/
 /build/
+android/build/
 
 # Web related
 lib/generated_plugin_registrant.dart
@@ -59,7 +60,8 @@ app.*.map.json
 # FVM Version Cache
 .fvm/
 
-.env
+.env*
+!.env.example
 local.properties
 firebase.json
 firestore.rules

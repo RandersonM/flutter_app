@@ -3,15 +3,14 @@ abstract class IGeminiService {
     required String prompt,
     String? systemInstruction,
     String? context,
-    Map<String, dynamic>? parameters,
+    double? temperature,
+    int? topK,
+    double? topP,
+    int? maxOutputTokens,
   });
 
   Future<String?> generateImage({
     required String prompt,
     bool forceRefresh = false,
   });
-
-  void clearCache();
-
-  Map<String, dynamic> getServiceStatus();
 }

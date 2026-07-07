@@ -73,9 +73,9 @@ class _CrewCardState extends State<CrewCard> {
                     Text(
                       widget.crew.name,
                       style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                            fontWeight: FontWeight.bold,
-                            color: Theme.of(context).colorScheme.primary,
-                          ),
+                        fontWeight: FontWeight.bold,
+                        color: Theme.of(context).colorScheme.primary,
+                      ),
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                     ),
@@ -103,8 +103,7 @@ class _CrewCardState extends State<CrewCard> {
                       context,
                       PhosphorIconsRegular.coin,
                       '${_formatBounty(widget.crew.members.fold<int>(0, (sum, member) {
-                        final bountyString =
-                            member.bounty.replaceAll(RegExp(r'[^\d]'), '');
+                        final bountyString = member.bounty.replaceAll(RegExp(r'[^\d]'), '');
                         final bounty = int.tryParse(bountyString) ?? 0;
                         return sum + bounty;
                       }).toInt())} ${l10n.berriesTotal}',
@@ -119,19 +118,21 @@ class _CrewCardState extends State<CrewCard> {
                         spacing: 4,
                         children: widget.crew.tags
                             .take(2)
-                            .map((tag) => Chip(
-                                  label: Text(
-                                    tag,
-                                    style: const TextStyle(fontSize: 10),
-                                  ),
-                                  backgroundColor: Theme.of(context)
-                                      .colorScheme
-                                      .primaryContainer
-                                      .withValues(alpha: 0.2),
-                                  materialTapTargetSize:
-                                      MaterialTapTargetSize.shrinkWrap,
-                                  visualDensity: VisualDensity.compact,
-                                ))
+                            .map(
+                              (tag) => Chip(
+                                label: Text(
+                                  tag,
+                                  style: const TextStyle(fontSize: 10),
+                                ),
+                                backgroundColor: Theme.of(context)
+                                    .colorScheme
+                                    .primaryContainer
+                                    .withValues(alpha: 0.2),
+                                materialTapTargetSize:
+                                    MaterialTapTargetSize.shrinkWrap,
+                                visualDensity: VisualDensity.compact,
+                              ),
+                            )
                             .toList(),
                       ),
                   ],
@@ -144,8 +145,10 @@ class _CrewCardState extends State<CrewCard> {
                     if (widget.onEdit != null)
                       IconButton(
                         onPressed: widget.onEdit,
-                        icon: const AppIcon(PhosphorIconsRegular.pencil,
-                            size: 20),
+                        icon: const AppIcon(
+                          PhosphorIconsRegular.pencil,
+                          size: 20,
+                        ),
                         tooltip: AppLocalizations.of(context)!.edit,
                         padding: EdgeInsets.zero,
                         constraints: const BoxConstraints(),
@@ -153,8 +156,11 @@ class _CrewCardState extends State<CrewCard> {
                     if (widget.onDelete != null)
                       IconButton(
                         onPressed: widget.onDelete,
-                        icon: const AppIcon(PhosphorIconsRegular.trash,
-                            size: 20, color: Colors.red),
+                        icon: const AppIcon(
+                          PhosphorIconsRegular.trash,
+                          size: 20,
+                          color: Colors.red,
+                        ),
                         tooltip: AppLocalizations.of(context)!.delete,
                         padding: EdgeInsets.zero,
                         constraints: const BoxConstraints(),
@@ -180,7 +186,7 @@ class _CrewCardState extends State<CrewCard> {
             child: CircularProgressIndicator(
               value: loadingProgress.expectedTotalBytes != null
                   ? loadingProgress.cumulativeBytesLoaded /
-                      loadingProgress.expectedTotalBytes!
+                        loadingProgress.expectedTotalBytes!
                   : null,
             ),
           );
@@ -200,7 +206,7 @@ class _CrewCardState extends State<CrewCard> {
             child: CircularProgressIndicator(
               value: loadingProgress.expectedTotalBytes != null
                   ? loadingProgress.cumulativeBytesLoaded /
-                      loadingProgress.expectedTotalBytes!
+                        loadingProgress.expectedTotalBytes!
                   : null,
             ),
           );
@@ -250,18 +256,14 @@ class _CrewCardState extends State<CrewCard> {
   Widget _buildInfoRow(BuildContext context, IconData icon, String text) {
     return Row(
       children: [
-        Icon(
-          icon,
-          size: 14,
-          color: Colors.grey[600],
-        ),
+        Icon(icon, size: 14, color: Colors.grey[600]),
         const SizedBox(width: 4),
         Expanded(
           child: Text(
             text,
-            style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                  color: Colors.grey[600],
-                ),
+            style: Theme.of(
+              context,
+            ).textTheme.bodySmall?.copyWith(color: Colors.grey[600]),
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
           ),

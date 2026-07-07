@@ -11,12 +11,18 @@ class CustomCharacterRoutes implements FeatureRouteModule {
   static const String editCustomCharacter = '/editCustomCharacter';
 
   @override
-  List<String> get routes =>
-      [createCustomCharacter, customCharacterList, editCustomCharacter];
+  List<String> get routes => [
+    createCustomCharacter,
+    customCharacterList,
+    editCustomCharacter,
+  ];
 
   @override
-  Set<String> get privateRoutes =>
-      {createCustomCharacter, customCharacterList, editCustomCharacter};
+  Set<String> get privateRoutes => {
+    createCustomCharacter,
+    customCharacterList,
+    editCustomCharacter,
+  };
 
   @override
   Route<dynamic>? getRoute(RouteSettings settings) {

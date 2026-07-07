@@ -54,8 +54,7 @@ class NutritionCalculationService implements INutritionCalculationService {
     );
   }
 
-  double _calculateBMR(
-      int age, String gender, double weight, double height) {
+  double _calculateBMR(int age, String gender, double weight, double height) {
     // Fórmula de Mifflin-St Jeor
     if (gender.toLowerCase() == 'masculino' || gender.toLowerCase() == 'male') {
       return (10 * weight) + (6.25 * height) - (5 * age) + 5;
@@ -96,7 +95,9 @@ class NutritionCalculationService implements INutritionCalculationService {
 
   @override
   String getActivityLevelDisplayName(
-      String key, Function(String) getLocalizedString) {
+    String key,
+    Function(String) getLocalizedString,
+  ) {
     switch (key) {
       case 'sedentary':
         return getLocalizedString('sedentary');
@@ -114,8 +115,7 @@ class NutritionCalculationService implements INutritionCalculationService {
   }
 
   @override
-  String getGoalDisplayName(
-      String key, Function(String) getLocalizedString) {
+  String getGoalDisplayName(String key, Function(String) getLocalizedString) {
     switch (key) {
       case 'weight_loss':
         return getLocalizedString('weightLoss');

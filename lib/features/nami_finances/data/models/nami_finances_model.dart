@@ -1,6 +1,5 @@
 import 'package:hive/hive.dart';
 
-
 class NamiFinancesModel extends HiveObject {
   final String id;
 
@@ -106,14 +105,7 @@ class ExpenseModel {
   });
 }
 
-enum ExpenseCategory {
-  fixed,
-  food,
-  transport,
-  entertainment,
-  health,
-  other,
-}
+enum ExpenseCategory { fixed, food, transport, entertainment, health, other }
 
 class NamiFinancesModelAdapter extends TypeAdapter<NamiFinancesModel> {
   @override

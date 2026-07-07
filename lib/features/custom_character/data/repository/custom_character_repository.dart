@@ -58,8 +58,10 @@ class CustomCharacterRepository implements ICustomCharacterRepository {
       );
 
       var characters = documents
-          .map((doc) =>
-              CustomCharacterModel.fromFirestore(doc, doc['id'] as String))
+          .map(
+            (doc) =>
+                CustomCharacterModel.fromFirestore(doc, doc['id'] as String),
+          )
           .toList();
 
       if (orderBy != null) {
@@ -67,8 +69,9 @@ class CustomCharacterRepository implements ICustomCharacterRepository {
           int comparison = 0;
           switch (orderBy) {
             case 'createdAt':
-              comparison = (a.createdAt ?? DateTime.now())
-                  .compareTo(b.createdAt ?? DateTime.now());
+              comparison = (a.createdAt ?? DateTime.now()).compareTo(
+                b.createdAt ?? DateTime.now(),
+              );
               break;
             case 'name':
               comparison = a.name.compareTo(b.name);
@@ -104,8 +107,10 @@ class CustomCharacterRepository implements ICustomCharacterRepository {
       );
 
       var characters = documents
-          .map((doc) =>
-              CustomCharacterModel.fromFirestore(doc, doc['id'] as String))
+          .map(
+            (doc) =>
+                CustomCharacterModel.fromFirestore(doc, doc['id'] as String),
+          )
           .toList();
 
       if (orderBy != null) {
@@ -113,8 +118,9 @@ class CustomCharacterRepository implements ICustomCharacterRepository {
           int comparison = 0;
           switch (orderBy) {
             case 'createdAt':
-              comparison = (a.createdAt ?? DateTime.now())
-                  .compareTo(b.createdAt ?? DateTime.now());
+              comparison = (a.createdAt ?? DateTime.now()).compareTo(
+                b.createdAt ?? DateTime.now(),
+              );
               break;
             case 'name':
               comparison = a.name.compareTo(b.name);
@@ -137,7 +143,9 @@ class CustomCharacterRepository implements ICustomCharacterRepository {
 
   @override
   Future<void> updateCustomCharacter(
-      String documentId, CustomCharacterModel character) async {
+    String documentId,
+    CustomCharacterModel character,
+  ) async {
     try {
       final data = character.toFirestoreWithEnglishKeys();
       await _firestoreService.updateUserDocument(
@@ -158,8 +166,9 @@ class CustomCharacterRepository implements ICustomCharacterRepository {
         throw Exception('Personagem não encontrado');
       }
 
-      final crewsWithCharacter =
-          await _crewRepository.getCrewsByMember(documentId);
+      final crewsWithCharacter = await _crewRepository.getCrewsByMember(
+        documentId,
+      );
 
       for (final crew in crewsWithCharacter) {
         if (crew.id != null) {
@@ -182,7 +191,8 @@ class CustomCharacterRepository implements ICustomCharacterRepository {
             }
           } catch (e) {
             debugPrint(
-                'Erro ao remover personagem da tripulação ${crew.id}: $e');
+              'Erro ao remover personagem da tripulação ${crew.id}: $e',
+            );
           }
         }
       }
@@ -215,8 +225,10 @@ class CustomCharacterRepository implements ICustomCharacterRepository {
       );
 
       var characters = documents
-          .map((doc) =>
-              CustomCharacterModel.fromFirestore(doc, doc['id'] as String))
+          .map(
+            (doc) =>
+                CustomCharacterModel.fromFirestore(doc, doc['id'] as String),
+          )
           .toList();
 
       if (orderBy != null) {
@@ -224,8 +236,9 @@ class CustomCharacterRepository implements ICustomCharacterRepository {
           int comparison = 0;
           switch (orderBy) {
             case 'createdAt':
-              comparison = (a.createdAt ?? DateTime.now())
-                  .compareTo(b.createdAt ?? DateTime.now());
+              comparison = (a.createdAt ?? DateTime.now()).compareTo(
+                b.createdAt ?? DateTime.now(),
+              );
               break;
             case 'name':
               comparison = a.name.compareTo(b.name);
@@ -254,53 +267,63 @@ class CustomCharacterRepository implements ICustomCharacterRepository {
   }) {
     return _firestoreService
         .streamUserDocuments(
-      collection: _collection,
-      orderBy: null, // Remove ordenação temporariamente
-      descending: false,
-      limit: limit,
-    )
+          collection: _collection,
+          orderBy: null, // Remove ordenação temporariamente
+          descending: false,
+          limit: limit,
+        )
         .map((documents) {
-      var characters = documents
-          .map((doc) =>
-              CustomCharacterModel.fromFirestore(doc, doc['id'] as String))
-          .toList();
+          var characters = documents
+              .map(
+                (doc) => CustomCharacterModel.fromFirestore(
+                  doc,
+                  doc['id'] as String,
+                ),
+              )
+              .toList();
 
-      // Ordenação local como fallback
-      if (orderBy != null) {
-        characters.sort((a, b) {
-          int comparison = 0;
-          switch (orderBy) {
-            case 'createdAt':
-              comparison = (a.createdAt ?? DateTime.now())
-                  .compareTo(b.createdAt ?? DateTime.now());
-              break;
-            case 'name':
-              comparison = a.name.compareTo(b.name);
-              break;
-            case 'bounty':
-              comparison = a.bounty.compareTo(b.bounty);
-              break;
-            default:
-              comparison = 0;
+          // Ordenação local como fallback
+          if (orderBy != null) {
+            characters.sort((a, b) {
+              int comparison = 0;
+              switch (orderBy) {
+                case 'createdAt':
+                  comparison = (a.createdAt ?? DateTime.now()).compareTo(
+                    b.createdAt ?? DateTime.now(),
+                  );
+                  break;
+                case 'name':
+                  comparison = a.name.compareTo(b.name);
+                  break;
+                case 'bounty':
+                  comparison = a.bounty.compareTo(b.bounty);
+                  break;
+                default:
+                  comparison = 0;
+              }
+              return descending ? -comparison : comparison;
+            });
           }
-          return descending ? -comparison : comparison;
-        });
-      }
 
-      return characters;
-    });
+          return characters;
+        });
   }
 
   @override
   Future<List<CustomCharacterModel>> searchCustomCharactersByName(
-      String name) async {
+    String name,
+  ) async {
     try {
       final allCharacters = await getUserCustomCharacters();
       return allCharacters
-          .where((character) =>
-              character.name.toLowerCase().contains(name.toLowerCase()) ||
-              (character.nickname?.toLowerCase().contains(name.toLowerCase()) ??
-                  false))
+          .where(
+            (character) =>
+                character.name.toLowerCase().contains(name.toLowerCase()) ||
+                (character.nickname?.toLowerCase().contains(
+                      name.toLowerCase(),
+                    ) ??
+                    false),
+          )
           .toList();
     } catch (e) {
       throw Exception('Erro ao buscar personagens por nome: $e');
@@ -309,25 +332,29 @@ class CustomCharacterRepository implements ICustomCharacterRepository {
 
   @override
   Future<List<CustomCharacterModel>> getCustomCharactersByDevilFruit(
-      String devilFruit) async {
+    String devilFruit,
+  ) async {
     return searchCustomCharacters(field: 'devilFruit', value: devilFruit);
   }
 
   @override
   Future<List<CustomCharacterModel>> getCustomCharactersByCrew(
-      String crew) async {
+    String crew,
+  ) async {
     return searchCustomCharacters(field: 'crew', value: crew);
   }
 
   @override
   Future<List<CustomCharacterModel>> getCustomCharactersByStatus(
-      String status) async {
+    String status,
+  ) async {
     return searchCustomCharacters(field: 'status', value: status);
   }
 
   @override
   Future<List<CustomCharacterModel>> getCustomCharactersBySigno(
-      String signo) async {
+    String signo,
+  ) async {
     return searchCustomCharacters(field: 'signo', value: signo);
   }
 
@@ -336,8 +363,9 @@ class CustomCharacterRepository implements ICustomCharacterRepository {
     try {
       final allCharacters = await getUserCustomCharacters();
       return allCharacters
-          .where((character) =>
-              character.haki != null && character.haki!.isNotEmpty)
+          .where(
+            (character) => character.haki != null && character.haki!.isNotEmpty,
+          )
           .toList();
     } catch (e) {
       throw Exception('Erro ao buscar personagens com haki: $e');

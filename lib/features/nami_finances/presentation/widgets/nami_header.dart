@@ -42,10 +42,7 @@ class _NamiHeaderState extends State<NamiHeader> {
       width: double.infinity,
       height: 250,
       clipBehavior: Clip.antiAlias,
-      child: Image.asset(
-        _selectedImage,
-        fit: BoxFit.cover,
-      ),
+      child: Image.asset(_selectedImage, fit: BoxFit.cover),
     );
   }
 }

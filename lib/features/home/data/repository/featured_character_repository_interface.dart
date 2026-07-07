@@ -13,7 +13,9 @@ abstract class IFeaturedCharacterRepository {
   Future<void> saveSelectedCharacter(CustomCharacterModel character);
 
   Future<void> updateFeaturedCharacter(
-      String documentId, TodayCharacter character);
+    String documentId,
+    TodayCharacter character,
+  );
 
   Future<void> deleteFeaturedCharacter(String documentId);
 

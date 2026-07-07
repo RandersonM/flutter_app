@@ -7,25 +7,15 @@ import 'package:opfan/l10n/app_localizations.dart';
 import 'package:opfan/shared/utils/app_routes.dart';
 import 'package:opfan/shared/utils/constants.dart';
 
-
 // Fixed dark plum color — identical for light and dark mode.
 const Color _kNavBarBackground = Color(0xFF2D1648);
 // Active capsule — solid violet.
 const Color _kActiveCapsule = Color(0xFF7C3AED);
 
-enum BottomNavigationPages {
-  home,
-  finances,
-  workout,
-  cooking,
-  vegapunkChat,
-}
+enum BottomNavigationPages { home, finances, workout, cooking, vegapunkChat }
 
 class BottomNavigation extends StatefulWidget {
-  const BottomNavigation(
-    this.currentPage, {
-    super.key,
-  });
+  const BottomNavigation(this.currentPage, {super.key});
 
   final BottomNavigationPages currentPage;
 
@@ -104,25 +94,25 @@ class BottomNavigationState extends State<BottomNavigation> {
 
     final (String label, IconData icon) = switch (page) {
       BottomNavigationPages.finances => (
-          localizations.finances,
-          PhosphorIconsRegular.coins,
-        ),
+        localizations.finances,
+        PhosphorIconsRegular.coins,
+      ),
       BottomNavigationPages.workout => (
-          localizations.workout,
-          PhosphorIconsRegular.barbell,
-        ),
+        localizations.workout,
+        PhosphorIconsRegular.barbell,
+      ),
       BottomNavigationPages.home => (
-          localizations.home,
-          PhosphorIconsRegular.skull,
-        ),
+        localizations.home,
+        PhosphorIconsRegular.skull,
+      ),
       BottomNavigationPages.cooking => (
-          localizations.cooking,
-          PhosphorIconsRegular.forkKnife,
-        ),
+        localizations.cooking,
+        PhosphorIconsRegular.forkKnife,
+      ),
       BottomNavigationPages.vegapunkChat => (
         localizations.vegapunk,
         PhosphorIconsRegular.robot,
-        ),
+      ),
     };
 
     return Expanded(
@@ -147,9 +137,7 @@ class BottomNavigationState extends State<BottomNavigation> {
                 child: Icon(
                   icon,
                   size: 20,
-                  color: Colors.white.withValues(
-                    alpha: isActive ? 1.0 : 0.55,
-                  ),
+                  color: Colors.white.withValues(alpha: isActive ? 1.0 : 0.55),
                 ),
               ),
               const SizedBox(height: 5),

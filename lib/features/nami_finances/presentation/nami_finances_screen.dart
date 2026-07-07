@@ -10,6 +10,7 @@ import 'package:opfan/app/di/injection.dart';
 import 'widgets/finances_setup_form.dart';
 import 'widgets/finances_dashboard_view.dart';
 import 'widgets/finances_empty_state.dart';
+import 'widgets/nami_chat_sheet.dart';
 
 class NamiFinancesScreen extends StatefulWidget {
   const NamiFinancesScreen({super.key});
@@ -32,9 +33,21 @@ class _NamiFinancesScreenState extends State<NamiFinancesScreen> {
       create: (context) =>
           getIt<NamiFinancesBloc>()..add(LoadCurrentMonthFinances()),
       child: Scaffold(
-        bottomNavigationBar:
-            const BottomNavigation(BottomNavigationPages.finances),
+        bottomNavigationBar: const BottomNavigation(
+          BottomNavigationPages.finances,
+        ),
         appBar: DefaultAppBar(title: Text(l10n.financeWithNami)),
+        floatingActionButton: FloatingActionButton(
+          onPressed: () {
+            showModalBottomSheet(
+              context: context,
+              isScrollControlled: true,
+              backgroundColor: Colors.transparent,
+              builder: (context) => const NamiChatSheet(),
+            );
+          },
+          child: const Icon(Icons.chat),
+        ),
         body: Container(
           color: Theme.of(context).colorScheme.surface,
           child: BlocBuilder<NamiFinancesBloc, NamiFinancesState>(
@@ -93,8 +106,10 @@ class _NamiFinancesScreenState extends State<NamiFinancesScreen> {
 
               if (state is NamiFinancesError) {
                 return Center(
-                    child: Text(AppLocalizations.of(context)!
-                        .errorPrefix(state.message)));
+                  child: Text(
+                    AppLocalizations.of(context)!.errorPrefix(state.message),
+                  ),
+                );
               }
 
               return const SizedBox.shrink();
@@ -111,12 +126,14 @@ class _NamiFinancesScreenState extends State<NamiFinancesScreen> {
     List<ExpenseModel> expenses,
     double savings,
   ) {
-    context.read<NamiFinancesBloc>().add(SaveFinances(
-          incomes: incomes,
-          expenses: expenses,
-          savings: savings,
-          month: DateTime.now(),
-        ));
+    context.read<NamiFinancesBloc>().add(
+      SaveFinances(
+        incomes: incomes,
+        expenses: expenses,
+        savings: savings,
+        month: DateTime.now(),
+      ),
+    );
     setState(() {
       _editingFinances = null;
       _showSetupForm = false;
