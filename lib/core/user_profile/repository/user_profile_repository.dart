@@ -14,7 +14,7 @@ class UserProfileRepository implements IUserProfileRepository {
   final FirebaseFirestore _firestore;
 
   UserProfileRepository({FirebaseFirestore? firestore})
-      : _firestore = firestore ?? FirebaseFirestore.instance;
+    : _firestore = firestore ?? FirebaseFirestore.instance;
 
   // ── Internal helpers ───────────────────────────────────────────────────────
 

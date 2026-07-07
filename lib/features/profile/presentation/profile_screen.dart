@@ -29,9 +29,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
     if (!mounted) return;
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
-        content: Text(cubit.state.isDarkMode
-            ? AppLocalizations.of(context)!.darkThemeActivated
-            : AppLocalizations.of(context)!.lightThemeActivated),
+        content: Text(
+          cubit.state.isDarkMode
+              ? AppLocalizations.of(context)!.darkThemeActivated
+              : AppLocalizations.of(context)!.lightThemeActivated,
+        ),
       ),
     );
   }
@@ -56,9 +58,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
             return _buildProfileContent(context, state.user);
           }
 
-          return const Center(
-            child: CircularProgressIndicator(),
-          );
+          return const Center(child: CircularProgressIndicator());
         },
       ),
     );
@@ -82,7 +82,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     ScaffoldMessenger.of(context).showSnackBar(
                       SnackBar(
                         content: Text(
-                            AppLocalizations.of(context)!.profilePhotoTapped),
+                          AppLocalizations.of(context)!.profilePhotoTapped,
+                        ),
                       ),
                     );
                   },
@@ -91,18 +92,17 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 Text(
                   user.displayName,
                   style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                        fontWeight: FontWeight.bold,
-                      ),
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
                 const SizedBox(height: 8),
                 Text(
                   user.email,
                   style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                        color: Theme.of(context)
-                            .colorScheme
-                            .onSurface
-                            .withValues(alpha: 0.7),
-                      ),
+                    color: Theme.of(
+                      context,
+                    ).colorScheme.onSurface.withValues(alpha: 0.7),
+                  ),
                 ),
               ],
             ),
@@ -122,10 +122,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   subtitle:
                       '${user.weightKg} kg • ${user.heightCm} cm • IMC: ${(user.weightKg! / ((user.heightCm! / 100) * (user.heightCm! / 100))).toStringAsFixed(1)}',
                   onTap: () {
-                    Navigator.of(context).pushNamed(
-                      AppRoutes.onboarding,
-                      arguments: user,
-                    );
+                    Navigator.of(
+                      context,
+                    ).pushNamed(AppRoutes.onboarding, arguments: user);
                   },
                 ),
               ],
@@ -147,8 +146,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   // Navigate to edit profile
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(
-                        content: Text(
-                            AppLocalizations.of(context)!.editProfileTapped)),
+                      content: Text(
+                        AppLocalizations.of(context)!.editProfileTapped,
+                      ),
+                    ),
                   );
                 },
               ),
@@ -161,8 +162,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   // Navigate to notifications settings
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(
-                        content: Text(
-                            AppLocalizations.of(context)!.notificationsTapped)),
+                      content: Text(
+                        AppLocalizations.of(context)!.notificationsTapped,
+                      ),
+                    ),
                   );
                 },
               ),
@@ -188,14 +191,16 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       title: Text(AppLocalizations.of(context)!.language),
                       children: [
                         SimpleDialogOption(
-                          child:
-                              Text(AppLocalizations.of(context)!.englishLang),
+                          child: Text(
+                            AppLocalizations.of(context)!.englishLang,
+                          ),
                           onPressed: () =>
                               Navigator.pop(context, const Locale('en')),
                         ),
                         SimpleDialogOption(
                           child: Text(
-                              AppLocalizations.of(context)!.portugueseLang),
+                            AppLocalizations.of(context)!.portugueseLang,
+                          ),
                           onPressed: () =>
                               Navigator.pop(context, const Locale('pt')),
                         ),
@@ -226,8 +231,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   // Navigate to help
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(
-                        content: Text(
-                            AppLocalizations.of(context)!.helpSupportTapped)),
+                      content: Text(
+                        AppLocalizations.of(context)!.helpSupportTapped,
+                      ),
+                    ),
                   );
                 },
               ),
@@ -240,8 +247,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   // Navigate to about
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(
-                        content:
-                            Text(AppLocalizations.of(context)!.aboutTapped)),
+                      content: Text(AppLocalizations.of(context)!.aboutTapped),
+                    ),
                   );
                 },
               ),
@@ -291,9 +298,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
         Text(
           title,
           style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                fontWeight: FontWeight.bold,
-                color: Theme.of(context).colorScheme.primary,
-              ),
+            fontWeight: FontWeight.bold,
+            color: Theme.of(context).colorScheme.primary,
+          ),
         ),
         const SizedBox(height: Constants.margin),
         Container(
@@ -308,9 +315,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
               ),
             ],
           ),
-          child: Column(
-            children: items,
-          ),
+          child: Column(children: items),
         ),
       ],
     );
@@ -324,14 +329,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
     required VoidCallback onTap,
   }) {
     return ListTile(
-      leading: Icon(
-        icon,
-        color: Theme.of(context).colorScheme.primary,
-      ),
-      title: Text(
-        title,
-        style: const TextStyle(fontWeight: FontWeight.w500),
-      ),
+      leading: Icon(icon, color: Theme.of(context).colorScheme.primary),
+      title: Text(title, style: const TextStyle(fontWeight: FontWeight.w500)),
       subtitle: Text(subtitle),
       trailing: const AppIcon(PhosphorIconsRegular.caretRight),
       onTap: onTap,

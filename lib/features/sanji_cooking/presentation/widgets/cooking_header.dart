@@ -8,9 +8,7 @@ const Color _kAmber = Color(0xFFFACC15);
 const Color _kVioletGlow = Color(0xFF7C3AED);
 
 class CookingHeader extends StatefulWidget {
-  const CookingHeader({
-    super.key,
-  });
+  const CookingHeader({super.key});
 
   @override
   State<CookingHeader> createState() => _CookingHeaderState();
@@ -133,11 +131,11 @@ class _CookingHeaderState extends State<CookingHeader>
                         _buildSanjiQuotes(context)[index],
                         textAlign: TextAlign.center,
                         style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                              fontWeight: FontWeight.bold,
-                              color: _kAmber,
-                              height: 1.4,
-                              fontStyle: FontStyle.italic,
-                            ),
+                          fontWeight: FontWeight.bold,
+                          color: _kAmber,
+                          height: 1.4,
+                          fontStyle: FontStyle.italic,
+                        ),
                       ),
                     );
                   },

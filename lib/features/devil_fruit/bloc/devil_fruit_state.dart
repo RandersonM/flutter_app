@@ -40,14 +40,14 @@ class DevilFruitLoaded extends DevilFruitState {
 
   @override
   List<Object?> get props => [
-        fruits,
-        filteredFruits,
-        availableTypes,
-        searchQuery,
-        selectedType,
-        isSearching,
-        error,
-      ];
+    fruits,
+    filteredFruits,
+    availableTypes,
+    searchQuery,
+    selectedType,
+    isSearching,
+    error,
+  ];
 
   DevilFruitLoaded copyWith({
     List<DevilFruit>? fruits,

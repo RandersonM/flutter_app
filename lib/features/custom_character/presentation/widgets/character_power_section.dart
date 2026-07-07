@@ -27,24 +27,26 @@ class CharacterPowerSection extends StatelessWidget {
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
 
-    final hakiOptions =
-        CharacterLocalizationMapper.getLocalizedHakiOptions(l10n);
+    final hakiOptions = CharacterLocalizationMapper.getLocalizedHakiOptions(
+      l10n,
+    );
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
           l10n.powers,
-          style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                fontWeight: FontWeight.bold,
-              ),
+          style: Theme.of(
+            context,
+          ).textTheme.headlineSmall?.copyWith(fontWeight: FontWeight.bold),
         ),
         const SizedBox(height: 16),
         DevilFruitSearchDropdown(
           label: l10n.devilFruit,
           value: selectedDevilFruit,
-          items:
-              devilFruits.where((fruit) => fruit.romanName.isNotEmpty).toList(),
+          items: devilFruits
+              .where((fruit) => fruit.romanName.isNotEmpty)
+              .toList(),
           onChanged: onDevilFruitChanged,
         ),
         CustomChipSelector(

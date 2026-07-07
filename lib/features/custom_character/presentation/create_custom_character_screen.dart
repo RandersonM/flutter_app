@@ -97,14 +97,16 @@ class _CreateCustomCharacterScreenState
           return Scaffold(
             appBar: DefaultAppBar(
               title: Text(
-                  AppLocalizations.of(context)!.createCustomCharacterTitle),
+                AppLocalizations.of(context)!.createCustomCharacterTitle,
+              ),
             ),
             body: BlocListener<CustomCharacterBloc, CustomCharacterState>(
               listenWhen: (previous, current) {
                 return current is CustomCharacterCreated ||
                     (current is CustomCharacterError &&
                         !current.message.contains(
-                            'mas houve um erro ao atualizar a lista'));
+                          'mas houve um erro ao atualizar a lista',
+                        ));
               },
               listener: (context, state) {
                 if (state is CustomCharacterCreated) {
@@ -125,20 +127,19 @@ class _CreateCustomCharacterScreenState
                           width: double.infinity,
                           padding: const EdgeInsets.all(16),
                           decoration: BoxDecoration(
-                            color: Theme.of(context)
-                                .primaryColor
-                                .withValues(alpha: 0.1),
+                            color: Theme.of(
+                              context,
+                            ).primaryColor.withValues(alpha: 0.1),
                             borderRadius: BorderRadius.circular(8),
                           ),
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                AppLocalizations.of(context)!
-                                    .createCustomCharacterTitle,
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .headlineSmall
+                                AppLocalizations.of(
+                                  context,
+                                )!.createCustomCharacterTitle,
+                                style: Theme.of(context).textTheme.headlineSmall
                                     ?.copyWith(
                                       fontWeight: FontWeight.bold,
                                       color: Theme.of(context).primaryColor,
@@ -146,8 +147,9 @@ class _CreateCustomCharacterScreenState
                               ),
                               const SizedBox(height: 8),
                               Text(
-                                AppLocalizations.of(context)!
-                                    .createCustomCharacterSubtitle,
+                                AppLocalizations.of(
+                                  context,
+                                )!.createCustomCharacterSubtitle,
                                 style: Theme.of(context).textTheme.bodyMedium,
                               ),
                             ],
@@ -208,8 +210,9 @@ class _CreateCustomCharacterScreenState
                           },
                           onAffiliationSelected: (affiliation) {
                             setState(() {
-                              if (!_selectedAffiliations
-                                  .contains(affiliation)) {
+                              if (!_selectedAffiliations.contains(
+                                affiliation,
+                              )) {
                                 _selectedAffiliations.add(affiliation);
                               }
                             });
@@ -274,7 +277,9 @@ class _CreateCustomCharacterScreenState
       // Mapear os dados de Haki do formato localizado para o formato salvo
       final mappedHaki = _selectedHaki.map((localizedHaki) {
         return CharacterLocalizationMapper.mapLocalizedToHaki(
-            localizedHaki, AppLocalizations.of(context)!);
+          localizedHaki,
+          AppLocalizations.of(context)!,
+        );
       }).toList();
 
       final newCharacter = CustomCharacterModel(
@@ -296,13 +301,12 @@ class _CreateCustomCharacterScreenState
             : null,
         crew: _selectedCrewId != null
             ? _availableCrews
-                .firstWhere((crew) => crew.id == _selectedCrewId)
-                .name
+                  .firstWhere((crew) => crew.id == _selectedCrewId)
+                  .name
             : null,
         status: _selectedStatus,
         race: _selectedRace,
-        age: birthDate != null ? ZodiacIcons.calculateAge(birthDate)
-            : null,
+        age: birthDate != null ? ZodiacIcons.calculateAge(birthDate) : null,
         birthDate: birthDate,
         description: _descriptionController.text.trim().isNotEmpty
             ? _descriptionController.text.trim()
@@ -310,15 +314,18 @@ class _CreateCustomCharacterScreenState
       );
 
       debugPrint(
-          'CreateCharacter: Character birth date: ${newCharacter.birthDate}');
+        'CreateCharacter: Character birth date: ${newCharacter.birthDate}',
+      );
       debugPrint('CreateCharacter: Character age: ${newCharacter.age}');
       debugPrint('CreateCharacter: Character signo: ${newCharacter.signo}');
 
-      context.read<CustomCharacterBloc>().add(CreateCustomCharacter(
-            newCharacter,
-            crewId: _selectedCrewId,
-            crewRole: _selectedCrewRole,
-          ));
+      context.read<CustomCharacterBloc>().add(
+        CreateCustomCharacter(
+          newCharacter,
+          crewId: _selectedCrewId,
+          crewRole: _selectedCrewRole,
+        ),
+      );
     }
   }
 

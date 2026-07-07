@@ -102,37 +102,37 @@ class _ListCrewsScreenContentState extends State<_ListCrewsScreenContent>
           children: [
             // Tab 1: Minhas Tripulações
             CrewList(
-            onCrewTap: (crew) => _onCrewTap(context, crew),
-            onCrewEdit: (crew) => _onCrewEdit(context, crew),
-            onCrewDelete: (crew) => _onCrewDelete(context, crew),
-            showEditDeleteButtons: (crew) =>
-                _canEditCrew(crew, currentUser?.uid),
-            isUserCrews: true,
-            onSearch: (query) {
-              if (query.isEmpty) {
-                context.read<ListCrewsBloc>().add(LoadUserCrews());
-              } else {
-                context.read<ListCrewsBloc>().add(SearchUserCrews(query));
-              }
-            },
-          ),
-          // Tab 2: Todas as Tripulações
-          CrewList(
-            onCrewTap: (crew) => _onCrewTap(context, crew),
-            onCrewEdit: (crew) => _onCrewEdit(context, crew),
-            onCrewDelete: (crew) => _onCrewDelete(context, crew),
-            showEditDeleteButtons: (crew) =>
-                _canEditCrew(crew, currentUser?.uid),
-            isUserCrews: false,
-            onSearch: (query) {
-              if (query.isEmpty) {
-                context.read<ListCrewsBloc>().add(LoadCrews());
-              } else {
-                context.read<ListCrewsBloc>().add(SearchCrews(query));
-              }
-            },
-          ),
-        ],
+              onCrewTap: (crew) => _onCrewTap(context, crew),
+              onCrewEdit: (crew) => _onCrewEdit(context, crew),
+              onCrewDelete: (crew) => _onCrewDelete(context, crew),
+              showEditDeleteButtons: (crew) =>
+                  _canEditCrew(crew, currentUser?.uid),
+              isUserCrews: true,
+              onSearch: (query) {
+                if (query.isEmpty) {
+                  context.read<ListCrewsBloc>().add(LoadUserCrews());
+                } else {
+                  context.read<ListCrewsBloc>().add(SearchUserCrews(query));
+                }
+              },
+            ),
+            // Tab 2: Todas as Tripulações
+            CrewList(
+              onCrewTap: (crew) => _onCrewTap(context, crew),
+              onCrewEdit: (crew) => _onCrewEdit(context, crew),
+              onCrewDelete: (crew) => _onCrewDelete(context, crew),
+              showEditDeleteButtons: (crew) =>
+                  _canEditCrew(crew, currentUser?.uid),
+              isUserCrews: false,
+              onSearch: (query) {
+                if (query.isEmpty) {
+                  context.read<ListCrewsBloc>().add(LoadCrews());
+                } else {
+                  context.read<ListCrewsBloc>().add(SearchCrews(query));
+                }
+              },
+            ),
+          ],
         ),
       ),
     );

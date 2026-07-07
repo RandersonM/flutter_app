@@ -17,10 +17,7 @@ import 'package:opfan/shared/utils/constants.dart';
 import 'package:phosphoricons_flutter/phosphoricons_flutter.dart';
 
 class CharacterDetailsScreen extends StatelessWidget {
-  const CharacterDetailsScreen({
-    super.key,
-    required this.character,
-  });
+  const CharacterDetailsScreen({super.key, required this.character});
 
   final CustomCharacterModel character;
 
@@ -42,9 +39,10 @@ class CharacterDetailsScreen extends StatelessWidget {
                 style: const TextStyle(
                   shadows: [
                     Shadow(
-                        color: Colors.black54,
-                        blurRadius: 4,
-                        offset: Offset(1, 1))
+                      color: Colors.black54,
+                      blurRadius: 4,
+                      offset: Offset(1, 1),
+                    ),
                   ],
                 ),
               ),
@@ -87,8 +85,9 @@ class CharacterDetailsScreen extends StatelessWidget {
               children: [
                 Padding(
                   padding: const EdgeInsets.symmetric(
-                      horizontal: Constants.margin * 2,
-                      vertical: Constants.margin),
+                    horizontal: Constants.margin * 2,
+                    vertical: Constants.margin,
+                  ),
                   child: DetailsName(
                     name: character.name,
                     nickname: character.nickname,
@@ -103,8 +102,9 @@ class CharacterDetailsScreen extends StatelessWidget {
                     character.description!.isNotEmpty)
                   Card(
                     margin: const EdgeInsets.symmetric(
-                        horizontal: Constants.margin * 2,
-                        vertical: Constants.margin),
+                      horizontal: Constants.margin * 2,
+                      vertical: Constants.margin,
+                    ),
                     child: Padding(
                       padding: const EdgeInsets.all(Constants.margin * 2),
                       child: Column(
@@ -113,8 +113,10 @@ class CharacterDetailsScreen extends StatelessWidget {
                           Row(
                             spacing: Constants.margin,
                             children: [
-                              const AppIcon(PhosphorIconsRegular.fileText,
-                                  size: 20),
+                              const AppIcon(
+                                PhosphorIconsRegular.fileText,
+                                size: 20,
+                              ),
                               Text(
                                 l10n.description,
                                 style: theme.textTheme.titleMedium?.copyWith(

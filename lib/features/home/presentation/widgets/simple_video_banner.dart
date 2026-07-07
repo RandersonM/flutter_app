@@ -7,11 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:opfan/features/youtube/data/models/youtube_video_model.dart';
 
-enum SimpleBannerType {
-  gif,
-  image,
-  youtube,
-}
+enum SimpleBannerType { gif, image, youtube }
 
 class SimpleVideoBanner extends StatelessWidget {
   const SimpleVideoBanner({
@@ -51,8 +47,9 @@ class SimpleVideoBanner extends StatelessWidget {
           ),
           boxShadow: [
             BoxShadow(
-              color:
-                  Theme.of(context).colorScheme.primary.withValues(alpha: 0.25),
+              color: Theme.of(
+                context,
+              ).colorScheme.primary.withValues(alpha: 0.25),
               blurRadius: 16,
               spreadRadius: 2,
               offset: const Offset(0, 4),
@@ -112,10 +109,7 @@ class SimpleVideoBanner extends StatelessWidget {
       placeholder: (context, url) => Container(
         color: Colors.grey[900],
         child: const Center(
-          child: CircularProgressIndicator(
-            color: Colors.white,
-            strokeWidth: 2,
-          ),
+          child: CircularProgressIndicator(color: Colors.white, strokeWidth: 2),
         ),
       ),
       errorWidget: (context, url, error) => _buildFallback(),
@@ -128,15 +122,15 @@ class SimpleVideoBanner extends StatelessWidget {
         width: 72,
         height: 72,
         decoration: BoxDecoration(
-          color: Theme.of(context)
-              .colorScheme
-              .primaryContainer
-              .withValues(alpha: 0.9),
+          color: Theme.of(
+            context,
+          ).colorScheme.primaryContainer.withValues(alpha: 0.9),
           shape: BoxShape.circle,
           boxShadow: [
             BoxShadow(
-              color:
-                  Theme.of(context).colorScheme.primary.withValues(alpha: 0.3),
+              color: Theme.of(
+                context,
+              ).colorScheme.primary.withValues(alpha: 0.3),
               blurRadius: 12,
               spreadRadius: 2,
               offset: const Offset(0, 4),
@@ -167,10 +161,7 @@ class SimpleVideoBanner extends StatelessWidget {
             gradient: LinearGradient(
               begin: Alignment.topCenter,
               end: Alignment.bottomCenter,
-              colors: [
-                Colors.transparent,
-                Colors.black.withValues(alpha: 0.5),
-              ],
+              colors: [Colors.transparent, Colors.black.withValues(alpha: 0.5)],
             ),
           ),
         ),
@@ -207,10 +198,7 @@ class SimpleVideoBanner extends StatelessWidget {
             SizedBox(height: 4),
             Text(
               'Verifique sua conexão',
-              style: TextStyle(
-                color: Colors.white70,
-                fontSize: 12,
-              ),
+              style: TextStyle(color: Colors.white70, fontSize: 12),
             ),
           ],
         ),
@@ -224,10 +212,7 @@ class SimpleVideoBanner extends StatelessWidget {
         gradient: LinearGradient(
           begin: Alignment.topCenter,
           end: Alignment.bottomCenter,
-          colors: [
-            Colors.transparent,
-            Colors.black.withValues(alpha: 0.7),
-          ],
+          colors: [Colors.transparent, Colors.black.withValues(alpha: 0.7)],
         ),
       ),
       child: Padding(

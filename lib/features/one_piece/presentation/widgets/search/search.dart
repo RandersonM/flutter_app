@@ -16,36 +16,35 @@ class Search extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => BlocBuilder<SearchCubit, SearchState>(
-          builder: (BuildContext context, SearchState state) {
-        String query = '';
-        List<CustomCharacterModel> queryResults = [];
+    builder: (BuildContext context, SearchState state) {
+      String query = '';
+      List<CustomCharacterModel> queryResults = [];
 
-        if (state is SearchLoaded) {
-          query = state.query;
-          queryResults = state.queryResults;
-        } else if (state is SearchLoading) {
-          query = state.query;
-        } else if (state is SearchInitial) {
-          query = state.query;
-        } else if (state is SearchError) {
-          query = state.query;
-        }
+      if (state is SearchLoaded) {
+        query = state.query;
+        queryResults = state.queryResults;
+      } else if (state is SearchLoading) {
+        query = state.query;
+      } else if (state is SearchInitial) {
+        query = state.query;
+      } else if (state is SearchError) {
+        query = state.query;
+      }
 
-        return ListView(
-          children: <Widget>[
-            const SearchHeader(),
-            if (queryResults.isNotEmpty)
-              ...queryResults
-                  .map((CustomCharacterModel character) => Padding(
-                        padding: const EdgeInsets.all(Constants.margin),
-                        child: ResultCard(
-                          character: character,
-                        ),
-                      ))
-                  
-            else
-              UnexistentSearch(query: query),
-          ],
-        );
-      });
+      return ListView(
+        children: <Widget>[
+          const SearchHeader(),
+          if (queryResults.isNotEmpty)
+            ...queryResults.map(
+              (CustomCharacterModel character) => Padding(
+                padding: const EdgeInsets.all(Constants.margin),
+                child: ResultCard(character: character),
+              ),
+            )
+          else
+            UnexistentSearch(query: query),
+        ],
+      );
+    },
+  );
 }

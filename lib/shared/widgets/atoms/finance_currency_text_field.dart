@@ -36,9 +36,7 @@ class FinanceCurrencyTextField extends StatelessWidget {
           labelText: label,
           hintText: hint ?? '0,00',
           prefixText: '$currencySymbol ',
-          border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(8),
-          ),
+          border: OutlineInputBorder(borderRadius: BorderRadius.circular(8)),
           filled: true,
         ),
       ),

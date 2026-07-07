@@ -15,9 +15,6 @@ class OnboardingBodyForm extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Form(
-      key: formKey,
-      child: child,
-    );
+    return Form(key: formKey, child: child);
   }
 }

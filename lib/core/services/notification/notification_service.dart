@@ -7,7 +7,6 @@ import 'package:opfan/core/services/index.dart';
 import 'package:opfan/shared/utils/app_routes.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-
 class NotificationService implements INotificationService {
   static final NotificationService _instance = NotificationService._internal();
   factory NotificationService() => _instance;
@@ -60,7 +59,8 @@ class NotificationService implements INotificationService {
         );
 
         debugPrint(
-            'NotificationService: Permissão iOS: ${settings.authorizationStatus}');
+          'NotificationService: Permissão iOS: ${settings.authorizationStatus}',
+        );
       }
 
       if (Platform.isAndroid) {
@@ -75,7 +75,8 @@ class NotificationService implements INotificationService {
         );
 
         debugPrint(
-            'NotificationService: Permissão Android: ${settings.authorizationStatus}');
+          'NotificationService: Permissão Android: ${settings.authorizationStatus}',
+        );
       }
     } catch (e) {
       debugPrint('NotificationService: Erro ao solicitar permissões: $e');
@@ -83,8 +84,9 @@ class NotificationService implements INotificationService {
   }
 
   Future<void> _setupLocalNotifications() async {
-    const androidSettings =
-        AndroidInitializationSettings('@mipmap/ic_launcher');
+    const androidSettings = AndroidInitializationSettings(
+      '@mipmap/ic_launcher',
+    );
     const iosSettings = DarwinInitializationSettings(
       requestAlertPermission: true,
       requestBadgePermission: true,
@@ -193,21 +195,29 @@ class NotificationService implements INotificationService {
   }
 
   void _navigateBasedOnNotificationType(
-      String? type, String? id, String? route, Map<String, dynamic> data) {
+    String? type,
+    String? id,
+    String? route,
+    Map<String, dynamic> data,
+  ) {
     final navigationService = NavigationService();
 
     switch (type?.toLowerCase()) {
       case 'character':
         if (id != null) {
-          navigationService
-              .navigateTo(AppRoutes.characterDetails, arguments: {'id': id});
+          navigationService.navigateTo(
+            AppRoutes.characterDetails,
+            arguments: {'id': id},
+          );
         }
         break;
 
       case 'crew':
         if (id != null) {
-          navigationService
-              .navigateTo(AppRoutes.crewDetails, arguments: {'id': id});
+          navigationService.navigateTo(
+            AppRoutes.crewDetails,
+            arguments: {'id': id},
+          );
         }
         break;
 
@@ -264,7 +274,8 @@ class NotificationService implements INotificationService {
       debugPrint('NotificationService: Inscrito no tópico: $topic');
     } catch (e) {
       debugPrint(
-          'NotificationService: Erro ao se inscrever no tópico $topic: $e');
+        'NotificationService: Erro ao se inscrever no tópico $topic: $e',
+      );
     }
   }
 
@@ -275,7 +286,8 @@ class NotificationService implements INotificationService {
       debugPrint('NotificationService: Cancelada inscrição no tópico: $topic');
     } catch (e) {
       debugPrint(
-          'NotificationService: Erro ao cancelar inscrição no tópico $topic: $e');
+        'NotificationService: Erro ao cancelar inscrição no tópico $topic: $e',
+      );
     }
   }
 
@@ -294,7 +306,8 @@ class NotificationService implements INotificationService {
         },
       );
       debugPrint(
-          'NotificationService: Token salvo no Firestore para usuário: $userId');
+        'NotificationService: Token salvo no Firestore para usuário: $userId',
+      );
     } catch (e) {
       debugPrint('NotificationService: Erro ao salvar token no Firestore: $e');
     }

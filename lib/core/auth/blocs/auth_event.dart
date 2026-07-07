@@ -36,10 +36,7 @@ class AuthUpdateProfile extends AuthEvent {
   final String? displayName;
   final String? photoUrl;
 
-  const AuthUpdateProfile({
-    this.displayName,
-    this.photoUrl,
-  });
+  const AuthUpdateProfile({this.displayName, this.photoUrl});
 
   @override
   List<Object?> get props => [displayName, photoUrl];

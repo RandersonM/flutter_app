@@ -27,8 +27,9 @@ class ConnectivityCubit extends Cubit<ConnectivityState> {
 
   void _init() {
     // Subscribe to connectivity changes
-    _subscription =
-        Connectivity().onConnectivityChanged.listen(_onConnectivityChanged);
+    _subscription = Connectivity().onConnectivityChanged.listen(
+      _onConnectivityChanged,
+    );
 
     // Check initial state without debounce
     Connectivity().checkConnectivity().then((results) {

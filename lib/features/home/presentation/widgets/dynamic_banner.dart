@@ -12,11 +12,7 @@ class DynamicBanner extends StatelessWidget {
   final HomeState state;
   final double height;
 
-  const DynamicBanner({
-    super.key,
-    required this.state,
-    this.height = 250.0,
-  });
+  const DynamicBanner({super.key, required this.state, this.height = 250.0});
 
   @override
   Widget build(BuildContext context) {
@@ -86,9 +82,7 @@ class DynamicBanner extends StatelessWidget {
         color: Colors.grey[300],
         borderRadius: BorderRadius.circular(12),
       ),
-      child: const Center(
-        child: CircularProgressIndicator(),
-      ),
+      child: const Center(child: CircularProgressIndicator()),
     );
   }
 }

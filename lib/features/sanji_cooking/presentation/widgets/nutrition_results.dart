@@ -24,10 +24,7 @@ const Color _kAlertOrange = Color(0xFFF97316);
 class NutritionResults extends StatelessWidget {
   final NutritionCalculationModel results;
 
-  const NutritionResults({
-    super.key,
-    required this.results,
-  });
+  const NutritionResults({super.key, required this.results});
 
   @override
   Widget build(BuildContext context) {
@@ -42,9 +39,9 @@ class NutritionResults extends StatelessWidget {
         Text(
           AppLocalizations.of(context)!.nutritionResultsTitle,
           style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                fontWeight: FontWeight.bold,
-                color: textPrimary,
-              ),
+            fontWeight: FontWeight.bold,
+            color: textPrimary,
+          ),
         ),
         const SizedBox(height: 8),
 
@@ -52,8 +49,9 @@ class NutritionResults extends StatelessWidget {
         _buildMetricCard(
           context,
           AppLocalizations.of(context)!.bmrTitle,
-          AppLocalizations.of(context)!
-              .kcalPerDay(results.bmr.toStringAsFixed(0)),
+          AppLocalizations.of(
+            context,
+          )!.kcalPerDay(results.bmr.toStringAsFixed(0)),
           AppLocalizations.of(context)!.bmrSubtitle,
           valueColor: null,
           cardColor: cardColor,
@@ -62,8 +60,9 @@ class NutritionResults extends StatelessWidget {
         _buildMetricCard(
           context,
           AppLocalizations.of(context)!.tdeeTitle,
-          AppLocalizations.of(context)!
-              .kcalPerDay(results.tdee.toStringAsFixed(0)),
+          AppLocalizations.of(
+            context,
+          )!.kcalPerDay(results.tdee.toStringAsFixed(0)),
           AppLocalizations.of(context)!.tdeeSubtitle,
           valueColor: _kAmber,
           cardColor: cardColor,
@@ -75,9 +74,9 @@ class NutritionResults extends StatelessWidget {
         Text(
           AppLocalizations.of(context)!.caloriesPerGoal,
           style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                fontWeight: FontWeight.bold,
-                color: textPrimary,
-              ),
+            fontWeight: FontWeight.bold,
+            color: textPrimary,
+          ),
         ),
         const SizedBox(height: 4),
 
@@ -85,22 +84,25 @@ class NutritionResults extends StatelessWidget {
         _buildCalorieCard(
           context,
           AppLocalizations.of(context)!.maintainWeight,
-          AppLocalizations.of(context)!
-              .kcalPerDay(results.maintenanceCalories.toStringAsFixed(0)),
+          AppLocalizations.of(
+            context,
+          )!.kcalPerDay(results.maintenanceCalories.toStringAsFixed(0)),
           cardColor: cardColor,
         ),
         _buildCalorieCard(
           context,
           AppLocalizations.of(context)!.loseWeight,
-          AppLocalizations.of(context)!
-              .kcalPerDay(results.weightLossCalories.toStringAsFixed(0)),
+          AppLocalizations.of(
+            context,
+          )!.kcalPerDay(results.weightLossCalories.toStringAsFixed(0)),
           cardColor: cardColor,
         ),
         _buildCalorieCard(
           context,
           AppLocalizations.of(context)!.gainMuscle,
-          AppLocalizations.of(context)!
-              .kcalPerDay(results.muscleGainCalories.toStringAsFixed(0)),
+          AppLocalizations.of(
+            context,
+          )!.kcalPerDay(results.muscleGainCalories.toStringAsFixed(0)),
           cardColor: cardColor,
         ),
 
@@ -109,15 +111,18 @@ class NutritionResults extends StatelessWidget {
         Text(
           AppLocalizations.of(context)!.classifications,
           style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                fontWeight: FontWeight.bold,
-                color: textPrimary,
-              ),
+            fontWeight: FontWeight.bold,
+            color: textPrimary,
+          ),
         ),
         const SizedBox(height: 4),
 
         // T4 — Classification chips in a neutral card
-        _buildClassificationRow(context,
-            cardColor: cardColor, textPrimary: textPrimary),
+        _buildClassificationRow(
+          context,
+          cardColor: cardColor,
+          textPrimary: textPrimary,
+        ),
 
         const SizedBox(height: 24),
 
@@ -159,16 +164,16 @@ class NutritionResults extends StatelessWidget {
                 Text(
                   title,
                   style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                        fontWeight: FontWeight.w600,
-                        color: textPrimary,
-                      ),
+                    fontWeight: FontWeight.w600,
+                    color: textPrimary,
+                  ),
                 ),
                 const SizedBox(height: 2),
                 Text(
                   subtitle,
-                  style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                        color: _kMuted,
-                      ),
+                  style: Theme.of(
+                    context,
+                  ).textTheme.bodySmall?.copyWith(color: _kMuted),
                 ),
               ],
             ),
@@ -177,9 +182,9 @@ class NutritionResults extends StatelessWidget {
           Text(
             value,
             style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                  fontWeight: FontWeight.bold,
-                  color: valueColor ?? textPrimary,
-                ),
+              fontWeight: FontWeight.bold,
+              color: valueColor ?? textPrimary,
+            ),
           ),
         ],
       ),
@@ -212,26 +217,29 @@ class NutritionResults extends StatelessWidget {
               if (isSelected) ...[
                 Transform.rotate(
                   angle: -30 * 3.14159 / 180,
-                  child: SvgPicture.asset('assets/svg/sanji-jolly-roger.svg',
-                      width: 20, height: 20),
+                  child: SvgPicture.asset(
+                    'assets/svg/sanji-jolly-roger.svg',
+                    width: 20,
+                    height: 20,
+                  ),
                 ),
                 const SizedBox(width: 8),
               ],
               Text(
                 title,
                 style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                      fontWeight: FontWeight.w600,
-                      color: textColor,
-                    ),
+                  fontWeight: FontWeight.w600,
+                  color: textColor,
+                ),
               ),
             ],
           ),
           Text(
             calories,
             style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                  fontWeight: FontWeight.bold,
-                  color: caloriesColor,
-                ),
+              fontWeight: FontWeight.bold,
+              color: caloriesColor,
+            ),
           ),
         ],
       ),
@@ -262,7 +270,9 @@ class NutritionResults extends StatelessWidget {
             context,
             label: AppLocalizations.of(context)!.waistToHeight,
             value: _getLocalizedWaistToHeightCategory(
-                results.waistToHeightCategory, context),
+              results.waistToHeightCategory,
+              context,
+            ),
             dotColor: _getWaistToHeightColor(results.waistToHeightCategory),
             cardColor: cardColor,
             textPrimary: textPrimary,
@@ -292,9 +302,9 @@ class NutritionResults extends StatelessWidget {
           Text(
             label,
             style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                  color: _kMuted,
-                  fontWeight: FontWeight.w500,
-                ),
+              color: _kMuted,
+              fontWeight: FontWeight.w500,
+            ),
           ),
           const SizedBox(height: 8),
           Row(
@@ -313,9 +323,9 @@ class NutritionResults extends StatelessWidget {
                 child: Text(
                   value,
                   style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                        fontWeight: FontWeight.bold,
-                        color: textPrimary,
-                      ),
+                    fontWeight: FontWeight.bold,
+                    color: textPrimary,
+                  ),
                 ),
               ),
             ],
@@ -340,15 +350,18 @@ class NutritionResults extends StatelessWidget {
         children: [
           Row(
             children: [
-              const AppIcon(PhosphorIconsRegular.bookOpenText,
-                  color: _kAmber, size: 22),
+              const AppIcon(
+                PhosphorIconsRegular.bookOpenText,
+                color: _kAmber,
+                size: 22,
+              ),
               const SizedBox(width: 10),
               Text(
                 AppLocalizations.of(context)!.sanjiTipTitle,
                 style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                      fontWeight: FontWeight.bold,
-                      color: _kAmber,
-                    ),
+                  fontWeight: FontWeight.bold,
+                  color: _kAmber,
+                ),
               ),
             ],
           ),
@@ -356,9 +369,9 @@ class NutritionResults extends StatelessWidget {
           Text(
             AppLocalizations.of(context)!.sanjiTipText,
             style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                  color: Colors.white.withValues(alpha: 0.85),
-                  height: 1.5,
-                ),
+              color: Colors.white.withValues(alpha: 0.85),
+              height: 1.5,
+            ),
           ),
           const SizedBox(height: 16),
           AppButton(
@@ -380,8 +393,10 @@ class NutritionResults extends StatelessWidget {
   }
 
   // ─── T6: Plate Guide card ─────────────────────────────────────────────────
-  Widget _buildPlateGuideButton(BuildContext context,
-      {required Color cardColor}) {
+  Widget _buildPlateGuideButton(
+    BuildContext context, {
+    required Color cardColor,
+  }) {
     return Container(
       width: double.infinity,
       padding: const EdgeInsets.all(20),
@@ -395,16 +410,19 @@ class NutritionResults extends StatelessWidget {
         children: [
           Row(
             children: [
-              const AppIcon(PhosphorIconsRegular.bookOpenText,
-                  color: _kViolet, size: 22),
+              const AppIcon(
+                PhosphorIconsRegular.bookOpenText,
+                color: _kViolet,
+                size: 22,
+              ),
               const SizedBox(width: 10),
               Expanded(
                 child: Text(
                   AppLocalizations.of(context)!.plateGuideQuestion,
                   style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                        fontWeight: FontWeight.bold,
-                        color: _kViolet,
-                      ),
+                    fontWeight: FontWeight.bold,
+                    color: _kViolet,
+                  ),
                 ),
               ),
             ],
@@ -412,9 +430,9 @@ class NutritionResults extends StatelessWidget {
           const SizedBox(height: 8),
           Text(
             AppLocalizations.of(context)!.plateGuideSubtitle,
-            style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                  color: _kMuted,
-                ),
+            style: Theme.of(
+              context,
+            ).textTheme.bodySmall?.copyWith(color: _kMuted),
           ),
           const SizedBox(height: 16),
           AppButton(
@@ -494,7 +512,9 @@ class NutritionResults extends StatelessWidget {
   }
 
   String _getLocalizedWaistToHeightCategory(
-      String category, BuildContext context) {
+    String category,
+    BuildContext context,
+  ) {
     switch (category) {
       case 'excellent':
         return AppLocalizations.of(context)!.excellent;

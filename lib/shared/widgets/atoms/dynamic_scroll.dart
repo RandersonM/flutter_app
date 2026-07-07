@@ -60,7 +60,9 @@ class DynamicScroll {
   }
 
   Future<void> _centerExpansionTile(
-      GlobalKey expansionTileKey, ScrollController scrollController) async {
+    GlobalKey expansionTileKey,
+    ScrollController scrollController,
+  ) async {
     final context = expansionTileKey.currentContext;
     if (context == null) {
       return;
@@ -87,7 +89,8 @@ class DynamicScroll {
       final double availableHeight =
           screenHeight - appBarHeight - statusBarHeight - bottomNavHeight;
 
-      final double targetGlobalY = statusBarHeight +
+      final double targetGlobalY =
+          statusBarHeight +
           appBarHeight +
           (availableHeight / 2) -
           (tileHeight / 2);

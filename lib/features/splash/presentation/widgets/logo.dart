@@ -4,16 +4,12 @@
 import 'package:flutter/material.dart';
 
 class SplashLogo extends StatelessWidget {
-  const SplashLogo({
-    super.key,
-  });
+  const SplashLogo({super.key});
 
   @override
   Widget build(BuildContext context) {
     const String logoPath = 'assets/logo/splash_logo.png';
 
-    return const Image(
-      image: AssetImage(logoPath),
-    );
+    return const Image(image: AssetImage(logoPath));
   }
 }

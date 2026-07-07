@@ -80,14 +80,16 @@ class ExpenseItemWidget extends StatelessWidget {
                 child: Text(
                   _getCategoryLabel(expenseItem.category, l10n),
                   style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                        color: _getCategoryColor(expenseItem.category),
-                      ),
+                    color: _getCategoryColor(expenseItem.category),
+                  ),
                 ),
               ),
               IconButton(
                 onPressed: onRemove,
-                icon: const AppIcon(PhosphorIconsRegular.minusCircle,
-                    color: Colors.red),
+                icon: const AppIcon(
+                  PhosphorIconsRegular.minusCircle,
+                  color: Colors.red,
+                ),
                 tooltip: l10n.remove,
               ),
             ],
@@ -102,9 +104,9 @@ class ExpenseItemWidget extends StatelessWidget {
             Text(
               expenseItem.description,
               style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                    color: Colors.grey[600],
-                    fontStyle: FontStyle.italic,
-                  ),
+                color: Colors.grey[600],
+                fontStyle: FontStyle.italic,
+              ),
             ),
           ],
         ],

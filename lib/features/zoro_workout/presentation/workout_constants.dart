@@ -1,8 +1,5 @@
 class WorkoutConstants {
-  static const List<String> genderOptions = [
-    'male',
-    'female',
-  ];
+  static const List<String> genderOptions = ['male', 'female'];
 
   static const Map<String, int> healthScoreThresholds = {
     'excellent': 80,

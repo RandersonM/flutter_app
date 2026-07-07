@@ -19,15 +19,17 @@ class CharacterGridList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => GridView.count(
-      controller: controller,
-      crossAxisCount: 2,
-      childAspectRatio: 0.75,
-      padding: const EdgeInsets.all(Constants.margin),
-      mainAxisSpacing: Constants.margin,
-      crossAxisSpacing: Constants.margin,
-      children: characters
-          .map((CustomCharacterModel character) => CharacterCard(
-                character: character,
-              ))
-          .toList());
+    controller: controller,
+    crossAxisCount: 2,
+    childAspectRatio: 0.75,
+    padding: const EdgeInsets.all(Constants.margin),
+    mainAxisSpacing: Constants.margin,
+    crossAxisSpacing: Constants.margin,
+    children: characters
+        .map(
+          (CustomCharacterModel character) =>
+              CharacterCard(character: character),
+        )
+        .toList(),
+  );
 }

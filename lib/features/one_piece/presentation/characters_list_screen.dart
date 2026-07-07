@@ -24,33 +24,31 @@ class CharactersListScreen extends StatefulWidget {
 class _CharactersListScreenState extends State<CharactersListScreen> {
   @override
   Widget build(BuildContext context) => Scaffold(
-        appBar: DefaultAppBar(
-            title: Text(AppLocalizations.of(context)!.onePiece),
-            leading: IconButton(
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-              icon: const AppIcon(PhosphorIconsRegular.caretLeft, size: 34),
-            ),
-            actions: [
-              Builder(
-                builder: (context) => IconButton(
-                  icon: const AppIcon(
-                      PhosphorIconsRegular.magnifyingGlass),
-                  onPressed: () => Scaffold.of(context).openDrawer(),
-                ),
-              ),
-            ]),
-        body: BlocProvider.value(
-          value: getIt<ConnectivityCubit>(),
-          child: const OfflineBlockerOverlay(
-            child: ListContent(),
+    appBar: DefaultAppBar(
+      title: Text(AppLocalizations.of(context)!.onePiece),
+      leading: IconButton(
+        onPressed: () {
+          Navigator.of(context).pop();
+        },
+        icon: const AppIcon(PhosphorIconsRegular.caretLeft, size: 34),
+      ),
+      actions: [
+        Builder(
+          builder: (context) => IconButton(
+            icon: const AppIcon(PhosphorIconsRegular.magnifyingGlass),
+            onPressed: () => Scaffold.of(context).openDrawer(),
           ),
         ),
-        drawer: Drawer(
-          backgroundColor: Theme.of(context).colorScheme.primaryContainer,
-          elevation: 0.0,
-          child: const Search(),
-        ),
-      );
+      ],
+    ),
+    body: BlocProvider.value(
+      value: getIt<ConnectivityCubit>(),
+      child: const OfflineBlockerOverlay(child: ListContent()),
+    ),
+    drawer: Drawer(
+      backgroundColor: Theme.of(context).colorScheme.primaryContainer,
+      elevation: 0.0,
+      child: const Search(),
+    ),
+  );
 }

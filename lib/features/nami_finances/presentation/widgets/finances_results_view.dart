@@ -44,8 +44,9 @@ class _FinancesResultsViewState extends State<FinancesResultsView> {
   Future<void> _loadAccumulatedInfo() async {
     try {
       final service = NamiFinancesService();
-      final info = await service
-          .getAccumulatedSavingsInfoLocalized(AppLocalizations.of(context)!);
+      final info = await service.getAccumulatedSavingsInfoLocalized(
+        AppLocalizations.of(context)!,
+      );
       setState(() {
         _accumulatedInfo = info;
       });
@@ -90,10 +91,7 @@ class _FinancesResultsViewState extends State<FinancesResultsView> {
       ),
       child: Column(
         children: [
-          Text(
-            l10n.financialSummary,
-            style: TextTheme.of(context).titleMedium,
-          ),
+          Text(l10n.financialSummary, style: TextTheme.of(context).titleMedium),
           const SizedBox(height: Constants.margin * 2),
           Row(
             children: [
@@ -162,9 +160,9 @@ class _FinancesResultsViewState extends State<FinancesResultsView> {
           const SizedBox(height: 4),
           Text(
             'R\$ ${value.toStringAsFixed(2)}',
-            style: TextTheme.of(context).bodyMedium?.copyWith(
-                  fontWeight: FontWeight.bold,
-                ),
+            style: TextTheme.of(
+              context,
+            ).bodyMedium?.copyWith(fontWeight: FontWeight.bold),
             textAlign: TextAlign.center,
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
@@ -177,7 +175,9 @@ class _FinancesResultsViewState extends State<FinancesResultsView> {
   Widget _buildExpensesBreakdown(AppLocalizations l10n) {
     return Padding(
       padding: const EdgeInsets.symmetric(
-          vertical: Constants.margin * 3, horizontal: Constants.margin),
+        vertical: Constants.margin * 3,
+        horizontal: Constants.margin,
+      ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -189,8 +189,11 @@ class _FinancesResultsViewState extends State<FinancesResultsView> {
           const SizedBox(height: Constants.margin * 3),
           Row(
             children: [
-              AppIcon(PhosphorIconsRegular.chartPieSlice,
-                  color: AppColors.red[500], size: 24),
+              AppIcon(
+                PhosphorIconsRegular.chartPieSlice,
+                color: AppColors.red[500],
+                size: 24,
+              ),
               const SizedBox(width: Constants.margin),
               Text(
                 l10n.expensesByCategory,
@@ -245,10 +248,9 @@ class _FinancesResultsViewState extends State<FinancesResultsView> {
     return Container(
       padding: const EdgeInsets.all(Constants.margin),
       decoration: BoxDecoration(
-        color: Theme.of(context)
-            .colorScheme
-            .primaryContainer
-            .withValues(alpha: 0.3),
+        color: Theme.of(
+          context,
+        ).colorScheme.primaryContainer.withValues(alpha: 0.3),
         borderRadius: BorderRadius.circular(Constants.margin * 2),
       ),
       child: Column(
@@ -257,10 +259,7 @@ class _FinancesResultsViewState extends State<FinancesResultsView> {
             children: [
               const AppIcon(PhosphorIconsRegular.piggyBank, size: 24),
               const SizedBox(width: Constants.margin),
-              Text(
-                l10n.savings,
-                style: TextTheme.of(context).titleMedium,
-              ),
+              Text(l10n.savings, style: TextTheme.of(context).titleMedium),
             ],
           ),
           const SizedBox(height: Constants.margin),
@@ -324,11 +323,11 @@ class _FinancesResultsViewState extends State<FinancesResultsView> {
                             ? l10n.namiApproves
                             : l10n.namiNeedsReview,
                         style: TextTheme.of(context).bodySmall?.copyWith(
-                              fontWeight: FontWeight.bold,
-                              color: widget.finances.savingsPercentage >= 10
-                                  ? AppColors.yellow[500]!
-                                  : AppColors.red[500]!,
-                            ),
+                          fontWeight: FontWeight.bold,
+                          color: widget.finances.savingsPercentage >= 10
+                              ? AppColors.yellow[500]!
+                              : AppColors.red[500]!,
+                        ),
                         textAlign: TextAlign.center,
                         maxLines: 2,
                         overflow: TextOverflow.ellipsis,
@@ -367,9 +366,9 @@ class _FinancesResultsViewState extends State<FinancesResultsView> {
           const SizedBox(height: 4),
           Text(
             value,
-            style: TextTheme.of(context).titleMedium?.copyWith(
-                  fontWeight: FontWeight.bold,
-                ),
+            style: TextTheme.of(
+              context,
+            ).titleMedium?.copyWith(fontWeight: FontWeight.bold),
             textAlign: TextAlign.center,
             maxLines: 1,
             overflow: TextOverflow.ellipsis,

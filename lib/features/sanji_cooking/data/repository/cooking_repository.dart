@@ -19,7 +19,9 @@ class CookingRepository implements ICookingRepository {
     String? difficulty,
   }) async {
     final safeIngredient = _sanitize(ingredient);
-    final safeCookingMethod = cookingMethod != null ? _sanitize(cookingMethod) : null;
+    final safeCookingMethod = cookingMethod != null
+        ? _sanitize(cookingMethod)
+        : null;
     final safeDifficulty = difficulty != null ? _sanitize(difficulty) : null;
     final isPortuguese = PromptLocale.isPortuguese();
 
@@ -32,7 +34,9 @@ class CookingRepository implements ICookingRepository {
 
     return await _geminiService.generateText(
       prompt: prompt,
-      systemInstruction: SanjiPrompt.systemInstruction(isPortuguese: isPortuguese),
+      systemInstruction: SanjiPrompt.systemInstruction(
+        isPortuguese: isPortuguese,
+      ),
       context: SanjiPrompt.cookingTipsContext(isPortuguese: isPortuguese),
     );
   }
@@ -59,7 +63,9 @@ class CookingRepository implements ICookingRepository {
 
     return await _geminiService.generateText(
       prompt: prompt,
-      systemInstruction: SanjiPrompt.systemInstruction(isPortuguese: isPortuguese),
+      systemInstruction: SanjiPrompt.systemInstruction(
+        isPortuguese: isPortuguese,
+      ),
       context: SanjiPrompt.personalizedMealContext(isPortuguese: isPortuguese),
     );
   }

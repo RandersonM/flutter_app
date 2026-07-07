@@ -12,12 +12,13 @@ abstract class INutritionCalculationService {
   });
 
   List<String> getActivityLevels();
-  
+
   List<String> getGoals();
-  
+
   String getActivityLevelDisplayName(
-      String key, Function(String) getLocalizedString);
-      
-  String getGoalDisplayName(
-      String key, Function(String) getLocalizedString);
+    String key,
+    Function(String) getLocalizedString,
+  );
+
+  String getGoalDisplayName(String key, Function(String) getLocalizedString);
 }

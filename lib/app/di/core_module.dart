@@ -26,7 +26,6 @@ import 'package:opfan/features/robin_knowledge/data/repository/planner_repositor
 import 'package:opfan/core/auth/blocs/index.dart';
 import 'package:opfan/core/connectivity/connectivity_cubit.dart';
 
-
 void registerCoreModule(GetIt getIt) {
   // ── Connectivity (must be first — other services may depend on it) ──────────
   getIt.registerSingleton<ConnectivityCubit>(ConnectivityCubit());
@@ -36,12 +35,15 @@ void registerCoreModule(GetIt getIt) {
   getIt.registerLazySingleton<ILocaleService>(() => LocaleService());
   getIt.registerLazySingleton<IThemeService>(() => ThemeService());
 
-  getIt.registerLazySingleton<INotificationService>(() => NotificationService());
+  getIt.registerLazySingleton<INotificationService>(
+    () => NotificationService(),
+  );
   getIt.registerLazySingleton<IDevilFruitService>(() => DevilFruitService());
   getIt.registerLazySingleton<IYouTubeService>(() => YouTubeService());
   getIt.registerLazySingleton<IGeminiService>(() => GeminiService());
   getIt.registerLazySingleton<ICharacterImageService>(
-      () => CharacterImageService());
+    () => CharacterImageService(),
+  );
 
   getIt.registerLazySingleton<ICookingRepository>(() => CookingRepository());
   getIt.registerLazySingleton<IFeaturedCharacterRepository>(
@@ -64,9 +66,15 @@ void registerCoreModule(GetIt getIt) {
   getIt.registerLazySingleton<PlannerRepositoryInterface>(
     () => PlannerRepository(firestoreService: getIt<IFirestoreService>()),
   );
-  getIt.registerLazySingleton<INamiFinancesService>(() => NamiFinancesService());
-  getIt.registerLazySingleton<INutritionCalculationService>(() => NutritionCalculationService());
-  getIt.registerLazySingleton<IWorkoutAssessmentService>(() => WorkoutAssessmentService());
+  getIt.registerLazySingleton<INamiFinancesService>(
+    () => NamiFinancesService(),
+  );
+  getIt.registerLazySingleton<INutritionCalculationService>(
+    () => NutritionCalculationService(),
+  );
+  getIt.registerLazySingleton<IWorkoutAssessmentService>(
+    () => WorkoutAssessmentService(),
+  );
 
   getIt.registerLazySingleton<IRAGService>(() => RAGService());
   getIt.registerLazySingleton<IWebSearchService>(() => WebSearchService());
@@ -87,7 +95,9 @@ void registerCoreModule(GetIt getIt) {
       GetUserProfileHandler(authService: getIt<IAuthService>()),
     );
     registry.register(
-      GetWorkoutHistoryHandler(workoutService: getIt<IWorkoutAssessmentService>()),
+      GetWorkoutHistoryHandler(
+        workoutService: getIt<IWorkoutAssessmentService>(),
+      ),
     );
     registry.register(
       SaveWorkoutHandler(workoutService: getIt<IWorkoutAssessmentService>()),

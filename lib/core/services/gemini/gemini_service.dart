@@ -6,7 +6,6 @@ import 'package:flutter/foundation.dart';
 import 'package:google_generative_ai/google_generative_ai.dart';
 import 'package:opfan/core/services/index.dart';
 
-
 class GeminiService implements IGeminiService {
   final IEnvironmentService _env = GetIt.I.get<IEnvironmentService>();
 
@@ -30,53 +29,56 @@ class GeminiService implements IGeminiService {
   }
 
   void _initializeDio() {
-    _dio = Dio(BaseOptions(
-      connectTimeout: Duration(milliseconds: _env.networkTimeout),
-      receiveTimeout: Duration(milliseconds: _env.networkTimeout),
-      sendTimeout: Duration(milliseconds: _env.networkTimeout),
-      validateStatus: (status) => status != null && status < 500,
-      maxRedirects: 3,
-    ));
+    _dio = Dio(
+      BaseOptions(
+        connectTimeout: Duration(milliseconds: _env.networkTimeout),
+        receiveTimeout: Duration(milliseconds: _env.networkTimeout),
+        sendTimeout: Duration(milliseconds: _env.networkTimeout),
+        validateStatus: (status) => status != null && status < 500,
+        maxRedirects: 3,
+      ),
+    );
 
-    _dio.interceptors.add(InterceptorsWrapper(
-      onError: (error, handler) async {
-        if (error.type == DioExceptionType.connectionError ||
-            error.type == DioExceptionType.connectionTimeout ||
-            error.type == DioExceptionType.receiveTimeout ||
-            error.type == DioExceptionType.sendTimeout) {
-          debugPrint('Gemini Service: Network error detected, retrying...');
+    _dio.interceptors.add(
+      InterceptorsWrapper(
+        onError: (error, handler) async {
+          if (error.type == DioExceptionType.connectionError ||
+              error.type == DioExceptionType.connectionTimeout ||
+              error.type == DioExceptionType.receiveTimeout ||
+              error.type == DioExceptionType.sendTimeout) {
+            debugPrint('Gemini Service: Network error detected, retrying...');
 
-          await Future.delayed(const Duration(milliseconds: 1000));
+            await Future.delayed(const Duration(milliseconds: 1000));
 
-          try {
-            final retryOptions = Options(
-              receiveTimeout: const Duration(seconds: 60),
-              sendTimeout: const Duration(seconds: 60),
-            );
+            try {
+              final retryOptions = Options(
+                receiveTimeout: const Duration(seconds: 60),
+                sendTimeout: const Duration(seconds: 60),
+              );
 
-            final retryResponse = await _dio.request(
-              error.requestOptions.path,
-              data: error.requestOptions.data,
-              queryParameters: error.requestOptions.queryParameters,
-              options: retryOptions,
-            );
+              final retryResponse = await _dio.request(
+                error.requestOptions.path,
+                data: error.requestOptions.data,
+                queryParameters: error.requestOptions.queryParameters,
+                options: retryOptions,
+              );
 
-            handler.resolve(retryResponse);
-            return;
-          } catch (retryError) {
-            debugPrint('Gemini Service: Retry failed - $retryError');
+              handler.resolve(retryResponse);
+              return;
+            } catch (retryError) {
+              debugPrint('Gemini Service: Retry failed - $retryError');
+            }
           }
-        }
 
-        handler.next(error);
-      },
-    ));
+          handler.next(error);
+        },
+      ),
+    );
 
     if (kDebugMode) {
-      _dio.interceptors.add(LogInterceptor(
-        requestBody: true,
-        responseBody: true,
-      ));
+      _dio.interceptors.add(
+        LogInterceptor(requestBody: true, responseBody: true),
+      );
     }
   }
 
@@ -115,8 +117,9 @@ class GeminiService implements IGeminiService {
       final model = GenerativeModel(
         model: _textModel,
         apiKey: _env.geminiApiKey,
-        systemInstruction: systemInstruction != null && systemInstruction.isNotEmpty 
-            ? Content.system(systemInstruction) 
+        systemInstruction:
+            systemInstruction != null && systemInstruction.isNotEmpty
+            ? Content.system(systemInstruction)
             : null,
         generationConfig: GenerationConfig(
           temperature: temperature ?? 0.4,
@@ -126,7 +129,9 @@ class GeminiService implements IGeminiService {
         ),
       );
 
-      final response = await model.generateContent([Content.text(enhancedPrompt)]);
+      final response = await model.generateContent([
+        Content.text(enhancedPrompt),
+      ]);
 
       if (response.text != null && response.text!.isNotEmpty) {
         debugPrint('Gemini Service: Text generation successful');
@@ -137,7 +142,9 @@ class GeminiService implements IGeminiService {
       return null;
     } on GenerativeAIException catch (e) {
       debugPrint('Gemini Service: GenerativeAIException - $e');
-      if (e.toString().contains('quota') || e.toString().contains('rate limit') || e.toString().contains('RESOURCE_EXHAUSTED')) {
+      if (e.toString().contains('quota') ||
+          e.toString().contains('rate limit') ||
+          e.toString().contains('RESOURCE_EXHAUSTED')) {
         _handleQuotaExceeded();
       }
       return null;
@@ -148,7 +155,8 @@ class GeminiService implements IGeminiService {
           msg.contains('rate limit') ||
           msg.contains('429')) {
         debugPrint(
-            'Gemini Service: Quota/rate-limit exceeded — activating cooldown');
+          'Gemini Service: Quota/rate-limit exceeded — activating cooldown',
+        );
         _handleQuotaExceeded();
         return null;
       }
@@ -244,13 +252,13 @@ class GeminiService implements IGeminiService {
         "contents": [
           {
             "parts": [
-              {"text": prompt}
-            ]
-          }
+              {"text": prompt},
+            ],
+          },
         ],
         "generationConfig": {
-          "responseModalities": ["IMAGE"]
-        }
+          "responseModalities": ["IMAGE"],
+        },
       };
 
       debugPrint('Gemini Service: Sending image request to Gemini API');
@@ -282,7 +290,8 @@ class GeminiService implements IGeminiService {
                   final imageData = base64Decode(base64Image);
                   final imageUrl = await _uploadImageToServer(imageData);
                   debugPrint(
-                      'Gemini Service: Gemini REST image generated and uploaded to Imgur');
+                    'Gemini Service: Gemini REST image generated and uploaded to Imgur',
+                  );
                   return imageUrl;
                 }
               }
@@ -292,19 +301,23 @@ class GeminiService implements IGeminiService {
       }
 
       debugPrint(
-          'Gemini Service: No image returned from Gemini REST API (Status ${response.statusCode})');
+        'Gemini Service: No image returned from Gemini REST API (Status ${response.statusCode})',
+      );
       if (response.data != null && response.data['error'] != null) {
         debugPrint(
-            'Gemini Service: Error Details: ${response.data['error']['message']}');
+          'Gemini Service: Error Details: ${response.data['error']['message']}',
+        );
       }
       return null;
     } on DioException catch (e) {
       debugPrint(
-          'Gemini Service: DioException in Gemini REST image generation - ${e.message}');
+        'Gemini Service: DioException in Gemini REST image generation - ${e.message}',
+      );
       return null;
     } catch (e) {
       debugPrint(
-          'Gemini Service: Unexpected error in Gemini REST image generation - $e');
+        'Gemini Service: Unexpected error in Gemini REST image generation - $e',
+      );
       return null;
     }
   }
@@ -321,9 +334,7 @@ class GeminiService implements IGeminiService {
         'https://api.imgur.com/3/image',
         data: formData,
         options: Options(
-          headers: {
-            'Authorization': 'Client-ID 546c25a59c58ad7',
-          },
+          headers: {'Authorization': 'Client-ID 546c25a59c58ad7'},
         ),
       );
 
@@ -357,8 +368,9 @@ class GeminiService implements IGeminiService {
     final now = DateTime.now();
     final oneHourAgo = now.subtract(const Duration(hours: 1));
 
-    _requestTimestamps
-        .removeWhere((timestamp) => timestamp.isBefore(oneHourAgo));
+    _requestTimestamps.removeWhere(
+      (timestamp) => timestamp.isBefore(oneHourAgo),
+    );
 
     return _requestTimestamps.length < _maxRequestsPerHour;
   }
@@ -371,7 +383,7 @@ class GeminiService implements IGeminiService {
     _quotaExceeded = true;
     _quotaExceededTime = DateTime.now();
     debugPrint(
-        'Gemini Service: Quota exceeded, will reset in $_quotaResetDuration');
+      'Gemini Service: Quota exceeded, will reset in $_quotaResetDuration',
+    );
   }
-
 }

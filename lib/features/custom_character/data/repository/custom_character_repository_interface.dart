@@ -17,7 +17,9 @@ abstract class ICustomCharacterRepository {
   });
 
   Future<void> updateCustomCharacter(
-      String documentId, CustomCharacterModel character);
+    String documentId,
+    CustomCharacterModel character,
+  );
 
   Future<void> deleteCustomCharacter(String documentId);
 
@@ -38,7 +40,8 @@ abstract class ICustomCharacterRepository {
   Future<List<CustomCharacterModel>> searchCustomCharactersByName(String name);
 
   Future<List<CustomCharacterModel>> getCustomCharactersByDevilFruit(
-      String devilFruit);
+    String devilFruit,
+  );
 
   Future<List<CustomCharacterModel>> getCustomCharactersByCrew(String crew);
 

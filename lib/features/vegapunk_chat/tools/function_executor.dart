@@ -52,7 +52,9 @@ class FunctionExecutor {
 
       if (name == null || name.isEmpty) return null;
 
-      final argsMap = (args is Map<String, dynamic>) ? args : <String, dynamic>{};
+      final argsMap = (args is Map<String, dynamic>)
+          ? args
+          : <String, dynamic>{};
       return ToolCall(name: name, arguments: argsMap);
     } catch (e) {
       debugPrint('FunctionExecutor: failed to parse JSON — $e');
@@ -79,7 +81,8 @@ class FunctionExecutor {
           if (openCount == 0) {
             final candidate = text.substring(startIndex, i + 1);
             if (_parseJson(candidate) != null) {
-              return (text.substring(0, startIndex) + text.substring(i + 1)).trim();
+              return (text.substring(0, startIndex) + text.substring(i + 1))
+                  .trim();
             }
           }
         }

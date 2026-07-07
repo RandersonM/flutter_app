@@ -30,8 +30,10 @@ class _UpdateProgressDialogState extends State<UpdateProgressDialog> {
 
   @override
   Widget build(BuildContext context) {
-    final newProgress =
-        (widget.goal.progress + widget.increment).clamp(0.0, 100.0);
+    final newProgress = (widget.goal.progress + widget.increment).clamp(
+      0.0,
+      100.0,
+    );
     final isIncrement = widget.increment > 0;
 
     return AlertDialog(
@@ -39,9 +41,9 @@ class _UpdateProgressDialogState extends State<UpdateProgressDialog> {
         isIncrement
             ? AppLocalizations.of(context)!.increaseProgressTitle
             : AppLocalizations.of(context)!.decreaseProgressTitle,
-        style: Theme.of(context).textTheme.titleLarge?.copyWith(
-              fontWeight: FontWeight.bold,
-            ),
+        style: Theme.of(
+          context,
+        ).textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold),
       ),
       content: Form(
         key: _formKey,
@@ -51,9 +53,9 @@ class _UpdateProgressDialogState extends State<UpdateProgressDialog> {
           children: [
             Text(
               AppLocalizations.of(context)!.objectiveLabel(widget.goal.title),
-              style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                    fontWeight: FontWeight.w500,
-                  ),
+              style: Theme.of(
+                context,
+              ).textTheme.bodyMedium?.copyWith(fontWeight: FontWeight.w500),
             ),
             const SizedBox(height: 16),
             Row(
@@ -65,9 +67,9 @@ class _UpdateProgressDialogState extends State<UpdateProgressDialog> {
                 Text(
                   '${widget.goal.progress.toStringAsFixed(1)}%',
                   style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                        fontWeight: FontWeight.bold,
-                        color: AppColors.purple[350],
-                      ),
+                    fontWeight: FontWeight.bold,
+                    color: AppColors.purple[350],
+                  ),
                 ),
               ],
             ),
@@ -81,9 +83,9 @@ class _UpdateProgressDialogState extends State<UpdateProgressDialog> {
                 Text(
                   '${newProgress.toStringAsFixed(1)}%',
                   style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                        fontWeight: FontWeight.bold,
-                        color: isIncrement ? Colors.green : Colors.orange,
-                      ),
+                    fontWeight: FontWeight.bold,
+                    color: isIncrement ? Colors.green : Colors.orange,
+                  ),
                 ),
                 const SizedBox(width: 8),
                 Icon(
@@ -98,9 +100,9 @@ class _UpdateProgressDialogState extends State<UpdateProgressDialog> {
             const SizedBox(height: 16),
             Text(
               AppLocalizations.of(context)!.planUpdatesLabel,
-              style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                    fontWeight: FontWeight.w500,
-                  ),
+              style: Theme.of(
+                context,
+              ).textTheme.bodyMedium?.copyWith(fontWeight: FontWeight.w500),
             ),
             const SizedBox(height: 8),
             TextFormField(
@@ -146,9 +148,11 @@ class _UpdateProgressDialogState extends State<UpdateProgressDialog> {
             backgroundColor: AppColors.purple[350],
             foregroundColor: Colors.white,
           ),
-          child: Text(isIncrement
-              ? AppLocalizations.of(context)!.increaseAction
-              : AppLocalizations.of(context)!.decreaseAction),
+          child: Text(
+            isIncrement
+                ? AppLocalizations.of(context)!.increaseAction
+                : AppLocalizations.of(context)!.decreaseAction,
+          ),
         ),
       ],
     );

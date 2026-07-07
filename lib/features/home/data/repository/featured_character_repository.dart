@@ -125,7 +125,9 @@ class FeaturedCharacterRepository implements IFeaturedCharacterRepository {
 
   @override
   Future<void> updateFeaturedCharacter(
-      String documentId, TodayCharacter character) async {
+    String documentId,
+    TodayCharacter character,
+  ) async {
     try {
       await _initHive();
       await _box.put(_currentCharacterKey, character);
@@ -234,8 +236,9 @@ class FeaturedCharacterRepository implements IFeaturedCharacterRepository {
   }
 
   @override
-  Future<List<CustomCharacterModel>> getAllOnePieceCharacters(
-      {int? limit}) async {
+  Future<List<CustomCharacterModel>> getAllOnePieceCharacters({
+    int? limit,
+  }) async {
     try {
       final documents = await _firestoreService.getDocuments(
         collection: _collection,
@@ -243,8 +246,10 @@ class FeaturedCharacterRepository implements IFeaturedCharacterRepository {
       );
 
       return documents
-          .map((doc) =>
-              CustomCharacterModel.fromFirestore(doc, doc['id'] as String))
+          .map(
+            (doc) =>
+                CustomCharacterModel.fromFirestore(doc, doc['id'] as String),
+          )
           .toList();
     } catch (e) {
       debugPrint('Error getting all One Piece characters: $e');
@@ -254,16 +259,19 @@ class FeaturedCharacterRepository implements IFeaturedCharacterRepository {
 
   @override
   Future<List<CustomCharacterModel>> searchOnePieceCharacters(
-      String query) async {
+    String query,
+  ) async {
     try {
       final allCharacters = await getAllOnePieceCharacters();
       return allCharacters
-          .where((character) =>
-              character.name.toLowerCase().contains(query.toLowerCase()) ||
-              (character.nickname
-                      ?.toLowerCase()
-                      .contains(query.toLowerCase()) ??
-                  false))
+          .where(
+            (character) =>
+                character.name.toLowerCase().contains(query.toLowerCase()) ||
+                (character.nickname?.toLowerCase().contains(
+                      query.toLowerCase(),
+                    ) ??
+                    false),
+          )
           .toList();
     } catch (e) {
       debugPrint('Error searching One Piece characters: $e');
@@ -279,8 +287,10 @@ class FeaturedCharacterRepository implements IFeaturedCharacterRepository {
       );
 
       return documents
-          .map((doc) =>
-              CustomCharacterModel.fromFirestore(doc, doc['id'] as String))
+          .map(
+            (doc) =>
+                CustomCharacterModel.fromFirestore(doc, doc['id'] as String),
+          )
           .toList();
     } catch (e) {
       debugPrint('Error getting all featured characters: $e');

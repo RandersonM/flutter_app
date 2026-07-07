@@ -83,19 +83,18 @@ class _AiImageGeneratorState extends State<AiImageGenerator> {
       children: [
         Text(
           l10n.aiImageGeneration,
-          style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                fontWeight: FontWeight.bold,
-              ),
+          style: Theme.of(
+            context,
+          ).textTheme.headlineSmall?.copyWith(fontWeight: FontWeight.bold),
         ),
         const SizedBox(height: 8),
         Text(
           l10n.aiImageGenerationSubtitle,
           style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                color: Theme.of(context)
-                    .colorScheme
-                    .onSurface
-                    .withValues(alpha: 0.7),
-              ),
+            color: Theme.of(
+              context,
+            ).colorScheme.onSurface.withValues(alpha: 0.7),
+          ),
         ),
         const SizedBox(height: 16),
 
@@ -112,8 +111,9 @@ class _AiImageGeneratorState extends State<AiImageGenerator> {
         SizedBox(
           width: double.infinity,
           child: ElevatedButton.icon(
-            onPressed:
-                _isGenerating || widget.isLoading ? null : _generateImage,
+            onPressed: _isGenerating || widget.isLoading
+                ? null
+                : _generateImage,
             icon: _isGenerating
                 ? const SizedBox(
                     width: 16,
@@ -121,8 +121,9 @@ class _AiImageGeneratorState extends State<AiImageGenerator> {
                     child: CircularProgressIndicator(strokeWidth: 2),
                   )
                 : const AppIcon(PhosphorIconsRegular.magicWand),
-            label:
-                Text(_isGenerating ? l10n.generatingImage : l10n.generateImage),
+            label: Text(
+              _isGenerating ? l10n.generatingImage : l10n.generateImage,
+            ),
             style: ElevatedButton.styleFrom(
               padding: const EdgeInsets.symmetric(vertical: 12),
             ),
@@ -165,10 +166,9 @@ class _AiImageGeneratorState extends State<AiImageGenerator> {
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(12),
               border: Border.all(
-                color: Theme.of(context)
-                    .colorScheme
-                    .outline
-                    .withValues(alpha: 0.3),
+                color: Theme.of(
+                  context,
+                ).colorScheme.outline.withValues(alpha: 0.3),
               ),
             ),
             child: ClipRRect(
@@ -201,7 +201,8 @@ class _AiImageGeneratorState extends State<AiImageGenerator> {
                       ? const AppIcon(PhosphorIconsRegular.check)
                       : const AppIcon(PhosphorIconsRegular.clock),
                   label: Text(
-                      _isImageConfirmed ? l10n.imageConfirmed : l10n.useImage),
+                    _isImageConfirmed ? l10n.imageConfirmed : l10n.useImage,
+                  ),
                 ),
               ),
             ],

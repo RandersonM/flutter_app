@@ -23,14 +23,15 @@ class ModelDownloadOverlay extends StatelessWidget {
   Widget build(BuildContext context) {
     return switch (state) {
       VegapunkModelNotInstalled() => _NotInstalledView(onDownload: onDownload),
-      VegapunkModelDownloading(:final progress) =>
-        _DownloadingView(progress: progress),
+      VegapunkModelDownloading(:final progress) => _DownloadingView(
+        progress: progress,
+      ),
       VegapunkModelLoading() => const _LoadingView(),
       VegapunkChatError(:final message, :final isInstallError) => _ErrorView(
-          message: message,
-          isInstallError: isInstallError,
-          onRetry: onRetry,
-        ),
+        message: message,
+        isInstallError: isInstallError,
+        onRetry: onRetry,
+      ),
       _ => const SizedBox.shrink(),
     };
   }
@@ -59,8 +60,9 @@ class _NotInstalledView extends StatelessWidget {
           const SizedBox(height: Constants.size16),
           Text(
             l10n.vegapunkModelDownloadTitle,
-            style: theme.textTheme.titleLarge
-                ?.copyWith(fontWeight: FontWeight.bold),
+            style: theme.textTheme.titleLarge?.copyWith(
+              fontWeight: FontWeight.bold,
+            ),
             textAlign: TextAlign.center,
           ),
           const SizedBox(height: Constants.size12),
@@ -106,8 +108,9 @@ class _DownloadingView extends StatelessWidget {
           const SizedBox(height: Constants.size16),
           Text(
             l10n.vegapunkModelDownloadTitle,
-            style: theme.textTheme.titleLarge
-                ?.copyWith(fontWeight: FontWeight.bold),
+            style: theme.textTheme.titleLarge?.copyWith(
+              fontWeight: FontWeight.bold,
+            ),
             textAlign: TextAlign.center,
           ),
           const SizedBox(height: Constants.size24),
@@ -153,8 +156,9 @@ class _LoadingView extends StatelessWidget {
           const SizedBox(height: Constants.size24),
           Text(
             l10n.vegapunkModelLoadingTitle,
-            style: theme.textTheme.titleMedium
-                ?.copyWith(fontWeight: FontWeight.w600),
+            style: theme.textTheme.titleMedium?.copyWith(
+              fontWeight: FontWeight.w600,
+            ),
             textAlign: TextAlign.center,
           ),
         ],

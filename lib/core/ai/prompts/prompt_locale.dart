@@ -11,7 +11,6 @@ class PromptLocale {
 
   static bool isPortuguese() {
     final lang = GetIt.I.get<ILocaleService>().locale?.languageCode;
-    return (lang ?? ui.PlatformDispatcher.instance.locale.languageCode) ==
-        'pt';
+    return (lang ?? ui.PlatformDispatcher.instance.locale.languageCode) == 'pt';
   }
 }

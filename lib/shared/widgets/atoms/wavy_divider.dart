@@ -25,10 +25,7 @@ class WavyDivider extends StatelessWidget {
         waveHeight: waveHeight,
         waveLength: waveLength,
       ),
-      child: SizedBox(
-        height: height,
-        width: double.infinity,
-      ),
+      child: SizedBox(height: height, width: double.infinity),
     );
   }
 }
@@ -61,16 +58,12 @@ class WavyDividerPainter extends CustomPainter {
 
     for (double x = 0; x <= size.width; x += waveLength) {
       final nextX = x + waveLength;
-      final controlY = centerY +
+      final controlY =
+          centerY +
           (x % (waveLength * 2) < waveLength ? waveHeight : -waveHeight);
 
       if (nextX <= size.width) {
-        path.quadraticBezierTo(
-          x + waveLength / 2,
-          controlY,
-          nextX,
-          centerY,
-        );
+        path.quadraticBezierTo(x + waveLength / 2, controlY, nextX, centerY);
       }
     }
 

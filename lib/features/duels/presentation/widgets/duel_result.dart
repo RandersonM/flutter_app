@@ -15,11 +15,7 @@ class DuelResult extends StatelessWidget {
   final CustomCharacterModel winner;
   final VoidCallback onNewDuel;
 
-  const DuelResult({
-    super.key,
-    required this.winner,
-    required this.onNewDuel,
-  });
+  const DuelResult({super.key, required this.winner, required this.onNewDuel});
 
   @override
   Widget build(BuildContext context) {
@@ -42,10 +38,7 @@ class DuelResult extends StatelessWidget {
           ],
         ),
         borderRadius: BorderRadius.circular(Constants.margin * 3),
-        border: Border.all(
-          color: AppColors.orange[700]!,
-          width: 3,
-        ),
+        border: Border.all(color: AppColors.orange[700]!, width: 3),
         boxShadow: [
           BoxShadow(
             color: AppColors.orange[1000]!.withValues(alpha: 0.5),
@@ -74,10 +67,9 @@ class DuelResult extends StatelessWidget {
                   fontSize: 36,
                   shadows: [
                     Shadow(
-                      color: Theme.of(context)
-                          .colorScheme
-                          .onTertiaryContainer
-                          .withValues(alpha: 0.8),
+                      color: Theme.of(
+                        context,
+                      ).colorScheme.onTertiaryContainer.withValues(alpha: 0.8),
                       offset: const Offset(2, 2),
                       blurRadius: 6,
                     ),
@@ -85,9 +77,10 @@ class DuelResult extends StatelessWidget {
                 ),
               ),
               const SizedBox(width: Constants.margin),
-              AppIcon(PhosphorIconsRegular.trophy,
+              AppIcon(
+                PhosphorIconsRegular.trophy,
                 color: AppColors.orange[700],
-                size: 40
+                size: 40,
               ),
             ],
           ),
@@ -100,10 +93,9 @@ class DuelResult extends StatelessWidget {
               color: Colors.white.withValues(alpha: 0.1),
               borderRadius: BorderRadius.circular(Constants.margin * 2),
               border: Border.all(
-                color: Theme.of(context)
-                    .colorScheme
-                    .tertiary
-                    .withValues(alpha: 0.5),
+                color: Theme.of(
+                  context,
+                ).colorScheme.tertiary.withValues(alpha: 0.5),
                 width: 2,
               ),
             ),
@@ -121,10 +113,9 @@ class DuelResult extends StatelessWidget {
                     ),
                     boxShadow: [
                       BoxShadow(
-                        color: Theme.of(context)
-                            .colorScheme
-                            .tertiary
-                            .withValues(alpha: 0.6),
+                        color: Theme.of(
+                          context,
+                        ).colorScheme.tertiary.withValues(alpha: 0.6),
                         blurRadius: 20,
                         spreadRadius: 5,
                       ),
@@ -186,10 +177,7 @@ class DuelResult extends StatelessWidget {
 
           const Text(
             '🎉 🎊 ⭐ 🎊 🎉',
-            style: TextStyle(
-              fontSize: 32,
-              letterSpacing: 8,
-            ),
+            style: TextStyle(fontSize: 32, letterSpacing: 8),
           ),
 
           const SizedBox(height: Constants.margin * 2),
@@ -200,10 +188,9 @@ class DuelResult extends StatelessWidget {
               color: Colors.black.withValues(alpha: 0.3),
               borderRadius: BorderRadius.circular(Constants.margin * 1.5),
               border: Border.all(
-                color: Theme.of(context)
-                    .colorScheme
-                    .tertiary
-                    .withValues(alpha: 0.3),
+                color: Theme.of(
+                  context,
+                ).colorScheme.tertiary.withValues(alpha: 0.3),
               ),
             ),
             child: Text(
@@ -246,8 +233,10 @@ class DuelResult extends StatelessWidget {
               ),
               ElevatedButton.icon(
                 onPressed: onNewDuel,
-                icon: const AppIcon(PhosphorIconsRegular.arrowsClockwise,
-                    size: 20),
+                icon: const AppIcon(
+                  PhosphorIconsRegular.arrowsClockwise,
+                  size: 20,
+                ),
                 label: Text(l10n.newDuel),
                 style: ElevatedButton.styleFrom(
                   backgroundColor: AppColors.green[500],

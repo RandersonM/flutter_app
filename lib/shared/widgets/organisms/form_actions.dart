@@ -32,10 +32,7 @@ class FormActions extends StatelessWidget {
                   borderRadius: BorderRadius.circular(8),
                 ),
               ),
-              child: Text(
-                l10n.cancel,
-                style: const TextStyle(fontSize: 16),
-              ),
+              child: Text(l10n.cancel, style: const TextStyle(fontSize: 16)),
             ),
           ),
           const SizedBox(width: 16),

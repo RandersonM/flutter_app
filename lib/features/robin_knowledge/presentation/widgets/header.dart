@@ -21,9 +21,7 @@ class _RobinKnowledgeHeaderState extends State<RobinKnowledgeHeader> {
 
   void _selectRandomImage() {
     final random = Random();
-    final images = [
-      'assets/logo/nico-robin-1.gif',
-    ];
+    final images = ['assets/logo/nico-robin-1.gif'];
     _selectedImage = images[random.nextInt(images.length)];
   }
 
@@ -43,10 +41,7 @@ class _RobinKnowledgeHeaderState extends State<RobinKnowledgeHeader> {
       width: double.infinity,
       height: 250,
       clipBehavior: Clip.antiAlias,
-      child: Image.asset(
-        _selectedImage,
-        fit: BoxFit.cover,
-      ),
+      child: Image.asset(_selectedImage, fit: BoxFit.cover),
     );
   }
 }

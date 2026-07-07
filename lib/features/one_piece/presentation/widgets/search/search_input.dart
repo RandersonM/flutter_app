@@ -48,10 +48,7 @@ class _SearchInputState extends State<SearchInput> {
 
   Widget _inputIcon() {
     if (state == InputState.filled) {
-      return IconButton(
-        icon: widget.clearIcon,
-        onPressed: _clearQuery,
-      );
+      return IconButton(icon: widget.clearIcon, onPressed: _clearQuery);
     }
     return widget.searchIcon;
   }
@@ -61,8 +58,9 @@ class _SearchInputState extends State<SearchInput> {
     return TextField(
       controller: _controller,
       decoration: InputDecoration(
-          hintText: AppLocalizations.of(context)!.search,
-          suffixIcon: _inputIcon()),
+        hintText: AppLocalizations.of(context)!.search,
+        suffixIcon: _inputIcon(),
+      ),
       onChanged: (String value) {
         setState(() {
           if (value.isEmpty) {

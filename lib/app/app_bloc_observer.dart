@@ -22,7 +22,8 @@ class AppBlocObserver extends BlocObserver {
       // frames — i.e. this logging was itself contributing to the "tap a
       // nav button, it freezes for a bit" symptom in debug builds.
       debugPrint(
-          'BLOC CHANGE: [${bloc.runtimeType}] - ${change.currentState.runtimeType} -> ${change.nextState.runtimeType}');
+        'BLOC CHANGE: [${bloc.runtimeType}] - ${change.currentState.runtimeType} -> ${change.nextState.runtimeType}',
+      );
     }
   }
 }

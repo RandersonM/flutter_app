@@ -12,11 +12,7 @@ class CrewHeader extends StatelessWidget {
   final CrewModel crew;
   final VoidCallback? onEdit;
 
-  const CrewHeader({
-    super.key,
-    required this.crew,
-    this.onEdit,
-  });
+  const CrewHeader({super.key, required this.crew, this.onEdit});
 
   @override
   Widget build(BuildContext context) {
@@ -142,18 +138,14 @@ class CrewHeader extends StatelessWidget {
       padding: const EdgeInsets.only(bottom: Constants.margin / 2),
       child: Row(
         children: [
-          Icon(
-            icon,
-            size: 16,
-            color: Theme.of(context).colorScheme.primary,
-          ),
+          Icon(icon, size: 16, color: Theme.of(context).colorScheme.primary),
           const SizedBox(width: Constants.margin),
           Expanded(
             child: Text(
               text,
-              style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                    fontWeight: FontWeight.w500,
-                  ),
+              style: Theme.of(
+                context,
+              ).textTheme.bodyMedium?.copyWith(fontWeight: FontWeight.w500),
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
             ),

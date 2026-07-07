@@ -71,9 +71,7 @@ class _CrewListState extends State<CrewList> {
           child: BlocBuilder<ListCrewsBloc, ListCrewsState>(
             builder: (context, state) {
               if (state is ListCrewsLoading) {
-                return const Center(
-                  child: CircularProgressIndicator(),
-                );
+                return const Center(child: CircularProgressIndicator());
               }
 
               if (state is ListCrewsError) {
@@ -143,8 +141,9 @@ class _CrewListState extends State<CrewList> {
                 }
 
                 return ListView.builder(
-                  padding:
-                      const EdgeInsets.symmetric(vertical: Constants.margin),
+                  padding: const EdgeInsets.symmetric(
+                    vertical: Constants.margin,
+                  ),
                   itemCount: state.crews.length,
                   itemBuilder: (context, index) {
                     final crew = state.crews[index];
@@ -153,10 +152,12 @@ class _CrewListState extends State<CrewList> {
                     return CrewCard(
                       crew: crew,
                       onTap: () => widget.onCrewTap?.call(crew),
-                      onEdit:
-                          canEdit ? () => widget.onCrewEdit?.call(crew) : null,
-                      onDelete:
-                          canEdit ? () => _showDeleteConfirmation(crew) : null,
+                      onEdit: canEdit
+                          ? () => widget.onCrewEdit?.call(crew)
+                          : null,
+                      onDelete: canEdit
+                          ? () => _showDeleteConfirmation(crew)
+                          : null,
                     );
                   },
                 );
@@ -203,9 +204,7 @@ class _CrewListState extends State<CrewList> {
       context: context,
       builder: (context) => AlertDialog(
         title: Text(l10n.confirmDelete),
-        content: Text(
-          l10n.confirmDeleteCrew(crew.name),
-        ),
+        content: Text(l10n.confirmDeleteCrew(crew.name)),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),

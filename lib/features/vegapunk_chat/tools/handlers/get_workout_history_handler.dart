@@ -48,7 +48,9 @@ class GetWorkoutHistoryHandler extends ToolHandler {
         );
       }
 
-      final List<Map<String, dynamic>> serializedHistory = history.map((assessment) {
+      final List<Map<String, dynamic>> serializedHistory = history.map((
+        assessment,
+      ) {
         return {
           'monthYear': assessment.monthYear,
           'weight': assessment.weight,
@@ -57,7 +59,7 @@ class GetWorkoutHistoryHandler extends ToolHandler {
           'workoutDaysCount': assessment.workoutDays?.length ?? 0,
           'activityLevel': assessment.activityLevel,
           'goal': assessment.goal,
-          'workoutPlan': assessment.workoutPlan
+          'workoutPlan': assessment.workoutPlan,
         };
       }).toList();
 

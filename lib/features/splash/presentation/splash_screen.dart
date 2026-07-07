@@ -23,10 +23,7 @@ class SplashScreen extends StatelessWidget {
       body: Container(
         decoration: purpleGradient(),
         child: const Center(
-          child: FractionallySizedBox(
-            widthFactor: .5,
-            child: SplashLogo(),
-          ),
+          child: FractionallySizedBox(widthFactor: .5, child: SplashLogo()),
         ),
       ),
     );

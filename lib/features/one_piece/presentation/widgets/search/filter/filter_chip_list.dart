@@ -11,31 +11,31 @@ class FilterChipList extends StatelessWidget {
   const FilterChipList({super.key});
   @override
   Widget build(BuildContext context) => SingleChildScrollView(
-        physics: const ClampingScrollPhysics(),
-        scrollDirection: Axis.horizontal,
-        reverse: true,
-        child: Row(
-          children: <Widget>[
-            SearchFilter(label: AppLocalizations.of(context)!.superRookie),
-            SearchFilter(
-              label: AppLocalizations.of(context)!.emperors,
-            ),
-            SearchFilter(
-              label: AppLocalizations.of(context)!.strawHat,
-            ),
-            SearchFilter(
-              label: AppLocalizations.of(context)!.beastsPirates,
-            ),
-            SearchFilter(
-              label: AppLocalizations.of(context)!.bigMomPirates,
-            ),
-          ]
-              .map((Widget widget) => Padding(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: Constants.margin / 3.5),
-                    child: widget,
-                  ))
+    physics: const ClampingScrollPhysics(),
+    scrollDirection: Axis.horizontal,
+    reverse: true,
+    child: Row(
+      children:
+          <Widget>[
+                SearchFilter(label: AppLocalizations.of(context)!.superRookie),
+                SearchFilter(label: AppLocalizations.of(context)!.emperors),
+                SearchFilter(label: AppLocalizations.of(context)!.strawHat),
+                SearchFilter(
+                  label: AppLocalizations.of(context)!.beastsPirates,
+                ),
+                SearchFilter(
+                  label: AppLocalizations.of(context)!.bigMomPirates,
+                ),
+              ]
+              .map(
+                (Widget widget) => Padding(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: Constants.margin / 3.5,
+                  ),
+                  child: widget,
+                ),
+              )
               .toList(),
-        ),
-      );
+    ),
+  );
 }

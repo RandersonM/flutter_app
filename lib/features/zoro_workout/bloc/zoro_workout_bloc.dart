@@ -29,14 +29,16 @@ class ZoroWorkoutBloc extends Bloc<ZoroWorkoutEvent, ZoroWorkoutState> {
       final currentAssessment = await _service.getCurrentUserAssessment();
       final assessmentHistory = await _service.getUserAssessmentHistory();
 
-      emit(ZoroWorkoutLoaded(
-        currentAssessment: currentAssessment,
-        assessmentHistory: assessmentHistory,
-        hasCurrentAssessment: currentAssessment != null,
-        canEditCurrentAssessment: true,
-        currentMonthProgress: _calculateProgress(currentAssessment),
-        remainingDaysToGoal: _calculateRemainingDays(currentAssessment),
-      ));
+      emit(
+        ZoroWorkoutLoaded(
+          currentAssessment: currentAssessment,
+          assessmentHistory: assessmentHistory,
+          hasCurrentAssessment: currentAssessment != null,
+          canEditCurrentAssessment: true,
+          currentMonthProgress: _calculateProgress(currentAssessment),
+          remainingDaysToGoal: _calculateRemainingDays(currentAssessment),
+        ),
+      );
     } catch (e) {
       emit(ZoroWorkoutError(message: 'Erro ao inicializar: $e'));
     }
@@ -65,7 +67,8 @@ class ZoroWorkoutBloc extends Bloc<ZoroWorkoutEvent, ZoroWorkoutState> {
           heightCm: event.healthResults['height'] as double?,
           weightKg: event.healthResults['weight'] as double?,
           waistCm: event.healthResults['waist'] as double?,
-          activityLevel: event.healthResults['activity_level'] as String? ??
+          activityLevel:
+              event.healthResults['activity_level'] as String? ??
               user.activityLevel,
           goal: event.healthResults['goal'] as String? ?? user.goal,
         );
@@ -86,7 +89,8 @@ class ZoroWorkoutBloc extends Bloc<ZoroWorkoutEvent, ZoroWorkoutState> {
         healthScore: event.healthResults['health_score'] as double?,
         workoutDaysGoal: event.healthResults['workout_days_goal'] as int?,
         workoutDays: event.healthResults['workout_days'] as List<int>?,
-        activityLevel: event.healthResults['activity_level'] as String? ??
+        activityLevel:
+            event.healthResults['activity_level'] as String? ??
             user?.activityLevel,
         goal: event.healthResults['goal'] as String? ?? user?.goal,
       );
@@ -94,14 +98,16 @@ class ZoroWorkoutBloc extends Bloc<ZoroWorkoutEvent, ZoroWorkoutState> {
       final currentAssessment = await _service.getCurrentUserAssessment();
       final assessmentHistory = await _service.getUserAssessmentHistory();
 
-      emit(ZoroWorkoutLoaded(
-        currentAssessment: currentAssessment,
-        assessmentHistory: assessmentHistory,
-        hasCurrentAssessment: currentAssessment != null,
-        canEditCurrentAssessment: true,
-        currentMonthProgress: _calculateProgress(currentAssessment),
-        remainingDaysToGoal: _calculateRemainingDays(currentAssessment),
-      ));
+      emit(
+        ZoroWorkoutLoaded(
+          currentAssessment: currentAssessment,
+          assessmentHistory: assessmentHistory,
+          hasCurrentAssessment: currentAssessment != null,
+          canEditCurrentAssessment: true,
+          currentMonthProgress: _calculateProgress(currentAssessment),
+          remainingDaysToGoal: _calculateRemainingDays(currentAssessment),
+        ),
+      );
     } catch (e) {
       emit(ZoroWorkoutError(message: 'Erro ao salvar avaliação: $e'));
     }
@@ -115,14 +121,16 @@ class ZoroWorkoutBloc extends Bloc<ZoroWorkoutEvent, ZoroWorkoutState> {
       final currentAssessment = await _service.getCurrentUserAssessment();
       final assessmentHistory = await _service.getUserAssessmentHistory();
 
-      emit(ZoroWorkoutLoaded(
-        currentAssessment: currentAssessment,
-        assessmentHistory: assessmentHistory,
-        hasCurrentAssessment: currentAssessment != null,
-        canEditCurrentAssessment: true,
-        currentMonthProgress: _calculateProgress(currentAssessment),
-        remainingDaysToGoal: _calculateRemainingDays(currentAssessment),
-      ));
+      emit(
+        ZoroWorkoutLoaded(
+          currentAssessment: currentAssessment,
+          assessmentHistory: assessmentHistory,
+          hasCurrentAssessment: currentAssessment != null,
+          canEditCurrentAssessment: true,
+          currentMonthProgress: _calculateProgress(currentAssessment),
+          remainingDaysToGoal: _calculateRemainingDays(currentAssessment),
+        ),
+      );
     } catch (e) {
       emit(ZoroWorkoutError(message: 'Erro ao atualizar: $e'));
     }
@@ -143,14 +151,16 @@ class ZoroWorkoutBloc extends Bloc<ZoroWorkoutEvent, ZoroWorkoutState> {
 
       final updatedAssessment = await _service.getCurrentUserAssessment();
 
-      emit(ZoroWorkoutLoaded(
-        currentAssessment: updatedAssessment,
-        assessmentHistory: await _service.getUserAssessmentHistory(),
-        hasCurrentAssessment: true,
-        canEditCurrentAssessment: true,
-        currentMonthProgress: _calculateProgress(updatedAssessment),
-        remainingDaysToGoal: _calculateRemainingDays(updatedAssessment),
-      ));
+      emit(
+        ZoroWorkoutLoaded(
+          currentAssessment: updatedAssessment,
+          assessmentHistory: await _service.getUserAssessmentHistory(),
+          hasCurrentAssessment: true,
+          canEditCurrentAssessment: true,
+          currentMonthProgress: _calculateProgress(updatedAssessment),
+          remainingDaysToGoal: _calculateRemainingDays(updatedAssessment),
+        ),
+      );
     } catch (e) {
       emit(ZoroWorkoutError(message: 'Error updating workout days: $e'));
     }
@@ -166,23 +176,22 @@ class ZoroWorkoutBloc extends Bloc<ZoroWorkoutEvent, ZoroWorkoutState> {
       final currentAssessment = await _service.getCurrentUserAssessment();
       final assessmentHistory = await _service.getUserAssessmentHistory();
 
-      emit(ZoroWorkoutLoaded(
-        currentAssessment: currentAssessment,
-        assessmentHistory: assessmentHistory,
-        hasCurrentAssessment: currentAssessment != null,
-        canEditCurrentAssessment: true,
-        currentMonthProgress: _calculateProgress(currentAssessment),
-        remainingDaysToGoal: _calculateRemainingDays(currentAssessment),
-      ));
+      emit(
+        ZoroWorkoutLoaded(
+          currentAssessment: currentAssessment,
+          assessmentHistory: assessmentHistory,
+          hasCurrentAssessment: currentAssessment != null,
+          canEditCurrentAssessment: true,
+          currentMonthProgress: _calculateProgress(currentAssessment),
+          remainingDaysToGoal: _calculateRemainingDays(currentAssessment),
+        ),
+      );
     } catch (e) {
       emit(ZoroWorkoutError(message: 'Erro ao salvar plano de treino: $e'));
     }
   }
 
-  void _onClearError(
-    ClearError event,
-    Emitter<ZoroWorkoutState> emit,
-  ) {
+  void _onClearError(ClearError event, Emitter<ZoroWorkoutState> emit) {
     emit(const ZoroWorkoutInitial());
   }
 

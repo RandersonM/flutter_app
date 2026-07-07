@@ -23,19 +23,21 @@ class _ResultCardState extends State<ResultCard> {
 
   @override
   Widget build(BuildContext context) => Card(
-        color: Theme.of(context).colorScheme.primaryContainer,
-        child: ListTile(
-          onTap: () => Navigator.pushNamed(
-            context,
-            AppRoutes.characterDetails,
-            arguments: widget.character,
-          ),
-          leading: _buildAvatar(),
-          title: Text(widget.character.name),
-          subtitle: Text(widget.character.nickname ??
-              '฿${Constants.formatBounty(widget.character.bounty)}'),
-        ),
-      );
+    color: Theme.of(context).colorScheme.primaryContainer,
+    child: ListTile(
+      onTap: () => Navigator.pushNamed(
+        context,
+        AppRoutes.characterDetails,
+        arguments: widget.character,
+      ),
+      leading: _buildAvatar(),
+      title: Text(widget.character.name),
+      subtitle: Text(
+        widget.character.nickname ??
+            '฿${Constants.formatBounty(widget.character.bounty)}',
+      ),
+    ),
+  );
 
   Widget _buildAvatar() {
     return CircleAvatar(

@@ -8,8 +8,8 @@ class ListCrewsBloc extends Bloc<ListCrewsEvent, ListCrewsState> {
   final ICrewRepository _crewRepository;
 
   ListCrewsBloc({ICrewRepository? crewRepository})
-      : _crewRepository = crewRepository ?? getIt<ICrewRepository>(),
-        super(ListCrewsInitial()) {
+    : _crewRepository = crewRepository ?? getIt<ICrewRepository>(),
+      super(ListCrewsInitial()) {
     on<LoadCrews>(_onLoadCrews);
     on<LoadUserCrews>(_onLoadUserCrews);
     on<SearchCrews>(_onSearchCrews);
@@ -54,8 +54,10 @@ class ListCrewsBloc extends Bloc<ListCrewsEvent, ListCrewsState> {
     try {
       final allCrews = await _crewRepository.getAllCrews();
       final filteredCrews = allCrews
-          .where((crew) =>
-              crew.name.toLowerCase().contains(event.query.toLowerCase()))
+          .where(
+            (crew) =>
+                crew.name.toLowerCase().contains(event.query.toLowerCase()),
+          )
           .toList();
       emit(ListCrewsLoaded(filteredCrews));
     } catch (e) {
@@ -72,8 +74,10 @@ class ListCrewsBloc extends Bloc<ListCrewsEvent, ListCrewsState> {
     try {
       final userCrews = await _crewRepository.getUserCrews();
       final filteredCrews = userCrews
-          .where((crew) =>
-              crew.name.toLowerCase().contains(event.query.toLowerCase()))
+          .where(
+            (crew) =>
+                crew.name.toLowerCase().contains(event.query.toLowerCase()),
+          )
           .toList();
       emit(ListCrewsLoaded(filteredCrews));
     } catch (e) {

@@ -23,9 +23,9 @@ class CharacterBasicInfoSection extends StatelessWidget {
       children: [
         Text(
           l10n.basicInfo,
-          style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                fontWeight: FontWeight.bold,
-              ),
+          style: Theme.of(
+            context,
+          ).textTheme.headlineSmall?.copyWith(fontWeight: FontWeight.bold),
         ),
         const SizedBox(height: 16),
         CustomTextField(

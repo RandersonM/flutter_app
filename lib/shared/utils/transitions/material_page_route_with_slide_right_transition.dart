@@ -5,21 +5,26 @@ import 'package:flutter/material.dart';
 
 class MaterialPageRouteWithSlideRightTransition
     extends MaterialPageRoute<dynamic> {
-  MaterialPageRouteWithSlideRightTransition(
-      {required super.builder, super.settings});
+  MaterialPageRouteWithSlideRightTransition({
+    required super.builder,
+    super.settings,
+  });
 
   @override
-  Widget buildTransitions(BuildContext context, Animation<double> animation,
-      Animation<double> secondaryAnimation, Widget child) {
+  Widget buildTransitions(
+    BuildContext context,
+    Animation<double> animation,
+    Animation<double> secondaryAnimation,
+    Widget child,
+  ) {
     Offset begin = const Offset(1.0, 0);
     Offset end = Offset.zero;
     Cubic curve = Curves.easeIn;
-    Animatable<Offset> tween =
-        Tween<Offset>(begin: begin, end: end).chain(CurveTween(curve: curve));
+    Animatable<Offset> tween = Tween<Offset>(
+      begin: begin,
+      end: end,
+    ).chain(CurveTween(curve: curve));
 
-    return SlideTransition(
-      position: animation.drive(tween),
-      child: child,
-    );
+    return SlideTransition(position: animation.drive(tween), child: child);
   }
 }

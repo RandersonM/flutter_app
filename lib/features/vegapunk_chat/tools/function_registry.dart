@@ -45,7 +45,9 @@ class FunctionRegistry {
         reason: 'Unknown function "${call.name}".',
       );
     }
-    debugPrint('FunctionRegistry: executing "${call.name}" with args ${call.arguments}');
+    debugPrint(
+      'FunctionRegistry: executing "${call.name}" with args ${call.arguments}',
+    );
     return handler.execute(call);
   }
 

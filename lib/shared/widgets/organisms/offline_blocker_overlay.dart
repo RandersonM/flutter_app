@@ -21,10 +21,7 @@ import 'package:phosphoricons_flutter/phosphoricons_flutter.dart';
 /// ),
 /// ```
 class OfflineBlockerOverlay extends StatelessWidget {
-  const OfflineBlockerOverlay({
-    required this.child,
-    super.key,
-  });
+  const OfflineBlockerOverlay({required this.child, super.key});
 
   final Widget child;
 
@@ -35,8 +32,7 @@ class OfflineBlockerOverlay extends StatelessWidget {
         return Stack(
           children: [
             child,
-            if (state is ConnectivityOffline)
-              const _OfflineOverlayContent(),
+            if (state is ConnectivityOffline) const _OfflineOverlayContent(),
           ],
         );
       },

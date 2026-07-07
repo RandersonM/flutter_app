@@ -11,10 +11,7 @@ import 'package:opfan/shared/utils/constants.dart';
 class CrewStatistics extends StatelessWidget {
   final CrewModel crew;
 
-  const CrewStatistics({
-    super.key,
-    required this.crew,
-  });
+  const CrewStatistics({super.key, required this.crew});
 
   @override
   Widget build(BuildContext context) {

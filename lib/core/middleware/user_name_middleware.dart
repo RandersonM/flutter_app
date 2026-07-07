@@ -15,8 +15,11 @@ class UserNameMiddleware {
       return _specialNameReplacement;
     }
 
-    final words =
-        displayName.trim().split(' ').where((word) => word.isNotEmpty).toList();
+    final words = displayName
+        .trim()
+        .split(' ')
+        .where((word) => word.isNotEmpty)
+        .toList();
 
     if (words.length > _maxWords) {
       return words.take(_maxWords).join(' ');

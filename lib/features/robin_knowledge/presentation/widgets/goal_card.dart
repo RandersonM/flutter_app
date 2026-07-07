@@ -11,18 +11,13 @@ import 'package:opfan/l10n/app_localizations.dart';
 class GoalCard extends StatelessWidget {
   final GoalModel goal;
 
-  const GoalCard({
-    super.key,
-    required this.goal,
-  });
+  const GoalCard({super.key, required this.goal});
 
   @override
   Widget build(BuildContext context) {
     return Card(
       elevation: 2,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(12),
-      ),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
       child: InkWell(
         onTap: () => _navigateToDetails(context),
         borderRadius: BorderRadius.circular(12),
@@ -54,9 +49,9 @@ class GoalCard extends StatelessWidget {
             children: [
               Text(
                 goal.title,
-                style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                      fontWeight: FontWeight.bold,
-                    ),
+                style: Theme.of(
+                  context,
+                ).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
               ),
@@ -64,9 +59,9 @@ class GoalCard extends StatelessWidget {
                 const SizedBox(height: 4),
                 Text(
                   goal.description,
-                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                        color: Colors.grey[600],
-                      ),
+                  style: Theme.of(
+                    context,
+                  ).textTheme.bodyMedium?.copyWith(color: Colors.grey[600]),
                   maxLines: 2,
                   overflow: TextOverflow.ellipsis,
                 ),
@@ -127,16 +122,16 @@ class GoalCard extends StatelessWidget {
           children: [
             Text(
               AppLocalizations.of(context)!.progress,
-              style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                    fontWeight: FontWeight.w500,
-                  ),
+              style: Theme.of(
+                context,
+              ).textTheme.bodySmall?.copyWith(fontWeight: FontWeight.w500),
             ),
             Text(
               '${goal.progress.toInt()}%',
               style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                    fontWeight: FontWeight.bold,
-                    color: AppColors.purple[350],
-                  ),
+                fontWeight: FontWeight.bold,
+                color: AppColors.purple[350],
+              ),
             ),
           ],
         ),
@@ -156,10 +151,7 @@ class GoalCard extends StatelessWidget {
   Widget _buildFooter(BuildContext context) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        _buildDeadlineInfo(context),
-        _buildActions(context),
-      ],
+      children: [_buildDeadlineInfo(context), _buildActions(context)],
     );
   }
 
@@ -171,15 +163,17 @@ class GoalCard extends StatelessWidget {
     Color textColor;
 
     if (isOverdue) {
-      deadlineText =
-          AppLocalizations.of(context)!.overdueDays(daysUntilDeadline.abs());
+      deadlineText = AppLocalizations.of(
+        context,
+      )!.overdueDays(daysUntilDeadline.abs());
       textColor = Colors.red;
     } else if (daysUntilDeadline == 0) {
       deadlineText = AppLocalizations.of(context)!.dueToday;
       textColor = Colors.orange;
     } else if (daysUntilDeadline < 0) {
-      deadlineText =
-          AppLocalizations.of(context)!.dueDaysAgo(daysUntilDeadline.abs());
+      deadlineText = AppLocalizations.of(
+        context,
+      )!.dueDaysAgo(daysUntilDeadline.abs());
       textColor = Colors.red;
     } else {
       deadlineText = AppLocalizations.of(context)!.dueInDays(daysUntilDeadline);
@@ -188,18 +182,14 @@ class GoalCard extends StatelessWidget {
 
     return Row(
       children: [
-        AppIcon(
-          PhosphorIconsRegular.calendar,
-          size: 14,
-          color: textColor,
-        ),
+        AppIcon(PhosphorIconsRegular.calendar, size: 14, color: textColor),
         const SizedBox(width: 4),
         Text(
           deadlineText,
           style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                color: textColor,
-                fontWeight: FontWeight.w500,
-              ),
+            color: textColor,
+            fontWeight: FontWeight.w500,
+          ),
         ),
       ],
     );
@@ -262,9 +252,7 @@ class GoalCard extends StatelessWidget {
   void _navigateToDetails(BuildContext context) {
     Navigator.push(
       context,
-      MaterialPageRoute(
-        builder: (context) => GoalDetailsScreen(goal: goal),
-      ),
+      MaterialPageRoute(builder: (context) => GoalDetailsScreen(goal: goal)),
     );
   }
 
@@ -273,8 +261,9 @@ class GoalCard extends StatelessWidget {
       context: context,
       builder: (context) => AlertDialog(
         title: Text(AppLocalizations.of(context)!.deleteObjective),
-        content: Text(AppLocalizations.of(context)!
-            .deleteObjectiveConfirmation(goal.title)),
+        content: Text(
+          AppLocalizations.of(context)!.deleteObjectiveConfirmation(goal.title),
+        ),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),

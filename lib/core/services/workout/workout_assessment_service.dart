@@ -79,24 +79,30 @@ class WorkoutAssessmentService implements IWorkoutAssessmentService {
           weight: weight,
           waist: waist,
           bmi: bmi ?? (existingBmi is double ? existingBmi : null),
-          waistToHeightRatio: waistToHeightRatio ??
+          waistToHeightRatio:
+              waistToHeightRatio ??
               (existingWaistToHeightRatio is double
                   ? existingWaistToHeightRatio
                   : null),
-          bodyFatPercentage: bodyFatPercentage ??
+          bodyFatPercentage:
+              bodyFatPercentage ??
               (existingBodyFatPercentage is double
                   ? existingBodyFatPercentage
                   : null),
-          healthScore: healthScore ??
+          healthScore:
+              healthScore ??
               (existingHealthScore is double ? existingHealthScore : null),
-          workoutDaysGoal: workoutDaysGoal ??
+          workoutDaysGoal:
+              workoutDaysGoal ??
               (existingWorkoutDaysGoal is int ? existingWorkoutDaysGoal : null),
           workoutDays: workoutDays,
-          activityLevel: activityLevel ??
+          activityLevel:
+              activityLevel ??
               (existingActivityLevel is String ? existingActivityLevel : null),
           goal: goal ?? (existingGoal is String ? existingGoal : null),
-          createdAt:
-              existingCreatedAt is Timestamp ? existingCreatedAt.toDate() : now,
+          createdAt: existingCreatedAt is Timestamp
+              ? existingCreatedAt.toDate()
+              : now,
           updatedAt: now,
         );
 
@@ -132,15 +138,17 @@ class WorkoutAssessmentService implements IWorkoutAssessmentService {
         data['created_at'] = Timestamp.fromDate(assessment.createdAt);
         data['updated_at'] = Timestamp.fromDate(assessment.updatedAt);
 
-        final docRef =
-            await _firestore.collection('workout_assessments').add(data);
+        final docRef = await _firestore
+            .collection('workout_assessments')
+            .add(data);
 
         assessment = assessment.copyWith(id: docRef.id);
       }
       return assessment;
     } catch (e, stackTrace) {
       debugPrint(
-          'WorkoutAssessmentService: Error in saveWorkoutAssessment: $e');
+        'WorkoutAssessmentService: Error in saveWorkoutAssessment: $e',
+      );
       debugPrint('WorkoutAssessmentService: Stack trace: $stackTrace');
       rethrow;
     }
@@ -171,12 +179,14 @@ class WorkoutAssessmentService implements IWorkoutAssessmentService {
       data['id'] = doc.docs.first.id;
 
       if (data['created_at'] is Timestamp) {
-        data['created_at'] =
-            (data['created_at'] as Timestamp).toDate().toIso8601String();
+        data['created_at'] = (data['created_at'] as Timestamp)
+            .toDate()
+            .toIso8601String();
       }
       if (data['updated_at'] is Timestamp) {
-        data['updated_at'] =
-            (data['updated_at'] as Timestamp).toDate().toIso8601String();
+        data['updated_at'] = (data['updated_at'] as Timestamp)
+            .toDate()
+            .toIso8601String();
       }
 
       return WorkoutAssessmentModel.fromJson(data);
@@ -204,25 +214,31 @@ class WorkoutAssessmentService implements IWorkoutAssessmentService {
       }
 
       final sortedDocs = docs.docs.toList()
-        ..sort((a, b) => (b.data()['month_year'] as String)
-            .compareTo(a.data()['month_year'] as String));
+        ..sort(
+          (a, b) => (b.data()['month_year'] as String).compareTo(
+            a.data()['month_year'] as String,
+          ),
+        );
 
       final data = sortedDocs.first.data();
       data['id'] = sortedDocs.first.id;
 
       if (data['created_at'] is Timestamp) {
-        data['created_at'] =
-            (data['created_at'] as Timestamp).toDate().toIso8601String();
+        data['created_at'] = (data['created_at'] as Timestamp)
+            .toDate()
+            .toIso8601String();
       }
       if (data['updated_at'] is Timestamp) {
-        data['updated_at'] =
-            (data['updated_at'] as Timestamp).toDate().toIso8601String();
+        data['updated_at'] = (data['updated_at'] as Timestamp)
+            .toDate()
+            .toIso8601String();
       }
 
       return WorkoutAssessmentModel.fromJson(data);
     } catch (e) {
       debugPrint(
-          'WorkoutAssessmentService: Erro ao buscar avaliação mais recente: $e');
+        'WorkoutAssessmentService: Erro ao buscar avaliação mais recente: $e',
+      );
       return null;
     }
   }
@@ -247,7 +263,8 @@ class WorkoutAssessmentService implements IWorkoutAssessmentService {
       return doc.docs.isNotEmpty;
     } catch (e) {
       debugPrint(
-          'WorkoutAssessmentService: Erro ao verificar avaliação do mês atual: $e');
+        'WorkoutAssessmentService: Erro ao verificar avaliação do mês atual: $e',
+      );
       return false;
     }
   }
@@ -287,20 +304,25 @@ class WorkoutAssessmentService implements IWorkoutAssessmentService {
           .get();
 
       final sortedDocs = docs.docs.toList()
-        ..sort((a, b) => (b.data()['month_year'] as String)
-            .compareTo(a.data()['month_year'] as String));
+        ..sort(
+          (a, b) => (b.data()['month_year'] as String).compareTo(
+            a.data()['month_year'] as String,
+          ),
+        );
 
       return sortedDocs.map((doc) {
         final data = doc.data();
         data['id'] = doc.id;
 
         if (data['created_at'] is Timestamp) {
-          data['created_at'] =
-              (data['created_at'] as Timestamp).toDate().toIso8601String();
+          data['created_at'] = (data['created_at'] as Timestamp)
+              .toDate()
+              .toIso8601String();
         }
         if (data['updated_at'] is Timestamp) {
-          data['updated_at'] =
-              (data['updated_at'] as Timestamp).toDate().toIso8601String();
+          data['updated_at'] = (data['updated_at'] as Timestamp)
+              .toDate()
+              .toIso8601String();
         }
 
         return WorkoutAssessmentModel.fromJson(data);
@@ -355,7 +377,8 @@ class WorkoutAssessmentService implements IWorkoutAssessmentService {
       }
     } catch (e) {
       debugPrint(
-          'WorkoutAssessmentService: Erro ao deletar todas as avaliações: $e');
+        'WorkoutAssessmentService: Erro ao deletar todas as avaliações: $e',
+      );
       rethrow;
     }
   }
@@ -387,7 +410,8 @@ class WorkoutAssessmentService implements IWorkoutAssessmentService {
       });
     } catch (e) {
       debugPrint(
-          'WorkoutAssessmentService: Erro ao atualizar dias de treino: $e');
+        'WorkoutAssessmentService: Erro ao atualizar dias de treino: $e',
+      );
       rethrow;
     }
   }
@@ -482,17 +506,20 @@ class WorkoutAssessmentService implements IWorkoutAssessmentService {
           bodyFatPercentage: existingBodyFatPercentage is double
               ? existingBodyFatPercentage
               : null,
-          healthScore:
-              existingHealthScore is double ? existingHealthScore : null,
+          healthScore: existingHealthScore is double
+              ? existingHealthScore
+              : null,
           workoutDays: existingWorkoutDays is List
               ? List<int>.from(existingWorkoutDays)
               : null,
-          workoutDaysGoal:
-              existingWorkoutDaysGoal is int ? existingWorkoutDaysGoal : null,
+          workoutDaysGoal: existingWorkoutDaysGoal is int
+              ? existingWorkoutDaysGoal
+              : null,
           activityLevel: activityLevel,
           goal: goal,
-          createdAt:
-              existingCreatedAt is Timestamp ? existingCreatedAt.toDate() : now,
+          createdAt: existingCreatedAt is Timestamp
+              ? existingCreatedAt.toDate()
+              : now,
           updatedAt: now,
         );
 
@@ -528,8 +555,9 @@ class WorkoutAssessmentService implements IWorkoutAssessmentService {
         data['created_at'] = Timestamp.fromDate(assessment.createdAt);
         data['updated_at'] = Timestamp.fromDate(assessment.updatedAt);
 
-        final docRef =
-            await _firestore.collection('workout_assessments').add(data);
+        final docRef = await _firestore
+            .collection('workout_assessments')
+            .add(data);
 
         assessment = assessment.copyWith(id: docRef.id);
       }

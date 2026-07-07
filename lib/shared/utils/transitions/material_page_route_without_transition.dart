@@ -5,11 +5,13 @@ import 'package:flutter/material.dart';
 /// animation.
 ///
 class MaterialPageRouteWithoutTransition<T> extends MaterialPageRoute<T> {
-  MaterialPageRouteWithoutTransition(
-      {required super.builder, super.settings});
+  MaterialPageRouteWithoutTransition({required super.builder, super.settings});
 
   @override
-  Widget buildTransitions(BuildContext context, Animation<double> animation,
-          Animation<double> secondaryAnimation, Widget child) =>
-      child;
+  Widget buildTransitions(
+    BuildContext context,
+    Animation<double> animation,
+    Animation<double> secondaryAnimation,
+    Widget child,
+  ) => child;
 }

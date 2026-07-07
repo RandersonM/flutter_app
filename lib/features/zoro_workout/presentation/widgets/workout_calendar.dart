@@ -68,10 +68,7 @@ class _WorkoutCalendarState extends State<WorkoutCalendar> {
         _updateCurrentMonthDays();
         if (mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text(state.message),
-              backgroundColor: Colors.red,
-            ),
+            SnackBar(content: Text(state.message), backgroundColor: Colors.red),
           );
         }
       }
@@ -91,10 +88,16 @@ class _WorkoutCalendarState extends State<WorkoutCalendar> {
   }
 
   Widget _buildCalendarGrid(BuildContext context) {
-    final daysInMonth =
-        DateTime(_currentMonth.year, _currentMonth.month + 1, 0).day;
-    final firstDayOfMonth =
-        DateTime(_currentMonth.year, _currentMonth.month, 1);
+    final daysInMonth = DateTime(
+      _currentMonth.year,
+      _currentMonth.month + 1,
+      0,
+    ).day;
+    final firstDayOfMonth = DateTime(
+      _currentMonth.year,
+      _currentMonth.month,
+      1,
+    );
     final firstWeekday = firstDayOfMonth.weekday;
 
     final List<Widget> calendarDays = [];
@@ -108,7 +111,8 @@ class _WorkoutCalendarState extends State<WorkoutCalendar> {
     for (int day = 1; day <= daysInMonth; day++) {
       final isWorkoutDay = _workoutDays.contains(day);
 
-      final isToday = day == DateTime.now().day &&
+      final isToday =
+          day == DateTime.now().day &&
           _currentMonth.month == DateTime.now().month &&
           _currentMonth.year == DateTime.now().year;
 
@@ -135,7 +139,8 @@ class _WorkoutCalendarState extends State<WorkoutCalendar> {
 
                   if (_isCurrentMonth()) {
                     _bloc.add(
-                        UpdateWorkoutDays(workoutDays: _workoutDays.toList()));
+                      UpdateWorkoutDays(workoutDays: _workoutDays.toList()),
+                    );
                   }
                 }
               : null,
@@ -147,20 +152,17 @@ class _WorkoutCalendarState extends State<WorkoutCalendar> {
               color: isWorkoutDay
                   ? Colors.green.shade600
                   : isToday
-                      ? Theme.of(context)
-                          .colorScheme
-                          .primary
-                          .withValues(alpha: 0.1)
-                      : isEditable
-                          ? Colors.transparent
-                          : AppColors.grey[700]!,
+                  ? Theme.of(context).colorScheme.primary.withValues(alpha: 0.1)
+                  : isEditable
+                  ? Colors.transparent
+                  : AppColors.grey[700]!,
               borderRadius: BorderRadius.circular(6),
               border: Border.all(
                 color: isToday
                     ? Theme.of(context).colorScheme.primary
                     : isEditable
-                        ? AppColors.grey[300]!
-                        : AppColors.grey[200]!,
+                    ? AppColors.grey[300]!
+                    : AppColors.grey[200]!,
                 width: isToday ? 2 : 1,
               ),
             ),
@@ -177,8 +179,8 @@ class _WorkoutCalendarState extends State<WorkoutCalendar> {
                       color: isToday
                           ? Theme.of(context).colorScheme.primary
                           : isEditable
-                              ? Theme.of(context).colorScheme.onSecondary
-                              : Colors.grey.shade400,
+                          ? Theme.of(context).colorScheme.onSecondary
+                          : Colors.grey.shade400,
                     ),
             ),
           ),
@@ -190,28 +192,31 @@ class _WorkoutCalendarState extends State<WorkoutCalendar> {
       children: [
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: [
-            AppLocalizations.of(context)!.workout_calendar_sunday,
-            AppLocalizations.of(context)!.workout_calendar_monday,
-            AppLocalizations.of(context)!.workout_calendar_tuesday,
-            AppLocalizations.of(context)!.workout_calendar_wednesday,
-            AppLocalizations.of(context)!.workout_calendar_thursday,
-            AppLocalizations.of(context)!.workout_calendar_friday,
-            AppLocalizations.of(context)!.workout_calendar_saturday,
-          ]
-              .map((day) => SizedBox(
-                    width: 35,
-                    child: Text(
-                      day,
-                      textAlign: TextAlign.center,
-                      style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                            fontWeight: FontWeight.bold,
-                            color: Colors.grey.shade600,
-                            fontSize: 10,
-                          ),
+          children:
+              [
+                    AppLocalizations.of(context)!.workout_calendar_sunday,
+                    AppLocalizations.of(context)!.workout_calendar_monday,
+                    AppLocalizations.of(context)!.workout_calendar_tuesday,
+                    AppLocalizations.of(context)!.workout_calendar_wednesday,
+                    AppLocalizations.of(context)!.workout_calendar_thursday,
+                    AppLocalizations.of(context)!.workout_calendar_friday,
+                    AppLocalizations.of(context)!.workout_calendar_saturday,
+                  ]
+                  .map(
+                    (day) => SizedBox(
+                      width: 35,
+                      child: Text(
+                        day,
+                        textAlign: TextAlign.center,
+                        style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                          fontWeight: FontWeight.bold,
+                          color: Colors.grey.shade600,
+                          fontSize: 10,
+                        ),
+                      ),
                     ),
-                  ))
-              .toList(),
+                  )
+                  .toList(),
         ),
         const SizedBox(height: 8),
         GridView.count(
@@ -250,9 +255,9 @@ class _WorkoutCalendarState extends State<WorkoutCalendar> {
               Expanded(
                 child: Text(
                   AppLocalizations.of(context)!.workout_calendar_title,
-                  style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                        fontWeight: FontWeight.bold,
-                      ),
+                  style: Theme.of(
+                    context,
+                  ).textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold),
                 ),
               ),
               Row(
@@ -262,7 +267,9 @@ class _WorkoutCalendarState extends State<WorkoutCalendar> {
                     onPressed: () {
                       setState(() {
                         _currentMonth = DateTime(
-                            _currentMonth.year, _currentMonth.month - 1);
+                          _currentMonth.year,
+                          _currentMonth.month - 1,
+                        );
                       });
                       _updateCurrentMonthDays();
                     },
@@ -277,7 +284,9 @@ class _WorkoutCalendarState extends State<WorkoutCalendar> {
                     onPressed: () {
                       setState(() {
                         _currentMonth = DateTime(
-                            _currentMonth.year, _currentMonth.month + 1);
+                          _currentMonth.year,
+                          _currentMonth.month + 1,
+                        );
                       });
                       _updateCurrentMonthDays();
                     },
@@ -301,16 +310,19 @@ class _WorkoutCalendarState extends State<WorkoutCalendar> {
               ),
               child: Row(
                 children: [
-                  AppIcon(PhosphorIconsRegular.info,
-                      color: Colors.orange.shade600, size: 16),
+                  AppIcon(
+                    PhosphorIconsRegular.info,
+                    color: Colors.orange.shade600,
+                    size: 16,
+                  ),
                   const SizedBox(width: 8),
                   Expanded(
                     child: Text(
                       'Apenas o mês atual permite edição dos dias de exercício',
                       style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                            color: Colors.orange.shade700,
-                            fontSize: 11,
-                          ),
+                        color: Colors.orange.shade700,
+                        fontSize: 11,
+                      ),
                     ),
                   ),
                 ],

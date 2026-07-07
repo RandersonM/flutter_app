@@ -36,17 +36,21 @@ class GetCharacterInfoHandler extends ToolHandler {
 
   @override
   Map<String, String> get parameterDescriptions => {
-        'characterName': 'The name of the character to search for (e.g., "Luffy", "Zoro").',
-      };
+    'characterName':
+        'The name of the character to search for (e.g., "Luffy", "Zoro").',
+  };
 
   @override
   Map<String, String> get parameterDescriptionsPt => {
-        'characterName': 'O nome do personagem a ser buscado (ex: "Luffy", "Zoro").',
-      };
+    'characterName':
+        'O nome do personagem a ser buscado (ex: "Luffy", "Zoro").',
+  };
 
   @override
   Future<ToolResult> execute(ToolCall call) async {
-    debugPrint('GetCharacterInfoHandler: fetching character info for ${call.arguments['characterName']}');
+    debugPrint(
+      'GetCharacterInfoHandler: fetching character info for ${call.arguments['characterName']}',
+    );
 
     try {
       final characterName = call.arguments['characterName'] as String?;
@@ -59,10 +63,12 @@ class GetCharacterInfoHandler extends ToolHandler {
       }
 
       // Search in featured characters (canonical One Piece characters)
-      final featuredCharacters = await _featuredCharacterRepository.searchOnePieceCharacters(characterName.trim());
+      final featuredCharacters = await _featuredCharacterRepository
+          .searchOnePieceCharacters(characterName.trim());
 
       // Search in custom characters (user created characters)
-      final customCharacters = await _customCharacterRepository.searchCustomCharactersByName(characterName.trim());
+      final customCharacters = await _customCharacterRepository
+          .searchCustomCharactersByName(characterName.trim());
 
       if (featuredCharacters.isEmpty && customCharacters.isEmpty) {
         return ToolResult.success(

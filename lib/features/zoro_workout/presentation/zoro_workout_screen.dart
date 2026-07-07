@@ -70,8 +70,9 @@ class _WorkoutScreenState extends State<WorkoutScreen> {
             final assessment = state.currentAssessment!;
             if (assessment.workoutDaysGoal != null) {
               _healthResults = assessment.toJson();
-              _recommendedExercises =
-                  _getRecommendedExercises(assessment.toJson());
+              _recommendedExercises = _getRecommendedExercises(
+                assessment.toJson(),
+              );
               _showResults = true;
             }
           }
@@ -146,7 +147,8 @@ class _WorkoutScreenState extends State<WorkoutScreen> {
   }
 
   List<Map<String, dynamic>> _getRecommendedExercises(
-      Map<String, dynamic> results) {
+    Map<String, dynamic> results,
+  ) {
     List<Map<String, dynamic>> exercises = [];
 
     final healthScore = results['health_score'] as double? ?? 0.0;
@@ -168,8 +170,9 @@ class _WorkoutScreenState extends State<WorkoutScreen> {
     if (healthScore >= excellentThreshold) {
       exercises = [
         {
-          'name':
-              AppLocalizations.of(context)!.workout_exercise_advanced_strength,
+          'name': AppLocalizations.of(
+            context,
+          )!.workout_exercise_advanced_strength,
           'icon': PhosphorIconsRegular.barbell,
         },
         {
@@ -177,13 +180,15 @@ class _WorkoutScreenState extends State<WorkoutScreen> {
           'icon': PhosphorIconsRegular.gauge,
         },
         {
-          'name':
-              AppLocalizations.of(context)!.workout_exercise_competitive_sports,
+          'name': AppLocalizations.of(
+            context,
+          )!.workout_exercise_competitive_sports,
           'icon': PhosphorIconsRegular.soccerBall,
         },
         {
-          'name':
-              AppLocalizations.of(context)!.workout_exercise_complex_functional,
+          'name': AppLocalizations.of(
+            context,
+          )!.workout_exercise_complex_functional,
           'icon': PhosphorIconsRegular.personArmsSpread,
         },
         {
@@ -194,13 +199,15 @@ class _WorkoutScreenState extends State<WorkoutScreen> {
     } else if (healthScore >= goodThreshold) {
       exercises = [
         {
-          'name':
-              AppLocalizations.of(context)!.workout_exercise_strength_training,
+          'name': AppLocalizations.of(
+            context,
+          )!.workout_exercise_strength_training,
           'icon': PhosphorIconsRegular.barbell,
         },
         {
-          'name':
-              AppLocalizations.of(context)!.workout_exercise_moderate_cardio,
+          'name': AppLocalizations.of(
+            context,
+          )!.workout_exercise_moderate_cardio,
           'icon': PhosphorIconsRegular.sneaker,
         },
         {
@@ -212,8 +219,9 @@ class _WorkoutScreenState extends State<WorkoutScreen> {
           'icon': PhosphorIconsRegular.handsPraying,
         },
         {
-          'name': AppLocalizations.of(context)!
-              .workout_exercise_recreational_sports,
+          'name': AppLocalizations.of(
+            context,
+          )!.workout_exercise_recreational_sports,
           'icon': PhosphorIconsRegular.basketball,
         },
       ];
@@ -247,13 +255,15 @@ class _WorkoutScreenState extends State<WorkoutScreen> {
           'icon': PhosphorIconsRegular.personSimpleWalk,
         },
         {
-          'name':
-              AppLocalizations.of(context)!.workout_exercise_light_stretching,
+          'name': AppLocalizations.of(
+            context,
+          )!.workout_exercise_light_stretching,
           'icon': PhosphorIconsRegular.personArmsSpread,
         },
         {
-          'name': AppLocalizations.of(context)!
-              .workout_exercise_soft_water_aerobics,
+          'name': AppLocalizations.of(
+            context,
+          )!.workout_exercise_soft_water_aerobics,
           'icon': PhosphorIconsRegular.waves,
         },
         {
@@ -261,8 +271,9 @@ class _WorkoutScreenState extends State<WorkoutScreen> {
           'icon': PhosphorIconsRegular.handsPraying,
         },
         {
-          'name': AppLocalizations.of(context)!
-              .workout_exercise_consult_professional,
+          'name': AppLocalizations.of(
+            context,
+          )!.workout_exercise_consult_professional,
           'icon': PhosphorIconsRegular.firstAid,
         },
       ];
@@ -271,8 +282,9 @@ class _WorkoutScreenState extends State<WorkoutScreen> {
     if (waistToHeightRatio > goodWaistThreshold) {
       exercises.addAll([
         {
-          'name': AppLocalizations.of(context)!
-              .workout_exercise_cardiovascular_focus,
+          'name': AppLocalizations.of(
+            context,
+          )!.workout_exercise_cardiovascular_focus,
           'icon': PhosphorIconsRegular.heart,
         },
         {
@@ -293,13 +305,15 @@ class _WorkoutScreenState extends State<WorkoutScreen> {
           'icon': PhosphorIconsRegular.trendDown,
         },
         {
-          'name': AppLocalizations.of(context)!
-              .workout_exercise_professional_supervision,
+          'name': AppLocalizations.of(
+            context,
+          )!.workout_exercise_professional_supervision,
           'icon': PhosphorIconsRegular.userList,
         },
         {
-          'name': AppLocalizations.of(context)!
-              .workout_exercise_gradual_progression,
+          'name': AppLocalizations.of(
+            context,
+          )!.workout_exercise_gradual_progression,
           'icon': PhosphorIconsRegular.trendUp,
         },
       ]);
@@ -314,8 +328,9 @@ class _WorkoutScreenState extends State<WorkoutScreen> {
       appBar: DefaultAppBar(
         title: Text(AppLocalizations.of(context)!.workout_title_screen),
       ),
-      bottomNavigationBar:
-          const BottomNavigation(BottomNavigationPages.workout),
+      bottomNavigationBar: const BottomNavigation(
+        BottomNavigationPages.workout,
+      ),
       body: MultiBlocProvider(
         providers: [
           BlocProvider.value(value: _bloc),
@@ -323,40 +338,40 @@ class _WorkoutScreenState extends State<WorkoutScreen> {
         ],
         child: OfflineBlockerOverlay(
           child: Container(
-          color: Theme.of(context).colorScheme.surface,
-          child: SingleChildScrollView(
-            padding: const EdgeInsets.symmetric(horizontal: Constants.margin),
-            child: Column(
-              children: [
-                WorkoutHeader(currentAssessment: _currentAssessment),
-                const SizedBox(height: 20),
-                if (_isLoading)
-                  Center(
-                    child: Column(
-                      children: [
-                        const CircularProgressIndicator(),
-                        const SizedBox(height: 16),
-                        Text(AppLocalizations.of(context)!.loading),
-                      ],
+            color: Theme.of(context).colorScheme.surface,
+            child: SingleChildScrollView(
+              padding: const EdgeInsets.symmetric(horizontal: Constants.margin),
+              child: Column(
+                children: [
+                  WorkoutHeader(currentAssessment: _currentAssessment),
+                  const SizedBox(height: 20),
+                  if (_isLoading)
+                    Center(
+                      child: Column(
+                        children: [
+                          const CircularProgressIndicator(),
+                          const SizedBox(height: 16),
+                          Text(AppLocalizations.of(context)!.loading),
+                        ],
+                      ),
+                    )
+                  else if (_showResults && _healthResults != null)
+                    WorkoutResults(
+                      healthResults: _healthResults!,
+                      recommendedExercises: _recommendedExercises,
+                      onBackToSetup: _onBackToSetup,
+                      currentAssessment: _currentAssessment,
+                    )
+                  else
+                    WorkoutSetup(
+                      onCalculate: _onCalculate,
+                      existingData: _existingData,
                     ),
-                  )
-                else if (_showResults && _healthResults != null)
-                  WorkoutResults(
-                    healthResults: _healthResults!,
-                    recommendedExercises: _recommendedExercises,
-                    onBackToSetup: _onBackToSetup,
-                    currentAssessment: _currentAssessment,
-                  )
-                else
-                  WorkoutSetup(
-                    onCalculate: _onCalculate,
-                    existingData: _existingData,
-                  ),
-                const SizedBox(height: Constants.margin * 2),
-              ],
+                  const SizedBox(height: Constants.margin * 2),
+                ],
+              ),
             ),
           ),
-        ),
         ),
       ),
     );

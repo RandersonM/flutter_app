@@ -11,10 +11,7 @@ import 'package:intl/intl.dart';
 class CrewInfoSection extends StatelessWidget {
   final CrewModel crew;
 
-  const CrewInfoSection({
-    super.key,
-    required this.crew,
-  });
+  const CrewInfoSection({super.key, required this.crew});
 
   @override
   Widget build(BuildContext context) {
@@ -23,9 +20,7 @@ class CrewInfoSection extends StatelessWidget {
 
     return Card(
       elevation: 2.0,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(16.0),
-      ),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16.0)),
       child: Padding(
         padding: const EdgeInsets.all(Constants.margin * 2),
         child: Column(
@@ -88,17 +83,17 @@ class CrewInfoSection extends StatelessWidget {
   }
 
   Widget _buildInfoRow(
-      BuildContext context, IconData icon, String label, String value) {
+    BuildContext context,
+    IconData icon,
+    String label,
+    String value,
+  ) {
     final theme = Theme.of(context);
 
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Icon(
-          icon,
-          size: 20,
-          color: theme.colorScheme.primary,
-        ),
+        Icon(icon, size: 20, color: theme.colorScheme.primary),
         const SizedBox(width: Constants.margin),
         Expanded(
           child: Column(

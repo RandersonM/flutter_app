@@ -12,10 +12,7 @@ import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 class YouTubePlayerScreen extends StatefulWidget {
   final YouTubeVideo video;
 
-  const YouTubePlayerScreen({
-    super.key,
-    required this.video,
-  });
+  const YouTubePlayerScreen({super.key, required this.video});
 
   @override
   State<YouTubePlayerScreen> createState() => _YouTubePlayerScreenState();
@@ -23,7 +20,6 @@ class YouTubePlayerScreen extends StatefulWidget {
 
 class _YouTubePlayerScreenState extends State<YouTubePlayerScreen> {
   late YoutubePlayerController _controller;
-
 
   @override
   void initState() {
@@ -39,7 +35,6 @@ class _YouTubePlayerScreenState extends State<YouTubePlayerScreen> {
     );
   }
 
-
   @override
   void dispose() {
     _controller.close();
@@ -52,115 +47,116 @@ class _YouTubePlayerScreenState extends State<YouTubePlayerScreen> {
       value: getIt<ConnectivityCubit>(),
       child: Scaffold(
         backgroundColor: Colors.black,
-      appBar: AppBar(
-        backgroundColor: Colors.black,
-        foregroundColor: Colors.white,
-        title: Text(
-          widget.video.title,
-          overflow: TextOverflow.ellipsis,
-        ),
-        actions: [
-          IconButton(
-            icon: const AppIcon(PhosphorIconsRegular.shareNetwork),
-            onPressed: () {
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(
-                  content: Text(AppLocalizations.of(context)!
-                      .linkLabel(widget.video.youTubeUrl)),
-                  action: SnackBarAction(
-                    label: AppLocalizations.of(context)!.copyAction,
-                    onPressed: () {
-                      // Implementar cópia para clipboard
-                    },
+        appBar: AppBar(
+          backgroundColor: Colors.black,
+          foregroundColor: Colors.white,
+          title: Text(widget.video.title, overflow: TextOverflow.ellipsis),
+          actions: [
+            IconButton(
+              icon: const AppIcon(PhosphorIconsRegular.shareNetwork),
+              onPressed: () {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    content: Text(
+                      AppLocalizations.of(
+                        context,
+                      )!.linkLabel(widget.video.youTubeUrl),
+                    ),
+                    action: SnackBarAction(
+                      label: AppLocalizations.of(context)!.copyAction,
+                      onPressed: () {
+                        // Implementar cópia para clipboard
+                      },
+                    ),
                   ),
-                ),
-              );
-            },
-          ),
-        ],
-      ),
-      body: OfflineBlockerOverlay(
-        child: Column(
-          children: [
-          YoutubePlayer(controller: _controller,
+                );
+              },
             ),
-            Expanded(
-              child: SingleChildScrollView(
-                padding: const EdgeInsets.all(16),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      widget.video.title,
-                      style: const TextStyle(
-                        color: Colors.white,
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    const SizedBox(height: 8),
-                    Text(
-                      'Por: ${widget.video.channelTitle}',
-                      style: const TextStyle(
-                        color: Colors.grey,
-                        fontSize: 14,
-                      ),
-                    ),
-                    const SizedBox(height: 16),
-                    if (widget.video.description.isNotEmpty) ...[
-                      const Text(
-                        'Descrição:',
-                        style: TextStyle(
+          ],
+        ),
+        body: OfflineBlockerOverlay(
+          child: Column(
+            children: [
+              YoutubePlayer(controller: _controller),
+              Expanded(
+                child: SingleChildScrollView(
+                  padding: const EdgeInsets.all(16),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        widget.video.title,
+                        style: const TextStyle(
                           color: Colors.white,
-                          fontSize: 16,
+                          fontSize: 18,
                           fontWeight: FontWeight.bold,
                         ),
                       ),
                       const SizedBox(height: 8),
                       Text(
-                        widget.video.description,
+                        'Por: ${widget.video.channelTitle}',
                         style: const TextStyle(
                           color: Colors.grey,
                           fontSize: 14,
-                          height: 1.4,
                         ),
                       ),
-                    ],
-                    const SizedBox(height: 24),
-                    Row(
-                      children: [
-                        Expanded(
-                          child: OutlinedButton.icon(
-                            onPressed: () {
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                const SnackBar(
-                                  content: Text(
-                                      'Abrir no YouTube - Em desenvolvimento'),
-                                ),
-                              );
-                            },
-                            icon: const AppIcon(
-                                PhosphorIconsRegular.arrowSquareOut,
-                                color: Colors.red),
-                            label: const Text(
-                              'Abrir no YouTube',
-                              style: TextStyle(color: Colors.white),
-                            ),
-                            style: OutlinedButton.styleFrom(
-                              side: const BorderSide(color: Colors.red),
-                            ),
+                      const SizedBox(height: 16),
+                      if (widget.video.description.isNotEmpty) ...[
+                        const Text(
+                          'Descrição:',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        const SizedBox(height: 8),
+                        Text(
+                          widget.video.description,
+                          style: const TextStyle(
+                            color: Colors.grey,
+                            fontSize: 14,
+                            height: 1.4,
                           ),
                         ),
                       ],
-                    ),
-                  ],
+                      const SizedBox(height: 24),
+                      Row(
+                        children: [
+                          Expanded(
+                            child: OutlinedButton.icon(
+                              onPressed: () {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  const SnackBar(
+                                    content: Text(
+                                      'Abrir no YouTube - Em desenvolvimento',
+                                    ),
+                                  ),
+                                );
+                              },
+                              icon: const AppIcon(
+                                PhosphorIconsRegular.arrowSquareOut,
+                                color: Colors.red,
+                              ),
+                              label: const Text(
+                                'Abrir no YouTube',
+                                style: TextStyle(color: Colors.white),
+                              ),
+                              style: OutlinedButton.styleFrom(
+                                side: const BorderSide(color: Colors.red),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
-    ),
     );
   }
 }

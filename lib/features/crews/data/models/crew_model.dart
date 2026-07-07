@@ -103,7 +103,9 @@ class CrewModel {
   }
 
   factory CrewModel.fromFirestore(
-      Map<String, dynamic> data, String documentId) {
+    Map<String, dynamic> data,
+    String documentId,
+  ) {
     return CrewModel(
       id: documentId,
       name: data['name'] ?? '',

@@ -57,10 +57,10 @@ class CustomCharacterCard extends StatelessWidget {
                               if (loadingProgress == null) return child;
                               return Center(
                                 child: CircularProgressIndicator(
-                                  value: loadingProgress.expectedTotalBytes !=
-                                          null
+                                  value:
+                                      loadingProgress.expectedTotalBytes != null
                                       ? loadingProgress.cumulativeBytesLoaded /
-                                          loadingProgress.expectedTotalBytes!
+                                            loadingProgress.expectedTotalBytes!
                                       : null,
                                 ),
                               );
@@ -86,14 +86,13 @@ class CustomCharacterCard extends StatelessWidget {
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
                         style: Theme.of(context).textTheme.bodySmall!.merge(
-                              TextStyle(
-                                fontWeight: FontWeight.bold,
-                                color: Theme.of(context)
-                                    .appBarTheme
-                                    .titleTextStyle!
-                                    .color,
-                              ),
-                            ),
+                          TextStyle(
+                            fontWeight: FontWeight.bold,
+                            color: Theme.of(
+                              context,
+                            ).appBarTheme.titleTextStyle!.color,
+                          ),
+                        ),
                       ),
                     ),
                     if (character.nickname != null &&
@@ -106,11 +105,11 @@ class CustomCharacterCard extends StatelessWidget {
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
                           style: Theme.of(context).textTheme.bodySmall!.merge(
-                                TextStyle(
-                                  color: Colors.grey[600],
-                                  fontStyle: FontStyle.italic,
-                                ),
-                              ),
+                            TextStyle(
+                              color: Colors.grey[600],
+                              fontStyle: FontStyle.italic,
+                            ),
+                          ),
                         ),
                       ),
                   ],
@@ -123,8 +122,10 @@ class CustomCharacterCard extends StatelessWidget {
                     if (onEdit != null)
                       IconButton(
                         onPressed: onEdit,
-                        icon: const AppIcon(PhosphorIconsRegular.pencil,
-                            size: 16),
+                        icon: const AppIcon(
+                          PhosphorIconsRegular.pencil,
+                          size: 16,
+                        ),
                         tooltip: AppLocalizations.of(context)!.edit,
                         padding: EdgeInsets.zero,
                         constraints: const BoxConstraints(),
@@ -132,8 +133,11 @@ class CustomCharacterCard extends StatelessWidget {
                     if (onDelete != null)
                       IconButton(
                         onPressed: onDelete,
-                        icon: const AppIcon(PhosphorIconsRegular.trash,
-                            size: 16, color: Colors.red),
+                        icon: const AppIcon(
+                          PhosphorIconsRegular.trash,
+                          size: 16,
+                          color: Colors.red,
+                        ),
                         tooltip: AppLocalizations.of(context)!.delete,
                         padding: EdgeInsets.zero,
                         constraints: const BoxConstraints(),
@@ -155,11 +159,7 @@ class CustomCharacterCard extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          AppIcon(
-            PhosphorIconsRegular.user,
-            size: 48,
-            color: Colors.grey[600],
-          ),
+          AppIcon(PhosphorIconsRegular.user, size: 48, color: Colors.grey[600]),
           const SizedBox(height: 8),
           Text(
             AppLocalizations.of(context)!.noImage,

@@ -24,17 +24,18 @@ class YouTubeService implements IYouTubeService {
   static const Duration _quotaResetDuration = Duration(hours: 24);
 
   YouTubeService() {
-    _dio = Dio(BaseOptions(
-      baseUrl: _env.youtubeBaseUrl,
-      connectTimeout: Duration(milliseconds: _env.networkTimeout),
-      receiveTimeout: Duration(milliseconds: _env.networkTimeout),
-    ));
+    _dio = Dio(
+      BaseOptions(
+        baseUrl: _env.youtubeBaseUrl,
+        connectTimeout: Duration(milliseconds: _env.networkTimeout),
+        receiveTimeout: Duration(milliseconds: _env.networkTimeout),
+      ),
+    );
 
     if (kDebugMode) {
-      _dio.interceptors.add(LogInterceptor(
-        requestBody: true,
-        responseBody: true,
-      ));
+      _dio.interceptors.add(
+        LogInterceptor(requestBody: true, responseBody: true),
+      );
     }
   }
 
@@ -61,16 +62,19 @@ class YouTubeService implements IYouTubeService {
 
       _recordRequest();
 
-      final response = await _dio.get('/search', queryParameters: {
-        'part': 'snippet',
-        'q': query,
-        'type': 'video',
-        'maxResults': 5,
-        'order': 'relevance',
-        'key': _env.youtubeApiKey,
-        'safeSearch': 'none',
-        'videoEmbeddable': 'true',
-      });
+      final response = await _dio.get(
+        '/search',
+        queryParameters: {
+          'part': 'snippet',
+          'q': query,
+          'type': 'video',
+          'maxResults': 5,
+          'order': 'relevance',
+          'key': _env.youtubeApiKey,
+          'safeSearch': 'none',
+          'videoEmbeddable': 'true',
+        },
+      );
 
       if (response.statusCode == 200) {
         final data = response.data;
@@ -107,8 +111,10 @@ class YouTubeService implements IYouTubeService {
   }
 
   @override
-  Future<List<YouTubeVideo>> searchMultipleCharacterAMVs(String characterName,
-      {int maxResults = 3}) async {
+  Future<List<YouTubeVideo>> searchMultipleCharacterAMVs(
+    String characterName, {
+    int maxResults = 3,
+  }) async {
     final cacheKey = _getCacheKey(characterName, maxResults);
     if (_multipleVideoCache.containsKey(cacheKey)) {
       return _multipleVideoCache[cacheKey]!;
@@ -129,23 +135,27 @@ class YouTubeService implements IYouTubeService {
 
       _recordRequest();
 
-      final response = await _dio.get('/search', queryParameters: {
-        'part': 'snippet',
-        'q': query,
-        'type': 'video',
-        'maxResults': maxResults,
-        'order': 'relevance',
-        'key': _env.youtubeApiKey,
-        'safeSearch': 'none',
-        'videoEmbeddable': 'true',
-      });
+      final response = await _dio.get(
+        '/search',
+        queryParameters: {
+          'part': 'snippet',
+          'q': query,
+          'type': 'video',
+          'maxResults': maxResults,
+          'order': 'relevance',
+          'key': _env.youtubeApiKey,
+          'safeSearch': 'none',
+          'videoEmbeddable': 'true',
+        },
+      );
 
       if (response.statusCode == 200) {
         final data = response.data;
         final items = data['items'] as List;
 
-        final videos =
-            items.map((item) => YouTubeVideo.fromJson(item)).toList();
+        final videos = items
+            .map((item) => YouTubeVideo.fromJson(item))
+            .toList();
 
         _multipleVideoCache[cacheKey] = videos;
 
@@ -194,7 +204,9 @@ class YouTubeService implements IYouTubeService {
   }
 
   Future<List<YouTubeVideo>> _getMockVideos(
-      String characterName, int count) async {
+    String characterName,
+    int count,
+  ) async {
     await Future.delayed(const Duration(milliseconds: 500));
 
     final mockVideos = [
@@ -234,7 +246,8 @@ class YouTubeService implements IYouTubeService {
 
   @override
   Future<YouTubeVideo?> searchCharacterAMVWithFallback(
-      String characterName) async {
+    String characterName,
+  ) async {
     if (hasApiKey) {
       return await searchCharacterAMV(characterName);
     } else {
@@ -252,8 +265,9 @@ class YouTubeService implements IYouTubeService {
     final now = DateTime.now();
     final oneHourAgo = now.subtract(const Duration(hours: 1));
 
-    _requestTimestamps
-        .removeWhere((timestamp) => timestamp.isBefore(oneHourAgo));
+    _requestTimestamps.removeWhere(
+      (timestamp) => timestamp.isBefore(oneHourAgo),
+    );
 
     return _requestTimestamps.length < _maxRequestsPerHour;
   }
@@ -266,8 +280,9 @@ class YouTubeService implements IYouTubeService {
     if (!_quotaExceeded) return false;
 
     if (_quotaExceededTime != null) {
-      final timeSinceQuotaExceeded =
-          DateTime.now().difference(_quotaExceededTime!);
+      final timeSinceQuotaExceeded = DateTime.now().difference(
+        _quotaExceededTime!,
+      );
       if (timeSinceQuotaExceeded > _quotaResetDuration) {
         _quotaExceeded = false;
         _quotaExceededTime = null;
@@ -289,7 +304,8 @@ class YouTubeService implements IYouTubeService {
         for (final err in errors) {
           if (err['reason'] == 'quotaExceeded') {
             debugPrint(
-                'YouTube Service: Quota exceeded - switching to offline mode');
+              'YouTube Service: Quota exceeded - switching to offline mode',
+            );
             break;
           }
         }

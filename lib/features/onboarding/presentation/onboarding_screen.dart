@@ -126,8 +126,10 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
       } else if (_gender == null) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-              content:
-                  Text(AppLocalizations.of(context)!.onboardingBiologicalSex)),
+            content: Text(
+              AppLocalizations.of(context)!.onboardingBiologicalSex,
+            ),
+          ),
         );
       }
     } else {
@@ -139,7 +141,8 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
     if (_formKey2.currentState!.validate() &&
         _activityLevel != null &&
         _goal != null) {
-      final user = _initialData ??
+      final user =
+          _initialData ??
           context.read<AuthBloc>().state.props.first as UserModel;
 
       final updatedUser = user.copyWith(
@@ -156,9 +159,9 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
         thighCm: double.tryParse(_thighController.text),
       );
 
-      context
-          .read<AuthBloc>()
-          .add(AuthProfileBodyUpdated(updatedUser: updatedUser));
+      context.read<AuthBloc>().add(
+        AuthProfileBodyUpdated(updatedUser: updatedUser),
+      );
 
       if (_isEditing) {
         Navigator.of(context).pop();
@@ -166,8 +169,8 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-            content:
-                Text(AppLocalizations.of(context)!.onboardingFillAllFields)),
+          content: Text(AppLocalizations.of(context)!.onboardingFillAllFields),
+        ),
       );
     }
   }
@@ -200,10 +203,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                     _currentStep = index;
                   });
                 },
-                children: [
-                  _buildStep1(),
-                  _buildStep2(),
-                ],
+                children: [_buildStep1(), _buildStep2()],
               ),
             ),
             Padding(
@@ -233,30 +233,32 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
           children: [
             Text(
               'Dados Pessoais',
-              style: Theme.of(context).textTheme.headlineMedium?.copyWith(
-                    fontWeight: FontWeight.bold,
-                  ),
+              style: Theme.of(
+                context,
+              ).textTheme.headlineMedium?.copyWith(fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 8),
             Text(
               'Essas informações são essenciais para calcularmos seu plano nutricional de forma precisa.',
               style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                    color: Theme.of(context)
-                        .colorScheme
-                        .onSurface
-                        .withValues(alpha: 0.7),
-                  ),
+                color: Theme.of(
+                  context,
+                ).colorScheme.onSurface.withValues(alpha: 0.7),
+              ),
             ),
             const SizedBox(height: 32),
-            Text(AppLocalizations.of(context)!.biologicalSexLabel,
-                style: Theme.of(context).textTheme.titleMedium),
+            Text(
+              AppLocalizations.of(context)!.biologicalSexLabel,
+              style: Theme.of(context).textTheme.titleMedium,
+            ),
             const SizedBox(height: 12),
             Row(
               children: [
                 Expanded(
                   child: ChoiceChip(
-                    label:
-                        Center(child: Text(AppLocalizations.of(context)!.male)),
+                    label: Center(
+                      child: Text(AppLocalizations.of(context)!.male),
+                    ),
                     selected: _gender == 'male',
                     onSelected: (selected) =>
                         setState(() => _gender = selected ? 'male' : _gender),
@@ -266,7 +268,8 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                 Expanded(
                   child: ChoiceChip(
                     label: Center(
-                        child: Text(AppLocalizations.of(context)!.female)),
+                      child: Text(AppLocalizations.of(context)!.female),
+                    ),
                     selected: _gender == 'female',
                     onSelected: (selected) =>
                         setState(() => _gender = selected ? 'female' : _gender),
@@ -311,96 +314,114 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
           children: [
             Text(
               AppLocalizations.of(context)!.goalsAndMeasuresTitle,
-              style: Theme.of(context).textTheme.headlineMedium?.copyWith(
-                    fontWeight: FontWeight.bold,
-                  ),
+              style: Theme.of(
+                context,
+              ).textTheme.headlineMedium?.copyWith(fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 8),
             Text(
               AppLocalizations.of(context)!.goalsAndMeasuresSubtitle,
               style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                    color: Theme.of(context)
-                        .colorScheme
-                        .onSurface
-                        .withValues(alpha: 0.7),
-                  ),
+                color: Theme.of(
+                  context,
+                ).colorScheme.onSurface.withValues(alpha: 0.7),
+              ),
             ),
             const SizedBox(height: 32),
-            Text(AppLocalizations.of(context)!.objectiveTitle,
-                style: Theme.of(context).textTheme.titleMedium),
+            Text(
+              AppLocalizations.of(context)!.objectiveTitle,
+              style: Theme.of(context).textTheme.titleMedium,
+            ),
             const SizedBox(height: 12),
             Wrap(
               spacing: 8.0,
               runSpacing: 8.0,
               children: [
                 _buildChoiceChip(
-                    'weight_loss',
-                    AppLocalizations.of(context)!.goalLoseWeight,
-                    _goal,
-                    (v) => setState(() => _goal = v)),
+                  'weight_loss',
+                  AppLocalizations.of(context)!.goalLoseWeight,
+                  _goal,
+                  (v) => setState(() => _goal = v),
+                ),
                 _buildChoiceChip(
-                    'maintenance',
-                    AppLocalizations.of(context)!.goalMaintain,
-                    _goal,
-                    (v) => setState(() => _goal = v)),
+                  'maintenance',
+                  AppLocalizations.of(context)!.goalMaintain,
+                  _goal,
+                  (v) => setState(() => _goal = v),
+                ),
                 _buildChoiceChip(
-                    'muscle_gain',
-                    AppLocalizations.of(context)!.goalGainMuscle,
-                    _goal,
-                    (v) => setState(() => _goal = v)),
+                  'muscle_gain',
+                  AppLocalizations.of(context)!.goalGainMuscle,
+                  _goal,
+                  (v) => setState(() => _goal = v),
+                ),
               ],
             ),
             const SizedBox(height: 24),
-            Text(AppLocalizations.of(context)!.activityLevelLabel,
-                style: Theme.of(context).textTheme.titleMedium),
+            Text(
+              AppLocalizations.of(context)!.activityLevelLabel,
+              style: Theme.of(context).textTheme.titleMedium,
+            ),
             const SizedBox(height: 12),
             Wrap(
               spacing: 8.0,
               runSpacing: 8.0,
               children: [
                 _buildChoiceChip(
-                    'sedentary',
-                    AppLocalizations.of(context)!.activitySedentary,
-                    _activityLevel,
-                    (v) => setState(() => _activityLevel = v)),
+                  'sedentary',
+                  AppLocalizations.of(context)!.activitySedentary,
+                  _activityLevel,
+                  (v) => setState(() => _activityLevel = v),
+                ),
                 _buildChoiceChip(
-                    'light',
-                    AppLocalizations.of(context)!.activityLight,
-                    _activityLevel,
-                    (v) => setState(() => _activityLevel = v)),
+                  'light',
+                  AppLocalizations.of(context)!.activityLight,
+                  _activityLevel,
+                  (v) => setState(() => _activityLevel = v),
+                ),
                 _buildChoiceChip(
-                    'moderate',
-                    AppLocalizations.of(context)!.activityModerate,
-                    _activityLevel,
-                    (v) => setState(() => _activityLevel = v)),
+                  'moderate',
+                  AppLocalizations.of(context)!.activityModerate,
+                  _activityLevel,
+                  (v) => setState(() => _activityLevel = v),
+                ),
                 _buildChoiceChip(
-                    'intense',
-                    AppLocalizations.of(context)!.activityIntense,
-                    _activityLevel,
-                    (v) => setState(() => _activityLevel = v)),
+                  'intense',
+                  AppLocalizations.of(context)!.activityIntense,
+                  _activityLevel,
+                  (v) => setState(() => _activityLevel = v),
+                ),
                 _buildChoiceChip(
-                    'very_intense',
-                    AppLocalizations.of(context)!.activityVeryIntense,
-                    _activityLevel,
-                    (v) => setState(() => _activityLevel = v)),
+                  'very_intense',
+                  AppLocalizations.of(context)!.activityVeryIntense,
+                  _activityLevel,
+                  (v) => setState(() => _activityLevel = v),
+                ),
               ],
             ),
             const SizedBox(height: 32),
             Row(
               children: [
-                Text(AppLocalizations.of(context)!.circumferencesLabel,
-                    style: Theme.of(context).textTheme.titleMedium),
+                Text(
+                  AppLocalizations.of(context)!.circumferencesLabel,
+                  style: Theme.of(context).textTheme.titleMedium,
+                ),
                 const SizedBox(width: 8),
                 Container(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 8,
+                    vertical: 2,
+                  ),
                   decoration: BoxDecoration(
-                    color:
-                        Theme.of(context).colorScheme.surfaceContainerHighest,
+                    color: Theme.of(
+                      context,
+                    ).colorScheme.surfaceContainerHighest,
                     borderRadius: BorderRadius.circular(12),
                   ),
-                  child: Text(AppLocalizations.of(context)!.optionalLabel,
-                      style: Theme.of(context).textTheme.bodySmall),
+                  child: Text(
+                    AppLocalizations.of(context)!.optionalLabel,
+                    style: Theme.of(context).textTheme.bodySmall,
+                  ),
                 ),
               ],
             ),
@@ -408,36 +429,44 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
             Row(
               children: [
                 Expanded(
-                    child: _buildNumberField(
-                        controller: _waistController,
-                        label: AppLocalizations.of(context)!.waistLabel,
-                        suffix: 'cm',
-                        isOptional: true)),
+                  child: _buildNumberField(
+                    controller: _waistController,
+                    label: AppLocalizations.of(context)!.waistLabel,
+                    suffix: 'cm',
+                    isOptional: true,
+                  ),
+                ),
                 const SizedBox(width: 16),
                 Expanded(
-                    child: _buildNumberField(
-                        controller: _chestController,
-                        label: AppLocalizations.of(context)!.chestLabel,
-                        suffix: 'cm',
-                        isOptional: true)),
+                  child: _buildNumberField(
+                    controller: _chestController,
+                    label: AppLocalizations.of(context)!.chestLabel,
+                    suffix: 'cm',
+                    isOptional: true,
+                  ),
+                ),
               ],
             ),
             const SizedBox(height: 16),
             Row(
               children: [
                 Expanded(
-                    child: _buildNumberField(
-                        controller: _armController,
-                        label: AppLocalizations.of(context)!.armLabel,
-                        suffix: 'cm',
-                        isOptional: true)),
+                  child: _buildNumberField(
+                    controller: _armController,
+                    label: AppLocalizations.of(context)!.armLabel,
+                    suffix: 'cm',
+                    isOptional: true,
+                  ),
+                ),
                 const SizedBox(width: 16),
                 Expanded(
-                    child: _buildNumberField(
-                        controller: _hipController,
-                        label: AppLocalizations.of(context)!.hipLabel,
-                        suffix: 'cm',
-                        isOptional: true)),
+                  child: _buildNumberField(
+                    controller: _hipController,
+                    label: AppLocalizations.of(context)!.hipLabel,
+                    suffix: 'cm',
+                    isOptional: true,
+                  ),
+                ),
               ],
             ),
             const SizedBox(height: 16),
@@ -446,10 +475,11 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
               child: Padding(
                 padding: const EdgeInsets.only(right: 8.0),
                 child: _buildNumberField(
-                    controller: _thighController,
-                    label: AppLocalizations.of(context)!.thighLabel,
-                    suffix: 'cm',
-                    isOptional: true),
+                  controller: _thighController,
+                  label: AppLocalizations.of(context)!.thighLabel,
+                  suffix: 'cm',
+                  isOptional: true,
+                ),
               ),
             ),
             const SizedBox(height: 24),
@@ -459,8 +489,12 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
     );
   }
 
-  Widget _buildChoiceChip(String value, String label, String? groupValue,
-      ValueChanged<String> onSelected) {
+  Widget _buildChoiceChip(
+    String value,
+    String label,
+    String? groupValue,
+    ValueChanged<String> onSelected,
+  ) {
     return ChoiceChip(
       label: Text(label),
       selected: groupValue == value,

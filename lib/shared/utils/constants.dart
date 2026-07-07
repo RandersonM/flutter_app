@@ -63,9 +63,9 @@ class Constants {
 
     // Format with commas for thousands separators
     final formatted = number.toString().replaceAllMapped(
-          RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'),
-          (Match match) => '${match[1]},',
-        );
+      RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'),
+      (Match match) => '${match[1]},',
+    );
 
     return formatted;
   }

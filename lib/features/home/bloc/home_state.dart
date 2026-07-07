@@ -41,12 +41,12 @@ class HomeLoaded extends HomeState {
 
   @override
   List<Object?> get props => [
-        featuredCharacter,
-        isRandomCharacter,
-        currentVideo,
-        isLoadingVideo,
-        isPlayingVideo,
-      ];
+    featuredCharacter,
+    isRandomCharacter,
+    currentVideo,
+    isLoadingVideo,
+    isPlayingVideo,
+  ];
 
   HomeLoaded copyWith({
     CustomCharacterModel? featuredCharacter,
@@ -59,8 +59,9 @@ class HomeLoaded extends HomeState {
     return HomeLoaded(
       featuredCharacter: featuredCharacter ?? this.featuredCharacter,
       isRandomCharacter: isRandomCharacter ?? this.isRandomCharacter,
-      currentVideo:
-          clearVideo == true ? null : (currentVideo ?? this.currentVideo),
+      currentVideo: clearVideo == true
+          ? null
+          : (currentVideo ?? this.currentVideo),
       isLoadingVideo: isLoadingVideo ?? this.isLoadingVideo,
       isPlayingVideo: isPlayingVideo ?? this.isPlayingVideo,
     );

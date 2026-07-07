@@ -6,12 +6,10 @@ import 'package:flutter_gemma/flutter_gemma.dart';
 import 'package:opfan/core/ai/prompts/index.dart';
 import 'package:opfan/core/services/index.dart';
 
-
 class GemmaService implements IGemmaService {
   GemmaService();
 
-  final _statusController =
-      StreamController<GemmaServiceStatus>.broadcast();
+  final _statusController = StreamController<GemmaServiceStatus>.broadcast();
 
   GemmaServiceStatus _currentStatus = const GemmaNotInstalled();
   InferenceChat? _chat;
@@ -58,14 +56,11 @@ class GemmaService implements IGemmaService {
     final env = GetIt.I.get<IEnvironmentService>();
     try {
       _emit(const GemmaDownloading(0));
-      
+
       final modelType = _determineModelType(env.gemmaModelName);
       final fileType = _determineModelFileType(env.gemmaModelName);
 
-      await FlutterGemma.installModel(
-        modelType: modelType,
-        fileType: fileType,
-      )
+      await FlutterGemma.installModel(modelType: modelType, fileType: fileType)
           .fromNetwork(
             env.gemmaModelUrl,
             token: env.huggingFaceApiKey.isNotEmpty
@@ -114,7 +109,6 @@ class GemmaService implements IGemmaService {
     }
     return ModelFileType.litertlm;
   }
-
 
   @override
   Future<void> loadModel({bool isThinkingMode = false}) async {
@@ -183,14 +177,12 @@ class GemmaService implements IGemmaService {
   }) {
     final chat = _chat;
     if (chat == null) {
-      return Stream.error(
-        StateError('GemmaService: model not ready'),
-      );
+      return Stream.error(StateError('GemmaService: model not ready'));
     }
 
     bool isCancelled = false;
     late final StreamController<ModelResponse> controller;
-    
+
     controller = StreamController<ModelResponse>(
       onCancel: () async {
         isCancelled = true;
@@ -204,7 +196,9 @@ class GemmaService implements IGemmaService {
         final promptText =
             '${RagContextFraming.styleInstruction(styleInstruction)}$contextBlock$text';
 
-        debugPrint('GemmaService: prompt context=${ragContext?.length ?? 0} docs');
+        debugPrint(
+          'GemmaService: prompt context=${ragContext?.length ?? 0} docs',
+        );
         await chat.addQueryChunk(Message(text: promptText, isUser: true));
         await for (final response in chat.generateChatResponseAsync()) {
           if (isCancelled) break;

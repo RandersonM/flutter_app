@@ -74,12 +74,16 @@ class _NamiChatSheetContentState extends State<_NamiChatSheetContent> {
                   return ListView.builder(
                     controller: _scrollController,
                     padding: const EdgeInsets.all(Constants.margin),
-                    itemCount: state.messages.length +
+                    itemCount:
+                        state.messages.length +
                         (state.isGenerating ? 1 : 0) +
                         (state.error != null ? 1 : 0),
                     itemBuilder: (context, index) {
                       if (index < state.messages.length) {
-                        return _buildMessageBubble(context, state.messages[index]);
+                        return _buildMessageBubble(
+                          context,
+                          state.messages[index],
+                        );
                       }
                       index -= state.messages.length;
 
@@ -87,7 +91,9 @@ class _NamiChatSheetContentState extends State<_NamiChatSheetContent> {
                         if (index == 0) {
                           return state.streamingToken.isEmpty
                               ? const ChatThinkingBubble()
-                              : ChatStreamingBubble(token: state.streamingToken);
+                              : ChatStreamingBubble(
+                                  token: state.streamingToken,
+                                );
                         }
                         index -= 1;
                       }
@@ -145,8 +151,8 @@ class _NamiChatSheetContentState extends State<_NamiChatSheetContent> {
           maxWidth: MediaQuery.of(context).size.width * 0.8,
         ),
         decoration: BoxDecoration(
-          color: isUser 
-              ? Theme.of(context).colorScheme.primaryContainer 
+          color: isUser
+              ? Theme.of(context).colorScheme.primaryContainer
               : Theme.of(context).colorScheme.surfaceContainerHighest,
           borderRadius: BorderRadius.circular(16).copyWith(
             bottomRight: isUser ? Radius.zero : const Radius.circular(16),
@@ -170,7 +176,9 @@ class _NamiChatSheetContentState extends State<_NamiChatSheetContent> {
         ),
         decoration: BoxDecoration(
           color: theme.colorScheme.errorContainer,
-          borderRadius: BorderRadius.circular(16).copyWith(bottomLeft: Radius.zero),
+          borderRadius: BorderRadius.circular(
+            16,
+          ).copyWith(bottomLeft: Radius.zero),
         ),
         child: Text(
           error,
@@ -239,8 +247,8 @@ class _NamiChatLoadingView extends StatelessWidget {
           Text(
             'Preparando Nami...',
             style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                  color: Theme.of(context).colorScheme.onSurfaceVariant,
-                ),
+              color: Theme.of(context).colorScheme.onSurfaceVariant,
+            ),
           ),
         ],
       ),

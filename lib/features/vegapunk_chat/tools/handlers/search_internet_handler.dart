@@ -35,15 +35,17 @@ class SearchInternetHandler extends ToolHandler {
 
   @override
   Map<String, String> get parameterDescriptions => {
-        'query': '(string) The search query to send to the web.',
-        'searchTopic': '(string) Optional. Must be one of: "general", "news", or "finance". Defaults to "general".',
-      };
+    'query': '(string) The search query to send to the web.',
+    'searchTopic':
+        '(string) Optional. Must be one of: "general", "news", or "finance". Defaults to "general".',
+  };
 
   @override
   Map<String, String> get parameterDescriptionsPt => {
-        'query': '(string) A consulta de busca a ser enviada para a web.',
-        'searchTopic': '(string) Opcional. Deve ser: "general", "news", ou "finance". O padrão é "general".',
-      };
+    'query': '(string) A consulta de busca a ser enviada para a web.',
+    'searchTopic':
+        '(string) Opcional. Deve ser: "general", "news", ou "finance". O padrão é "general".',
+  };
 
   @override
   Future<ToolResult> execute(ToolCall call) async {
@@ -55,18 +57,22 @@ class SearchInternetHandler extends ToolHandler {
       );
     }
 
-    final searchTopicStr = call.arguments['searchTopic']?.toString() ?? 'general';
+    final searchTopicStr =
+        call.arguments['searchTopic']?.toString() ?? 'general';
     final searchTopic = SearchTopic.values.firstWhere(
       (e) => e.name == searchTopicStr,
       orElse: () => SearchTopic.general,
     );
 
-    debugPrint('SearchInternetHandler: searching for "$query" (topic: ${searchTopic.name})');
+    debugPrint(
+      'SearchInternetHandler: searching for "$query" (topic: ${searchTopic.name})',
+    );
 
     if (!connectivityCubit.isOnline) {
       return ToolResult.error(
         toolName: name,
-        reason: 'The device is currently offline. Internet search is unavailable.',
+        reason:
+            'The device is currently offline. Internet search is unavailable.',
       );
     }
 
@@ -108,8 +114,9 @@ class SearchInternetHandler extends ToolHandler {
 
       for (var i = 0; i < results.length; i++) {
         final r = results[i];
-        final content =
-            r.content.length > 400 ? '${r.content.substring(0, 400)}…' : r.content;
+        final content = r.content.length > 400
+            ? '${r.content.substring(0, 400)}…'
+            : r.content;
 
         buffer.writeln('${i + 1}.');
         buffer.writeln('Title: ${r.title}');

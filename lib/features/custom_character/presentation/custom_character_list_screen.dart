@@ -29,9 +29,7 @@ class CustomCharacterListScreen extends StatelessWidget {
             crewRepository: getIt<ICrewRepository>(),
           ),
         ),
-        BlocProvider.value(
-          value: getIt<ConnectivityCubit>(),
-        ),
+        BlocProvider.value(value: getIt<ConnectivityCubit>()),
       ],
       child: const _CustomCharacterListScreenContent(),
     );
@@ -68,8 +66,10 @@ class _CustomCharacterListScreenContent extends StatelessWidget {
   }
 
   Future<void> _navigateToCreateCharacter(BuildContext context) async {
-    final result =
-        await Navigator.pushNamed(context, AppRoutes.createCustomCharacter);
+    final result = await Navigator.pushNamed(
+      context,
+      AppRoutes.createCustomCharacter,
+    );
 
     if (result == true) {
       await Future.delayed(const Duration(milliseconds: 500));
@@ -80,8 +80,11 @@ class _CustomCharacterListScreenContent extends StatelessWidget {
   }
 
   void _onCharacterTap(BuildContext context, CustomCharacterModel character) =>
-      Navigator.pushNamed(context, AppRoutes.characterDetails,
-          arguments: character);
+      Navigator.pushNamed(
+        context,
+        AppRoutes.characterDetails,
+        arguments: character,
+      );
 
   void _onCharacterEdit(BuildContext context, CustomCharacterModel character) {
     Navigator.pushNamed(
@@ -92,17 +95,20 @@ class _CustomCharacterListScreenContent extends StatelessWidget {
   }
 
   void _onCharacterDelete(
-      BuildContext context, CustomCharacterModel character) {
+    BuildContext context,
+    CustomCharacterModel character,
+  ) {
     final l10n = AppLocalizations.of(context)!;
-    context
-        .read<CustomCharacterBloc>()
-        .add(DeleteCustomCharacter(character.id!));
+    context.read<CustomCharacterBloc>().add(
+      DeleteCustomCharacter(character.id!),
+    );
     context.read<CustomCharacterBloc>().add(const LoadCustomCharacters());
 
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: Text(
-            '${l10n.featuredCharacter} "${character.name}" ${l10n.delete}'),
+          '${l10n.featuredCharacter} "${character.name}" ${l10n.delete}',
+        ),
         backgroundColor: Theme.of(context).colorScheme.error,
         duration: const Duration(seconds: 2),
       ),

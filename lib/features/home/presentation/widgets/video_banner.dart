@@ -8,11 +8,7 @@ import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 import 'package:video_player/video_player.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 
-enum BannerType {
-  youtube,
-  networkVideo,
-  gif,
-}
+enum BannerType { youtube, networkVideo, gif }
 
 class VideoBanner extends StatefulWidget {
   const VideoBanner({
@@ -68,8 +64,9 @@ class _VideoBannerState extends State<VideoBanner> {
           }
           break;
         case BannerType.networkVideo:
-          _videoController =
-              VideoPlayerController.networkUrl(Uri.parse(widget.url));
+          _videoController = VideoPlayerController.networkUrl(
+            Uri.parse(widget.url),
+          );
           await _videoController!.initialize();
           if (widget.autoPlay) {
             await _videoController!.play();
@@ -122,9 +119,7 @@ class _VideoBannerState extends State<VideoBanner> {
   Widget _buildContent() {
     if (_isLoading) {
       return const Center(
-        child: CircularProgressIndicator(
-          color: Colors.white,
-        ),
+        child: CircularProgressIndicator(color: Colors.white),
       );
     }
 
@@ -135,9 +130,7 @@ class _VideoBannerState extends State<VideoBanner> {
     switch (widget.bannerType) {
       case BannerType.youtube:
         return _youtubeController != null
-            ? YoutubePlayer(
-                controller: _youtubeController!,
-              )
+            ? YoutubePlayer(controller: _youtubeController!)
             : _buildErrorWidget();
       case BannerType.networkVideo:
         return _videoController != null && _videoController!.value.isInitialized
@@ -173,10 +166,7 @@ class _VideoBannerState extends State<VideoBanner> {
             SizedBox(height: 8),
             Text(
               'Error loading content',
-              style: TextStyle(
-                color: Colors.white,
-                fontSize: 16,
-              ),
+              style: TextStyle(color: Colors.white, fontSize: 16),
             ),
           ],
         ),

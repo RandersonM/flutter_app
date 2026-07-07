@@ -63,8 +63,9 @@ class CrewRepository implements ICrewRepository {
           int comparison = 0;
           switch (orderBy) {
             case 'createdAt':
-              comparison = (a.createdAt ?? DateTime.now())
-                  .compareTo(b.createdAt ?? DateTime.now());
+              comparison = (a.createdAt ?? DateTime.now()).compareTo(
+                b.createdAt ?? DateTime.now(),
+              );
               break;
             case 'name':
               comparison = a.name.compareTo(b.name);
@@ -108,8 +109,9 @@ class CrewRepository implements ICrewRepository {
           int comparison = 0;
           switch (orderBy) {
             case 'createdAt':
-              comparison = (a.createdAt ?? DateTime.now())
-                  .compareTo(b.createdAt ?? DateTime.now());
+              comparison = (a.createdAt ?? DateTime.now()).compareTo(
+                b.createdAt ?? DateTime.now(),
+              );
               break;
             case 'name':
               comparison = a.name.compareTo(b.name);
@@ -183,8 +185,9 @@ class CrewRepository implements ICrewRepository {
           int comparison = 0;
           switch (orderBy) {
             case 'createdAt':
-              comparison = (a.createdAt ?? DateTime.now())
-                  .compareTo(b.createdAt ?? DateTime.now());
+              comparison = (a.createdAt ?? DateTime.now()).compareTo(
+                b.createdAt ?? DateTime.now(),
+              );
               break;
             case 'name':
               comparison = a.name.compareTo(b.name);
@@ -213,39 +216,40 @@ class CrewRepository implements ICrewRepository {
   }) {
     return _firestoreService
         .streamUserDocuments(
-      collection: _collection,
-      orderBy: null, // Remove ordenação temporariamente
-      descending: false,
-      limit: limit,
-    )
+          collection: _collection,
+          orderBy: null, // Remove ordenação temporariamente
+          descending: false,
+          limit: limit,
+        )
         .map((documents) {
-      var crews = documents
-          .map((doc) => CrewModel.fromFirestore(doc, doc['id'] as String))
-          .toList();
+          var crews = documents
+              .map((doc) => CrewModel.fromFirestore(doc, doc['id'] as String))
+              .toList();
 
-      if (orderBy != null) {
-        crews.sort((a, b) {
-          int comparison = 0;
-          switch (orderBy) {
-            case 'createdAt':
-              comparison = (a.createdAt ?? DateTime.now())
-                  .compareTo(b.createdAt ?? DateTime.now());
-              break;
-            case 'name':
-              comparison = a.name.compareTo(b.name);
-              break;
-            case 'members':
-              comparison = a.members.length.compareTo(b.members.length);
-              break;
-            default:
-              comparison = 0;
+          if (orderBy != null) {
+            crews.sort((a, b) {
+              int comparison = 0;
+              switch (orderBy) {
+                case 'createdAt':
+                  comparison = (a.createdAt ?? DateTime.now()).compareTo(
+                    b.createdAt ?? DateTime.now(),
+                  );
+                  break;
+                case 'name':
+                  comparison = a.name.compareTo(b.name);
+                  break;
+                case 'members':
+                  comparison = a.members.length.compareTo(b.members.length);
+                  break;
+                default:
+                  comparison = 0;
+              }
+              return descending ? -comparison : comparison;
+            });
           }
-          return descending ? -comparison : comparison;
-        });
-      }
 
-      return crews;
-    });
+          return crews;
+        });
   }
 
   @override
@@ -303,7 +307,8 @@ class CrewRepository implements ICrewRepository {
       }).toList();
     } catch (e) {
       throw Exception(
-          'Erro ao buscar tripulações por quantidade de membros: $e');
+        'Erro ao buscar tripulações por quantidade de membros: $e',
+      );
     }
   }
 
@@ -312,8 +317,10 @@ class CrewRepository implements ICrewRepository {
     try {
       final allCrews = await getUserCrews();
       return allCrews
-          .where((crew) =>
-              crew.members.any((member) => member.characterId == characterId))
+          .where(
+            (crew) =>
+                crew.members.any((member) => member.characterId == characterId),
+          )
           .toList();
     } catch (e) {
       throw Exception('Erro ao buscar tripulações por membro: $e');
@@ -381,7 +388,10 @@ class CrewRepository implements ICrewRepository {
 
   @override
   Future<void> updateCrewMember(
-      String crewId, String characterId, CrewMember updatedMember) async {
+    String crewId,
+    String characterId,
+    CrewMember updatedMember,
+  ) async {
     try {
       final crew = await getCrew(crewId);
       if (crew == null) {

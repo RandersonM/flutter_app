@@ -14,11 +14,7 @@ class CrewMembersList extends StatelessWidget {
   final CrewModel crew;
   final Function(CrewMember)? onMemberTap;
 
-  const CrewMembersList({
-    super.key,
-    required this.crew,
-    this.onMemberTap,
-  });
+  const CrewMembersList({super.key, required this.crew, this.onMemberTap});
 
   @override
   Widget build(BuildContext context) {
@@ -64,9 +60,7 @@ class CrewMembersList extends StatelessWidget {
 
     return Card(
       elevation: 2.0,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(16.0),
-      ),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16.0)),
       child: Padding(
         padding: const EdgeInsets.all(Constants.margin * 2),
         child: Column(
@@ -110,8 +104,10 @@ class CrewMembersList extends StatelessWidget {
   Widget _buildMemberCard(BuildContext context, CrewMember member, int index) {
     final theme = Theme.of(context);
     final roleIcon = RoleIconMapper.getIconForRole(member.role);
-    final roleColor =
-        RoleIconMapper.getColorForRole(member.role, theme.colorScheme);
+    final roleColor = RoleIconMapper.getColorForRole(
+      member.role,
+      theme.colorScheme,
+    );
     final l10n = AppLocalizations.of(context)!;
 
     return InkWell(
@@ -121,10 +117,7 @@ class CrewMembersList extends StatelessWidget {
         padding: const EdgeInsets.all(Constants.margin * 1.5),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(Constants.margin * 1.5),
-          border: Border.all(
-            color: Colors.white,
-            width: 1,
-          ),
+          border: Border.all(color: Colors.white, width: 1),
           boxShadow: [
             BoxShadow(
               color: Colors.grey.withValues(alpha: 0.1),
@@ -146,13 +139,7 @@ class CrewMembersList extends StatelessWidget {
                   width: 1,
                 ),
               ),
-              child: Center(
-                child: Icon(
-                  roleIcon,
-                  size: 28,
-                  color: roleColor,
-                ),
-              ),
+              child: Center(child: Icon(roleIcon, size: 28, color: roleColor)),
             ),
             const SizedBox(width: Constants.margin * 1.5),
             Expanded(
@@ -166,7 +153,9 @@ class CrewMembersList extends StatelessWidget {
                       children: [
                         Text(
                           CharacterLocalizationMapper.mapOccupationToLocalized(
-                              member.role!, l10n),
+                            member.role!,
+                            l10n,
+                          ),
                           style: theme.textTheme.titleLarge?.copyWith(
                             fontWeight: FontWeight.bold,
                             color: roleColor,
@@ -216,30 +205,29 @@ class CrewMembersList extends StatelessWidget {
   }
 
   List<CrewMember> _sortMembersByRole(List<CrewMember> members) {
-    return List.from(members)
-      ..sort((a, b) {
-        final roleA = a.role?.toLowerCase() ?? '';
-        final roleB = b.role?.toLowerCase() ?? '';
+    return List.from(members)..sort((a, b) {
+      final roleA = a.role?.toLowerCase() ?? '';
+      final roleB = b.role?.toLowerCase() ?? '';
 
-        // Prioridade para capitão
-        if (roleA.contains('capitão') ||
-            roleA.contains('capitao') ||
-            roleA.contains('captain')) {
-          return -1;
-        }
-        if (roleB.contains('capitão') ||
-            roleB.contains('capitao') ||
-            roleB.contains('captain')) {
-          return 1;
-        }
+      // Prioridade para capitão
+      if (roleA.contains('capitão') ||
+          roleA.contains('capitao') ||
+          roleA.contains('captain')) {
+        return -1;
+      }
+      if (roleB.contains('capitão') ||
+          roleB.contains('capitao') ||
+          roleB.contains('captain')) {
+        return 1;
+      }
 
-        // Prioridade para vice-capitão
-        if (roleA.contains('vice')) return -1;
-        if (roleB.contains('vice')) return 1;
+      // Prioridade para vice-capitão
+      if (roleA.contains('vice')) return -1;
+      if (roleB.contains('vice')) return 1;
 
-        // Ordem alfabética para os demais
-        return roleA.compareTo(roleB);
-      });
+      // Ordem alfabética para os demais
+      return roleA.compareTo(roleB);
+    });
   }
 
   String _formatMemberName(CrewMember member) {

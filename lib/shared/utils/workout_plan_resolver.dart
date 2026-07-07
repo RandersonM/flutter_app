@@ -13,7 +13,8 @@ class WorkoutPlanResolver {
   /// The rotation is based on the total number of workout days done so far
   /// in `assessment.workoutDays`, counting only days ≤ today.
   static WorkoutSplitModel? resolveTodaySplit(
-      WorkoutAssessmentModel? assessment) {
+    WorkoutAssessmentModel? assessment,
+  ) {
     if (assessment == null) return null;
     final plan = assessment.workoutPlan;
     if (plan == null || plan.isEmpty) return null;
@@ -25,7 +26,8 @@ class WorkoutPlanResolver {
 
   /// Returns the split for the NEXT scheduled workout (done+1).
   static WorkoutSplitModel? resolveNextSplit(
-      WorkoutAssessmentModel? assessment) {
+    WorkoutAssessmentModel? assessment,
+  ) {
     if (assessment == null) return null;
     final plan = assessment.workoutPlan;
     if (plan == null || plan.isEmpty) return null;
@@ -60,7 +62,9 @@ class WorkoutPlanResolver {
 
   /// Returns a human-readable label for when the split is scheduled.
   static String resolveScheduleLabel(
-      WorkoutAssessmentModel? assessment, AppLocalizations loc) {
+    WorkoutAssessmentModel? assessment,
+    AppLocalizations loc,
+  ) {
     if (assessment == null) return '';
     final done = isTodayWorkoutDone(assessment);
     return done ? loc.todayCompleted : loc.today;
@@ -77,7 +81,9 @@ class WorkoutPlanResolver {
       return;
     }
     final done = _countWorkoutsDoneUpToToday(assessment);
-    debugPrint('WorkoutPlanResolver: $done workouts done, '
-        '${plan.splits.length} splits, index=${done % plan.splits.length}');
+    debugPrint(
+      'WorkoutPlanResolver: $done workouts done, '
+      '${plan.splits.length} splits, index=${done % plan.splits.length}',
+    );
   }
 }

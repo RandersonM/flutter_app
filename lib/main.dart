@@ -41,9 +41,7 @@ void main() async {
   try {
     debugPrint('MAIN: Starting Firebase, Env, Theme initialize...');
     await Future.wait([
-      Firebase.initializeApp(
-        options: DefaultFirebaseOptions.currentPlatform,
-      ),
+      Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform),
       getIt<IEnvironmentService>().initialize(),
       getIt<IThemeService>().initialize(),
     ]);
@@ -70,9 +68,9 @@ void main() async {
     rethrow;
   }
 
-  SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
-    statusBarColor: Colors.white24,
-  ));
+  SystemChrome.setSystemUIOverlayStyle(
+    const SystemUiOverlayStyle(statusBarColor: Colors.white24),
+  );
 
   runApp(const GlobalErrorBoundary(child: MyApp()));
 }
@@ -82,48 +80,40 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => MultiBlocProvider(
-        providers: [
-          BlocProvider<ThemeCubit>(
-            create: (_) => getIt<ThemeCubit>(),
-          ),
-          BlocProvider<LocaleCubit>(
-            create: (_) => getIt<LocaleCubit>(),
-          ),
-          BlocProvider<AuthBloc>(
-            create: (_) => getIt<AuthBloc>(),
-            lazy: false,
-          ),
-          BlocProvider<CharactersCubit>(
-            create: (_) => getIt<CharactersCubit>(),
-            lazy: false,
-          ),
-          BlocProvider<SearchCubit>(
-            create: (_) => getIt<SearchCubit>(),
-            lazy: true,
-          ),
-        ],
-        child: BlocBuilder<ThemeCubit, ThemeState>(
-          builder: (context, themeState) =>
-              BlocBuilder<LocaleCubit, LocaleState>(
-            builder: (context, localeState) => BlocBuilder<AuthBloc, AuthState>(
-              builder: (context, authState) => MaterialApp(
-                title: getIt<IEnvironmentService>().appName,
-                locale: localeState.locale,
-                localizationsDelegates: AppLocalizations.localizationsDelegates,
-                supportedLocales: const <Locale>[
-                  Locale('en', ''),
-                  Locale('pt', ''),
-                ],
-                theme: getLightTheme(),
-                darkTheme: getDarkTheme(),
-                themeMode: themeState.themeMode,
-                navigatorKey: NavigationService().navigatorKey,
-                home: const OfflineBannerWrapper(child: AppWrapper()),
-                onGenerateRoute: (settings) =>
-                    AuthRouteMiddleware.onGenerateRoute(settings, authState),
-              ),
-            ),
+    providers: [
+      BlocProvider<ThemeCubit>(create: (_) => getIt<ThemeCubit>()),
+      BlocProvider<LocaleCubit>(create: (_) => getIt<LocaleCubit>()),
+      BlocProvider<AuthBloc>(create: (_) => getIt<AuthBloc>(), lazy: false),
+      BlocProvider<CharactersCubit>(
+        create: (_) => getIt<CharactersCubit>(),
+        lazy: false,
+      ),
+      BlocProvider<SearchCubit>(
+        create: (_) => getIt<SearchCubit>(),
+        lazy: true,
+      ),
+    ],
+    child: BlocBuilder<ThemeCubit, ThemeState>(
+      builder: (context, themeState) => BlocBuilder<LocaleCubit, LocaleState>(
+        builder: (context, localeState) => BlocBuilder<AuthBloc, AuthState>(
+          builder: (context, authState) => MaterialApp(
+            title: getIt<IEnvironmentService>().appName,
+            locale: localeState.locale,
+            localizationsDelegates: AppLocalizations.localizationsDelegates,
+            supportedLocales: const <Locale>[
+              Locale('en', ''),
+              Locale('pt', ''),
+            ],
+            theme: getLightTheme(),
+            darkTheme: getDarkTheme(),
+            themeMode: themeState.themeMode,
+            navigatorKey: NavigationService().navigatorKey,
+            home: const OfflineBannerWrapper(child: AppWrapper()),
+            onGenerateRoute: (settings) =>
+                AuthRouteMiddleware.onGenerateRoute(settings, authState),
           ),
         ),
-      );
+      ),
+    ),
+  );
 }

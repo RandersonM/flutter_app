@@ -86,8 +86,9 @@ class NamiFinancesService implements INamiFinancesService {
   Future<List<NamiFinancesModel>> getFinancesForYear(int year) async {
     try {
       final box = await _getBox;
-      final finances =
-          box.values.where((finances) => finances.month.year == year).toList();
+      final finances = box.values
+          .where((finances) => finances.month.year == year)
+          .toList();
       finances.sort((a, b) => b.month.compareTo(a.month));
       return finances;
     } catch (e) {
@@ -106,9 +107,11 @@ class NamiFinancesService implements INamiFinancesService {
       final cutoffDate = DateTime(now.year, now.month - months + 1, 1);
 
       return allFinances
-          .where((finances) =>
-              finances.month.isAfter(cutoffDate) ||
-              finances.month.isAtSameMomentAs(cutoffDate))
+          .where(
+            (finances) =>
+                finances.month.isAfter(cutoffDate) ||
+                finances.month.isAtSameMomentAs(cutoffDate),
+          )
           .toList();
     } catch (e) {
       throw Exception('Erro ao buscar finanças dos últimos meses: $e');
@@ -144,12 +147,7 @@ class NamiFinancesService implements INamiFinancesService {
       final allFinances = box.values.toList();
 
       if (allFinances.isEmpty) {
-        return {
-          'totalSavings': 0.0,
-          'months': 0,
-          'years': 0,
-          'periodText': '',
-        };
+        return {'totalSavings': 0.0, 'months': 0, 'years': 0, 'periodText': ''};
       }
 
       allFinances.sort((a, b) => a.month.compareTo(b.month));
@@ -193,18 +191,14 @@ class NamiFinancesService implements INamiFinancesService {
       };
     } catch (e) {
       debugPrint('Erro ao calcular informações de savings acumulados: $e');
-      return {
-        'totalSavings': 0.0,
-        'months': 0,
-        'years': 0,
-        'periodText': '',
-      };
+      return {'totalSavings': 0.0, 'months': 0, 'years': 0, 'periodText': ''};
     }
   }
 
   @override
   Future<Map<String, dynamic>> getAccumulatedSavingsInfoLocalized(
-      AppLocalizations l10n) async {
+    AppLocalizations l10n,
+  ) async {
     try {
       final box = await _getBox;
       final allFinances = box.values.toList();
@@ -239,8 +233,10 @@ class NamiFinancesService implements INamiFinancesService {
       String periodText = '';
       if (years > 0) {
         if (remainingMonths > 0) {
-          periodText =
-              l10n.savings_period_years_and_months(years, remainingMonths);
+          periodText = l10n.savings_period_years_and_months(
+            years,
+            remainingMonths,
+          );
         } else {
           periodText = l10n.savings_period_years_only(years);
         }

@@ -20,9 +20,9 @@ class VegapunkChatCubit extends Cubit<VegapunkChatState> {
   VegapunkChatCubit({
     IVegapunkChatRepository? repository,
     IRAGService? ragService,
-  })  : _repository = repository ?? VegapunkChatRepository(),
-        _rag = ragService ?? getIt<IRAGService>(),
-        super(const VegapunkModelNotInstalled()) {
+  }) : _repository = repository ?? VegapunkChatRepository(),
+       _rag = ragService ?? getIt<IRAGService>(),
+       super(const VegapunkModelNotInstalled()) {
     _modelStatusSub = _repository.modelStatusStream.listen(_onModelStatus);
   }
 
@@ -59,7 +59,9 @@ class VegapunkChatCubit extends Cubit<VegapunkChatState> {
   Future<void> _initRag() async {
     if (_ragInitialized) return;
     await _rag.initialize();
-    final docs = OnePieceKnowledgeBase.getDocumentsForCategories(_targetCategories);
+    final docs = OnePieceKnowledgeBase.getDocumentsForCategories(
+      _targetCategories,
+    );
     await _rag.setKnowledgeBase(docs);
     _ragInitialized = true;
     debugPrint('VegapunkChatCubit: RAG ready — ${docs.length} docs loaded');
@@ -107,11 +109,13 @@ class VegapunkChatCubit extends Cubit<VegapunkChatState> {
       role: MessageRole.user,
     );
 
-    emit(ready.copyWith(
-      messages: [...ready.messages, userMsg],
-      streamingToken: '',
-      isGenerating: true,
-    ));
+    emit(
+      ready.copyWith(
+        messages: [...ready.messages, userMsg],
+        streamingToken: '',
+        isGenerating: true,
+      ),
+    );
 
     _lastUserMessage = text.trim();
 
@@ -131,54 +135,59 @@ class VegapunkChatCubit extends Cubit<VegapunkChatState> {
       if (buffered.isEmpty) return;
       _tokenBuffer.clear();
       final current = state as VegapunkChatReady;
-      emit(current.copyWith(
-        streamingToken: current.streamingToken + buffered,
-      ));
+      emit(current.copyWith(streamingToken: current.streamingToken + buffered));
     });
 
-    _streamSub = _repository.sendMessage(text.trim(), styleInstruction: instruction).listen(
-      (token) {
-        if (state is! VegapunkChatReady) return;
-        final current = state as VegapunkChatReady;
+    _streamSub = _repository
+        .sendMessage(text.trim(), styleInstruction: instruction)
+        .listen(
+          (token) {
+            if (state is! VegapunkChatReady) return;
+            final current = state as VegapunkChatReady;
 
-        // Handle sentinel tokens from the repository's function calling loop.
-        if (token == VegapunkChatRepository.searchingWebSentinel) {
-          _emitTimer?.cancel();
-          _tokenBuffer.clear();
-          emit(current.copyWith(
-            isSearchingWeb: true,
-            streamingToken: '', // Clear any hallucinated text or raw JSON
-          ));
-          return;
-        }
-        if (token == VegapunkChatRepository.searchingDoneSentinel) {
-          emit(current.copyWith(isSearchingWeb: false));
-          return;
-        }
+            // Handle sentinel tokens from the repository's function calling loop.
+            if (token == VegapunkChatRepository.searchingWebSentinel) {
+              _emitTimer?.cancel();
+              _tokenBuffer.clear();
+              emit(
+                current.copyWith(
+                  isSearchingWeb: true,
+                  streamingToken: '', // Clear any hallucinated text or raw JSON
+                ),
+              );
+              return;
+            }
+            if (token == VegapunkChatRepository.searchingDoneSentinel) {
+              emit(current.copyWith(isSearchingWeb: false));
+              return;
+            }
 
-        // Accumulate into buffer — the timer will emit batched.
-        _tokenBuffer.write(token);
-      },
-      onDone: () {
-        _emitTimer?.cancel();
-        // Flush remaining buffered tokens before committing.
-        if (_tokenBuffer.isNotEmpty && state is VegapunkChatReady) {
-          final current = state as VegapunkChatReady;
-          emit(current.copyWith(
-            streamingToken: current.streamingToken + _tokenBuffer.toString(),
-          ));
-          _tokenBuffer.clear();
-        }
-        _commitStreamingMessage();
-      },
-      onError: (Object e) {
-        _emitTimer?.cancel();
-        _tokenBuffer.clear();
-        debugPrint('VegapunkChatCubit stream error: $e');
-        _commitStreamingMessage();
-      },
-      cancelOnError: true,
-    );
+            // Accumulate into buffer — the timer will emit batched.
+            _tokenBuffer.write(token);
+          },
+          onDone: () {
+            _emitTimer?.cancel();
+            // Flush remaining buffered tokens before committing.
+            if (_tokenBuffer.isNotEmpty && state is VegapunkChatReady) {
+              final current = state as VegapunkChatReady;
+              emit(
+                current.copyWith(
+                  streamingToken:
+                      current.streamingToken + _tokenBuffer.toString(),
+                ),
+              );
+              _tokenBuffer.clear();
+            }
+            _commitStreamingMessage();
+          },
+          onError: (Object e) {
+            _emitTimer?.cancel();
+            _tokenBuffer.clear();
+            debugPrint('VegapunkChatCubit stream error: $e');
+            _commitStreamingMessage();
+          },
+          cancelOnError: true,
+        );
   }
 
   Future<void> stopGeneration() async {
@@ -209,19 +218,23 @@ class VegapunkChatCubit extends Cubit<VegapunkChatState> {
         // a re-load triggered by something other than reset).
         final current = state;
         if (current is VegapunkChatReady) {
-          emit(current.copyWith(
-            isGenerating: false,
-            streamingToken: '',
-            isThinkingMode: _isThinkingMode,
-          ));
+          emit(
+            current.copyWith(
+              isGenerating: false,
+              streamingToken: '',
+              isThinkingMode: _isThinkingMode,
+            ),
+          );
         } else {
           emit(VegapunkChatReady(isThinkingMode: _isThinkingMode));
         }
       case GemmaError(:final error, :final isInstallError):
-        emit(VegapunkChatError(
-          message: error.toString(),
-          isInstallError: isInstallError,
-        ));
+        emit(
+          VegapunkChatError(
+            message: error.toString(),
+            isInstallError: isInstallError,
+          ),
+        );
     }
   }
 
@@ -242,11 +255,13 @@ class VegapunkChatCubit extends Cubit<VegapunkChatState> {
           ]
         : current.messages;
 
-    emit(current.copyWith(
-      messages: updated,
-      streamingToken: '',
-      isGenerating: false,
-    ));
+    emit(
+      current.copyWith(
+        messages: updated,
+        streamingToken: '',
+        isGenerating: false,
+      ),
+    );
 
     // Schedule the RAG document addition after a 2-second delay so it does
     // NOT compete with any in-flight LiteRT inference on the next user message.
@@ -261,7 +276,8 @@ class VegapunkChatCubit extends Cubit<VegapunkChatState> {
       if (isClosed) return;
       // The model started generating again before the delay elapsed — retry
       // once it's idle instead of silently dropping this turn's document.
-      if (state is VegapunkChatReady && (state as VegapunkChatReady).isGenerating) {
+      if (state is VegapunkChatReady &&
+          (state as VegapunkChatReady).isGenerating) {
         _scheduleSessionDocument(userText, responseText);
         return;
       }
@@ -272,15 +288,19 @@ class VegapunkChatCubit extends Cubit<VegapunkChatState> {
   void _addSessionDocument(String userText, String response) {
     if (userText.isEmpty || response.isEmpty) return;
     // Truncate long responses to avoid large embedding vectors (max 512 chars).
-    final truncated = response.length > 512 ? response.substring(0, 512) : response;
-    _rag.addDocument(RagDocument(
-      id: 'sess-${_uuid.v4()}',
-      content: 'User asked: $userText\nAnswer: $truncated',
-      category: 'session',
-      language: 'both',
-      topic: 'session',
-      isSession: true,
-    ));
+    final truncated = response.length > 512
+        ? response.substring(0, 512)
+        : response;
+    _rag.addDocument(
+      RagDocument(
+        id: 'sess-${_uuid.v4()}',
+        content: 'User asked: $userText\nAnswer: $truncated',
+        category: 'session',
+        language: 'both',
+        topic: 'session',
+        isSession: true,
+      ),
+    );
   }
 
   Future<void> _cancelStream() async {

@@ -27,10 +27,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 class CrewDetailsScreen extends StatefulWidget {
   final CrewModel crew;
 
-  const CrewDetailsScreen({
-    super.key,
-    required this.crew,
-  });
+  const CrewDetailsScreen({super.key, required this.crew});
 
   @override
   State<CrewDetailsScreen> createState() => _CrewDetailsScreenState();
@@ -59,8 +56,10 @@ class _CrewDetailsScreenState extends State<CrewDetailsScreen> {
             ),
             IconButton(
               onPressed: _onDeleteCrew,
-              icon:
-                  const AppIcon(PhosphorIconsRegular.trash, color: Colors.red),
+              icon: const AppIcon(
+                PhosphorIconsRegular.trash,
+                color: Colors.red,
+              ),
               tooltip: l10n.delete,
             ),
           ],
@@ -71,15 +70,9 @@ class _CrewDetailsScreenState extends State<CrewDetailsScreen> {
         child: Column(
           spacing: Constants.margin * 2,
           children: [
-            CrewHeader(
-              crew: _crew,
-              onEdit: _onEditCrew,
-            ),
+            CrewHeader(crew: _crew, onEdit: _onEditCrew),
             CrewStatistics(crew: _crew),
-            CrewMembersList(
-              crew: _crew,
-              onMemberTap: _onMemberTap,
-            ),
+            CrewMembersList(crew: _crew, onMemberTap: _onMemberTap),
             CrewBoatSection(crew: _crew),
             CrewTagsSection(crew: _crew),
             CrewInfoSection(crew: _crew),
@@ -147,9 +140,7 @@ class _CrewDetailsScreenState extends State<CrewDetailsScreen> {
               Navigator.of(context).pop();
               _confirmDeleteCrew();
             },
-            style: TextButton.styleFrom(
-              foregroundColor: Colors.red,
-            ),
+            style: TextButton.styleFrom(foregroundColor: Colors.red),
             child: Text(l10n.delete),
           ),
         ],
@@ -163,9 +154,7 @@ class _CrewDetailsScreenState extends State<CrewDetailsScreen> {
       showDialog(
         context: context,
         barrierDismissible: false,
-        builder: (context) => const Center(
-          child: CircularProgressIndicator(),
-        ),
+        builder: (context) => const Center(child: CircularProgressIndicator()),
       );
 
       final crewRepository = getIt<ICrewRepository>();
@@ -240,11 +229,16 @@ class _CrewDetailsScreenState extends State<CrewDetailsScreen> {
     ];
 
     final filledRoles = _crew.rolesFilled
-        .map((roleKey) =>
-            CharacterLocalizationMapper.mapOccupationToLocalized(roleKey, l10n))
+        .map(
+          (roleKey) => CharacterLocalizationMapper.mapOccupationToLocalized(
+            roleKey,
+            l10n,
+          ),
+        )
         .toSet();
-    final availableRoles =
-        allRoles.where((role) => !filledRoles.contains(role)).toList();
+    final availableRoles = allRoles
+        .where((role) => !filledRoles.contains(role))
+        .toList();
 
     if (availableRoles.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
@@ -348,7 +342,10 @@ class _CrewDetailsScreenState extends State<CrewDetailsScreen> {
                   ? () async {
                       Navigator.of(context).pop();
                       await _addMemberToCrew(
-                          selectedCharacter!, selectedRole!, l10n);
+                        selectedCharacter!,
+                        selectedRole!,
+                        l10n,
+                      );
                     }
                   : null,
               child: Text(l10n.add),
@@ -361,8 +358,8 @@ class _CrewDetailsScreenState extends State<CrewDetailsScreen> {
 
   Future<List<CustomCharacterModel>> _getAvailableCharacters() async {
     try {
-      final allCharacters =
-          await getIt<ICustomCharacterRepository>().getUserCustomCharacters();
+      final allCharacters = await getIt<ICustomCharacterRepository>()
+          .getUserCustomCharacters();
 
       if (allCharacters.isEmpty) {
         return [];
@@ -399,10 +396,7 @@ class _CrewDetailsScreenState extends State<CrewDetailsScreen> {
         Expanded(
           child: Text(
             character.name,
-            style: const TextStyle(
-              fontWeight: FontWeight.bold,
-              fontSize: 14,
-            ),
+            style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
             overflow: TextOverflow.ellipsis,
             maxLines: 1,
           ),
@@ -412,10 +406,14 @@ class _CrewDetailsScreenState extends State<CrewDetailsScreen> {
   }
 
   Widget _buildCharacterDropdownItem(
-      CustomCharacterModel character, AppLocalizations l10n) {
+    CustomCharacterModel character,
+    AppLocalizations l10n,
+  ) {
     final occupations = character.occupation
-        .map((occ) =>
-            CharacterLocalizationMapper.mapOccupationToLocalized(occ, l10n))
+        .map(
+          (occ) =>
+              CharacterLocalizationMapper.mapOccupationToLocalized(occ, l10n),
+        )
         .take(2)
         .join(', ');
 
@@ -448,10 +446,7 @@ class _CrewDetailsScreenState extends State<CrewDetailsScreen> {
                   if (occupations.isNotEmpty)
                     Text(
                       occupations,
-                      style: TextStyle(
-                        fontSize: 11,
-                        color: Colors.grey[600],
-                      ),
+                      style: TextStyle(fontSize: 11, color: Colors.grey[600]),
                       overflow: TextOverflow.ellipsis,
                       maxLines: 1,
                     ),
@@ -496,7 +491,9 @@ class _CrewDetailsScreenState extends State<CrewDetailsScreen> {
       final updatedCharacter = character.copyWith(crew: _crew.name);
       final customCharacterRepository = getIt<ICustomCharacterRepository>();
       await customCharacterRepository.updateCustomCharacter(
-          character.id!, updatedCharacter);
+        character.id!,
+        updatedCharacter,
+      );
 
       if (mounted) {
         setState(() {
@@ -509,8 +506,9 @@ class _CrewDetailsScreenState extends State<CrewDetailsScreen> {
         if (mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
-              content:
-                  Text(l10n.memberAddedAsRole(character.name, translatedRole)),
+              content: Text(
+                l10n.memberAddedAsRole(character.name, translatedRole),
+              ),
               backgroundColor: Colors.green,
             ),
           );
@@ -566,21 +564,23 @@ class _CrewDetailsScreenState extends State<CrewDetailsScreen> {
       showDialog(
         context: context,
         barrierDismissible: false,
-        builder: (context) => const Center(
-          child: CircularProgressIndicator(),
-        ),
+        builder: (context) => const Center(child: CircularProgressIndicator()),
       );
 
       final customCharacterRepository = getIt<ICustomCharacterRepository>();
-      final character = await customCharacterRepository
-          .getCustomCharacter(member.characterId);
+      final character = await customCharacterRepository.getCustomCharacter(
+        member.characterId,
+      );
 
       if (!mounted) return;
       Navigator.of(context).pop();
 
       if (character != null) {
-        Navigator.pushNamed(context, AppRoutes.characterDetails,
-            arguments: character);
+        Navigator.pushNamed(
+          context,
+          AppRoutes.characterDetails,
+          arguments: character,
+        );
       } else {
         WidgetsBinding.instance.addPostFrameCallback((_) {
           if (mounted) {

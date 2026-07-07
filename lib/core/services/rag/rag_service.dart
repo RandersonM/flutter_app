@@ -110,8 +110,7 @@ class RAGService implements IRAGService {
         query: query,
         topK: topK,
       );
-      final label =
-          query.length > 30 ? '${query.substring(0, 30)}…' : query;
+      final label = query.length > 30 ? '${query.substring(0, 30)}…' : query;
       debugPrint('RAGService: "$label" → ${results.length} docs');
       return results.map((r) => r.content).toList();
     } catch (e) {

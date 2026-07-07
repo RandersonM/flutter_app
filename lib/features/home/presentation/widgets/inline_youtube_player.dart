@@ -26,7 +26,6 @@ class InlineYouTubePlayer extends StatefulWidget {
 class _InlineYouTubePlayerState extends State<InlineYouTubePlayer> {
   late YoutubePlayerController _controller;
 
-
   @override
   void initState() {
     super.initState();
@@ -72,9 +71,7 @@ class _InlineYouTubePlayerState extends State<InlineYouTubePlayer> {
         borderRadius: BorderRadius.circular(14),
         child: Stack(
           children: [
-            YoutubePlayer(
-              controller: _controller,
-            ),
+            YoutubePlayer(controller: _controller),
             Positioned(
               top: 8,
               right: 8,
@@ -103,8 +100,10 @@ class _InlineYouTubePlayerState extends State<InlineYouTubePlayer> {
               left: 8,
               right: 8,
               child: Container(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 12,
+                  vertical: 6,
+                ),
                 decoration: BoxDecoration(
                   color: Colors.black.withValues(alpha: 0.7),
                   borderRadius: BorderRadius.circular(8),

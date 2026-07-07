@@ -9,15 +9,14 @@ class SanjiPrompt {
   static String systemInstruction({required bool isPortuguese}) =>
       isPortuguese ? _systemInstructionPt : _systemInstructionEn;
 
-  static String cookingTipsContext({required bool isPortuguese}) =>
-      isPortuguese
-          ? 'Dicas de culinária e conselhos para ingredientes'
-          : 'Cooking tips and advice for ingredients';
+  static String cookingTipsContext({required bool isPortuguese}) => isPortuguese
+      ? 'Dicas de culinária e conselhos para ingredientes'
+      : 'Cooking tips and advice for ingredients';
 
   static String personalizedMealContext({required bool isPortuguese}) =>
       isPortuguese
-          ? 'Receita personalizada baseada em dados nutricionais'
-          : 'Personalized recipe based on nutritional data';
+      ? 'Receita personalizada baseada em dados nutricionais'
+      : 'Personalized recipe based on nutritional data';
 
   static String cookingTipsPrompt({
     required String ingredient,
@@ -27,30 +26,30 @@ class SanjiPrompt {
   }) {
     final methodStr = cookingMethod != null && cookingMethod.isNotEmpty
         ? (isPortuguese
-            ? 'Método de cozimento: $cookingMethod'
-            : 'Cooking method: $cookingMethod')
+              ? 'Método de cozimento: $cookingMethod'
+              : 'Cooking method: $cookingMethod')
         : '';
     final difficultyStr = difficulty != null && difficulty.isNotEmpty
         ? (isPortuguese
-            ? 'Nível de dificuldade: $difficulty'
-            : 'Difficulty level: $difficulty')
+              ? 'Nível de dificuldade: $difficulty'
+              : 'Difficulty level: $difficulty')
         : '';
 
     return isPortuguese
         ? 'Gere dicas úteis de culinária para $ingredient.\n'
-            '$methodStr\n$difficultyStr\n\n'
-            'Por favor, forneça:\n'
-            '1. Dicas de preparação\n'
-            '2. Técnicas de cozimento\n'
-            '3. Erros comuns a evitar\n'
-            '4. Sugestões de servir'
+              '$methodStr\n$difficultyStr\n\n'
+              'Por favor, forneça:\n'
+              '1. Dicas de preparação\n'
+              '2. Técnicas de cozimento\n'
+              '3. Erros comuns a evitar\n'
+              '4. Sugestões de servir'
         : 'Generate helpful cooking tips for $ingredient.\n'
-            '$methodStr\n$difficultyStr\n\n'
-            'Please provide:\n'
-            '1. Preparation tips\n'
-            '2. Cooking techniques\n'
-            '3. Common mistakes to avoid\n'
-            '4. Serving suggestions';
+              '$methodStr\n$difficultyStr\n\n'
+              'Please provide:\n'
+              '1. Preparation tips\n'
+              '2. Cooking techniques\n'
+              '3. Common mistakes to avoid\n'
+              '4. Serving suggestions';
   }
 
   static String goalLabel(String goal, {required bool isPortuguese}) {
@@ -77,40 +76,40 @@ class SanjiPrompt {
     final goalText = goalLabel(goal, isPortuguese: isPortuguese);
     final restrictionsStr =
         dietaryRestrictions != null && dietaryRestrictions.isNotEmpty
-            ? (isPortuguese
-                ? '- Restrições alimentares: $dietaryRestrictions'
-                : '- Dietary restrictions: $dietaryRestrictions')
-            : '';
+        ? (isPortuguese
+              ? '- Restrições alimentares: $dietaryRestrictions'
+              : '- Dietary restrictions: $dietaryRestrictions')
+        : '';
 
     return isPortuguese
         ? 'Crie uma refeição personalizada para $mealType usando os ingredientes disponíveis: $ingredients\n\n'
-            'Informações nutricionais:\n'
-            '- Calorias alvo: $targetCalories kcal\n'
-            '- Objetivo: $goalText\n'
-            '$restrictionsStr\n\n'
-            'Por favor, forneça:\n'
-            '1. **Nome da Receita**\n'
-            '2. **Ingredientes** (quantidades específicas)\n'
-            '3. **Informações Nutricionais** (calorias, proteínas, carboidratos, gorduras)\n'
-            '4. **Passo a Passo** detalhado\n'
-            '5. **Dicas do Chef Sanji** para melhor resultado\n'
-            '6. **Tempo de Preparo** e **Dificuldade**\n'
-            '7. **Substituições** possíveis se necessário\n\n'
-            'Formate a resposta em markdown com títulos, listas e destaques.'
+              'Informações nutricionais:\n'
+              '- Calorias alvo: $targetCalories kcal\n'
+              '- Objetivo: $goalText\n'
+              '$restrictionsStr\n\n'
+              'Por favor, forneça:\n'
+              '1. **Nome da Receita**\n'
+              '2. **Ingredientes** (quantidades específicas)\n'
+              '3. **Informações Nutricionais** (calorias, proteínas, carboidratos, gorduras)\n'
+              '4. **Passo a Passo** detalhado\n'
+              '5. **Dicas do Chef Sanji** para melhor resultado\n'
+              '6. **Tempo de Preparo** e **Dificuldade**\n'
+              '7. **Substituições** possíveis se necessário\n\n'
+              'Formate a resposta em markdown com títulos, listas e destaques.'
         : 'Create a personalized meal for $mealType using available ingredients: $ingredients\n\n'
-            'Nutritional information:\n'
-            '- Target calories: $targetCalories kcal\n'
-            '- Goal: $goalText\n'
-            '$restrictionsStr\n\n'
-            'Please provide:\n'
-            '1. **Recipe Name**\n'
-            '2. **Ingredients** (specific quantities)\n'
-            '3. **Nutritional Information** (calories, proteins, carbs, fats)\n'
-            '4. **Step-by-Step** detailed instructions\n'
-            '5. **Chef Sanji\'s Tips** for best results\n'
-            '6. **Prep Time** and **Difficulty**\n'
-            '7. **Possible Substitutions** if needed\n\n'
-            'Format the response in markdown with titles, lists, and highlights.';
+              'Nutritional information:\n'
+              '- Target calories: $targetCalories kcal\n'
+              '- Goal: $goalText\n'
+              '$restrictionsStr\n\n'
+              'Please provide:\n'
+              '1. **Recipe Name**\n'
+              '2. **Ingredients** (specific quantities)\n'
+              '3. **Nutritional Information** (calories, proteins, carbs, fats)\n'
+              '4. **Step-by-Step** detailed instructions\n'
+              '5. **Chef Sanji\'s Tips** for best results\n'
+              '6. **Prep Time** and **Difficulty**\n'
+              '7. **Possible Substitutions** if needed\n\n'
+              'Format the response in markdown with titles, lists, and highlights.';
   }
 
   static const _systemInstructionEn =

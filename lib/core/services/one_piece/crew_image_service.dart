@@ -4,13 +4,12 @@ import 'package:opfan/app/di/injection.dart';
 import 'package:opfan/core/ai/prompts/index.dart';
 import 'package:opfan/core/services/index.dart';
 
-
 class CrewImageService implements ICrewImageService {
   final GeminiService _geminiService;
   final Map<String, String> _imageCache = {};
 
   CrewImageService({GeminiService? geminiService})
-      : _geminiService = geminiService ?? getIt<GeminiService>();
+    : _geminiService = geminiService ?? getIt<GeminiService>();
 
   String _getCacheKey(String prefix, String prompt) {
     return '${prefix}_${prompt.hashCode}';
@@ -41,7 +40,8 @@ class CrewImageService implements ICrewImageService {
     );
 
     debugPrint(
-        'Crew Image Service: Generating Jolly Roger with prompt: $enhancedPrompt');
+      'Crew Image Service: Generating Jolly Roger with prompt: $enhancedPrompt',
+    );
 
     final imageUrl = await _geminiService.generateImage(prompt: enhancedPrompt);
 
@@ -51,9 +51,14 @@ class CrewImageService implements ICrewImageService {
     }
 
     debugPrint(
-        'Crew Image Service: Jolly Roger generation failed or in dev mode, returning fallback');
+      'Crew Image Service: Jolly Roger generation failed or in dev mode, returning fallback',
+    );
     return await _getJollyRogerFallbackImage(
-        crewName, prompt, tags, description);
+      crewName,
+      prompt,
+      tags,
+      description,
+    );
   }
 
   @override
@@ -76,7 +81,8 @@ class CrewImageService implements ICrewImageService {
     );
 
     debugPrint(
-        'Crew Image Service: Generating Boat with prompt: $enhancedPrompt');
+      'Crew Image Service: Generating Boat with prompt: $enhancedPrompt',
+    );
 
     final imageUrl = await _geminiService.generateImage(prompt: enhancedPrompt);
 
@@ -86,7 +92,8 @@ class CrewImageService implements ICrewImageService {
     }
 
     debugPrint(
-        'Crew Image Service: Boat generation failed or in dev mode, returning fallback');
+      'Crew Image Service: Boat generation failed or in dev mode, returning fallback',
+    );
     return await _getBoatFallbackImage(crewName, prompt, tags, description);
   }
 

@@ -17,24 +17,24 @@ class TodayCharacter extends HiveObject {
   final DateTime? createdAt;
   final DateTime? updatedAt;
 
-  TodayCharacter({
+  TodayCharacter({this.id, this.userId, this.createdAt, this.updatedAt});
+
+  TodayCharacter.fromCharacter(
+    CustomCharacterModel character,
+    this.date, {
+    this.isManuallySelected = false,
     this.id,
     this.userId,
     this.createdAt,
     this.updatedAt,
-  });
-
-  TodayCharacter.fromCharacter(CustomCharacterModel character, this.date,
-      {this.isManuallySelected = false,
-      this.id,
-      this.userId,
-      this.createdAt,
-      this.updatedAt}) {
+  }) {
     characterId = character.id ?? '0';
   }
 
   factory TodayCharacter.fromFirestore(
-      Map<String, dynamic> data, String documentId) {
+    Map<String, dynamic> data,
+    String documentId,
+  ) {
     final character = TodayCharacter(
       id: documentId,
       userId: data['userId'] as String?,

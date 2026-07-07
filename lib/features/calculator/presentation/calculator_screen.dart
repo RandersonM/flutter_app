@@ -14,12 +14,12 @@ class CalculatorScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => BlocProvider<CalculatorCubit>(
-        create: (_) => getIt<CalculatorCubit>(),
-        child: Scaffold(
-          appBar: DefaultAppBar(
-            title: Text(AppLocalizations.of(context)!.calculatorTitle),
-          ),
-          body: const CalculatorContent(),
-        ),
-      );
+    create: (_) => getIt<CalculatorCubit>(),
+    child: Scaffold(
+      appBar: DefaultAppBar(
+        title: Text(AppLocalizations.of(context)!.calculatorTitle),
+      ),
+      body: const CalculatorContent(),
+    ),
+  );
 }

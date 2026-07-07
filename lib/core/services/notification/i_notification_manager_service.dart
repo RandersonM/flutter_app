@@ -20,15 +20,15 @@ abstract class INotificationManagerService {
   });
 
   Future<Map<String, dynamic>> sendNamiMonthlyReportNotification();
-  
+
   Future<Map<String, dynamic>> sendZoroWorkoutNotification();
-  
+
   Future<Map<String, dynamic>> sendSanjiCookingNotification();
-  
+
   Future<Map<String, dynamic>> sendFeaturedCharacterNotification();
-  
+
   Future<Map<String, dynamic>> sendFinanceTipNotification();
-  
+
   Future<Map<String, dynamic>> sendDuelNotification();
 
   bool get isUserAuthenticated;

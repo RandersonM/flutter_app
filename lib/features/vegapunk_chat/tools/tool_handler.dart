@@ -36,14 +36,13 @@ abstract class ToolHandler {
   /// the Gemma 4 E2B model is trained to interpret natively.
   gemma.Tool toFlutterGemmaTool({bool isPortuguese = false}) {
     final desc = isPortuguese ? descriptionPt : description;
-    final params = isPortuguese ? parameterDescriptionsPt : parameterDescriptions;
+    final params = isPortuguese
+        ? parameterDescriptionsPt
+        : parameterDescriptions;
 
     final properties = <String, dynamic>{};
     for (final entry in params.entries) {
-      properties[entry.key] = {
-        'type': 'string',
-        'description': entry.value,
-      };
+      properties[entry.key] = {'type': 'string', 'description': entry.value};
     }
 
     return gemma.Tool(

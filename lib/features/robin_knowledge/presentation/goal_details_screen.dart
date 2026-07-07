@@ -13,17 +13,12 @@ import 'package:opfan/l10n/app_localizations.dart';
 class GoalDetailsScreen extends StatelessWidget {
   final GoalModel goal;
 
-  const GoalDetailsScreen({
-    super.key,
-    required this.goal,
-  });
+  const GoalDetailsScreen({super.key, required this.goal});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: DefaultAppBar(
-        title: Text(goal.title),
-      ),
+      appBar: DefaultAppBar(title: Text(goal.title)),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16),
         child: Column(
@@ -65,10 +60,8 @@ class GoalDetailsScreen extends StatelessWidget {
                     children: [
                       Text(
                         goal.title,
-                        style:
-                            Theme.of(context).textTheme.headlineSmall?.copyWith(
-                                  fontWeight: FontWeight.bold,
-                                ),
+                        style: Theme.of(context).textTheme.headlineSmall
+                            ?.copyWith(fontWeight: FontWeight.bold),
                       ),
                       const SizedBox(height: 4),
                       _buildStatusChip(context),
@@ -157,15 +150,15 @@ class GoalDetailsScreen extends StatelessWidget {
                 Text(
                   AppLocalizations.of(context)!.progress,
                   style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                        fontWeight: FontWeight.bold,
-                      ),
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
                 Text(
                   '${goal.progress.toInt()}%',
                   style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                        fontWeight: FontWeight.bold,
-                        color: Theme.of(context).colorScheme.primary,
-                      ),
+                    fontWeight: FontWeight.bold,
+                    color: Theme.of(context).colorScheme.primary,
+                  ),
                 ),
               ],
             ),
@@ -218,18 +211,17 @@ class GoalDetailsScreen extends StatelessWidget {
   void _showUpdateProgressDialog(BuildContext context, int increment) async {
     final result = await showDialog<Map<String, dynamic>>(
       context: context,
-      builder: (context) => UpdateProgressDialog(
-        goal: goal,
-        increment: increment,
-      ),
+      builder: (context) =>
+          UpdateProgressDialog(goal: goal, increment: increment),
     );
 
     if (result != null) {
       final newProgress = result['progress'] as double;
       final notes = result['notes'] as String;
 
-      getIt.robinKnowledgeBloc
-          .add(UpdateGoalProgress(goal.id, newProgress, notes: notes));
+      getIt.robinKnowledgeBloc.add(
+        UpdateGoalProgress(goal.id, newProgress, notes: notes),
+      );
       if (context.mounted) {
         Navigator.pop(context);
       }
@@ -247,9 +239,9 @@ class GoalDetailsScreen extends StatelessWidget {
           children: [
             Text(
               AppLocalizations.of(context)!.details,
-              style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                    fontWeight: FontWeight.bold,
-                  ),
+              style: Theme.of(
+                context,
+              ).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 16),
             _buildDetailRow(
@@ -288,26 +280,22 @@ class GoalDetailsScreen extends StatelessWidget {
   }) {
     return Row(
       children: [
-        Icon(
-          icon,
-          size: 16,
-          color: isOverdue ? Colors.red : Colors.grey[600],
-        ),
+        Icon(icon, size: 16, color: isOverdue ? Colors.red : Colors.grey[600]),
         const SizedBox(width: 8),
         Text(
           '$label: ',
           style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                color: Colors.grey[600],
-                fontWeight: FontWeight.w500,
-              ),
+            color: Colors.grey[600],
+            fontWeight: FontWeight.w500,
+          ),
         ),
         Expanded(
           child: Text(
             value,
             style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                  color: isOverdue ? Colors.red : null,
-                  fontWeight: FontWeight.w500,
-                ),
+              color: isOverdue ? Colors.red : null,
+              fontWeight: FontWeight.w500,
+            ),
           ),
         ),
       ],
@@ -332,16 +320,13 @@ class GoalDetailsScreen extends StatelessWidget {
                 Text(
                   AppLocalizations.of(context)!.notes,
                   style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                        fontWeight: FontWeight.bold,
-                      ),
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
               ],
             ),
             const SizedBox(height: 12),
-            Text(
-              goal.notes!,
-              style: Theme.of(context).textTheme.bodyMedium,
-            ),
+            Text(goal.notes!, style: Theme.of(context).textTheme.bodyMedium),
           ],
         ),
       ),
@@ -366,8 +351,8 @@ class GoalDetailsScreen extends StatelessWidget {
                 Text(
                   AppLocalizations.of(context)!.tags,
                   style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                        fontWeight: FontWeight.bold,
-                      ),
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
               ],
             ),
@@ -378,10 +363,9 @@ class GoalDetailsScreen extends StatelessWidget {
               children: goal.tags.map((tag) {
                 return Chip(
                   label: Text(tag),
-                  backgroundColor: Theme.of(context)
-                      .colorScheme
-                      .primary
-                      .withValues(alpha: 0.1),
+                  backgroundColor: Theme.of(
+                    context,
+                  ).colorScheme.primary.withValues(alpha: 0.1),
                   labelStyle: TextStyle(
                     color: Theme.of(context).colorScheme.primary,
                     fontSize: 12,

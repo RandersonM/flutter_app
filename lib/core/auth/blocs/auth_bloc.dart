@@ -14,10 +14,9 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   final IAuthService _authService;
   StreamSubscription<AuthStatus>? _authStatusSubscription;
 
-  AuthBloc({
-    required this._authService}) : super(const AuthInitial()) {
+  AuthBloc({required this._authService}) : super(const AuthInitial()) {
     //
-  
+
     on<AuthStarted>(_onAuthStarted);
     on<AuthSignInRequested>(_onAuthSignInRequested);
     on<AuthSignOutRequested>(_onAuthSignOutRequested);
@@ -58,21 +57,23 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         emit(const AuthUnauthenticated());
       }
 
-      _authStatusSubscription = _authService.authStatusStream.listen(
-        (status) async {
-          if (status == AuthStatus.authenticated) {
-            final currentUser = await _authService.checkAuthStatus();
-            if (currentUser != null) {
-              add(AuthStatusChanged(currentUser));
-            }
-          } else if (status == AuthStatus.unauthenticated) {
-            add(const AuthStatusChanged(null));
+      _authStatusSubscription = _authService.authStatusStream.listen((
+        status,
+      ) async {
+        if (status == AuthStatus.authenticated) {
+          final currentUser = await _authService.checkAuthStatus();
+          if (currentUser != null) {
+            add(AuthStatusChanged(currentUser));
           }
-        },
-      );
+        } else if (status == AuthStatus.unauthenticated) {
+          add(const AuthStatusChanged(null));
+        }
+      });
     } catch (e) {
       debugPrint('AuthBloc: Error initializing authentication - $e');
-      emit(const AuthError(message: 'Authentication failed. Please try again.'));
+      emit(
+        const AuthError(message: 'Authentication failed. Please try again.'),
+      );
     }
   }
 
@@ -148,7 +149,9 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       }
     } catch (e) {
       debugPrint('AuthBloc: Error updating profile - $e');
-      emit(const AuthError(message: 'Profile update failed. Please try again.'));
+      emit(
+        const AuthError(message: 'Profile update failed. Please try again.'),
+      );
     }
   }
 
@@ -165,7 +168,9 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       emit(AuthAuthenticated(user: event.updatedUser));
     } catch (e) {
       debugPrint('AuthBloc: Error updating body profile - $e');
-      emit(const AuthError(message: 'Profile update failed. Please try again.'));
+      emit(
+        const AuthError(message: 'Profile update failed. Please try again.'),
+      );
     }
   }
 
@@ -182,7 +187,9 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       emit(const AuthUnauthenticated());
     } catch (e) {
       debugPrint('AuthBloc: Error deleting account - $e');
-      emit(const AuthError(message: 'Account deletion failed. Please try again.'));
+      emit(
+        const AuthError(message: 'Account deletion failed. Please try again.'),
+      );
     }
   }
 
@@ -212,7 +219,9 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       }
     } catch (e) {
       debugPrint('AuthBloc: Error checking status - $e');
-      emit(const AuthError(message: 'Authentication failed. Please try again.'));
+      emit(
+        const AuthError(message: 'Authentication failed. Please try again.'),
+      );
     }
   }
 
@@ -230,8 +239,9 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   }
 
   UserModel _processUserWithMiddleware(UserModel user) {
-    final processedDisplayName =
-        UserNameMiddleware.processDisplayName(user.displayName);
+    final processedDisplayName = UserNameMiddleware.processDisplayName(
+      user.displayName,
+    );
 
     if (processedDisplayName != user.displayName) {
       return user.copyWith(displayName: processedDisplayName);

@@ -38,13 +38,11 @@ class DuelsBloc extends Bloc<DuelsEvent, DuelsState> {
       final onePieceCharacters = await _featuredCharacterRepository
           .getAllOnePieceCharacters(limit: 100);
 
-      final customCharacters =
-          await _customCharacterRepository.getAllCustomCharacters();
+      final customCharacters = await _customCharacterRepository
+          .getAllCustomCharacters();
       final allCharacters = [...customCharacters, ...onePieceCharacters];
 
-      emit(DuelsReady(
-        availableCharacters: allCharacters,
-      ));
+      emit(DuelsReady(availableCharacters: allCharacters));
     } catch (e) {
       debugPrint('DuelsBloc: Error loading characters - $e');
       emit(DuelsError('Erro ao carregar personagens: $e'));
@@ -60,14 +58,14 @@ class DuelsBloc extends Bloc<DuelsEvent, DuelsState> {
 
       // Verificar se o personagem já está selecionado como segundo
       if (currentState.secondCharacter?.id == event.character.id) {
-        emit(currentState.copyWith(
-          firstCharacter: event.character,
-          clearSecondCharacter: true,
-        ));
+        emit(
+          currentState.copyWith(
+            firstCharacter: event.character,
+            clearSecondCharacter: true,
+          ),
+        );
       } else {
-        emit(currentState.copyWith(
-          firstCharacter: event.character,
-        ));
+        emit(currentState.copyWith(firstCharacter: event.character));
       }
     }
   }
@@ -81,14 +79,14 @@ class DuelsBloc extends Bloc<DuelsEvent, DuelsState> {
 
       // Verificar se o personagem já está selecionado como primeiro
       if (currentState.firstCharacter?.id == event.character.id) {
-        emit(currentState.copyWith(
-          secondCharacter: event.character,
-          clearFirstCharacter: true,
-        ));
+        emit(
+          currentState.copyWith(
+            secondCharacter: event.character,
+            clearFirstCharacter: true,
+          ),
+        );
       } else {
-        emit(currentState.copyWith(
-          secondCharacter: event.character,
-        ));
+        emit(currentState.copyWith(secondCharacter: event.character));
       }
     }
   }
@@ -108,10 +106,7 @@ class DuelsBloc extends Bloc<DuelsEvent, DuelsState> {
     }
   }
 
-  Future<void> _onStartDuel(
-    StartDuel event,
-    Emitter<DuelsState> emit,
-  ) async {
+  Future<void> _onStartDuel(StartDuel event, Emitter<DuelsState> emit) async {
     if (state is DuelsReady) {
       final currentState = state as DuelsReady;
 
@@ -119,10 +114,7 @@ class DuelsBloc extends Bloc<DuelsEvent, DuelsState> {
         return;
       }
 
-      emit(currentState.copyWith(
-        isDuelInProgress: true,
-        clearWinner: true,
-      ));
+      emit(currentState.copyWith(isDuelInProgress: true, clearWinner: true));
 
       await Future.delayed(const Duration(seconds: 2));
 
@@ -131,26 +123,22 @@ class DuelsBloc extends Bloc<DuelsEvent, DuelsState> {
         currentState.secondCharacter!,
       );
 
-      emit(currentState.copyWith(
-        isDuelInProgress: false,
-        winner: winner,
-      ));
+      emit(currentState.copyWith(isDuelInProgress: false, winner: winner));
     }
   }
 
-  void _onResetDuel(
-    ResetDuel event,
-    Emitter<DuelsState> emit,
-  ) {
+  void _onResetDuel(ResetDuel event, Emitter<DuelsState> emit) {
     if (state is DuelsReady) {
       final currentState = state as DuelsReady;
 
-      emit(currentState.copyWith(
-        clearFirstCharacter: true,
-        clearSecondCharacter: true,
-        isDuelInProgress: false,
-        clearWinner: true,
-      ));
+      emit(
+        currentState.copyWith(
+          clearFirstCharacter: true,
+          clearSecondCharacter: true,
+          isDuelInProgress: false,
+          clearWinner: true,
+        ),
+      );
     }
   }
 
@@ -166,11 +154,13 @@ class DuelsBloc extends Bloc<DuelsEvent, DuelsState> {
           currentState.availableCharacters,
         )..shuffle(_random);
 
-        emit(currentState.copyWith(
-          firstCharacter: shuffledCharacters[0],
-          secondCharacter: shuffledCharacters[1],
-          clearWinner: true,
-        ));
+        emit(
+          currentState.copyWith(
+            firstCharacter: shuffledCharacters[0],
+            secondCharacter: shuffledCharacters[1],
+            clearWinner: true,
+          ),
+        );
       }
     }
   }
@@ -223,11 +213,12 @@ class DuelsBloc extends Bloc<DuelsEvent, DuelsState> {
       'yonkou',
       'admiral',
       'shichibukai',
-      'four emperors'
+      'four emperors',
     ];
     for (final affiliation in character.affiliations) {
-      if (importantAffiliations
-          .any((important) => affiliation.toLowerCase().contains(important))) {
+      if (importantAffiliations.any(
+        (important) => affiliation.toLowerCase().contains(important),
+      )) {
         score += 30;
       }
     }
@@ -250,7 +241,9 @@ class DuelsBloc extends Bloc<DuelsEvent, DuelsState> {
   }
 
   int _calculateStrategicBonus(
-      CustomCharacterModel attacker, CustomCharacterModel defender) {
+    CustomCharacterModel attacker,
+    CustomCharacterModel defender,
+  ) {
     int bonus = 0;
 
     if (attacker.haki != null &&
@@ -277,13 +270,19 @@ class DuelsBloc extends Bloc<DuelsEvent, DuelsState> {
       }
     }
 
-    bool attackerHasKingsHaki = attacker.haki?.any((h) =>
-            h.toLowerCase().contains('haoshoku') ||
-            h.toLowerCase().contains('king')) ??
+    bool attackerHasKingsHaki =
+        attacker.haki?.any(
+          (h) =>
+              h.toLowerCase().contains('haoshoku') ||
+              h.toLowerCase().contains('king'),
+        ) ??
         false;
-    bool defenderHasKingsHaki = defender.haki?.any((h) =>
-            h.toLowerCase().contains('haoshoku') ||
-            h.toLowerCase().contains('king')) ??
+    bool defenderHasKingsHaki =
+        defender.haki?.any(
+          (h) =>
+              h.toLowerCase().contains('haoshoku') ||
+              h.toLowerCase().contains('king'),
+        ) ??
         false;
 
     if (attackerHasKingsHaki && !defenderHasKingsHaki) {

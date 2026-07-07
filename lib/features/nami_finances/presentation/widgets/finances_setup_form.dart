@@ -53,26 +53,29 @@ class _FinancesSetupFormState extends State<FinancesSetupForm> {
     final finances = widget.existingFinances!;
 
     for (final income in finances.monthlyIncomes) {
-      final controller =
-          TextEditingController(text: _formatCurrencyForDisplay(income.amount));
+      final controller = TextEditingController(
+        text: _formatCurrencyForDisplay(income.amount),
+      );
       controller.addListener(_validateForm);
 
-      _incomeItems.add(IncomeItem(
-        controller: controller,
-        description: income.description,
-      ));
+      _incomeItems.add(
+        IncomeItem(controller: controller, description: income.description),
+      );
     }
 
     for (final expense in finances.expenses) {
       final controller = TextEditingController(
-          text: _formatCurrencyForDisplay(expense.amount));
+        text: _formatCurrencyForDisplay(expense.amount),
+      );
       controller.addListener(_validateForm);
 
-      _expenseItems.add(dialog.ExpenseItem(
-        controller: controller,
-        category: _mapModelCategoryToDialog(expense.category),
-        description: expense.description,
-      ));
+      _expenseItems.add(
+        dialog.ExpenseItem(
+          controller: controller,
+          category: _mapModelCategoryToDialog(expense.category),
+          description: expense.description,
+        ),
+      );
     }
 
     _savingsController.text = _formatCurrencyForDisplay(finances.savings);
@@ -106,7 +109,8 @@ class _FinancesSetupFormState extends State<FinancesSetupForm> {
   }
 
   dialog.ExpenseCategory _mapModelCategoryToDialog(
-      ExpenseCategory modelCategory) {
+    ExpenseCategory modelCategory,
+  ) {
     switch (modelCategory) {
       case ExpenseCategory.fixed:
         return dialog.ExpenseCategory.fixed;
@@ -128,10 +132,7 @@ class _FinancesSetupFormState extends State<FinancesSetupForm> {
     controller.addListener(_validateForm);
 
     setState(() {
-      _incomeItems.add(IncomeItem(
-        controller: controller,
-        description: '',
-      ));
+      _incomeItems.add(IncomeItem(controller: controller, description: ''));
     });
   }
 
@@ -174,20 +175,28 @@ class _FinancesSetupFormState extends State<FinancesSetupForm> {
   }
 
   bool get _isFormValid {
-    final hasIncome = _incomeItems.any((item) =>
-        (double.tryParse(
-                item.controller.text.replaceAll(RegExp(r'[^\d]'), '')) ??
-            0) >
-        0);
+    final hasIncome = _incomeItems.any(
+      (item) =>
+          (double.tryParse(
+                item.controller.text.replaceAll(RegExp(r'[^\d]'), ''),
+              ) ??
+              0) >
+          0,
+    );
 
-    final hasExpense = _expenseItems.any((item) =>
-        (double.tryParse(
-                item.controller.text.replaceAll(RegExp(r'[^\d]'), '')) ??
-            0) >
-        0);
+    final hasExpense = _expenseItems.any(
+      (item) =>
+          (double.tryParse(
+                item.controller.text.replaceAll(RegExp(r'[^\d]'), ''),
+              ) ??
+              0) >
+          0,
+    );
 
-    final hasSavings = (double.tryParse(
-                _savingsController.text.replaceAll(RegExp(r'[^\d]'), '')) ??
+    final hasSavings =
+        (double.tryParse(
+              _savingsController.text.replaceAll(RegExp(r'[^\d]'), ''),
+            ) ??
             0) >=
         0;
 
@@ -198,38 +207,54 @@ class _FinancesSetupFormState extends State<FinancesSetupForm> {
     if (!_isFormValid) return;
 
     final incomes = _incomeItems
-        .where((item) =>
-            (double.tryParse(
-                    item.controller.text.replaceAll(RegExp(r'[^\d]'), '')) ??
-                0) >
-            0)
-        .map((item) => MonthlyIncomeModel(
-              id: const Uuid().v4(),
-              amount: double.parse(
-                      item.controller.text.replaceAll(RegExp(r'[^\d]'), '')) /
-                  100,
-              description: item.description,
-            ))
+        .where(
+          (item) =>
+              (double.tryParse(
+                    item.controller.text.replaceAll(RegExp(r'[^\d]'), ''),
+                  ) ??
+                  0) >
+              0,
+        )
+        .map(
+          (item) => MonthlyIncomeModel(
+            id: const Uuid().v4(),
+            amount:
+                double.parse(
+                  item.controller.text.replaceAll(RegExp(r'[^\d]'), ''),
+                ) /
+                100,
+            description: item.description,
+          ),
+        )
         .toList();
 
     final expenses = _expenseItems
-        .where((item) =>
-            (double.tryParse(
-                    item.controller.text.replaceAll(RegExp(r'[^\d]'), '')) ??
-                0) >
-            0)
-        .map((item) => ExpenseModel(
-              id: const Uuid().v4(),
-              amount: double.parse(
-                      item.controller.text.replaceAll(RegExp(r'[^\d]'), '')) /
-                  100,
-              category: _mapDialogCategoryToModel(item.category),
-              description: item.description,
-            ))
+        .where(
+          (item) =>
+              (double.tryParse(
+                    item.controller.text.replaceAll(RegExp(r'[^\d]'), ''),
+                  ) ??
+                  0) >
+              0,
+        )
+        .map(
+          (item) => ExpenseModel(
+            id: const Uuid().v4(),
+            amount:
+                double.parse(
+                  item.controller.text.replaceAll(RegExp(r'[^\d]'), ''),
+                ) /
+                100,
+            category: _mapDialogCategoryToModel(item.category),
+            description: item.description,
+          ),
+        )
         .toList();
 
-    final savings = double.tryParse(
-            _savingsController.text.replaceAll(RegExp(r'[^\d]'), '')) ??
+    final savings =
+        double.tryParse(
+          _savingsController.text.replaceAll(RegExp(r'[^\d]'), ''),
+        ) ??
         0.0;
     final savingsAmount = savings / 100;
 
@@ -237,7 +262,8 @@ class _FinancesSetupFormState extends State<FinancesSetupForm> {
   }
 
   ExpenseCategory _mapDialogCategoryToModel(
-      dialog.ExpenseCategory dialogCategory) {
+    dialog.ExpenseCategory dialogCategory,
+  ) {
     switch (dialogCategory) {
       case dialog.ExpenseCategory.fixed:
         return ExpenseCategory.fixed;
@@ -308,7 +334,8 @@ class _FinancesSetupFormState extends State<FinancesSetupForm> {
           final item = entry.value;
           return Padding(
             padding: EdgeInsets.only(
-                bottom: index < _incomeItems.length - 1 ? Constants.margin : 0),
+              bottom: index < _incomeItems.length - 1 ? Constants.margin : 0,
+            ),
             child: Row(
               children: [
                 Expanded(
@@ -320,7 +347,8 @@ class _FinancesSetupFormState extends State<FinancesSetupForm> {
                         return 'Por favor, insira um valor';
                       }
                       final amount = double.tryParse(
-                          value.replaceAll(RegExp(r'[^\d]'), ''));
+                        value.replaceAll(RegExp(r'[^\d]'), ''),
+                      );
                       if (amount == null || amount <= 0) {
                         return 'Por favor, insira um valor válido';
                       }
@@ -332,8 +360,10 @@ class _FinancesSetupFormState extends State<FinancesSetupForm> {
                   const SizedBox(width: Constants.margin),
                   IconButton(
                     onPressed: () => _removeIncomeItem(index),
-                    icon: const AppIcon(PhosphorIconsRegular.minusCircle,
-                        color: _errorRed),
+                    icon: const AppIcon(
+                      PhosphorIconsRegular.minusCircle,
+                      color: _errorRed,
+                    ),
                     tooltip: l10n.remove,
                   ),
                 ],
@@ -359,8 +389,9 @@ class _FinancesSetupFormState extends State<FinancesSetupForm> {
             if (value == null || value.isEmpty) {
               return 'Por favor, insira um valor';
             }
-            final amount =
-                double.tryParse(value.replaceAll(RegExp(r'[^\d]'), ''));
+            final amount = double.tryParse(
+              value.replaceAll(RegExp(r'[^\d]'), ''),
+            );
             if (amount == null || amount < 0) {
               return 'Por favor, insira um valor válido';
             }
@@ -393,8 +424,8 @@ class _FinancesSetupFormState extends State<FinancesSetupForm> {
           final item = entry.value;
           return Padding(
             padding: EdgeInsets.only(
-                bottom:
-                    index < _expenseItems.length - 1 ? Constants.margin : 0),
+              bottom: index < _expenseItems.length - 1 ? Constants.margin : 0,
+            ),
             child: ExpenseItemWidget(
               expenseItem: item,
               onRemove: () => _removeExpenseItem(index),
@@ -450,9 +481,9 @@ class _FinancesSetupFormState extends State<FinancesSetupForm> {
               Text(
                 title,
                 style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                      color: Colors.white,
-                      fontWeight: FontWeight.w600,
-                    ),
+                  color: Colors.white,
+                  fontWeight: FontWeight.w600,
+                ),
               ),
             ],
           ),
@@ -468,8 +499,5 @@ class IncomeItem {
   final TextEditingController controller;
   String description;
 
-  IncomeItem({
-    required this.controller,
-    required this.description,
-  });
+  IncomeItem({required this.controller, required this.description});
 }

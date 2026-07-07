@@ -6,7 +6,6 @@ abstract class ICookingRepository {
     String? difficulty,
   });
 
-
   /// Generate personalized meal based on nutrition data
   Future<String?> generatePersonalizedMeal({
     required List<String> ingredients,

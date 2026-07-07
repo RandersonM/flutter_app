@@ -11,8 +11,9 @@ class CalculatorCubit extends Cubit<CalculatorState> {
 
   void deleteLastChar() {
     if (state.input.isNotEmpty) {
-      emit(state.copyWith(
-          input: state.input.substring(0, state.input.length - 1)));
+      emit(
+        state.copyWith(input: state.input.substring(0, state.input.length - 1)),
+      );
     }
   }
 

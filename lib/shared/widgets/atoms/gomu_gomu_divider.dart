@@ -32,10 +32,7 @@ class GomuGomuDivider extends StatelessWidget {
         spiralCount: spiralCount,
         spiralTurns: spiralTurns,
       ),
-      child: SizedBox(
-        height: height,
-        width: double.infinity,
-      ),
+      child: SizedBox(height: height, width: double.infinity),
     );
   }
 }
@@ -73,8 +70,9 @@ class GomuGomuDividerPainter extends CustomPainter {
 
     final centerY = size.height / 2;
     final availableWidth = size.width - (spiralRadius * 2);
-    final actualSpacing =
-        spiralCount > 1 ? availableWidth / (spiralCount - 1) : 0;
+    final actualSpacing = spiralCount > 1
+        ? availableWidth / (spiralCount - 1)
+        : 0;
 
     for (int i = 0; i < spiralCount; i++) {
       final spiralCenterX = spiralRadius + (i * actualSpacing);
@@ -83,14 +81,26 @@ class GomuGomuDividerPainter extends CustomPainter {
 
       if (i < spiralCount - 1) {
         final nextSpiralX = spiralRadius + ((i + 1) * actualSpacing);
-        _drawConnection(canvas, paint, glowPaint, spiralCenterX, centerY,
-            nextSpiralX, centerY);
+        _drawConnection(
+          canvas,
+          paint,
+          glowPaint,
+          spiralCenterX,
+          centerY,
+          nextSpiralX,
+          centerY,
+        );
       }
     }
   }
 
-  void _drawSpiral(Canvas canvas, Paint paint, Paint glowPaint, double centerX,
-      double centerY) {
+  void _drawSpiral(
+    Canvas canvas,
+    Paint paint,
+    Paint glowPaint,
+    double centerX,
+    double centerY,
+  ) {
     final path = Path();
     final points = <Offset>[];
 
@@ -116,8 +126,15 @@ class GomuGomuDividerPainter extends CustomPainter {
     canvas.drawPath(path, paint);
   }
 
-  void _drawConnection(Canvas canvas, Paint paint, Paint glowPaint,
-      double startX, double startY, double endX, double endY) {
+  void _drawConnection(
+    Canvas canvas,
+    Paint paint,
+    Paint glowPaint,
+    double startX,
+    double startY,
+    double endX,
+    double endY,
+  ) {
     final path = Path();
 
     final startPoint = Offset(startX + spiralRadius, startY);

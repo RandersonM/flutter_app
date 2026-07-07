@@ -23,21 +23,23 @@ class DefaultAppBar extends StatelessWidget implements PreferredSizeWidget {
 
   @override
   Widget build(BuildContext context) => AppBar(
-        flexibleSpace: Container(
-            decoration: BoxDecoration(
-          gradient: LinearGradient(
-              begin: Alignment.topCenter,
-              end: Alignment.bottomCenter,
-              colors: <Color>[
-                Theme.of(context).colorScheme.onPrimaryContainer,
-                Theme.of(context).colorScheme.primaryContainer,
-                Theme.of(context).colorScheme.surface,
-                Theme.of(context).colorScheme.surfaceContainer,
-              ]),
-        )),
-        leading: leading,
-        title: title,
-        actions: actions,
-        bottom: bottom,
-      );
+    flexibleSpace: Container(
+      decoration: BoxDecoration(
+        gradient: LinearGradient(
+          begin: Alignment.topCenter,
+          end: Alignment.bottomCenter,
+          colors: <Color>[
+            Theme.of(context).colorScheme.onPrimaryContainer,
+            Theme.of(context).colorScheme.primaryContainer,
+            Theme.of(context).colorScheme.surface,
+            Theme.of(context).colorScheme.surfaceContainer,
+          ],
+        ),
+      ),
+    ),
+    leading: leading,
+    title: title,
+    actions: actions,
+    bottom: bottom,
+  );
 }

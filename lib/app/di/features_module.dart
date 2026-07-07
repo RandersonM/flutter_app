@@ -54,7 +54,8 @@ void registerFeaturesModule(GetIt getIt) {
 
   getIt.registerLazySingleton<RobinKnowledgeBloc>(
     () => RobinKnowledgeBloc(
-        plannerRepository: getIt<PlannerRepositoryInterface>()),
+      plannerRepository: getIt<PlannerRepositoryInterface>(),
+    ),
   );
 
   getIt.registerFactory<VegapunkChatCubit>(() => VegapunkChatCubit());

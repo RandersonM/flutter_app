@@ -10,7 +10,8 @@ class NamiFinancesBloc extends Bloc<NamiFinancesEvent, NamiFinancesState> {
   final INamiFinancesService _service;
   final NamiRagService _ragService;
 
-  NamiFinancesBloc(this._service, this._ragService) : super(NamiFinancesInitial()) {
+  NamiFinancesBloc(this._service, this._ragService)
+    : super(NamiFinancesInitial()) {
     on<LoadFinances>(_onLoadFinances);
     on<LoadCurrentMonthFinances>(_onLoadCurrentMonthFinances);
     on<LoadFinancesHistory>(_onLoadFinancesHistory);
@@ -26,10 +27,7 @@ class NamiFinancesBloc extends Bloc<NamiFinancesEvent, NamiFinancesState> {
 
     try {
       final finances = await _service.getFinancesForMonth(event.month);
-      emit(NamiFinancesLoaded(
-        finances: finances,
-        hasData: finances != null,
-      ));
+      emit(NamiFinancesLoaded(finances: finances, hasData: finances != null));
     } catch (e) {
       emit(NamiFinancesError('Erro ao carregar finanças: $e'));
     }
@@ -43,10 +41,7 @@ class NamiFinancesBloc extends Bloc<NamiFinancesEvent, NamiFinancesState> {
 
     try {
       final finances = await _service.getCurrentMonthFinances();
-      emit(NamiFinancesLoaded(
-        finances: finances,
-        hasData: finances != null,
-      ));
+      emit(NamiFinancesLoaded(finances: finances, hasData: finances != null));
     } catch (e) {
       emit(NamiFinancesError('Erro ao carregar finanças do mês atual: $e'));
     }
@@ -57,8 +52,9 @@ class NamiFinancesBloc extends Bloc<NamiFinancesEvent, NamiFinancesState> {
     Emitter<NamiFinancesState> emit,
   ) async {
     try {
-      final financesHistory =
-          await _service.getLastMonthsFinances(event.months);
+      final financesHistory = await _service.getLastMonthsFinances(
+        event.months,
+      );
       emit(NamiFinancesHistoryLoaded(financesHistory));
     } catch (e) {
       emit(NamiFinancesError('Erro ao carregar histórico de finanças: $e'));
@@ -90,11 +86,8 @@ class NamiFinancesBloc extends Bloc<NamiFinancesEvent, NamiFinancesState> {
 
       await _service.saveFinances(finances);
       await _ragService.syncMonth(finances);
-      
-      emit(NamiFinancesLoaded(
-        finances: finances,
-        hasData: true,
-      ));
+
+      emit(NamiFinancesLoaded(finances: finances, hasData: true));
     } catch (e) {
       emit(NamiFinancesError('Erro ao salvar finanças: $e'));
     }

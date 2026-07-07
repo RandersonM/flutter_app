@@ -60,7 +60,8 @@ class NotificationManagerService implements INotificationManagerService {
       });
 
       debugPrint(
-          'NotificationManagerService: Notificação enviada para usuários específicos');
+        'NotificationManagerService: Notificação enviada para usuários específicos',
+      );
       return result.data as Map<String, dynamic>;
     } catch (e) {
       debugPrint('NotificationManagerService: Erro ao enviar notificação: $e');
@@ -77,16 +78,14 @@ class NotificationManagerService implements INotificationManagerService {
     try {
       final callable = _functions.httpsCallable('testNotification');
 
-      final result = await callable.call({
-        'title': title,
-        'body': body,
-      });
+      final result = await callable.call({'title': title, 'body': body});
 
       debugPrint('NotificationManagerService: Teste de notificação enviado');
       return result.data as Map<String, dynamic>;
     } catch (e) {
       debugPrint(
-          'NotificationManagerService: Erro no teste de notificação: $e');
+        'NotificationManagerService: Erro no teste de notificação: $e',
+      );
       rethrow;
     }
   }

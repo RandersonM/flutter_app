@@ -33,8 +33,9 @@ class _NamiFinancesScreenState extends State<NamiFinancesScreen> {
       create: (context) =>
           getIt<NamiFinancesBloc>()..add(LoadCurrentMonthFinances()),
       child: Scaffold(
-        bottomNavigationBar:
-            const BottomNavigation(BottomNavigationPages.finances),
+        bottomNavigationBar: const BottomNavigation(
+          BottomNavigationPages.finances,
+        ),
         appBar: DefaultAppBar(title: Text(l10n.financeWithNami)),
         floatingActionButton: FloatingActionButton(
           onPressed: () {
@@ -105,8 +106,10 @@ class _NamiFinancesScreenState extends State<NamiFinancesScreen> {
 
               if (state is NamiFinancesError) {
                 return Center(
-                    child: Text(AppLocalizations.of(context)!
-                        .errorPrefix(state.message)));
+                  child: Text(
+                    AppLocalizations.of(context)!.errorPrefix(state.message),
+                  ),
+                );
               }
 
               return const SizedBox.shrink();
@@ -123,12 +126,14 @@ class _NamiFinancesScreenState extends State<NamiFinancesScreen> {
     List<ExpenseModel> expenses,
     double savings,
   ) {
-    context.read<NamiFinancesBloc>().add(SaveFinances(
-          incomes: incomes,
-          expenses: expenses,
-          savings: savings,
-          month: DateTime.now(),
-        ));
+    context.read<NamiFinancesBloc>().add(
+      SaveFinances(
+        incomes: incomes,
+        expenses: expenses,
+        savings: savings,
+        month: DateTime.now(),
+      ),
+    );
     setState(() {
       _editingFinances = null;
       _showSetupForm = false;

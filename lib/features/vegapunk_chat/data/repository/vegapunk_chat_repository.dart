@@ -32,9 +32,9 @@ class VegapunkChatRepository implements IVegapunkChatRepository {
     FunctionRegistry? functionRegistry,
     FunctionExecutor? functionExecutor,
     ToolIntentDetector? intentDetector,
-  })  : _gemma = gemmaService ?? getIt<IGemmaService>(),
-        _rag = ragService ?? getIt<IRAGService>(),
-        _registry = functionRegistry ?? getIt<FunctionRegistry>(),
+  }) : _gemma = gemmaService ?? getIt<IGemmaService>(),
+       _rag = ragService ?? getIt<IRAGService>(),
+       _registry = functionRegistry ?? getIt<FunctionRegistry>(),
        _executor = functionExecutor ?? getIt<FunctionExecutor>(),
        _intentDetector = intentDetector ?? const ToolIntentDetector();
 

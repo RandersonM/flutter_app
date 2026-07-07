@@ -41,26 +41,23 @@ class _DevilFruitSearchHeaderState extends State<DevilFruitSearchHeader> {
         children: [
           Text(
             'Explore as Akuma no Mi',
-            style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                  fontWeight: FontWeight.bold,
-                ),
+            style: Theme.of(
+              context,
+            ).textTheme.headlineSmall?.copyWith(fontWeight: FontWeight.bold),
           ),
           const SizedBox(height: Constants.margin / 2),
           Text(
             'Descubra os poderes místicos das frutas do diabo',
-            style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                  color: Colors.grey[600],
-                ),
+            style: Theme.of(
+              context,
+            ).textTheme.bodyMedium?.copyWith(color: Colors.grey[600]),
           ),
           const SizedBox(height: Constants.margin * 2),
           Container(
             decoration: BoxDecoration(
               color: Colors.grey[100],
               borderRadius: BorderRadius.circular(Constants.margin * 2),
-              border: Border.all(
-                color: Colors.grey[300]!,
-                width: 1,
-              ),
+              border: Border.all(color: Colors.grey[300]!, width: 1),
             ),
             child: TextField(
               controller: _searchController,
@@ -80,8 +77,8 @@ class _DevilFruitSearchHeaderState extends State<DevilFruitSearchHeader> {
                         onPressed: () {
                           _searchController.clear();
                           context.read<DevilFruitBloc>().add(
-                                const SearchDevilFruits(''),
-                              );
+                            const SearchDevilFruits(''),
+                          );
                         },
                       )
                     : null,
@@ -93,9 +90,7 @@ class _DevilFruitSearchHeaderState extends State<DevilFruitSearchHeader> {
               ),
               onChanged: (value) {
                 setState(() {});
-                context.read<DevilFruitBloc>().add(
-                      SearchDevilFruits(value),
-                    );
+                context.read<DevilFruitBloc>().add(SearchDevilFruits(value));
               },
             ),
           ),
@@ -107,17 +102,12 @@ class _DevilFruitSearchHeaderState extends State<DevilFruitSearchHeader> {
                   const SizedBox(
                     width: 16,
                     height: 16,
-                    child: CircularProgressIndicator(
-                      strokeWidth: 2,
-                    ),
+                    child: CircularProgressIndicator(strokeWidth: 2),
                   ),
                   const SizedBox(width: Constants.margin),
                   Text(
                     AppLocalizations.of(context)!.searching,
-                    style: const TextStyle(
-                      color: Colors.grey,
-                      fontSize: 12,
-                    ),
+                    style: const TextStyle(color: Colors.grey, fontSize: 12),
                   ),
                 ],
               ),

@@ -62,9 +62,7 @@ class _CustomCharacterGridListState extends State<CustomCharacterGridList> {
           child: BlocBuilder<CustomCharacterBloc, CustomCharacterState>(
             builder: (context, state) {
               if (state is CustomCharacterLoading) {
-                return const Center(
-                  child: CircularProgressIndicator(),
-                );
+                return const Center(child: CircularProgressIndicator());
               }
 
               if (state is CustomCharacterError) {
@@ -92,9 +90,9 @@ class _CustomCharacterGridListState extends State<CustomCharacterGridList> {
                       const SizedBox(height: Constants.margin),
                       ElevatedButton(
                         onPressed: () {
-                          context
-                              .read<CustomCharacterBloc>()
-                              .add(const LoadCustomCharacters());
+                          context.read<CustomCharacterBloc>().add(
+                            const LoadCustomCharacters(),
+                          );
                         },
                         child: Text(AppLocalizations.of(context)!.tryAgain),
                       ),
@@ -122,8 +120,9 @@ class _CustomCharacterGridListState extends State<CustomCharacterGridList> {
                         ),
                         const SizedBox(height: Constants.margin),
                         Text(
-                          AppLocalizations.of(context)!
-                              .createFirstCustomCharacter,
+                          AppLocalizations.of(
+                            context,
+                          )!.createFirstCustomCharacter,
                           style: Theme.of(context).textTheme.bodySmall,
                           textAlign: TextAlign.center,
                         ),
@@ -228,8 +227,8 @@ class _CustomCharacterGridListState extends State<CustomCharacterGridList> {
                 Navigator.pop(context);
                 if (value.isNotEmpty) {
                   context.read<CustomCharacterBloc>().add(
-                        FilterCustomCharactersByDevilFruit(value),
-                      );
+                    FilterCustomCharactersByDevilFruit(value),
+                  );
                 }
               },
             ),
@@ -243,9 +242,9 @@ class _CustomCharacterGridListState extends State<CustomCharacterGridList> {
           TextButton(
             onPressed: () {
               Navigator.pop(context);
-              context
-                  .read<CustomCharacterBloc>()
-                  .add(const LoadCustomCharacters());
+              context.read<CustomCharacterBloc>().add(
+                const LoadCustomCharacters(),
+              );
             },
             child: Text(AppLocalizations.of(context)!.clearFilters),
           ),
@@ -271,8 +270,8 @@ class _CustomCharacterGridListState extends State<CustomCharacterGridList> {
                 Navigator.pop(context);
                 if (value.isNotEmpty) {
                   context.read<CustomCharacterBloc>().add(
-                        FilterCustomCharactersByCrew(value),
-                      );
+                    FilterCustomCharactersByCrew(value),
+                  );
                 }
               },
             ),
@@ -286,9 +285,9 @@ class _CustomCharacterGridListState extends State<CustomCharacterGridList> {
           TextButton(
             onPressed: () {
               Navigator.pop(context);
-              context
-                  .read<CustomCharacterBloc>()
-                  .add(const LoadCustomCharacters());
+              context.read<CustomCharacterBloc>().add(
+                const LoadCustomCharacters(),
+              );
             },
             child: Text(AppLocalizations.of(context)!.clearFilters),
           ),
@@ -304,9 +303,7 @@ class _CustomCharacterGridListState extends State<CustomCharacterGridList> {
       context: context,
       builder: (context) => AlertDialog(
         title: Text(l10n.confirmDelete),
-        content: Text(
-          l10n.confirmDeleteCrew(character.name),
-        ),
+        content: Text(l10n.confirmDeleteCrew(character.name)),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),

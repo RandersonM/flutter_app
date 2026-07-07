@@ -17,28 +17,35 @@ class VegapunkSatellitePrompt {
   /// The full style instruction for a turn: satellite persona (if any) +
   /// the mandatory formatting rule.
   static String forMessage(String satelliteName, {required bool isPortuguese}) {
-    final persona = personaInstruction(satelliteName, isPortuguese: isPortuguese);
+    final persona = personaInstruction(
+      satelliteName,
+      isPortuguese: isPortuguese,
+    );
     final formatting = responseFormattingRule(isPortuguese: isPortuguese);
     return persona != null ? '$persona\n\n$formatting' : formatting;
   }
 
   /// Returns null for 'stella' (Vegapunk's main body — no persona override,
   /// just his default system instruction from [VegapunkPrompt]).
-  static String? personaInstruction(String satelliteName, {required bool isPortuguese}) {
+  static String? personaInstruction(
+    String satelliteName, {
+    required bool isPortuguese,
+  }) {
     final map = isPortuguese ? _pt : _en;
     return map[satelliteName];
   }
 
-  static String responseFormattingRule({required bool isPortuguese}) => isPortuguese
+  static String responseFormattingRule({required bool isPortuguese}) =>
+      isPortuguese
       ? "IMPORTANTE: Você deve SEMPRE responder em Português do Brasil (pt-BR). "
-          "Nunca responda em Inglês. Nunca use formatação LaTeX ou blocos "
-          "matemáticos (como \$...\$). Use apenas texto simples. Para "
-          "apresentar dados estruturados, SEMPRE crie uma Tabela Markdown "
-          "(Markdown Table)."
+            "Nunca responda em Inglês. Nunca use formatação LaTeX ou blocos "
+            "matemáticos (como \$...\$). Use apenas texto simples. Para "
+            "apresentar dados estruturados, SEMPRE crie uma Tabela Markdown "
+            "(Markdown Table)."
       : "IMPORTANT: You must ALWAYS answer in English. Never answer in "
-          "Portuguese. Never use LaTeX formatting or math blocks (like "
-          "\$...\$). Use plain text only. To present structured data, "
-          "ALWAYS create a Markdown Table.";
+            "Portuguese. Never use LaTeX formatting or math blocks (like "
+            "\$...\$). Use plain text only. To present structured data, "
+            "ALWAYS create a Markdown Table.";
 
   static const _en = {
     'shaka':

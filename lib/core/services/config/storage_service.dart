@@ -6,7 +6,6 @@ import 'package:hive_flutter/hive_flutter.dart';
 import 'package:opfan/core/auth/models/user_model.dart';
 import 'package:opfan/core/models/theme/theme_model.dart';
 
-
 class HiveStorageService implements IStorageService {
   /// Central Registry of Hive Type IDs to prevent collisions.
   ///

@@ -12,20 +12,21 @@ class SearchHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => DrawerHeader(
-      decoration: BoxDecoration(
-        color: Theme.of(context).colorScheme.primaryContainer,
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          Padding(
-            padding: const EdgeInsets.only(top: Constants.margin * 2),
-            child: SearchInput(),
-          ),
-          const Padding(
-            padding: EdgeInsets.only(top: Constants.margin * 3),
-            child: FilterChipList(),
-          ),
-        ],
-      ));
+    decoration: BoxDecoration(
+      color: Theme.of(context).colorScheme.primaryContainer,
+    ),
+    child: Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        Padding(
+          padding: const EdgeInsets.only(top: Constants.margin * 2),
+          child: SearchInput(),
+        ),
+        const Padding(
+          padding: EdgeInsets.only(top: Constants.margin * 3),
+          child: FilterChipList(),
+        ),
+      ],
+    ),
+  );
 }

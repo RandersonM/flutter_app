@@ -35,8 +35,8 @@ class CharacterRaceSection extends StatelessWidget {
                 Text(
                   'Raça',
                   style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                        fontWeight: FontWeight.bold,
-                      ),
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
               ],
             ),

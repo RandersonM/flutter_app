@@ -55,9 +55,7 @@ class CustomDropdown<T> extends StatelessWidget {
         },
         decoration: InputDecoration(
           labelText: label,
-          border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(8),
-          ),
+          border: OutlineInputBorder(borderRadius: BorderRadius.circular(8)),
           filled: true,
         ),
       ),

@@ -68,8 +68,13 @@ class GeneratePersonalizedMeal extends SanjiCookingEvent {
   });
 
   @override
-  List<Object?> get props =>
-      [ingredients, mealType, targetCalories, goal, dietaryRestrictions];
+  List<Object?> get props => [
+    ingredients,
+    mealType,
+    targetCalories,
+    goal,
+    dietaryRestrictions,
+  ];
 }
 
 class ClearCookingTips extends SanjiCookingEvent {

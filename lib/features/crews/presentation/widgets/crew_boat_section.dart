@@ -9,10 +9,7 @@ import 'package:opfan/shared/widgets/atoms/clickable_image.dart';
 class CrewBoatSection extends StatelessWidget {
   final CrewModel crew;
 
-  const CrewBoatSection({
-    super.key,
-    required this.crew,
-  });
+  const CrewBoatSection({super.key, required this.crew});
 
   @override
   Widget build(BuildContext context) {
@@ -26,9 +23,7 @@ class CrewBoatSection extends StatelessWidget {
     return Container(
       width: double.infinity,
       padding: const EdgeInsets.all(Constants.margin),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(8),
-      ),
+      decoration: BoxDecoration(borderRadius: BorderRadius.circular(8)),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -79,10 +74,7 @@ class CrewBoatSection extends StatelessWidget {
               ),
               child: Row(
                 children: [
-                  const AppIcon(
-                    PhosphorIconsRegular.tag,
-                    size: 16,
-                  ),
+                  const AppIcon(PhosphorIconsRegular.tag, size: 16),
                   const SizedBox(width: 8),
                   Expanded(
                     child: Text(

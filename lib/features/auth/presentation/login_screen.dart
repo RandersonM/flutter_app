@@ -111,9 +111,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     ),
                   ),
                 ),
-                Container(
-                  color: Colors.black.withValues(alpha: 0.45),
-                ),
+                Container(color: Colors.black.withValues(alpha: 0.45)),
                 SafeArea(
                   child: Padding(
                     padding: const EdgeInsets.all(Constants.margin),
@@ -150,25 +148,25 @@ class _LoginScreenState extends State<LoginScreen> {
       final returnArguments = arguments['returnArguments'];
 
       if (returnRoute != null) {
-        Navigator.of(context)
-            .pushReplacementNamed(returnRoute, arguments: returnArguments);
+        Navigator.of(
+          context,
+        ).pushReplacementNamed(returnRoute, arguments: returnArguments);
         return;
       }
     }
 
-    Navigator.of(context).pushNamedAndRemoveUntil(
-      AppRoutes.home,
-      (route) => false,
-    );
+    Navigator.of(
+      context,
+    ).pushNamedAndRemoveUntil(AppRoutes.home, (route) => false);
   }
 
   Widget _buildWelcomeText() {
     return Text(
       AppLocalizations.of(context)!.welcomeToOpfan,
       style: Theme.of(context).textTheme.headlineMedium?.copyWith(
-            color: Colors.white,
-            fontWeight: FontWeight.bold,
-          ),
+        color: Colors.white,
+        fontWeight: FontWeight.bold,
+      ),
       textAlign: TextAlign.center,
     );
   }
@@ -176,9 +174,9 @@ class _LoginScreenState extends State<LoginScreen> {
   Widget _buildSubtitleText() {
     return Text(
       AppLocalizations.of(context)!.loginWelcomeSubtitle,
-      style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-            color: Colors.white,
-          ),
+      style: Theme.of(
+        context,
+      ).textTheme.bodyLarge?.copyWith(color: Colors.white),
       textAlign: TextAlign.center,
     );
   }
@@ -210,10 +208,9 @@ class _LoginScreenState extends State<LoginScreen> {
       label: AppLocalizations.of(context)!.skipForNow,
       variant: AppButtonVariant.text,
       onPressed: () {
-        Navigator.of(context).pushNamedAndRemoveUntil(
-          AppRoutes.home,
-          (route) => false,
-        );
+        Navigator.of(
+          context,
+        ).pushNamedAndRemoveUntil(AppRoutes.home, (route) => false);
       },
     );
   }

@@ -135,7 +135,7 @@ class _ChatTypingIndicatorState extends State<ChatTypingIndicator>
             final offset = (animationValue * 3 - index) % 3;
             double opacity = 0.3;
             double translateY = 0;
-            
+
             if (offset >= 0 && offset <= 1) {
               // Up and down bounce
               translateY = -3 * (0.5 - (offset - 0.5).abs());
@@ -149,7 +149,9 @@ class _ChatTypingIndicatorState extends State<ChatTypingIndicator>
                 width: 6,
                 height: 6,
                 decoration: BoxDecoration(
-                  color: theme.colorScheme.onSurfaceVariant.withValues(alpha: opacity),
+                  color: theme.colorScheme.onSurfaceVariant.withValues(
+                    alpha: opacity,
+                  ),
                   shape: BoxShape.circle,
                 ),
               ),

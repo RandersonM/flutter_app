@@ -23,7 +23,8 @@ class CalculatorContent extends StatelessWidget {
                 child: GridView.builder(
                   itemCount: Constants.calculatorButtons.length,
                   gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 4),
+                    crossAxisCount: 4,
+                  ),
                   itemBuilder: (BuildContext context, int index) {
                     final button = Constants.calculatorButtons[index];
                     switch (index) {

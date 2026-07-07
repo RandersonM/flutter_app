@@ -13,11 +13,7 @@ class WorkoutSetup extends StatefulWidget {
   final Function(Map<String, dynamic>) onCalculate;
   final Map<String, dynamic>? existingData;
 
-  const WorkoutSetup({
-    super.key,
-    required this.onCalculate,
-    this.existingData,
-  });
+  const WorkoutSetup({super.key, required this.onCalculate, this.existingData});
 
   @override
   State<WorkoutSetup> createState() => _WorkoutSetupState();
@@ -48,10 +44,7 @@ class _WorkoutSetupState extends State<WorkoutSetup> {
       if (state is ZoroWorkoutError) {
         if (mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text(state.message),
-              backgroundColor: Colors.red,
-            ),
+            SnackBar(content: Text(state.message), backgroundColor: Colors.red),
           );
         }
       }
@@ -122,14 +115,23 @@ class _WorkoutSetupState extends State<WorkoutSetup> {
 
       final bmi = weight / ((height / 100) * (height / 100));
       final waistToHeightRatio = waist / height;
-      final bodyFatPercentage =
-          _calculateBodyFatPercentage(weight, height, age, _selectedGender!);
-      final healthScore =
-          _calculateHealthScore(bmi, waistToHeightRatio, bodyFatPercentage);
+      final bodyFatPercentage = _calculateBodyFatPercentage(
+        weight,
+        height,
+        age,
+        _selectedGender!,
+      );
+      final healthScore = _calculateHealthScore(
+        bmi,
+        waistToHeightRatio,
+        bodyFatPercentage,
+      );
 
       final results = {
         'gender': GenderMapper.getInternalValue(
-            _selectedGender!, AppLocalizations.of(context)!),
+          _selectedGender!,
+          AppLocalizations.of(context)!,
+        ),
         'age': age,
         'height': height,
         'weight': weight,
@@ -142,19 +144,23 @@ class _WorkoutSetupState extends State<WorkoutSetup> {
         'workout_days': _workoutDays,
       };
 
-      _bloc.add(SaveNewAssessment(
-        healthResults: results,
-      ));
+      _bloc.add(SaveNewAssessment(healthResults: results));
 
       widget.onCalculate(results);
     }
   }
 
   double _calculateBodyFatPercentage(
-      double weight, double height, int age, String gender) {
+    double weight,
+    double height,
+    int age,
+    String gender,
+  ) {
     final bmi = weight / ((height / 100) * (height / 100));
-    final internalGender =
-        GenderMapper.getInternalValue(gender, AppLocalizations.of(context)!);
+    final internalGender = GenderMapper.getInternalValue(
+      gender,
+      AppLocalizations.of(context)!,
+    );
 
     if (internalGender == GenderMapper.male) {
       return (1.2 * bmi) + (0.23 * age) - 16.2;
@@ -164,7 +170,10 @@ class _WorkoutSetupState extends State<WorkoutSetup> {
   }
 
   double _calculateHealthScore(
-      double bmi, double waistToHeightRatio, double bodyFatPercentage) {
+    double bmi,
+    double waistToHeightRatio,
+    double bodyFatPercentage,
+  ) {
     double score = 100;
 
     if (bmi < 18.5 || bmi > 30) {
@@ -197,16 +206,16 @@ class _WorkoutSetupState extends State<WorkoutSetup> {
           Text(
             '• $title: ',
             style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                  fontWeight: FontWeight.bold,
-                  color: Colors.grey[700],
-                ),
+              fontWeight: FontWeight.bold,
+              color: Colors.grey[700],
+            ),
           ),
           Expanded(
             child: Text(
               formula,
-              style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                    color: Colors.grey[600],
-                  ),
+              style: Theme.of(
+                context,
+              ).textTheme.bodySmall?.copyWith(color: Colors.grey[600]),
             ),
           ),
         ],
@@ -223,37 +232,42 @@ class _WorkoutSetupState extends State<WorkoutSetup> {
         children: [
           Text(
             AppLocalizations.of(context)!.workout_health_assessment,
-            style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                  fontWeight: FontWeight.bold,
-                ),
+            style: Theme.of(
+              context,
+            ).textTheme.headlineSmall?.copyWith(fontWeight: FontWeight.bold),
           ),
           const SizedBox(height: 10),
           Text(
             AppLocalizations.of(context)!.workout_health_assessment_subtitle,
-            style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                  color: Colors.grey[600],
-                ),
+            style: Theme.of(
+              context,
+            ).textTheme.bodyMedium?.copyWith(color: Colors.grey[600]),
           ),
           const SizedBox(height: 10),
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               _buildFormulaItem(
-                  'IMC', AppLocalizations.of(context)!.workout_formula_bmi),
+                'IMC',
+                AppLocalizations.of(context)!.workout_formula_bmi,
+              ),
               _buildFormulaItem(
-                  'Relação Cintura/Altura',
-                  AppLocalizations.of(context)!
-                      .workout_formula_waist_to_height),
-              _buildFormulaItem('Percentual de Gordura',
-                  AppLocalizations.of(context)!.workout_formula_body_fat),
+                'Relação Cintura/Altura',
+                AppLocalizations.of(context)!.workout_formula_waist_to_height,
+              ),
+              _buildFormulaItem(
+                'Percentual de Gordura',
+                AppLocalizations.of(context)!.workout_formula_body_fat,
+              ),
             ],
           ),
           const SizedBox(height: 20),
           CustomDropdown<String>(
             value: _selectedGender,
             label: AppLocalizations.of(context)!.workout_gender,
-            items:
-                GenderMapper.getLocalizedOptions(AppLocalizations.of(context)!),
+            items: GenderMapper.getLocalizedOptions(
+              AppLocalizations.of(context)!,
+            ),
             onChanged: (value) {
               setState(() {
                 _selectedGender = value;
@@ -261,8 +275,9 @@ class _WorkoutSetupState extends State<WorkoutSetup> {
             },
             validator: (value) {
               if (value == null) {
-                return AppLocalizations.of(context)!
-                    .workout_validation_gender_required;
+                return AppLocalizations.of(
+                  context,
+                )!.workout_validation_gender_required;
               }
               return null;
             },
@@ -275,12 +290,14 @@ class _WorkoutSetupState extends State<WorkoutSetup> {
             keyboardType: TextInputType.number,
             validator: (value) {
               if (value == null || value.isEmpty) {
-                return AppLocalizations.of(context)!
-                    .workout_validation_age_required;
+                return AppLocalizations.of(
+                  context,
+                )!.workout_validation_age_required;
               }
               if (int.tryParse(value) == null) {
-                return AppLocalizations.of(context)!
-                    .workout_validation_age_invalid;
+                return AppLocalizations.of(
+                  context,
+                )!.workout_validation_age_invalid;
               }
               return null;
             },
@@ -292,12 +309,14 @@ class _WorkoutSetupState extends State<WorkoutSetup> {
             keyboardType: TextInputType.number,
             validator: (value) {
               if (value == null || value.isEmpty) {
-                return AppLocalizations.of(context)!
-                    .workout_validation_height_required;
+                return AppLocalizations.of(
+                  context,
+                )!.workout_validation_height_required;
               }
               if (double.tryParse(value) == null) {
-                return AppLocalizations.of(context)!
-                    .workout_validation_height_invalid;
+                return AppLocalizations.of(
+                  context,
+                )!.workout_validation_height_invalid;
               }
               return null;
             },
@@ -309,12 +328,14 @@ class _WorkoutSetupState extends State<WorkoutSetup> {
             keyboardType: TextInputType.number,
             validator: (value) {
               if (value == null || value.isEmpty) {
-                return AppLocalizations.of(context)!
-                    .workout_validation_weight_required;
+                return AppLocalizations.of(
+                  context,
+                )!.workout_validation_weight_required;
               }
               if (double.tryParse(value) == null) {
-                return AppLocalizations.of(context)!
-                    .workout_validation_weight_invalid;
+                return AppLocalizations.of(
+                  context,
+                )!.workout_validation_weight_invalid;
               }
               return null;
             },
@@ -326,12 +347,14 @@ class _WorkoutSetupState extends State<WorkoutSetup> {
             keyboardType: TextInputType.number,
             validator: (value) {
               if (value == null || value.isEmpty) {
-                return AppLocalizations.of(context)!
-                    .workout_validation_waist_required;
+                return AppLocalizations.of(
+                  context,
+                )!.workout_validation_waist_required;
               }
               if (double.tryParse(value) == null) {
-                return AppLocalizations.of(context)!
-                    .workout_validation_waist_invalid;
+                return AppLocalizations.of(
+                  context,
+                )!.workout_validation_waist_invalid;
               }
               return null;
             },
@@ -348,8 +371,9 @@ class _WorkoutSetupState extends State<WorkoutSetup> {
             },
             validator: (value) {
               if (value == null) {
-                return AppLocalizations.of(context)!
-                    .workout_validation_workout_days_required;
+                return AppLocalizations.of(
+                  context,
+                )!.workout_validation_workout_days_required;
               }
               return null;
             },

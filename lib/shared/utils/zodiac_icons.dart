@@ -102,7 +102,9 @@ class ZodiacIcons {
   /// [zodiacSign] - The zodiac sign name (e.g., 'aries', 'taurus', etc.)
   /// Returns the localized name of the zodiac sign or 'Unknown' if not found
   static String getLocalizedZodiacSign(
-      BuildContext context, String? zodiacSign) {
+    BuildContext context,
+    String? zodiacSign,
+  ) {
     if (zodiacSign == null || zodiacSign.isEmpty) {
       return AppLocalizations.of(context)!.unknown;
     }

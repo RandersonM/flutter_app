@@ -17,7 +17,8 @@ class YouTubeVideo {
     return YouTubeVideo(
       videoId: json['id']['videoId'] ?? '',
       title: json['snippet']['title'] ?? '',
-      thumbnailUrl: json['snippet']['thumbnails']['high']['url'] ??
+      thumbnailUrl:
+          json['snippet']['thumbnails']['high']['url'] ??
           json['snippet']['thumbnails']['medium']['url'] ??
           json['snippet']['thumbnails']['default']['url'] ??
           '',

@@ -27,7 +27,7 @@ class NamiChatBloc extends Cubit<NamiChatState> {
   static const _sessionId = 'nami';
 
   NamiChatBloc(this._ragService, this._gemmaService, this._financesService)
-      : super(NamiChatInitial()) {
+    : super(NamiChatInitial()) {
     _init();
   }
 
@@ -54,16 +54,19 @@ class NamiChatBloc extends Cubit<NamiChatState> {
     await _backfillFuture;
 
     if (isClosed) return;
-    emit(NamiChatReady(
-      messages: const [
-        ChatMessage(
-          id: 'welcome_nami',
-          text: 'Oi! Eu sou a Nami. Posso analisar suas finanças que salvamos! Pergunte o que quiser sobre os meses registrados.',
-          role: MessageRole.assistant,
-        ),
-      ],
-      error: readyError,
-    ));
+    emit(
+      NamiChatReady(
+        messages: const [
+          ChatMessage(
+            id: 'welcome_nami',
+            text:
+                'Oi! Eu sou a Nami. Posso analisar suas finanças que salvamos! Pergunte o que quiser sobre os meses registrados.',
+            role: MessageRole.assistant,
+          ),
+        ],
+        error: readyError,
+      ),
+    );
   }
 
   /// Waits for the shared [IGemmaService] model to reach [GemmaReady].
@@ -91,9 +94,11 @@ class NamiChatBloc extends Cubit<NamiChatState> {
         // instead of leaving the sheet stuck in a loading state forever.
         sub.cancel();
         if (!completer.isCompleted) {
-          completer.completeError(StateError(
-            'Modelo de IA ainda não foi baixado — abra o chat do Vegapunk para instalá-lo.',
-          ));
+          completer.completeError(
+            StateError(
+              'Modelo de IA ainda não foi baixado — abra o chat do Vegapunk para instalá-lo.',
+            ),
+          );
         }
       }
     });
@@ -135,7 +140,7 @@ class NamiChatBloc extends Cubit<NamiChatState> {
 
   Future<void> sendMessage(String text) async {
     if (text.trim().isEmpty) return;
-    
+
     final currentState = state;
     if (currentState is! NamiChatReady || currentState.isGenerating) return;
 
@@ -145,11 +150,13 @@ class NamiChatBloc extends Cubit<NamiChatState> {
       role: MessageRole.user,
     );
 
-    emit(currentState.copyWith(
-      messages: [...currentState.messages, userMsg],
-      streamingToken: '',
-      isGenerating: true,
-    ));
+    emit(
+      currentState.copyWith(
+        messages: [...currentState.messages, userMsg],
+        streamingToken: '',
+        isGenerating: true,
+      ),
+    );
 
     final ragContext = await _buildRagContext(text);
 
@@ -161,63 +168,67 @@ class NamiChatBloc extends Cubit<NamiChatState> {
       final current = state as NamiChatReady;
       final buffered = _tokenBuffer.toString();
       if (buffered.isEmpty) return;
-      
+
       _tokenBuffer.clear();
-      emit(current.copyWith(
-        streamingToken: current.streamingToken + buffered,
-      ));
+      emit(current.copyWith(streamingToken: current.streamingToken + buffered));
     });
 
     try {
-      _streamSub = _gemmaService.sendSessionMessage(
-        _sessionId,
-        systemInstruction: NamiPrompt.system(
-          isPortuguese: PromptLocale.isPortuguese(),
-        ),
-        text: text,
-        ragContext: ragContext,
-      ).listen(
-        (response) {
-          if (state is! NamiChatReady) return;
-          
-          if (response is TextResponse) {
-            _tokenBuffer.write(response.token);
-          }
-        },
-        onError: (error) {
-          if (state is NamiChatReady) {
-            emit((state as NamiChatReady).copyWith(
-              isGenerating: false,
-              error: 'Erro na conexão com Nami: $error',
-            ));
-          }
-        },
-        onDone: () {
-          if (state is NamiChatReady) {
-            final current = state as NamiChatReady;
-            // Flush remaining buffer
-            final finalToken = current.streamingToken + _tokenBuffer.toString();
-            _tokenBuffer.clear();
-            
-            final modelMsg = ChatMessage(
-              id: _uuid.v4(),
-              text: finalToken.trim(),
-              role: MessageRole.assistant,
-            );
-            
-            emit(current.copyWith(
-              messages: [...current.messages, modelMsg],
-              streamingToken: '',
-              isGenerating: false,
-            ));
-          }
-        },
-      );
+      _streamSub = _gemmaService
+          .sendSessionMessage(
+            _sessionId,
+            systemInstruction: NamiPrompt.system(
+              isPortuguese: PromptLocale.isPortuguese(),
+            ),
+            text: text,
+            ragContext: ragContext,
+          )
+          .listen(
+            (response) {
+              if (state is! NamiChatReady) return;
+
+              if (response is TextResponse) {
+                _tokenBuffer.write(response.token);
+              }
+            },
+            onError: (error) {
+              if (state is NamiChatReady) {
+                emit(
+                  (state as NamiChatReady).copyWith(
+                    isGenerating: false,
+                    error: 'Erro na conexão com Nami: $error',
+                  ),
+                );
+              }
+            },
+            onDone: () {
+              if (state is NamiChatReady) {
+                final current = state as NamiChatReady;
+                // Flush remaining buffer
+                final finalToken =
+                    current.streamingToken + _tokenBuffer.toString();
+                _tokenBuffer.clear();
+
+                final modelMsg = ChatMessage(
+                  id: _uuid.v4(),
+                  text: finalToken.trim(),
+                  role: MessageRole.assistant,
+                );
+
+                emit(
+                  current.copyWith(
+                    messages: [...current.messages, modelMsg],
+                    streamingToken: '',
+                    isGenerating: false,
+                  ),
+                );
+              }
+            },
+          );
     } catch (e) {
-      emit(currentState.copyWith(
-        isGenerating: false,
-        error: 'Falha interna: $e',
-      ));
+      emit(
+        currentState.copyWith(isGenerating: false, error: 'Falha interna: $e'),
+      );
     }
   }
 

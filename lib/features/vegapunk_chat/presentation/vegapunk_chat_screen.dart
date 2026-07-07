@@ -33,7 +33,8 @@ class VegapunkChatScreen extends StatelessWidget {
     }
 
     return BlocProvider<VegapunkChatCubit>(
-      create: (_) => getIt<VegapunkChatCubit>()..initialize(targetCategories: categories),
+      create: (_) =>
+          getIt<VegapunkChatCubit>()..initialize(targetCategories: categories),
       child: const _VegapunkChatView(),
     );
   }
@@ -78,28 +79,26 @@ class _VegapunkChatViewState extends State<_VegapunkChatView> {
           BlocBuilder<VegapunkChatCubit, VegapunkChatState>(
             buildWhen: (prev, curr) =>
                 curr is VegapunkChatReady && prev is VegapunkChatReady
-                    ? prev.messages.length != curr.messages.length
-                    : false,
+                ? prev.messages.length != curr.messages.length
+                : false,
             builder: (context, state) {
-              if (state is! VegapunkChatReady ||
-                  state.messages.isEmpty) {
+              if (state is! VegapunkChatReady || state.messages.isEmpty) {
                 return const SizedBox.shrink();
               }
               return IconButton(
                 icon: const Icon(PhosphorIconsRegular.arrowCounterClockwise),
                 tooltip: 'Reset chat',
-                onPressed: () =>
-                    context.read<VegapunkChatCubit>().reset(),
+                onPressed: () => context.read<VegapunkChatCubit>().reset(),
               );
             },
           ),
         ],
       ),
-      bottomNavigationBar:
-          const BottomNavigation(BottomNavigationPages.vegapunkChat),
+      bottomNavigationBar: const BottomNavigation(
+        BottomNavigationPages.vegapunkChat,
+      ),
       body: BlocConsumer<VegapunkChatCubit, VegapunkChatState>(
-        listenWhen: (_, curr) =>
-            curr is VegapunkChatReady && curr.isGenerating,
+        listenWhen: (_, curr) => curr is VegapunkChatReady && curr.isGenerating,
         listener: (_, __) => _scrollToBottom(),
         builder: (context, state) {
           if (state is! VegapunkChatReady) {
@@ -115,15 +114,22 @@ class _VegapunkChatViewState extends State<_VegapunkChatView> {
             children: [
               _SatelliteSelector(
                 selected: state.selectedSatellite,
-                onSelected: (satellite) =>
-                    context.read<VegapunkChatCubit>().changeSatellite(satellite),
+                onSelected: (satellite) => context
+                    .read<VegapunkChatCubit>()
+                    .changeSatellite(satellite),
               ),
               _ThinkingModeToggle(
                 isEnabled: state.isThinkingMode,
-                onChanged: (enabled) =>
-                    context.read<VegapunkChatCubit>().toggleThinkingMode(enabled),
+                onChanged: (enabled) => context
+                    .read<VegapunkChatCubit>()
+                    .toggleThinkingMode(enabled),
               ),
-              Expanded(child: _ChatList(state: state, scrollController: _scrollController)),
+              Expanded(
+                child: _ChatList(
+                  state: state,
+                  scrollController: _scrollController,
+                ),
+              ),
               if (state.isSearchingWeb) const _WebSearchIndicator(),
               ChatInputBar(
                 isGenerating: state.isGenerating,
@@ -144,10 +150,7 @@ class _VegapunkChatViewState extends State<_VegapunkChatView> {
 }
 
 class _ChatList extends StatelessWidget {
-  const _ChatList({
-    required this.state,
-    required this.scrollController,
-  });
+  const _ChatList({required this.state, required this.scrollController});
 
   final VegapunkChatReady state;
   final ScrollController scrollController;
@@ -344,7 +347,7 @@ class _TypingIndicatorState extends State<_TypingIndicator>
             final offset = (animationValue * 3 - index) % 3;
             double opacity = 0.3;
             double translateY = 0;
-            
+
             if (offset >= 0 && offset <= 1) {
               // Up and down bounce
               translateY = -3 * (0.5 - (offset - 0.5).abs());
@@ -358,7 +361,9 @@ class _TypingIndicatorState extends State<_TypingIndicator>
                 width: 6,
                 height: 6,
                 decoration: BoxDecoration(
-                  color: theme.colorScheme.onSurfaceVariant.withValues(alpha: opacity),
+                  color: theme.colorScheme.onSurfaceVariant.withValues(
+                    alpha: opacity,
+                  ),
                   shape: BoxShape.circle,
                 ),
               ),
@@ -371,10 +376,7 @@ class _TypingIndicatorState extends State<_TypingIndicator>
 }
 
 class _SatelliteSelector extends StatelessWidget {
-  const _SatelliteSelector({
-    required this.selected,
-    required this.onSelected,
-  });
+  const _SatelliteSelector({required this.selected, required this.onSelected});
 
   final VegapunkSatellite selected;
   final ValueChanged<VegapunkSatellite> onSelected;
@@ -397,7 +399,10 @@ class _SatelliteSelector extends StatelessWidget {
       ),
       child: ListView.builder(
         scrollDirection: Axis.horizontal,
-        padding: const EdgeInsets.symmetric(horizontal: Constants.size12, vertical: 8.0),
+        padding: const EdgeInsets.symmetric(
+          horizontal: Constants.size12,
+          vertical: 8.0,
+        ),
         itemCount: VegapunkSatellite.values.length,
         itemBuilder: (context, index) {
           final satellite = VegapunkSatellite.values[index];
@@ -410,7 +415,9 @@ class _SatelliteSelector extends StatelessWidget {
                 satellite.getLocalizedName(l10n),
                 style: theme.textTheme.labelMedium?.copyWith(
                   fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
-                  color: isSelected ? theme.colorScheme.onPrimary : theme.colorScheme.onSurface,
+                  color: isSelected
+                      ? theme.colorScheme.onPrimary
+                      : theme.colorScheme.onSurface,
                 ),
               ),
               selected: isSelected,
@@ -423,7 +430,9 @@ class _SatelliteSelector extends StatelessWidget {
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(Constants.size16),
                 side: BorderSide(
-                  color: isSelected ? Colors.transparent : theme.colorScheme.outline.withValues(alpha: 0.15),
+                  color: isSelected
+                      ? Colors.transparent
+                      : theme.colorScheme.outline.withValues(alpha: 0.15),
                 ),
               ),
             ),
@@ -435,10 +444,7 @@ class _SatelliteSelector extends StatelessWidget {
 }
 
 class _ThinkingModeToggle extends StatelessWidget {
-  const _ThinkingModeToggle({
-    required this.isEnabled,
-    required this.onChanged,
-  });
+  const _ThinkingModeToggle({required this.isEnabled, required this.onChanged});
 
   final bool isEnabled;
   final ValueChanged<bool> onChanged;
@@ -529,9 +535,10 @@ class _WebSearchIndicatorState extends State<_WebSearchIndicator>
       vsync: this,
       duration: const Duration(milliseconds: 900),
     )..repeat(reverse: true);
-    _pulseAnimation = Tween<double>(begin: 0.4, end: 1.0).animate(
-      CurvedAnimation(parent: _controller, curve: Curves.easeInOut),
-    );
+    _pulseAnimation = Tween<double>(
+      begin: 0.4,
+      end: 1.0,
+    ).animate(CurvedAnimation(parent: _controller, curve: Curves.easeInOut));
   }
 
   @override
