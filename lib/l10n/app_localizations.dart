@@ -4945,6 +4945,24 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'High protein'**
   String get dietaryRestrictionHighProtein;
+
+  /// Top banner shown when the device has no internet connection
+  ///
+  /// In en, this message translates to:
+  /// **'You\'re offline. Some features are unavailable.'**
+  String get offlineBannerMessage;
+
+  /// Title of the offline blocker overlay shown on internet-required screens
+  ///
+  /// In en, this message translates to:
+  /// **'No Internet Connection'**
+  String get offlineScreenTitle;
+
+  /// Subtitle of the offline blocker overlay shown on internet-required screens
+  ///
+  /// In en, this message translates to:
+  /// **'This feature requires an internet connection.\nPlease reconnect to continue.'**
+  String get offlineScreenSubtitle;
 }
 
 class _AppLocalizationsDelegate

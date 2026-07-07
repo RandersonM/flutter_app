@@ -5,6 +5,8 @@ import 'package:phosphoricons_flutter/phosphoricons_flutter.dart';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:opfan/core/connectivity/connectivity_cubit.dart';
+import 'package:opfan/core/connectivity/connectivity_state.dart';
 import 'package:opfan/features/custom_character/data/models/custom_character_model.dart';
 import 'package:opfan/app/di/injection.dart';
 import 'package:opfan/l10n/app_localizations.dart';
@@ -41,8 +43,17 @@ class _HomeScreenState extends State<HomeScreen> {
         BlocProvider.value(
           value: getIt<AuthBloc>(),
         ),
+        BlocProvider.value(
+          value: getIt<ConnectivityCubit>(),
+        ),
       ],
-      child: BlocBuilder<AuthBloc, AuthState>(
+      child: BlocListener<ConnectivityCubit, ConnectivityState>(
+        listener: (context, state) {
+          if (state is ConnectivityOnline) {
+            context.read<HomeBloc>().add(const ConnectivityRestored());
+          }
+        },
+        child: BlocBuilder<AuthBloc, AuthState>(
         builder: (context, authState) {
           return Scaffold(
             appBar: const HomeAppBar(),
@@ -230,6 +241,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 const BottomNavigation(BottomNavigationPages.home),
           );
         },
+        ),
       ),
     );
   }
@@ -243,6 +255,16 @@ class _HomeScreenState extends State<HomeScreen> {
             child: CircularProgressIndicator(),
           ),
         ),
+      );
+    }
+
+    // Offline: show static placeholder so the home doesn't get stuck loading.
+    if (state is HomeOffline) {
+      return CharacterInfoCard(
+        characterName: 'Monkey D. Luffy',
+        characterBounty: '฿1.500.000.000',
+        characterImage: 'assets/logo/splash_logo.png',
+        onTap: () {},
       );
     }
 
@@ -306,6 +328,30 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   Widget _buildCharacterStatistics(BuildContext context, HomeState state) {
+    // Offline placeholder statistics
+    if (state is HomeOffline) {
+      return StatisticsGrid(
+        title: AppLocalizations.of(context)!.statistics,
+        statistics: [
+          StatisticData(
+            label: AppLocalizations.of(context)!.status,
+            value: '—',
+            icon: PhosphorIconsRegular.flag,
+          ),
+          StatisticData(
+            label: AppLocalizations.of(context)!.crew(0),
+            value: '—',
+            svgPath: 'assets/logo/ship-crew.svg',
+          ),
+          StatisticData(
+            label: AppLocalizations.of(context)!.signo,
+            value: '—',
+            icon: PhosphorIconsRegular.star,
+          ),
+        ],
+      );
+    }
+
     if (state is HomeLoaded) {
       final character = state.featuredCharacter;
 

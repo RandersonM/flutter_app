@@ -2,13 +2,15 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:uuid/uuid.dart';
 import 'package:opfan/features/nami_finances/data/models/nami_finances_model.dart';
 import 'package:opfan/core/services/index.dart';
+import 'package:opfan/features/nami_finances/data/services/nami_rag_service.dart';
 import 'nami_finances_event.dart';
 import 'nami_finances_state.dart';
 
 class NamiFinancesBloc extends Bloc<NamiFinancesEvent, NamiFinancesState> {
   final INamiFinancesService _service;
+  final NamiRagService _ragService;
 
-  NamiFinancesBloc(this._service) : super(NamiFinancesInitial()) {
+  NamiFinancesBloc(this._service, this._ragService) : super(NamiFinancesInitial()) {
     on<LoadFinances>(_onLoadFinances);
     on<LoadCurrentMonthFinances>(_onLoadCurrentMonthFinances);
     on<LoadFinancesHistory>(_onLoadFinancesHistory);
@@ -87,6 +89,8 @@ class NamiFinancesBloc extends Bloc<NamiFinancesEvent, NamiFinancesState> {
       );
 
       await _service.saveFinances(finances);
+      await _ragService.syncMonth(finances);
+      
       emit(NamiFinancesLoaded(
         finances: finances,
         hasData: true,

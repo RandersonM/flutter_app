@@ -19,7 +19,7 @@ class ToolResult {
   }) : this(
           toolName: toolName,
           content:
-              'Internet search failed.\n\nReason:\n$reason\n\nAsk the user to try again later.',
+              'Tool "$toolName" failed.\n\nReason:\n$reason\n\nAsk the user to try again later.',
           isError: true,
         );
 

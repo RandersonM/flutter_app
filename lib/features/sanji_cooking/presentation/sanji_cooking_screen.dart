@@ -2,6 +2,7 @@ import 'package:opfan/shared/widgets/atoms/app_icon.dart';
 import 'package:phosphoricons_flutter/phosphoricons_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:opfan/core/connectivity/connectivity_cubit.dart';
 import 'package:opfan/l10n/app_localizations.dart';
 import 'package:opfan/features/sanji_cooking/bloc/index.dart';
 import 'package:opfan/features/sanji_cooking/presentation/widgets/cooking_header.dart';
@@ -11,6 +12,7 @@ import 'package:opfan/features/sanji_cooking/presentation/widgets/nutrition_resu
 import 'package:opfan/shared/utils/constants.dart';
 import 'package:opfan/shared/widgets/molecules/default_app_bar.dart';
 import 'package:opfan/shared/widgets/organisms/bottom_navigation.dart';
+import 'package:opfan/shared/widgets/organisms/offline_blocker_overlay.dart';
 import 'package:opfan/shared/utils/app_routes.dart';
 import 'package:opfan/core/services/index.dart';
 import 'package:opfan/shared/widgets/atoms/app_button.dart';
@@ -50,16 +52,20 @@ class _SanjiCookingScreenState extends State<SanjiCookingScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => _bloc,
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider.value(value: _bloc),
+        BlocProvider.value(value: getIt<ConnectivityCubit>()),
+      ],
       child: BlocBuilder<SanjiCookingBloc, SanjiCookingState>(
         builder: (context, state) {
           return Scaffold(
             appBar: DefaultAppBar(
               title: Text(AppLocalizations.of(context)!.cookingWithSanji),
             ),
-            body: SingleChildScrollView(
-              child: Column(
+            body: OfflineBlockerOverlay(
+              child: SingleChildScrollView(
+                child: Column(
                 children: [
                   const CookingHeader(),
                   Padding(
@@ -128,6 +134,7 @@ class _SanjiCookingScreenState extends State<SanjiCookingScreen> {
                   ),
                 ],
               ),
+            ),
             ),
             bottomNavigationBar: const BottomNavigation(
               BottomNavigationPages.cooking,

@@ -1,8 +1,10 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:opfan/shared/widgets/atoms/custom_dropdown.dart';
 import 'package:opfan/shared/widgets/atoms/custom_text_field.dart';
 import 'package:opfan/l10n/app_localizations.dart';
-import 'package:opfan/app/di/injection.dart';
 import 'package:opfan/shared/utils/gender_mapper.dart';
 import 'package:opfan/shared/widgets/atoms/app_button.dart';
 import '../../bloc/index.dart';
@@ -31,12 +33,18 @@ class _WorkoutSetupState extends State<WorkoutSetup> {
   int? _selectedWorkoutDays;
   late ZoroWorkoutBloc _bloc;
   List<int> _workoutDays = [];
+  StreamSubscription<ZoroWorkoutState>? _errorSub;
 
   @override
   void initState() {
     super.initState();
-    _bloc = getIt.zoroWorkoutBloc;
-    _bloc.stream.listen((state) {
+    // Reuse the screen's existing bloc instance instead of pulling a fresh
+    // one from GetIt — ZoroWorkoutBloc is a factory registration, so a
+    // second `getIt.zoroWorkoutBloc` call here created an orphaned bloc
+    // (redundant Firestore fetch, and a stream subscription that was never
+    // canceled).
+    _bloc = context.read<ZoroWorkoutBloc>();
+    _errorSub = _bloc.stream.listen((state) {
       if (state is ZoroWorkoutError) {
         if (mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
@@ -97,6 +105,7 @@ class _WorkoutSetupState extends State<WorkoutSetup> {
 
   @override
   void dispose() {
+    _errorSub?.cancel();
     _heightController.dispose();
     _weightController.dispose();
     _waistController.dispose();

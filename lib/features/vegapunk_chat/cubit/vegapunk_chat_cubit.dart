@@ -1,4 +1,3 @@
-import 'package:get_it/get_it.dart';
 import 'dart:async';
 
 import 'package:flutter/foundation.dart';
@@ -6,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:uuid/uuid.dart';
 
 import 'package:opfan/app/di/injection.dart';
+import 'package:opfan/core/ai/prompts/index.dart';
 import 'package:opfan/core/models/rag/rag_document.dart';
 import 'package:opfan/core/services/index.dart';
 import 'package:opfan/core/services/rag/i_rag_service.dart';
@@ -34,12 +34,10 @@ class VegapunkChatCubit extends Cubit<VegapunkChatState> {
   bool _ragInitialized = false;
   List<String>? _targetCategories;
   String _lastUserMessage = '';
-  int _turnCount = 0;
-  bool _isSilentReset = false;
-  Future<void>? _pendingReset;
-  // After this many complete exchanges, silently reset the model KV-cache to
-  // prevent context-window overflow. UI history is untouched.
-  static const int _maxTurnsBeforeReset = 5;
+  // Buffer to accumulate tokens before emitting to the UI — reduces rebuild frequency.
+  final StringBuffer _tokenBuffer = StringBuffer();
+  Timer? _emitTimer;
+  Timer? _sessionDocTimer;
 
   static const _uuid = Uuid();
 
@@ -71,6 +69,7 @@ class VegapunkChatCubit extends Cubit<VegapunkChatState> {
 
   Future<void> reset() async {
     await _cancelStream();
+    _sessionDocTimer?.cancel();
     await _rag.clearSession();
     await _repository.resetChat(isThinkingMode: _isThinkingMode);
     // Status stream emits GemmaLoading → GemmaReady, which transitions state.
@@ -78,6 +77,8 @@ class VegapunkChatCubit extends Cubit<VegapunkChatState> {
 
   @override
   Future<void> close() async {
+    _emitTimer?.cancel();
+    _sessionDocTimer?.cancel();
     await _cancelStream();
     await _modelStatusSub.cancel();
     _repository.dispose();
@@ -95,11 +96,6 @@ class VegapunkChatCubit extends Cubit<VegapunkChatState> {
 
   Future<void> sendMessage(String text) async {
     if (text.trim().isEmpty) return;
-    // If a silent KV-cache reset is in flight, await it before proceeding.
-    // Without this guard, sendMessage sees _chat == null and the user's
-    // message is silently dropped with no response or error shown.
-    // `await null` is a no-op in Dart, so this is safe when no reset is pending.
-    await _pendingReset;
 
     if (state is! VegapunkChatReady) return;
     final ready = state as VegapunkChatReady;
@@ -119,12 +115,26 @@ class VegapunkChatCubit extends Cubit<VegapunkChatState> {
 
     _lastUserMessage = text.trim();
 
-    final isPortuguese = GetIt.I.get<ILocaleService>().locale?.languageCode == 'pt';
-    final instruction = ready.selectedSatellite == VegapunkSatellite.stella
-        ? null
-        : (isPortuguese
-            ? ready.selectedSatellite.styleInstructionPt
-            : ready.selectedSatellite.styleInstructionEn);
+    final instruction = VegapunkSatellitePrompt.forMessage(
+      ready.selectedSatellite.name,
+      isPortuguese: PromptLocale.isPortuguese(),
+    );
+
+    _tokenBuffer.clear();
+    _emitTimer?.cancel();
+
+    // Batch token emits every frame to avoid rebuilding the widget tree
+    // on every single token (~100ms intervals at LiteRT inference speed).
+    _emitTimer = Timer.periodic(const Duration(milliseconds: 80), (_) {
+      if (state is! VegapunkChatReady) return;
+      final buffered = _tokenBuffer.toString();
+      if (buffered.isEmpty) return;
+      _tokenBuffer.clear();
+      final current = state as VegapunkChatReady;
+      emit(current.copyWith(
+        streamingToken: current.streamingToken + buffered,
+      ));
+    });
 
     _streamSub = _repository.sendMessage(text.trim(), styleInstruction: instruction).listen(
       (token) {
@@ -133,6 +143,8 @@ class VegapunkChatCubit extends Cubit<VegapunkChatState> {
 
         // Handle sentinel tokens from the repository's function calling loop.
         if (token == VegapunkChatRepository.searchingWebSentinel) {
+          _emitTimer?.cancel();
+          _tokenBuffer.clear();
           emit(current.copyWith(
             isSearchingWeb: true,
             streamingToken: '', // Clear any hallucinated text or raw JSON
@@ -144,12 +156,24 @@ class VegapunkChatCubit extends Cubit<VegapunkChatState> {
           return;
         }
 
-        emit(current.copyWith(
-          streamingToken: current.streamingToken + token,
-        ));
+        // Accumulate into buffer — the timer will emit batched.
+        _tokenBuffer.write(token);
       },
-      onDone: _commitStreamingMessage,
+      onDone: () {
+        _emitTimer?.cancel();
+        // Flush remaining buffered tokens before committing.
+        if (_tokenBuffer.isNotEmpty && state is VegapunkChatReady) {
+          final current = state as VegapunkChatReady;
+          emit(current.copyWith(
+            streamingToken: current.streamingToken + _tokenBuffer.toString(),
+          ));
+          _tokenBuffer.clear();
+        }
+        _commitStreamingMessage();
+      },
       onError: (Object e) {
+        _emitTimer?.cancel();
+        _tokenBuffer.clear();
         debugPrint('VegapunkChatCubit stream error: $e');
         _commitStreamingMessage();
       },
@@ -173,16 +197,6 @@ class VegapunkChatCubit extends Cubit<VegapunkChatState> {
   // ── Private ──────────────────────────────────────────────────────────────
 
   void _onModelStatus(GemmaServiceStatus status) {
-    // During a silent KV-cache reset, suppress Loading/Ready transitions so
-    // the UI never flickers or loses its message history.
-    if (_isSilentReset) {
-      if (status is GemmaLoading) return;
-      if (status is GemmaReady) {
-        _isSilentReset = false;
-        return;
-      }
-    }
-
     switch (status) {
       case GemmaNotInstalled():
         emit(const VegapunkModelNotInstalled());
@@ -234,27 +248,34 @@ class VegapunkChatCubit extends Cubit<VegapunkChatState> {
       isGenerating: false,
     ));
 
+    // Schedule the RAG document addition after a 2-second delay so it does
+    // NOT compete with any in-flight LiteRT inference on the next user message.
     if (token.isNotEmpty) {
-      _addSessionDocument(_lastUserMessage, token);
-      _turnCount++;
-      if (_turnCount >= _maxTurnsBeforeReset) {
-        _turnCount = 0;
-        _isSilentReset = true;
-        // Silently reset the model's KV-cache to free context window space.
-        // _onModelStatus suppresses the Loading/Ready events so the UI is unaffected.
-        // Track the future so sendMessage can await it if a tap arrives mid-reset.
-        _pendingReset = _repository
-            .resetChat(isThinkingMode: _isThinkingMode)
-            .whenComplete(() => _pendingReset = null);
-      }
+      _scheduleSessionDocument(_lastUserMessage, token);
     }
+  }
+
+  void _scheduleSessionDocument(String userText, String responseText) {
+    _sessionDocTimer?.cancel();
+    _sessionDocTimer = Timer(const Duration(seconds: 2), () {
+      if (isClosed) return;
+      // The model started generating again before the delay elapsed — retry
+      // once it's idle instead of silently dropping this turn's document.
+      if (state is VegapunkChatReady && (state as VegapunkChatReady).isGenerating) {
+        _scheduleSessionDocument(userText, responseText);
+        return;
+      }
+      _addSessionDocument(userText, responseText);
+    });
   }
 
   void _addSessionDocument(String userText, String response) {
     if (userText.isEmpty || response.isEmpty) return;
+    // Truncate long responses to avoid large embedding vectors (max 512 chars).
+    final truncated = response.length > 512 ? response.substring(0, 512) : response;
     _rag.addDocument(RagDocument(
       id: 'sess-${_uuid.v4()}',
-      content: 'User asked: $userText\nAnswer: $response',
+      content: 'User asked: $userText\nAnswer: $truncated',
       category: 'session',
       language: 'both',
       topic: 'session',
@@ -263,6 +284,9 @@ class VegapunkChatCubit extends Cubit<VegapunkChatState> {
   }
 
   Future<void> _cancelStream() async {
+    _emitTimer?.cancel();
+    _emitTimer = null;
+    _tokenBuffer.clear();
     await _streamSub?.cancel();
     _streamSub = null;
   }

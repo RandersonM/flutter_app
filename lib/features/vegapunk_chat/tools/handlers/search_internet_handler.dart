@@ -11,34 +11,38 @@ import '../tool_handler.dart';
 /// ```json
 /// {"name": "searchInternet", "arguments": {"query": "..."}}
 /// ```
-class SearchInternetHandler implements ToolHandler {
-  const SearchInternetHandler({required this._webSearch});
+import 'package:opfan/core/connectivity/connectivity_cubit.dart';
 
-  final IWebSearchService _webSearch;
+class SearchInternetHandler extends ToolHandler {
+  SearchInternetHandler({
+    required this.webSearch,
+    required this.connectivityCubit,
+  });
+
+  final IWebSearchService webSearch;
+  final ConnectivityCubit connectivityCubit;
 
   @override
   String get name => 'searchInternet';
 
   @override
   String get description =>
-      'Search the web for recent or external information. '
-      'Use this function whenever the answer depends on current events, news, '
-      'facts that may have changed, or information not available in the model.';
+      'MUST use when asked about: sports scores, game schedules, current events, news, weather, real-world facts. Returns web search results.';
 
   @override
   String get descriptionPt =>
-      'Pesquise na web por informações recentes ou externas. '
-      'Use esta função sempre que a resposta depender de eventos atuais, notícias, '
-      'fatos que possam ter mudado ou informações não disponíveis no modelo.';
+      'DEVE ser usado para: placares, jogos, notícias, clima, eventos atuais. Retorna resultados da web.';
 
   @override
   Map<String, String> get parameterDescriptions => {
         'query': '(string) The search query to send to the web.',
+        'searchTopic': '(string) Optional. Must be one of: "general", "news", or "finance". Defaults to "general".',
       };
 
   @override
   Map<String, String> get parameterDescriptionsPt => {
         'query': '(string) A consulta de busca a ser enviada para a web.',
+        'searchTopic': '(string) Opcional. Deve ser: "general", "news", ou "finance". O padrão é "general".',
       };
 
   @override
@@ -51,9 +55,22 @@ class SearchInternetHandler implements ToolHandler {
       );
     }
 
-    debugPrint('SearchInternetHandler: searching for "$query"');
+    final searchTopicStr = call.arguments['searchTopic']?.toString() ?? 'general';
+    final searchTopic = SearchTopic.values.firstWhere(
+      (e) => e.name == searchTopicStr,
+      orElse: () => SearchTopic.general,
+    );
 
-    if (!_webSearch.isConfigured) {
+    debugPrint('SearchInternetHandler: searching for "$query" (topic: ${searchTopic.name})');
+
+    if (!connectivityCubit.isOnline) {
+      return ToolResult.error(
+        toolName: name,
+        reason: 'The device is currently offline. Internet search is unavailable.',
+      );
+    }
+
+    if (!webSearch.isConfigured) {
       return ToolResult.error(
         toolName: name,
         reason: 'Tavily API key is not configured.',
@@ -61,11 +78,12 @@ class SearchInternetHandler implements ToolHandler {
     }
 
     try {
-      final results = await _webSearch.search(
+      final results = await webSearch.search(
         query,
         maxResults: 5,
         searchDepth: 'advanced',
-        includeAnswer: true,
+        includeAnswer: 'advanced',
+        searchTopic: searchTopic,
       );
 
       if (results.isEmpty) {

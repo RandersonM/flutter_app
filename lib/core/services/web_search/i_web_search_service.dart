@@ -1,5 +1,13 @@
 import 'web_search_result.dart';
 
+enum SearchTopic {
+  general,
+  news,
+  finance;
+
+  String get value => name;
+}
+
 abstract class IWebSearchService {
   bool get isConfigured;
 
@@ -12,6 +20,7 @@ abstract class IWebSearchService {
     String query, {
     int maxResults = 2,
     String searchDepth = 'basic',
-    bool includeAnswer = false,
+    String includeAnswer = 'basic',
+    SearchTopic searchTopic = SearchTopic.general,
   });
 }

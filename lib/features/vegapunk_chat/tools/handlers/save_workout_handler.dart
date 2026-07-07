@@ -12,8 +12,8 @@ import '../tool_handler.dart';
 /// ```json
 /// {"name": "saveWorkout", "arguments": {}}
 /// ```
-class SaveWorkoutHandler implements ToolHandler {
-  const SaveWorkoutHandler({required this._workoutService});
+class SaveWorkoutHandler extends ToolHandler {
+  SaveWorkoutHandler({required this._workoutService});
 
   final IWorkoutAssessmentService _workoutService;
 

@@ -14,8 +14,10 @@ import 'package:opfan/features/zoro_workout/bloc/index.dart';
 import 'package:opfan/features/sanji_cooking/bloc/index.dart';
 import 'package:opfan/features/robin_knowledge/bloc/robin_knowledge_bloc.dart';
 import 'package:opfan/features/vegapunk_chat/cubit/index.dart';
+import 'package:opfan/features/nami_finances/data/services/nami_rag_service.dart';
 
 void registerFeaturesModule(GetIt getIt) {
+  getIt.registerLazySingleton<NamiRagService>(() => NamiRagService());
   getIt.registerFactory<CalculatorCubit>(() => CalculatorCubit());
 
   getIt.registerFactory<CharactersCubit>(
@@ -41,7 +43,10 @@ void registerFeaturesModule(GetIt getIt) {
   );
 
   getIt.registerFactory<NamiFinancesBloc>(
-    () => NamiFinancesBloc(getIt<INamiFinancesService>()),
+    () => NamiFinancesBloc(
+      getIt<INamiFinancesService>(),
+      getIt<NamiRagService>(),
+    ),
   );
 
   getIt.registerFactory<ZoroWorkoutBloc>(() => ZoroWorkoutBloc());

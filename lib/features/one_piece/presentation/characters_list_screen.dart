@@ -9,6 +9,10 @@ import 'package:opfan/l10n/app_localizations.dart';
 import 'package:opfan/features/one_piece/presentation/widgets/list/list_content.dart';
 import 'package:opfan/features/one_piece/presentation/widgets/search/search.dart';
 import 'package:opfan/shared/widgets/molecules/default_app_bar.dart';
+import 'package:opfan/core/connectivity/connectivity_cubit.dart';
+import 'package:opfan/app/di/injection.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:opfan/shared/widgets/organisms/offline_blocker_overlay.dart';
 
 class CharactersListScreen extends StatefulWidget {
   const CharactersListScreen({super.key});
@@ -37,7 +41,12 @@ class _CharactersListScreenState extends State<CharactersListScreen> {
                 ),
               ),
             ]),
-        body: const ListContent(),
+        body: BlocProvider.value(
+          value: getIt<ConnectivityCubit>(),
+          child: const OfflineBlockerOverlay(
+            child: ListContent(),
+          ),
+        ),
         drawer: Drawer(
           backgroundColor: Theme.of(context).colorScheme.primaryContainer,
           elevation: 0.0,

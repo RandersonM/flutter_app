@@ -1,10 +1,12 @@
+import 'dart:async';
+
 import 'package:get_it/get_it.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:opfan/core/services/index.dart';
 import 'package:opfan/l10n/app_localizations.dart';
 import 'package:opfan/shared/widgets/atoms/custom_dropdown.dart';
 import 'package:opfan/shared/widgets/atoms/custom_text_field.dart';
-import 'package:opfan/app/di/injection.dart';
 import 'package:opfan/shared/utils/gender_mapper.dart';
 import 'package:opfan/shared/widgets/atoms/app_button.dart';
 import '../../bloc/index.dart';
@@ -34,12 +36,17 @@ class _NutritionFormState extends State<NutritionForm> {
   String? _selectedActivityLevel;
   String? _selectedGoal;
   late SanjiCookingBloc _bloc;
+  StreamSubscription<SanjiCookingState>? _errorSub;
 
   @override
   void initState() {
     super.initState();
-    _bloc = getIt.sanjiCookingBloc;
-    _bloc.stream.listen((state) {
+    // Reuse the screen's existing bloc instance instead of pulling a fresh
+    // one from GetIt — SanjiCookingBloc is a factory registration, so a
+    // second `getIt.sanjiCookingBloc` call here created an orphaned bloc
+    // (redundant work, and a stream subscription that was never canceled).
+    _bloc = context.read<SanjiCookingBloc>();
+    _errorSub = _bloc.stream.listen((state) {
       if (state is SanjiCookingError) {
         if (mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
@@ -69,6 +76,7 @@ class _NutritionFormState extends State<NutritionForm> {
 
   @override
   void dispose() {
+    _errorSub?.cancel();
     _ageController.dispose();
     _weightController.dispose();
     _heightController.dispose();

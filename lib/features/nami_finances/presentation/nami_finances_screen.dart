@@ -10,6 +10,7 @@ import 'package:opfan/app/di/injection.dart';
 import 'widgets/finances_setup_form.dart';
 import 'widgets/finances_dashboard_view.dart';
 import 'widgets/finances_empty_state.dart';
+import 'widgets/nami_chat_sheet.dart';
 
 class NamiFinancesScreen extends StatefulWidget {
   const NamiFinancesScreen({super.key});
@@ -35,6 +36,17 @@ class _NamiFinancesScreenState extends State<NamiFinancesScreen> {
         bottomNavigationBar:
             const BottomNavigation(BottomNavigationPages.finances),
         appBar: DefaultAppBar(title: Text(l10n.financeWithNami)),
+        floatingActionButton: FloatingActionButton(
+          onPressed: () {
+            showModalBottomSheet(
+              context: context,
+              isScrollControlled: true,
+              backgroundColor: Colors.transparent,
+              builder: (context) => const NamiChatSheet(),
+            );
+          },
+          child: const Icon(Icons.chat),
+        ),
         body: Container(
           color: Theme.of(context).colorScheme.surface,
           child: BlocBuilder<NamiFinancesBloc, NamiFinancesState>(

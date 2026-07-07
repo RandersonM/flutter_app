@@ -3,6 +3,10 @@ import 'package:phosphoricons_flutter/phosphoricons_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:opfan/l10n/app_localizations.dart';
 import 'package:opfan/features/youtube/data/models/youtube_video_model.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:opfan/core/connectivity/connectivity_cubit.dart';
+import 'package:opfan/app/di/injection.dart';
+import 'package:opfan/shared/widgets/organisms/offline_blocker_overlay.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 
 class YouTubePlayerScreen extends StatefulWidget {
@@ -44,8 +48,10 @@ class _YouTubePlayerScreenState extends State<YouTubePlayerScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.black,
+    return BlocProvider.value(
+      value: getIt<ConnectivityCubit>(),
+      child: Scaffold(
+        backgroundColor: Colors.black,
       appBar: AppBar(
         backgroundColor: Colors.black,
         foregroundColor: Colors.white,
@@ -73,8 +79,9 @@ class _YouTubePlayerScreenState extends State<YouTubePlayerScreen> {
           ),
         ],
       ),
-      body: Column(
-        children: [
+      body: OfflineBlockerOverlay(
+        child: Column(
+          children: [
           YoutubePlayer(controller: _controller,
             ),
             Expanded(
@@ -151,7 +158,9 @@ class _YouTubePlayerScreenState extends State<YouTubePlayerScreen> {
               ),
             ),
           ],
+        ),
       ),
+    ),
     );
   }
 }

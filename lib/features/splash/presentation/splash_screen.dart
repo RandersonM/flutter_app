@@ -3,31 +3,19 @@
 
 import 'package:flutter/material.dart';
 import 'package:opfan/features/splash/presentation/widgets/logo.dart';
-import 'package:opfan/shared/utils/app_routes.dart';
 import 'package:opfan/shared/utils/decorations/gradient.dart';
 
-class SplashScreen extends StatefulWidget {
+/// Purely presentational — shown by [AppWrapper] while `AuthBloc` is
+/// `AuthInitial`/`AuthLoading`. It must NOT navigate on its own: this used to
+/// fire an unconditional `Navigator.pushNamedAndRemoveUntil(AppRoutes.home)`
+/// after a fixed 3s timer, racing `AppWrapper`'s own auth-reactive navigation.
+/// Whenever the real session check took longer than 3s, this timer won the
+/// race and pushed a second, independent Home route before auth resolved —
+/// showing the logged-out Home banner until AuthBloc finally caught up.
+/// `AppWrapper`'s `BlocBuilder<AuthBloc, AuthState>` is the only thing that
+/// should decide when to leave this screen.
+class SplashScreen extends StatelessWidget {
   const SplashScreen({super.key});
-
-  @override
-  State<SplashScreen> createState() => _SplashScreenState();
-}
-
-class _SplashScreenState extends State<SplashScreen> {
-  @override
-  void initState() {
-    super.initState();
-
-    Future<void>.delayed(const Duration(seconds: 3), () {
-      if (mounted) {
-        Navigator.pushNamedAndRemoveUntil(
-          context,
-          AppRoutes.home,
-          (_) => false,
-        );
-      }
-    });
-  }
 
   @override
   Widget build(BuildContext context) {

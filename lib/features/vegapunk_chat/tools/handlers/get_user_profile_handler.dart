@@ -12,8 +12,8 @@ import '../tool_handler.dart';
 /// ```json
 /// {"name": "getUserProfile", "arguments": {}}
 /// ```
-class GetUserProfileHandler implements ToolHandler {
-  const GetUserProfileHandler({required this._authService});
+class GetUserProfileHandler extends ToolHandler {
+  GetUserProfileHandler({required this._authService});
 
   final IAuthService _authService;
 
@@ -22,11 +22,11 @@ class GetUserProfileHandler implements ToolHandler {
 
   @override
   String get description =>
-      'MUST be called EVERY TIME the user asks for or references their personal information, profile data, or physical attributes. This includes retrieving their name, weight, height, age, gender, fitness goal, activity level, workout days, or any other data saved in their profile. Use this tool to get accurate user context before answering questions about their specific goals or stats.';
+      'Retrieve the current user\'s personal profile (name, weight, height, age, goal, activity level).';
 
   @override
   String get descriptionPt =>
-      'DEVE ser chamada SEMPRE que o usuário pedir ou fizer referência às suas informações pessoais, dados de perfil ou atributos físicos. Inclui nome, peso, altura, idade, gênero, objetivo fitness, nível de atividade, dias de treino ou quaisquer outros dados do perfil. Use para obter contexto preciso do usuário antes de responder sobre objetivos ou estatísticas específicas.';
+      'Recupera o perfil pessoal do usuário atual (nome, peso, altura, idade, objetivo, nível de atividade).';
 
   @override
   Map<String, String> get parameterDescriptions => {};

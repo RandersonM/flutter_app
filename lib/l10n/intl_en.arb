@@ -4309,5 +4309,17 @@
   "dietaryRestrictionLowCarb": "Low carb",
   "@dietaryRestrictionLowCarb": { "description": "Dietary restriction option" },
   "dietaryRestrictionHighProtein": "High protein",
-  "@dietaryRestrictionHighProtein": { "description": "Dietary restriction option" }
+  "@dietaryRestrictionHighProtein": { "description": "Dietary restriction option" },
+  "offlineBannerMessage": "You're offline. Some features are unavailable.",
+  "@offlineBannerMessage": {
+    "description": "Top banner shown when the device has no internet connection"
+  },
+  "offlineScreenTitle": "No Internet Connection",
+  "@offlineScreenTitle": {
+    "description": "Title of the offline blocker overlay shown on internet-required screens"
+  },
+  "offlineScreenSubtitle": "This feature requires an internet connection.\nPlease reconnect to continue.",
+  "@offlineScreenSubtitle": {
+    "description": "Subtitle of the offline blocker overlay shown on internet-required screens"
+  }
 }

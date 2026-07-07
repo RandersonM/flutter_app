@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:opfan/features/vegapunk_chat/data/models/chat_message.dart';
 import 'package:opfan/shared/utils/constants.dart';
 
+import 'package:markdown_widget/markdown_widget.dart';
+
 class ChatMessageBubble extends StatelessWidget {
   const ChatMessageBubble({super.key, required this.message});
 
@@ -11,6 +13,7 @@ class ChatMessageBubble extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final isUser = message.isUser;
+    final isDark = theme.brightness == Brightness.dark;
 
     return Align(
       alignment: isUser ? Alignment.centerRight : Alignment.centerLeft,
@@ -47,15 +50,33 @@ class ChatMessageBubble extends StatelessWidget {
               ),
             ],
           ),
-          child: Text(
-            message.text,
-            style: theme.textTheme.bodyMedium?.copyWith(
-              color: isUser
-                  ? theme.colorScheme.onPrimary
-                  : theme.colorScheme.onSurface,
-              height: 1.5,
-            ),
-          ),
+          child: isUser
+              ? Text(
+                  message.text,
+                  style: theme.textTheme.bodyMedium?.copyWith(
+                    color: theme.colorScheme.onPrimary,
+                    height: 1.5,
+                  ),
+                )
+              : MarkdownBlock(
+                  data: message.text,
+                  config:
+                      (isDark
+                              ? MarkdownConfig.darkConfig
+                              : MarkdownConfig.defaultConfig)
+                          .copy(
+                            configs: [
+                              PConfig(
+                                textStyle:
+                                    theme.textTheme.bodyMedium?.copyWith(
+                                      color: theme.colorScheme.onSurface,
+                                      height: 1.5,
+                                    ) ??
+                                    const TextStyle(),
+                              ),
+                            ],
+                          ),
+                ),
         ),
       ),
     );

@@ -48,3 +48,7 @@ class PlayVideoInline extends HomeEvent {
 class StopVideoInline extends HomeEvent {
   const StopVideoInline();
 }
+
+class ConnectivityRestored extends HomeEvent {
+  const ConnectivityRestored();
+}

@@ -1,6 +1,7 @@
 import 'dart:math';
 import 'package:flutter/foundation.dart';
 import 'package:opfan/app/di/injection.dart';
+import 'package:opfan/core/ai/prompts/index.dart';
 import 'package:opfan/core/services/index.dart';
 
 
@@ -95,36 +96,12 @@ class CrewImageService implements ICrewImageService {
     List<String>? tags,
     String? description,
   }) {
-    final basePrompt = prompt.isNotEmpty ? prompt : 'pirate flag';
-
-    final List<String> promptParts = [
-      basePrompt,
-      'crew name: $crewName',
-    ];
-
-    if (description != null && description.isNotEmpty) {
-      promptParts.add('description: $description');
-    }
-
-    if (tags != null && tags.isNotEmpty) {
-      final tagTypes = tags.join(', ');
-      promptParts.add('tags: $tagTypes');
-    }
-
-    promptParts.addAll([
-      'One Piece style',
-      'pirate flag design',
-      'jolly roger',
-      'detailed flag design',
-      'high quality',
-      'professional illustration',
-      'vibrant colors',
-      'symbolic design',
-      'flag waving',
-      'anime style',
-    ]);
-
-    return promptParts.join(', ');
+    return CrewImagePrompt.jollyRoger(
+      crewName: crewName,
+      prompt: prompt,
+      tags: tags,
+      description: description,
+    );
   }
 
   String _buildBoatPrompt({
@@ -133,38 +110,12 @@ class CrewImageService implements ICrewImageService {
     List<String>? tags,
     String? description,
   }) {
-    final basePrompt = prompt.isNotEmpty ? prompt : 'pirate ship';
-
-    final List<String> promptParts = [
-      basePrompt,
-      'crew name: $crewName',
-    ];
-
-    if (description != null && description.isNotEmpty) {
-      promptParts.add('description: $description');
-    }
-
-    if (tags != null && tags.isNotEmpty) {
-      final tagTypes = tags.join(', ');
-      promptParts.add('tags: $tagTypes');
-    }
-
-    promptParts.addAll([
-      'One Piece style',
-      'pirate ship',
-      'sailing vessel',
-      'detailed ship design',
-      'high quality',
-      'professional illustration',
-      'vibrant colors',
-      'ocean background',
-      'sails',
-      'wooden ship',
-      'anime style',
-      'adventure ship',
-    ]);
-
-    return promptParts.join(', ');
+    return CrewImagePrompt.boat(
+      crewName: crewName,
+      prompt: prompt,
+      tags: tags,
+      description: description,
+    );
   }
 
   Future<String> _getJollyRogerFallbackImage(

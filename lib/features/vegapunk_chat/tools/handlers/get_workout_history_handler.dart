@@ -12,8 +12,8 @@ import '../tool_handler.dart';
 /// ```json
 /// {"name": "getWorkoutHistory", "arguments": {}}
 /// ```
-class GetWorkoutHistoryHandler implements ToolHandler {
-  const GetWorkoutHistoryHandler({required this._workoutService});
+class GetWorkoutHistoryHandler extends ToolHandler {
+  GetWorkoutHistoryHandler({required this._workoutService});
 
   final IWorkoutAssessmentService _workoutService;
 
@@ -22,11 +22,11 @@ class GetWorkoutHistoryHandler implements ToolHandler {
 
   @override
   String get description =>
-      'Retrieve the user\'s comprehensive workout history and assessment data. Use this tool when asked about the user\'s workout plan or routine, how many days they have trained, which specific days they trained in a given month, body metric history over time (weight, body fat), activity level, and their fitness goals.';
+      'Retrieve the user\'s workout history, past training days, and fitness progress over time.';
 
   @override
   String get descriptionPt =>
-      'Recupere o histórico completo de treinos e dados de avaliação do usuário. Use esta ferramenta quando perguntado sobre o plano ou rotina de treino, quantos dias treinou, quais dias específicos treinou em um mês, histórico de métricas corporais (peso, gordura), nível de atividade e objetivos fitness.';
+      'Recupera o histórico de treinos do usuário, dias treinados e progresso fitness ao longo do tempo.';
 
   @override
   Map<String, String> get parameterDescriptions => {};

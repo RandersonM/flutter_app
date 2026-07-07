@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'dart:math';
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
+import 'package:google_generative_ai/google_generative_ai.dart';
 import 'package:opfan/core/services/index.dart';
 
 
@@ -85,7 +86,10 @@ class GeminiService implements IGeminiService {
     required String prompt,
     String? systemInstruction,
     String? context,
-    Map<String, dynamic>? parameters,
+    double? temperature,
+    int? topK,
+    double? topP,
+    int? maxOutputTokens,
   }) async {
     if (_env.geminiApiKey == 'dev_mode' || _env.geminiApiKey.isEmpty) {
       debugPrint('Gemini Service: Development mode or invalid API key');
@@ -103,22 +107,39 @@ class GeminiService implements IGeminiService {
     }
 
     try {
-      final enhancedPrompt = _buildTextPrompt(prompt, context, parameters);
+      final enhancedPrompt = _buildTextPrompt(prompt, context);
       debugPrint('Gemini Service: Generating text...');
 
       _recordRequest();
 
-      final response = await _generateTextWithGemini(
-        prompt: enhancedPrompt,
-        systemInstruction: systemInstruction,
+      final model = GenerativeModel(
+        model: _textModel,
+        apiKey: _env.geminiApiKey,
+        systemInstruction: systemInstruction != null && systemInstruction.isNotEmpty 
+            ? Content.system(systemInstruction) 
+            : null,
+        generationConfig: GenerationConfig(
+          temperature: temperature ?? 0.4,
+          topK: topK ?? 40,
+          topP: topP ?? 0.95,
+          maxOutputTokens: maxOutputTokens ?? 8192,
+        ),
       );
 
-      if (response != null && response.isNotEmpty) {
+      final response = await model.generateContent([Content.text(enhancedPrompt)]);
+
+      if (response.text != null && response.text!.isNotEmpty) {
         debugPrint('Gemini Service: Text generation successful');
-        return response;
+        return response.text;
       }
 
       debugPrint('Gemini Service: Invalid response from Gemini AI');
+      return null;
+    } on GenerativeAIException catch (e) {
+      debugPrint('Gemini Service: GenerativeAIException - $e');
+      if (e.toString().contains('quota') || e.toString().contains('rate limit') || e.toString().contains('RESOURCE_EXHAUSTED')) {
+        _handleQuotaExceeded();
+      }
       return null;
     } catch (e) {
       final msg = e.toString();
@@ -136,91 +157,7 @@ class GeminiService implements IGeminiService {
     }
   }
 
-  Future<String?> _generateTextWithGemini({
-    required String prompt,
-    String? systemInstruction,
-  }) async {
-    try {
-      final apiKey = _env.geminiApiKey;
-      const url = '$_baseUrl/models/$_textModel:generateContent';
-
-      final body = {
-        "contents": [
-          {
-            "parts": [
-              {"text": prompt}
-            ]
-          }
-        ],
-        "generationConfig": {
-          "temperature": 0.7,
-          "topK": 40,
-          "topP": 0.95,
-          "maxOutputTokens": 8192,
-        }
-      };
-
-      if (systemInstruction != null && systemInstruction.isNotEmpty) {
-        body["systemInstruction"] = {
-          "parts": [
-            {"text": systemInstruction}
-          ]
-        };
-      }
-
-      debugPrint('Gemini Service: Sending text request to Gemini API');
-
-      final response = await _dio.post(
-        url,
-        data: jsonEncode(body),
-        options: Options(
-          headers: {
-            'Content-Type': 'application/json',
-            'User-Agent': 'Dart/3.0',
-            'x-goog-api-key': apiKey,
-          },
-          receiveTimeout: const Duration(seconds: 60),
-          sendTimeout: const Duration(seconds: 30),
-        ),
-      );
-
-      // Handle quota / rate-limit (429) explicitly
-      if (response.statusCode == 429) {
-        final retryMsg =
-            response.data?['error']?['message'] ?? 'Rate limit exceeded';
-        debugPrint('Gemini Service: 429 RESOURCE_EXHAUSTED — $retryMsg');
-        throw Exception('RESOURCE_EXHAUSTED: $retryMsg');
-      }
-
-      if (response.statusCode == 200 && response.data != null) {
-        final candidates = response.data['candidates'] as List?;
-        if (candidates != null && candidates.isNotEmpty) {
-          final parts = candidates[0]['content']['parts'] as List?;
-          if (parts != null && parts.isNotEmpty) {
-            // Concatenate ALL text parts — Gemini may split long responses
-            final fullText = parts
-                .where((p) => p['text'] != null)
-                .map((p) => p['text'] as String)
-                .join();
-            if (fullText.isNotEmpty) return fullText;
-          }
-        }
-      }
-
-      debugPrint('Gemini Service: Response body: ${response.data}');
-      return null;
-    } on DioException catch (e) {
-      debugPrint(
-          'Gemini Service: DioException in text generation - ${e.message}');
-      return null;
-    } catch (e) {
-      debugPrint('Gemini Service: Unexpected error in text generation - $e');
-      return null;
-    }
-  }
-
-  String _buildTextPrompt(
-      String prompt, String? context, Map<String, dynamic>? parameters) {
+  String _buildTextPrompt(String prompt, String? context) {
     // Return the prompt as-is — callers (repositories) are responsible for
     // crafting detailed prompts; generic suffixes like "keep it concise" would
     // contradict prompts that explicitly request long, structured responses.
@@ -437,21 +374,4 @@ class GeminiService implements IGeminiService {
         'Gemini Service: Quota exceeded, will reset in $_quotaResetDuration');
   }
 
-  @override
-  void clearCache() {
-    _imageCache.clear();
-  }
-
-  @override
-  Map<String, dynamic> getServiceStatus() {
-    return {
-      'quota_exceeded': _quotaExceeded,
-      'quota_reset_time': _quotaExceededTime?.toIso8601String(),
-      'requests_this_hour': _requestTimestamps.length,
-      'max_requests_per_hour': _maxRequestsPerHour,
-      'cache_size': _imageCache.length,
-      'api_configured':
-          _env.geminiApiKey.isNotEmpty && _env.geminiApiKey != 'dev_mode',
-    };
-  }
 }

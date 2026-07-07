@@ -61,12 +61,19 @@ class FeaturedCharacterRepository implements IFeaturedCharacterRepository {
       final currentCharacter = await getCurrentCharacter();
 
       if (currentCharacter != null && currentCharacter.isToday) {
-        final allCharacters = await getAllOnePieceCharacters();
-        final foundCharacter = allCharacters
-            .where((c) => c.id == currentCharacter.characterId)
-            .firstOrNull;
-        if (foundCharacter != null) {
-          return foundCharacter;
+        // Fetch this one character by id instead of the whole collection —
+        // this is the common warm-start path (same day, app reopened), so
+        // it must not pay for an unbounded `featuredCharacters` scan just to
+        // find a document whose id is already known.
+        final data = await _firestoreService.getDocument(
+          collection: _collection,
+          documentId: currentCharacter.characterId,
+        );
+        if (data != null) {
+          return CustomCharacterModel.fromFirestore(
+            data,
+            currentCharacter.characterId,
+          );
         }
       }
 

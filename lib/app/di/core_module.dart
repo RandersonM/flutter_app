@@ -24,9 +24,13 @@ import 'package:opfan/features/sanji_cooking/data/repository/cooking_repository_
 import 'package:opfan/features/robin_knowledge/data/repository/planner_repository.dart';
 import 'package:opfan/features/robin_knowledge/data/repository/planner_repository_interface.dart';
 import 'package:opfan/core/auth/blocs/index.dart';
+import 'package:opfan/core/connectivity/connectivity_cubit.dart';
 
 
 void registerCoreModule(GetIt getIt) {
+  // ── Connectivity (must be first — other services may depend on it) ──────────
+  getIt.registerSingleton<ConnectivityCubit>(ConnectivityCubit());
+
   getIt.registerSingleton<IStorageService>(HiveStorageService());
   getIt.registerSingleton<IEnvironmentService>(EnvironmentService());
   getIt.registerLazySingleton<ILocaleService>(() => LocaleService());
@@ -74,7 +78,10 @@ void registerCoreModule(GetIt getIt) {
   getIt.registerLazySingleton<FunctionRegistry>(() {
     final registry = FunctionRegistry();
     registry.register(
-      SearchInternetHandler(webSearch: getIt<IWebSearchService>()),
+      SearchInternetHandler(
+        webSearch: getIt<IWebSearchService>(),
+        connectivityCubit: getIt<ConnectivityCubit>(),
+      ),
     );
     registry.register(
       GetUserProfileHandler(authService: getIt<IAuthService>()),
@@ -95,9 +102,14 @@ void registerCoreModule(GetIt getIt) {
   });
   getIt.registerLazySingleton<FunctionExecutor>(() => FunctionExecutor());
 
-  getIt.registerLazySingleton<IGemmaService>(
-    () => GemmaService(functionRegistry: getIt<FunctionRegistry>()),
-  );
+  getIt.registerLazySingleton<IGemmaService>(() {
+    final gemma = GemmaService();
+    // Register native tools from FunctionRegistry so the Gemma 4 SDK
+    // handles function calling at the SDK level (structured JSON Schema).
+    final registry = getIt<FunctionRegistry>();
+    gemma.setTools(registry.getTools());
+    return gemma;
+  });
 
   getIt.registerLazySingleton<AuthBloc>(() {
     final authBloc = AuthBloc(authService: getIt<IAuthService>());

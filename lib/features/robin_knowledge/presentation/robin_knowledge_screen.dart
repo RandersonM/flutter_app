@@ -8,6 +8,8 @@ import 'package:opfan/shared/utils/constants.dart';
 import 'package:opfan/shared/utils/theme.dart';
 import 'package:opfan/shared/widgets/molecules/default_app_bar.dart';
 import 'package:opfan/app/di/injection.dart';
+import 'package:opfan/core/connectivity/connectivity_cubit.dart';
+import 'package:opfan/shared/widgets/organisms/offline_blocker_overlay.dart';
 
 import 'widgets/index.dart';
 import 'timeline_screen.dart';
@@ -25,13 +27,18 @@ class RobinKnowledgeScreen extends StatelessWidget {
       appBar: DefaultAppBar(
         title: Text(AppLocalizations.of(context)!.knowledgeTitleScreen),
       ),
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            const RobinKnowledgeHeader(),
-            const SizedBox(height: 24),
-            _buildTimelineSection(context),
-          ],
+      body: BlocProvider.value(
+        value: getIt<ConnectivityCubit>(),
+        child: OfflineBlockerOverlay(
+          child: SingleChildScrollView(
+            child: Column(
+              children: [
+                const RobinKnowledgeHeader(),
+                const SizedBox(height: 24),
+                _buildTimelineSection(context),
+              ],
+            ),
+          ),
         ),
       ),
     );

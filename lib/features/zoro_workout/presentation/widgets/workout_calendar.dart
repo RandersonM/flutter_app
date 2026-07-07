@@ -1,10 +1,10 @@
 import 'package:opfan/shared/widgets/atoms/app_icon.dart';
 import 'package:phosphoricons_flutter/phosphoricons_flutter.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:opfan/l10n/app_localizations.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:opfan/shared/utils/theme.dart';
-import 'package:opfan/app/di/injection.dart';
 import '../../bloc/index.dart';
 
 class WorkoutCalendar extends StatefulWidget {
@@ -24,7 +24,12 @@ class _WorkoutCalendarState extends State<WorkoutCalendar> {
   void initState() {
     super.initState();
     _currentMonth = DateTime.now();
-    _bloc = getIt.zoroWorkoutBloc;
+    // Reuse the screen's existing bloc instance instead of pulling a fresh
+    // one from GetIt — ZoroWorkoutBloc is a factory registration, so a
+    // second `getIt.zoroWorkoutBloc` call here created an orphaned bloc that
+    // redundantly re-fetched the assessment + history from Firestore on
+    // every screen visit and never saw updates from the screen's own bloc.
+    _bloc = context.read<ZoroWorkoutBloc>();
     _loadWorkoutDays();
 
     final currentState = _bloc.state;

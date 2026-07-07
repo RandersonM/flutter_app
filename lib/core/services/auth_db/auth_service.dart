@@ -1,6 +1,8 @@
 // Developed by Randerson Mayllon
 // Copyright © 2025.
 
+import 'dart:io';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:google_sign_in/google_sign_in.dart';
@@ -80,18 +82,49 @@ class AuthService implements IAuthService {
       final firebaseUser = _firebaseAuth.currentUser;
       if (firebaseUser == null) return false;
 
+      // Attempt a forced token refresh (requires network).
       await firebaseUser.getIdToken(true);
 
       final cachedUser = currentUser;
       if (cachedUser == null || cachedUser.uid != firebaseUser.uid) {
         return false;
       }
-
       return true;
+    } on SocketException catch (_) {
+      // Device is offline — fall back to the cached session.
+      debugPrint('AuthService: Offline — validating session from local cache');
+      return _isLocalSessionValid();
     } catch (e) {
+      if (_isNetworkError(e)) {
+        debugPrint(
+            'AuthService: Network error — validating session from local cache');
+        return _isLocalSessionValid();
+      }
       debugPrint('AuthService: Session validation error - $e');
       return false;
     }
+  }
+
+  /// Validates the session using only local state (no network call).
+  ///
+  /// Returns true if both the Firebase SDK has a current user AND the Hive
+  /// cache has a matching [UserModel]. This covers the offline startup case.
+  bool _isLocalSessionValid() {
+    final firebaseUser = _firebaseAuth.currentUser;
+    final cachedUser = currentUser; // reads from Hive
+    return firebaseUser != null &&
+        cachedUser != null &&
+        firebaseUser.uid == cachedUser.uid;
+  }
+
+  /// Heuristic to detect network-related exceptions from Firebase.
+  bool _isNetworkError(Object e) {
+    final msg = e.toString().toLowerCase();
+    return msg.contains('network') ||
+        msg.contains('socket') ||
+        msg.contains('failed host lookup') ||
+        msg.contains('connection') ||
+        msg.contains('unavailable');
   }
 
   @override

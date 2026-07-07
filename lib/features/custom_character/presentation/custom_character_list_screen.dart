@@ -2,6 +2,7 @@ import 'package:opfan/shared/widgets/atoms/app_icon.dart';
 import 'package:phosphoricons_flutter/phosphoricons_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:opfan/core/connectivity/connectivity_cubit.dart';
 import 'package:opfan/l10n/app_localizations.dart';
 import 'package:opfan/features/custom_character/data/models/custom_character_model.dart';
 import 'package:opfan/app/di/injection.dart';
@@ -13,17 +14,25 @@ import 'package:opfan/shared/utils/app_routes.dart';
 
 import 'package:opfan/shared/widgets/molecules/default_app_bar.dart';
 import 'package:opfan/shared/widgets/organisms/custom_character_grid_list.dart';
+import 'package:opfan/shared/widgets/organisms/offline_blocker_overlay.dart';
 
 class CustomCharacterListScreen extends StatelessWidget {
   const CustomCharacterListScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => CustomCharacterBloc(
-        customCharacterService: getIt<ICustomCharacterRepository>(),
-        crewRepository: getIt<ICrewRepository>(),
-      ),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(
+          create: (context) => CustomCharacterBloc(
+            customCharacterService: getIt<ICustomCharacterRepository>(),
+            crewRepository: getIt<ICrewRepository>(),
+          ),
+        ),
+        BlocProvider.value(
+          value: getIt<ConnectivityCubit>(),
+        ),
+      ],
       child: const _CustomCharacterListScreenContent(),
     );
   }
@@ -47,11 +56,13 @@ class _CustomCharacterListScreenContent extends StatelessWidget {
           ),
         ],
       ),
-      body: CustomCharacterGridList(
-        onCharacterTap: (character) => _onCharacterTap(context, character),
-        onCharacterEdit: (character) => _onCharacterEdit(context, character),
-        onCharacterDelete: (character) =>
-            _onCharacterDelete(context, character),
+      body: OfflineBlockerOverlay(
+        child: CustomCharacterGridList(
+          onCharacterTap: (character) => _onCharacterTap(context, character),
+          onCharacterEdit: (character) => _onCharacterEdit(context, character),
+          onCharacterDelete: (character) =>
+              _onCharacterDelete(context, character),
+        ),
       ),
     );
   }

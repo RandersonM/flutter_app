@@ -2632,4 +2632,15 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get dietaryRestrictionHighProtein => 'High protein';
+
+  @override
+  String get offlineBannerMessage =>
+      'You\'re offline. Some features are unavailable.';
+
+  @override
+  String get offlineScreenTitle => 'No Internet Connection';
+
+  @override
+  String get offlineScreenSubtitle =>
+      'This feature requires an internet connection.\nPlease reconnect to continue.';
 }

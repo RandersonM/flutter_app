@@ -1,11 +1,13 @@
 import 'package:opfan/shared/widgets/atoms/app_icon.dart';
 import 'package:phosphoricons_flutter/phosphoricons_flutter.dart';
+import 'package:opfan/core/connectivity/connectivity_cubit.dart';
+import 'package:opfan/app/di/injection.dart';
+import 'package:opfan/shared/widgets/organisms/offline_blocker_overlay.dart';
 // Developed by Randerson Mayllon
 // Copyright © 2022.
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:opfan/app/di/injection.dart';
 import 'package:opfan/l10n/app_localizations.dart';
 
 import 'package:opfan/features/devil_fruit/bloc/index.dart';
@@ -43,8 +45,11 @@ class _DevilFruitListScreenState extends State<DevilFruitListScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider.value(
-      value: _devilFruitBloc,
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider.value(value: _devilFruitBloc),
+        BlocProvider.value(value: getIt<ConnectivityCubit>()),
+      ],
       child: Scaffold(
         appBar: DefaultAppBar(
           title: Text(
@@ -66,24 +71,25 @@ class _DevilFruitListScreenState extends State<DevilFruitListScreen> {
             ),
           ],
         ),
-        body: BlocBuilder<DevilFruitBloc, DevilFruitState>(
-          builder: (context, state) {
-            if (state is DevilFruitInitial || state is DevilFruitLoading) {
-              return const Center(
-                child: CircularProgressIndicator(),
-              );
-            }
+        body: OfflineBlockerOverlay(
+          child: BlocBuilder<DevilFruitBloc, DevilFruitState>(
+            builder: (context, state) {
+              if (state is DevilFruitInitial || state is DevilFruitLoading) {
+                return const Center(
+                  child: CircularProgressIndicator(),
+                );
+              }
 
-            if (state is DevilFruitError) {
-              return _buildErrorState(state.message);
-            }
+              if (state is DevilFruitError) {
+                return _buildErrorState(state.message);
+              }
 
-            if (state is DevilFruitLoaded) {
-              return _buildLoadedState(state);
-            }
-
-            return const SizedBox.shrink();
-          },
+              if (state is DevilFruitLoaded) {
+                return _buildLoadedState(state);
+              }
+              return const SizedBox();
+            },
+          ),
         ),
       ),
     );

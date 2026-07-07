@@ -161,23 +161,25 @@ class _ChatList extends StatelessWidget {
       return Center(
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: Constants.size32),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Icon(
-                PhosphorIconsRegular.robot,
-                size: Constants.size64,
-                color: theme.colorScheme.primary.withValues(alpha: 0.5),
-              ),
-              const SizedBox(height: Constants.size16),
-              Text(
-                l10n.vegapunkChatEmpty,
-                style: theme.textTheme.bodyLarge?.copyWith(
-                  color: theme.colorScheme.onSurfaceVariant,
+          child: SingleChildScrollView(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Icon(
+                  PhosphorIconsRegular.robot,
+                  size: Constants.size64,
+                  color: theme.colorScheme.primary.withValues(alpha: 0.5),
                 ),
-                textAlign: TextAlign.center,
-              ),
-            ],
+                const SizedBox(height: Constants.size16),
+                Text(
+                  l10n.vegapunkChatEmpty,
+                  style: theme.textTheme.bodyLarge?.copyWith(
+                    color: theme.colorScheme.onSurfaceVariant,
+                  ),
+                  textAlign: TextAlign.center,
+                ),
+              ],
+            ),
           ),
         ),
       );

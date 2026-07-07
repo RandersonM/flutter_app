@@ -41,6 +41,7 @@ untranslatedMessages.json
 .pub-cache/
 .pub/
 /build/
+android/build/
 
 # Web related
 lib/generated_plugin_registrant.dart

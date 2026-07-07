@@ -3,6 +3,8 @@
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:get_it/get_it.dart';
+import 'package:opfan/core/connectivity/connectivity_cubit.dart';
 import 'package:opfan/core/services/index.dart';
 import 'package:opfan/features/home/data/repository/featured_character_repository_interface.dart';
 import 'home_event.dart';
@@ -23,12 +25,22 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     on<SelectCharacter>(_onSelectCharacter);
     on<PlayVideoInline>(_onPlayVideoInline);
     on<StopVideoInline>(_onStopVideoInline);
+    on<ConnectivityRestored>((event, emit) {
+      add(const LoadFeaturedCharacter());
+    });
   }
 
   Future<void> _onLoadFeaturedCharacter(
     LoadFeaturedCharacter event,
     Emitter<HomeState> emit,
   ) async {
+    // Offline guard — emit placeholder state immediately.
+    if (!GetIt.I.get<ConnectivityCubit>().isOnline) {
+      debugPrint('Home: Device is offline — emitting HomeOffline');
+      emit(const HomeOffline());
+      return;
+    }
+
     try {
       emit(const HomeLoading());
 
@@ -53,6 +65,13 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     LoadRandomCharacter event,
     Emitter<HomeState> emit,
   ) async {
+    // Offline guard
+    if (!GetIt.I.get<ConnectivityCubit>().isOnline) {
+      debugPrint('Home: Device is offline — cannot load random character');
+      emit(const HomeOffline());
+      return;
+    }
+
     try {
       if (state is HomeLoaded) {
       } else {

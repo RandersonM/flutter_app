@@ -14,8 +14,8 @@ import '../tool_handler.dart';
 /// ```json
 /// {"name": "getCharacterInfo", "arguments": {"characterName": "Luffy"}}
 /// ```
-class GetCharacterInfoHandler implements ToolHandler {
-  const GetCharacterInfoHandler({
+class GetCharacterInfoHandler extends ToolHandler {
+  GetCharacterInfoHandler({
     required this._featuredCharacterRepository,
     required this._customCharacterRepository,
   });
@@ -28,11 +28,11 @@ class GetCharacterInfoHandler implements ToolHandler {
 
   @override
   String get description =>
-      'MUST be called EVERY TIME the user asks for information about a specific One Piece character or a custom character. EVEN IF YOU ALREADY KNOW THE CHARACTER (e.g. Kaidou, Luffy), you MUST call this function to retrieve the character\'s stats, devil fruit, haki, and other data from the database. Do NOT answer from your own knowledge without calling this tool first.';
+      'Fetch stats, devil fruit, and lore for a specific One Piece character from the database.';
 
   @override
   String get descriptionPt =>
-      'DEVE ser chamada SEMPRE que o usuário pedir informações sobre um personagem específico de One Piece ou um personagem customizado. MESMO QUE VOCÊ JÁ CONHEÇA O PERSONAGEM (ex: Kaidou, Luffy), você DEVE chamar esta função para recuperar os atributos, fruta do diabo, haki e outros dados do banco. NÃO responda com seu próprio conhecimento sem chamar esta ferramenta primeiro.';
+      'Busca status, akuma no mi e lore de um personagem específico de One Piece no banco de dados.';
 
   @override
   Map<String, String> get parameterDescriptions => {

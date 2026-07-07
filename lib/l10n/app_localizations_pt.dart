@@ -2643,4 +2643,15 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get dietaryRestrictionHighProtein => 'Alto teor proteico';
+
+  @override
+  String get offlineBannerMessage =>
+      'Você está offline. Algumas funções estão indisponíveis.';
+
+  @override
+  String get offlineScreenTitle => 'Sem Conexão com a Internet';
+
+  @override
+  String get offlineScreenSubtitle =>
+      'Esta função requer conexão com a internet.\nReconecte-se para continuar.';
 }

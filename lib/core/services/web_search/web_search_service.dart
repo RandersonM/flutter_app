@@ -25,9 +25,10 @@ class WebSearchService implements IWebSearchService {
   @override
   Future<List<WebSearchResult>> search(
     String query, {
-    int maxResults = 2,
-    String searchDepth = 'basic',
-    bool includeAnswer = false,
+    int maxResults = 5,
+    String searchDepth = 'advanced',
+    String includeAnswer = 'advanced',
+    SearchTopic searchTopic = SearchTopic.general
   }) async {
     if (!isConfigured) return [];
 
@@ -39,6 +40,7 @@ class WebSearchService implements IWebSearchService {
           'query': query,
           'search_depth': searchDepth,
           'max_results': maxResults,
+          'search_topic': searchTopic.value,
           'include_answer': includeAnswer,
           'include_raw_content': false,
         },

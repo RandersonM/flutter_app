@@ -20,6 +20,10 @@ class HomeLoading extends HomeState {
   const HomeLoading();
 }
 
+class HomeOffline extends HomeState {
+  const HomeOffline();
+}
+
 class HomeLoaded extends HomeState {
   final CustomCharacterModel featuredCharacter;
   final bool isRandomCharacter;

@@ -1,21 +1,24 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter_gemma/flutter_gemma.dart';
-import 'package:path_provider/path_provider.dart';
 
 import 'package:opfan/core/models/rag/rag_document.dart';
 import 'package:opfan/core/services/rag/i_rag_service.dart';
+import 'package:opfan/core/services/rag/rag_store_coordinator.dart';
 
 class RAGService implements IRAGService {
   bool _initialized = false;
   bool _vectorStoreReady = false;
   EmbeddingModel? _embeddingModel;
   List<RagDocument> _knowledgeBaseDocs = [];
+  int _sessionDocCount = 0;
 
-  // Gecko-64: smallest embedding model (~110 MB), no HuggingFace auth required
-  static const _modelUrl =
-      'https://huggingface.co/litert-community/Gecko-110m-en/resolve/main/Gecko_64_quant.tflite';
-  static const _tokenizerUrl =
-      'https://huggingface.co/litert-community/Gecko-110m-en/resolve/main/sentencepiece.model';
+  static const _owner = 'vegapunk';
+  static const _dbFileName = 'opfan_rag.db';
+
+  // Session documents accumulate for the lifetime of a chat (only cleared on
+  // an explicit reset). Cap them so a very long single session doesn't keep
+  // growing the vector store and slowing down `searchSimilar`.
+  static const _maxSessionDocs = 20;
 
   @override
   Future<void> initialize() async {
@@ -23,23 +26,7 @@ class RAGService implements IRAGService {
     _initialized = true;
 
     try {
-      debugPrint('RAGService: installing embedding model…');
-      await FlutterGemma.installEmbedder()
-          .modelFromNetwork(_modelUrl)
-          .tokenizerFromNetwork(_tokenizerUrl)
-          .withModelProgress(
-            (p) => debugPrint('RAGService: embedder model $p%'),
-          )
-          .withTokenizerProgress(
-            (p) => debugPrint('RAGService: embedder tokenizer $p%'),
-          )
-          .install();
-
-      _embeddingModel = await FlutterGemma.getActiveEmbedder();
-
-      final appDir = await getApplicationDocumentsDirectory();
-      final dbPath = '${appDir.path}/opfan_rag.db';
-      await FlutterGemmaPlugin.instance.initializeVectorStore(dbPath);
+      _embeddingModel = await RagStoreCoordinator.ensureEmbedderInstalled();
       _vectorStoreReady = true;
 
       debugPrint('RAGService: ready (vector search)');
@@ -49,9 +36,22 @@ class RAGService implements IRAGService {
     }
   }
 
+  /// Re-asserts that the shared vector store points at this service's own
+  /// database before every operation — another RAG feature (e.g. Nami
+  /// finances) may have switched it since [initialize] ran.
+  Future<bool> _ensureActiveStore() async {
+    if (!_vectorStoreReady) return false;
+    await RagStoreCoordinator.ensureActive(_owner, _dbFileName);
+    return true;
+  }
+
   @override
   Future<void> addDocument(RagDocument doc) async {
-    if (!_vectorStoreReady) return;
+    if (!await _ensureActiveStore()) return;
+    if (doc.isSession) {
+      if (_sessionDocCount >= _maxSessionDocs) return;
+      _sessionDocCount++;
+    }
     final model = _embeddingModel;
     if (model == null) return;
 
@@ -73,7 +73,7 @@ class RAGService implements IRAGService {
 
   @override
   Future<void> addDocumentBatch(List<RagDocument> docs) async {
-    if (!_vectorStoreReady || docs.isEmpty) return;
+    if (docs.isEmpty || !await _ensureActiveStore()) return;
     final model = _embeddingModel;
     if (model == null) return;
 
@@ -103,7 +103,7 @@ class RAGService implements IRAGService {
 
   @override
   Future<List<String>> search(String query, {int topK = 3}) async {
-    if (!_vectorStoreReady || query.trim().isEmpty) return [];
+    if (query.trim().isEmpty || !await _ensureActiveStore()) return [];
 
     try {
       final results = await FlutterGemmaPlugin.instance.searchSimilar(
@@ -122,10 +122,11 @@ class RAGService implements IRAGService {
 
   @override
   Future<void> clearSession() async {
-    if (!_vectorStoreReady) return;
+    if (!await _ensureActiveStore()) return;
 
     try {
       await FlutterGemmaPlugin.instance.clearVectorStore();
+      _sessionDocCount = 0;
       debugPrint('RAGService: store cleared');
 
       // Rebuild with KB docs so the knowledge base survives the session reset
@@ -142,12 +143,13 @@ class RAGService implements IRAGService {
 
   @override
   Future<void> setKnowledgeBase(List<RagDocument> docs) async {
-    if (!_vectorStoreReady) return;
+    if (!await _ensureActiveStore()) return;
 
     try {
       await FlutterGemmaPlugin.instance.clearVectorStore();
       debugPrint('RAGService: store cleared for new knowledge base');
       _knowledgeBaseDocs = [];
+      _sessionDocCount = 0;
       if (docs.isNotEmpty) {
         await addDocumentBatch(docs);
       }
