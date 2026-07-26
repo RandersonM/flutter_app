@@ -7,6 +7,15 @@ lib/static/l10n/messages_*.dart
 untranslatedMessages.json
 *.g.dart
 
+# Local analyzer output / scratch files
+analyze.txt
+analyze_output.txt
+assets/bakcup.json
+
+# Editor / AI assistant local rules
+.cursor/rules/project-structure.cursorrules
+.cursor/rules/project-structure.mdc
+
 # Miscellaneous
 *.class
 *.log

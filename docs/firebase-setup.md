@@ -1,5 +1,7 @@
 # Configuração do Firebase para Autenticação
 
+> **Nota:** os passos no Firebase/Google Cloud Console abaixo continuam válidos. A seção "Estrutura do Projeto" reflete uma versão antiga do layout (`lib/screens/`); a estrutura atual usa `lib/features/auth/` — veja [`architecture-overview.md`](./architecture-overview.md).
+
 Este guia te ajudará a configurar a autenticação Firebase com Google no seu app OpFan.
 
 ## Pré-requisitos

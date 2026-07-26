@@ -14,12 +14,14 @@
 
 ### 2. Configurar no App
 
-1. Abra o arquivo `lib/core/services/youtube_service.dart`
-2. Substitua `YOUR_YOUTUBE_API_KEY` pela sua API key real:
+A API key é lida via `flutter_dotenv` — **nunca hardcode a chave no código**. Adicione ao `.env`:
 
-```dart
-static const String _apiKey = 'SUA_API_KEY_AQUI';
+```env
+YOUTUBE_API_KEY=sua_api_key_aqui
+YOUTUBE_BASE_URL=https://www.googleapis.com/youtube/v3
 ```
+
+O `YouTubeService` (`lib/core/services/youtube/youtube_service.dart`) lê esses valores através de `IEnvironmentService`, injetado via GetIt.
 
 ### 3. Funcionalidades
 
@@ -48,7 +50,7 @@ Se você não configurar a API key, o app funcionará normalmente usando dados s
 
 ## Estrutura dos arquivos
 
-- `lib/core/services/youtube_service.dart` - Serviço principal
-- `lib/core/home/models/youtube_video_model.dart` - Modelo de dados
-- `lib/screens/home/widgets/youtube_player_screen.dart` - Tela do player
-- `lib/screens/home/widgets/simple_video_banner.dart` - Banner com suporte a YouTube 
+- `lib/core/services/youtube/youtube_service.dart` — Serviço principal (implementa `IYouTubeService`)
+- `lib/core/services/youtube/i_youtube_service.dart` — Interface do serviço
+- `lib/features/youtube/data/models/youtube_video_model.dart` — Modelo de dados
+- `lib/features/youtube/` — Tela e widgets do player (feature module) 

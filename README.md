@@ -1,6 +1,9 @@
-# Flutter App - One Piece Characters
+# OpFan — One Piece Fan App
 
-This is a Flutter application that displays One Piece characters with their information, including a calculator and counter features.
+A Flutter app for One Piece fans: character browser, custom characters, Devil Fruit database, crews, duels, a personal finance tracker, workout planner, cooking recipes, and an on-device AI chat (**Ask Vegapunk**, powered by `flutter_gemma`). Firebase for auth/data, BLoC/Cubit for state, GetIt for DI. Localized in English and Portuguese.
+
+📚 **Documentation index:** [`docs/README.md`](docs/README.md) — setup guides (Firebase, Firestore, YouTube API, Gemini AI, flutter_gemma) and links to architecture specs.
+🤖 **AI assistant guide:** [`CLAUDE.md`](CLAUDE.md) — full architecture, conventions, and stack reference (also used by Claude Code).
 
 ## 🛠️ Development Setup
 
@@ -68,15 +71,14 @@ If you're using VS Code, add this to your `.vscode/settings.json`:
 
 ```
 lib/
-├── core/                    # Business logic and providers
-├── l10n/                    # Localization files
-├── screens/                 # UI screens
-│   ├── calculator/         # Calculator functionality
-│   ├── counter/            # Simple counter
-│   ├── one_piece/          # One Piece characters
-│   └── splash/             # Splash screen
-└── shared/                 # Shared widgets and utilities
+├── app/di/                  # GetIt dependency injection modules
+├── core/                    # Auth, models, services (Gemini, Gemma/RAG, Firestore, etc.), theme, locale
+├── features/                # 18 feature modules (one_piece, vegapunk_chat, nami_finances, zoro_workout, …)
+├── shared/                  # Atomic-design widgets (atoms/molecules/organisms) and utils
+└── l10n/                    # ARB localization files (en, pt)
 ```
+
+See [`CLAUDE.md`](CLAUDE.md) for the full architecture reference.
 
 ## 🚀 Getting Started
 
@@ -88,19 +90,23 @@ lib/
 
 ## 📱 Features
 
-- **Counter**: Simple increment/decrement counter
-- **Calculator**: Basic mathematical operations
-- **One Piece**: Browse and search One Piece characters
+- **One Piece**: Browse and search characters, Devil Fruits, crews, custom characters
+- **Ask Vegapunk**: On-device AI chat (`flutter_gemma`) with RAG and function calling — see [`docs/flutter-gemma-on-device.md`](docs/flutter-gemma-on-device.md)
+- **Nami Finances**: Personal finance tracker with its own on-device RAG assistant
+- **Zoro Workout / Sanji Cooking / Robin Knowledge**: planners, recipes, trivia
+- **Duels, Calculator**: utility features
 - **Internationalization**: English and Portuguese support
-- **Responsive Design**: Works on different screen sizes
 
 ## 🔧 Technical Details
 
-- **Flutter Version**: 3.22.3 (managed by FVM)
-- **Dart Version**: 3.4.4
-- **State Management**: Provider
-- **Localization**: flutter_localizations
-- **Code Generation**: build_runner, json_serializable
+- **Flutter**: >=3.27.0 (managed by FVM)
+- **Dart**: >=3.12.0
+- **State Management**: flutter_bloc (BLoC/Cubit)
+- **Dependency Injection**: get_it
+- **Backend**: Firebase (Auth, Firestore, Cloud Functions, FCM)
+- **AI**: `google_generative_ai` (Gemini, cloud) + `flutter_gemma` (on-device)
+- **Localization**: flutter_localizations + ARB files
+- **Code Generation**: build_runner, json_serializable, hive_generator
 
 ## 🤝 Contributing
 
@@ -110,4 +116,4 @@ lib/
 
 ---
 
-*Last updated: Flutter 3.22.3 with FVM support*
+*Last updated: 2026-07-06*
