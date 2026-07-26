@@ -70,7 +70,9 @@ class NamiFinancesBloc extends Bloc<NamiFinancesEvent, NamiFinancesState> {
     try {
       final canEdit = await _service.canEditFinances(event.month);
       if (!canEdit) {
-        emit(NamiFinancesError('Não é possível editar finanças de meses futuros'));
+        emit(
+          NamiFinancesError('Não é possível editar finanças de meses futuros'),
+        );
         return;
       }
 

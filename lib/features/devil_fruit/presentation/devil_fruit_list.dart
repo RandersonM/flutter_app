@@ -101,7 +101,7 @@ class _DevilFruitListScreenState extends State<DevilFruitListScreen> {
             AppIcon(
               PhosphorIconsRegular.warningCircle,
               size: 64,
-              color: Colors.red[400],
+              color: Theme.of(context).colorScheme.error,
             ),
             const SizedBox(height: Constants.margin * 2),
             Text(

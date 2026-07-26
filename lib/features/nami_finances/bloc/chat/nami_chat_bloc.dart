@@ -242,7 +242,8 @@ class NamiChatBloc extends Cubit<NamiChatState> {
     final result = await _registry.execute(toolCall);
     var content = result.content;
     if (content.length > _maxToolContentLength) {
-      content = '${content.substring(0, _maxToolContentLength)}\n...[TRUNCATED]';
+      content =
+          '${content.substring(0, _maxToolContentLength)}\n...[TRUNCATED]';
     }
 
     await _streamToBuffer(

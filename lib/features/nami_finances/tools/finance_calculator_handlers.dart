@@ -10,7 +10,9 @@ import 'package:opfan/features/vegapunk_chat/tools/tool_handler.dart';
 /// Number of recent months used to derive average income/expenses.
 const _averageWindowMonths = 3;
 
-Future<MonthlyAggregates> _recentAggregates(INamiFinancesService service) async {
+Future<MonthlyAggregates> _recentAggregates(
+  INamiFinancesService service,
+) async {
   final months = await service.getLastMonthsFinances(_averageWindowMonths);
   return FinanceMath.aggregate(months);
 }
@@ -73,7 +75,9 @@ class AffordableInstallmentHandler extends ToolHandler {
   @override
   Future<ToolResult> execute(ToolCall call) async {
     try {
-      final price = FinanceMath.parseAmount(call.arguments['price']?.toString());
+      final price = FinanceMath.parseAmount(
+        call.arguments['price']?.toString(),
+      );
       if (price == null || price <= 0) {
         return ToolResult.error(
           toolName: name,
@@ -182,8 +186,7 @@ class SimulateGoalPlanHandler extends ToolHandler {
     'monthlyContribution':
         'How much can be set aside per month. Optional (defaults to the '
         'average monthly reserve).',
-    'targetMonths':
-        'Desired number of months to reach the goal. Optional.',
+    'targetMonths': 'Desired number of months to reach the goal. Optional.',
   };
 
   @override
@@ -232,7 +235,9 @@ class SimulateGoalPlanHandler extends ToolHandler {
         'currency': 'BRL',
         'note': 'Quote the *_formatted values verbatim; do not recompute.',
         'target_formatted': FinanceMath.formatBrl(plan.targetAmount),
-        'currentReserves_formatted': FinanceMath.formatBrl(plan.currentReserves),
+        'currentReserves_formatted': FinanceMath.formatBrl(
+          plan.currentReserves,
+        ),
         'remaining_formatted': FinanceMath.formatBrl(plan.remaining),
         'monthlyContribution_formatted': FinanceMath.formatBrl(
           plan.requiredMonthlyContribution,

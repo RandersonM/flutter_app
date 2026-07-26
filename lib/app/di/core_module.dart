@@ -6,6 +6,8 @@ import 'package:opfan/core/services/rag/i_rag_service.dart';
 import 'package:opfan/core/services/rag/rag_service.dart';
 import 'package:opfan/core/services/web_search/i_web_search_service.dart';
 import 'package:opfan/core/services/web_search/web_search_service.dart';
+import 'package:opfan/features/vegapunk_chat/data/repository/i_vegapunk_chat_repository.dart';
+import 'package:opfan/features/vegapunk_chat/data/repository/vegapunk_chat_repository.dart';
 import 'package:opfan/features/vegapunk_chat/tools/function_executor.dart';
 import 'package:opfan/features/vegapunk_chat/tools/function_registry.dart';
 import 'package:opfan/features/vegapunk_chat/tools/handlers/search_internet_handler.dart';
@@ -35,8 +37,15 @@ void registerCoreModule(GetIt getIt) {
   getIt.registerLazySingleton<ILocaleService>(() => LocaleService());
   getIt.registerLazySingleton<IThemeService>(() => ThemeService());
 
+  // NavigationService owns the app's single navigatorKey, so it must be a
+  // singleton and resolved from here — never constructed ad hoc.
+  getIt.registerLazySingleton<INavigationService>(() => NavigationService());
+
   getIt.registerLazySingleton<INotificationService>(
-    () => NotificationService(),
+    () => NotificationService(
+      navigationService: getIt<INavigationService>(),
+      firestoreService: getIt<IFirestoreService>(),
+    ),
   );
   getIt.registerLazySingleton<IDevilFruitService>(() => DevilFruitService());
   getIt.registerLazySingleton<IYouTubeService>(() => YouTubeService());
@@ -47,7 +56,9 @@ void registerCoreModule(GetIt getIt) {
 
   getIt.registerLazySingleton<ICookingRepository>(() => CookingRepository());
   getIt.registerLazySingleton<IFeaturedCharacterRepository>(
-    () => FeaturedCharacterRepository(),
+    () => FeaturedCharacterRepository(
+      firestoreService: getIt<IFirestoreService>(),
+    ),
   );
 
   getIt.registerLazySingleton<IUserProfileRepository>(
@@ -55,13 +66,21 @@ void registerCoreModule(GetIt getIt) {
   );
 
   getIt.registerLazySingleton<IAuthService>(
-    () => AuthService(userProfileRepository: getIt<IUserProfileRepository>()),
+    () => AuthService(
+      userProfileRepository: getIt<IUserProfileRepository>(),
+      notificationService: getIt<INotificationService>(),
+    ),
   );
   getIt.registerLazySingleton<IFirestoreService>(() => FirestoreService());
 
-  getIt.registerLazySingleton<ICrewRepository>(() => CrewRepository());
+  getIt.registerLazySingleton<ICrewRepository>(
+    () => CrewRepository(firestoreService: getIt<IFirestoreService>()),
+  );
   getIt.registerLazySingleton<ICustomCharacterRepository>(
-    () => CustomCharacterRepository(getIt<ICrewRepository>()),
+    () => CustomCharacterRepository(
+      getIt<ICrewRepository>(),
+      firestoreService: getIt<IFirestoreService>(),
+    ),
   );
   getIt.registerLazySingleton<PlannerRepositoryInterface>(
     () => PlannerRepository(firestoreService: getIt<IFirestoreService>()),
@@ -120,6 +139,17 @@ void registerCoreModule(GetIt getIt) {
     gemma.setTools(registry.getTools());
     return gemma;
   });
+
+  // Registered after IGemmaService — the repository takes it as a constructor
+  // dependency, so the closure must be able to resolve it when first read.
+  getIt.registerLazySingleton<IVegapunkChatRepository>(
+    () => VegapunkChatRepository(
+      gemmaService: getIt<IGemmaService>(),
+      ragService: getIt<IRAGService>(),
+      functionRegistry: getIt<FunctionRegistry>(),
+      functionExecutor: getIt<FunctionExecutor>(),
+    ),
+  );
 
   getIt.registerLazySingleton<AuthBloc>(() {
     final authBloc = AuthBloc(authService: getIt<IAuthService>());

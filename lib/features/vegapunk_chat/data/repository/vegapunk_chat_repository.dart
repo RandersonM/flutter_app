@@ -1,6 +1,5 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_gemma/core/model_response.dart';
-import 'package:opfan/app/di/injection.dart';
 import 'package:opfan/core/services/gemma/gemma_service.dart';
 import 'package:opfan/core/services/gemma/gemma_service_status.dart';
 import 'package:opfan/core/services/gemma/i_gemma_service.dart';
@@ -27,16 +26,15 @@ import 'i_vegapunk_chat_repository.dart';
 ///      detection in case the SDK path misses it.
 class VegapunkChatRepository implements IVegapunkChatRepository {
   VegapunkChatRepository({
-    IGemmaService? gemmaService,
-    IRAGService? ragService,
-    FunctionRegistry? functionRegistry,
-    FunctionExecutor? functionExecutor,
-    ToolIntentDetector? intentDetector,
-  }) : _gemma = gemmaService ?? getIt<IGemmaService>(),
-       _rag = ragService ?? getIt<IRAGService>(),
-       _registry = functionRegistry ?? getIt<FunctionRegistry>(),
-       _executor = functionExecutor ?? getIt<FunctionExecutor>(),
-       _intentDetector = intentDetector ?? const ToolIntentDetector();
+    required IGemmaService gemmaService,
+    required IRAGService ragService,
+    required FunctionRegistry functionRegistry,
+    required FunctionExecutor functionExecutor,
+    this._intentDetector = const ToolIntentDetector(),
+  }) : _gemma = gemmaService,
+       _rag = ragService,
+       _registry = functionRegistry,
+       _executor = functionExecutor;
 
   final IGemmaService _gemma;
   final IRAGService _rag;

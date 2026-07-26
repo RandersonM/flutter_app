@@ -44,7 +44,10 @@ class _WorkoutSetupState extends State<WorkoutSetup> {
       if (state is ZoroWorkoutError) {
         if (mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text(state.message), backgroundColor: Colors.red),
+            SnackBar(
+              content: Text(state.message),
+              backgroundColor: Theme.of(context).colorScheme.error,
+            ),
           );
         }
       }

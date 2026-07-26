@@ -21,10 +21,10 @@ class AppLocalizationsPt extends AppLocalizations {
   }
 
   @override
-  String get beastsPirates => 'Beasts Pirates';
+  String get beastsPirates => 'Piratas das Feras';
 
   @override
-  String get bigMomPirates => 'Big Mom Pirates';
+  String get bigMomPirates => 'Piratas da Big Mom';
 
   @override
   String get bounty => 'Recompensa';
@@ -2708,4 +2708,39 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get editingPastMonth => 'Editando um mês passado';
+
+  @override
+  String get newCrewTitle => 'Nova Tripulação';
+
+  @override
+  String get descriptionLabel => 'Descrição';
+
+  @override
+  String get tagsLabel => 'Tags';
+
+  @override
+  String get generatingLabel => 'Gerando...';
+
+  @override
+  String get generateFlagLabel => 'Gerar Bandeira';
+
+  @override
+  String get generateBoatLabel => 'Gerar Barco';
+
+  @override
+  String get crewBoatTitle => 'Barco da Tripulação';
+
+  @override
+  String get aiImageHelpText =>
+      'Use prompts descritivos para gerar imagens únicas da sua tripulação. As imagens geradas serão salvas automaticamente.';
+
+  @override
+  String get flagPromptHint =>
+      'Ex: caveira com espadas cruzadas, bandeira negra';
+
+  @override
+  String get boatPromptHint => 'Ex: navio pirata de madeira com velas pretas';
+
+  @override
+  String get defaultCrewName => 'Tripulação';
 }

@@ -14,8 +14,7 @@ class _FakeFinancesService implements INamiFinancesService {
   final Map<String, NamiFinancesModel> byMonth;
   final Map<String, dynamic> accumulated;
 
-  String _key(DateTime m) =>
-      '${m.year}-${m.month.toString().padLeft(2, '0')}';
+  String _key(DateTime m) => '${m.year}-${m.month.toString().padLeft(2, '0')}';
 
   @override
   Future<NamiFinancesModel?> getFinancesForMonth(DateTime month) async =>

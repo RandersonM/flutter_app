@@ -1,19 +1,25 @@
-import 'package:get_it/get_it.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:opfan/features/sanji_cooking/data/repository/cooking_repository_interface.dart';
 import 'package:opfan/core/services/index.dart';
-import 'package:opfan/app/di/injection.dart';
 import 'package:opfan/core/auth/blocs/index.dart';
 import 'sanji_cooking_event.dart';
 import 'sanji_cooking_state.dart';
 
 class SanjiCookingBloc extends Bloc<SanjiCookingEvent, SanjiCookingState> {
-  final IWorkoutAssessmentService _workoutService =
-      getIt<IWorkoutAssessmentService>();
-  final ICookingRepository _cookingRepository = getIt<ICookingRepository>();
+  final IWorkoutAssessmentService _workoutService;
+  final ICookingRepository _cookingRepository;
+  final INutritionCalculationService _nutritionService;
+  final IAuthService _authService;
+  final AuthBloc _authBloc;
 
-  SanjiCookingBloc() : super(const SanjiCookingInitial()) {
+  SanjiCookingBloc({
+    required this._workoutService,
+    required this._cookingRepository,
+    required this._nutritionService,
+    required this._authService,
+    required this._authBloc,
+  }) : super(const SanjiCookingInitial()) {
     on<InitializeSanjiCooking>(_onInitializeSanjiCooking);
     on<CalculateNutrition>(_onCalculateNutrition);
     on<SaveNutritionData>(_onSaveNutritionData);
@@ -33,20 +39,18 @@ class SanjiCookingBloc extends Bloc<SanjiCookingEvent, SanjiCookingState> {
     emit(const SanjiCookingLoading());
 
     try {
-      final user = getIt<IAuthService>().currentUser;
+      final user = _authService.currentUser;
 
       if (user != null && user.isProfileComplete) {
-        final nutritionResults = GetIt.I
-            .get<INutritionCalculationService>()
-            .calculateNutrition(
-              age: user.age!,
-              gender: user.gender!,
-              weight: user.weightKg!,
-              height: user.heightCm!,
-              waist: user.waistCm ?? 0.0,
-              activityLevel: user.activityLevel!,
-              goal: user.goal!,
-            );
+        final nutritionResults = _nutritionService.calculateNutrition(
+          age: user.age!,
+          gender: user.gender!,
+          weight: user.weightKg!,
+          height: user.heightCm!,
+          waist: user.waistCm ?? 0.0,
+          activityLevel: user.activityLevel!,
+          goal: user.goal!,
+        );
 
         emit(
           SanjiCookingLoaded(
@@ -82,20 +86,18 @@ class SanjiCookingBloc extends Bloc<SanjiCookingEvent, SanjiCookingState> {
     emit(const SanjiCookingLoading());
 
     try {
-      final nutritionResults = GetIt.I
-          .get<INutritionCalculationService>()
-          .calculateNutrition(
-            age: event.nutritionData['age'],
-            gender: event.nutritionData['gender'],
-            weight: event.nutritionData['weight'],
-            height: event.nutritionData['height'],
-            waist: event.nutritionData['waist'],
-            activityLevel: event.nutritionData['activityLevel'],
-            goal: event.nutritionData['goal'],
-          );
+      final nutritionResults = _nutritionService.calculateNutrition(
+        age: event.nutritionData['age'],
+        gender: event.nutritionData['gender'],
+        weight: event.nutritionData['weight'],
+        height: event.nutritionData['height'],
+        waist: event.nutritionData['waist'],
+        activityLevel: event.nutritionData['activityLevel'],
+        goal: event.nutritionData['goal'],
+      );
 
       // Auto-save global profile when calculating
-      final user = getIt<IAuthService>().currentUser;
+      final user = _authService.currentUser;
       if (user != null) {
         final updatedUser = user.copyWith(
           gender: event.nutritionData['gender'],
@@ -106,7 +108,7 @@ class SanjiCookingBloc extends Bloc<SanjiCookingEvent, SanjiCookingState> {
           activityLevel: event.nutritionData['activityLevel'],
           goal: event.nutritionData['goal'],
         );
-        getIt<AuthBloc>().add(AuthProfileBodyUpdated(updatedUser: updatedUser));
+        _authBloc.add(AuthProfileBodyUpdated(updatedUser: updatedUser));
       }
 
       emit(
@@ -128,7 +130,7 @@ class SanjiCookingBloc extends Bloc<SanjiCookingEvent, SanjiCookingState> {
     try {
       debugPrint('SanjiCookingBloc: Starting _onSaveNutritionData');
 
-      final user = getIt<IAuthService>().currentUser;
+      final user = _authService.currentUser;
       if (user != null) {
         final updatedUser = user.copyWith(
           gender: event.nutritionData['gender'],
@@ -139,7 +141,7 @@ class SanjiCookingBloc extends Bloc<SanjiCookingEvent, SanjiCookingState> {
           activityLevel: event.nutritionData['activityLevel'],
           goal: event.nutritionData['goal'],
         );
-        getIt<AuthBloc>().add(AuthProfileBodyUpdated(updatedUser: updatedUser));
+        _authBloc.add(AuthProfileBodyUpdated(updatedUser: updatedUser));
       }
 
       await _workoutService.updateNutritionData(
@@ -167,7 +169,7 @@ class SanjiCookingBloc extends Bloc<SanjiCookingEvent, SanjiCookingState> {
     Emitter<SanjiCookingState> emit,
   ) async {
     try {
-      final user = getIt<IAuthService>().currentUser;
+      final user = _authService.currentUser;
 
       if (user != null && user.isProfileComplete) {
         final existingData = {

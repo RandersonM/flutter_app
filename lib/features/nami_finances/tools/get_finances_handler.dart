@@ -92,12 +92,15 @@ class GetFinancesHandler extends ToolHandler {
         final record = await _service.getFinancesForMonth(target);
         if (record != null) records.add(record);
         monthPayloads.add(
-          record != null ? _serializeMonth(target, record) : _emptyMonth(target),
+          record != null
+              ? _serializeMonth(target, record)
+              : _emptyMonth(target),
         );
       }
 
       final accumulated = await _service.getAccumulatedSavingsInfo();
-      final accumulatedTotal = (accumulated['totalSavings'] as num?)?.toDouble() ?? 0.0;
+      final accumulatedTotal =
+          (accumulated['totalSavings'] as num?)?.toDouble() ?? 0.0;
 
       // Pre-compute cross-month aggregates so the model never has to sum.
       final agg = FinanceMath.aggregate(records);
@@ -115,8 +118,12 @@ class GetFinancesHandler extends ToolHandler {
           'totalExpenses_formatted': FinanceMath.formatBrl(agg.totalExpenses),
           'totalReserves_formatted': FinanceMath.formatBrl(agg.totalReserves),
           'avgMonthlyIncome_formatted': FinanceMath.formatBrl(agg.avgIncome),
-          'avgMonthlyExpenses_formatted': FinanceMath.formatBrl(agg.avgExpenses),
-          'avgMonthlyReserves_formatted': FinanceMath.formatBrl(agg.avgReserves),
+          'avgMonthlyExpenses_formatted': FinanceMath.formatBrl(
+            agg.avgExpenses,
+          ),
+          'avgMonthlyReserves_formatted': FinanceMath.formatBrl(
+            agg.avgReserves,
+          ),
           'avgMonthlyDisposable_formatted': FinanceMath.formatBrl(
             agg.avgDisposable,
           ),
@@ -192,7 +199,9 @@ class GetFinancesHandler extends ToolHandler {
       'reserveGoalProgress_formatted': record.reserveGoalProgress == null
           ? null
           : FinanceMath.formatPct(record.reserveGoalProgress!),
-      'availableAmount_formatted': FinanceMath.formatBrl(record.availableAmount),
+      'availableAmount_formatted': FinanceMath.formatBrl(
+        record.availableAmount,
+      ),
     };
   }
 }

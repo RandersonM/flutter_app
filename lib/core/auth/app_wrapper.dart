@@ -58,10 +58,10 @@ class _AppWrapperState extends State<AppWrapper> {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    const AppIcon(
+                    AppIcon(
                       PhosphorIconsRegular.warningCircle,
                       size: 64,
-                      color: Colors.red,
+                      color: Theme.of(context).colorScheme.error,
                     ),
                     const SizedBox(height: 16),
                     Text(

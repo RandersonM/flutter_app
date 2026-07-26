@@ -3,6 +3,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:opfan/shared/utils/constants.dart';
+import 'app_semantic_colors.dart';
 
 class IconSize {
   static const double standard = 16.0;
@@ -274,6 +275,7 @@ ThemeData getLightTheme() {
           surfaceContainerLow: AppColors.purple[50]!,
           surfaceContainerHigh: const Color(0xFFF9FAFB),
         ),
+    extensions: const <ThemeExtension<dynamic>>[AppSemanticColors.light],
     dividerColor: AppColors.grey[200],
     textTheme: const TextTheme(
       displayLarge: _Typography.headline1,
@@ -392,6 +394,7 @@ ThemeData getDarkTheme() {
       surfaceContainerHigh: const Color(0xFF2E2D38),
       onSecondaryContainer: AppColors.purple[100],
     ),
+    extensions: const <ThemeExtension<dynamic>>[AppSemanticColors.dark],
     dividerColor: const Color(0xFF2E2D38),
     textTheme: const TextTheme(
       displayLarge: _Typography.headline1,

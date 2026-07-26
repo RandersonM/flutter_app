@@ -118,7 +118,10 @@ class FinanceMath {
     required double monthlyContribution,
     int? targetMonths,
   }) {
-    final remaining = (targetAmount - currentReserves).clamp(0, double.infinity);
+    final remaining = (targetAmount - currentReserves).clamp(
+      0,
+      double.infinity,
+    );
 
     if (targetMonths != null && targetMonths > 0) {
       return GoalPlan(
@@ -161,7 +164,9 @@ class FinanceMath {
   }) {
     final financed = (price - downPayment).clamp(0, double.infinity).toDouble();
     final safeByIncome = monthlyIncome * maxIncomePct;
-    final safeByDisposable = monthlyDisposable.clamp(0, double.infinity).toDouble();
+    final safeByDisposable = monthlyDisposable
+        .clamp(0, double.infinity)
+        .toDouble();
     final recommendedMax = safeByIncome < safeByDisposable
         ? safeByIncome
         : safeByDisposable;

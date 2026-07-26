@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'dart:math';
+import 'package:opfan/shared/utils/app_semantic_colors.dart';
 
 class NamiHeader extends StatefulWidget {
   const NamiHeader({super.key});
@@ -33,7 +34,9 @@ class _NamiHeaderState extends State<NamiHeader> {
         borderRadius: BorderRadius.circular(20),
         boxShadow: [
           BoxShadow(
-            color: Colors.orange.withValues(alpha: 0.2),
+            color: Theme.of(
+              context,
+            ).semanticColors.warning.withValues(alpha: 0.2),
             blurRadius: 15,
             spreadRadius: 2,
           ),

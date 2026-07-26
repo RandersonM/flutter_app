@@ -168,7 +168,7 @@ class GoalDetailsScreen extends StatelessWidget {
               backgroundColor: Theme.of(context).colorScheme.onSecondary,
               borderRadius: BorderRadius.circular(12),
               valueColor: AlwaysStoppedAnimation<Color>(
-                _getProgressColor(goal.progress),
+                _getProgressColor(context, goal.progress),
               ),
               minHeight: 8,
             ),
@@ -280,7 +280,13 @@ class GoalDetailsScreen extends StatelessWidget {
   }) {
     return Row(
       children: [
-        Icon(icon, size: 16, color: isOverdue ? Colors.red : Colors.grey[600]),
+        Icon(
+          icon,
+          size: 16,
+          color: isOverdue
+              ? Theme.of(context).colorScheme.error
+              : Colors.grey[600],
+        ),
         const SizedBox(width: 8),
         Text(
           '$label: ',
@@ -293,7 +299,7 @@ class GoalDetailsScreen extends StatelessWidget {
           child: Text(
             value,
             style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-              color: isOverdue ? Colors.red : null,
+              color: isOverdue ? Theme.of(context).colorScheme.error : null,
               fontWeight: FontWeight.w500,
             ),
           ),
@@ -430,11 +436,11 @@ class GoalDetailsScreen extends StatelessWidget {
     }
   }
 
-  Color _getProgressColor(double progress) {
+  Color _getProgressColor(BuildContext context, double progress) {
     if (progress >= 100) return AppColors.purple[350]!;
     if (progress >= 75) return AppColors.yellow[500]!;
     if (progress >= 50) return AppColors.orange[500]!;
     if (progress >= 25) return AppColors.red[500]!;
-    return Colors.red;
+    return Theme.of(context).colorScheme.error;
   }
 }

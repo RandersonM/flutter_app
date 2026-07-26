@@ -4,6 +4,7 @@
 import 'package:equatable/equatable.dart';
 import 'package:hive/hive.dart';
 import 'package:json_annotation/json_annotation.dart';
+import 'package:opfan/core/storage/hive_type_ids.dart';
 
 part 'user_model.g.dart';
 
@@ -199,7 +200,7 @@ class UserModel extends Equatable {
 
 class UserModelAdapter extends TypeAdapter<UserModel> {
   @override
-  final int typeId = 1;
+  final int typeId = HiveTypeIds.userModel;
 
   @override
   UserModel read(BinaryReader reader) {

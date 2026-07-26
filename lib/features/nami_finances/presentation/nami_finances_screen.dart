@@ -64,7 +64,8 @@ class _NamiFinancesScreenState extends State<NamiFinancesScreen> {
                 // reloads that month's data.
                 key: ValueKey('${_selectedMonth.year}-${_selectedMonth.month}'),
                 create: (context) =>
-                    getIt<NamiFinancesBloc>()..add(LoadFinances(_selectedMonth)),
+                    getIt<NamiFinancesBloc>()
+                      ..add(LoadFinances(_selectedMonth)),
                 child: BlocBuilder<NamiFinancesBloc, NamiFinancesState>(
                   builder: (context, state) {
                     if (state is NamiFinancesLoading) {
@@ -77,14 +78,15 @@ class _NamiFinancesScreenState extends State<NamiFinancesScreen> {
                         return SingleChildScrollView(
                           padding: const EdgeInsets.all(Constants.margin),
                           child: FinancesSetupForm(
-                            onSave: (incomes, expenses, reserves, reserveGoal) =>
-                                _onSaveFinances(
-                                  context,
-                                  incomes,
-                                  expenses,
-                                  reserves,
-                                  reserveGoal,
-                                ),
+                            onSave:
+                                (incomes, expenses, reserves, reserveGoal) =>
+                                    _onSaveFinances(
+                                      context,
+                                      incomes,
+                                      expenses,
+                                      reserves,
+                                      reserveGoal,
+                                    ),
                             existingFinances: _editingFinances,
                           ),
                         );
@@ -95,14 +97,15 @@ class _NamiFinancesScreenState extends State<NamiFinancesScreen> {
                         return SingleChildScrollView(
                           padding: const EdgeInsets.all(Constants.margin),
                           child: FinancesSetupForm(
-                            onSave: (incomes, expenses, reserves, reserveGoal) =>
-                                _onSaveFinances(
-                                  context,
-                                  incomes,
-                                  expenses,
-                                  reserves,
-                                  reserveGoal,
-                                ),
+                            onSave:
+                                (incomes, expenses, reserves, reserveGoal) =>
+                                    _onSaveFinances(
+                                      context,
+                                      incomes,
+                                      expenses,
+                                      reserves,
+                                      reserveGoal,
+                                    ),
                             existingFinances: null,
                           ),
                         );

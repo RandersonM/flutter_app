@@ -6,6 +6,7 @@ import 'package:opfan/l10n/app_localizations.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:opfan/shared/utils/theme.dart';
 import '../../bloc/index.dart';
+import 'package:opfan/shared/utils/app_semantic_colors.dart';
 
 class WorkoutCalendar extends StatefulWidget {
   const WorkoutCalendar({super.key});
@@ -68,7 +69,10 @@ class _WorkoutCalendarState extends State<WorkoutCalendar> {
         _updateCurrentMonthDays();
         if (mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text(state.message), backgroundColor: Colors.red),
+            SnackBar(
+              content: Text(state.message),
+              backgroundColor: Theme.of(context).colorScheme.error,
+            ),
           );
         }
       }
@@ -150,7 +154,7 @@ class _WorkoutCalendarState extends State<WorkoutCalendar> {
             margin: const EdgeInsets.all(1),
             decoration: BoxDecoration(
               color: isWorkoutDay
-                  ? Colors.green.shade600
+                  ? Theme.of(context).semanticColors.success
                   : isToday
                   ? Theme.of(context).colorScheme.primary.withValues(alpha: 0.1)
                   : isEditable
@@ -304,15 +308,17 @@ class _WorkoutCalendarState extends State<WorkoutCalendar> {
             Container(
               padding: const EdgeInsets.all(8),
               decoration: BoxDecoration(
-                color: Colors.orange.shade50,
+                color: Theme.of(context).semanticColors.warning,
                 borderRadius: BorderRadius.circular(6),
-                border: Border.all(color: Colors.orange.shade200),
+                border: Border.all(
+                  color: Theme.of(context).semanticColors.warning,
+                ),
               ),
               child: Row(
                 children: [
                   AppIcon(
                     PhosphorIconsRegular.info,
-                    color: Colors.orange.shade600,
+                    color: Theme.of(context).semanticColors.warning,
                     size: 16,
                   ),
                   const SizedBox(width: 8),
@@ -320,7 +326,7 @@ class _WorkoutCalendarState extends State<WorkoutCalendar> {
                     child: Text(
                       'Apenas o mês atual permite edição dos dias de exercício',
                       style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                        color: Colors.orange.shade700,
+                        color: Theme.of(context).semanticColors.warning,
                         fontSize: 11,
                       ),
                     ),

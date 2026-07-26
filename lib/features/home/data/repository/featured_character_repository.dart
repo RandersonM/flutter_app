@@ -7,9 +7,9 @@ import 'package:opfan/core/services/index.dart';
 import 'package:opfan/features/home/data/repository/featured_character_repository_interface.dart';
 
 class FeaturedCharacterRepository implements IFeaturedCharacterRepository {
-  FeaturedCharacterRepository();
+  FeaturedCharacterRepository({required this._firestoreService});
 
-  final IFirestoreService _firestoreService = FirestoreService();
+  final IFirestoreService _firestoreService;
 
   static const String _collection = 'featuredCharacters';
   static const String _hiveBoxName = 'featured_character_box';

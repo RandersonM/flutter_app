@@ -4,9 +4,9 @@ import 'package:opfan/core/services/index.dart';
 import 'package:opfan/features/crews/data/repository/crew_repository_interface.dart';
 
 class CrewRepository implements ICrewRepository {
-  CrewRepository();
+  CrewRepository({required this._firestoreService});
 
-  final IFirestoreService _firestoreService = FirestoreService();
+  final IFirestoreService _firestoreService;
   static const String _collection = 'crews';
 
   @override

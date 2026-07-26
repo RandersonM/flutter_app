@@ -4,6 +4,11 @@ import 'package:opfan/features/home/data/repository/featured_character_repositor
 import 'package:opfan/features/crews/data/repository/crew_repository_interface.dart';
 import 'package:opfan/features/robin_knowledge/data/repository/planner_repository_interface.dart';
 import 'package:opfan/core/services/index.dart';
+import 'package:opfan/core/services/rag/i_rag_service.dart';
+import 'package:opfan/core/auth/blocs/index.dart';
+import 'package:opfan/core/connectivity/connectivity_cubit.dart';
+import 'package:opfan/features/sanji_cooking/data/repository/cooking_repository_interface.dart';
+import 'package:opfan/features/vegapunk_chat/data/repository/i_vegapunk_chat_repository.dart';
 import 'package:opfan/features/one_piece/bloc/characters_cubit.dart';
 import 'package:opfan/features/one_piece/bloc/search_cubit.dart';
 import 'package:opfan/features/home/bloc/home_bloc.dart';
@@ -51,6 +56,7 @@ void registerFeaturesModule(GetIt getIt) {
     () => HomeBloc(
       youTubeService: getIt<IYouTubeService>(),
       featuredCharacterRepository: getIt<IFeaturedCharacterRepository>(),
+      connectivity: getIt<ConnectivityCubit>(),
     ),
   );
 
@@ -61,6 +67,17 @@ void registerFeaturesModule(GetIt getIt) {
   getIt.registerFactory<ListCrewsBloc>(
     () => ListCrewsBloc(crewRepository: getIt<ICrewRepository>()),
   );
+  getIt.registerFactory<EditCrewBloc>(
+    () => EditCrewBloc(crewRepository: getIt<ICrewRepository>()),
+  );
+  // userId comes from the auth state at screen-build time, so it is passed as
+  // a factory param rather than resolved from the container.
+  getIt.registerFactoryParam<CreateCrewBloc, String?, void>(
+    (userId, _) => CreateCrewBloc(
+      crewRepository: getIt<ICrewRepository>(),
+      userId: userId,
+    ),
+  );
 
   getIt.registerFactory<NamiFinancesBloc>(
     () => NamiFinancesBloc(
@@ -69,8 +86,22 @@ void registerFeaturesModule(GetIt getIt) {
     ),
   );
 
-  getIt.registerFactory<ZoroWorkoutBloc>(() => ZoroWorkoutBloc());
-  getIt.registerFactory<SanjiCookingBloc>(() => SanjiCookingBloc());
+  getIt.registerFactory<ZoroWorkoutBloc>(
+    () => ZoroWorkoutBloc(
+      service: getIt<IWorkoutAssessmentService>(),
+      authService: getIt<IAuthService>(),
+      authBloc: getIt<AuthBloc>(),
+    ),
+  );
+  getIt.registerFactory<SanjiCookingBloc>(
+    () => SanjiCookingBloc(
+      workoutService: getIt<IWorkoutAssessmentService>(),
+      cookingRepository: getIt<ICookingRepository>(),
+      nutritionService: getIt<INutritionCalculationService>(),
+      authService: getIt<IAuthService>(),
+      authBloc: getIt<AuthBloc>(),
+    ),
+  );
 
   getIt.registerLazySingleton<RobinKnowledgeBloc>(
     () => RobinKnowledgeBloc(
@@ -78,7 +109,12 @@ void registerFeaturesModule(GetIt getIt) {
     ),
   );
 
-  getIt.registerFactory<VegapunkChatCubit>(() => VegapunkChatCubit());
+  getIt.registerFactory<VegapunkChatCubit>(
+    () => VegapunkChatCubit(
+      repository: getIt<IVegapunkChatRepository>(),
+      ragService: getIt<IRAGService>(),
+    ),
+  );
 }
 
 extension FeaturesModuleExtensions on GetIt {

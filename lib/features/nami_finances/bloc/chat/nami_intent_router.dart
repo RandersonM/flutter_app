@@ -75,7 +75,8 @@ class NamiIntentRouter {
     final lower = text.toLowerCase();
     final hasMilhao = RegExp(r'milh|\bmi\b').hasMatch(lower);
     final hasMil =
-        RegExp(r'mil').hasMatch(lower) || RegExp(r'\dk\b|\bk\b').hasMatch(lower);
+        RegExp(r'mil').hasMatch(lower) ||
+        RegExp(r'\dk\b|\bk\b').hasMatch(lower);
 
     // Drop the term phrase so its count isn't read as an amount.
     final scrubbed = text.replaceAll(

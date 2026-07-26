@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 
 import 'i_navigation_service.dart';
 
+/// Registered as a lazy singleton in `core_module.dart`. Resolve it through
+/// GetIt — constructing a second instance creates a second [navigatorKey],
+/// which would not be attached to any live navigator.
 class NavigationService implements INavigationService {
-  static final NavigationService _instance = NavigationService._internal();
-  factory NavigationService() => _instance;
-  NavigationService._internal();
-
+  @override
   final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
   @override

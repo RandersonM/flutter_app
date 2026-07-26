@@ -8,11 +8,18 @@ import 'package:opfan/shared/utils/app_routes.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class NotificationService implements INotificationService {
-  static final NotificationService _instance = NotificationService._internal();
-  factory NotificationService() => _instance;
-  NotificationService._internal();
+  /// [navigationService] is required rather than defaulted: notification taps
+  /// navigate through the app's single navigatorKey, and a fallback
+  /// `NavigationService()` here would mint a second key attached to nothing.
+  NotificationService({
+    required this._navigationService,
+    required this._firestoreService,
+    FirebaseMessaging? firebaseMessaging,
+  }) : _firebaseMessaging = firebaseMessaging ?? FirebaseMessaging.instance;
 
-  final FirebaseMessaging _firebaseMessaging = FirebaseMessaging.instance;
+  final INavigationService _navigationService;
+  final IFirestoreService _firestoreService;
+  final FirebaseMessaging _firebaseMessaging;
   final FlutterLocalNotificationsPlugin _localNotifications =
       FlutterLocalNotificationsPlugin();
 
@@ -200,7 +207,7 @@ class NotificationService implements INotificationService {
     String? route,
     Map<String, dynamic> data,
   ) {
-    final navigationService = NavigationService();
+    final navigationService = _navigationService;
 
     switch (type?.toLowerCase()) {
       case 'character':
@@ -296,7 +303,7 @@ class NotificationService implements INotificationService {
     if (_fcmToken == null) return;
 
     try {
-      await FirestoreService().createDocumentWithId(
+      await _firestoreService.createDocumentWithId(
         collection: 'user_tokens',
         documentId: userId,
         data: {

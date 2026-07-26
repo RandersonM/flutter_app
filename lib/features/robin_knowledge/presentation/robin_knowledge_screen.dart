@@ -202,9 +202,11 @@ class RobinKnowledgeScreen extends StatelessWidget {
                 return Container(
                   height: 200,
                   decoration: BoxDecoration(
-                    color: Colors.red[50],
+                    color: Theme.of(context).colorScheme.error,
                     borderRadius: BorderRadius.circular(12),
-                    border: Border.all(color: Colors.red[300]!),
+                    border: Border.all(
+                      color: Theme.of(context).colorScheme.error,
+                    ),
                   ),
                   child: Center(
                     child: Column(
@@ -213,7 +215,7 @@ class RobinKnowledgeScreen extends StatelessWidget {
                         AppIcon(
                           PhosphorIconsRegular.warningCircle,
                           size: 48,
-                          color: Colors.red[300],
+                          color: Theme.of(context).colorScheme.error,
                         ),
                         const SizedBox(height: 8),
                         Text(
@@ -221,7 +223,7 @@ class RobinKnowledgeScreen extends StatelessWidget {
                           style: TextStyle(
                             fontSize: 16,
                             fontWeight: FontWeight.w500,
-                            color: Colors.red[700],
+                            color: Theme.of(context).colorScheme.error,
                           ),
                         ),
                         const SizedBox(height: 4),
@@ -229,7 +231,7 @@ class RobinKnowledgeScreen extends StatelessWidget {
                           state.message,
                           style: TextStyle(
                             fontSize: 14,
-                            color: Colors.red[600],
+                            color: Theme.of(context).colorScheme.error,
                           ),
                           textAlign: TextAlign.center,
                         ),

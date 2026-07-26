@@ -6,6 +6,7 @@ import 'package:opfan/core/connectivity/connectivity_state.dart';
 import 'package:opfan/l10n/app_localizations.dart';
 import 'package:opfan/shared/widgets/atoms/app_icon.dart';
 import 'package:phosphoricons_flutter/phosphoricons_flutter.dart';
+import 'package:opfan/shared/utils/app_semantic_colors.dart';
 
 /// Wraps the entire widget tree and shows a persistent top banner whenever
 /// the device loses internet connectivity.
@@ -50,7 +51,7 @@ class _OfflineBannerTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Material(
-      color: Colors.orange.shade700,
+      color: Theme.of(context).semanticColors.warning,
       child: SafeArea(
         bottom: false,
         child: Padding(

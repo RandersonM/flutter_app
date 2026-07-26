@@ -107,7 +107,7 @@ class MyApp extends StatelessWidget {
             theme: getLightTheme(),
             darkTheme: getDarkTheme(),
             themeMode: themeState.themeMode,
-            navigatorKey: NavigationService().navigatorKey,
+            navigatorKey: getIt<INavigationService>().navigatorKey,
             home: const OfflineBannerWrapper(child: AppWrapper()),
             onGenerateRoute: (settings) =>
                 AuthRouteMiddleware.onGenerateRoute(settings, authState),

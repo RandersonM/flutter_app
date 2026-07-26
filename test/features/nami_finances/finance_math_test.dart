@@ -41,24 +41,27 @@ void main() {
   });
 
   group('affordableInstallment', () {
-    test('caps the installment by the more conservative of income/cash-flow', () {
-      // Income 10k, expenses 6k → disposable 4k. 30% of income = 3k (tighter).
-      final plan = FinanceMath.affordableInstallment(
-        price: 80000,
-        downPayment: 60000,
-        monthlyIncome: 10000,
-        monthlyDisposable: 4000,
-      );
-      expect(plan.financed, 20000);
-      expect(plan.safeByIncome, 3000);
-      expect(plan.safeByDisposable, 4000);
-      expect(plan.recommendedMaxInstallment, 3000);
-      // 20000 / 3000 = 6.67 → ceil 7 months.
-      expect(plan.monthsAtRecommendedMax, 7);
-      // A 12-month term (1666.67) is within the 3000 budget.
-      final term12 = plan.scenarios.firstWhere((s) => s.termMonths == 12);
-      expect(term12.withinBudget, isTrue);
-    });
+    test(
+      'caps the installment by the more conservative of income/cash-flow',
+      () {
+        // Income 10k, expenses 6k → disposable 4k. 30% of income = 3k (tighter).
+        final plan = FinanceMath.affordableInstallment(
+          price: 80000,
+          downPayment: 60000,
+          monthlyIncome: 10000,
+          monthlyDisposable: 4000,
+        );
+        expect(plan.financed, 20000);
+        expect(plan.safeByIncome, 3000);
+        expect(plan.safeByDisposable, 4000);
+        expect(plan.recommendedMaxInstallment, 3000);
+        // 20000 / 3000 = 6.67 → ceil 7 months.
+        expect(plan.monthsAtRecommendedMax, 7);
+        // A 12-month term (1666.67) is within the 3000 budget.
+        final term12 = plan.scenarios.firstWhere((s) => s.termMonths == 12);
+        expect(term12.withinBudget, isTrue);
+      },
+    );
   });
 
   group('goalPlan', () {

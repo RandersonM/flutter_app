@@ -2,13 +2,17 @@ import 'package:flutter/material.dart';
 import 'package:phosphoricons_flutter/phosphoricons_flutter.dart';
 
 import 'package:opfan/l10n/app_localizations.dart';
+import 'package:opfan/shared/utils/app_semantic_colors.dart';
 
 class DetailsStatusBadge extends StatelessWidget {
   const DetailsStatusBadge({super.key, required this.status});
 
   final String? status;
 
-  Map<String, dynamic> _statusTheme(AppLocalizations l10n) {
+  Map<String, dynamic> _statusTheme(
+    BuildContext context,
+    AppLocalizations l10n,
+  ) {
     final statusLower = status?.toLowerCase() ?? '';
 
     if (statusLower.contains('captured') ||
@@ -23,7 +27,7 @@ class DetailsStatusBadge extends StatelessWidget {
 
     if (statusLower.contains('deceased')) {
       return {
-        'backgroundColor': Colors.red,
+        'backgroundColor': Theme.of(context).colorScheme.error,
         'textColor': Colors.white,
         'icon': PhosphorIconsRegular.skull,
         'displayText': l10n.dead,
@@ -32,7 +36,7 @@ class DetailsStatusBadge extends StatelessWidget {
 
     if (statusLower.contains('living') || statusLower.contains('live')) {
       return {
-        'backgroundColor': Colors.green[500],
+        'backgroundColor': Theme.of(context).semanticColors.success,
         'textColor': Colors.white,
         'icon': PhosphorIconsRegular.wind,
         'displayText': l10n.alive,
@@ -50,7 +54,7 @@ class DetailsStatusBadge extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
-    final theme = _statusTheme(l10n);
+    final theme = _statusTheme(context, l10n);
 
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),

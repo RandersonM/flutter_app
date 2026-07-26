@@ -7,9 +7,12 @@ import 'package:opfan/features/crews/data/repository/crew_repository_interface.d
 class CustomCharacterRepository implements ICustomCharacterRepository {
   final ICrewRepository _crewRepository;
 
-  CustomCharacterRepository(this._crewRepository);
+  CustomCharacterRepository(
+    this._crewRepository, {
+    required this._firestoreService,
+  });
 
-  final IFirestoreService _firestoreService = FirestoreService();
+  final IFirestoreService _firestoreService;
   static const String _collection = 'custom_characters';
 
   @override

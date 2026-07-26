@@ -1,4 +1,5 @@
 import 'package:hive/hive.dart';
+import 'package:opfan/core/storage/hive_type_ids.dart';
 
 class NamiFinancesModel extends HiveObject {
   final String id;
@@ -166,7 +167,7 @@ class ReserveModel {
 
 class NamiFinancesModelAdapter extends TypeAdapter<NamiFinancesModel> {
   @override
-  final int typeId = 10;
+  final int typeId = HiveTypeIds.namiFinancesModel;
 
   @override
   NamiFinancesModel read(BinaryReader reader) {
@@ -226,7 +227,7 @@ class NamiFinancesModelAdapter extends TypeAdapter<NamiFinancesModel> {
 
 class MonthlyIncomeModelAdapter extends TypeAdapter<MonthlyIncomeModel> {
   @override
-  final int typeId = 11;
+  final int typeId = HiveTypeIds.monthlyIncomeModel;
 
   @override
   MonthlyIncomeModel read(BinaryReader reader) {
@@ -266,7 +267,7 @@ class MonthlyIncomeModelAdapter extends TypeAdapter<MonthlyIncomeModel> {
 
 class ExpenseModelAdapter extends TypeAdapter<ExpenseModel> {
   @override
-  final int typeId = 12;
+  final int typeId = HiveTypeIds.expenseModel;
 
   @override
   ExpenseModel read(BinaryReader reader) {
@@ -309,7 +310,7 @@ class ExpenseModelAdapter extends TypeAdapter<ExpenseModel> {
 
 class ReserveModelAdapter extends TypeAdapter<ReserveModel> {
   @override
-  final int typeId = 14;
+  final int typeId = HiveTypeIds.reserveModel;
 
   @override
   ReserveModel read(BinaryReader reader) {
@@ -352,7 +353,7 @@ class ReserveModelAdapter extends TypeAdapter<ReserveModel> {
 
 class ReservePurposeAdapter extends TypeAdapter<ReservePurpose> {
   @override
-  final int typeId = 15;
+  final int typeId = HiveTypeIds.reservePurpose;
 
   @override
   ReservePurpose read(BinaryReader reader) {
@@ -406,7 +407,7 @@ class ReservePurposeAdapter extends TypeAdapter<ReservePurpose> {
 
 class ExpenseCategoryAdapter extends TypeAdapter<ExpenseCategory> {
   @override
-  final int typeId = 13;
+  final int typeId = HiveTypeIds.expenseCategory;
 
   @override
   ExpenseCategory read(BinaryReader reader) {

@@ -315,7 +315,7 @@ class _CustomCharacterGridListState extends State<CustomCharacterGridList> {
               Navigator.pop(context);
             },
             style: ElevatedButton.styleFrom(
-              backgroundColor: Colors.red,
+              backgroundColor: Theme.of(context).colorScheme.error,
               foregroundColor: Colors.white,
             ),
             child: Text(l10n.delete),

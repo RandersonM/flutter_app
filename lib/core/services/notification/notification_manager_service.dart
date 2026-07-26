@@ -5,13 +5,12 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'i_notification_manager_service.dart';
 
 class NotificationManagerService implements INotificationManagerService {
-  static final NotificationManagerService _instance =
-      NotificationManagerService._internal();
-  factory NotificationManagerService() => _instance;
-  NotificationManagerService._internal();
+  NotificationManagerService({FirebaseFunctions? functions, FirebaseAuth? auth})
+    : _functions = functions ?? FirebaseFunctions.instance,
+      _auth = auth ?? FirebaseAuth.instance;
 
-  final FirebaseFunctions _functions = FirebaseFunctions.instance;
-  final FirebaseAuth _auth = FirebaseAuth.instance;
+  final FirebaseFunctions _functions;
+  final FirebaseAuth _auth;
 
   // Enviar notificação personalizada para todos os usuários
   @override

@@ -6,6 +6,7 @@ import 'package:phosphoricons_flutter/phosphoricons_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:opfan/shared/utils/constants.dart';
+import 'package:opfan/shared/utils/app_semantic_colors.dart';
 
 class CharacterInfoCard extends StatelessWidget {
   const CharacterInfoCard({
@@ -72,10 +73,14 @@ class CharacterInfoCard extends StatelessWidget {
                             vertical: 4,
                           ),
                           decoration: BoxDecoration(
-                            color: Colors.amber.withValues(alpha: 0.15),
+                            color: Theme.of(
+                              context,
+                            ).semanticColors.warning.withValues(alpha: 0.15),
                             borderRadius: BorderRadius.circular(8),
                             border: Border.all(
-                              color: Colors.amber.withValues(alpha: 0.3),
+                              color: Theme.of(
+                                context,
+                              ).semanticColors.warning.withValues(alpha: 0.3),
                             ),
                           ),
                           child: Row(
@@ -84,14 +89,16 @@ class CharacterInfoCard extends StatelessWidget {
                               AppIcon(
                                 PhosphorIconsRegular.coin,
                                 size: 14,
-                                color: Colors.amber[700],
+                                color: Theme.of(context).semanticColors.warning,
                               ),
                               const SizedBox(width: 4),
                               Text(
                                 characterBounty,
                                 style: Theme.of(context).textTheme.bodySmall
                                     ?.copyWith(
-                                      color: Colors.amber[700],
+                                      color: Theme.of(
+                                        context,
+                                      ).semanticColors.warning,
                                       fontWeight: FontWeight.w700,
                                     ),
                               ),

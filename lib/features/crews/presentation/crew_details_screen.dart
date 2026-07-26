@@ -23,6 +23,7 @@ import 'widgets/crew_info_section.dart';
 import 'widgets/crew_boat_section.dart';
 import 'package:opfan/core/utils/character_localization_mapper.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:opfan/shared/utils/app_semantic_colors.dart';
 
 class CrewDetailsScreen extends StatefulWidget {
   final CrewModel crew;
@@ -56,9 +57,9 @@ class _CrewDetailsScreenState extends State<CrewDetailsScreen> {
             ),
             IconButton(
               onPressed: _onDeleteCrew,
-              icon: const AppIcon(
+              icon: AppIcon(
                 PhosphorIconsRegular.trash,
-                color: Colors.red,
+                color: Theme.of(context).colorScheme.error,
               ),
               tooltip: l10n.delete,
             ),
@@ -101,7 +102,7 @@ class _CrewDetailsScreenState extends State<CrewDetailsScreen> {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text(l10n.noPermissionToEdit),
-          backgroundColor: Colors.orange,
+          backgroundColor: Theme.of(context).semanticColors.warning,
         ),
       );
       return;
@@ -119,7 +120,7 @@ class _CrewDetailsScreenState extends State<CrewDetailsScreen> {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text(l10n.noPermissionToDelete),
-          backgroundColor: Colors.orange,
+          backgroundColor: Theme.of(context).semanticColors.warning,
         ),
       );
       return;
@@ -140,7 +141,9 @@ class _CrewDetailsScreenState extends State<CrewDetailsScreen> {
               Navigator.of(context).pop();
               _confirmDeleteCrew();
             },
-            style: TextButton.styleFrom(foregroundColor: Colors.red),
+            style: TextButton.styleFrom(
+              foregroundColor: Theme.of(context).colorScheme.error,
+            ),
             child: Text(l10n.delete),
           ),
         ],
@@ -168,7 +171,7 @@ class _CrewDetailsScreenState extends State<CrewDetailsScreen> {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
               content: Text(l10n.crewDeletedWithName(_crew.name)),
-              backgroundColor: Colors.red,
+              backgroundColor: Theme.of(context).colorScheme.error,
             ),
           );
         }
@@ -185,7 +188,7 @@ class _CrewDetailsScreenState extends State<CrewDetailsScreen> {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
               content: Text(l10n.crewDeletionError),
-              backgroundColor: Colors.red,
+              backgroundColor: Theme.of(context).colorScheme.error,
             ),
           );
         }
@@ -202,7 +205,7 @@ class _CrewDetailsScreenState extends State<CrewDetailsScreen> {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text(l10n.noPermissionToEdit),
-          backgroundColor: Colors.orange,
+          backgroundColor: Theme.of(context).semanticColors.warning,
         ),
       );
       return;
@@ -244,7 +247,7 @@ class _CrewDetailsScreenState extends State<CrewDetailsScreen> {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text(l10n.allRolesFilled),
-          backgroundColor: Colors.orange,
+          backgroundColor: Theme.of(context).semanticColors.warning,
         ),
       );
       return;
@@ -509,7 +512,7 @@ class _CrewDetailsScreenState extends State<CrewDetailsScreen> {
               content: Text(
                 l10n.memberAddedAsRole(character.name, translatedRole),
               ),
-              backgroundColor: Colors.green,
+              backgroundColor: Theme.of(context).semanticColors.success,
             ),
           );
         }
@@ -521,7 +524,7 @@ class _CrewDetailsScreenState extends State<CrewDetailsScreen> {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
               content: Text('${l10n.error}: $e'),
-              backgroundColor: Colors.red,
+              backgroundColor: Theme.of(context).colorScheme.error,
             ),
           );
         }
@@ -587,7 +590,7 @@ class _CrewDetailsScreenState extends State<CrewDetailsScreen> {
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
                 content: Text(l10n.characterNotFound),
-                backgroundColor: Colors.orange,
+                backgroundColor: Theme.of(context).semanticColors.warning,
               ),
             );
           }
@@ -602,7 +605,7 @@ class _CrewDetailsScreenState extends State<CrewDetailsScreen> {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
               content: Text(l10n.characterLoadError),
-              backgroundColor: Colors.red,
+              backgroundColor: Theme.of(context).colorScheme.error,
             ),
           );
         }

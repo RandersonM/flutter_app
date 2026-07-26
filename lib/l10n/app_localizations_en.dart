@@ -2697,4 +2697,38 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get editingPastMonth => 'Editing a past month';
+
+  @override
+  String get newCrewTitle => 'New Crew';
+
+  @override
+  String get descriptionLabel => 'Description';
+
+  @override
+  String get tagsLabel => 'Tags';
+
+  @override
+  String get generatingLabel => 'Generating...';
+
+  @override
+  String get generateFlagLabel => 'Generate Flag';
+
+  @override
+  String get generateBoatLabel => 'Generate Ship';
+
+  @override
+  String get crewBoatTitle => 'Crew\'s Ship';
+
+  @override
+  String get aiImageHelpText =>
+      'Use descriptive prompts to generate unique images for your crew. Generated images are saved automatically.';
+
+  @override
+  String get flagPromptHint => 'E.g. skull with crossed swords, black flag';
+
+  @override
+  String get boatPromptHint => 'E.g. wooden pirate ship with black sails';
+
+  @override
+  String get defaultCrewName => 'Crew';
 }

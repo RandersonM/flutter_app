@@ -5059,6 +5059,72 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Editing a past month'**
   String get editingPastMonth;
+
+  /// No description provided for @newCrewTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'New Crew'**
+  String get newCrewTitle;
+
+  /// No description provided for @descriptionLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Description'**
+  String get descriptionLabel;
+
+  /// No description provided for @tagsLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Tags'**
+  String get tagsLabel;
+
+  /// No description provided for @generatingLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Generating...'**
+  String get generatingLabel;
+
+  /// No description provided for @generateFlagLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Generate Flag'**
+  String get generateFlagLabel;
+
+  /// No description provided for @generateBoatLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Generate Ship'**
+  String get generateBoatLabel;
+
+  /// No description provided for @crewBoatTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Crew\'s Ship'**
+  String get crewBoatTitle;
+
+  /// No description provided for @aiImageHelpText.
+  ///
+  /// In en, this message translates to:
+  /// **'Use descriptive prompts to generate unique images for your crew. Generated images are saved automatically.'**
+  String get aiImageHelpText;
+
+  /// No description provided for @flagPromptHint.
+  ///
+  /// In en, this message translates to:
+  /// **'E.g. skull with crossed swords, black flag'**
+  String get flagPromptHint;
+
+  /// No description provided for @boatPromptHint.
+  ///
+  /// In en, this message translates to:
+  /// **'E.g. wooden pirate ship with black sails'**
+  String get boatPromptHint;
+
+  /// No description provided for @defaultCrewName.
+  ///
+  /// In en, this message translates to:
+  /// **'Crew'**
+  String get defaultCrewName;
 }
 
 class _AppLocalizationsDelegate

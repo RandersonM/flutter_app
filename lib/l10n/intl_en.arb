@@ -4150,7 +4150,6 @@
       }
     }
   },
-
   "vegapunk": "Vegapunk",
   "@vegapunk": {
     "description": "Vegapunk feature name shown in bottom navigation"
@@ -4251,8 +4250,12 @@
   "@cookingTargetCaloriesInfo": {
     "description": "Info line showing target calories and goal",
     "placeholders": {
-      "calories": { "type": "String" },
-      "goal": { "type": "String" }
+      "calories": {
+        "type": "String"
+      },
+      "goal": {
+        "type": "String"
+      }
     }
   },
   "cookingGeneratingMeal": "Generating meal...",
@@ -4267,7 +4270,9 @@
   "@cookingPersonalizedRecipeTitle": {
     "description": "Title of the result card showing the personalized recipe",
     "placeholders": {
-      "mealType": { "type": "String" }
+      "mealType": {
+        "type": "String"
+      }
     }
   },
   "cookingGoalMaintenance": "Maintain weight",
@@ -4283,33 +4288,61 @@
     "description": "Display label for the muscle-gain goal"
   },
   "mealTypeBreakfast": "Breakfast",
-  "@mealTypeBreakfast": { "description": "Meal type option" },
+  "@mealTypeBreakfast": {
+    "description": "Meal type option"
+  },
   "mealTypeMorningSnack": "Morning Snack",
-  "@mealTypeMorningSnack": { "description": "Meal type option" },
+  "@mealTypeMorningSnack": {
+    "description": "Meal type option"
+  },
   "mealTypeLunch": "Lunch",
-  "@mealTypeLunch": { "description": "Meal type option" },
+  "@mealTypeLunch": {
+    "description": "Meal type option"
+  },
   "mealTypeAfternoonSnack": "Afternoon Snack",
-  "@mealTypeAfternoonSnack": { "description": "Meal type option" },
+  "@mealTypeAfternoonSnack": {
+    "description": "Meal type option"
+  },
   "mealTypeDinner": "Dinner",
-  "@mealTypeDinner": { "description": "Meal type option" },
+  "@mealTypeDinner": {
+    "description": "Meal type option"
+  },
   "mealTypeDessert": "Dessert",
-  "@mealTypeDessert": { "description": "Meal type option" },
+  "@mealTypeDessert": {
+    "description": "Meal type option"
+  },
   "mealTypeNightSnack": "Night Snack",
-  "@mealTypeNightSnack": { "description": "Meal type option" },
+  "@mealTypeNightSnack": {
+    "description": "Meal type option"
+  },
   "dietaryRestrictionNone": "No restrictions",
-  "@dietaryRestrictionNone": { "description": "Dietary restriction option — no restrictions" },
+  "@dietaryRestrictionNone": {
+    "description": "Dietary restriction option — no restrictions"
+  },
   "dietaryRestrictionVegetarian": "Vegetarian",
-  "@dietaryRestrictionVegetarian": { "description": "Dietary restriction option" },
+  "@dietaryRestrictionVegetarian": {
+    "description": "Dietary restriction option"
+  },
   "dietaryRestrictionVegan": "Vegan",
-  "@dietaryRestrictionVegan": { "description": "Dietary restriction option" },
+  "@dietaryRestrictionVegan": {
+    "description": "Dietary restriction option"
+  },
   "dietaryRestrictionGlutenFree": "Gluten-free",
-  "@dietaryRestrictionGlutenFree": { "description": "Dietary restriction option" },
+  "@dietaryRestrictionGlutenFree": {
+    "description": "Dietary restriction option"
+  },
   "dietaryRestrictionLactoseFree": "Lactose-free",
-  "@dietaryRestrictionLactoseFree": { "description": "Dietary restriction option" },
+  "@dietaryRestrictionLactoseFree": {
+    "description": "Dietary restriction option"
+  },
   "dietaryRestrictionLowCarb": "Low carb",
-  "@dietaryRestrictionLowCarb": { "description": "Dietary restriction option" },
+  "@dietaryRestrictionLowCarb": {
+    "description": "Dietary restriction option"
+  },
   "dietaryRestrictionHighProtein": "High protein",
-  "@dietaryRestrictionHighProtein": { "description": "Dietary restriction option" },
+  "@dietaryRestrictionHighProtein": {
+    "description": "Dietary restriction option"
+  },
   "offlineBannerMessage": "You're offline. Some features are unavailable.",
   "@offlineBannerMessage": {
     "description": "Top banner shown when the device has no internet connection"
@@ -4339,40 +4372,77 @@
     "description": "Label for the optional reserve note field"
   },
   "reservePurposeEmergency": "Emergency",
-  "@reservePurposeEmergency": { "description": "Reserve purpose option" },
+  "@reservePurposeEmergency": {
+    "description": "Reserve purpose option"
+  },
   "reservePurposeTravel": "Travel",
-  "@reservePurposeTravel": { "description": "Reserve purpose option" },
+  "@reservePurposeTravel": {
+    "description": "Reserve purpose option"
+  },
   "reservePurposeGoal": "Goal",
-  "@reservePurposeGoal": { "description": "Reserve purpose option" },
+  "@reservePurposeGoal": {
+    "description": "Reserve purpose option"
+  },
   "reservePurposeInvestment": "Investment",
-  "@reservePurposeInvestment": { "description": "Reserve purpose option" },
+  "@reservePurposeInvestment": {
+    "description": "Reserve purpose option"
+  },
   "reservePurposeOther": "Other",
-  "@reservePurposeOther": { "description": "Reserve purpose option" },
+  "@reservePurposeOther": {
+    "description": "Reserve purpose option"
+  },
   "reserveGoalLabel": "Goal: {amount}",
   "@reserveGoalLabel": {
     "description": "Shows the monthly reserve goal amount",
-    "placeholders": { "amount": { "type": "String" } }
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
   },
   "reserveGoalProgressPct": "{pct}% of goal",
   "@reserveGoalProgressPct": {
     "description": "Percentage progress toward the reserve goal",
-    "placeholders": { "pct": { "type": "String" } }
+    "placeholders": {
+      "pct": {
+        "type": "String"
+      }
+    }
   },
   "reserveGoalRemaining": "{amount} to go",
   "@reserveGoalRemaining": {
     "description": "Remaining amount to reach the reserve goal",
-    "placeholders": { "amount": { "type": "String" } }
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
   },
   "reserveGoalMetricLabel": "Reserve goal",
   "@reserveGoalMetricLabel": {
     "description": "Metric label for the reserve goal in the detailed screen"
   },
   "previousMonth": "Previous month",
-  "@previousMonth": { "description": "Tooltip for the previous-month navigation button" },
+  "@previousMonth": {
+    "description": "Tooltip for the previous-month navigation button"
+  },
   "nextMonth": "Next month",
-  "@nextMonth": { "description": "Tooltip for the next-month navigation button" },
+  "@nextMonth": {
+    "description": "Tooltip for the next-month navigation button"
+  },
   "editingPastMonth": "Editing a past month",
   "@editingPastMonth": {
     "description": "Hint shown when the finances screen is viewing a non-current month"
-  }
+  },
+  "newCrewTitle": "New Crew",
+  "descriptionLabel": "Description",
+  "tagsLabel": "Tags",
+  "generatingLabel": "Generating...",
+  "generateFlagLabel": "Generate Flag",
+  "generateBoatLabel": "Generate Ship",
+  "crewBoatTitle": "Crew's Ship",
+  "aiImageHelpText": "Use descriptive prompts to generate unique images for your crew. Generated images are saved automatically.",
+  "flagPromptHint": "E.g. skull with crossed swords, black flag",
+  "boatPromptHint": "E.g. wooden pirate ship with black sails",
+  "defaultCrewName": "Crew"
 }

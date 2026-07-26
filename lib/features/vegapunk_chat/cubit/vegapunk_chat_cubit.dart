@@ -4,7 +4,6 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:uuid/uuid.dart';
 
-import 'package:opfan/app/di/injection.dart';
 import 'package:opfan/core/ai/prompts/index.dart';
 import 'package:opfan/core/models/rag/rag_document.dart';
 import 'package:opfan/core/services/index.dart';
@@ -18,10 +17,9 @@ import 'vegapunk_chat_state.dart';
 
 class VegapunkChatCubit extends Cubit<VegapunkChatState> {
   VegapunkChatCubit({
-    IVegapunkChatRepository? repository,
-    IRAGService? ragService,
-  }) : _repository = repository ?? VegapunkChatRepository(),
-       _rag = ragService ?? getIt<IRAGService>(),
+    required this._repository,
+    required IRAGService ragService,
+  }) : _rag = ragService,
        super(const VegapunkModelNotInstalled()) {
     _modelStatusSub = _repository.modelStatusStream.listen(_onModelStatus);
   }

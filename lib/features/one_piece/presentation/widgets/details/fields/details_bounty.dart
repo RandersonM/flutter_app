@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:opfan/l10n/app_localizations.dart';
 
 import 'package:opfan/shared/utils/constants.dart';
+import 'package:opfan/shared/utils/app_semantic_colors.dart';
 
 class DetailsBounty extends StatelessWidget {
   const DetailsBounty({super.key, required this.bounty});
@@ -30,7 +31,7 @@ class DetailsBounty extends StatelessWidget {
             AppIcon(
               PhosphorIconsRegular.coin,
               size: 28,
-              color: Colors.amber[700],
+              color: Theme.of(context).semanticColors.warning,
             ),
             Padding(
               padding: const EdgeInsets.symmetric(

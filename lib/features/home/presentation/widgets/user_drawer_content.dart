@@ -9,6 +9,7 @@ import 'package:opfan/shared/utils/constants.dart';
 import 'package:opfan/core/auth/blocs/index.dart';
 import 'package:opfan/l10n/app_localizations.dart';
 import 'package:opfan/shared/utils/app_routes.dart' show AppRoutes;
+import 'package:opfan/shared/utils/app_semantic_colors.dart';
 
 class UserDrawerContent extends StatelessWidget {
   final UserModel user;
@@ -38,7 +39,9 @@ class UserDrawerContent extends StatelessWidget {
                         shape: BoxShape.circle,
                         boxShadow: [
                           BoxShadow(
-                            color: Colors.orange.withValues(alpha: 0.3),
+                            color: Theme.of(
+                              context,
+                            ).semanticColors.warning.withValues(alpha: 0.3),
                             blurRadius: 20,
                             spreadRadius: 5,
                           ),
@@ -62,7 +65,9 @@ class UserDrawerContent extends StatelessWidget {
                         color: Colors.white,
                         shadows: [
                           Shadow(
-                            color: Colors.orange.withValues(alpha: 0.5),
+                            color: Theme.of(
+                              context,
+                            ).semanticColors.warning.withValues(alpha: 0.5),
                             blurRadius: 10,
                           ),
                         ],

@@ -11,6 +11,7 @@ import 'package:opfan/features/nami_finances/bloc/index.dart';
 import 'package:opfan/app/di/injection.dart';
 import 'package:opfan/shared/utils/theme.dart';
 import 'package:opfan/shared/widgets/atoms/app_button.dart';
+import 'package:opfan/shared/utils/app_semantic_colors.dart';
 
 class NamiDetailedFinancesScreen extends StatefulWidget {
   final DateTime? selectedMonth;
@@ -552,15 +553,16 @@ class _NamiDetailedFinancesScreenState
   Color _getCategoryColor(ExpenseCategory category) {
     switch (category) {
       case ExpenseCategory.fixed:
-        return AppColors.red[500] ?? Colors.red;
+        return AppColors.red[500] ?? Theme.of(context).colorScheme.error;
       case ExpenseCategory.food:
-        return AppColors.orange[500] ?? Colors.orange;
+        return AppColors.orange[500] ??
+            Theme.of(context).semanticColors.warning;
       case ExpenseCategory.transport:
         return AppColors.blue[500] ?? Colors.blue;
       case ExpenseCategory.entertainment:
         return AppColors.purple[500] ?? Colors.purple;
       case ExpenseCategory.health:
-        return AppColors.green[500] ?? Colors.green;
+        return AppColors.green[500] ?? Theme.of(context).semanticColors.success;
       case ExpenseCategory.other:
         return AppColors.grey[500] ?? Colors.grey;
     }

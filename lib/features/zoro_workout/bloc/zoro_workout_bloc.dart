@@ -1,15 +1,20 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:opfan/core/services/index.dart';
 import 'package:opfan/features/zoro_workout/data/models/workout_assessment_model.dart';
-import '../../../app/di/injection.dart';
 import '../../../core/auth/blocs/index.dart';
 import 'zoro_workout_event.dart';
 import 'zoro_workout_state.dart';
 
 class ZoroWorkoutBloc extends Bloc<ZoroWorkoutEvent, ZoroWorkoutState> {
-  final IWorkoutAssessmentService _service = getIt<IWorkoutAssessmentService>();
+  final IWorkoutAssessmentService _service;
+  final IAuthService _authService;
+  final AuthBloc _authBloc;
 
-  ZoroWorkoutBloc() : super(const ZoroWorkoutInitial()) {
+  ZoroWorkoutBloc({
+    required this._service,
+    required this._authService,
+    required this._authBloc,
+  }) : super(const ZoroWorkoutInitial()) {
     on<InitializeWorkoutAssessment>(_onInitializeWorkoutAssessment);
     on<CheckAndCreateNewMonth>(_onCheckAndCreateNewMonth);
     on<SaveNewAssessment>(_onSaveNewAssessment);
@@ -59,7 +64,7 @@ class ZoroWorkoutBloc extends Bloc<ZoroWorkoutEvent, ZoroWorkoutState> {
     Emitter<ZoroWorkoutState> emit,
   ) async {
     try {
-      final user = getIt<IAuthService>().currentUser;
+      final user = _authService.currentUser;
       if (user != null) {
         final updatedUser = user.copyWith(
           gender: event.healthResults['gender'] as String?,
@@ -72,7 +77,7 @@ class ZoroWorkoutBloc extends Bloc<ZoroWorkoutEvent, ZoroWorkoutState> {
               user.activityLevel,
           goal: event.healthResults['goal'] as String? ?? user.goal,
         );
-        getIt<AuthBloc>().add(AuthProfileBodyUpdated(updatedUser: updatedUser));
+        _authBloc.add(AuthProfileBodyUpdated(updatedUser: updatedUser));
       }
 
       await _service.saveWorkoutAssessment(
