@@ -3948,5 +3948,21 @@
   "@dietaryRestrictionHighProtein": { "description": "Dietary restriction option" },
   "offlineBannerMessage": "Você está offline. Algumas funções estão indisponíveis.",
   "offlineScreenTitle": "Sem Conexão com a Internet",
-  "offlineScreenSubtitle": "Esta função requer conexão com a internet.\nReconecte-se para continuar."
+  "offlineScreenSubtitle": "Esta função requer conexão com a internet.\nReconecte-se para continuar.",
+  "addReserve": "Adicionar reserva",
+  "reserveGoalOptional": "Meta de reserva mensal (opcional)",
+  "reservePurpose": "Finalidade",
+  "reserveNote": "Observação (opcional)",
+  "reservePurposeEmergency": "Emergência",
+  "reservePurposeTravel": "Viagem",
+  "reservePurposeGoal": "Objetivo",
+  "reservePurposeInvestment": "Investimento",
+  "reservePurposeOther": "Outro",
+  "reserveGoalLabel": "Meta: {amount}",
+  "reserveGoalProgressPct": "{pct}% da meta",
+  "reserveGoalRemaining": "Faltam {amount}",
+  "reserveGoalMetricLabel": "Meta de reserva",
+  "previousMonth": "Mês anterior",
+  "nextMonth": "Próximo mês",
+  "editingPastMonth": "Editando um mês passado"
 }

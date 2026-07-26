@@ -6,17 +6,38 @@ import 'package:opfan/core/services/index.dart';
 import 'package:flutter_gemma/core/model_response.dart';
 import 'package:opfan/features/nami_finances/data/services/nami_rag_service.dart';
 import 'package:opfan/features/vegapunk_chat/data/models/chat_message.dart';
+import 'package:opfan/features/vegapunk_chat/tools/function_executor.dart';
+import 'package:opfan/features/vegapunk_chat/tools/function_registry.dart';
+import 'nami_intent_router.dart';
 import 'nami_chat_state.dart';
 
 class NamiChatBloc extends Cubit<NamiChatState> {
   final NamiRagService _ragService;
   final IGemmaService _gemmaService;
   final INamiFinancesService _financesService;
+
+  /// Nami-scoped tool registry (finances data + financial calculators). Kept
+  /// separate from the Vegapunk registry so these tools are wired only here.
+  final FunctionRegistry _registry;
+
+  /// Fallback parser for tool calls the on-device model emits as plain-text
+  /// JSON (the SDK's native parser misses that format) — same defense the
+  /// Vegapunk repository uses.
+  final _executor = FunctionExecutor();
+
+  /// Deterministic message → tool router (see [NamiIntentRouter]).
+  final _router = const NamiIntentRouter();
   final _uuid = const Uuid();
-  StreamSubscription<ModelResponse>? _streamSub;
   Timer? _emitTimer;
   final StringBuffer _tokenBuffer = StringBuffer();
   Future<void>? _backfillFuture;
+
+  /// Max characters of tool JSON injected back into the model per turn.
+  static const _maxToolContentLength = 1800;
+
+  /// Output-token budget for Nami's answers. Higher than the default so
+  /// detailed financial breakdowns aren't cut off mid-sentence.
+  static const _maxAnswerTokens = 1536;
 
   // Nami gets her own independent Gemma chat session — own system
   // instruction, own history — instead of sharing Vegapunk's singleton chat.
@@ -26,8 +47,12 @@ class NamiChatBloc extends Cubit<NamiChatState> {
   // conversation history.
   static const _sessionId = 'nami';
 
-  NamiChatBloc(this._ragService, this._gemmaService, this._financesService)
-    : super(NamiChatInitial()) {
+  NamiChatBloc(
+    this._ragService,
+    this._gemmaService,
+    this._financesService,
+    this._registry,
+  ) : super(NamiChatInitial()) {
     _init();
   }
 
@@ -121,23 +146,6 @@ class NamiChatBloc extends Cubit<NamiChatState> {
     }
   }
 
-  /// Deterministic context for date-relative questions ("this month", "last
-  /// month") merged with whatever the embedding search surfaces. Semantic
-  /// similarity is unreliable for resolving "esse mês" against a document
-  /// phrased as an absolute "07/2026" — so the current + previous month are
-  /// always included directly instead of relying on the vector store to
-  /// guess the match.
-  Future<List<String>?> _buildRagContext(String query) async {
-    await _backfillFuture;
-
-    final recentMonths = await _financesService.getLastMonthsFinances(2);
-    final deterministic = recentMonths.map(NamiRagService.summarize);
-    final searchHits = await _ragService.searchSimilar(query, topK: 3);
-
-    final merged = <String>{...deterministic, ...searchHits}.toList();
-    return merged.isEmpty ? null : merged;
-  }
-
   Future<void> sendMessage(String text) async {
     if (text.trim().isEmpty) return;
 
@@ -158,11 +166,13 @@ class NamiChatBloc extends Cubit<NamiChatState> {
       ),
     );
 
-    final ragContext = await _buildRagContext(text);
+    // Ensure the vector store backfill has settled (keeps the RAG store warm
+    // for future features — see [_backfillRag]); the finances answer path
+    // itself now goes through the [GetFinancesHandler] tool, not RAG.
+    await _backfillFuture;
 
     _tokenBuffer.clear();
     _emitTimer?.cancel();
-
     _emitTimer = Timer.periodic(const Duration(milliseconds: 80), (_) {
       if (state is! NamiChatReady) return;
       final current = state as NamiChatReady;
@@ -174,67 +184,120 @@ class NamiChatBloc extends Cubit<NamiChatState> {
     });
 
     try {
-      _streamSub = _gemmaService
-          .sendSessionMessage(
-            _sessionId,
-            systemInstruction: NamiPrompt.system(
-              isPortuguese: PromptLocale.isPortuguese(),
-            ),
-            text: text,
-            ragContext: ragContext,
-          )
-          .listen(
-            (response) {
-              if (state is! NamiChatReady) return;
+      await _generateAnswer(text);
 
-              if (response is TextResponse) {
-                _tokenBuffer.write(response.token);
-              }
-            },
-            onError: (error) {
-              if (state is NamiChatReady) {
-                emit(
-                  (state as NamiChatReady).copyWith(
-                    isGenerating: false,
-                    error: 'Erro na conexão com Nami: $error',
-                  ),
-                );
-              }
-            },
-            onDone: () {
-              if (state is NamiChatReady) {
-                final current = state as NamiChatReady;
-                // Flush remaining buffer
-                final finalToken =
-                    current.streamingToken + _tokenBuffer.toString();
-                _tokenBuffer.clear();
+      _emitTimer?.cancel();
+      if (state is NamiChatReady) {
+        final current = state as NamiChatReady;
+        final rawFinal = current.streamingToken + _tokenBuffer.toString();
+        _tokenBuffer.clear();
 
-                final modelMsg = ChatMessage(
-                  id: _uuid.v4(),
-                  text: finalToken.trim(),
-                  role: MessageRole.assistant,
-                );
+        // Strip any residual tool-call JSON the model may have emitted as text
+        // so it never persists in the visible message.
+        final cleaned = _stripToolCallJson(rawFinal);
+        final finalToken = cleaned.isNotEmpty ? cleaned : rawFinal.trim();
 
-                emit(
-                  current.copyWith(
-                    messages: [...current.messages, modelMsg],
-                    streamingToken: '',
-                    isGenerating: false,
-                  ),
-                );
-              }
-            },
-          );
+        emit(
+          current.copyWith(
+            messages: [
+              ...current.messages,
+              ChatMessage(
+                id: _uuid.v4(),
+                text: finalToken,
+                role: MessageRole.assistant,
+              ),
+            ],
+            streamingToken: '',
+            isGenerating: false,
+          ),
+        );
+      }
     } catch (e) {
-      emit(
-        currentState.copyWith(isGenerating: false, error: 'Falha interna: $e'),
-      );
+      _emitTimer?.cancel();
+      if (state is NamiChatReady) {
+        emit(
+          (state as NamiChatReady).copyWith(
+            isGenerating: false,
+            error: 'Erro na conexão com Nami: $e',
+          ),
+        );
+      }
+    }
+  }
+
+  /// Produces Nami's answer.
+  ///
+  /// The tool is chosen and executed **deterministically in Dart** (see
+  /// [_resolveToolCall]) and its already-formatted result is injected as
+  /// context; the model then only narrates. This is the reliable pattern for a
+  /// small on-device model, which otherwise tends to *talk about* calling a
+  /// tool without emitting a real call, and to mangle raw numbers. No tools are
+  /// attached to the generation pass, so the model can't wander into an
+  /// unparseable text tool-call.
+  Future<void> _generateAnswer(String text) async {
+    final isPt = PromptLocale.isPortuguese();
+    final systemInstruction = NamiPrompt.system(isPortuguese: isPt);
+
+    final toolCall = _router.resolve(text);
+    final result = await _registry.execute(toolCall);
+    var content = result.content;
+    if (content.length > _maxToolContentLength) {
+      content = '${content.substring(0, _maxToolContentLength)}\n...[TRUNCATED]';
+    }
+
+    await _streamToBuffer(
+      _gemmaService.sendSessionMessage(
+        _sessionId,
+        systemInstruction: systemInstruction,
+        text: text,
+        ragContext: [content],
+        maxOutputTokens: _maxAnswerTokens,
+      ),
+    );
+  }
+
+  /// Removes any whole JSON block that parses as a tool call (including
+  /// chat-completion wrappers like `{"role":"assistant","tool_calls":[...]}`),
+  /// keeping the surrounding prose. Defense in depth against the model leaking a
+  /// tool call as plain text into the final answer.
+  String _stripToolCallJson(String text) {
+    var out = text.trim();
+    while (true) {
+      final start = out.indexOf('{');
+      if (start == -1) break;
+      var open = 0;
+      var end = -1;
+      for (var i = start; i < out.length; i++) {
+        if (out[i] == '{') {
+          open++;
+        } else if (out[i] == '}') {
+          open--;
+          if (open == 0) {
+            end = i;
+            break;
+          }
+        }
+      }
+      if (end == -1) break;
+      final block = out.substring(start, end + 1);
+      // Only strip when the block is actually a tool call — never legit text.
+      if (_executor.tryParse(block) == null) break;
+      out = (out.substring(0, start) + out.substring(end + 1)).trim();
+    }
+    return out;
+  }
+
+  Future<void> _streamToBuffer(Stream<ModelResponse> stream) async {
+    await for (final response in stream) {
+      if (state is! NamiChatReady) break;
+      if (response is TextResponse) {
+        _tokenBuffer.write(response.token);
+      }
     }
   }
 
   @override
   Future<void> close() async {
-    _streamSub?.cancel();
     _emitTimer?.cancel();
     // Free the session's KV cache — it doesn't need to live once the sheet
     // that owns this chat is dismissed.

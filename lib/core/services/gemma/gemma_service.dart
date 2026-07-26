@@ -262,6 +262,8 @@ class GemmaService implements IGemmaService {
     required String systemInstruction,
     required String text,
     List<String>? ragContext,
+    List<Tool>? tools,
+    int maxOutputTokens = 512,
   }) {
     final model = _model;
     if (model == null) {
@@ -282,10 +284,19 @@ class GemmaService implements IGemmaService {
       try {
         var session = _sessions[sessionId];
         if (session == null) {
+          final hasTools = tools != null && tools.isNotEmpty;
           session = await model.openChat(
             systemInstruction: systemInstruction,
-            temperature: 0.3,
-            maxOutputTokens: 512,
+            // Lower temperature for reliable function-call JSON emission when
+            // tools are attached (matches the main chat's tuning).
+            temperature: hasTools ? 0.2 : 0.3,
+            maxOutputTokens: maxOutputTokens,
+            tools: tools ?? const [],
+            supportsFunctionCalls: hasTools,
+            toolChoice: hasTools ? ToolChoice.auto : ToolChoice.none,
+            modelType: _determineModelType(
+              GetIt.I.get<IEnvironmentService>().gemmaModelName,
+            ),
           );
           _sessions[sessionId] = session;
         }
@@ -297,6 +308,48 @@ class GemmaService implements IGemmaService {
 
         await session.addQueryChunk(
           Message(text: '$contextBlock$text', isUser: true),
+        );
+        await for (final response in session.generateChatResponseAsync()) {
+          if (isCancelled) break;
+          controller.add(response);
+        }
+      } catch (e) {
+        if (!controller.isClosed) controller.addError(e);
+      } finally {
+        if (!controller.isClosed) await controller.close();
+      }
+    }();
+
+    return controller.stream;
+  }
+
+  @override
+  Stream<ModelResponse> sendSessionToolResult(
+    String sessionId, {
+    required String toolName,
+    required Map<String, dynamic> result,
+  }) {
+    final session = _sessions[sessionId];
+    if (session == null) {
+      return Stream.error(
+        StateError('GemmaService: session "$sessionId" not open'),
+      );
+    }
+
+    bool isCancelled = false;
+    late final StreamController<ModelResponse> controller;
+
+    controller = StreamController<ModelResponse>(
+      onCancel: () async {
+        isCancelled = true;
+        await session.stopGeneration();
+      },
+    );
+
+    () async {
+      try {
+        await session.addQueryChunk(
+          Message.toolResponse(toolName: toolName, response: result),
         );
         await for (final response in session.generateChatResponseAsync()) {
           if (isCancelled) break;

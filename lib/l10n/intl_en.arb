@@ -4321,5 +4321,58 @@
   "offlineScreenSubtitle": "This feature requires an internet connection.\nPlease reconnect to continue.",
   "@offlineScreenSubtitle": {
     "description": "Subtitle of the offline blocker overlay shown on internet-required screens"
+  },
+  "addReserve": "Add reserve",
+  "@addReserve": {
+    "description": "Button to add a new reserve item in the finances form"
+  },
+  "reserveGoalOptional": "Monthly reserve goal (optional)",
+  "@reserveGoalOptional": {
+    "description": "Label for the optional monthly reserve goal field"
+  },
+  "reservePurpose": "Purpose",
+  "@reservePurpose": {
+    "description": "Label for the reserve purpose dropdown"
+  },
+  "reserveNote": "Note (optional)",
+  "@reserveNote": {
+    "description": "Label for the optional reserve note field"
+  },
+  "reservePurposeEmergency": "Emergency",
+  "@reservePurposeEmergency": { "description": "Reserve purpose option" },
+  "reservePurposeTravel": "Travel",
+  "@reservePurposeTravel": { "description": "Reserve purpose option" },
+  "reservePurposeGoal": "Goal",
+  "@reservePurposeGoal": { "description": "Reserve purpose option" },
+  "reservePurposeInvestment": "Investment",
+  "@reservePurposeInvestment": { "description": "Reserve purpose option" },
+  "reservePurposeOther": "Other",
+  "@reservePurposeOther": { "description": "Reserve purpose option" },
+  "reserveGoalLabel": "Goal: {amount}",
+  "@reserveGoalLabel": {
+    "description": "Shows the monthly reserve goal amount",
+    "placeholders": { "amount": { "type": "String" } }
+  },
+  "reserveGoalProgressPct": "{pct}% of goal",
+  "@reserveGoalProgressPct": {
+    "description": "Percentage progress toward the reserve goal",
+    "placeholders": { "pct": { "type": "String" } }
+  },
+  "reserveGoalRemaining": "{amount} to go",
+  "@reserveGoalRemaining": {
+    "description": "Remaining amount to reach the reserve goal",
+    "placeholders": { "amount": { "type": "String" } }
+  },
+  "reserveGoalMetricLabel": "Reserve goal",
+  "@reserveGoalMetricLabel": {
+    "description": "Metric label for the reserve goal in the detailed screen"
+  },
+  "previousMonth": "Previous month",
+  "@previousMonth": { "description": "Tooltip for the previous-month navigation button" },
+  "nextMonth": "Next month",
+  "@nextMonth": { "description": "Tooltip for the next-month navigation button" },
+  "editingPastMonth": "Editing a past month",
+  "@editingPastMonth": {
+    "description": "Hint shown when the finances screen is viewing a non-current month"
   }
 }

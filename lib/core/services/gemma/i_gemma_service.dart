@@ -52,11 +52,31 @@ abstract class IGemmaService {
   ///
   /// The session survives until [closeSession] is called or the model is
   /// reloaded (which invalidates every open session).
+  ///
+  /// Pass [tools] to enable native function calling on this session (the
+  /// session is created with them on first use). When the returned stream
+  /// yields a [FunctionCallResponse], execute the tool and feed the result
+  /// back via [sendSessionToolResult] for the model's final answer.
+  ///
+  /// [maxOutputTokens] caps the length of the generated answer for this
+  /// session (set on first use, when the session is created). Raise it for
+  /// assistants that produce long, detailed replies.
   Stream<ModelResponse> sendSessionMessage(
     String sessionId, {
     required String systemInstruction,
     required String text,
     List<String>? ragContext,
+    List<Tool>? tools,
+    int maxOutputTokens = 512,
+  });
+
+  /// Feed a tool result back into a session (second pass) after a
+  /// [FunctionCallResponse] from [sendSessionMessage]. Mirrors [sendMessage]'s
+  /// tool-response flow but for an independent named session.
+  Stream<ModelResponse> sendSessionToolResult(
+    String sessionId, {
+    required String toolName,
+    required Map<String, dynamic> result,
   });
 
   /// Closes and forgets a session opened via [sendSessionMessage]. Callers

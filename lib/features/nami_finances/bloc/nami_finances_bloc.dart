@@ -70,18 +70,29 @@ class NamiFinancesBloc extends Bloc<NamiFinancesEvent, NamiFinancesState> {
     try {
       final canEdit = await _service.canEditFinances(event.month);
       if (!canEdit) {
-        emit(NamiFinancesError('Só é possível editar finanças do mês atual'));
+        emit(NamiFinancesError('Não é possível editar finanças de meses futuros'));
         return;
       }
 
+      // Preserve the record's identity when editing an existing month so its
+      // RAG document (keyed by id) is updated in place instead of duplicated,
+      // and its original creation timestamp is kept.
+      final existing = await _service.getFinancesForMonth(event.month);
+      final now = DateTime.now();
+
       final finances = NamiFinancesModel(
-        id: const Uuid().v4(),
+        id: existing?.id ?? const Uuid().v4(),
         month: event.month,
         monthlyIncomes: event.incomes,
         expenses: event.expenses,
-        savings: event.savings,
-        createdAt: DateTime.now(),
-        updatedAt: DateTime.now(),
+        reserves: event.reserves,
+        reserveGoal: event.reserveGoal,
+        // Denormalize the legacy single-value savings to the reserves total so
+        // aggregation in the service (getTotalSavings, accumulated info) keeps
+        // working without reading the new list.
+        savings: event.reserves.fold(0.0, (sum, r) => sum + r.amount),
+        createdAt: existing?.createdAt ?? now,
+        updatedAt: now,
       );
 
       await _service.saveFinances(finances);

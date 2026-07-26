@@ -2643,4 +2643,58 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get offlineScreenSubtitle =>
       'This feature requires an internet connection.\nPlease reconnect to continue.';
+
+  @override
+  String get addReserve => 'Add reserve';
+
+  @override
+  String get reserveGoalOptional => 'Monthly reserve goal (optional)';
+
+  @override
+  String get reservePurpose => 'Purpose';
+
+  @override
+  String get reserveNote => 'Note (optional)';
+
+  @override
+  String get reservePurposeEmergency => 'Emergency';
+
+  @override
+  String get reservePurposeTravel => 'Travel';
+
+  @override
+  String get reservePurposeGoal => 'Goal';
+
+  @override
+  String get reservePurposeInvestment => 'Investment';
+
+  @override
+  String get reservePurposeOther => 'Other';
+
+  @override
+  String reserveGoalLabel(String amount) {
+    return 'Goal: $amount';
+  }
+
+  @override
+  String reserveGoalProgressPct(String pct) {
+    return '$pct% of goal';
+  }
+
+  @override
+  String reserveGoalRemaining(String amount) {
+    return '$amount to go';
+  }
+
+  @override
+  String get reserveGoalMetricLabel => 'Reserve goal';
+
+  @override
+  String get previousMonth => 'Previous month';
+
+  @override
+  String get nextMonth => 'Next month';
+
+  @override
+  String get editingPastMonth => 'Editing a past month';
 }

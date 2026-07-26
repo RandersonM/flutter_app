@@ -17,13 +17,15 @@ class LoadFinancesHistory extends NamiFinancesEvent {
 class SaveFinances extends NamiFinancesEvent {
   final List<MonthlyIncomeModel> incomes;
   final List<ExpenseModel> expenses;
-  final double savings;
+  final List<ReserveModel> reserves;
+  final double? reserveGoal;
   final DateTime month;
 
   SaveFinances({
     required this.incomes,
     required this.expenses,
-    required this.savings,
+    required this.reserves,
+    this.reserveGoal,
     required this.month,
   });
 }

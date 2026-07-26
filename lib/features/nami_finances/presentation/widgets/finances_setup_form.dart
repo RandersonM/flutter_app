@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:opfan/l10n/app_localizations.dart';
 import 'package:opfan/shared/utils/constants.dart';
 import 'package:opfan/shared/widgets/atoms/finance_currency_text_field.dart';
+import 'package:opfan/shared/widgets/atoms/custom_dropdown.dart';
+import 'package:opfan/shared/widgets/atoms/custom_text_field.dart';
 import 'package:opfan/features/nami_finances/presentation/widgets/add_expense_dialog.dart'
     as dialog;
 import 'package:opfan/features/nami_finances/presentation/widgets/expense_item_widget.dart';
@@ -17,7 +19,13 @@ const _errorRed = Color(0xFFEF4444);
 const _successGreen = Color(0xFF22C55E);
 
 class FinancesSetupForm extends StatefulWidget {
-  final Function(List<MonthlyIncomeModel>, List<ExpenseModel>, double) onSave;
+  final Function(
+    List<MonthlyIncomeModel> incomes,
+    List<ExpenseModel> expenses,
+    List<ReserveModel> reserves,
+    double? reserveGoal,
+  )
+  onSave;
   final NamiFinancesModel? existingFinances;
 
   const FinancesSetupForm({
@@ -33,13 +41,14 @@ class FinancesSetupForm extends StatefulWidget {
 class _FinancesSetupFormState extends State<FinancesSetupForm> {
   final List<IncomeItem> _incomeItems = [];
   final List<dialog.ExpenseItem> _expenseItems = [];
-  final _savingsController = TextEditingController();
+  final List<ReserveItem> _reserveItems = [];
+  final _reserveGoalController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
 
   @override
   void initState() {
     super.initState();
-    _savingsController.addListener(_validateForm);
+    _reserveGoalController.addListener(_validateForm);
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (widget.existingFinances != null) {
         _loadExistingData();
@@ -78,9 +87,43 @@ class _FinancesSetupFormState extends State<FinancesSetupForm> {
       );
     }
 
-    _savingsController.text = _formatCurrencyForDisplay(finances.savings);
+    if (finances.reserves.isNotEmpty) {
+      for (final reserve in finances.reserves) {
+        _reserveItems.add(_buildReserveItem(reserve));
+      }
+    } else if (finances.savings > 0) {
+      // Legacy record stored a single savings value with no itemized reserves —
+      // seed it as one "other" reserve so the amount isn't lost on first edit.
+      _reserveItems.add(
+        _buildReserveItem(
+          ReserveModel(
+            id: const Uuid().v4(),
+            amount: finances.savings,
+            purpose: ReservePurpose.other,
+          ),
+        ),
+      );
+    }
+
+    if (finances.reserveGoal != null && finances.reserveGoal! > 0) {
+      _reserveGoalController.text = _formatCurrencyForDisplay(
+        finances.reserveGoal!,
+      );
+    }
 
     setState(() {});
+  }
+
+  ReserveItem _buildReserveItem(ReserveModel reserve) {
+    final controller = TextEditingController(
+      text: _formatCurrencyForDisplay(reserve.amount),
+    );
+    controller.addListener(_validateForm);
+    return ReserveItem(
+      controller: controller,
+      noteController: TextEditingController(text: reserve.note),
+      purpose: reserve.purpose,
+    );
   }
 
   String _formatCurrencyForDisplay(double amount) {
@@ -170,6 +213,29 @@ class _FinancesSetupFormState extends State<FinancesSetupForm> {
     _validateForm();
   }
 
+  void _addReserveItem() {
+    final controller = TextEditingController();
+    controller.addListener(_validateForm);
+    setState(() {
+      _reserveItems.add(
+        ReserveItem(
+          controller: controller,
+          noteController: TextEditingController(),
+          purpose: ReservePurpose.emergency,
+        ),
+      );
+    });
+  }
+
+  void _removeReserveItem(int index) {
+    setState(() {
+      _reserveItems[index].controller.dispose();
+      _reserveItems[index].noteController.dispose();
+      _reserveItems.removeAt(index);
+    });
+    _validateForm();
+  }
+
   void _validateForm() {
     setState(() {});
   }
@@ -193,14 +259,13 @@ class _FinancesSetupFormState extends State<FinancesSetupForm> {
           0,
     );
 
-    final hasSavings =
-        (double.tryParse(
-              _savingsController.text.replaceAll(RegExp(r'[^\d]'), ''),
-            ) ??
-            0) >=
-        0;
+    // Reserves are optional — a month may have none.
+    return hasIncome && hasExpense;
+  }
 
-    return hasIncome && hasExpense && hasSavings;
+  double _parseCurrency(String text) {
+    final digits = text.replaceAll(RegExp(r'[^\d]'), '');
+    return (double.tryParse(digits) ?? 0.0) / 100;
   }
 
   void _saveFinances() {
@@ -251,14 +316,22 @@ class _FinancesSetupFormState extends State<FinancesSetupForm> {
         )
         .toList();
 
-    final savings =
-        double.tryParse(
-          _savingsController.text.replaceAll(RegExp(r'[^\d]'), ''),
-        ) ??
-        0.0;
-    final savingsAmount = savings / 100;
+    final reserves = _reserveItems
+        .where((item) => _parseCurrency(item.controller.text) > 0)
+        .map(
+          (item) => ReserveModel(
+            id: const Uuid().v4(),
+            amount: _parseCurrency(item.controller.text),
+            purpose: item.purpose,
+            note: item.noteController.text.trim(),
+          ),
+        )
+        .toList();
 
-    widget.onSave(incomes, expenses, savingsAmount);
+    final goalAmount = _parseCurrency(_reserveGoalController.text);
+    final reserveGoal = goalAmount > 0 ? goalAmount : null;
+
+    widget.onSave(incomes, expenses, reserves, reserveGoal);
   }
 
   ExpenseCategory _mapDialogCategoryToModel(
@@ -288,7 +361,11 @@ class _FinancesSetupFormState extends State<FinancesSetupForm> {
     for (final item in _expenseItems) {
       item.controller.dispose();
     }
-    _savingsController.dispose();
+    for (final item in _reserveItems) {
+      item.controller.dispose();
+      item.noteController.dispose();
+    }
+    _reserveGoalController.dispose();
     super.dispose();
   }
 
@@ -302,7 +379,7 @@ class _FinancesSetupFormState extends State<FinancesSetupForm> {
         children: [
           _buildIncomeSection(l10n),
           const SizedBox(height: Constants.margin * 4),
-          _buildSavingsSection(l10n),
+          _buildReservesSection(l10n),
           const SizedBox(height: Constants.margin * 4),
           _buildExpensesSection(l10n),
           const SizedBox(height: Constants.margin * 2),
@@ -376,28 +453,102 @@ class _FinancesSetupFormState extends State<FinancesSetupForm> {
     );
   }
 
-  Widget _buildSavingsSection(AppLocalizations l10n) {
+  String _reservePurposeLabel(ReservePurpose purpose, AppLocalizations l10n) {
+    switch (purpose) {
+      case ReservePurpose.emergency:
+        return l10n.reservePurposeEmergency;
+      case ReservePurpose.travel:
+        return l10n.reservePurposeTravel;
+      case ReservePurpose.goal:
+        return l10n.reservePurposeGoal;
+      case ReservePurpose.investment:
+        return l10n.reservePurposeInvestment;
+      case ReservePurpose.other:
+        return l10n.reservePurposeOther;
+    }
+  }
+
+  Widget _buildReservesSection(AppLocalizations l10n) {
     return _buildSection(
-      title: l10n.savings,
+      title: l10n.reserves,
       icon: PhosphorIconsRegular.piggyBank,
       color: _purple,
       children: [
+        // Optional monthly reserve target.
         FinanceCurrencyTextField(
-          label: l10n.savings,
-          controller: _savingsController,
-          validator: (value) {
-            if (value == null || value.isEmpty) {
-              return 'Por favor, insira um valor';
-            }
-            final amount = double.tryParse(
-              value.replaceAll(RegExp(r'[^\d]'), ''),
-            );
-            if (amount == null || amount < 0) {
-              return 'Por favor, insira um valor válido';
-            }
-            return null;
-          },
+          label: l10n.reserveGoalOptional,
+          controller: _reserveGoalController,
         ),
+        const SizedBox(height: Constants.margin * 2),
+        AppButton(
+          onPressed: _addReserveItem,
+          variant: AppButtonVariant.outline,
+          icon: const AppIcon(PhosphorIconsRegular.plus, size: 16),
+          label: l10n.addReserve,
+          foregroundColor: _purple,
+          padding: const EdgeInsets.symmetric(vertical: 12),
+          borderRadius: 12,
+          isFullWidth: true,
+        ),
+        const SizedBox(height: Constants.margin),
+        ..._reserveItems.asMap().entries.map((entry) {
+          final index = entry.key;
+          final item = entry.value;
+          return Padding(
+            padding: EdgeInsets.only(
+              bottom: index < _reserveItems.length - 1 ? Constants.margin : 0,
+            ),
+            child: Container(
+              padding: const EdgeInsets.all(Constants.margin),
+              decoration: BoxDecoration(
+                color: Colors.white.withValues(alpha: 0.05),
+                borderRadius: BorderRadius.circular(16),
+              ),
+              child: Column(
+                children: [
+                  Row(
+                    children: [
+                      Expanded(
+                        child: CustomDropdown<ReservePurpose>(
+                          label: l10n.reservePurpose,
+                          value: item.purpose,
+                          items: ReservePurpose.values,
+                          itemToString: (purpose) =>
+                              _reservePurposeLabel(purpose, l10n),
+                          onChanged: (purpose) {
+                            if (purpose == null) return;
+                            setState(() => item.purpose = purpose);
+                          },
+                        ),
+                      ),
+                      const SizedBox(width: Constants.margin),
+                      IconButton(
+                        onPressed: () => _removeReserveItem(index),
+                        icon: const AppIcon(
+                          PhosphorIconsRegular.minusCircle,
+                          color: _errorRed,
+                        ),
+                        tooltip: l10n.remove,
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: Constants.margin),
+                  FinanceCurrencyTextField(
+                    label: l10n.value,
+                    controller: item.controller,
+                  ),
+                  const SizedBox(height: Constants.margin),
+                  CustomTextField(
+                    label: l10n.reserveNote,
+                    controller: item.noteController,
+                    maxLines: 1,
+                  ),
+                ],
+              ),
+            ),
+          );
+        }),
+        const SizedBox(height: Constants.margin),
       ],
     );
   }
@@ -500,4 +651,16 @@ class IncomeItem {
   String description;
 
   IncomeItem({required this.controller, required this.description});
+}
+
+class ReserveItem {
+  final TextEditingController controller;
+  final TextEditingController noteController;
+  ReservePurpose purpose;
+
+  ReserveItem({
+    required this.controller,
+    required this.noteController,
+    required this.purpose,
+  });
 }

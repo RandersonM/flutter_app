@@ -18,6 +18,8 @@ class HiveStorageService implements IStorageService {
   /// | 11      | MonthlyIncomeModel   | Monthly income list entry        |
   /// | 12      | ExpenseModel         | Individual expense item          |
   /// | 13      | ExpenseCategory      | Enum-like categories for expenses|
+  /// | 14      | ReserveModel         | Individual reserve item          |
+  /// | 15      | ReservePurpose       | Enum-like purposes for reserves  |
   static const int todayCharacterTypeId = 0;
   static const int userModelTypeId = 1;
   static const int themeSettingsTypeId = 2;
@@ -25,6 +27,8 @@ class HiveStorageService implements IStorageService {
   static const int monthlyIncomeModelTypeId = 11;
   static const int expenseModelTypeId = 12;
   static const int expenseCategoryTypeId = 13;
+  static const int reserveModelTypeId = 14;
+  static const int reservePurposeTypeId = 15;
 
   @override
   Future<void> initialize() async {
@@ -39,5 +43,7 @@ class HiveStorageService implements IStorageService {
     Hive.registerAdapter(MonthlyIncomeModelAdapter());
     Hive.registerAdapter(ExpenseModelAdapter());
     Hive.registerAdapter(ExpenseCategoryAdapter());
+    Hive.registerAdapter(ReserveModelAdapter());
+    Hive.registerAdapter(ReservePurposeAdapter());
   }
 }

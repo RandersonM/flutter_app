@@ -4963,6 +4963,102 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'This feature requires an internet connection.\nPlease reconnect to continue.'**
   String get offlineScreenSubtitle;
+
+  /// Button to add a new reserve item in the finances form
+  ///
+  /// In en, this message translates to:
+  /// **'Add reserve'**
+  String get addReserve;
+
+  /// Label for the optional monthly reserve goal field
+  ///
+  /// In en, this message translates to:
+  /// **'Monthly reserve goal (optional)'**
+  String get reserveGoalOptional;
+
+  /// Label for the reserve purpose dropdown
+  ///
+  /// In en, this message translates to:
+  /// **'Purpose'**
+  String get reservePurpose;
+
+  /// Label for the optional reserve note field
+  ///
+  /// In en, this message translates to:
+  /// **'Note (optional)'**
+  String get reserveNote;
+
+  /// Reserve purpose option
+  ///
+  /// In en, this message translates to:
+  /// **'Emergency'**
+  String get reservePurposeEmergency;
+
+  /// Reserve purpose option
+  ///
+  /// In en, this message translates to:
+  /// **'Travel'**
+  String get reservePurposeTravel;
+
+  /// Reserve purpose option
+  ///
+  /// In en, this message translates to:
+  /// **'Goal'**
+  String get reservePurposeGoal;
+
+  /// Reserve purpose option
+  ///
+  /// In en, this message translates to:
+  /// **'Investment'**
+  String get reservePurposeInvestment;
+
+  /// Reserve purpose option
+  ///
+  /// In en, this message translates to:
+  /// **'Other'**
+  String get reservePurposeOther;
+
+  /// Shows the monthly reserve goal amount
+  ///
+  /// In en, this message translates to:
+  /// **'Goal: {amount}'**
+  String reserveGoalLabel(String amount);
+
+  /// Percentage progress toward the reserve goal
+  ///
+  /// In en, this message translates to:
+  /// **'{pct}% of goal'**
+  String reserveGoalProgressPct(String pct);
+
+  /// Remaining amount to reach the reserve goal
+  ///
+  /// In en, this message translates to:
+  /// **'{amount} to go'**
+  String reserveGoalRemaining(String amount);
+
+  /// Metric label for the reserve goal in the detailed screen
+  ///
+  /// In en, this message translates to:
+  /// **'Reserve goal'**
+  String get reserveGoalMetricLabel;
+
+  /// Tooltip for the previous-month navigation button
+  ///
+  /// In en, this message translates to:
+  /// **'Previous month'**
+  String get previousMonth;
+
+  /// Tooltip for the next-month navigation button
+  ///
+  /// In en, this message translates to:
+  /// **'Next month'**
+  String get nextMonth;
+
+  /// Hint shown when the finances screen is viewing a non-current month
+  ///
+  /// In en, this message translates to:
+  /// **'Editing a past month'**
+  String get editingPastMonth;
 }
 
 class _AppLocalizationsDelegate

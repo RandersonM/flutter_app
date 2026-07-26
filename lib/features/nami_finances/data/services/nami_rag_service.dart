@@ -59,11 +59,27 @@ class NamiRagService {
         .map((e) => '${e.key.name}: R\$ ${e.value.toStringAsFixed(2)}')
         .join(', ');
 
+    final reserveBreakdown = model.reserves.isEmpty
+        ? ''
+        : model.reserves
+              .map(
+                (r) =>
+                    '${r.purpose.name}: R\$ ${r.amount.toStringAsFixed(2)}'
+                    '${r.note.isNotEmpty ? ' (${r.note})' : ''}',
+              )
+              .join(', ');
+
+    final goalPart = model.reserveGoal != null && model.reserveGoal! > 0
+        ? "Meta de reserva: R\$ ${model.reserveGoal!.toStringAsFixed(2)}. "
+        : '';
+
     return "Resumo financeiro de $monthStr/$yearStr. "
         "Receita total: R\$ ${model.totalIncome.toStringAsFixed(2)}. "
         "Despesas totais: R\$ ${model.totalExpenses.toStringAsFixed(2)}. "
         "Despesas por categoria: $categoryBreakdown. "
-        "Valor economizado no mês: R\$ ${model.savings.toStringAsFixed(2)}. "
+        "Total reservado no mês: R\$ ${model.totalReserves.toStringAsFixed(2)}. "
+        "${reserveBreakdown.isNotEmpty ? 'Reservas por finalidade: $reserveBreakdown. ' : ''}"
+        "$goalPart"
         "Saldo disponível: R\$ ${model.availableAmount.toStringAsFixed(2)}.";
   }
 

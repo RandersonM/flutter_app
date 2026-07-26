@@ -202,8 +202,8 @@ class _NamiDetailedFinancesScreenState
             children: [
               Expanded(
                 child: _buildOverviewItem(
-                  AppLocalizations.of(context)!.savingsLabel,
-                  finances.savings,
+                  AppLocalizations.of(context)!.reservesLabel,
+                  finances.totalReserves,
                   PhosphorIconsRegular.piggyBank,
                   AppColors.blue[500]!,
                 ),
@@ -583,6 +583,22 @@ class _NamiDetailedFinancesScreenState
     }
   }
 
+  String _reservePurposeLabel(ReservePurpose purpose) {
+    final l10n = AppLocalizations.of(context)!;
+    switch (purpose) {
+      case ReservePurpose.emergency:
+        return l10n.reservePurposeEmergency;
+      case ReservePurpose.travel:
+        return l10n.reservePurposeTravel;
+      case ReservePurpose.goal:
+        return l10n.reservePurposeGoal;
+      case ReservePurpose.investment:
+        return l10n.reservePurposeInvestment;
+      case ReservePurpose.other:
+        return l10n.reservePurposeOther;
+    }
+  }
+
   Widget _buildSavingsDetailsCard(
     NamiFinancesModel finances,
     AppLocalizations l10n,
@@ -613,9 +629,15 @@ class _NamiDetailedFinancesScreenState
             const SizedBox(height: Constants.margin),
             _buildSavingsMetric(
               AppLocalizations.of(context)!.monthSavings,
-              finances.savings,
+              finances.totalReserves,
               AppColors.blue[500]!,
             ),
+            if (finances.reserveGoal != null && finances.reserveGoal! > 0)
+              _buildSavingsMetric(
+                AppLocalizations.of(context)!.reserveGoalMetricLabel,
+                finances.reserveGoal!,
+                AppColors.purple[500]!,
+              ),
             _buildSavingsMetric(
               AppLocalizations.of(context)!.savingsPercentage,
               finances.savingsPercentage,
@@ -626,6 +648,19 @@ class _NamiDetailedFinancesScreenState
               finances.yearlySavings,
               Theme.of(context).colorScheme.primary,
             ),
+            // Per-reserve breakdown (purpose + optional note).
+            if (finances.reserves.isNotEmpty) ...[
+              const SizedBox(height: Constants.margin),
+              ...finances.reserves.map(
+                (reserve) => _buildSavingsMetric(
+                  reserve.note.isNotEmpty
+                      ? '${_reservePurposeLabel(reserve.purpose)} · ${reserve.note}'
+                      : _reservePurposeLabel(reserve.purpose),
+                  reserve.amount,
+                  AppColors.blue[400] ?? AppColors.blue[500]!,
+                ),
+              ),
+            ],
           ],
         ),
       ),

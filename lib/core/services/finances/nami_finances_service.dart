@@ -49,8 +49,12 @@ class NamiFinancesService implements INamiFinancesService {
 
   @override
   Future<bool> canEditFinances(DateTime month) async {
+    // Allow the current month and any past month (historical backfill); block
+    // future months. Compared against the first day of next month so any day
+    // within the current month passes.
     final now = DateTime.now();
-    return month.year == now.year && month.month == now.month;
+    final firstOfNextMonth = DateTime(now.year, now.month + 1, 1);
+    return month.isBefore(firstOfNextMonth);
   }
 
   @override

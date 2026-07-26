@@ -112,7 +112,7 @@ class _FinancesHistoryWidgetState extends State<FinancesHistoryWidget> {
                         );
                       case 2:
                         return BarTooltipItem(
-                          'Poupança: R\$ ${finance.savings.toStringAsFixed(0)}',
+                          'Poupança: R\$ ${finance.totalReserves.toStringAsFixed(0)}',
                           TextStyle(
                             color: AppColors.orange[500],
                             fontWeight: FontWeight.bold,
@@ -283,7 +283,7 @@ class _FinancesHistoryWidgetState extends State<FinancesHistoryWidget> {
             ),
           ),
           BarChartRodData(
-            toY: finance.savings,
+            toY: finance.totalReserves,
             color: AppColors.orange[500],
             width: 24,
             borderRadius: const BorderRadius.only(

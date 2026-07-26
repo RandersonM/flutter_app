@@ -14,10 +14,30 @@ import 'package:opfan/features/zoro_workout/bloc/index.dart';
 import 'package:opfan/features/sanji_cooking/bloc/index.dart';
 import 'package:opfan/features/robin_knowledge/bloc/robin_knowledge_bloc.dart';
 import 'package:opfan/features/vegapunk_chat/cubit/index.dart';
+import 'package:opfan/features/vegapunk_chat/tools/function_registry.dart';
 import 'package:opfan/features/nami_finances/data/services/nami_rag_service.dart';
+import 'package:opfan/features/nami_finances/tools/get_finances_handler.dart';
+import 'package:opfan/features/nami_finances/tools/finance_calculator_handlers.dart';
+
+/// Instance name for the Nami-scoped tool registry (kept separate from the
+/// Vegapunk FunctionRegistry so these tools are exposed only in the Nami chat).
+const kNamiToolsRegistry = 'namiToolsRegistry';
 
 void registerFeaturesModule(GetIt getIt) {
   getIt.registerLazySingleton<NamiRagService>(() => NamiRagService());
+
+  // Nami's function-calling tools: finances data + deterministic financial
+  // calculators. The handlers are reusable (they could also be registered in
+  // the Vegapunk FunctionRegistry later); for now they live only here.
+  getIt.registerLazySingleton<FunctionRegistry>(() {
+    final registry = FunctionRegistry();
+    final finances = getIt<INamiFinancesService>();
+    registry.register(GetFinancesHandler(financesService: finances));
+    registry.register(AffordableInstallmentHandler(financesService: finances));
+    registry.register(SimulateGoalPlanHandler(financesService: finances));
+    registry.register(BudgetBreakdownHandler(financesService: finances));
+    return registry;
+  }, instanceName: kNamiToolsRegistry);
   getIt.registerFactory<CalculatorCubit>(() => CalculatorCubit());
 
   getIt.registerFactory<CharactersCubit>(

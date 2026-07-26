@@ -9,7 +9,18 @@ class NamiFinancesModel extends HiveObject {
 
   final List<ExpenseModel> expenses;
 
+  /// Legacy single-value reserves total. Kept for backward compatibility and
+  /// denormalized on every save to equal [totalReserves] so the aggregation in
+  /// `NamiFinancesService.getTotalSavings` / `getAccumulatedSavingsInfo`
+  /// keeps working unchanged. New code should read [totalReserves].
   final double savings;
+
+  /// Itemized reserves for the month (each with a purpose + optional note).
+  /// Empty for records saved before this feature — see [totalReserves].
+  final List<ReserveModel> reserves;
+
+  /// Optional monthly reserve target. Null when the user has not set a goal.
+  final double? reserveGoal;
 
   final DateTime createdAt;
 
@@ -21,6 +32,8 @@ class NamiFinancesModel extends HiveObject {
     required this.monthlyIncomes,
     required this.expenses,
     this.savings = 0.0,
+    this.reserves = const [],
+    this.reserveGoal,
     required this.createdAt,
     required this.updatedAt,
   });
@@ -33,7 +46,14 @@ class NamiFinancesModel extends HiveObject {
     return expenses.fold(0.0, (sum, expense) => sum + expense.amount);
   }
 
-  double get availableAmount => totalIncome - totalExpenses - savings;
+  /// Total reserved this month. Falls back to the legacy [savings] value for
+  /// records saved before reserves became a list.
+  double get totalReserves {
+    if (reserves.isEmpty) return savings;
+    return reserves.fold(0.0, (sum, reserve) => sum + reserve.amount);
+  }
+
+  double get availableAmount => totalIncome - totalExpenses - totalReserves;
 
   double get dailyAmount {
     final daysInMonth = DateTime(month.year, month.month + 1, 0).day;
@@ -42,11 +62,27 @@ class NamiFinancesModel extends HiveObject {
 
   double get savingsPercentage {
     if (totalIncome == 0) return 0;
-    return (savings / totalIncome) * 100;
+    return (totalReserves / totalIncome) * 100;
   }
 
   double get yearlySavings {
-    return savings * 12;
+    return totalReserves * 12;
+  }
+
+  /// Progress toward [reserveGoal] as a 0..1+ ratio, or null when no goal set.
+  double? get reserveGoalProgress {
+    final goal = reserveGoal;
+    if (goal == null || goal <= 0) return null;
+    return totalReserves / goal;
+  }
+
+  /// Reserve amounts aggregated by purpose.
+  Map<ReservePurpose, double> get reservesByPurpose {
+    final Map<ReservePurpose, double> totals = {};
+    for (final reserve in reserves) {
+      totals[reserve.purpose] = (totals[reserve.purpose] ?? 0) + reserve.amount;
+    }
+    return totals;
   }
 
   bool get isCurrentMonth {
@@ -107,6 +143,27 @@ class ExpenseModel {
 
 enum ExpenseCategory { fixed, food, transport, entertainment, health, other }
 
+/// What a reserve is being set aside for.
+enum ReservePurpose { emergency, travel, goal, investment, other }
+
+class ReserveModel {
+  final String id;
+
+  final double amount;
+
+  final ReservePurpose purpose;
+
+  /// Optional free-text note describing the reserve. May be ''.
+  final String note;
+
+  ReserveModel({
+    required this.id,
+    required this.amount,
+    required this.purpose,
+    this.note = '',
+  });
+}
+
 class NamiFinancesModelAdapter extends TypeAdapter<NamiFinancesModel> {
   @override
   final int typeId = 10;
@@ -125,13 +182,17 @@ class NamiFinancesModelAdapter extends TypeAdapter<NamiFinancesModel> {
       savings: fields[4] as double,
       createdAt: fields[5] as DateTime,
       updatedAt: fields[6] as DateTime,
+      // Fields 7 & 8 are absent in records saved before the reserves feature —
+      // default to an empty list / null so legacy data loads unchanged.
+      reserves: (fields[7] as List?)?.cast<ReserveModel>() ?? const [],
+      reserveGoal: fields[8] as double?,
     );
   }
 
   @override
   void write(BinaryWriter writer, NamiFinancesModel obj) {
     writer
-      ..writeByte(7)
+      ..writeByte(9)
       ..writeByte(0)
       ..write(obj.id)
       ..writeByte(1)
@@ -145,7 +206,11 @@ class NamiFinancesModelAdapter extends TypeAdapter<NamiFinancesModel> {
       ..writeByte(5)
       ..write(obj.createdAt)
       ..writeByte(6)
-      ..write(obj.updatedAt);
+      ..write(obj.updatedAt)
+      ..writeByte(7)
+      ..write(obj.reserves)
+      ..writeByte(8)
+      ..write(obj.reserveGoal);
   }
 
   @override
@@ -238,6 +303,103 @@ class ExpenseModelAdapter extends TypeAdapter<ExpenseModel> {
   bool operator ==(Object other) =>
       identical(this, other) ||
       other is ExpenseModelAdapter &&
+          runtimeType == other.runtimeType &&
+          typeId == other.typeId;
+}
+
+class ReserveModelAdapter extends TypeAdapter<ReserveModel> {
+  @override
+  final int typeId = 14;
+
+  @override
+  ReserveModel read(BinaryReader reader) {
+    final numOfFields = reader.readByte();
+    final fields = <int, dynamic>{
+      for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
+    };
+    return ReserveModel(
+      id: fields[0] as String,
+      amount: fields[1] as double,
+      purpose: fields[2] as ReservePurpose,
+      note: fields[3] as String? ?? '',
+    );
+  }
+
+  @override
+  void write(BinaryWriter writer, ReserveModel obj) {
+    writer
+      ..writeByte(4)
+      ..writeByte(0)
+      ..write(obj.id)
+      ..writeByte(1)
+      ..write(obj.amount)
+      ..writeByte(2)
+      ..write(obj.purpose)
+      ..writeByte(3)
+      ..write(obj.note);
+  }
+
+  @override
+  int get hashCode => typeId.hashCode;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is ReserveModelAdapter &&
+          runtimeType == other.runtimeType &&
+          typeId == other.typeId;
+}
+
+class ReservePurposeAdapter extends TypeAdapter<ReservePurpose> {
+  @override
+  final int typeId = 15;
+
+  @override
+  ReservePurpose read(BinaryReader reader) {
+    switch (reader.readByte()) {
+      case 0:
+        return ReservePurpose.emergency;
+      case 1:
+        return ReservePurpose.travel;
+      case 2:
+        return ReservePurpose.goal;
+      case 3:
+        return ReservePurpose.investment;
+      case 4:
+        return ReservePurpose.other;
+      default:
+        return ReservePurpose.other;
+    }
+  }
+
+  @override
+  void write(BinaryWriter writer, ReservePurpose obj) {
+    switch (obj) {
+      case ReservePurpose.emergency:
+        writer.writeByte(0);
+        break;
+      case ReservePurpose.travel:
+        writer.writeByte(1);
+        break;
+      case ReservePurpose.goal:
+        writer.writeByte(2);
+        break;
+      case ReservePurpose.investment:
+        writer.writeByte(3);
+        break;
+      case ReservePurpose.other:
+        writer.writeByte(4);
+        break;
+    }
+  }
+
+  @override
+  int get hashCode => typeId.hashCode;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is ReservePurposeAdapter &&
           runtimeType == other.runtimeType &&
           typeId == other.typeId;
 }
