@@ -5,9 +5,6 @@ import 'package:opfan/shared/utils/constants.dart';
 import 'package:opfan/features/nami_finances/bloc/chat/nami_chat_bloc.dart';
 import 'package:opfan/features/nami_finances/bloc/chat/nami_chat_state.dart';
 import 'package:opfan/app/di/injection.dart';
-import 'package:opfan/core/services/index.dart';
-import 'package:opfan/features/nami_finances/data/services/nami_rag_service.dart';
-import 'package:opfan/features/vegapunk_chat/tools/function_registry.dart';
 import 'package:opfan/features/vegapunk_chat/data/models/chat_message.dart';
 import 'package:opfan/shared/widgets/atoms/chat_loading_bubbles.dart';
 
@@ -17,12 +14,7 @@ class NamiChatSheet extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (_) => NamiChatBloc(
-        getIt<NamiRagService>(),
-        getIt<IGemmaService>(),
-        getIt<INamiFinancesService>(),
-        getIt<FunctionRegistry>(instanceName: kNamiToolsRegistry),
-      ),
+      create: (_) => getIt<NamiChatBloc>(),
       child: const _NamiChatSheetContent(),
     );
   }

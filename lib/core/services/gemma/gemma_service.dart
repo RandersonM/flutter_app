@@ -123,6 +123,49 @@ class GemmaService implements IGemmaService {
     }
   }
 
+  /// Gemma 4 E2B supports 128K context; 4096 balances context capacity against
+  /// memory usage on mobile.
+  static const int _maxTokens = 4096;
+
+  /// Backends to try, in order. GPU first for throughput, CPU as the last
+  /// resort so a Metal-init failure degrades performance instead of breaking
+  /// the feature outright.
+  static const List<PreferredBackend> _backendPreference = [
+    PreferredBackend.gpu,
+    PreferredBackend.cpu,
+  ];
+
+  /// Opens the active model, trying each backend in [_backendPreference].
+  ///
+  /// Rethrows the last error if every backend fails, so the caller still emits
+  /// [GemmaError] rather than silently continuing without a model.
+  Future<InferenceModel> _openModelWithFallback() async {
+    Object? lastError;
+    StackTrace? lastStackTrace;
+
+    for (final backend in _backendPreference) {
+      try {
+        final model = await FlutterGemma.getActiveModel(
+          maxTokens: _maxTokens,
+          preferredBackend: backend,
+        );
+        if (backend != _backendPreference.first) {
+          debugPrint(
+            'GemmaService: opened model on ${backend.name} after '
+            '${_backendPreference.first.name} failed — inference will be slower',
+          );
+        }
+        return model;
+      } catch (e, st) {
+        debugPrint('GemmaService: ${backend.name} backend failed: $e');
+        lastError = e;
+        lastStackTrace = st;
+      }
+    }
+
+    Error.throwWithStackTrace(lastError!, lastStackTrace!);
+  }
+
   /// Closes the current chat/session and creates a fresh one against the
   /// active model. [loadModel] and [resetChat] both go through here so the
   /// backend/model-type selection can never drift between the two call
@@ -144,12 +187,16 @@ class GemmaService implements IGemmaService {
     final env = GetIt.I.get<IEnvironmentService>();
     final modelType = _determineModelType(env.gemmaModelName);
 
-    // Gemma 4 E2B supports 128K context; use 4096 for a good balance of
-    // context capacity and memory usage on mobile devices.
-    final model = await FlutterGemma.getActiveModel(
-      maxTokens: 4096,
-      preferredBackend: PreferredBackend.gpu,
-    );
+    // GPU (Metal) is preferred for speed, but its init can fail on devices
+    // where the accelerator is unavailable or cannot fit the model — so fall
+    // back to CPU rather than leaving the chat unusable. The plugin resets its
+    // cached model instance when createModel throws, so the retry really does
+    // build a fresh one instead of replaying the failed attempt.
+    //
+    // Note: this only recovers *reported* failures. If the OS kills the process
+    // for exceeding its memory limit there is no Dart error to catch — that is
+    // what the increased-memory-limit entitlement in Runner.entitlements is for.
+    final model = await _openModelWithFallback();
     _model = model;
     _chat = await model.createChat(
       systemInstruction: _vegapunkPrompt,

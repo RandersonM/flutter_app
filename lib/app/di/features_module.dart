@@ -8,19 +8,23 @@ import 'package:opfan/core/services/rag/i_rag_service.dart';
 import 'package:opfan/core/auth/blocs/index.dart';
 import 'package:opfan/core/connectivity/connectivity_cubit.dart';
 import 'package:opfan/features/sanji_cooking/data/repository/cooking_repository_interface.dart';
+import 'package:opfan/features/vegapunk_chat/data/repository/i_vegapunk_chat_history_repository.dart';
 import 'package:opfan/features/vegapunk_chat/data/repository/i_vegapunk_chat_repository.dart';
 import 'package:opfan/features/one_piece/bloc/characters_cubit.dart';
 import 'package:opfan/features/one_piece/bloc/search_cubit.dart';
 import 'package:opfan/features/home/bloc/home_bloc.dart';
 import 'package:opfan/features/devil_fruit/bloc/devil_fruit_bloc.dart';
 import 'package:opfan/features/crews/bloc/index.dart';
+import 'package:opfan/features/nami_finances/bloc/chat/nami_chat_bloc.dart';
 import 'package:opfan/features/nami_finances/bloc/nami_finances_bloc.dart';
 import 'package:opfan/features/zoro_workout/bloc/index.dart';
 import 'package:opfan/features/sanji_cooking/bloc/index.dart';
 import 'package:opfan/features/robin_knowledge/bloc/robin_knowledge_bloc.dart';
 import 'package:opfan/features/vegapunk_chat/cubit/index.dart';
 import 'package:opfan/features/vegapunk_chat/tools/function_registry.dart';
+import 'package:opfan/features/nami_finances/data/services/i_nami_rag_service.dart';
 import 'package:opfan/features/nami_finances/data/services/nami_rag_service.dart';
+import 'package:opfan/features/nami_finances/tools/find_expenses_handler.dart';
 import 'package:opfan/features/nami_finances/tools/get_finances_handler.dart';
 import 'package:opfan/features/nami_finances/tools/finance_calculator_handlers.dart';
 
@@ -29,7 +33,7 @@ import 'package:opfan/features/nami_finances/tools/finance_calculator_handlers.d
 const kNamiToolsRegistry = 'namiToolsRegistry';
 
 void registerFeaturesModule(GetIt getIt) {
-  getIt.registerLazySingleton<NamiRagService>(() => NamiRagService());
+  getIt.registerLazySingleton<INamiRagService>(() => NamiRagService());
 
   // Nami's function-calling tools: finances data + deterministic financial
   // calculators. The handlers are reusable (they could also be registered in
@@ -41,6 +45,15 @@ void registerFeaturesModule(GetIt getIt) {
     registry.register(AffordableInstallmentHandler(financesService: finances));
     registry.register(SimulateGoalPlanHandler(financesService: finances));
     registry.register(BudgetBreakdownHandler(financesService: finances));
+    // Semantic lookup over expense descriptions. Registered here because the
+    // router can emit `findExpenses`; without it that call would find no
+    // handler at execution time.
+    registry.register(
+      FindExpensesHandler(
+        ragService: getIt<INamiRagService>(),
+        financesService: finances,
+      ),
+    );
     return registry;
   }, instanceName: kNamiToolsRegistry);
   getIt.registerFactory<CalculatorCubit>(() => CalculatorCubit());
@@ -82,7 +95,16 @@ void registerFeaturesModule(GetIt getIt) {
   getIt.registerFactory<NamiFinancesBloc>(
     () => NamiFinancesBloc(
       getIt<INamiFinancesService>(),
-      getIt<NamiRagService>(),
+      getIt<INamiRagService>(),
+    ),
+  );
+
+  getIt.registerFactory<NamiChatBloc>(
+    () => NamiChatBloc(
+      getIt<INamiRagService>(),
+      getIt<IGemmaService>(),
+      getIt<INamiFinancesService>(),
+      getIt<FunctionRegistry>(instanceName: kNamiToolsRegistry),
     ),
   );
 
@@ -113,6 +135,7 @@ void registerFeaturesModule(GetIt getIt) {
     () => VegapunkChatCubit(
       repository: getIt<IVegapunkChatRepository>(),
       ragService: getIt<IRAGService>(),
+      historyRepository: getIt<IVegapunkChatHistoryRepository>(),
     ),
   );
 }
@@ -127,5 +150,6 @@ extension FeaturesModuleExtensions on GetIt {
   ZoroWorkoutBloc get zoroWorkoutBloc => get<ZoroWorkoutBloc>();
   SanjiCookingBloc get sanjiCookingBloc => get<SanjiCookingBloc>();
   RobinKnowledgeBloc get robinKnowledgeBloc => get<RobinKnowledgeBloc>();
+  NamiChatBloc get namiChatBloc => get<NamiChatBloc>();
   VegapunkChatCubit get vegapunkChatCubit => get<VegapunkChatCubit>();
 }

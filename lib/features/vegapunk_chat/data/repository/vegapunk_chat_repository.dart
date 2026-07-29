@@ -55,6 +55,19 @@ class VegapunkChatRepository implements IVegapunkChatRepository {
   @override
   Future<void> downloadModel() => _gemma.downloadModel();
 
+  /// Combines lore and session-memory hits into one context list for the
+  /// prompt. Each search has its own scope and topK — see
+  /// `IRAGService.searchLore`/`searchSession` — so a strong lore match can
+  /// no longer crowd out a relevant piece of conversation history, or vice
+  /// versa. An empty result from either (or both) is valid: absence of
+  /// context is not an error.
+  Future<List<String>?> _combinedRagContext(String text) async {
+    final lore = await _rag.searchLore(text);
+    final session = await _rag.searchSession(text);
+    final combined = [...lore, ...session];
+    return combined.isEmpty ? null : combined;
+  }
+
   @override
   Stream<String> sendMessage(String text, {String? styleInstruction}) =>
       _sendWithFunctionCalling(text, styleInstruction: styleInstruction);
@@ -105,8 +118,7 @@ class VegapunkChatRepository implements IVegapunkChatRepository {
           'Answer the following question using the search results above:\n'
           '$text';
 
-      final ragDocs = await _rag.search(text, topK: 2);
-      final ragContext = ragDocs.isEmpty ? null : ragDocs;
+      final ragContext = await _combinedRagContext(text);
 
       await for (final response in _gemma.sendMessage(
         toolContext,
@@ -122,8 +134,7 @@ class VegapunkChatRepository implements IVegapunkChatRepository {
     }
 
     // ── Step 1: RAG context ──────────────────────────────────────────────
-    final ragDocs = await _rag.search(text, topK: 2);
-    final ragContext = ragDocs.isEmpty ? null : ragDocs;
+    final ragContext = await _combinedRagContext(text);
 
     // ── Step 2: Gemma pass (with native function calling) ────────────────
     final buffer = StringBuffer();

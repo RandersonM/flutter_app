@@ -32,7 +32,7 @@ class _EditCrewScreenState extends State<EditCrewScreen> {
   final _boatNameController = TextEditingController();
   List<String> _tags = [];
 
-  final ICrewImageService _crewImageService = CrewImageService();
+  final ICrewImageService _crewImageService = getIt<ICrewImageService>();
   String? _generatedJollyRogerUrl;
   String? _generatedBoatUrl;
   bool _isGeneratingJollyRoger = false;

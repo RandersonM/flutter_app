@@ -1,5 +1,6 @@
 import 'package:opfan/features/nami_finances/data/models/nami_finances_model.dart';
 import 'package:opfan/features/one_piece/data/models/today_character.dart';
+import 'package:opfan/features/vegapunk_chat/data/models/chat_message.dart';
 
 import 'i_storage_service.dart';
 import 'package:hive_flutter/hive_flutter.dart';
@@ -64,6 +65,8 @@ class HiveStorageService implements IStorageService {
         _Registration<ExpenseCategory>(ExpenseCategoryAdapter()),
         _Registration<ReserveModel>(ReserveModelAdapter()),
         _Registration<ReservePurpose>(ReservePurposeAdapter()),
+        _Registration<ChatMessage>(ChatMessageAdapter()),
+        _Registration<MessageRole>(MessageRoleAdapter()),
       ];
 
   @override

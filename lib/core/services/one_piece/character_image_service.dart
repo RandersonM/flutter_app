@@ -1,15 +1,13 @@
 import 'dart:math';
 import 'package:flutter/foundation.dart';
-import 'package:opfan/app/di/injection.dart';
 import 'package:opfan/core/ai/prompts/index.dart';
 import 'package:opfan/core/services/index.dart';
 
 class CharacterImageService implements ICharacterImageService {
-  final GeminiService _geminiService;
+  final IGeminiService _geminiService;
   final Map<String, String> _imageCache = {};
 
-  CharacterImageService({GeminiService? geminiService})
-    : _geminiService = geminiService ?? getIt<GeminiService>();
+  CharacterImageService({required this._geminiService});
 
   String _getCacheKey(String characterName, String prompt) {
     return '${characterName}_${prompt.hashCode}';

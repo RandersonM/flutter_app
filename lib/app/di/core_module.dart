@@ -21,6 +21,8 @@ import 'package:opfan/features/custom_character/data/repository/custom_character
 import 'package:opfan/features/custom_character/data/repository/custom_character_repository_interface.dart';
 import 'package:opfan/features/crews/data/repository/crew_repository.dart';
 import 'package:opfan/features/crews/data/repository/crew_repository_interface.dart';
+import 'package:opfan/features/vegapunk_chat/data/repository/i_vegapunk_chat_history_repository.dart';
+import 'package:opfan/features/vegapunk_chat/data/repository/vegapunk_chat_history_repository.dart';
 import 'package:opfan/features/sanji_cooking/data/repository/cooking_repository.dart';
 import 'package:opfan/features/sanji_cooking/data/repository/cooking_repository_interface.dart';
 import 'package:opfan/features/robin_knowledge/data/repository/planner_repository.dart';
@@ -51,7 +53,10 @@ void registerCoreModule(GetIt getIt) {
   getIt.registerLazySingleton<IYouTubeService>(() => YouTubeService());
   getIt.registerLazySingleton<IGeminiService>(() => GeminiService());
   getIt.registerLazySingleton<ICharacterImageService>(
-    () => CharacterImageService(),
+    () => CharacterImageService(geminiService: getIt<IGeminiService>()),
+  );
+  getIt.registerLazySingleton<ICrewImageService>(
+    () => CrewImageService(geminiService: getIt<IGeminiService>()),
   );
 
   getIt.registerLazySingleton<ICookingRepository>(() => CookingRepository());
@@ -81,6 +86,9 @@ void registerCoreModule(GetIt getIt) {
       getIt<ICrewRepository>(),
       firestoreService: getIt<IFirestoreService>(),
     ),
+  );
+  getIt.registerLazySingleton<IVegapunkChatHistoryRepository>(
+    () => VegapunkChatHistoryRepository(),
   );
   getIt.registerLazySingleton<PlannerRepositoryInterface>(
     () => PlannerRepository(firestoreService: getIt<IFirestoreService>()),
@@ -170,6 +178,7 @@ extension CoreModuleExtensions on GetIt {
   IGeminiService get geminiService => get<IGeminiService>();
   ICharacterImageService get characterImageService =>
       get<ICharacterImageService>();
+  ICrewImageService get crewImageService => get<ICrewImageService>();
   ICookingRepository get cookingRepository => get<ICookingRepository>();
   IUserProfileRepository get userProfileRepository =>
       get<IUserProfileRepository>();
@@ -178,6 +187,8 @@ extension CoreModuleExtensions on GetIt {
   ICustomCharacterRepository get customCharacterRepository =>
       get<ICustomCharacterRepository>();
   ICrewRepository get crewRepository => get<ICrewRepository>();
+  IVegapunkChatHistoryRepository get vegapunkChatHistoryRepository =>
+      get<IVegapunkChatHistoryRepository>();
   PlannerRepositoryInterface get plannerRepository =>
       get<PlannerRepositoryInterface>();
   INamiFinancesService get namiFinancesService => get<INamiFinancesService>();

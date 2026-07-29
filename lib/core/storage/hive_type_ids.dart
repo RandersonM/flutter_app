@@ -20,7 +20,8 @@
 ///   20–29  zoro_workout
 ///   30–39  sanji_cooking
 ///   40–49  robin_knowledge
-///   50+    unassigned — claim the next block and document it here
+///   50–59  vegapunk_chat
+///   60+    unassigned — claim the next block and document it here
 abstract final class HiveTypeIds {
   // ── core (0–9) ──────────────────────────────────────────────────────────
   /// Daily featured character model.
@@ -51,6 +52,13 @@ abstract final class HiveTypeIds {
   /// Enum-like purposes for reserves.
   static const int reservePurpose = 15;
 
+  // ── vegapunk_chat (50–59) ───────────────────────────────────────────────
+  /// A single chat turn (user or assistant) in the Vegapunk chat history.
+  static const int vegapunkChatMessage = 50;
+
+  /// Enum-like role of a [vegapunkChatMessage] (user/assistant).
+  static const int vegapunkMessageRole = 51;
+
   /// Ids that have shipped and must never be reused, even though no adapter
   /// claims them today. Empty for now — add here when a model is deleted.
   static const Set<int> retired = <int>{};
@@ -68,5 +76,7 @@ abstract final class HiveTypeIds {
     expenseCategory,
     reserveModel,
     reservePurpose,
+    vegapunkChatMessage,
+    vegapunkMessageRole,
   ];
 }

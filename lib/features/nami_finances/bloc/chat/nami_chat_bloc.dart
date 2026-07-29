@@ -4,7 +4,7 @@ import 'package:uuid/uuid.dart';
 import 'package:opfan/core/ai/prompts/index.dart';
 import 'package:opfan/core/services/index.dart';
 import 'package:flutter_gemma/core/model_response.dart';
-import 'package:opfan/features/nami_finances/data/services/nami_rag_service.dart';
+import 'package:opfan/features/nami_finances/data/services/i_nami_rag_service.dart';
 import 'package:opfan/features/vegapunk_chat/data/models/chat_message.dart';
 import 'package:opfan/features/vegapunk_chat/tools/function_executor.dart';
 import 'package:opfan/features/vegapunk_chat/tools/function_registry.dart';
@@ -12,7 +12,7 @@ import 'nami_intent_router.dart';
 import 'nami_chat_state.dart';
 
 class NamiChatBloc extends Cubit<NamiChatState> {
-  final NamiRagService _ragService;
+  final INamiRagService _ragService;
   final IGemmaService _gemmaService;
   final INamiFinancesService _financesService;
 
@@ -81,12 +81,13 @@ class NamiChatBloc extends Cubit<NamiChatState> {
     if (isClosed) return;
     emit(
       NamiChatReady(
-        messages: const [
+        messages: [
           ChatMessage(
             id: 'welcome_nami',
             text:
                 'Oi! Eu sou a Nami. Posso analisar suas finanças que salvamos! Pergunte o que quiser sobre os meses registrados.',
             role: MessageRole.assistant,
+            timestamp: DateTime.now(),
           ),
         ],
         error: readyError,
@@ -156,6 +157,7 @@ class NamiChatBloc extends Cubit<NamiChatState> {
       id: _uuid.v4(),
       text: text.trim(),
       role: MessageRole.user,
+      timestamp: DateTime.now(),
     );
 
     emit(
@@ -205,6 +207,7 @@ class NamiChatBloc extends Cubit<NamiChatState> {
                 id: _uuid.v4(),
                 text: finalToken,
                 role: MessageRole.assistant,
+                timestamp: DateTime.now(),
               ),
             ],
             streamingToken: '',

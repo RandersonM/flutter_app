@@ -2,13 +2,13 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:uuid/uuid.dart';
 import 'package:opfan/features/nami_finances/data/models/nami_finances_model.dart';
 import 'package:opfan/core/services/index.dart';
-import 'package:opfan/features/nami_finances/data/services/nami_rag_service.dart';
+import 'package:opfan/features/nami_finances/data/services/i_nami_rag_service.dart';
 import 'nami_finances_event.dart';
 import 'nami_finances_state.dart';
 
 class NamiFinancesBloc extends Bloc<NamiFinancesEvent, NamiFinancesState> {
   final INamiFinancesService _service;
-  final NamiRagService _ragService;
+  final INamiRagService _ragService;
 
   NamiFinancesBloc(this._service, this._ragService)
     : super(NamiFinancesInitial()) {

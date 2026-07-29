@@ -1,23 +1,54 @@
-import 'package:flutter/foundation.dart';
-import 'package:flutter_gemma/flutter_gemma.dart';
-import 'package:opfan/core/services/rag/rag_store_coordinator.dart';
-import 'package:opfan/features/nami_finances/data/models/nami_finances_model.dart';
 import 'dart:convert';
 
-class NamiRagService {
+import 'package:flutter/foundation.dart';
+import 'package:flutter_gemma/flutter_gemma.dart';
+import 'package:hive/hive.dart';
+import 'package:opfan/core/services/rag/rag_store_coordinator.dart';
+import 'package:opfan/features/nami_finances/data/models/expense_match.dart';
+import 'package:opfan/features/nami_finances/data/models/nami_finances_model.dart';
+import 'package:opfan/features/nami_finances/data/services/i_nami_rag_service.dart';
+
+class NamiRagService implements INamiRagService {
   static const _owner = 'nami_finances';
   static const _dbFileName = 'nami_finances_store.db';
+
+  /// Bump to force a full re-index on the next launch.
+  ///
+  /// v1 stored one document per *month*, containing a numeric summary
+  /// ("Receita total: R$ 8.400,00 …"). That was the wrong unit twice over:
+  /// numbers do not embed usefully, and the per-expense descriptions the user
+  /// actually typed were never indexed at all. v2 stores one document per
+  /// expense description. The old documents cannot be deleted individually —
+  /// flutter_gemma exposes no `removeDocument` on its public API — so a version
+  /// change clears the whole store and rebuilds it.
+  static const int _schemaVersion = 2;
+
+  /// `id` prefix marking a document as an indexed expense, so a hit from any
+  /// other document kind can be filtered out even if the store is shared later.
+  static const String _expenseIdPrefix = 'exp:';
+
+  static const String _metaBoxName = 'nami_rag_index_meta';
+  static const String _schemaVersionKey = '__schema_version';
+
+  /// Similarity floor for [findExpenses].
+  ///
+  /// Starting point, not a calibrated value — tune it against real user data.
+  /// Too low and unrelated questions retrieve arbitrary expenses; too high and
+  /// paraphrases stop matching.
+  static const double defaultThreshold = 0.55;
+
   bool _isInitialized = false;
   bool _backfilled = false;
+  Box<dynamic>? _metaBox;
 
-  /// Installs the shared embedding model (see [RagStoreCoordinator]).
+  @override
   Future<void> initialize() async {
     if (_isInitialized) return;
 
     try {
       await RagStoreCoordinator.ensureEmbedderInstalled();
       _isInitialized = true;
-      debugPrint('NamiRagService initialized.');
+      debugPrint('NamiRagService initialized (schema v$_schemaVersion).');
     } catch (e) {
       debugPrint('Failed to initialize NamiRagService: $e');
     }
@@ -29,12 +60,86 @@ class NamiRagService {
   Future<void> _ensureActiveStore() =>
       RagStoreCoordinator.ensureActive(_owner, _dbFileName);
 
-  /// Re-syncs previously saved months that predate the fix for the embedder
-  /// never being activated (see [RagStoreCoordinator.ensureEmbedderInstalled]).
-  /// Before that fix, `syncMonth` silently failed on save — the finances
-  /// were persisted to Hive/Firestore, but never made it into the vector
-  /// store, so the chat had no context for them. Runs once per app session
-  /// (this service is a singleton); safe to call every time the chat opens.
+  Future<Box<dynamic>> _meta() async =>
+      _metaBox ??= await Hive.openBox<dynamic>(_metaBoxName);
+
+  /// Fingerprint of a month's indexed state. Changes whenever the month is
+  /// edited, so [syncMonth] can skip re-embedding an unchanged month.
+  static String _fingerprint(NamiFinancesModel model) =>
+      'v$_schemaVersion:${model.updatedAt.toIso8601String()}';
+
+  /// Drops the whole store when the on-disk index predates [_schemaVersion].
+  /// No-op once migrated.
+  Future<void> _migrateIfNeeded() async {
+    final meta = await _meta();
+    if (meta.get(_schemaVersionKey) == _schemaVersion) return;
+
+    debugPrint('NamiRagService: re-indexing for schema v$_schemaVersion…');
+    await _ensureActiveStore();
+    try {
+      await FlutterGemmaPlugin.instance.clearVectorStore();
+    } catch (e) {
+      debugPrint('NamiRagService: clearVectorStore failed: $e');
+    }
+    await meta.clear();
+    await meta.put(_schemaVersionKey, _schemaVersion);
+  }
+
+  @override
+  Future<void> syncMonth(NamiFinancesModel model) async {
+    if (!_isInitialized) await initialize();
+    if (!_isInitialized) return;
+
+    await _migrateIfNeeded();
+
+    final meta = await _meta();
+    final monthKey = _monthKey(model);
+    if (meta.get(monthKey) == _fingerprint(model)) return;
+
+    await _ensureActiveStore();
+
+    // Only descriptions carry meaning worth embedding. An expense the user
+    // never described has nothing to match on, so indexing it would only add
+    // noise to the nearest-neighbour set.
+    final described = model.expenses.where(
+      (e) => e.description.trim().isNotEmpty,
+    );
+
+    var indexed = 0;
+    for (final expense in described) {
+      final ok = await _indexExpense(expense, monthKey);
+      if (ok) indexed++;
+    }
+
+    await meta.put(monthKey, _fingerprint(model));
+    debugPrint('NamiRagService: indexed $indexed expense(s) for $monthKey');
+  }
+
+  Future<bool> _indexExpense(ExpenseModel expense, String monthKey) async {
+    try {
+      await FlutterGemmaPlugin.instance.addDocument(
+        // Category and month go in the content as words, not numbers: they are
+        // part of how the user refers to a purchase ("comida de julho").
+        id: '$_expenseIdPrefix${expense.id}',
+        content:
+            '${expense.description.trim()} '
+            '(${expense.category.name}, $monthKey)',
+        metadata: jsonEncode({
+          'module': 'nami_finances',
+          'kind': 'expense',
+          'expenseId': expense.id,
+          'month': monthKey,
+          'category': expense.category.name,
+        }),
+      );
+      return true;
+    } catch (e) {
+      debugPrint('NamiRagService: failed to index expense ${expense.id}: $e');
+      return false;
+    }
+  }
+
+  @override
   Future<void> backfillIfNeeded(List<NamiFinancesModel> months) async {
     if (_backfilled || months.isEmpty) return;
     _backfilled = true;
@@ -43,89 +148,65 @@ class NamiRagService {
     }
   }
 
-  /// Natural-language summary of a month's finances — the single source of
-  /// truth for both what gets embedded into the vector store ([syncMonth])
-  /// and what gets injected as deterministic context for "this month" /
-  /// "last month" style questions (see `NamiChatBloc`).
-  static String summarize(NamiFinancesModel model) {
-    final monthStr = model.month.month.toString().padLeft(2, '0');
-    final yearStr = model.month.year.toString();
-
-    // NOTE: previously this used a nested single-quoted string with escaped
-    // `\$` markers, which suppressed interpolation entirely — every synced
-    // document had the literal text "${e.key.name}: R$ ${e.value...}" for
-    // its category breakdown instead of real numbers.
-    final categoryBreakdown = model.expensesByCategory.entries
-        .map((e) => '${e.key.name}: R\$ ${e.value.toStringAsFixed(2)}')
-        .join(', ');
-
-    final reserveBreakdown = model.reserves.isEmpty
-        ? ''
-        : model.reserves
-              .map(
-                (r) =>
-                    '${r.purpose.name}: R\$ ${r.amount.toStringAsFixed(2)}'
-                    '${r.note.isNotEmpty ? ' (${r.note})' : ''}',
-              )
-              .join(', ');
-
-    final goalPart = model.reserveGoal != null && model.reserveGoal! > 0
-        ? "Meta de reserva: R\$ ${model.reserveGoal!.toStringAsFixed(2)}. "
-        : '';
-
-    return "Resumo financeiro de $monthStr/$yearStr. "
-        "Receita total: R\$ ${model.totalIncome.toStringAsFixed(2)}. "
-        "Despesas totais: R\$ ${model.totalExpenses.toStringAsFixed(2)}. "
-        "Despesas por categoria: $categoryBreakdown. "
-        "Total reservado no mês: R\$ ${model.totalReserves.toStringAsFixed(2)}. "
-        "${reserveBreakdown.isNotEmpty ? 'Reservas por finalidade: $reserveBreakdown. ' : ''}"
-        "$goalPart"
-        "Saldo disponível: R\$ ${model.availableAmount.toStringAsFixed(2)}.";
-  }
-
-  /// Syncs a monthly finances model into the vector store as a RAG document
-  Future<void> syncMonth(NamiFinancesModel model) async {
+  @override
+  Future<List<ExpenseMatch>> findExpenses(
+    String query, {
+    int topK = 8,
+    double threshold = defaultThreshold,
+  }) async {
+    if (query.trim().isEmpty) return const [];
     if (!_isInitialized) await initialize();
-    await _ensureActiveStore();
+    if (!_isInitialized) return const [];
 
-    final monthStr = model.month.month.toString().padLeft(2, '0');
-    final yearStr = model.month.year.toString();
-    final content = summarize(model);
-
-    final metadata = jsonEncode({
-      "module": "nami_finances",
-      "year": yearStr,
-      "month": monthStr,
-    });
-
-    try {
-      await FlutterGemmaPlugin.instance.addDocument(
-        id: model.id,
-        content: content,
-        metadata: metadata,
-      );
-      debugPrint('Synced Nami finances document for $monthStr/$yearStr');
-    } catch (e) {
-      debugPrint('Failed to sync document to NamiRagService: $e');
-    }
-  }
-
-  /// Performs a semantic search against the finances store
-  Future<List<String>> searchSimilar(String query, {int topK = 3}) async {
-    if (!_isInitialized) await initialize();
     await _ensureActiveStore();
 
     try {
-      // NOTE: flutter_gemma searchSimilar handles the embeddings mapping automatically
-      // when addDocument was used.
       final results = await FlutterGemmaPlugin.instance.searchSimilar(
         query: query,
         topK: topK,
+        threshold: threshold,
       );
-      return results.map((r) => r.content).toList();
+
+      final matches = <ExpenseMatch>[];
+      for (final result in results) {
+        if (!result.id.startsWith(_expenseIdPrefix)) continue;
+        // `threshold` is honoured by the store, but re-check: a backend that
+        // ignores it would otherwise silently return low-relevance rows.
+        if (result.similarity < threshold) continue;
+
+        final monthKey = _monthKeyFromMetadata(result.metadata);
+        if (monthKey == null) continue;
+
+        matches.add(
+          ExpenseMatch(
+            expenseId: result.id.substring(_expenseIdPrefix.length),
+            monthKey: monthKey,
+            similarity: result.similarity,
+          ),
+        );
+      }
+
+      matches.sort((a, b) => b.similarity.compareTo(a.similarity));
+      return matches;
     } catch (e) {
-      debugPrint('Failed semantic search in NamiRagService: $e');
-      return [];
+      debugPrint('NamiRagService: findExpenses failed: $e');
+      return const [];
     }
   }
+
+  static String? _monthKeyFromMetadata(String? metadata) {
+    if (metadata == null || metadata.isEmpty) return null;
+    try {
+      final decoded = jsonDecode(metadata);
+      if (decoded is Map && decoded['month'] is String) {
+        return decoded['month'] as String;
+      }
+    } catch (_) {
+      // Malformed metadata — treat as a non-match rather than throwing.
+    }
+    return null;
+  }
+
+  static String _monthKey(NamiFinancesModel model) =>
+      '${model.month.year}-${model.month.month.toString().padLeft(2, '0')}';
 }
