@@ -2,6 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:opfan/shared/utils/constants.dart';
 
 /// Renders streaming LLM output with a blinking cursor while generating.
+///
+/// Uses lightweight [Text.rich] during active streaming to avoid re-parsing
+/// Markdown on every token (~80 ms) + cursor animation tick (~530 ms).
+/// Once streaming stops, the message is committed to [ChatMessageBubble]
+/// which renders full Markdown — so there is no visual gap.
 class StreamingText extends StatefulWidget {
   const StreamingText({
     super.key,
@@ -39,6 +44,8 @@ class _StreamingTextState extends State<StreamingText>
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
 
+    // Static path (not actively streaming) — plain text is fine here since
+    // committed messages are always re-rendered by ChatMessageBubble.
     if (!widget.isStreaming || widget.text.isEmpty) {
       return Text(
         widget.text,
@@ -49,6 +56,8 @@ class _StreamingTextState extends State<StreamingText>
       );
     }
 
+    // Hot path (streaming) — use Text.rich + blinking cursor.
+    // Deliberately avoids Markdown parsing on every rebuild.
     return AnimatedBuilder(
       animation: _cursor,
       builder: (context, _) {

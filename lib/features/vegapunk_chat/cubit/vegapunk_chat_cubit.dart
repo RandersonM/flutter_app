@@ -43,6 +43,12 @@ class VegapunkChatCubit extends Cubit<VegapunkChatState> {
   Timer? _emitTimer;
   Timer? _sessionDocTimer;
 
+  /// Watchdog: cancels generation if no token arrives within this duration.
+  /// Protects against native LiteRT inference stalls after Android lifecycle
+  /// interruptions (GPU/NPU suspended by OS → stream starts but never emits).
+  static const _generationTimeout = Duration(seconds: 90);
+  Timer? _watchdogTimer;
+
   static const _uuid = Uuid();
 
   /// Loaded once in [initialize], read by [_onModelStatus] when it constructs
@@ -188,6 +194,10 @@ class VegapunkChatCubit extends Cubit<VegapunkChatState> {
       emit(current.copyWith(streamingToken: current.streamingToken + buffered));
     });
 
+    // Start the watchdog — rearmed on every stream event (tokens and tool
+    // sentinels alike), cancelled on done/error.
+    _armWatchdog();
+
     _streamSub = _repository
         .sendMessage(text.trim(), styleInstruction: instruction)
         .listen(
@@ -195,20 +205,25 @@ class VegapunkChatCubit extends Cubit<VegapunkChatState> {
             if (state is! VegapunkChatReady) return;
             final current = state as VegapunkChatReady;
 
+            // Any event reaching here means inference is alive — including
+            // tool execution, which can legitimately take longer than a
+            // plain text token (e.g. a web search).
+            _armWatchdog();
+
             // Handle sentinel tokens from the repository's function calling loop.
-            if (token == VegapunkChatRepository.searchingWebSentinel) {
+            final parsedTool = VegapunkChatRepository.parseToolName(token);
+            if (parsedTool != null) {
+              // A tool started executing — the widget layer resolves the
+              // display label from this raw name.
               _emitTimer?.cancel();
               _tokenBuffer.clear();
               emit(
-                current.copyWith(
-                  isSearchingWeb: true,
-                  streamingToken: '', // Clear any hallucinated text or raw JSON
-                ),
+                current.copyWith(activeToolName: parsedTool, streamingToken: ''),
               );
               return;
             }
-            if (token == VegapunkChatRepository.searchingDoneSentinel) {
-              emit(current.copyWith(isSearchingWeb: false));
+            if (token == VegapunkChatRepository.toolDoneSentinel) {
+              emit(current.copyWith(activeToolName: null));
               return;
             }
 
@@ -217,6 +232,8 @@ class VegapunkChatCubit extends Cubit<VegapunkChatState> {
           },
           onDone: () {
             _emitTimer?.cancel();
+            _watchdogTimer?.cancel();
+            _watchdogTimer = null;
             // Flush remaining buffered tokens before committing.
             if (_tokenBuffer.isNotEmpty && state is VegapunkChatReady) {
               final current = state as VegapunkChatReady;
@@ -232,12 +249,28 @@ class VegapunkChatCubit extends Cubit<VegapunkChatState> {
           },
           onError: (Object e) {
             _emitTimer?.cancel();
+            _watchdogTimer?.cancel();
+            _watchdogTimer = null;
             _tokenBuffer.clear();
             debugPrint('VegapunkChatCubit stream error: $e');
             _commitStreamingMessage();
           },
           cancelOnError: true,
         );
+  }
+
+  /// (Re)arms the generation watchdog. Called once when a message is sent,
+  /// then again on every stream event — token or tool sentinel — so a
+  /// long-running tool call is not mistaken for a stalled inference.
+  void _armWatchdog() {
+    _watchdogTimer?.cancel();
+    _watchdogTimer = Timer(_generationTimeout, () {
+      debugPrint(
+        'VegapunkChatCubit: generation watchdog fired — '
+        'no token for ${_generationTimeout.inSeconds}s, cancelling',
+      );
+      stopGeneration();
+    });
   }
 
   Future<void> stopGeneration() async {
@@ -323,6 +356,7 @@ class VegapunkChatCubit extends Cubit<VegapunkChatState> {
         messages: updated,
         streamingToken: '',
         isGenerating: false,
+        activeToolName: null,
       ),
     );
 
@@ -449,6 +483,8 @@ class VegapunkChatCubit extends Cubit<VegapunkChatState> {
   Future<void> _cancelStream() async {
     _emitTimer?.cancel();
     _emitTimer = null;
+    _watchdogTimer?.cancel();
+    _watchdogTimer = null;
     _tokenBuffer.clear();
     await _streamSub?.cancel();
     _streamSub = null;

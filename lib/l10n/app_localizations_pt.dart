@@ -2564,6 +2564,28 @@ class AppLocalizationsPt extends AppLocalizations {
       'Ativa o raciocínio lógico (aumenta memória e latência)';
 
   @override
+  String get vegapunkToolSearchInternet => '🌐 Pesquisando na web…';
+
+  @override
+  String get vegapunkToolGetCharacterInfo =>
+      '🏴‍☠️ Buscando info do personagem…';
+
+  @override
+  String get vegapunkToolGetUserProfile => '👤 Buscando seu perfil…';
+
+  @override
+  String get vegapunkToolGetWorkoutHistory =>
+      '💪 Buscando histórico de treino…';
+
+  @override
+  String get vegapunkToolSaveWorkout => '💾 Salvando treino…';
+
+  @override
+  String vegapunkToolGeneric(String toolName) {
+    return '⚙️ Executando $toolName…';
+  }
+
+  @override
   String get cookingPersonalizedMealTitle =>
       'Refeição Personalizada com o Sanji';
 

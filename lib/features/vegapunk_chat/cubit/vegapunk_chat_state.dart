@@ -33,7 +33,7 @@ class VegapunkChatReady extends VegapunkChatState {
     this.isGenerating = false,
     this.selectedSatellite = VegapunkSatellite.stella,
     this.isThinkingMode = false,
-    this.isSearchingWeb = false,
+    this.activeToolName,
   });
 
   final List<ChatMessage> messages;
@@ -47,9 +47,11 @@ class VegapunkChatReady extends VegapunkChatState {
 
   final bool isThinkingMode;
 
-  /// True while Gemma has triggered a web search and we are awaiting
-  /// the Tavily result. Used to show a "Searching the web…" indicator.
-  final bool isSearchingWeb;
+  /// Non-null while a tool is executing. Holds the raw registered tool name
+  /// (e.g. "getWorkoutHistory") — not a display label. The cubit has no
+  /// BuildContext, so localization of the label happens in the widget layer
+  /// via `AppLocalizations`. Null means no tool is running.
+  final String? activeToolName;
 
   @override
   List<Object?> get props => [
@@ -58,7 +60,7 @@ class VegapunkChatReady extends VegapunkChatState {
     isGenerating,
     selectedSatellite,
     isThinkingMode,
-    isSearchingWeb,
+    activeToolName,
   ];
 
   VegapunkChatReady copyWith({
@@ -67,15 +69,20 @@ class VegapunkChatReady extends VegapunkChatState {
     bool? isGenerating,
     VegapunkSatellite? selectedSatellite,
     bool? isThinkingMode,
-    bool? isSearchingWeb,
+    // Use Object? sentinel to allow explicitly setting to null.
+    Object? activeToolName = _keepCurrent,
   }) => VegapunkChatReady(
     messages: messages ?? this.messages,
     streamingToken: streamingToken ?? this.streamingToken,
     isGenerating: isGenerating ?? this.isGenerating,
     selectedSatellite: selectedSatellite ?? this.selectedSatellite,
     isThinkingMode: isThinkingMode ?? this.isThinkingMode,
-    isSearchingWeb: isSearchingWeb ?? this.isSearchingWeb,
+    activeToolName: activeToolName == _keepCurrent
+        ? this.activeToolName
+        : activeToolName as String?,
   );
+
+  static const _keepCurrent = Object();
 }
 
 class VegapunkChatError extends VegapunkChatState {

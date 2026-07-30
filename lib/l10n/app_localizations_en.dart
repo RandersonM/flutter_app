@@ -2554,6 +2554,26 @@ class AppLocalizationsEn extends AppLocalizations {
       'Enable reasoning trace (increases memory and latency)';
 
   @override
+  String get vegapunkToolSearchInternet => '🌐 Searching the web…';
+
+  @override
+  String get vegapunkToolGetCharacterInfo => '🏴‍☠️ Looking up character info…';
+
+  @override
+  String get vegapunkToolGetUserProfile => '👤 Looking up your profile…';
+
+  @override
+  String get vegapunkToolGetWorkoutHistory => '💪 Looking up workout history…';
+
+  @override
+  String get vegapunkToolSaveWorkout => '💾 Saving workout…';
+
+  @override
+  String vegapunkToolGeneric(String toolName) {
+    return '⚙️ Running $toolName…';
+  }
+
+  @override
   String get cookingPersonalizedMealTitle => 'Personalized Meal with Sanji';
 
   @override

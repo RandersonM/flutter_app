@@ -4230,6 +4230,36 @@
   "@vegapunkThinkingModeDesc": {
     "description": "Description text for Vegapunk Thinking Mode toggle switch"
   },
+  "vegapunkToolSearchInternet": "🌐 Searching the web…",
+  "@vegapunkToolSearchInternet": {
+    "description": "Activity label shown while the searchInternet tool is executing"
+  },
+  "vegapunkToolGetCharacterInfo": "🏴‍☠️ Looking up character info…",
+  "@vegapunkToolGetCharacterInfo": {
+    "description": "Activity label shown while the getCharacterInfo tool is executing"
+  },
+  "vegapunkToolGetUserProfile": "👤 Looking up your profile…",
+  "@vegapunkToolGetUserProfile": {
+    "description": "Activity label shown while the getUserProfile tool is executing"
+  },
+  "vegapunkToolGetWorkoutHistory": "💪 Looking up workout history…",
+  "@vegapunkToolGetWorkoutHistory": {
+    "description": "Activity label shown while the getWorkoutHistory tool is executing"
+  },
+  "vegapunkToolSaveWorkout": "💾 Saving workout…",
+  "@vegapunkToolSaveWorkout": {
+    "description": "Activity label shown while the saveWorkout tool is executing"
+  },
+  "vegapunkToolGeneric": "⚙️ Running {toolName}…",
+  "@vegapunkToolGeneric": {
+    "description": "Fallback activity label shown while an unrecognized tool is executing",
+    "placeholders": {
+      "toolName": {
+        "type": "String",
+        "example": "getCharacterInfo"
+      }
+    }
+  },
   "cookingPersonalizedMealTitle": "Personalized Meal with Sanji",
   "@cookingPersonalizedMealTitle": {
     "description": "Header card title on the cooking tips screen"

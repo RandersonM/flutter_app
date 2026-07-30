@@ -4796,6 +4796,42 @@ abstract class AppLocalizations {
   /// **'Enable reasoning trace (increases memory and latency)'**
   String get vegapunkThinkingModeDesc;
 
+  /// Activity label shown while the searchInternet tool is executing
+  ///
+  /// In en, this message translates to:
+  /// **'🌐 Searching the web…'**
+  String get vegapunkToolSearchInternet;
+
+  /// Activity label shown while the getCharacterInfo tool is executing
+  ///
+  /// In en, this message translates to:
+  /// **'🏴‍☠️ Looking up character info…'**
+  String get vegapunkToolGetCharacterInfo;
+
+  /// Activity label shown while the getUserProfile tool is executing
+  ///
+  /// In en, this message translates to:
+  /// **'👤 Looking up your profile…'**
+  String get vegapunkToolGetUserProfile;
+
+  /// Activity label shown while the getWorkoutHistory tool is executing
+  ///
+  /// In en, this message translates to:
+  /// **'💪 Looking up workout history…'**
+  String get vegapunkToolGetWorkoutHistory;
+
+  /// Activity label shown while the saveWorkout tool is executing
+  ///
+  /// In en, this message translates to:
+  /// **'💾 Saving workout…'**
+  String get vegapunkToolSaveWorkout;
+
+  /// Fallback activity label shown while an unrecognized tool is executing
+  ///
+  /// In en, this message translates to:
+  /// **'⚙️ Running {toolName}…'**
+  String vegapunkToolGeneric(String toolName);
+
   /// Header card title on the cooking tips screen
   ///
   /// In en, this message translates to:

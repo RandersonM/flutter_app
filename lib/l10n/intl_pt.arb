@@ -3866,6 +3866,47 @@
     "type": "text",
     "placeholders": {}
   },
+  "vegapunkToolSearchInternet": "🌐 Pesquisando na web…",
+  "@vegapunkToolSearchInternet": {
+    "description": "Activity label shown while the searchInternet tool is executing",
+    "type": "text",
+    "placeholders": {}
+  },
+  "vegapunkToolGetCharacterInfo": "🏴‍☠️ Buscando info do personagem…",
+  "@vegapunkToolGetCharacterInfo": {
+    "description": "Activity label shown while the getCharacterInfo tool is executing",
+    "type": "text",
+    "placeholders": {}
+  },
+  "vegapunkToolGetUserProfile": "👤 Buscando seu perfil…",
+  "@vegapunkToolGetUserProfile": {
+    "description": "Activity label shown while the getUserProfile tool is executing",
+    "type": "text",
+    "placeholders": {}
+  },
+  "vegapunkToolGetWorkoutHistory": "💪 Buscando histórico de treino…",
+  "@vegapunkToolGetWorkoutHistory": {
+    "description": "Activity label shown while the getWorkoutHistory tool is executing",
+    "type": "text",
+    "placeholders": {}
+  },
+  "vegapunkToolSaveWorkout": "💾 Salvando treino…",
+  "@vegapunkToolSaveWorkout": {
+    "description": "Activity label shown while the saveWorkout tool is executing",
+    "type": "text",
+    "placeholders": {}
+  },
+  "vegapunkToolGeneric": "⚙️ Executando {toolName}…",
+  "@vegapunkToolGeneric": {
+    "description": "Fallback activity label shown while an unrecognized tool is executing",
+    "type": "text",
+    "placeholders": {
+      "toolName": {
+        "type": "String",
+        "example": "getCharacterInfo"
+      }
+    }
+  },
   "cookingPersonalizedMealTitle": "Refeição Personalizada com o Sanji",
   "@cookingPersonalizedMealTitle": {
     "description": "Header card title on the cooking tips screen"

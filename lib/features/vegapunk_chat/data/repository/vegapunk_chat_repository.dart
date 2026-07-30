@@ -92,7 +92,7 @@ class VegapunkChatRepository implements IVegapunkChatRepository {
       );
 
       // Execute the tool directly without asking the model
-      yield _searchingWebSentinel;
+      yield toolStartSentinel(intent.toolName);
 
       final toolCall = ToolCall(
         name: intent.toolName,
@@ -103,7 +103,7 @@ class VegapunkChatRepository implements IVegapunkChatRepository {
         'VegapunkChatRepository: pre-model tool result (isError=${result.isError})',
       );
 
-      yield _searchingDoneSentinel;
+      yield toolDoneSentinel;
 
       // Inject the result as context and let the model generate a response
       String safeContent = result.content;
@@ -176,7 +176,7 @@ class VegapunkChatRepository implements IVegapunkChatRepository {
 
     // ── Step 3: Handle native function call ───────────────────────────────
     if (nativeFunctionCall != null) {
-      yield _searchingWebSentinel;
+      yield toolStartSentinel(nativeFunctionCall.name);
 
       final toolCall = ToolCall(
         name: nativeFunctionCall.name,
@@ -187,7 +187,7 @@ class VegapunkChatRepository implements IVegapunkChatRepository {
         'VegapunkChatRepository: native tool result (isError=${result.isError})',
       );
 
-      yield _searchingDoneSentinel;
+      yield toolDoneSentinel;
 
       // Send tool result back to the model for the second pass
       // using the native Message.toolResponse API.
@@ -239,7 +239,7 @@ class VegapunkChatRepository implements IVegapunkChatRepository {
         '${textParsedCall.name}',
       );
 
-      yield _searchingWebSentinel;
+      yield toolStartSentinel(textParsedCall.name);
 
       final result = await _registry.execute(textParsedCall);
       debugPrint(
@@ -258,7 +258,7 @@ class VegapunkChatRepository implements IVegapunkChatRepository {
           'Answer the original question using the results above:\n'
           '$text';
 
-      yield _searchingDoneSentinel;
+      yield toolDoneSentinel;
 
       await for (final response in _gemma.sendMessage(
         toolContext,
@@ -276,11 +276,27 @@ class VegapunkChatRepository implements IVegapunkChatRepository {
   }
 
   // ── Sentinel tokens (not displayed to user) ──────────────────────────────
-  static const searchingWebSentinel = '\x00SEARCHING_WEB\x00';
-  static const searchingDoneSentinel = '\x00SEARCHING_DONE\x00';
 
-  static const _searchingWebSentinel = searchingWebSentinel;
-  static const _searchingDoneSentinel = searchingDoneSentinel;
+  /// Emitted into the stream when a tool starts executing. The [toolName] is
+  /// embedded so the cubit can extract it and display a specific label.
+  static String toolStartSentinel(String toolName) =>
+      '\x00TOOL_START:$toolName\x00';
+
+  /// Emitted when a tool finishes (success or error).
+  static const toolDoneSentinel = '\x00TOOL_DONE\x00';
+
+  /// Legacy aliases kept for any external code that still references them.
+  static String get searchingWebSentinel => toolStartSentinel('searchInternet');
+  static String get searchingDoneSentinel => toolDoneSentinel;
+
+  /// Parses a [toolStartSentinel] and returns the embedded tool name,
+  /// or null if [token] is not a tool-start sentinel.
+  static String? parseToolName(String token) {
+    if (token.startsWith('\x00TOOL_START:') && token.endsWith('\x00')) {
+      return token.substring('\x00TOOL_START:'.length, token.length - 1);
+    }
+    return null;
+  }
 
   @override
   Future<void> stopGeneration() => _gemma.stopGeneration();

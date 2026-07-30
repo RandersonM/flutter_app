@@ -76,6 +76,34 @@ class _VegapunkChatViewState extends State<_VegapunkChatView> {
       appBar: DefaultAppBar(
         title: Text(l10n.vegapunkChatTitle),
         actions: [
+          // Thinking-mode compact toggle in the AppBar
+          BlocBuilder<VegapunkChatCubit, VegapunkChatState>(
+            buildWhen: (prev, curr) =>
+                prev is VegapunkChatReady && curr is VegapunkChatReady
+                ? prev.isThinkingMode != curr.isThinkingMode
+                : prev.runtimeType != curr.runtimeType,
+            builder: (context, state) {
+              if (state is! VegapunkChatReady) return const SizedBox.shrink();
+              final isThinking = state.isThinkingMode;
+              return IconButton(
+                icon: Icon(
+                  PhosphorIconsRegular.brain,
+                  color: isThinking
+                      ? Theme.of(context).colorScheme.primary
+                      : Theme.of(
+                          context,
+                        ).colorScheme.onSurface.withValues(alpha: 0.4),
+                ),
+                tooltip: isThinking
+                    ? l10n.vegapunkThinkingMode
+                    : l10n.vegapunkThinkingModeDesc,
+                onPressed: () => context
+                    .read<VegapunkChatCubit>()
+                    .toggleThinkingMode(!isThinking),
+              );
+            },
+          ),
+          // Reset button
           BlocBuilder<VegapunkChatCubit, VegapunkChatState>(
             buildWhen: (prev, curr) =>
                 curr is VegapunkChatReady && prev is VegapunkChatReady
@@ -118,19 +146,14 @@ class _VegapunkChatViewState extends State<_VegapunkChatView> {
                     .read<VegapunkChatCubit>()
                     .changeSatellite(satellite),
               ),
-              _ThinkingModeToggle(
-                isEnabled: state.isThinkingMode,
-                onChanged: (enabled) => context
-                    .read<VegapunkChatCubit>()
-                    .toggleThinkingMode(enabled),
-              ),
               Expanded(
                 child: _ChatList(
                   state: state,
                   scrollController: _scrollController,
                 ),
               ),
-              if (state.isSearchingWeb) const _WebSearchIndicator(),
+              if (state.activeToolName != null)
+                _ToolActivityIndicator(toolName: state.activeToolName!),
               ChatInputBar(
                 isGenerating: state.isGenerating,
                 enabled: true,
@@ -443,87 +466,33 @@ class _SatelliteSelector extends StatelessWidget {
   }
 }
 
-class _ThinkingModeToggle extends StatelessWidget {
-  const _ThinkingModeToggle({required this.isEnabled, required this.onChanged});
+/// Animated indicator shown while a tool is executing.
+/// [toolName] is the raw registered tool name provided by the cubit (e.g.
+/// "getWorkoutHistory"); it's resolved to a localized label here, where
+/// `AppLocalizations` is available.
+class _ToolActivityIndicator extends StatefulWidget {
+  const _ToolActivityIndicator({required this.toolName});
 
-  final bool isEnabled;
-  final ValueChanged<bool> onChanged;
-
-  @override
-  Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    final l10n = AppLocalizations.of(context)!;
-
-    return Container(
-      margin: const EdgeInsets.symmetric(
-        horizontal: Constants.size16,
-        vertical: Constants.size12,
-      ),
-      padding: const EdgeInsets.symmetric(
-        horizontal: Constants.size16,
-        vertical: Constants.size12,
-      ),
-      decoration: BoxDecoration(
-        color: theme.colorScheme.surfaceContainerLow,
-        borderRadius: BorderRadius.circular(Constants.size12),
-        border: Border.all(
-          color: theme.colorScheme.outlineVariant.withValues(alpha: 0.2),
-          width: 1,
-        ),
-      ),
-      child: Row(
-        children: [
-          Icon(
-            PhosphorIconsRegular.brain,
-            color: isEnabled
-                ? theme.colorScheme.primary
-                : theme.colorScheme.onSurfaceVariant,
-            size: Constants.size24,
-          ),
-          const SizedBox(width: Constants.size12),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Text(
-                  l10n.vegapunkThinkingMode,
-                  style: theme.textTheme.titleSmall?.copyWith(
-                    fontWeight: FontWeight.bold,
-                    color: theme.colorScheme.onSurface,
-                  ),
-                ),
-                const SizedBox(height: 2),
-                Text(
-                  l10n.vegapunkThinkingModeDesc,
-                  style: theme.textTheme.bodySmall?.copyWith(
-                    color: theme.colorScheme.onSurfaceVariant,
-                  ),
-                ),
-              ],
-            ),
-          ),
-          const SizedBox(width: Constants.size12),
-          Switch.adaptive(
-            value: isEnabled,
-            onChanged: onChanged,
-            activeThumbColor: theme.colorScheme.primary,
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-/// Animated indicator shown while Gemma is performing a web search via Tavily.
-class _WebSearchIndicator extends StatefulWidget {
-  const _WebSearchIndicator();
+  final String toolName;
 
   @override
-  State<_WebSearchIndicator> createState() => _WebSearchIndicatorState();
+  State<_ToolActivityIndicator> createState() => _ToolActivityIndicatorState();
 }
 
-class _WebSearchIndicatorState extends State<_WebSearchIndicator>
+/// Maps a registered tool name to a localized, human-readable activity
+/// label. Falls back gracefully for unknown tools so new tools added to the
+/// registry are covered automatically.
+String _toolActivityLabel(AppLocalizations l10n, String toolName) =>
+    switch (toolName) {
+      'searchInternet' => l10n.vegapunkToolSearchInternet,
+      'getCharacterInfo' => l10n.vegapunkToolGetCharacterInfo,
+      'getUserProfile' => l10n.vegapunkToolGetUserProfile,
+      'getWorkoutHistory' => l10n.vegapunkToolGetWorkoutHistory,
+      'saveWorkout' => l10n.vegapunkToolSaveWorkout,
+      _ => l10n.vegapunkToolGeneric(toolName),
+    };
+
+class _ToolActivityIndicatorState extends State<_ToolActivityIndicator>
     with SingleTickerProviderStateMixin {
   late final AnimationController _controller;
   late final Animation<double> _pulseAnimation;
@@ -551,6 +520,8 @@ class _WebSearchIndicatorState extends State<_WebSearchIndicator>
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final colorScheme = theme.colorScheme;
+    final l10n = AppLocalizations.of(context)!;
+    final label = _toolActivityLabel(l10n, widget.toolName);
 
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
@@ -573,14 +544,8 @@ class _WebSearchIndicatorState extends State<_WebSearchIndicator>
               child: Row(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  Icon(
-                    PhosphorIconsRegular.globe,
-                    size: 14,
-                    color: colorScheme.primary,
-                  ),
-                  const SizedBox(width: 6),
                   Text(
-                    'Searching the web…',
+                    label,
                     style: theme.textTheme.labelSmall?.copyWith(
                       color: colorScheme.onPrimaryContainer,
                       fontWeight: FontWeight.w600,
