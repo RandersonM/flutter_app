@@ -206,7 +206,9 @@ class _DevilFruitListView extends StatelessWidget {
             mainAxisSize: MainAxisSize.min,
             children: [
               Text(
-                '${AppLocalizations.of(context)!.type}: ${fruit.type}',
+                AppLocalizations.of(
+                  context,
+                )!.labelValue(AppLocalizations.of(context)!.type, fruit.type),
                 style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                   color: Theme.of(context).primaryColor,
                   fontWeight: FontWeight.bold,

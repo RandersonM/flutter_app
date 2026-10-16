@@ -198,7 +198,9 @@ class _RobinKnowledgeView extends StatelessWidget {
                                   ?.copyWith(fontWeight: FontWeight.bold),
                             ),
                             Text(
-                              '${state.goals.length} ${AppLocalizations.of(context)!.total}',
+                              AppLocalizations.of(
+                                context,
+                              )!.goalsTotal(state.goals.length),
                               style: Theme.of(context).textTheme.bodySmall
                                   ?.copyWith(
                                     color: Theme.of(

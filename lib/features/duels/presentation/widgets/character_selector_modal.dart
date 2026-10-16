@@ -126,7 +126,9 @@ class CharacterSelectionModalState extends State<CharacterSelectionModal> {
             child: filteredCharacters.isEmpty
                 ? Center(
                     child: Text(
-                      l10n.noResultsFound,
+                      _searchController.text.isEmpty
+                          ? l10n.noCharactersAvailable
+                          : l10n.noResultsFoundFor(_searchController.text),
                       style: TextStyle(
                         color: Theme.of(context).colorScheme.onSurfaceVariant,
                       ),

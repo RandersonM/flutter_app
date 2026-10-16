@@ -74,7 +74,7 @@ class CrewMembersList extends StatelessWidget {
                 ),
                 const SizedBox(width: Constants.margin),
                 Text(
-                  '${crew.members.length} ${l10n.members(crew.members.length)}',
+                  l10n.membersCount(crew.members.length),
                   style: theme.textTheme.titleLarge?.copyWith(
                     fontWeight: FontWeight.bold,
                     color: theme.colorScheme.primary,

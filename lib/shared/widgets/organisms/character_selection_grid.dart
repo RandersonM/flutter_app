@@ -112,7 +112,9 @@ class _CharacterSelectionGridView extends StatelessWidget {
                   ),
                   const SizedBox(height: Constants.margin),
                   Text(
-                    '${AppLocalizations.of(context)!.noResultsFound} "${state.query}"',
+                    AppLocalizations.of(
+                      context,
+                    )!.noResultsFoundFor(state.query),
                     style: Theme.of(context).textTheme.titleMedium,
                     textAlign: TextAlign.center,
                   ),

@@ -54,9 +54,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String get noResearchYet => 'No research done yet.';
 
   @override
-  String get noResultsFound => 'No results found for';
-
-  @override
   String occupation(num count) {
     String _temp0 = intl.Intl.pluralLogic(
       count,
@@ -488,7 +485,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get boat => ' Boat';
 
   @override
-  String get crewBoatName => ' Boat name';
+  String get crewBoatName => 'Boat name';
 
   @override
   String get crewRole => 'Crew Role';
@@ -933,18 +930,6 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get resetDuel => 'Reset';
-
-  @override
-  String hakiType(num count) {
-    String _temp0 = intl.Intl.pluralLogic(
-      count,
-      locale: localeName,
-      other: 'types',
-      one: 'type',
-      zero: 'types',
-    );
-    return '$_temp0';
-  }
 
   @override
   String get newDuel => 'New Duel';
@@ -1751,9 +1736,6 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get recentObjectives => 'Recent Objectives';
-
-  @override
-  String get total => 'total';
 
   @override
   String get errorLoadingObjectives => 'Error loading objectives';
@@ -3118,4 +3100,42 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get errorBoundaryMessage =>
       'An unexpected error occurred in the user interface. Don\'t worry, the Straw Hats are on it!';
+
+  @override
+  String labelValue(String label, String value) {
+    return '$label: $value';
+  }
+
+  @override
+  String membersCount(num count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count members',
+      one: '1 member',
+      zero: 'No members',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String hakiTypesCount(num count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count types',
+      one: '1 type',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String goalsTotal(int count) {
+    return '$count total';
+  }
+
+  @override
+  String noResultsFoundFor(String query) {
+    return 'No results found for \"$query\"';
+  }
 }
