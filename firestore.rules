@@ -1,0 +1,70 @@
+rules_version = '2';
+
+// Cloud Functions use the Admin SDK and bypass these rules.
+// Collections without a match block are denied to clients.
+service cloud.firestore {
+  match /databases/{database}/documents {
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    function isOwner(userId) {
+      return isSignedIn() && request.auth.uid == userId;
+    }
+
+    function createsOwn() {
+      return isOwner(request.resource.data.get('userId', null));
+    }
+
+    function keepsUserId() {
+      return request.resource.data.get('userId', null) == resource.data.get('userId', null);
+    }
+
+    // Crews created before `userId` existed store the owner in `ownerId`.
+    function crewOwner(data) {
+      return data.get('userId', data.get('ownerId', null));
+    }
+
+    match /users/{userId} {
+      allow read, write: if isOwner(userId);
+    }
+
+    match /user_tokens/{userId} {
+      allow read, write: if isOwner(userId);
+    }
+
+    match /custom_characters/{characterId} {
+      allow read, delete: if isOwner(resource.data.userId);
+      allow create: if createsOwn();
+      allow update: if isOwner(resource.data.userId) && keepsUserId();
+    }
+
+    // Crews are a public showcase for signed-in users; only the owner changes one.
+    match /crews/{crewId} {
+      allow read: if isSignedIn();
+      allow create: if createsOwn();
+      allow update: if isOwner(crewOwner(resource.data))
+        && crewOwner(request.resource.data) == crewOwner(resource.data);
+      allow delete: if isOwner(crewOwner(resource.data));
+    }
+
+    match /planner/{goalId} {
+      allow read, delete: if isOwner(resource.data.userId);
+      allow create: if createsOwn();
+      allow update: if isOwner(resource.data.userId) && keepsUserId();
+    }
+
+    match /workout_assessments/{assessmentId} {
+      allow read, delete: if isOwner(resource.data.user_id);
+      allow create: if isOwner(request.resource.data.get('user_id', null));
+      allow update: if isOwner(resource.data.user_id)
+        && request.resource.data.get('user_id', null) == resource.data.user_id;
+    }
+
+    // Global catalog seeded with the Admin SDK.
+    match /featuredCharacters/{characterId} {
+      allow read: if true;
+      allow write: if false;
+    }
+  }
+}
