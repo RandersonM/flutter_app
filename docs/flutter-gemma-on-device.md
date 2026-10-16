@@ -7,9 +7,11 @@
 `flutter_gemma` é o plugin que embute um LLM (Gemma) rodando localmente no aparelho do usuário, via LiteRT (antigo TFLite). No OpFan ele alimenta o **Ask Vegapunk** — um chat com a persona do Dr. Vegapunk, com:
 
 - Geração de texto por streaming, 100% local (nenhum dado do chat sai do dispositivo)
-- **Function calling nativo** (chamada de ferramentas: busca na web, perfil do usuário, histórico de treino)
+- **Function calling nativo** (ferramentas: `searchInternet`, `getUserProfile`, `getWorkoutHistory`, `saveWorkout`, `getCharacterInfo`)
 - **RAG** (Retrieval-Augmented Generation) com uma base de conhecimento sobre One Piece + memória de sessão
-- Um segundo consumidor independente: **Nami Finances**, que usa o mesmo motor RAG para responder perguntas sobre as finanças do próprio usuário, sem relação com o Vegapunk
+- Um segundo consumidor independente: **Nami Finances**, que abre uma sessão própria no mesmo modelo. Ali o Dart escolhe e executa a ferramenta (`NamiIntentRouter`) e o modelo só narra o resultado; o RAG da Nami serve à ferramenta `findExpenses`
+
+> **Restrições fixas (decisão de produto, não parâmetro de ajuste):** modelo **Gemma 4 E2B** e `maxTokens: 4096`. Pressão de memória se resolve com outras alavancas — ver `.claude/rules/ai-on-device.md`.
 
 Motivação de produto (`.specs/features/vegapunk-chat/spec.md`): privacidade (dados financeiros/pessoais nunca saem do device), sem rate limit de API paga, e uma feature "de vitrine" para o app.
 
@@ -51,32 +53,43 @@ Modelo **atualmente ativo em produção**: **Gemma 4 E2B** (~2B parâmetros efet
 
 ### 3.3 `GemmaService` — `lib/core/services/gemma/gemma_service.dart`
 
-Serviço singleton (`IGemmaService`) que encapsula todo o ciclo de vida do plugin: instalação, carregamento, sessões de chat, streaming e function calling. Registrado em `lib/app/di/core_module.dart:115`:
+Serviço lazy singleton (`IGemmaService`, `i_gemma_service.dart`) que encapsula todo o ciclo de vida do plugin: instalação, carregamento, sessões de chat, streaming e function calling. Registrado em `lib/app/di/core_module.dart` (bloco `registerLazySingleton<IGemmaService>`):
 
 ```dart
 getIt.registerLazySingleton<IGemmaService>(() {
-  final gemma = GemmaService();
+  final gemma = GemmaService(
+    env: getIt<IEnvironmentService>(),
+    localeService: getIt<ILocaleService>(),
+  );
   final registry = getIt<FunctionRegistry>();
-  gemma.setTools(registry.getTools());   // tools nativas do Gemma 4
+  gemma.setTools(registry.getTools());   // tools nativas, antes de qualquer load
   return gemma;
 });
 ```
 
-Estados expostos via `Stream<GemmaServiceStatus>` (`gemma_service_status.dart`): `GemmaNotInstalled`, `GemmaDownloading(progress)`, `GemmaLoading`, `GemmaReady`, `GemmaError`.
+Estados expostos via `Stream<GemmaServiceStatus>` (`gemma_service_status.dart`, `sealed`): `GemmaNotInstalled`, `GemmaDownloading(progress)`, `GemmaLoading`, `GemmaReady`, `GemmaError(error, isInstallError)`.
 
-Dois modos de conversa, ambos passando por `_recreateChat()` (helper único que evita duplicação/desvio entre os dois — ver §6):
-- **`sendMessage()`** — o chat singleton principal do Vegapunk (`temperature: 0.2`, `maxOutputTokens: 768`)
-- **`sendSessionMessage(sessionId, ...)`** — chats independentes nomeados, cada um com seu próprio system prompt e histórico, sem contaminar o chat do Vegapunk. É esse o mecanismo que permite o Nami Finances ter sua própria "personalidade" de assistente sem herdar a persona do Vegapunk.
+Ciclo de vida:
+- **`initialize()`** — modelo não instalado → `GemmaNotInstalled`; instalado mas não aberto → `loadModel()`; já aberto → só `_refreshVegapunkChat()` (recria o chat do Vegapunk com o locale atual, **sem** reabrir o modelo nem fechar sessões).
+- **`downloadModel()`** — `FlutterGemma.installModel(...).fromNetwork(GEMMA_MODEL_URL, token)` com progresso, depois `loadModel()`.
+- **`loadModel()` → `_recreateChat()`** — recarga completa: fecha o chat **e todas as sessões nomeadas** (inclusive a da Nami), reabre o modelo via `_openModelWithFallback()` e cria o chat do Vegapunk.
+- **`resetChat()`** — também usa `_refreshVegapunkChat()`; só cai no `_recreateChat()` se o refresh falhar.
 
-Sempre usa `preferredBackend: PreferredBackend.gpu` e `maxTokens: 4096` no modelo ativo.
+Dois tipos de conversa sobre o mesmo modelo:
+- **`sendMessage()` / `sendToolResult()`** — o chat singleton do Vegapunk, criado em `_createVegapunkChat()` (`temperature` 0.2, ou 0.15 no modo thinking; `maxOutputTokens` 768, ou 512 no thinking; tools nativas + `ToolChoice.auto`).
+- **`sendSessionMessage(sessionId, ...)` / `sendSessionToolResult()` / `closeSession()`** — chats independentes nomeados (`model.openChat`), criados na primeira mensagem, cada um com seu system prompt e histórico (`temperature` 0.2 com tools, 0.3 sem; `maxOutputTokens` padrão 512). É o mecanismo que dá à Nami a própria persona. Feche a sessão no `close()` do BLoC.
+
+Não há lock de geração: uma geração por vez é responsabilidade de quem chama (os cubits/BLoCs controlam `isGenerating`). Cancelar a stream chama `stopGeneration()`.
+
+O modelo abre com `maxTokens: 4096` e backend **GPU com fallback para CPU** (`_backendPreference` + `_openModelWithFallback`): se o init do Metal/GPU falhar, abre em CPU; se os dois falharem, relança o erro e o status vira `GemmaError`.
 
 ### 3.4 Plataformas
 
 | Plataforma | Configuração atual | Observação |
 |---|---|---|
 | iOS `Info.plist` | `UIFileSharingEnabled=true`, `LSSupportsOpeningDocumentsInPlace=true` | conforme spec |
-| iOS `Runner.entitlements` | `increased-memory-limit`, `extended-virtual-addressing`, `increased-debugging-memory-limit` | mais permissivo que o spec original pedia |
-| iOS `Podfile` | `use_frameworks!` **sem** `:linkage => :static`; `platform :ios` comentado (usa o default do Flutter) | **diverge do spec**, que pedia linking estático e iOS 16 mínimo explícito — ver §7 |
+| iOS `Runner.entitlements` | **só** `com.apple.developer.kernel.increased-memory-limit` | `extended-virtual-addressing` e `increased-debugging-memory-limit` foram removidas de propósito: a Apple não as concede a *personal teams* e o provisioning falha (comentário no próprio arquivo) |
+| iOS `Podfile` | `platform :ios, '16.0'`; `use_frameworks!` **sem** `:linkage => :static` | linking dinâmico diverge do spec, que pedia estático — ver §7 |
 | Android `AndroidManifest.xml` | `libOpenCL.so`, `libOpenCL-car.so`, `libOpenCL-pixel.so` como `uses-library`/`uses-native-library` opcionais | aceleração GPU opcional, não obrigatória |
 | Android `minSdkVersion` | 28 | em `android/app/build.gradle` |
 
@@ -111,26 +124,29 @@ Cada serviço RAG chama `_ensureActiveStore()` (que delega ao coordinator) **ant
 
 ### 4.1 Vegapunk — knowledge base + memória de sessão
 
-- `OnePieceKnowledgeBase` — documentos seed sobre Vegapunk/satélites, personagens, frutas do diabo, arcos (bilíngue PT/EN), carregados uma vez por `VegapunkChatCubit.initialize()`.
-- Após cada resposta, um documento de sessão (`isSession: true`) é adicionado com um atraso de 2s (para não competir com a inferência em andamento) — capado em **20 documentos por sessão** (`_maxSessionDocs`) para não degradar a latência de busca.
-- `clearSession()` limpa a store inteira e **restaura a knowledge base** a partir de um snapshot em memória (não persiste a KB em disco separadamente).
+- `OnePieceKnowledgeBase` (`lib/features/vegapunk_chat/data/knowledge/one_piece_knowledge_base.dart`) — documentos seed sobre Vegapunk/satélites, personagens, frutas do diabo (bilíngue PT/EN), enviados por `VegapunkChatCubit._initRag()` (chamado **sem `await`** em `initialize()`). `RAGService.setKnowledgeBase` só reindexa quando o *fingerprint* (ids ordenados) muda — **mudar o texto de um documento exige mudar o id**.
+- Após cada resposta, um documento de sessão (prefixo `sess:`, `"User asked…\nAnswer:…"`, resposta truncada em 512 chars) é agendado com um `Timer` de 2 s (para não competir com a inferência) — capado em **20 documentos por processo** (`_maxSessionDocs`).
+- A busca é separada: `searchLore` e `searchSession`, cada uma com seu `topK` (over-fetch 4× e filtro por namespace).
+- `clearSession()` limpa a store inteira e **restaura a knowledge base** a partir de um snapshot em memória. Quando a store é limpa por mudança de KB, o hook `setOnStoreCleared` reconstrói os documentos de sessão a partir do histórico em Hive.
+- O histórico do chat fica num Hive `LazyBox` (`vegapunk_chat_history`); as últimas 20 mensagens são carregadas **só para exibição** — não são reenviadas ao modelo.
 
 ### 4.2 Nami Finances — RAG sobre dados financeiros do próprio usuário
 
-- Cada resumo mensal (`NamiFinancesModel`) é convertido em texto (`NamiRagService.summarize`) e sincronizado como documento — sem depender de LLM para gerar o resumo, é uma formatação determinística.
-- `backfillIfNeeded()` resincroniza meses salvos antes da correção do coordinator (quando o embedder nunca era de fato ativado e a sincronização falhava silenciosamente).
+- `NamiRagService.syncMonth` indexa **cada despesa** do mês (`_indexExpense`) como documento; `_schemaVersion` força reindexação quando o formato muda.
+- A ferramenta `findExpenses` usa o RAG só para **localizar** ids de despesa (limiar `defaultThreshold = 0.55`); os valores vêm dos registros estruturados e a soma é feita em Dart.
+- `backfillIfNeeded()` sincroniza meses já salvos na primeira abertura do chat.
 
 ## 5. Function calling — três camadas de defesa
 
-O modelo Gemma 4 E2B (2B parâmetros) **nem sempre decide corretamente quando chamar uma ferramenta** — um comentário no próprio código documenta essa limitação conhecida. Por isso o `VegapunkChatRepository` (`lib/features/vegapunk_chat/data/repository/vegapunk_chat_repository.dart`) implementa três camadas, em ordem de prioridade:
+O modelo Gemma 4 E2B (2B parâmetros efetivos) **nem sempre decide corretamente quando chamar uma ferramenta** — muitas vezes *descreve* a chamada em vez de emiti-la. Por isso o `VegapunkChatRepository` (`lib/features/vegapunk_chat/data/repository/vegapunk_chat_repository.dart`) implementa três camadas, em ordem de prioridade:
 
 1. **`ToolIntentDetector`** (heurística pré-modelo) — analisa a mensagem do usuário por padrões de texto (PT/EN) *antes* de qualquer chamada ao modelo. Alta confiança → executa a ferramenta direto, sem esperar o modelo decidir. Ex.: "pesquise na internet sobre X", "meu peso", "salvar treino".
 2. **Function calling nativo do SDK Gemma 4** — o modelo emite `<|tool_call|>...</tool_call|>` estruturado, que o SDK parseia em `FunctionCallResponse`/`ParallelFunctionCallResponse` no stream.
 3. **`FunctionExecutor.tryParse`** (fallback textual) — se o SDK não capturar a chamada estruturada, tenta parsear JSON solto no texto acumulado.
 
-Ferramentas registradas em `FunctionRegistry` (`lib/app/di/core_module.dart:86-112`): `searchInternet` (Tavily), `getUserProfile`, `getWorkoutHistory`, `saveWorkout`, `getCharacterInfo`.
+Ferramentas registradas no `FunctionRegistry` padrão (`lib/app/di/core_module.dart`, bloco `registerLazySingleton<FunctionRegistry>`): `searchInternet` (Tavily), `getUserProfile`, `getWorkoutHistory`, `saveWorkout`, `getCharacterInfo`. A Nami tem um registry próprio (`kNamiToolsRegistry` em `features_module.dart`).
 
-Resultado do tool call é injetado como `[SEARCH RESULTS]` no prompt (truncado em 1500 chars) e enviado de volta via `sendToolResult()` para a segunda passada do modelo gerar a resposta final. A UI recebe tokens sentinela invisíveis (`\x00SEARCHING_WEB\x00` / `\x00SEARCHING_DONE\x00`) para mostrar "pesquisando..." sem acoplar a repository à UI.
+O resultado da ferramenta é truncado em 1500 chars. Nas camadas 1 e 3 ele entra num novo `sendMessage()` como bloco `[SEARCH RESULTS for "<tool>"]`; na camada 2 volta ao modelo via `sendToolResult()` (`Message.toolResponse`, API nativa) para a segunda passada. A UI recebe tokens sentinela invisíveis — `\x00TOOL_START:<nome>\x00` e `\x00TOOL_DONE\x00` (`VegapunkChatRepository.toolStartSentinel` / `toolDoneSentinel` / `parseToolName`) — e o `VegapunkChatCubit` (`lib/features/vegapunk_chat/bloc/vegapunk_chat_cubit.dart`) os converte em `activeToolName` no estado, sem acoplar a repository à UI.
 
 ## 6. Bugs de performance já corrigidos (histórico útil para não reintroduzir)
 
@@ -138,7 +154,8 @@ Ver `.specs/features/gemma-performance-audit/` para a auditoria completa. Resumo
 
 | Problema | Causa raiz | Correção |
 |---|---|---|
-| Chat "novo" ficava mais lento que o inicial | `resetChat()` não passava `preferredBackend: gpu`, caía silenciosamente para CPU num modelo já pesado (E2B) | `_recreateChat()` único, usado por `loadModel` e `resetChat`, sempre com `gpu` |
+| Chat "novo" ficava mais lento que o inicial | `resetChat()` não passava `preferredBackend: gpu`, caía silenciosamente para CPU num modelo já pesado (E2B) | Abertura do modelo centralizada em `_openModelWithFallback()` (GPU primeiro, CPU só se a GPU falhar); `resetChat` hoje nem reabre o modelo (`_refreshVegapunkChat`) |
+| Abrir o Vegapunk fechava a sessão da Nami | `initialize()` recarregava o modelo a cada abertura da tela | Com o modelo já aberto, `initialize()` só recria o chat do Vegapunk; a Nami só chama `initialize()` a partir de `GemmaNotInstalled` |
 | Nami/Vegapunk "roubavam" o vector store um do outro | `initializeVectorStore()` chamado direto por cada feature, sem coordenação — é um singleton global no plugin | `RagStoreCoordinator` (§4) |
 | Sessão de RAG crescia sem limite | Nenhum cap nos documentos de sessão | Cap de 20 docs/sessão |
 | Documento de sessão perdido em respostas rápidas seguidas | `Future.delayed(2s)` sem cancelamento — corrida com a próxima mensagem | `Timer` cancelável que se reagenda em vez de descartar |
@@ -152,7 +169,9 @@ Ver `.specs/features/gemma-performance-audit/` para a auditoria completa. Resumo
 
 - **Modelo**: spec pedia Qwen3 0.6B `.task` (mobile-only); código real usa Gemma 4 E2B `.litertlm`.
 - **Engine**: spec pedia `flutter_gemma_mediapipe` + `flutter_gemma_litertlm` como fallback desktop; código real usa **só** `flutter_gemma_litertlm`.
-- **iOS linking**: spec pedia `use_frameworks! :linkage => :static` e `platform :ios, '16.0'` explícito; `Podfile` atual usa linking dinâmico padrão e não fixa a versão do iOS.
+- **iOS linking**: spec pedia `use_frameworks! :linkage => :static`; o `Podfile` atual fixa `platform :ios, '16.0'` mas usa linking dinâmico padrão.
+- **Entitlements iOS**: só `increased-memory-limit` (as variantes de debugging/virtual addressing não são concedidas a personal teams).
+- **Pipeline**: o spec previa um chat simples; o código tem detector de intenção → function call nativo → fallback textual, satélites, RAG de sessão e histórico em Hive. Resumo atual no topo de `.specs/features/vegapunk-chat/design.md`.
 - **Escopo**: RAG e function calling eram "Fase 3/Out of Scope" no spec original — já estão implementados e em produção, junto com um segundo consumidor de RAG (Nami Finances) que nem constava no spec do Vegapunk.
 
 Isso não é um problema em si — specs registram intenção no momento em que foram escritos — mas reforça: **para decisões de arquitetura, leia o código (`lib/core/services/gemma/`, `lib/core/services/rag/`) e o `pubspec.yaml`, não apenas `.specs/`**.
@@ -160,19 +179,20 @@ Isso não é um problema em si — specs registram intenção no momento em que 
 ## 8. Como configurar / melhorar (guia prático)
 
 ### Trocar o modelo
-1. Edite `GEMMA_MODEL_URL`/`GEMMA_MODEL_NAME` no `.env` (ou use a alternativa já comentada `Gemma3-1B-IT`).
-2. Nenhuma mudança de código é necessária — `_determineModelType`/`_determineModelFileType` derivam do nome do arquivo. Modelos suportados hoje: Gemma (`gemma-it`/`gemma4`), Qwen/Qwen3, DeepSeek, Phi, Llama, FunctionGemma, SmolLM (`general`).
+O produto fixa o **Gemma 4 E2B** e `maxTokens: 4096` — não troque por um modelo menor nem reduza o contexto para resolver memória. Tecnicamente a troca é só configuração (útil para experimentos locais):
+1. Edite `GEMMA_MODEL_URL`/`GEMMA_MODEL_NAME` no `.env` (o `.env.example` tem a alternativa comentada `Gemma3-1B-IT`).
+2. `_determineModelType`/`_determineModelFileType` derivam do nome do arquivo. Tipos reconhecidos: Gemma (`gemmaIt`/`gemma4`), Qwen/Qwen3, DeepSeek, Phi, Llama, FunctionGemma, SmolLM (`general`).
 3. Meça tokens/s num device de referência antes/depois — a diferença entre um modelo "E2B" (MatFormer, footprint maior que o nome sugere) e um dense 1B é substancial.
 
 ### Ajustar comportamento do chat
 - **Tom/persona**: `lib/core/ai/prompts/personas/vegapunk_prompt.dart` — prompt curto e baseado em regras numeradas funciona melhor que prosa longa para modelos pequenos.
-- **Brevidade**: `maxOutputTokens` em `_recreateChat()` (768 normal / 512 thinking) e as `RESPONSE RULES` do prompt trabalham juntos — mudar um sem o outro tende a não ter efeito visível.
+- **Brevidade**: `maxOutputTokens` em `_createVegapunkChat()` (768 normal / 512 thinking) e as `RESPONSE RULES` do prompt trabalham juntos — mudar um sem o outro tende a não ter efeito visível.
 - **Satélites** (variações de estilo dentro do mesmo chat): `vegapunk_satellite_prompt.dart` + `VegapunkSatellitePrompt.forMessage()`.
 
 ### Adicionar uma nova ferramenta (function calling)
-1. Implemente um `ToolHandler` e registre em `FunctionRegistry` (`core_module.dart`).
-2. Se a ferramenta tem gatilhos de linguagem natural previsíveis, adicione um `_matchesXIntent` em `ToolIntentDetector` para resposta instantânea sem esperar o modelo decidir.
-3. Teste os três caminhos: intent-detector direto, function call nativo do SDK, e fallback textual — os três devem convergir para o mesmo resultado.
+1. Implemente um `ToolHandler` (descrições EN + PT, valores `*_formatted` prontos, saída abaixo de ~1500 chars; nunca lance exceção de `execute`) e registre no registry certo (`core_module.dart` para o Vegapunk, `kNamiToolsRegistry` para a Nami).
+2. Torne-a alcançável de forma determinística: um `_matchesXIntent` em `ToolIntentDetector` (Vegapunk) ou um ramo no `NamiIntentRouter` (Nami).
+3. Teste o handler (Dart puro) e o roteamento; no Vegapunk, os três caminhos (intent direto, function call nativo, fallback textual) devem convergir para o mesmo resultado.
 
 ### Adicionar uma nova feature com RAG próprio
 1. Crie um serviço dedicado (como `NamiRagService`) com seu próprio `owner` id e nome de arquivo `.db`.
@@ -180,8 +200,9 @@ Isso não é um problema em si — specs registram intenção no momento em que 
 3. Se a feature precisa de um "assistente" com persona própria (não misturado ao Vegapunk), use `GemmaService.sendSessionMessage(sessionId, ...)` em vez do `sendMessage()` singleton.
 
 ### Diagnosticar lentidão
-- Confirme se o backend resolvido é GPU (log em `_recreateChat`, ou instrumentar antes/depois conforme o plano de verificação em `.specs/features/gemma-performance-audit/design.md`).
+- Confirme se o backend resolvido é GPU (`_openModelWithFallback` loga quando cai para CPU), ou instrumente conforme o plano em `.specs/features/gemma-performance-audit/design.md`.
 - Compare tokens/s: cold start vs. após `reset()` — hoje devem ser equivalentes (bug do §6 já corrigido); se divergirem de novo, é regressão.
+- Se o app some durante a geração sem erro Dart, suspeite primeiro de OOM (iOS mata o processo sem exceção capturável).
 - Verifique se alguma feature RAG está inicializando o vector store fora do `RagStoreCoordinator` (grep por `initializeVectorStore` deve retornar só o coordinator).
 
 ## 9. Pontos fortes e pontos de atenção
@@ -195,7 +216,7 @@ Isso não é um problema em si — specs registram intenção no momento em que 
 
 ### Pontos de atenção
 - **Tamanho do modelo em disco/memória**: Gemma 4 E2B é uma escolha consciente, mas continua sendo a maior fonte de risco de performance em devices de entrada — já documentado e aceito como trade-off, não um bug.
-- **`.specs/` desatualizado em relação ao código**: quem só ler os specs do Vegapunk vai achar que RAG e function calling são "trabalho futuro" — não são. Vale atualizar os specs ou ao menos linkar para este documento.
-- **Divergência de config de plataforma iOS** (linking dinâmico + sem `platform :ios` fixo) em relação ao que o spec original pedia — funciona hoje, mas não foi validado/documentado que a app-store review não vai exigir o linking estático eventualmente conforme o app cresce.
+- **`.specs/` desatualizado em relação ao código**: os specs originais do Vegapunk tratam RAG e function calling como "trabalho futuro". O `design.md` agora abre com um resumo do pipeline atual; o resto do arquivo é histórico.
+- **Linking dinâmico no iOS** (o spec pedia estático) — funciona hoje, mas não foi validado que continuará assim conforme o app cresce.
 - **Estado global do plugin (`ServiceRegistry` interno)**: o `RagStoreCoordinator` mitiga isso para o vector store, mas é um padrão do próprio `flutter_gemma` (instância "ativa" única também para modelo e embedder) que qualquer feature nova precisa respeitar manualmente — não há guarda-corrilhos automático do compilador contra reintroduzir o bug original.
-- **Sem testes automatizados** cobrindo o fluxo de function calling ou o coordinator de RAG (a spec do Vegapunk lista um teste de Cubit como tarefa, mas os componentes mais arriscados — `RagStoreCoordinator`, `ToolIntentDetector`, o loop de 3 camadas — não têm teste unitário visível no repositório).
+- **Cobertura de testes parcial**: há testes para `RAGService`, histórico/reindexação do cubit, `ToolIntentDetector`, handlers e o router da Nami (`test/core/services/rag/`, `test/features/vegapunk_chat/`, `test/features/nami_finances/`), mas não para o `RagStoreCoordinator` nem para o loop de 3 camadas da repository.

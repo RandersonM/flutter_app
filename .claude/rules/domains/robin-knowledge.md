@@ -24,6 +24,8 @@ tags, notes}`
 - Status and progress colours come from `goal_colors.dart` (`goalStatusColor`,
   `goalProgressColor`: ≥75 success, ≥50 warning, else error); category colours are
   the categorical `goalCategoryColor` palette.
+- The Firestore `planner` rule is owner-scoped (#25): only the goal's `userId` can
+  read, update or delete it, so every query must filter by `userId` (`firebase.md`).
 
 ## Debt
 
@@ -33,4 +35,3 @@ tags, notes}`
   `BlocProvider.value(getIt<RobinKnowledgeBloc>())`; pushed routes receive it with
   `BlocProvider.value(value: context.read<RobinKnowledgeBloc>())`.
 - `updateGoal` never writes `completed`.
-- The Firestore `planner` rule is open to any signed-in user (`firebase.md`).

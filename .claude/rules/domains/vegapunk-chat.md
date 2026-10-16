@@ -34,8 +34,8 @@ rules: `ai-on-device.md`.
   (categories `vegapunk`, `character`, `devil_fruit`). Changing a document's text
   needs a new id to trigger re-indexing.
 
-## Debt
+## Model lifecycle
 
-`initialize()` runs every time the screen opens, recreating the chat (and closing
-Nami's session). Prefer initializing only from `NotInstalled`, like Nami, when you
-touch it.
+`initialize()` runs every time the screen opens. When the model is already open it
+only refreshes the Vegapunk chat (`_refreshVegapunkChat`), which keeps the model and
+Nami's session alive; only `_recreateChat` closes every session.

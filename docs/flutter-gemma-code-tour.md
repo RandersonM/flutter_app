@@ -7,7 +7,9 @@ Companheiro da apresentação. Aqui está **o que abrir, em que ordem, e o que d
 
 **Orçamento:** ~40 min de código. Se tiver 20, faça os blocos **0, 1 e 2** e cite os outros.
 
-**Antes de começar:** abra as abas na ordem abaixo e deixe o `git status` limpo (o bloco 5 usa o diff atual de propósito — não faça commit antes da apresentação).
+**Antes de começar:** abra as abas na ordem abaixo. Os números de linha foram conferidos contra o código em 16/10/2026 — se o arquivo mudou, procure pelo nome do método.
+
+**Restrições fixas para citar:** modelo **Gemma 4 E2B** e `maxTokens: 4096` são decisões de produto, não parâmetros de ajuste (`.claude/rules/ai-on-device.md`).
 
 | Bloco | Assunto | Prova o quê | Tempo |
 |---|---|---|---|
@@ -16,7 +18,7 @@ Companheiro da apresentação. Aqui está **o que abrir, em que ordem, e o que d
 | 2 | Vegapunk | o chat **age** dentro do app | 12 min |
 | 3 | RAG | busca semântica sem sair do aparelho | 7 min |
 | 4 | Nami | o padrão oposto, e por que ele é melhor para números | 7 min |
-| 5 | Bônus | o que está na bancada agora | 3 min |
+| 5 | Bônus | a lição de prompt engineering que virou código | 3 min |
 
 ---
 
@@ -32,21 +34,21 @@ Companheiro da apresentação. Aqui está **o que abrir, em que ordem, e o que d
 
 **O detalhe:** aponte que **não** existe `flutter_gemma_mediapipe` aqui. O projeto usa exclusivamente o backend LiteRT-LM (`.litertlm`) — ninguém no app usa modelo `.task`. Se alguém já leu os specs antigos em `.specs/`, é aqui que a intenção antiga e o código real divergem.
 
-### 2. [`lib/main.dart`](../lib/main.dart#L57-L64)
+### 2. [`lib/main.dart`](../lib/main.dart#L55-L60)
 
-**Mostre:** linhas 57–64.
+**Mostre:** linhas 55–60.
 
 **A frase:** "Uma chamada, depois do Firebase, antes do `runApp`. Ela **registra** os engines — não baixa nem carrega nada."
 
 **O detalhe:** o app abre no mesmo tempo com ou sem modelo instalado. Vale dizer em voz alta, porque a suspeita natural da plateia é "então o app demora 2 GB para abrir?". O `huggingFaceToken` está aqui porque o modelo é *gated* no HuggingFace.
 
-### 3. [`.env.example`](../.env.example#L16-L20)
+### 3. [`.env.example`](../.env.example#L15-L22)
 
-**Mostre:** linhas 16–20.
+**Mostre:** linhas 15–22.
 
 **A frase:** "Qual modelo rodar é configuração, não código."
 
-**O detalhe:** mostre em seguida [`gemma_service.dart:79-111`](../lib/core/services/gemma/gemma_service.dart#L79-L111) — `_determineModelType` e `_determineModelFileType` derivam tudo do **nome do arquivo**. Trocar o modelo é editar duas linhas do `.env`; nenhum `.dart` muda. (E não mostre o `.env` real — tem token de verdade.)
+**O detalhe:** mostre em seguida [`gemma_service.dart:96-128`](../lib/core/services/gemma/gemma_service.dart#L96-L128) — `_determineModelType` e `_determineModelFileType` derivam tudo do **nome do arquivo**. Tecnicamente trocar o modelo é editar duas linhas do `.env`; na prática o produto fixa o Gemma 4 E2B. (E não mostre o `.env` real — tem token de verdade.)
 
 ### 4. [`ios/Runner/Runner.entitlements`](../ios/Runner/Runner.entitlements) + [`AndroidManifest.xml`](../android/app/src/main/AndroidManifest.xml#L52-L57)
 
@@ -64,28 +66,28 @@ Companheiro da apresentação. Aqui está **o que abrir, em que ordem, e o que d
 
 ### 5. [`lib/core/services/gemma/i_gemma_service.dart`](../lib/core/services/gemma/i_gemma_service.dart)
 
-**Mostre:** o arquivo inteiro (88 linhas) — leia como índice, não linha por linha.
+**Mostre:** o arquivo inteiro (95 linhas) — leia como índice, não linha por linha.
 
 **A frase:** "A interface é o mapa da feature: instalar, carregar, conversar, conversar em sessão isolada, devolver resultado de ferramenta, parar."
 
-**O detalhe:** os dois pares de métodos —`sendMessage`/`sendSessionMessage` e `sendToolResult`/`sendSessionToolResult`. A existência do par é o que permite duas personas sobre um modelo. Leia em voz alta o docstring de [`sendSessionMessage`](../lib/core/services/gemma/i_gemma_service.dart#L44-L63): ele já explica *por que* existe ("e.g. Nami finances vs. Vegapunk") — é documentação que se sustenta sozinha.
+**O detalhe:** os dois pares de métodos —`sendMessage`/`sendSessionMessage` e `sendToolResult`/`sendSessionToolResult`. A existência do par é o que permite duas personas sobre um modelo. Leia em voz alta o docstring de [`sendSessionMessage`](../lib/core/services/gemma/i_gemma_service.dart#L51-L70): ele já explica *por que* existe ("e.g. Nami finances vs. Vegapunk") — é documentação que se sustenta sozinha.
 
 ### 6. [`gemma_service_status.dart`](../lib/core/services/gemma/gemma_service_status.dart)
 
-**Mostre:** o arquivo inteiro (25 linhas).
+**Mostre:** o arquivo inteiro (26 linhas).
 
 **A frase:** "Cinco estados, `sealed class` — o `switch` no cubit é exaustivo, o compilador cobra estado novo."
 
 **O detalhe:** `GemmaError` carrega `isInstallError`. Essa flag existe porque "falhou o download" (repetir faz sentido) e "falhou o load" (geralmente é memória) pedem telas diferentes.
 
-### 7. [`gemma_service.dart:38-77`](../lib/core/services/gemma/gemma_service.dart#L38-L77) — `initialize` + `downloadModel`
+### 7. [`gemma_service.dart:40-94`](../lib/core/services/gemma/gemma_service.dart#L40-L94) — `initialize` + `_refreshVegapunkChat` + `downloadModel`
 
-**A frase:** "`initialize` pergunta se o arquivo já está no disco. Se está, vai direto para o load; reabrir o chat não baixa de novo."
+**A frase:** "`initialize` pergunta se o arquivo já está no disco. Não está: `NotInstalled`. Está e o modelo não foi aberto: load. Já está aberto: só recria o chat do Vegapunk — reabrir a tela não recarrega o modelo nem derruba a sessão da Nami."
 
 **O detalhe:** o builder fluente do download é bonito de mostrar —
 `installModel(...).fromNetwork(url, token: ...).withProgress(cb).install()`. O `withProgress` alimenta a stream de status direto, então a barra de progresso da UI sai de graça.
 
-### 8. [`gemma_service.dart:126-167`](../lib/core/services/gemma/gemma_service.dart#L126-L167) — memória e backend
+### 8. [`gemma_service.dart:143-184`](../lib/core/services/gemma/gemma_service.dart#L143-L184) — memória e backend
 
 **Mostre:** `_maxTokens`, `_backendPreference`, `_openModelWithFallback`.
 
@@ -93,41 +95,41 @@ Companheiro da apresentação. Aqui está **o que abrir, em que ordem, e o que d
 
 **O detalhe:** leia o comentário de `_maxTokens` — o E2B suporta 128 K de contexto, e 4096 é escolha nossa, de memória em mobile. E aponte que `_openModelWithFallback` **rethrow** o último erro se os dois backends falharem: o chamador ainda emite `GemmaError`, ninguém continua silenciosamente sem modelo.
 
-### 9. [`gemma_service.dart:174-217`](../lib/core/services/gemma/gemma_service.dart#L174-L217) — `_recreateChat` ⭐
+### 9. [`gemma_service.dart:186-238`](../lib/core/services/gemma/gemma_service.dart#L186-L238) — `_recreateChat` + `_createVegapunkChat` ⭐
 
-**Este é o método mais importante do arquivo.** Se der para mostrar só um trecho do serviço, mostre este.
+**Este é o trecho mais importante do arquivo.** Se der para mostrar só um trecho do serviço, mostre este.
 
-**A frase:** "Toda configuração de modelo vive aqui, em um lugar só: backend, tipo, temperatura, tools, tamanho de resposta. `loadModel` e `resetChat` passam os dois por aqui."
+**A frase:** "Dois níveis de reset. `_recreateChat` é a recarga completa — reabre o modelo e só roda no `loadModel` (ou se um refresh falhar). `_createVegapunkChat` é onde vive toda a configuração do chat: tipo, temperatura, tools, tamanho de resposta. `resetChat` e a reentrada na tela passam só por ele, via `_refreshVegapunkChat`."
 
 **O detalhe (aponte no `createChat`):**
-- `temperature: 0.2` — baixa de propósito. Determinismo é o que faz o modelo emitir JSON de tool call confiável.
-- `maxOutputTokens: 768` — trabalha em par com as `RESPONSE RULES` do prompt; mexer em um sem o outro não muda nada visível.
+- `temperature: 0.2` (0.15 no modo thinking) — baixa de propósito. Determinismo é o que faz o modelo emitir JSON de tool call confiável.
+- `maxOutputTokens: 768` (512 no thinking) — trabalha em par com as `RESPONSE RULES` do prompt; mexer em um sem o outro não muda nada visível.
 - `tools: _tools` + `supportsFunctionCalls` + `toolChoice: auto` — os três juntos ligam o function calling nativo.
 - Regra da casa que vale enunciar: **nenhuma configuração de modelo pode ser escrita em dois lugares**, porque dois lugares divergem com o tempo.
 
-Note também as sessões abertas sendo fechadas no topo do método: elas estão amarradas à instância do modelo que vai ser substituída, então não sobrevivem a um reload. Isso é o tipo de invariante que só aparece lendo o código.
+Note também as sessões abertas sendo fechadas no topo de `_recreateChat`: elas estão amarradas à instância do modelo que vai ser substituída, então não sobrevivem a um reload — inclusive a da Nami. Por isso o refresh barato existe. Isso é o tipo de invariante que só aparece lendo o código.
 
-### 10. [`gemma_service.dart:220-262`](../lib/core/services/gemma/gemma_service.dart#L220-L262) — `sendMessage`
+### 10. [`gemma_service.dart:240-283`](../lib/core/services/gemma/gemma_service.dart#L240-L283) — `sendMessage`
 
 **A frase:** "Um `StreamController` com `onCancel` que chama `stopGeneration`. Quem fecha a stream cancela a inferência — o botão de parar da UI é só um `cancel()`."
 
 **O detalhe:** a montagem do prompt é `styleInstruction + ragContext + texto`. Guarde o `RagContextFraming` para o bloco 2 (item 25), onde ele rende mais.
 
-### 11. [`gemma_service.dart:268-304`](../lib/core/services/gemma/gemma_service.dart#L268-L304) — `sendToolResult`
+### 11. [`gemma_service.dart:285-322`](../lib/core/services/gemma/gemma_service.dart#L285-L322) — `sendToolResult`
 
 **A frase:** "A segunda passada. `Message.toolResponse` é API nativa do SDK — não é injeção de texto disfarçada."
 
-### 12. [`gemma_service.dart:307-371`](../lib/core/services/gemma/gemma_service.dart#L307-L371) — `sendSessionMessage` ⭐
+### 12. [`gemma_service.dart:324-387`](../lib/core/services/gemma/gemma_service.dart#L324-L387) — `sendSessionMessage` ⭐
 
 **A frase:** "É isso que permite a Nami existir sem um segundo modelo na memória: `model.openChat()` com system prompt próprio, guardado num mapa por `sessionId`, criado na primeira mensagem."
 
-**O detalhe:** a sessão é criada *lazy*, na primeira mensagem, com os parâmetros daquela chamada. E o `closeSession` ([416–419](../lib/core/services/gemma/gemma_service.dart#L416-L419)) libera o KV cache quando a sheet fecha — uma sessão idle segurando cache é memória parada num aparelho que já está no limite.
+**O detalhe:** a sessão é criada *lazy*, na primeira mensagem, com os parâmetros daquela chamada. E o `closeSession` ([431–435](../lib/core/services/gemma/gemma_service.dart#L431-L435)) libera o KV cache quando a sheet fecha — uma sessão idle segurando cache é memória parada num aparelho que já está no limite.
 
-### 13. [`lib/app/di/core_module.dart:142-160`](../lib/app/di/core_module.dart#L142-L160)
+### 13. [`lib/app/di/core_module.dart:150-205`](../lib/app/di/core_module.dart#L150-L205)
 
 **A frase:** "As tools entram no serviço **antes** de qualquer chat ser criado."
 
-**O detalhe:** mostre o comentário sobre ordem de registro. `IWebSearchService` → `FunctionRegistry` → `IGemmaService` (que faz `setTools`) → `IVegapunkChatRepository`. É uma cadeia em que a ordem importa de verdade, e o comentário no arquivo explica por quê. Bom momento para citar a regra do projeto: nenhum BLoC/Cubit chama `getIt` por dentro.
+**O detalhe:** mostre o comentário sobre ordem de registro. `IWebSearchService` → `FunctionRegistry` → `IGemmaService` (que faz `setTools`) → `IVegapunkChatRepository`. É uma cadeia em que a ordem importa de verdade, e o comentário no arquivo explica por quê. Bom momento para citar a regra do projeto: nenhum BLoC/Cubit chama `getIt` por dentro — tudo chega pelo construtor.
 
 ---
 
@@ -161,27 +163,27 @@ Note também as sessões abertas sendo fechadas no topo do método: elas estão 
 
 **A frase:** "Antes de gastar uma passada de inferência, a gente olha a mensagem. 'Pesquise na internet sobre X' não precisa de um LLM para ser classificada."
 
-**O detalhe:** o detector não só classifica, ele **extrai argumentos** (veja a extração do nome do exercício por volta da linha 267). Quando a confiança é alta, esse é o caminho mais rápido percebido pelo usuário — a tool executa sem o modelo ter falado nada ainda.
+**O detalhe:** o detector não só classifica, ele **extrai argumentos** — a query de busca em `_extractSearchQuery` (linha 148) e o nome do personagem em `_matchesCharacterIntent` (linha 245, confiança média: só sugere, não força). Quando a confiança é alta, esse é o caminho mais rápido percebido pelo usuário — a tool executa sem o modelo ter falado nada ainda.
 
 ### 18. [`data/repository/vegapunk_chat_repository.dart`](../lib/features/vegapunk_chat/data/repository/vegapunk_chat_repository.dart) ⭐ o coração da feature
 
 Mostre em três paradas:
 
-**(a) [linhas 83-134](../lib/features/vegapunk_chat/data/repository/vegapunk_chat_repository.dart#L83-L134) — camada 1.**
+**(a) [linhas 82-133](../lib/features/vegapunk_chat/data/repository/vegapunk_chat_repository.dart#L82-L133) — camada 1.**
 "Intenção de alta confiança: executa a tool, injeta o resultado como `[SEARCH RESULTS]`, e só então pede a resposta ao modelo." Aponte o truncamento em 1500 caracteres — contexto é orçamento.
 
-**(b) [linhas 144-228](../lib/features/vegapunk_chat/data/repository/vegapunk_chat_repository.dart#L144-L228) — camadas 2 e 3.**
-O `switch` sobre `ModelResponse` é o trecho mais didático do arquivo: `TextResponse` faz streaming, `FunctionCallResponse` é a chamada nativa, `ParallelFunctionCallResponse` é o lote (usamos a primeira), `ThinkingResponse` é descartada hoje. Depois vem a volta pelo `sendToolResult` e, se nada disso pegou, o `tryParse` do texto acumulado (linha 234).
+**(b) [linhas 135-252](../lib/features/vegapunk_chat/data/repository/vegapunk_chat_repository.dart#L135-L252) — camadas 2 e 3.**
+O `switch` sobre `ModelResponse` é o trecho mais didático do arquivo: `TextResponse` faz streaming, `FunctionCallResponse` é a chamada nativa, `ParallelFunctionCallResponse` é o lote (usamos a primeira), `ThinkingResponse` é descartada hoje. Depois vem a volta pelo `sendToolResult` e, se nada disso pegou, o `tryParse` do texto acumulado (linha 213).
 
-**(c) [linhas 278-299](../lib/features/vegapunk_chat/data/repository/vegapunk_chat_repository.dart#L278-L299) — as sentinelas.**
+**(c) [linhas 257-278](../lib/features/vegapunk_chat/data/repository/vegapunk_chat_repository.dart#L257-L278) — as sentinelas.**
 "A repository precisa avisar a UI que uma ferramenta está rodando, sem conhecer a UI. Solução: tokens invisíveis na própria stream."
-`\x00TOOL_START:nome\x00` e `\x00TOOL_DONE\x00`. É a parte que as pessoas acham mais esperta — e a que mais gera pergunta. Tenha pronta a resposta: sim, é um canal lateral dentro da stream de texto; funciona porque `\x00` nunca aparece em texto gerado.
+`\x00TOOL_START:<nome>\x00` e `\x00TOOL_DONE\x00` (`toolStartSentinel`, `toolDoneSentinel`, `parseToolName`). É a parte que as pessoas acham mais esperta — e a que mais gera pergunta. Tenha pronta a resposta: sim, é um canal lateral dentro da stream de texto; funciona porque `\x00` nunca aparece em texto gerado.
 
-### 19. [`cubit/vegapunk_chat_cubit.dart:205-235`](../lib/features/vegapunk_chat/cubit/vegapunk_chat_cubit.dart#L205-L235)
+### 19. [`bloc/vegapunk_chat_cubit.dart:203-237`](../lib/features/vegapunk_chat/bloc/vegapunk_chat_cubit.dart#L203-L237)
 
 **A frase:** "E aqui é o outro lado da sentinela: o cubit intercepta, põe `activeToolName` no estado, e o token nunca chega na bolha de mensagem."
 
-**O detalhe (se sobrar tempo):** [linha 85](../lib/features/vegapunk_chat/cubit/vegapunk_chat_cubit.dart#L85) — `_initRag()` é chamado **sem `await`**. Baixar o modelo de embedding não pode travar a abertura do chat. É uma decisão de UX escrita no código, com comentário explicando.
+**O detalhe (se sobrar tempo):** [linha 87](../lib/features/vegapunk_chat/bloc/vegapunk_chat_cubit.dart#L87) — `_initRag()` é chamado **sem `await`**. Baixar o modelo de embedding não pode travar a abertura do chat. É uma decisão de UX escrita no código, com comentário explicando. Logo acima, os tokens são emitidos em lotes de **80 ms** (linha 190) e um *watchdog* de **90 s** (`_generationTimeout`, linha 51) encerra uma geração travada.
 
 ### 20. [`presentation/vegapunk_chat_screen.dart:143-157`](../lib/features/vegapunk_chat/presentation/vegapunk_chat_screen.dart#L143-L157)
 
@@ -232,7 +234,7 @@ O `switch` sobre `ModelResponse` é o trecho mais didático do arquivo: `TextRes
 
 ### 25. [`core/services/rag/rag_service.dart`](../lib/core/services/rag/rag_service.dart)
 
-**Mostre:** [20–42](../lib/core/services/rag/rag_service.dart#L20-L42) (cap e over-fetch), [80–86](../lib/core/services/rag/rag_service.dart#L80-L86) (`_ensureActiveStore`), [166–196](../lib/core/services/rag/rag_service.dart#L166-L196) (`searchLore` / `searchSession`).
+**Mostre:** [20–42](../lib/core/services/rag/rag_service.dart#L20-L42) (cap e over-fetch), [84–89](../lib/core/services/rag/rag_service.dart#L84-L89) (`_ensureActiveStore`), [166–215](../lib/core/services/rag/rag_service.dart#L166-L215) (`searchLore` / `searchSession` / `_scopedSearch`).
 
 **A frase:** "Cada operação se reafirma como dona do store antes de tocar nele — não só na inicialização."
 
@@ -242,15 +244,15 @@ O `switch` sobre `ModelResponse` é o trecho mais didático do arquivo: `TextRes
 
 ### 26. [`features/vegapunk_chat/data/knowledge/one_piece_knowledge_base.dart`](../lib/features/vegapunk_chat/data/knowledge/one_piece_knowledge_base.dart)
 
-**Mostre:** [1–36](../lib/features/vegapunk_chat/data/knowledge/one_piece_knowledge_base.dart#L1-L36) e **um** `RagDocument` de exemplo ([37–60](../lib/features/vegapunk_chat/data/knowledge/one_piece_knowledge_base.dart#L37-L60)). Não role as 422 linhas.
+**Mostre:** [1–37](../lib/features/vegapunk_chat/data/knowledge/one_piece_knowledge_base.dart#L1-L37) e **um** `RagDocument` de exemplo ([38–47](../lib/features/vegapunk_chat/data/knowledge/one_piece_knowledge_base.dart#L38-L47)). Não role as 422 linhas.
 
 **A frase:** "A base de conhecimento é código: `const` de `RagDocument`, bilíngue, agrupada por categoria — Vegapunk e satélites, personagens, frutas, arcos."
 
-**O detalhe:** `getDocumentsForCategories` permite carregar só um subconjunto. E porque são `const`, existe um snapshot em memória que o `clearSession()` usa para restaurar a base depois de limpar a store inteira — que é a única forma de "apagar só a sessão" com um plugin que não tem delete por documento.
+**O detalhe:** `getDocumentsForCategories` permite carregar só um subconjunto. E porque são `const`, existe um snapshot em memória que o `clearSession()` usa para restaurar a base depois de limpar a store inteira — que é a única forma de "apagar só a sessão" com um plugin que não tem delete por documento. A reindexação só acontece quando o *fingerprint* (ids ordenados) muda: mudar o texto de um documento exige mudar o id.
 
 ### 27. [`features/nami_finances/data/services/nami_rag_service.dart`](../lib/features/nami_finances/data/services/nami_rag_service.dart)
 
-**Mostre:** [12–44](../lib/features/nami_finances/data/services/nami_rag_service.dart#L12-L44) (owner, schema version, threshold) e [89–142](../lib/features/nami_finances/data/services/nami_rag_service.dart#L89-L142) (`syncMonth` / `_indexExpense`).
+**Mostre:** [11–41](../lib/features/nami_finances/data/services/nami_rag_service.dart#L11-L41) (owner, schema version, threshold) e [89–141](../lib/features/nami_finances/data/services/nami_rag_service.dart#L89-L141) (`syncMonth` / `_indexExpense`).
 
 **A frase:** "O segundo consumidor, com `owner` e `.db` próprios. Cada despesa vira um documento indexado."
 
@@ -262,23 +264,23 @@ O `switch` sobre `ModelResponse` é o trecho mais didático do arquivo: `TextRes
 
 > **Mensagem do bloco:** a mesma infraestrutura, uma escolha de arquitetura invertida. E para números, a invertida é a certa.
 
-### 28. [`bloc/chat/nami_chat_bloc.dart:105-140`](../lib/features/nami_finances/bloc/chat/nami_chat_bloc.dart#L105-L140) — `_ensureGemmaReady`
+### 28. [`bloc/chat/nami_chat_bloc.dart:90-127`](../lib/features/nami_finances/bloc/chat/nami_chat_bloc.dart#L90-L127) — `_ensureGemmaReady`
 
 **Comece por aqui**, é a parte que ninguém adivinha lendo de fora.
 
 **A frase:** "A Nami é passageira do modelo. Ela espera o `GemmaReady` — e só dispara o `initialize()` se **ninguém** começou a carregar ainda."
 
-**O detalhe:** leia o comentário: chamar `initialize()` com um load em curso recriaria o chat e **apagaria uma conversa do Vegapunk em andamento**. E o `StateError` do caminho triste é uma mensagem de produto, não de dev: *"Modelo de IA ainda não foi baixado — abra o chat do Vegapunk para instalá-lo."* Ou seja: o chat do Vegapunk é a superfície de instalação do modelo no app.
+**O detalhe:** leia o comentário: chamar `initialize()` com um load em curso recriaria o chat e **apagaria uma conversa do Vegapunk em andamento**. E o caminho triste vira `NamiChatFailure.modelNotInstalled`, que a sheet traduz para uma mensagem de produto (`namiChatModelNotInstalled`): *"Modelo de IA ainda não foi baixado — abra o chat do Vegapunk para instalá-lo."* Ou seja: o chat do Vegapunk é a superfície de instalação do modelo no app.
 
 ### 29. [`bloc/chat/nami_intent_router.dart`](../lib/features/nami_finances/bloc/chat/nami_intent_router.dart) ⭐
 
-**Mostre:** o docstring (linhas 6–13) e o `resolve` (a partir da 16).
+**Mostre:** o docstring (linhas 6–13) e o `resolve` (a partir da 17).
 
 **A frase:** "Aqui quem decide a ferramenta é o Dart, não o modelo. Função pura, testada."
 
 **O detalhe:** o docstring explica *por que* — o modelo pequeno tende a "descrever" o uso de uma ferramenta sem emitir a chamada, e a deturpar números. Mostre a extração de valores: `"60 a 80 mil"` → usa o maior como preço (pior caso). Esse tipo de regra de negócio em Dart é testável de um jeito que prompt não é.
 
-### 30. [`bloc/chat/nami_chat_bloc.dart:240-293`](../lib/features/nami_finances/bloc/chat/nami_chat_bloc.dart#L240-L293)
+### 30. [`bloc/chat/nami_chat_bloc.dart:230-282`](../lib/features/nami_finances/bloc/chat/nami_chat_bloc.dart#L230-L282)
 
 **Mostre:** `_generateAnswer` e depois `_stripToolCallJson`.
 
@@ -288,7 +290,7 @@ O `switch` sobre `ModelResponse` é o trecho mais didático do arquivo: `TextRes
 
 ### 31. [`tools/find_expenses_handler.dart`](../lib/features/nami_finances/tools/find_expenses_handler.dart)
 
-**Mostre:** o docstring (linhas 17–31) e o `execute` (a partir da 86).
+**Mostre:** o docstring (linhas 12–31) e o `execute` (a partir da 86).
 
 **A frase:** "Esta é a tool que justifica o RAG existir na Nami: achar 'aquela viagem pra praia' quando o usuário não sabe a data nem o valor."
 
@@ -302,17 +304,17 @@ O `switch` sobre `ModelResponse` é o trecho mais didático do arquivo: `TextRes
 
 ---
 
-## Bloco 5 — Bônus: o que está na bancada agora
+## Bloco 5 — Bônus: a lição de prompt engineering que virou código
 
-> Rode `git diff` ao vivo. São 4 arquivos, e a mudança é a melhor aula de prompt engineering do projeto.
+> Esta mudança já está no código (era o diff "na bancada" na primeira versão deste roteiro). Mostre os dois arquivos.
 
-### 33. `git diff lib/core/ai/prompts/personas/vegapunk_prompt.dart`
+### 33. [`core/ai/prompts/personas/vegapunk_prompt.dart`](../lib/core/ai/prompts/personas/vegapunk_prompt.dart#L22) — seção DATA RULES
 
-Uma seção nova, **DATA RULES**, em PT e EN:
+Uma seção **DATA RULES** (linha 22) / **REGRAS DE DADOS** (linha 45):
 
 > *"Nunca invente, chute ou altere nome, número ou fato vindo de [SEARCH RESULTS] ou resultado de ferramenta — repita exatamente como recebido. Se um campo disser 'not set' ou estiver ausente, diga que ainda não foi informado; nunca invente um valor."*
 
-### 34. `git diff lib/features/vegapunk_chat/tools/handlers/get_user_profile_handler.dart`
+### 34. [`tools/handlers/get_user_profile_handler.dart:38-79`](../lib/features/vegapunk_chat/tools/handlers/get_user_profile_handler.dart#L38-L79)
 
 **A frase:** "Instrução no prompt não bastou. A correção de verdade foi mudar o **formato do dado** entregue ao modelo."
 
@@ -331,7 +333,7 @@ Três mudanças, e cada uma tem uma razão:
 
 ## Apêndice A — Testes para rodar ao vivo
 
-Se a plateia perguntar "e como vocês garantem isso?", tudo isso roda sem device — **65 testes em ~2 segundos** (verificado em 30/07/2026):
+Se a plateia perguntar "e como vocês garantem isso?", tudo isso roda sem device, em poucos segundos:
 
 ```bash
 # tudo de uma vez — o que cabe numa demo ao vivo
@@ -350,6 +352,9 @@ fvm flutter test test/features/nami_finances/finance_math_test.dart
 # o fallback textual de tool call
 fvm flutter test test/features/nami_finances/tool_call_text_fallback_test.dart
 
+# detector de intenção do Vegapunk (camada 1)
+fvm flutter test test/features/vegapunk_chat/tools/tool_intent_detector_test.dart
+
 # RAG: idempotência do knowledge base, reindexação de sessão, cap de documentos
 fvm flutter test test/core/services/rag/rag_service_test.dart
 fvm flutter test test/features/vegapunk_chat/
@@ -360,7 +365,7 @@ Dois nomes de teste que valem ler na saída, porque explicam a feature melhor qu
 - `does not turn a trailing unanswered user message into a document`
 - `only rebuilds up to maxSessionDocuments most recent turns`
 
-O ponto a fazer: **o que é determinístico está testado** — router, matemática financeira, parser de tool call, fingerprint do knowledge base, reindexação de sessão, round-trip do histórico em disco. O que depende do modelo é verificado no aparelho, e é justamente por isso que tanta lógica foi puxada para fora do modelo.
+O ponto a fazer: **o que é determinístico está testado** — router, matemática financeira, parser de tool call, detector de intenção, fingerprint do knowledge base, reindexação de sessão, round-trip do histórico em disco. (Ainda sem teste: `RagStoreCoordinator`.) O que depende do modelo é verificado no aparelho, e é justamente por isso que tanta lógica foi puxada para fora do modelo.
 
 ## Apêndice B — O que não mostrar
 
@@ -370,7 +375,7 @@ O ponto a fazer: **o que é determinístico está testado** — router, matemát
 | `one_piece_knowledge_base.dart` inteiro | 422 linhas de conteúdo; mostre um `RagDocument` e siga |
 | `tool_intent_detector.dart` inteiro | 302 linhas de regex; mostre `detect` e um `_matches*` |
 | `l10n/app_localizations*.dart` | gerado, milhares de linhas |
-| `.specs/features/vegapunk-chat/` | registra a intenção antiga (Qwen3 `.task`, mediapipe, RAG como "fase futura"). Se for citar, deixe claro que o código é a fonte da verdade |
+| `.specs/features/vegapunk-chat/` | registra a intenção antiga (Qwen3 `.task`, mediapipe, RAG como "fase futura"). O topo do `design.md` resume o pipeline atual; o resto é histórico — o código é a fonte da verdade |
 | `firebase_options.dart` | gerado |
 
 ## Apêndice C — Perguntas que vão aparecer
@@ -385,7 +390,7 @@ O download é sob demanda, só ao abrir o chat, com progresso e retry, e no Andr
 Porque três das cinco ferramentas do Vegapunk leem ou escrevem dado corporal, e a Nami inteira roda sobre renda e extrato. A regra do projeto é: dado do usuário não sai do aparelho. O Gemini continua no app — para arte de personagem, arte de tripulação e receitas, onde o prompt não identifica ninguém.
 
 **"Dá para trocar por um modelo menor?"**
-Sim, e é só `.env` — o `_determineModelType` deriva do nome do arquivo. Já foi avaliado e descartado: a perda em function calling e multilíngue não valeu o ganho de performance.
+Tecnicamente é só `.env` — o `_determineModelType` deriva do nome do arquivo. Mas é decisão de produto: foi avaliado e descartado, a perda em function calling e multilíngue não valeu o ganho de performance. Gemma 4 E2B e `maxTokens: 4096` ficam fixos; memória se resolve com entitlement, fallback GPU→CPU, menos sessões e saídas menores.
 
 **"E se duas features usarem RAG ao mesmo tempo?"**
 É exatamente o que o `RagStoreCoordinator` resolve. O plugin tem um store ativo por processo; o coordinator é o dono único do ponteiro, e cada serviço se reafirma antes de toda operação.

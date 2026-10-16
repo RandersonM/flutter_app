@@ -1,9 +1,11 @@
 # Ask Vegapunk — Feature Specification
 
 **Feature ID:** VEGAPUNK  
-**Status:** Specification  
+**Status:** Implemented — superseded in parts (see note below)  
 **Created:** 2026-06-24  
 **Author:** Randerson M A dos Santos
+
+> **Status:** implemented and superseded in parts (Gemma 4 E2B `.litertlm` instead of Qwen3 `.task`, no mediapipe, tool calling + RAG + persisted history shipped). Kept as the Phase 1 record; the current pipeline is summarized in [`design.md` › Status / current implementation](./design.md#status--current-implementation-checked-against-code-2026-10-16).
 
 ---
 
