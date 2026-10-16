@@ -25,8 +25,8 @@ paths:
   `IAuthService.updateBodyProfile`; `AuthBloc` follows through `profileChanges`
   (golden: Sanji / Zoro).
 - No `package:flutter/material.dart` / `widgets.dart` / `BuildContext`. Use
-  `dart:ui` (`Locale`) or `package:flutter/foundation.dart`. No colours or widgets
-  in state (`CalculatorCubit.getButtonTextColor` is debt).
+  `dart:ui` (`Locale`) or `package:flutter/foundation.dart`. No colours, widgets or
+  `ThemeMode` in state — map them in the widget.
 
 ## State
 
