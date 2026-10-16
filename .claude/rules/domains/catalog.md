@@ -45,8 +45,7 @@ and AMV videos. All routes here are public.
   otherwise pick randomly from 100 and cache. A manual pick sets
   `isManuallySelected = true`. Falls back to Luffy when nothing loads.
 - `HomeBloc` also loads an AMV for the character via `IYouTubeService`, and has an
-  `Offline` state.
-- Debt: `HomeBloc` injects `ConnectivityCubit` (BLoC→BLoC).
+  `Offline` state decided by `IConnectivityService`.
 
 ## youtube
 

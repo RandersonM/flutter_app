@@ -8,7 +8,6 @@ import 'package:opfan/features/robin_knowledge/data/repository/planner_repositor
 import 'package:opfan/core/services/index.dart';
 import 'package:opfan/core/services/rag/i_rag_service.dart';
 import 'package:opfan/core/auth/blocs/index.dart';
-import 'package:opfan/core/connectivity/connectivity_cubit.dart';
 import 'package:opfan/features/sanji_cooking/data/repository/cooking_repository_interface.dart';
 import 'package:opfan/features/vegapunk_chat/data/repository/i_vegapunk_chat_history_repository.dart';
 import 'package:opfan/features/vegapunk_chat/data/repository/i_vegapunk_chat_repository.dart';
@@ -71,7 +70,7 @@ void registerFeaturesModule(GetIt getIt) {
     () => HomeBloc(
       youTubeService: getIt<IYouTubeService>(),
       featuredCharacterRepository: getIt<IFeaturedCharacterRepository>(),
-      connectivity: getIt<ConnectivityCubit>(),
+      connectivityService: getIt<IConnectivityService>(),
     ),
   );
 

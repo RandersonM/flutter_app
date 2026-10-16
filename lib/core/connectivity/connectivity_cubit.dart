@@ -41,9 +41,6 @@ class ConnectivityCubit extends Cubit<ConnectivityState> {
     });
   }
 
-  /// Synchronous check — safe to call outside of async context.
-  bool get isOnline => state is ConnectivityOnline;
-
   @override
   Future<void> close() {
     _debounce?.cancel();
