@@ -24,3 +24,12 @@ final class NotFoundException extends AppException {
   @override
   String toString() => 'NotFoundException($resource)';
 }
+
+/// The user backed out of a confirmation the operation needs (for example,
+/// signing in again before deleting the account).
+final class CancelledByUserException extends AppException {
+  const CancelledByUserException();
+
+  @override
+  String toString() => 'CancelledByUserException';
+}

@@ -128,7 +128,11 @@ void registerCoreModule(GetIt getIt) {
       userProfileRepository: getIt<IUserProfileRepository>(),
       notificationService: getIt<INotificationService>(),
       storage: getIt<IUserStorageService>(),
+      userDataEraser: getIt<IUserDataEraser>(),
     ),
+  );
+  getIt.registerLazySingleton<IUserDataEraser>(
+    () => UserDataEraser(firestore: getIt<IFirestoreService>()),
   );
   getIt.registerLazySingleton<IFirestoreService>(
     () => FirestoreService(
