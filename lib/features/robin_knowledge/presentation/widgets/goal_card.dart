@@ -2,7 +2,7 @@ import 'package:opfan/shared/widgets/atoms/app_icon.dart';
 import 'package:phosphoricons_flutter/phosphoricons_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:opfan/features/robin_knowledge/data/models/goal_model.dart';
-import 'package:opfan/app/di/injection.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:opfan/features/robin_knowledge/bloc/robin_knowledge_bloc.dart';
 import 'package:opfan/features/robin_knowledge/presentation/goal_details_screen.dart';
 import 'package:opfan/shared/utils/theme.dart';
@@ -255,11 +255,17 @@ class GoalCard extends StatelessWidget {
   void _navigateToDetails(BuildContext context) {
     Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) => GoalDetailsScreen(goal: goal)),
+      MaterialPageRoute(
+        builder: (_) => BlocProvider.value(
+          value: context.read<RobinKnowledgeBloc>(),
+          child: GoalDetailsScreen(goal: goal),
+        ),
+      ),
     );
   }
 
   void _deleteGoal(BuildContext context) {
+    final bloc = context.read<RobinKnowledgeBloc>();
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
@@ -274,7 +280,7 @@ class GoalCard extends StatelessWidget {
           ),
           TextButton(
             onPressed: () {
-              getIt.robinKnowledgeBloc.add(DeleteGoal(goal.id));
+              bloc.add(DeleteGoal(goal.id));
               Navigator.pop(context);
             },
             child: Text(AppLocalizations.of(context)!.delete),

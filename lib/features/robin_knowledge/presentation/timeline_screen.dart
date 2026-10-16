@@ -1,7 +1,7 @@
 import 'package:opfan/shared/widgets/atoms/app_icon.dart';
 import 'package:phosphoricons_flutter/phosphoricons_flutter.dart';
 import 'package:flutter/material.dart';
-import 'package:opfan/app/di/injection.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:opfan/features/robin_knowledge/bloc/robin_knowledge_bloc.dart';
 import 'package:opfan/shared/widgets/molecules/default_app_bar.dart';
 import 'package:opfan/l10n/app_localizations.dart';
@@ -16,7 +16,9 @@ class TimelineScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      getIt.robinKnowledgeBloc.add(const LoadGoals());
+      if (context.mounted) {
+        context.read<RobinKnowledgeBloc>().add(const LoadGoals());
+      }
     });
 
     return Scaffold(
@@ -42,7 +44,7 @@ class TimelineScreen extends StatelessWidget {
   }
 
   void _showAddGoalDialog(BuildContext context) {
-    final robinKnowledgeBloc = getIt.robinKnowledgeBloc;
+    final robinKnowledgeBloc = context.read<RobinKnowledgeBloc>();
     showDialog(
       context: context,
       builder: (context) =>
