@@ -64,9 +64,7 @@ class SearchInternetHandler extends ToolHandler {
       orElse: () => SearchTopic.general,
     );
 
-    debugPrint(
-      'SearchInternetHandler: searching for "$query" (topic: ${searchTopic.name})',
-    );
+    debugPrint('SearchInternetHandler: searching (topic: ${searchTopic.name})');
 
     if (!await connectivityService.isOnline()) {
       return ToolResult.error(

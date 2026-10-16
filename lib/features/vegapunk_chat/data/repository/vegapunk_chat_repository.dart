@@ -87,7 +87,7 @@ class VegapunkChatRepository implements IVegapunkChatRepository {
         _registry.has(intent.toolName)) {
       debugPrint(
         'VegapunkChatRepository: high-confidence intent detected — '
-        '${intent.toolName}(${intent.extractedArgs})',
+        '${intent.toolName}',
       );
 
       // Execute the tool directly without asking the model
@@ -150,12 +150,10 @@ class VegapunkChatRepository implements IVegapunkChatRepository {
           buffer.write(token);
           yield token;
 
-        case FunctionCallResponse(:final name, :final args):
+        case FunctionCallResponse(:final name):
           // Native SDK-detected function call
           nativeFunctionCall = response;
-          debugPrint(
-            'VegapunkChatRepository: native function call — $name($args)',
-          );
+          debugPrint('VegapunkChatRepository: native function call — $name');
 
         case ParallelFunctionCallResponse(:final calls):
           // Take the first call for now
@@ -163,7 +161,7 @@ class VegapunkChatRepository implements IVegapunkChatRepository {
             nativeFunctionCall = calls.first;
             debugPrint(
               'VegapunkChatRepository: parallel function call — '
-              '${nativeFunctionCall.name}(${nativeFunctionCall.args})',
+              '${nativeFunctionCall.name}',
             );
           }
 

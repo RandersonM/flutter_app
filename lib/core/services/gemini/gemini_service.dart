@@ -212,7 +212,7 @@ class GeminiService implements IGeminiService {
     }
 
     try {
-      debugPrint('Gemini Service: Generating image with prompt: $prompt');
+      debugPrint('Gemini Service: Generating image');
 
       _recordRequest();
 
