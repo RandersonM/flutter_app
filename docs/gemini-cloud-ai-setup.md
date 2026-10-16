@@ -42,7 +42,7 @@ O texto usa o SDK oficial (`GenerativeModel.generateContent`). A imagem usa a AP
 - **Rate limit**: 15 requisições/hora (`_maxRequestsPerHour` em `gemini_service.dart`)
 - **Cooldown de quota**: ao detectar `RESOURCE_EXHAUSTED`/429, o serviço entra em cooldown de **2 minutos** (não 1 hora) antes de tentar novamente
 - **Modo dev**: se `GEMINI_API_KEY=dev_mode` ou vazio, `generateText` retorna uma resposta de fallback genérica (texto fixo) sem chamar a API; `generateImage` retorna `null`
-- **Upload de imagem**: a imagem gerada é enviada ao Imgur com um Client-ID **hardcoded** em `gemini_service.dart` (`_uploadImageToServer`) — candidato a mover para `.env` numa limpeza futura
+- **Upload de imagem**: a imagem gerada é enviada ao Imgur com o Client-ID de `IMGUR_CLIENT_ID` (`.env`, lido via `IEnvironmentService.imgurClientId`). Sem a chave, o upload é pulado e a imagem fica como data URI base64
 - **Cache**: imagens geradas são cacheadas em memória por hash do prompt (`_imageCache`), não persistido entre sessões do app
 
 ### 6. Como funciona
@@ -63,6 +63,9 @@ GEMINI_API_KEY=dev_mode
 
 # Produção - com API real
 GEMINI_API_KEY=sua_api_key_aqui
+
+# Opcional - upload das imagens geradas ao Imgur (sem ela, ficam como data URI)
+IMGUR_CLIENT_ID=seu_client_id_aqui
 ```
 
 ### 10. Próximos Passos

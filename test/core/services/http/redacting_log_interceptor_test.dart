@@ -18,7 +18,7 @@ void main() {
         ' x-goog-api-key: ***',
       );
       expect(
-        redactSecrets(' Authorization: Client-ID 546c25a59c58ad7'),
+        redactSecrets(' Authorization: Client-ID 0123456789abcde'),
         ' Authorization: ***',
       );
     });

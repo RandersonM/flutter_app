@@ -42,6 +42,9 @@ class EnvironmentService implements IEnvironmentService {
   String get tavilyApiKey => _getString('TAVILY_API_KEY', '');
 
   @override
+  String get imgurClientId => _getString('IMGUR_CLIENT_ID', '');
+
+  @override
   String get appName => _getString('APP_NAME', 'One Piece Simple App');
 
   @override

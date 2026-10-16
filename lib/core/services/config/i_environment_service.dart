@@ -10,6 +10,7 @@ abstract class IEnvironmentService {
   String get gemmaModelUrl;
   String get gemmaModelName;
   String get tavilyApiKey;
+  String get imgurClientId;
   String get appName;
   String get appVersion;
   bool get debugMode;
