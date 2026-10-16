@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 import 'package:opfan/features/crews/data/models/crew_model.dart';
 import 'package:opfan/core/services/index.dart';
 import 'package:opfan/features/crews/data/repository/crew_repository_interface.dart';
@@ -8,6 +7,12 @@ class CrewRepository implements ICrewRepository {
 
   final IFirestoreService _firestoreService;
   static const String _collection = 'crews';
+
+  /// Role keys arrive as `viceCaptain`, `vice-captain` or `vice captain`.
+  static String _roleKey(String? role) =>
+      (role ?? '').toLowerCase().replaceAll(RegExp(r'[^a-z]'), '');
+  static bool _isCaptain(String? role) => _roleKey(role) == 'captain';
+  static bool _isViceCaptain(String? role) => _roleKey(role) == 'vicecaptain';
 
   @override
   Future<String> createCrew(CrewModel crew) async {
@@ -345,11 +350,9 @@ class CrewRepository implements ICrewRepository {
         if (!updatedRolesFilled.contains(member.role)) {
           updatedRolesFilled.add(member.role!);
         }
-        debugPrint('member.role: ${member.role}');
-        if (member.role!.toLowerCase() == 'captain') {
+        if (_isCaptain(member.role)) {
           updatedCaptain = member.name;
-        } else if (member.role!.toLowerCase() == 'vice-captain' ||
-            member.role!.toLowerCase() == 'vicecaptain') {
+        } else if (_isViceCaptain(member.role)) {
           updatedViceCaptain = member.name;
         }
       }
@@ -375,11 +378,23 @@ class CrewRepository implements ICrewRepository {
         throw Exception('Tripulação não encontrada');
       }
 
-      final updatedMembers = crew.members
-          .where((member) => member.characterId != characterId)
+      final removed = crew.members
+          .where((member) => member.characterId == characterId)
           .toList();
+      final freedRoles = removed.map((m) => m.role).whereType<String>().toSet();
 
-      final updatedCrew = crew.copyWith(members: updatedMembers);
+      final updatedCrew = crew.copyWith(
+        members: crew.members
+            .where((member) => member.characterId != characterId)
+            .toList(),
+        rolesFilled: crew.rolesFilled
+            .where((role) => !freedRoles.contains(role))
+            .toList(),
+        captain: removed.any((m) => _isCaptain(m.role)) ? '' : crew.captain,
+        viceCaptain: removed.any((m) => _isViceCaptain(m.role))
+            ? ''
+            : crew.viceCaptain,
+      );
       await updateCrew(crewId, updatedCrew);
     } catch (e) {
       throw Exception('Erro ao remover membro da tripulação: $e');
@@ -409,16 +424,24 @@ class CrewRepository implements ICrewRepository {
       String? updatedCaptain = crew.captain;
       String? updatedViceCaptain = crew.viceCaptain;
 
+      final previousRole = crew.members
+          .where((member) => member.characterId == characterId)
+          .firstOrNull
+          ?.role;
+      if (previousRole != null && previousRole != updatedMember.role) {
+        updatedRolesFilled.remove(previousRole);
+        if (_isCaptain(previousRole)) updatedCaptain = '';
+        if (_isViceCaptain(previousRole)) updatedViceCaptain = '';
+      }
+
       if (updatedMember.role != null && updatedMember.role!.isNotEmpty) {
         if (!updatedRolesFilled.contains(updatedMember.role)) {
           updatedRolesFilled.add(updatedMember.role!);
         }
 
-        // Atualiza captain ou viceCaptain se o role corresponder
-        if (updatedMember.role!.toLowerCase() == 'captain') {
+        if (_isCaptain(updatedMember.role)) {
           updatedCaptain = updatedMember.name;
-        } else if (updatedMember.role!.toLowerCase() == 'vice-captain' ||
-            updatedMember.role!.toLowerCase() == 'vice captain') {
+        } else if (_isViceCaptain(updatedMember.role)) {
           updatedViceCaptain = updatedMember.name;
         }
       }
