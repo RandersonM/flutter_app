@@ -244,5 +244,12 @@ class CustomCharacterModel {
 
   bool get isCustomCharacter => userId != null;
 
+  int get bountyValue => parseBounty(bounty);
+
+  /// Bounties are stored as display strings (`'3,000,000,000'`), so they must
+  /// be compared as numbers, never as text.
+  static int parseBounty(String raw) =>
+      int.tryParse(raw.replaceAll(RegExp(r'[^0-9]'), '')) ?? 0;
+
   int? get calculatedAge => age;
 }
