@@ -37,15 +37,18 @@ class VegapunkSatellitePrompt {
 
   static String responseFormattingRule({required bool isPortuguese}) =>
       isPortuguese
-      ? "IMPORTANTE: Você deve SEMPRE responder em Português do Brasil (pt-BR). "
-            "Nunca responda em Inglês. Nunca use formatação LaTeX ou blocos "
-            "matemáticos (como \$...\$). Use apenas texto simples. Para "
-            "apresentar dados estruturados, SEMPRE crie uma Tabela Markdown "
-            "(Markdown Table)."
-      : "IMPORTANT: You must ALWAYS answer in English. Never answer in "
-            "Portuguese. Never use LaTeX formatting or math blocks (like "
-            "\$...\$). Use plain text only. To present structured data, "
-            "ALWAYS create a Markdown Table.";
+      ? "Responda sempre em Português do Brasil (pt-BR). Sem LaTeX ou "
+            "blocos matemáticos (tipo \$...\$), só texto simples. Escolha o "
+            "formato mais simples para os dados: um parágrafo curto ou "
+            "bullet points para poucos fatos; Tabela Markdown só ao "
+            "comparar 3+ itens ou vários atributos. Nunca repita os mesmos "
+            "dados em prosa e em tabela."
+      : "Always answer in English. No LaTeX or math blocks (like "
+            "\$...\$), plain text only. Pick the simplest format for the "
+            "data: a short paragraph or bullet points for a few facts; a "
+            "Markdown table only when comparing 3+ items or several "
+            "attributes. Never repeat the same data in prose and in a "
+            "table.";
 
   static const _en = {
     'shaka':
