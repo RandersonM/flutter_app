@@ -186,7 +186,8 @@ class DetailsStatisticsCard extends StatelessWidget {
                           Expanded(
                             child: Center(
                               child: StatisticItem(
-                                label: 'Akuma no Mi',
+                                label:
+                                    'Akuma no Mi', // harness:allow proper noun
                                 value: character.devilFruit!,
                                 icon: PhosphorIconsRegular.plant,
                               ),
