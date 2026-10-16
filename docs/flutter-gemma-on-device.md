@@ -41,7 +41,7 @@ await FlutterGemma.initialize(
 
 Chamado após Firebase/Env/Theme, antes de `runApp()`. É síncrono/rápido — apenas registra os engines, não carrega o modelo.
 
-### 3.2 Variáveis de ambiente (`.env`)
+### 3.2 Variáveis de ambiente (`.env`, via `--dart-define-from-file=.env`)
 
 ```env
 HUGGING_FACE_API_KEY=hf_...              # token para baixar modelos gated no HuggingFace

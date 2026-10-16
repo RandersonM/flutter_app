@@ -14,7 +14,7 @@
 
 ### 2. Configurar no App
 
-A API key é lida via `flutter_dotenv` — **nunca hardcode a chave no código**. Adicione ao `.env`:
+A API key é um valor de build (`--dart-define-from-file=.env`) lido por `IEnvironmentService` — **nunca hardcode a chave no código**. Como ela vai compilada no app, **restrinja a chave** no Google Cloud console ao bundle id do iOS / package + SHA-1 do Android e só à *YouTube Data API v3*. Adicione ao `.env`:
 
 ```env
 YOUTUBE_API_KEY=sua_api_key_aqui

@@ -1,106 +1,68 @@
 # Gemini AI na Nuvem (Google) — Configuração
 
-> **Este documento cobre o `google_generative_ai` (Gemini na nuvem)** — usado para geração de texto e imagem via API do Google. Para o LLM que roda **no dispositivo** (`flutter_gemma`, chat do Vegapunk), veja [`flutter-gemma-on-device.md`](./flutter-gemma-on-device.md). Os dois são tecnologias diferentes que coexistem no projeto.
+> **Este documento cobre o Gemini na nuvem** — texto do Sanji e imagens de personagens e
+> tripulações. Para o LLM que roda **no dispositivo** (`flutter_gemma`, chats do Vegapunk e
+> da Nami), veja [`flutter-gemma-on-device.md`](./flutter-gemma-on-device.md).
 
-## Como configurar a API key do Gemini AI
+## Arquitetura: o app não tem a chave
 
-### 1. Obter a API Key
+Desde o SEC-1, o app nunca recebe a chave do Gemini, do Tavily nem do Imgur. Ele chama três
+Cloud Functions callable (`functions/src/ai_proxy.ts`), que guardam as chaves como
+**secrets** do Firebase:
 
-1. Acesse [Google AI Studio](https://makersuite.google.com/app/apikey)
-2. Faça login com sua conta Google
-3. Clique em **Create API Key**
-4. Copie a API key gerada
-
-### 2. Configurar no App
-
-1. Crie um arquivo `.env` na raiz do projeto
-2. Adicione a seguinte linha:
-
-```env
-GEMINI_API_KEY=sua_api_key_aqui
-```
-
-### 3. Exemplo completo do arquivo .env
-
-Veja o `.env.example` na raiz do projeto para a lista completa e atualizada de variáveis (inclui também as chaves do `flutter_gemma`, YouTube, Tavily etc). O bloco relevante para o Gemini na nuvem é:
-
-```env
-GEMINI_API_KEY=sua_api_key_aqui
-```
-
-### 4. Modelos usados atualmente
-
-| Uso | Modelo | Via |
+| Function | Faz | Secrets |
 |---|---|---|
-| Geração de texto | `gemini-2.5-flash-lite` | SDK `google_generative_ai` (`GenerativeModel`) |
-| Geração de imagem | `gemini-2.5-flash-image` | REST direto (`Dio` + header `x-goog-api-key`) |
+| `geminiGenerateText` | `gemini-2.5-flash-lite` (texto do Sanji) | `GEMINI_API_KEY` |
+| `geminiGenerateImage` | `gemini-2.5-flash-image` + upload no Imgur, devolve a URL | `GEMINI_API_KEY`, `IMGUR_CLIENT_ID` |
+| `webSearch` | busca Tavily do Vegapunk (`searchInternet`) | `TAVILY_API_KEY` |
 
-O texto usa o SDK oficial (`GenerativeModel.generateContent`). A imagem usa a API REST diretamente porque o SDK `google_generative_ai: ^0.3.0` não expõe geração de imagem — a resposta vem em `candidates[0].content.parts[].inlineData` (base64 PNG), que é decodificada e enviada para o Imgur para obter uma URL pública.
+Toda chamada:
 
-### 5. Limitações e comportamento de fallback
+- exige **usuário logado** (`unauthenticated` caso contrário);
+- consome uma **cota diária por usuário** em `ai_usage/{uid}` (texto 50, imagem 10, busca 30);
+  passou do limite → `resource-exhausted`;
+- valida tamanho do prompt (12 000 caracteres) e da busca (400);
+- pode exigir **App Check** (`REQUIRE_APP_CHECK=true`).
 
-- **Rate limit**: 15 requisições/hora (`_maxRequestsPerHour` em `gemini_service.dart`)
-- **Cooldown de quota**: ao detectar `RESOURCE_EXHAUSTED`/429, o serviço entra em cooldown de **2 minutos** (não 1 hora) antes de tentar novamente
-- **Modo dev**: se `GEMINI_API_KEY=dev_mode` ou vazio, `generateText` retorna uma resposta de fallback genérica (texto fixo) sem chamar a API; `generateImage` retorna `null`
-- **Upload de imagem**: a imagem gerada é enviada ao Imgur com o Client-ID de `IMGUR_CLIENT_ID` (`.env`, lido via `IEnvironmentService.imgurClientId`). Sem a chave, o upload é pulado e a imagem fica como data URI base64
-- **Cache**: imagens geradas são cacheadas em memória por hash do prompt (`_imageCache`), não persistido entre sessões do app
+No app, `GeminiService` e `WebSearchService` (`lib/core/services/`) só fazem a chamada:
+qualquer falha vira `null` / lista vazia, e `resource-exhausted` pausa novas chamadas por 2
+minutos.
 
-### 6. Como funciona
+## Configurar
 
-1. O caller (repository/service de uma feature) monta o prompt
-2. `GeminiService.generateText`/`generateImage` verifica quota e rate limit
-3. Se disponível, chama a API do Gemini
-4. Para imagem: decodifica o base64 retornado e faz upload ao Imgur, devolvendo uma URL
-5. Se a quota/API falhar, texto usa fallback genérico; imagem retorna `null` e a UI decide o que exibir
+1. Gere as chaves:
+   - Gemini: [Google AI Studio](https://aistudio.google.com/app/apikey)
+   - Tavily: [tavily.com](https://tavily.com)
+   - Imgur: [api.imgur.com/oauth2/addclient](https://api.imgur.com/oauth2/addclient) (anonymous usage)
+2. Grave como secrets e faça o deploy:
 
-### 9. Configuração de Desenvolvimento
-
-Para desenvolvimento, você pode usar:
-
-```env
-# Desenvolvimento - sem API
-GEMINI_API_KEY=dev_mode
-
-# Produção - com API real
-GEMINI_API_KEY=sua_api_key_aqui
-
-# Opcional - upload das imagens geradas ao Imgur (sem ela, ficam como data URI)
-IMGUR_CLIENT_ID=seu_client_id_aqui
+```bash
+firebase functions:secrets:set GEMINI_API_KEY
+firebase functions:secrets:set TAVILY_API_KEY
+firebase functions:secrets:set IMGUR_CLIENT_ID
+cd functions && npm run deploy
 ```
 
-### 10. Próximos Passos
+3. (Recomendado) **App Check**: registre os apps no console do Firebase (Play Integrity no
+   Android, DeviceCheck no iOS) e os *debug tokens* que o app imprime em builds de debug.
+   Depois crie `functions/.env.opfan-db177` com `REQUIRE_APP_CHECK=true` e faça o deploy de
+   novo. Antes disso, o parâmetro fica `false` — ligar sem registrar os apps bloqueia todas
+   as chamadas.
 
-1. Configure o arquivo `.env` com sua chave da API
-2. Execute `flutter pub get` para instalar as dependências
-3. Reinicie o aplicativo
-4. Teste a geração de imagens
+O projeto precisa estar no plano **Blaze** (já está: as Functions agendadas exigem). Nesse
+volume as chamadas cabem na cota grátis de Functions; o consumo do Gemini e do Tavily é
+cobrado pela própria chave, com ou sem proxy.
 
-### 11. Solução de Problemas
+## Comportamento de falha
 
-#### "API Key not found"
-- Verifique se o arquivo `.env` existe
-- Confirme se a chave está corretamente formatada
-- Reinicie o app após adicionar a chave
+- **Sem login, sem cota ou sem rede**: o Sanji mostra o erro de dica/refeição; a geração de
+  imagem não devolve imagem; a busca do Vegapunk responde que não encontrou resultados.
+- **Cache**: URLs de imagem geradas ficam em memória por prompt durante a sessão.
 
-#### "Quota exceeded"
-- O serviço entra em cooldown automático de 2 minutos e depois volta a tentar
-- Durante o cooldown, `generateText`/`generateImage` retornam sem chamar a API
+## Solução de problemas
 
-#### "Network timeout"
-- Verifique sua conexão com a internet
-- A API pode estar temporariamente indisponível
-- O `Dio` interceptor já faz 1 retry automático em erros de conexão/timeout
-
-### 12. Estrutura dos arquivos (atual)
-
-- `lib/core/services/gemini/gemini_service.dart` — Serviço principal (implementa `IGeminiService`)
-- `lib/core/services/gemini/i_gemini_service.dart` — Interface
-- `lib/core/services/environment_service.dart` — Leitura de variáveis de ambiente
-- `lib/app/di/core_module.dart` — Registro no GetIt
-
-### 13. ⚠️ Importante
-
-- Mantenha sua API key segura
-- Não commite a API key para o repositório
-- Configure quotas apropriadas no Google AI Studio
-- A API do Gemini tem limites de uso gratuito generosos 
+- `unauthenticated`: o usuário não está logado (Sanji e imagens ficam em rotas privadas).
+- `failed-precondition`: `REQUIRE_APP_CHECK` ligado e o app sem token válido — registre o app
+  ou o debug token no console.
+- `resource-exhausted`: cota diária do usuário (ou do Gemini/Tavily) estourada.
+- `unavailable`: a chamada ao Gemini, Tavily ou Imgur falhou; veja `firebase functions:log`.

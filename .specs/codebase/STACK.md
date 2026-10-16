@@ -28,10 +28,11 @@ Source of truth: `pubspec.yaml`, `.fvmrc`, `lib/main.dart`, `lib/app/di/`.
   SqliteVectorStore())`); wrapped by `lib/core/services/gemma/` and `lib/core/services/rag/`
 
 ## Cloud AI (not used for chat)
-- google_generative_ai ^0.3.0 — Gemini `gemini-2.5-flash-lite` for Sanji text
-- Gemini REST via Dio — `gemini-2.5-flash-image` for custom character and crew images
-  (`lib/core/services/gemini/gemini_service.dart`)
-- Tavily web search via Dio (`lib/core/services/web_search/`) behind Vegapunk's `searchInternet`
+- Gemini (`gemini-2.5-flash-lite` for Sanji text, `gemini-2.5-flash-image` + Imgur
+  for character and crew images) and Tavily web search run in Cloud Functions
+  (`functions/src/ai_proxy.ts`); the app calls them with cloud_functions ^5.6.2
+  from `lib/core/services/gemini/` and `lib/core/services/web_search/`
+- firebase_app_check ^0.3.2 — App Check tokens on those calls
 
 ## Backend / Firebase
 - firebase_core ^3.6.0
@@ -39,8 +40,9 @@ Source of truth: `pubspec.yaml`, `.fvmrc`, `lib/main.dart`, `lib/app/di/`.
 - cloud_firestore ^5.4.0 — `users`, `crews`, `custom_characters`, `planner`,
   `workout_assessments`, `featuredCharacters`, `user_tokens` (rules: `firestore.rules`)
 - firebase_messaging ^15.1.3 + flutter_local_notifications ^22.0.0 — FCM push
-- Cloud Functions (`functions/`, TypeScript, v2, Node 22) — scheduled push notifications;
-  the app has no client-side `cloud_functions` calls
+- Cloud Functions (`functions/`, TypeScript, v2, Node 22) — scheduled push
+  notifications and the AI proxy callables (`geminiGenerateText`,
+  `geminiGenerateImage`, `webSearch`) holding the Gemini, Tavily and Imgur secrets
 
 ## Local Storage
 - hive ^2.2.3 + hive_flutter ^1.1.0 — hand-written adapters, type ids in
@@ -48,7 +50,7 @@ Source of truth: `pubspec.yaml`, `.fvmrc`, `lib/main.dart`, `lib/app/di/`.
 - path_provider ^2.1.1
 
 ## Networking
-- dio ^5.4.0 — One Piece API, YouTube Data API, Gemini image REST, Tavily
+- dio ^5.4.0 — One Piece API, YouTube Data API
 - connectivity_plus ^6.1.0 — `ConnectivityCubit`, offline banner/blocker
 
 ## Code Generation
@@ -64,7 +66,7 @@ Source of truth: `pubspec.yaml`, `.fvmrc`, `lib/main.dart`, `lib/app/di/`.
 - youtube_player_flutter ^10.0.1, video_player ^2.8.2, cached_network_image ^3.3.1,
   flutter_svg ^2.0.10, url_launcher ^6.2.5, uuid ^4.5.1
 - math_expressions ^2.4.0 (calculator)
-- flutter_dotenv ^5.1.0 — read only inside `EnvironmentService`
+- Config: build-time `--dart-define-from-file=.env`, read only inside `EnvironmentService`
 - flutter_secure_storage ^11.2.0 — keychain/keystore holder of the Hive AES key
 
 ## Testing

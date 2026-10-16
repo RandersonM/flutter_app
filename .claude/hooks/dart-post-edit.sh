@@ -142,8 +142,10 @@ case "$rel" in
       'No ChangeNotifier, Provider or Riverpod. State lives in a BLoC/Cubit.'
     case "$rel" in
       lib/core/services/config/environment_service.dart) ;;
-      *) flag 'dotenv\.' 'Read configuration through IEnvironmentService, never dotenv directly.' ;;
+      *) flag 'dotenv\.|String\.fromEnvironment' 'Read configuration through IEnvironmentService, never dotenv or String.fromEnvironment directly.' ;;
     esac
+    flag 'generativelanguage\.googleapis\.com|api\.tavily\.com|api\.imgur\.com' \
+      'Gemini, Tavily and Imgur are called only from the Cloud Functions AI proxy (functions/src/ai_proxy.ts) — the app must never hold those keys.'
     case "$rel" in
       lib/app/di/*) ;;
       *) flag '(^|[^A-Za-z0-9_])NavigationService\(' \
