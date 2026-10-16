@@ -8,6 +8,7 @@ import 'package:opfan/l10n/app_localizations.dart';
 import 'package:opfan/shared/utils/gender_mapper.dart';
 import 'package:opfan/shared/widgets/atoms/app_button.dart';
 import '../../bloc/index.dart';
+import '../zoro_workout_failure_message.dart';
 
 class WorkoutSetup extends StatefulWidget {
   final Function(Map<String, dynamic>) onCalculate;
@@ -45,7 +46,12 @@ class _WorkoutSetupState extends State<WorkoutSetup> {
         if (mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
-              content: Text(state.message),
+              content: Text(
+                zoroWorkoutFailureMessage(
+                  AppLocalizations.of(context)!,
+                  state.failure,
+                ),
+              ),
               backgroundColor: Theme.of(context).colorScheme.error,
             ),
           );
@@ -251,15 +257,15 @@ class _WorkoutSetupState extends State<WorkoutSetup> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               _buildFormulaItem(
-                'IMC',
+                AppLocalizations.of(context)!.workout_bmi,
                 AppLocalizations.of(context)!.workout_formula_bmi,
               ),
               _buildFormulaItem(
-                'Relação Cintura/Altura',
+                AppLocalizations.of(context)!.workout_waist_to_height,
                 AppLocalizations.of(context)!.workout_formula_waist_to_height,
               ),
               _buildFormulaItem(
-                'Percentual de Gordura',
+                AppLocalizations.of(context)!.workout_body_fat,
                 AppLocalizations.of(context)!.workout_formula_body_fat,
               ),
             ],
@@ -381,7 +387,7 @@ class _WorkoutSetupState extends State<WorkoutSetup> {
               return null;
             },
             itemToString: (days) =>
-                '$days ${days == 1 ? AppLocalizations.of(context)!.workout_day : AppLocalizations.of(context)!.workout_days}',
+                AppLocalizations.of(context)!.zoroWorkoutDaysCount(days),
           ),
           const SizedBox(height: 20),
           AppButton(

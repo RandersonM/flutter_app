@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:opfan/core/auth/models/user_model.dart';
+import 'package:opfan/core/errors/app_exceptions.dart';
 import 'package:opfan/core/services/index.dart';
 import 'package:opfan/features/zoro_workout/data/models/workout_assessment_model.dart';
 import 'zoro_workout_event.dart';
@@ -44,7 +45,8 @@ class ZoroWorkoutBloc extends Bloc<ZoroWorkoutEvent, ZoroWorkoutState> {
         ),
       );
     } catch (e) {
-      emit(ZoroWorkoutError(message: 'Erro ao inicializar: $e'));
+      debugPrint('ZoroWorkoutBloc: loading the assessment failed: $e');
+      emit(const ZoroWorkoutError(ZoroWorkoutFailure.loadFailed));
     }
   }
 
@@ -113,7 +115,8 @@ class ZoroWorkoutBloc extends Bloc<ZoroWorkoutEvent, ZoroWorkoutState> {
         ),
       );
     } catch (e) {
-      emit(ZoroWorkoutError(message: 'Erro ao salvar avaliação: $e'));
+      debugPrint('ZoroWorkoutBloc: saving the assessment failed: $e');
+      emit(const ZoroWorkoutError(ZoroWorkoutFailure.saveAssessmentFailed));
     }
   }
 
@@ -136,7 +139,8 @@ class ZoroWorkoutBloc extends Bloc<ZoroWorkoutEvent, ZoroWorkoutState> {
         ),
       );
     } catch (e) {
-      emit(ZoroWorkoutError(message: 'Erro ao atualizar: $e'));
+      debugPrint('ZoroWorkoutBloc: refreshing the assessment failed: $e');
+      emit(const ZoroWorkoutError(ZoroWorkoutFailure.refreshFailed));
     }
   }
 
@@ -147,7 +151,7 @@ class ZoroWorkoutBloc extends Bloc<ZoroWorkoutEvent, ZoroWorkoutState> {
     try {
       final currentAssessment = await _service.getCurrentUserAssessment();
       if (currentAssessment == null) {
-        emit(const ZoroWorkoutError(message: 'noAssessmentFound'));
+        emit(const ZoroWorkoutError(ZoroWorkoutFailure.noAssessmentFound));
         return;
       }
 
@@ -165,8 +169,11 @@ class ZoroWorkoutBloc extends Bloc<ZoroWorkoutEvent, ZoroWorkoutState> {
           remainingDaysToGoal: _calculateRemainingDays(updatedAssessment),
         ),
       );
+    } on NotFoundException {
+      emit(const ZoroWorkoutError(ZoroWorkoutFailure.noAssessmentFound));
     } catch (e) {
-      emit(ZoroWorkoutError(message: 'Error updating workout days: $e'));
+      debugPrint('ZoroWorkoutBloc: updating workout days failed: $e');
+      emit(const ZoroWorkoutError(ZoroWorkoutFailure.updateDaysFailed));
     }
   }
 
@@ -190,8 +197,11 @@ class ZoroWorkoutBloc extends Bloc<ZoroWorkoutEvent, ZoroWorkoutState> {
           remainingDaysToGoal: _calculateRemainingDays(currentAssessment),
         ),
       );
+    } on NotFoundException {
+      emit(const ZoroWorkoutError(ZoroWorkoutFailure.noAssessmentFound));
     } catch (e) {
-      emit(ZoroWorkoutError(message: 'Erro ao salvar plano de treino: $e'));
+      debugPrint('ZoroWorkoutBloc: saving the workout plan failed: $e');
+      emit(const ZoroWorkoutError(ZoroWorkoutFailure.savePlanFailed));
     }
   }
 

@@ -9,6 +9,7 @@ import 'package:opfan/shared/widgets/atoms/custom_text_field.dart';
 import 'package:opfan/shared/utils/gender_mapper.dart';
 import 'package:opfan/shared/widgets/atoms/app_button.dart';
 import '../../bloc/index.dart';
+import '../sanji_cooking_failure_message.dart';
 
 class NutritionForm extends StatefulWidget {
   final Function(Map<String, dynamic>) onCalculate;
@@ -50,7 +51,12 @@ class _NutritionFormState extends State<NutritionForm> {
         if (mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
-              content: Text(state.message),
+              content: Text(
+                sanjiCookingFailureMessage(
+                  AppLocalizations.of(context)!,
+                  state.failure,
+                ),
+              ),
               backgroundColor: Theme.of(context).colorScheme.error,
             ),
           );

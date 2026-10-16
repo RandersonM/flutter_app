@@ -90,7 +90,9 @@ class _WeekProgressCard extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                '$weekWorkouts / $goal workouts',
+                AppLocalizations.of(
+                  context,
+                )!.zoroWeekProgressCount(weekWorkouts, goal),
                 style: theme.textTheme.bodyMedium?.copyWith(
                   color: theme.colorScheme.onSurface.withValues(alpha: 0.7),
                 ),

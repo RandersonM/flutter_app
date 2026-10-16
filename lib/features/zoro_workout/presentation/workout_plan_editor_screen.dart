@@ -6,6 +6,7 @@ import 'package:opfan/features/zoro_workout/data/models/workout_plan_model.dart'
 import 'package:opfan/features/zoro_workout/bloc/zoro_workout_bloc.dart';
 import 'package:opfan/features/zoro_workout/bloc/zoro_workout_event.dart';
 import 'package:opfan/features/zoro_workout/bloc/zoro_workout_state.dart';
+import 'package:opfan/features/zoro_workout/presentation/zoro_workout_failure_message.dart';
 import 'package:opfan/l10n/app_localizations.dart';
 import 'package:opfan/shared/widgets/atoms/app_button.dart';
 import 'package:opfan/shared/utils/app_semantic_colors.dart';
@@ -26,10 +27,14 @@ class WorkoutPlanEditorScreen extends StatefulWidget {
 class _WorkoutPlanEditorScreenState extends State<WorkoutPlanEditorScreen> {
   late List<_SplitDraft> _splits;
   bool _saving = false;
+  bool _splitsInitialized = false;
 
   @override
-  void initState() {
-    super.initState();
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    // The default split name is localized, so it cannot be built in initState.
+    if (_splitsInitialized) return;
+    _splitsInitialized = true;
     if (widget.existingPlan != null && widget.existingPlan!.isNotEmpty) {
       _splits = widget.existingPlan!.splits.map((s) {
         return _SplitDraft(
@@ -40,18 +45,19 @@ class _WorkoutPlanEditorScreenState extends State<WorkoutPlanEditorScreen> {
         );
       }).toList();
     } else {
-      _splits = [
-        _SplitDraft(name: 'Treino A', exercises: [_ExerciseDraft()]),
-      ];
+      _splits = [_newSplit('A')];
     }
   }
+
+  _SplitDraft _newSplit(String letter) => _SplitDraft(
+    name: AppLocalizations.of(context)!.zoroPlanSplitName(letter),
+    exercises: [_ExerciseDraft()],
+  );
 
   void _addSplit() {
     setState(() {
       final letter = String.fromCharCode('A'.codeUnitAt(0) + _splits.length);
-      _splits.add(
-        _SplitDraft(name: 'Treino $letter', exercises: [_ExerciseDraft()]),
-      );
+      _splits.add(_newSplit(letter));
     });
   }
 
@@ -61,19 +67,19 @@ class _WorkoutPlanEditorScreenState extends State<WorkoutPlanEditorScreen> {
   }
 
   Future<void> _save() async {
-    // Validate
+    final l10n = AppLocalizations.of(context)!;
     for (final split in _splits) {
       if (split.nameController.text.trim().isEmpty) {
-        _showError('Dê um nome para cada split de treino.');
+        _showError(l10n.zoroPlanSplitNameRequired);
         return;
       }
       for (final ex in split.exercises) {
         if (ex.nameController.text.trim().isEmpty) {
-          _showError('Preencha o nome de todos os exercícios.');
+          _showError(l10n.zoroPlanExerciseNameRequired);
           return;
         }
         if (ex.volumeController.text.trim().isEmpty) {
-          _showError('Preencha o volume de todos os exercícios (ex: 3x15).');
+          _showError(l10n.zoroPlanExerciseVolumeRequired);
           return;
         }
       }
@@ -136,14 +142,21 @@ class _WorkoutPlanEditorScreenState extends State<WorkoutPlanEditorScreen> {
             );
           } else if (state is ZoroWorkoutError) {
             setState(() => _saving = false);
-            _showError(state.message);
+            _showError(
+              zoroWorkoutFailureMessage(
+                AppLocalizations.of(context)!,
+                state.failure,
+              ),
+            );
           }
         }
       },
       child: Scaffold(
         appBar: AppBar(
           title: Text(
-            isEdit ? 'Editar Plano de Treino' : 'Criar Plano de Treino',
+            isEdit
+                ? AppLocalizations.of(context)!.zoroPlanEditTitle
+                : AppLocalizations.of(context)!.createWorkoutPlan,
           ),
           centerTitle: true,
           actions: [
@@ -182,7 +195,7 @@ class _WorkoutPlanEditorScreenState extends State<WorkoutPlanEditorScreen> {
                   const SizedBox(width: 10),
                   Expanded(
                     child: Text(
-                      'Crie splits (A, B, C…) com exercícios. O app vai rodiziar automaticamente conforme seus dias de treino.',
+                      AppLocalizations.of(context)!.zoroPlanHelp,
                       style: Theme.of(context).textTheme.bodySmall,
                     ),
                   ),
@@ -235,7 +248,11 @@ class _WorkoutPlanEditorScreenState extends State<WorkoutPlanEditorScreen> {
                   ),
                 )
               : const AppIcon(PhosphorIconsRegular.check),
-          label: Text(_saving ? 'Salvando…' : 'Salvar Plano'),
+          label: Text(
+            _saving
+                ? AppLocalizations.of(context)!.zoroPlanSaving
+                : AppLocalizations.of(context)!.zoroPlanSave,
+          ),
         ),
       ),
     );
@@ -496,7 +513,7 @@ class _SplitCard extends StatelessWidget {
                       ),
                       const SizedBox(width: 6),
                       Text(
-                        'Adicionar exercício',
+                        AppLocalizations.of(context)!.zoroPlanAddExercise,
                         style: Theme.of(context).textTheme.bodySmall?.copyWith(
                           color: primaryColor.withValues(alpha: 0.8),
                           fontWeight: FontWeight.w600,

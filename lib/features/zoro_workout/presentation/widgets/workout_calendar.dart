@@ -8,6 +8,7 @@ import 'package:opfan/l10n/app_localizations.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:opfan/shared/utils/theme.dart';
 import '../../bloc/index.dart';
+import '../zoro_workout_failure_message.dart';
 import 'package:opfan/shared/utils/app_semantic_colors.dart';
 
 class WorkoutCalendar extends StatefulWidget {
@@ -79,7 +80,12 @@ class _WorkoutCalendarState extends State<WorkoutCalendar> {
         if (mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
-              content: Text(state.message),
+              content: Text(
+                zoroWorkoutFailureMessage(
+                  AppLocalizations.of(context)!,
+                  state.failure,
+                ),
+              ),
               backgroundColor: Theme.of(context).colorScheme.error,
             ),
           );
@@ -333,7 +339,9 @@ class _WorkoutCalendarState extends State<WorkoutCalendar> {
                   const SizedBox(width: 8),
                   Expanded(
                     child: Text(
-                      'Apenas o mês atual permite edição dos dias de exercício',
+                      AppLocalizations.of(
+                        context,
+                      )!.zoroCalendarCurrentMonthOnly,
                       style: Theme.of(context).textTheme.bodySmall?.copyWith(
                         color: Theme.of(context).semanticColors.warning,
                         fontSize: 11,

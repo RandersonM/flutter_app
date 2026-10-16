@@ -45,7 +45,6 @@ Two steps: (1) biological sex, age, height, weight; (2) activity level, goal,
 optional measurements. Create mode on `AuthNeedsOnboarding`; edit mode when it
 receives a `UserModel`. Dispatches `AuthProfileBodyUpdated` — no bloc of its own.
 `/onboarding` is public by design.
-Debt: hardcoded Portuguese app bar titles.
 
 ## Profile
 

@@ -177,9 +177,14 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     return Scaffold(
       appBar: AppBar(
-        title: Text(_isEditing ? 'Atualizar Perfil' : 'Complete seu Perfil'),
+        title: Text(
+          _isEditing
+              ? l10n.onboardingUpdateProfileTitle
+              : l10n.onboardingCompleteProfileTitle,
+        ),
         backgroundColor: Colors.transparent,
         elevation: 0,
         leading: _isEditing ? const BackButton() : const SizedBox.shrink(),
@@ -210,8 +215,10 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
               padding: const EdgeInsets.all(Constants.margin * 2),
               child: AppButton(
                 label: _currentStep == 0
-                    ? 'Próximo'
-                    : (_isEditing ? 'Salvar Alterações' : 'Concluir Cadastro'),
+                    ? l10n.onboardingNext
+                    : (_isEditing
+                          ? l10n.onboardingSaveChanges
+                          : l10n.onboardingFinish),
                 variant: AppButtonVariant.primary,
                 isFullWidth: true,
                 onPressed: _nextStep,
@@ -232,14 +239,14 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              'Dados Pessoais',
+              AppLocalizations.of(context)!.personalData,
               style: Theme.of(
                 context,
               ).textTheme.headlineMedium?.copyWith(fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 8),
             Text(
-              'Essas informações são essenciais para calcularmos seu plano nutricional de forma precisa.',
+              AppLocalizations.of(context)!.onboardingPersonalDataDescription,
               style: Theme.of(context).textTheme.bodyLarge?.copyWith(
                 color: Theme.of(
                   context,
@@ -281,7 +288,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
             _buildNumberField(
               controller: _ageController,
               label: AppLocalizations.of(context)!.ageLabel,
-              suffix: 'anos',
+              suffix: AppLocalizations.of(context)!.onboardingAgeSuffix,
               validatorMsg: AppLocalizations.of(context)!.ageValidator,
             ),
             const SizedBox(height: 16),
@@ -525,7 +532,9 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
       validator: (value) {
         if (isOptional) return null;
         if (value == null || value.isEmpty) return validatorMsg;
-        if (double.tryParse(value) == null) return 'Valor inválido';
+        if (double.tryParse(value) == null) {
+          return AppLocalizations.of(context)!.onboardingInvalidValue;
+        }
         return null;
       },
     );

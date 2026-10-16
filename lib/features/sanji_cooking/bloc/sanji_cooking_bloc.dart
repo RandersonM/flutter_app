@@ -75,7 +75,8 @@ class SanjiCookingBloc extends Bloc<SanjiCookingEvent, SanjiCookingState> {
         emit(SanjiCookingFormWithData(existingData: existingData));
       }
     } catch (e) {
-      emit(SanjiCookingError(message: 'Erro ao inicializar: $e'));
+      debugPrint('SanjiCookingBloc: initializing failed: $e');
+      emit(const SanjiCookingError(SanjiCookingFailure.loadFailed));
     }
   }
 
@@ -119,7 +120,8 @@ class SanjiCookingBloc extends Bloc<SanjiCookingEvent, SanjiCookingState> {
         ),
       );
     } catch (e) {
-      emit(SanjiCookingError(message: 'Erro ao calcular nutrição: $e'));
+      debugPrint('SanjiCookingBloc: calculating nutrition failed: $e');
+      emit(const SanjiCookingError(SanjiCookingFailure.calculationFailed));
     }
   }
 
@@ -160,7 +162,7 @@ class SanjiCookingBloc extends Bloc<SanjiCookingEvent, SanjiCookingState> {
     } catch (e, stackTrace) {
       debugPrint('SanjiCookingBloc: Error in _onSaveNutritionData: $e');
       debugPrint('SanjiCookingBloc: Stack trace: $stackTrace');
-      emit(SanjiCookingError(message: 'Error saving nutrition data: $e'));
+      emit(const SanjiCookingError(SanjiCookingFailure.saveFailed));
     }
   }
 
@@ -187,7 +189,8 @@ class SanjiCookingBloc extends Bloc<SanjiCookingEvent, SanjiCookingState> {
         emit(const SanjiCookingLoaded(hasExistingData: false, showForm: true));
       }
     } catch (e) {
-      emit(SanjiCookingError(message: 'Erro ao carregar dados existentes: $e'));
+      debugPrint('SanjiCookingBloc: loading existing data failed: $e');
+      emit(const SanjiCookingError(SanjiCookingFailure.loadFailed));
     }
   }
 
@@ -205,7 +208,7 @@ class SanjiCookingBloc extends Bloc<SanjiCookingEvent, SanjiCookingState> {
           ingredients: event.ingredients,
           cookingMethod: event.cookingMethod,
           difficulty: event.difficulty,
-          errorMessage: 'Adicione pelo menos um ingrediente',
+          failure: SanjiCookingFailure.noIngredients,
         ),
       );
       return;
@@ -235,12 +238,13 @@ class SanjiCookingBloc extends Bloc<SanjiCookingEvent, SanjiCookingState> {
         ),
       );
     } catch (e) {
+      debugPrint('SanjiCookingBloc: generating cooking tips failed: $e');
       emit(
         SanjiCookingTipsLoaded(
           ingredients: event.ingredients,
           cookingMethod: event.cookingMethod,
           difficulty: event.difficulty,
-          errorMessage: 'Erro ao gerar dicas: $e',
+          failure: SanjiCookingFailure.tipsFailed,
         ),
       );
     }
@@ -290,7 +294,7 @@ class SanjiCookingBloc extends Bloc<SanjiCookingEvent, SanjiCookingState> {
           targetCalories: event.targetCalories,
           goal: event.goal,
           dietaryRestrictions: event.dietaryRestrictions,
-          errorMessage: 'Por favor, adicione pelo menos um ingrediente.',
+          failure: SanjiCookingFailure.noIngredients,
         ),
       );
       return;
@@ -323,12 +327,11 @@ class SanjiCookingBloc extends Bloc<SanjiCookingEvent, SanjiCookingState> {
           goal: event.goal,
           dietaryRestrictions: event.dietaryRestrictions,
           personalizedMeal: meal,
-          errorMessage: meal == null
-              ? 'Não foi possível gerar a refeição. Tente novamente.'
-              : null,
+          failure: meal == null ? SanjiCookingFailure.mealFailed : null,
         ),
       );
     } catch (e) {
+      debugPrint('SanjiCookingBloc: generating the meal failed: $e');
       emit(
         SanjiCookingPersonalizedMealLoaded(
           ingredients: event.ingredients,
@@ -336,7 +339,7 @@ class SanjiCookingBloc extends Bloc<SanjiCookingEvent, SanjiCookingState> {
           targetCalories: event.targetCalories,
           goal: event.goal,
           dietaryRestrictions: event.dietaryRestrictions,
-          errorMessage: 'Erro ao gerar refeição: $e',
+          failure: SanjiCookingFailure.mealFailed,
         ),
       );
     }

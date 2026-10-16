@@ -2,10 +2,12 @@ import 'package:bloc_test/bloc_test.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:opfan/core/auth/models/user_model.dart';
+import 'package:opfan/core/errors/app_exceptions.dart';
 import 'package:opfan/core/services/auth_db/i_auth_service.dart';
 import 'package:opfan/core/services/workout/i_workout_assessment_service.dart';
 import 'package:opfan/features/zoro_workout/bloc/index.dart';
 import 'package:opfan/features/zoro_workout/data/models/workout_assessment_model.dart';
+import 'package:opfan/features/zoro_workout/data/models/workout_plan_model.dart';
 
 class _MockWorkoutAssessmentService extends Mock
     implements IWorkoutAssessmentService {}
@@ -13,6 +15,8 @@ class _MockWorkoutAssessmentService extends Mock
 class _MockAuthService extends Mock implements IAuthService {}
 
 class _FakeAssessment extends Fake implements WorkoutAssessmentModel {}
+
+class _FakeWorkoutPlan extends Fake implements WorkoutPlanModel {}
 
 void main() {
   late _MockWorkoutAssessmentService workouts;
@@ -37,7 +41,10 @@ void main() {
     'goal': 'lose_weight',
   };
 
-  setUpAll(() => registerFallbackValue(user));
+  setUpAll(() {
+    registerFallbackValue(user);
+    registerFallbackValue(_FakeWorkoutPlan());
+  });
 
   setUp(() {
     workouts = _MockWorkoutAssessmentService();
@@ -97,6 +104,53 @@ void main() {
       act: (bloc) =>
           bloc.add(const SaveNewAssessment(healthResults: healthResults)),
       expect: () => [isA<ZoroWorkoutLoaded>()],
+    );
+  });
+
+  group('ZoroWorkoutBloc failures', () {
+    blocTest<ZoroWorkoutBloc, ZoroWorkoutState>(
+      'emits loadFailed when loading the assessment throws',
+      setUp: () => when(
+        () => workouts.getCurrentUserAssessment(),
+      ).thenThrow(Exception('offline')),
+      build: build,
+      act: (bloc) => bloc.add(const InitializeWorkoutAssessment()),
+      expect: () => [
+        const ZoroWorkoutLoading(),
+        const ZoroWorkoutError(ZoroWorkoutFailure.loadFailed),
+      ],
+    );
+
+    blocTest<ZoroWorkoutBloc, ZoroWorkoutState>(
+      'emits noAssessmentFound when updating days without an assessment',
+      build: build,
+      act: (bloc) => bloc.add(const UpdateWorkoutDays(workoutDays: [1, 2])),
+      expect: () => [
+        const ZoroWorkoutError(ZoroWorkoutFailure.noAssessmentFound),
+      ],
+      verify: (_) => verifyNever(() => workouts.updateWorkoutDays(any())),
+    );
+
+    blocTest<ZoroWorkoutBloc, ZoroWorkoutState>(
+      'emits noAssessmentFound when the plan has no month to be saved into',
+      setUp: () => when(
+        () => workouts.updateWorkoutPlan(any()),
+      ).thenThrow(const NotFoundException('assessment 2024-01')),
+      build: build,
+      act: (bloc) => bloc.add(SaveWorkoutPlan(workoutPlan: _FakeWorkoutPlan())),
+      expect: () => [
+        const ZoroWorkoutError(ZoroWorkoutFailure.noAssessmentFound),
+      ],
+    );
+
+    blocTest<ZoroWorkoutBloc, ZoroWorkoutState>(
+      'emits savePlanFailed when saving the plan throws',
+      setUp: () => when(
+        () => workouts.updateWorkoutPlan(any()),
+      ).thenThrow(Exception('offline')),
+      build: build,
+      act: (bloc) => bloc.add(SaveWorkoutPlan(workoutPlan: _FakeWorkoutPlan())),
+      expect: () => [const ZoroWorkoutError(ZoroWorkoutFailure.savePlanFailed)],
     );
   });
 }
