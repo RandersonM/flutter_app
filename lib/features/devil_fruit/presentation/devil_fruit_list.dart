@@ -11,6 +11,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:opfan/l10n/app_localizations.dart';
 
 import 'package:opfan/features/devil_fruit/bloc/index.dart';
+import 'package:opfan/features/devil_fruit/data/models/devil_fruit.dart';
 import 'package:opfan/features/devil_fruit/presentation/widgets/devil_fruit_card.dart';
 import 'package:opfan/features/devil_fruit/presentation/widgets/devil_fruit_search_header.dart';
 
@@ -18,80 +19,73 @@ import 'package:opfan/features/devil_fruit/presentation/widgets/empty_devil_frui
 import 'package:opfan/shared/utils/constants.dart';
 import 'package:opfan/shared/widgets/molecules/default_app_bar.dart';
 
-class DevilFruitListScreen extends StatefulWidget {
+class DevilFruitListScreen extends StatelessWidget {
   const DevilFruitListScreen({super.key});
-
-  @override
-  State<DevilFruitListScreen> createState() => _DevilFruitListScreenState();
-}
-
-class _DevilFruitListScreenState extends State<DevilFruitListScreen> {
-  late DevilFruitBloc _devilFruitBloc;
-
-  @override
-  void initState() {
-    super.initState();
-    _devilFruitBloc = DevilFruitBloc(devilFruitService: getIt());
-    _devilFruitBloc.add(const LoadDevilFruits());
-  }
-
-  @override
-  void dispose() {
-    _devilFruitBloc.close();
-    super.dispose();
-  }
 
   @override
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
-        BlocProvider.value(value: _devilFruitBloc),
+        BlocProvider(
+          create: (_) => getIt<DevilFruitBloc>()..add(const LoadDevilFruits()),
+        ),
         BlocProvider.value(value: getIt<ConnectivityCubit>()),
       ],
-      child: Scaffold(
-        appBar: DefaultAppBar(
-          title: Text(
-            AppLocalizations.of(context)!.devilFruit,
-            style: Theme.of(
-              context,
-            ).textTheme.headlineSmall?.copyWith(fontWeight: FontWeight.bold),
-          ),
-          actions: [
-            BlocBuilder<DevilFruitBloc, DevilFruitState>(
-              builder: (context, state) {
-                return IconButton(
-                  icon: const AppIcon(PhosphorIconsRegular.arrowsClockwise),
-                  onPressed: state is DevilFruitLoading
-                      ? null
-                      : () => _devilFruitBloc.add(const RefreshDevilFruits()),
-                );
-              },
-            ),
-          ],
+      child: const _DevilFruitListView(),
+    );
+  }
+}
+
+class _DevilFruitListView extends StatelessWidget {
+  const _DevilFruitListView();
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: DefaultAppBar(
+        title: Text(
+          AppLocalizations.of(context)!.devilFruit,
+          style: Theme.of(
+            context,
+          ).textTheme.headlineSmall?.copyWith(fontWeight: FontWeight.bold),
         ),
-        body: OfflineBlockerOverlay(
-          child: BlocBuilder<DevilFruitBloc, DevilFruitState>(
+        actions: [
+          BlocBuilder<DevilFruitBloc, DevilFruitState>(
             builder: (context, state) {
-              if (state is DevilFruitInitial || state is DevilFruitLoading) {
-                return const Center(child: CircularProgressIndicator());
-              }
-
-              if (state is DevilFruitError) {
-                return _buildErrorState(state.message);
-              }
-
-              if (state is DevilFruitLoaded) {
-                return _buildLoadedState(state);
-              }
-              return const SizedBox();
+              return IconButton(
+                icon: const AppIcon(PhosphorIconsRegular.arrowsClockwise),
+                onPressed: state is DevilFruitLoading
+                    ? null
+                    : () => context.read<DevilFruitBloc>().add(
+                        const RefreshDevilFruits(),
+                      ),
+              );
             },
           ),
+        ],
+      ),
+      body: OfflineBlockerOverlay(
+        child: BlocBuilder<DevilFruitBloc, DevilFruitState>(
+          builder: (context, state) {
+            if (state is DevilFruitInitial || state is DevilFruitLoading) {
+              return const Center(child: CircularProgressIndicator());
+            }
+
+            if (state is DevilFruitError) {
+              return _buildErrorState(context, state.message);
+            }
+
+            if (state is DevilFruitLoaded) {
+              return _buildLoadedState(context, state);
+            }
+            return const SizedBox();
+          },
         ),
       ),
     );
   }
 
-  Widget _buildErrorState(String message) {
+  Widget _buildErrorState(BuildContext context, String message) {
     return Center(
       child: Padding(
         padding: const EdgeInsets.all(Constants.margin * 2),
@@ -119,7 +113,8 @@ class _DevilFruitListScreenState extends State<DevilFruitListScreen> {
             ),
             const SizedBox(height: Constants.margin * 2),
             ElevatedButton.icon(
-              onPressed: () => _devilFruitBloc.add(const LoadDevilFruits()),
+              onPressed: () =>
+                  context.read<DevilFruitBloc>().add(const LoadDevilFruits()),
               icon: const AppIcon(PhosphorIconsRegular.arrowsClockwise),
               label: Text(AppLocalizations.of(context)!.tryAgain),
             ),
@@ -129,10 +124,10 @@ class _DevilFruitListScreenState extends State<DevilFruitListScreen> {
     );
   }
 
-  Widget _buildLoadedState(DevilFruitLoaded state) {
+  Widget _buildLoadedState(BuildContext context, DevilFruitLoaded state) {
     return RefreshIndicator(
       onRefresh: () async {
-        _devilFruitBloc.add(const RefreshDevilFruits());
+        context.read<DevilFruitBloc>().add(const RefreshDevilFruits());
       },
       child: CustomScrollView(
         slivers: [
@@ -142,7 +137,7 @@ class _DevilFruitListScreenState extends State<DevilFruitListScreen> {
               child: DevilFruitSearchHeader(),
             ),
           ),
-          SliverToBoxAdapter(child: _buildFiltersSection(state)),
+          SliverToBoxAdapter(child: _buildFiltersSection(context, state)),
           if (state.isSearching)
             const SliverToBoxAdapter(
               child: Padding(
@@ -156,7 +151,9 @@ class _DevilFruitListScreenState extends State<DevilFruitListScreen> {
                 hasFilters:
                     state.searchQuery.isNotEmpty || state.selectedType != null,
                 onClearFilters: () {
-                  _devilFruitBloc.add(const ClearDevilFruitFilters());
+                  context.read<DevilFruitBloc>().add(
+                    const ClearDevilFruitFilters(),
+                  );
                 },
               ),
             )
@@ -174,7 +171,7 @@ class _DevilFruitListScreenState extends State<DevilFruitListScreen> {
                   final fruit = state.filteredFruits[index];
                   return DevilFruitCard(
                     devilFruit: fruit,
-                    onTap: () => _showDevilFruitDetails(fruit),
+                    onTap: () => _showDevilFruitDetails(context, fruit),
                   );
                 }, childCount: state.filteredFruits.length),
               ),
@@ -187,7 +184,7 @@ class _DevilFruitListScreenState extends State<DevilFruitListScreen> {
     );
   }
 
-  void _showDevilFruitDetails(fruit) {
+  void _showDevilFruitDetails(BuildContext context, DevilFruit fruit) {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
@@ -229,7 +226,7 @@ class _DevilFruitListScreenState extends State<DevilFruitListScreen> {
     );
   }
 
-  Widget _buildFiltersSection(DevilFruitLoaded state) {
+  Widget _buildFiltersSection(BuildContext context, DevilFruitLoaded state) {
     if (state.availableTypes.isEmpty) {
       return const SizedBox.shrink();
     }
@@ -251,7 +248,9 @@ class _DevilFruitListScreenState extends State<DevilFruitListScreen> {
               if (state.selectedType != null)
                 TextButton(
                   onPressed: () {
-                    _devilFruitBloc.add(const ClearDevilFruitFilters());
+                    context.read<DevilFruitBloc>().add(
+                      const ClearDevilFruitFilters(),
+                    );
                   },
                   child: Text(AppLocalizations.of(context)!.clear),
                 ),
@@ -270,9 +269,13 @@ class _DevilFruitListScreenState extends State<DevilFruitListScreen> {
                     selected: isSelected,
                     onSelected: (_) {
                       if (isSelected) {
-                        _devilFruitBloc.add(const FilterDevilFruitsByType(''));
+                        context.read<DevilFruitBloc>().add(
+                          const FilterDevilFruitsByType(''),
+                        );
                       } else {
-                        _devilFruitBloc.add(FilterDevilFruitsByType(type));
+                        context.read<DevilFruitBloc>().add(
+                          FilterDevilFruitsByType(type),
+                        );
                       }
                     },
                     selectedColor: _getTypeColor(type).withValues(alpha: 0.2),
