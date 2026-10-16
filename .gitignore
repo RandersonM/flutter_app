@@ -12,10 +12,6 @@ analyze.txt
 analyze_output.txt
 assets/bakcup.json
 
-# Editor / AI assistant local rules
-.cursor/rules/project-structure.cursorrules
-.cursor/rules/project-structure.mdc
-
 # Miscellaneous
 *.class
 *.log
