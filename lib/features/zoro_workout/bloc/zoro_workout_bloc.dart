@@ -209,16 +209,19 @@ class ZoroWorkoutBloc extends Bloc<ZoroWorkoutEvent, ZoroWorkoutState> {
     emit(const ZoroWorkoutInitial());
   }
 
+  /// Share of the month's workout-day goal already done, from 0 to 1.
   double _calculateProgress(WorkoutAssessmentModel? assessment) {
-    if (assessment == null || assessment.workoutDaysGoal == null) return 0.0;
-
-    return 0.0;
+    final goal = assessment?.workoutDaysGoal ?? 0;
+    if (goal <= 0) return 0.0;
+    final done = assessment!.workoutDays?.length ?? 0;
+    return (done / goal).clamp(0.0, 1.0);
   }
 
+  /// Workout days still needed to reach the month's goal.
   int _calculateRemainingDays(WorkoutAssessmentModel? assessment) {
-    if (assessment == null || assessment.workoutDaysGoal == null) return 0;
-
-    return 0;
+    final goal = assessment?.workoutDaysGoal ?? 0;
+    final done = assessment?.workoutDays?.length ?? 0;
+    return (goal - done).clamp(0, goal);
   }
 
   /// Not awaited: the user's flow must not wait on, or fail with, the profile
