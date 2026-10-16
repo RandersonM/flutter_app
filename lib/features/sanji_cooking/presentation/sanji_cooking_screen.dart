@@ -34,6 +34,12 @@ class _SanjiCookingScreenState extends State<SanjiCookingScreen> {
     _bloc.add(const InitializeSanjiCooking());
   }
 
+  @override
+  void dispose() {
+    _bloc.close();
+    super.dispose();
+  }
+
   void _onCalculateNutrition(Map<String, dynamic> data) {
     _bloc.add(CalculateNutrition(nutritionData: data));
   }
