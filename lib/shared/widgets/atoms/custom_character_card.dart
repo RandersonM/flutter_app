@@ -133,10 +133,10 @@ class CustomCharacterCard extends StatelessWidget {
                     if (onDelete != null)
                       IconButton(
                         onPressed: onDelete,
-                        icon: const AppIcon(
+                        icon: AppIcon(
                           PhosphorIconsRegular.trash,
                           size: 16,
-                          color: Colors.red,
+                          color: Theme.of(context).colorScheme.error,
                         ),
                         tooltip: AppLocalizations.of(context)!.delete,
                         padding: EdgeInsets.zero,

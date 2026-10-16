@@ -4,6 +4,7 @@
 import 'package:hive/hive.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:opfan/features/custom_character/data/models/custom_character_model.dart';
+import 'package:opfan/core/storage/hive_type_ids.dart';
 
 class TodayCharacter extends HiveObject {
   late String date;
@@ -107,7 +108,7 @@ class TodayCharacter extends HiveObject {
 
 class TodayCharacterAdapter extends TypeAdapter<TodayCharacter> {
   @override
-  final int typeId = 0;
+  final int typeId = HiveTypeIds.todayCharacter;
 
   @override
   TodayCharacter read(BinaryReader reader) {

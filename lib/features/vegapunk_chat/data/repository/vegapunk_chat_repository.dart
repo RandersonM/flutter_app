@@ -1,6 +1,5 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_gemma/core/model_response.dart';
-import 'package:opfan/app/di/injection.dart';
 import 'package:opfan/core/services/gemma/gemma_service.dart';
 import 'package:opfan/core/services/gemma/gemma_service_status.dart';
 import 'package:opfan/core/services/gemma/i_gemma_service.dart';
@@ -27,16 +26,15 @@ import 'i_vegapunk_chat_repository.dart';
 ///      detection in case the SDK path misses it.
 class VegapunkChatRepository implements IVegapunkChatRepository {
   VegapunkChatRepository({
-    IGemmaService? gemmaService,
-    IRAGService? ragService,
-    FunctionRegistry? functionRegistry,
-    FunctionExecutor? functionExecutor,
-    ToolIntentDetector? intentDetector,
-  }) : _gemma = gemmaService ?? getIt<IGemmaService>(),
-       _rag = ragService ?? getIt<IRAGService>(),
-       _registry = functionRegistry ?? getIt<FunctionRegistry>(),
-       _executor = functionExecutor ?? getIt<FunctionExecutor>(),
-       _intentDetector = intentDetector ?? const ToolIntentDetector();
+    required IGemmaService gemmaService,
+    required IRAGService ragService,
+    required FunctionRegistry functionRegistry,
+    required FunctionExecutor functionExecutor,
+    this._intentDetector = const ToolIntentDetector(),
+  }) : _gemma = gemmaService,
+       _rag = ragService,
+       _registry = functionRegistry,
+       _executor = functionExecutor;
 
   final IGemmaService _gemma;
   final IRAGService _rag;
@@ -56,6 +54,19 @@ class VegapunkChatRepository implements IVegapunkChatRepository {
 
   @override
   Future<void> downloadModel() => _gemma.downloadModel();
+
+  /// Combines lore and session-memory hits into one context list for the
+  /// prompt. Each search has its own scope and topK — see
+  /// `IRAGService.searchLore`/`searchSession` — so a strong lore match can
+  /// no longer crowd out a relevant piece of conversation history, or vice
+  /// versa. An empty result from either (or both) is valid: absence of
+  /// context is not an error.
+  Future<List<String>?> _combinedRagContext(String text) async {
+    final lore = await _rag.searchLore(text);
+    final session = await _rag.searchSession(text);
+    final combined = [...lore, ...session];
+    return combined.isEmpty ? null : combined;
+  }
 
   @override
   Stream<String> sendMessage(String text, {String? styleInstruction}) =>
@@ -81,7 +92,7 @@ class VegapunkChatRepository implements IVegapunkChatRepository {
       );
 
       // Execute the tool directly without asking the model
-      yield _searchingWebSentinel;
+      yield toolStartSentinel(intent.toolName);
 
       final toolCall = ToolCall(
         name: intent.toolName,
@@ -92,7 +103,7 @@ class VegapunkChatRepository implements IVegapunkChatRepository {
         'VegapunkChatRepository: pre-model tool result (isError=${result.isError})',
       );
 
-      yield _searchingDoneSentinel;
+      yield toolDoneSentinel;
 
       // Inject the result as context and let the model generate a response
       String safeContent = result.content;
@@ -107,8 +118,7 @@ class VegapunkChatRepository implements IVegapunkChatRepository {
           'Answer the following question using the search results above:\n'
           '$text';
 
-      final ragDocs = await _rag.search(text, topK: 2);
-      final ragContext = ragDocs.isEmpty ? null : ragDocs;
+      final ragContext = await _combinedRagContext(text);
 
       await for (final response in _gemma.sendMessage(
         toolContext,
@@ -124,8 +134,7 @@ class VegapunkChatRepository implements IVegapunkChatRepository {
     }
 
     // ── Step 1: RAG context ──────────────────────────────────────────────
-    final ragDocs = await _rag.search(text, topK: 2);
-    final ragContext = ragDocs.isEmpty ? null : ragDocs;
+    final ragContext = await _combinedRagContext(text);
 
     // ── Step 2: Gemma pass (with native function calling) ────────────────
     final buffer = StringBuffer();
@@ -167,7 +176,7 @@ class VegapunkChatRepository implements IVegapunkChatRepository {
 
     // ── Step 3: Handle native function call ───────────────────────────────
     if (nativeFunctionCall != null) {
-      yield _searchingWebSentinel;
+      yield toolStartSentinel(nativeFunctionCall.name);
 
       final toolCall = ToolCall(
         name: nativeFunctionCall.name,
@@ -178,7 +187,7 @@ class VegapunkChatRepository implements IVegapunkChatRepository {
         'VegapunkChatRepository: native tool result (isError=${result.isError})',
       );
 
-      yield _searchingDoneSentinel;
+      yield toolDoneSentinel;
 
       // Send tool result back to the model for the second pass
       // using the native Message.toolResponse API.
@@ -230,7 +239,7 @@ class VegapunkChatRepository implements IVegapunkChatRepository {
         '${textParsedCall.name}',
       );
 
-      yield _searchingWebSentinel;
+      yield toolStartSentinel(textParsedCall.name);
 
       final result = await _registry.execute(textParsedCall);
       debugPrint(
@@ -249,7 +258,7 @@ class VegapunkChatRepository implements IVegapunkChatRepository {
           'Answer the original question using the results above:\n'
           '$text';
 
-      yield _searchingDoneSentinel;
+      yield toolDoneSentinel;
 
       await for (final response in _gemma.sendMessage(
         toolContext,
@@ -267,11 +276,27 @@ class VegapunkChatRepository implements IVegapunkChatRepository {
   }
 
   // ── Sentinel tokens (not displayed to user) ──────────────────────────────
-  static const searchingWebSentinel = '\x00SEARCHING_WEB\x00';
-  static const searchingDoneSentinel = '\x00SEARCHING_DONE\x00';
 
-  static const _searchingWebSentinel = searchingWebSentinel;
-  static const _searchingDoneSentinel = searchingDoneSentinel;
+  /// Emitted into the stream when a tool starts executing. The [toolName] is
+  /// embedded so the cubit can extract it and display a specific label.
+  static String toolStartSentinel(String toolName) =>
+      '\x00TOOL_START:$toolName\x00';
+
+  /// Emitted when a tool finishes (success or error).
+  static const toolDoneSentinel = '\x00TOOL_DONE\x00';
+
+  /// Legacy aliases kept for any external code that still references them.
+  static String get searchingWebSentinel => toolStartSentinel('searchInternet');
+  static String get searchingDoneSentinel => toolDoneSentinel;
+
+  /// Parses a [toolStartSentinel] and returns the embedded tool name,
+  /// or null if [token] is not a tool-start sentinel.
+  static String? parseToolName(String token) {
+    if (token.startsWith('\x00TOOL_START:') && token.endsWith('\x00')) {
+      return token.substring('\x00TOOL_START:'.length, token.length - 1);
+    }
+    return null;
+  }
 
   @override
   Future<void> stopGeneration() => _gemma.stopGeneration();

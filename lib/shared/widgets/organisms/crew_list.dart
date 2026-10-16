@@ -216,7 +216,7 @@ class _CrewListState extends State<CrewList> {
               Navigator.pop(context);
             },
             style: ElevatedButton.styleFrom(
-              backgroundColor: Colors.red,
+              backgroundColor: Theme.of(context).colorScheme.error,
               foregroundColor: Colors.white,
             ),
             child: Text(l10n.delete),

@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:markdown_widget/markdown_widget.dart';
 import 'package:opfan/shared/utils/constants.dart';
 import 'package:opfan/features/nami_finances/bloc/chat/nami_chat_bloc.dart';
 import 'package:opfan/features/nami_finances/bloc/chat/nami_chat_state.dart';
 import 'package:opfan/app/di/injection.dart';
-import 'package:opfan/core/services/index.dart';
-import 'package:opfan/features/nami_finances/data/services/nami_rag_service.dart';
 import 'package:opfan/features/vegapunk_chat/data/models/chat_message.dart';
 import 'package:opfan/shared/widgets/atoms/chat_loading_bubbles.dart';
 
@@ -15,11 +14,7 @@ class NamiChatSheet extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (_) => NamiChatBloc(
-        getIt<NamiRagService>(),
-        getIt<IGemmaService>(),
-        getIt<INamiFinancesService>(),
-      ),
+      create: (_) => getIt<NamiChatBloc>(),
       child: const _NamiChatSheetContent(),
     );
   }
@@ -141,6 +136,7 @@ class _NamiChatSheetContentState extends State<_NamiChatSheetContent> {
   }
 
   Widget _buildMessageBubble(BuildContext context, ChatMessage message) {
+    final theme = Theme.of(context);
     final isUser = message.role == MessageRole.user;
     return Align(
       alignment: isUser ? Alignment.centerRight : Alignment.centerLeft,
@@ -152,15 +148,46 @@ class _NamiChatSheetContentState extends State<_NamiChatSheetContent> {
         ),
         decoration: BoxDecoration(
           color: isUser
-              ? Theme.of(context).colorScheme.primaryContainer
-              : Theme.of(context).colorScheme.surfaceContainerHighest,
+              ? theme.colorScheme.primaryContainer
+              : theme.colorScheme.surfaceContainerHighest,
           borderRadius: BorderRadius.circular(16).copyWith(
             bottomRight: isUser ? Radius.zero : const Radius.circular(16),
             bottomLeft: isUser ? const Radius.circular(16) : Radius.zero,
           ),
         ),
-        child: Text(message.text), // We can use markdown here if we want
+        // User text is plain; Nami's answers are rendered as markdown so
+        // bold/lists/headings come through instead of raw ** and * markers.
+        child: isUser
+            ? Text(
+                message.text,
+                style: theme.textTheme.bodyMedium?.copyWith(
+                  color: theme.colorScheme.onPrimaryContainer,
+                ),
+              )
+            : _buildMarkdown(context, message.text),
       ),
+    );
+  }
+
+  Widget _buildMarkdown(BuildContext context, String data) {
+    final theme = Theme.of(context);
+    final isDark = theme.brightness == Brightness.dark;
+    return MarkdownBlock(
+      data: data,
+      config:
+          (isDark ? MarkdownConfig.darkConfig : MarkdownConfig.defaultConfig)
+              .copy(
+                configs: [
+                  PConfig(
+                    textStyle:
+                        theme.textTheme.bodyMedium?.copyWith(
+                          color: theme.colorScheme.onSurface,
+                          height: 1.5,
+                        ) ??
+                        const TextStyle(),
+                  ),
+                ],
+              ),
     );
   }
 

@@ -7,13 +7,12 @@ import 'package:opfan/features/zoro_workout/data/models/workout_plan_model.dart'
 import 'i_workout_assessment_service.dart';
 
 class WorkoutAssessmentService implements IWorkoutAssessmentService {
-  static final WorkoutAssessmentService _instance =
-      WorkoutAssessmentService._internal();
-  factory WorkoutAssessmentService() => _instance;
-  WorkoutAssessmentService._internal();
+  WorkoutAssessmentService({FirebaseFirestore? firestore, FirebaseAuth? auth})
+    : _firestore = firestore ?? FirebaseFirestore.instance,
+      _auth = auth ?? FirebaseAuth.instance;
 
-  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
-  final FirebaseAuth _auth = FirebaseAuth.instance;
+  final FirebaseFirestore _firestore;
+  final FirebaseAuth _auth;
 
   String get _currentMonthYear {
     final now = DateTime.now();

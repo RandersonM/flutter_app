@@ -896,7 +896,6 @@
     "type": "text",
     "placeholders": {}
   },
-  "createNewCharacter": "Criar novo personagem",
   "@createNewCharacter": {
     "description": "Tooltip for create new character button",
     "type": "text",
@@ -3867,6 +3866,47 @@
     "type": "text",
     "placeholders": {}
   },
+  "vegapunkToolSearchInternet": "🌐 Pesquisando na web…",
+  "@vegapunkToolSearchInternet": {
+    "description": "Activity label shown while the searchInternet tool is executing",
+    "type": "text",
+    "placeholders": {}
+  },
+  "vegapunkToolGetCharacterInfo": "🏴‍☠️ Buscando info do personagem…",
+  "@vegapunkToolGetCharacterInfo": {
+    "description": "Activity label shown while the getCharacterInfo tool is executing",
+    "type": "text",
+    "placeholders": {}
+  },
+  "vegapunkToolGetUserProfile": "👤 Buscando seu perfil…",
+  "@vegapunkToolGetUserProfile": {
+    "description": "Activity label shown while the getUserProfile tool is executing",
+    "type": "text",
+    "placeholders": {}
+  },
+  "vegapunkToolGetWorkoutHistory": "💪 Buscando histórico de treino…",
+  "@vegapunkToolGetWorkoutHistory": {
+    "description": "Activity label shown while the getWorkoutHistory tool is executing",
+    "type": "text",
+    "placeholders": {}
+  },
+  "vegapunkToolSaveWorkout": "💾 Salvando treino…",
+  "@vegapunkToolSaveWorkout": {
+    "description": "Activity label shown while the saveWorkout tool is executing",
+    "type": "text",
+    "placeholders": {}
+  },
+  "vegapunkToolGeneric": "⚙️ Executando {toolName}…",
+  "@vegapunkToolGeneric": {
+    "description": "Fallback activity label shown while an unrecognized tool is executing",
+    "type": "text",
+    "placeholders": {
+      "toolName": {
+        "type": "String",
+        "example": "getCharacterInfo"
+      }
+    }
+  },
   "cookingPersonalizedMealTitle": "Refeição Personalizada com o Sanji",
   "@cookingPersonalizedMealTitle": {
     "description": "Header card title on the cooking tips screen"
@@ -3887,8 +3927,12 @@
   "@cookingTargetCaloriesInfo": {
     "description": "Info line showing target calories and goal",
     "placeholders": {
-      "calories": { "type": "String" },
-      "goal": { "type": "String" }
+      "calories": {
+        "type": "String"
+      },
+      "goal": {
+        "type": "String"
+      }
     }
   },
   "cookingGeneratingMeal": "Gerando refeição...",
@@ -3903,7 +3947,9 @@
   "@cookingPersonalizedRecipeTitle": {
     "description": "Title of the result card showing the personalized recipe",
     "placeholders": {
-      "mealType": { "type": "String" }
+      "mealType": {
+        "type": "String"
+      }
     }
   },
   "cookingGoalMaintenance": "Manter peso",
@@ -3919,34 +3965,91 @@
     "description": "Display label for the muscle-gain goal"
   },
   "mealTypeBreakfast": "Café da manhã",
-  "@mealTypeBreakfast": { "description": "Meal type option" },
+  "@mealTypeBreakfast": {
+    "description": "Meal type option"
+  },
   "mealTypeMorningSnack": "Lanche da manhã",
-  "@mealTypeMorningSnack": { "description": "Meal type option" },
+  "@mealTypeMorningSnack": {
+    "description": "Meal type option"
+  },
   "mealTypeLunch": "Almoço",
-  "@mealTypeLunch": { "description": "Meal type option" },
+  "@mealTypeLunch": {
+    "description": "Meal type option"
+  },
   "mealTypeAfternoonSnack": "Café da tarde",
-  "@mealTypeAfternoonSnack": { "description": "Meal type option" },
+  "@mealTypeAfternoonSnack": {
+    "description": "Meal type option"
+  },
   "mealTypeDinner": "Jantar",
-  "@mealTypeDinner": { "description": "Meal type option" },
+  "@mealTypeDinner": {
+    "description": "Meal type option"
+  },
   "mealTypeDessert": "Sobremesa",
-  "@mealTypeDessert": { "description": "Meal type option" },
+  "@mealTypeDessert": {
+    "description": "Meal type option"
+  },
   "mealTypeNightSnack": "Lanche noturno",
-  "@mealTypeNightSnack": { "description": "Meal type option" },
+  "@mealTypeNightSnack": {
+    "description": "Meal type option"
+  },
   "dietaryRestrictionNone": "Sem restrições",
-  "@dietaryRestrictionNone": { "description": "Dietary restriction option — no restrictions" },
+  "@dietaryRestrictionNone": {
+    "description": "Dietary restriction option — no restrictions"
+  },
   "dietaryRestrictionVegetarian": "Vegetariano",
-  "@dietaryRestrictionVegetarian": { "description": "Dietary restriction option" },
+  "@dietaryRestrictionVegetarian": {
+    "description": "Dietary restriction option"
+  },
   "dietaryRestrictionVegan": "Vegano",
-  "@dietaryRestrictionVegan": { "description": "Dietary restriction option" },
+  "@dietaryRestrictionVegan": {
+    "description": "Dietary restriction option"
+  },
   "dietaryRestrictionGlutenFree": "Sem glúten",
-  "@dietaryRestrictionGlutenFree": { "description": "Dietary restriction option" },
+  "@dietaryRestrictionGlutenFree": {
+    "description": "Dietary restriction option"
+  },
   "dietaryRestrictionLactoseFree": "Sem lactose",
-  "@dietaryRestrictionLactoseFree": { "description": "Dietary restriction option" },
+  "@dietaryRestrictionLactoseFree": {
+    "description": "Dietary restriction option"
+  },
   "dietaryRestrictionLowCarb": "Baixo carboidrato",
-  "@dietaryRestrictionLowCarb": { "description": "Dietary restriction option" },
+  "@dietaryRestrictionLowCarb": {
+    "description": "Dietary restriction option"
+  },
   "dietaryRestrictionHighProtein": "Alto teor proteico",
-  "@dietaryRestrictionHighProtein": { "description": "Dietary restriction option" },
+  "@dietaryRestrictionHighProtein": {
+    "description": "Dietary restriction option"
+  },
   "offlineBannerMessage": "Você está offline. Algumas funções estão indisponíveis.",
   "offlineScreenTitle": "Sem Conexão com a Internet",
-  "offlineScreenSubtitle": "Esta função requer conexão com a internet.\nReconecte-se para continuar."
+  "offlineScreenSubtitle": "Esta função requer conexão com a internet.\nReconecte-se para continuar.",
+  "addReserve": "Adicionar reserva",
+  "reserveGoalOptional": "Meta de reserva mensal (opcional)",
+  "reservePurpose": "Finalidade",
+  "reserveNote": "Observação (opcional)",
+  "reservePurposeEmergency": "Emergência",
+  "reservePurposeTravel": "Viagem",
+  "reservePurposeGoal": "Objetivo",
+  "reservePurposeInvestment": "Investimento",
+  "reservePurposeOther": "Outro",
+  "reserveGoalLabel": "Meta: {amount}",
+  "reserveGoalProgressPct": "{pct}% da meta",
+  "reserveGoalRemaining": "Faltam {amount}",
+  "reserveGoalMetricLabel": "Meta de reserva",
+  "previousMonth": "Mês anterior",
+  "nextMonth": "Próximo mês",
+  "editingPastMonth": "Editando um mês passado",
+  "newCrewTitle": "Nova Tripulação",
+  "descriptionLabel": "Descrição",
+  "tagsLabel": "Tags",
+  "generatingLabel": "Gerando...",
+  "generateFlagLabel": "Gerar Bandeira",
+  "generateBoatLabel": "Gerar Barco",
+  "crewBoatTitle": "Barco da Tripulação",
+  "aiImageHelpText": "Use prompts descritivos para gerar imagens únicas da sua tripulação. As imagens geradas serão salvas automaticamente.",
+  "flagPromptHint": "Ex: caveira com espadas cruzadas, bandeira negra",
+  "boatPromptHint": "Ex: navio pirata de madeira com velas pretas",
+  "defaultCrewName": "Tripulação",
+  "beastsPirates": "Piratas das Feras",
+  "bigMomPirates": "Piratas da Big Mom"
 }

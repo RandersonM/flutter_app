@@ -1,271 +1,177 @@
 # OpFan — Claude Code Guide
 
-## Project Overview
+OpFan is a One Piece fan app in Flutter. Half of it is a fan catalog (characters,
+devil fruits, user-made crews and characters, duels); the other half is a set of
+persona "life assistants" — **Nami** (finances), **Zoro** (workout), **Sanji**
+(nutrition), **Robin** (goals) and **Vegapunk** (chat) — several of which run an
+**on-device LLM (Gemma via `flutter_gemma`)** with tool calling and RAG.
 
-**OpFan** is a One Piece fan app built with Flutter. It integrates Firebase for auth/database, Gemini AI for generative features, and supports English and Portuguese localization. The app is structured with a feature-first, BLoC-driven architecture using GetIt for dependency injection.
+Stack: Flutter 3.44.4 / Dart 3.12 (pinned in `.fvmrc`) · flutter_bloc · get_it ·
+Firebase (Auth, Firestore, Functions, FCM) · Hive · Dio · flutter_gemma (+ RAG
+sqlite, embeddings) · Gemini (`google_generative_ai`, images + Sanji only) ·
+ARB l10n (en, pt) · phosphoricons · fl_chart.
 
 ---
 
-## Tech Stack
+## Commands — always through FVM
 
-| Layer | Technology |
+The global `flutter` on this machine is older than the SDK constraint
+(`sdk: >=3.12.0`). **Never run bare `flutter`/`dart`**, and never "fix" a pub error
+by lowering the constraint.
+
+| Task | Command |
 |---|---|
-| Framework | Flutter >=3.10.0 / Dart >=3.0.0 |
-| State Management | flutter_bloc ^9.1.1 + bloc ^9.0.0 |
-| DI / Service Locator | get_it ^7.6.4 |
-| Backend | Firebase (Auth, Firestore, Cloud Functions, FCM) |
-| Local Storage | Hive ^2.2.3 |
-| HTTP Client | Dio ^5.4.0 |
-| AI / Generative | google_generative_ai ^0.3.0 (Gemini) |
-| Code Generation | json_serializable + hive_generator + build_runner |
-| Routing | Navigator.pushNamed + AuthRouteMiddleware |
-| Localization | ARB files + flutter_localizations + intl ^0.20.2 |
-| Charts | fl_chart ^1.0.0 |
-| Font Manager | FVM (Flutter Version Manager) |
+| Install deps | `fvm flutter pub get` |
+| Analyze | `fvm flutter analyze --no-fatal-infos` |
+| Test | `fvm flutter test` (one file: `fvm flutter test path/to/x_test.dart`) |
+| Format | `fvm dart format lib test` (CI fails on any diff) |
+| l10n | `fvm flutter gen-l10n` (output is committed in `lib/l10n/`) |
+| Codegen | `fvm dart run build_runner build -d` (only `@JsonSerializable` models) |
+| Run | `fvm flutter devices` then `fvm flutter run -d <id>` |
+| Build check | `fvm flutter build apk --debug` · `fvm flutter build ios --debug --no-codesign` |
+| Functions | `cd functions && npm run deploy` |
 
----
+CI (`.github/workflows/code_quality.yml`) runs: gen-l10n → build_runner →
+`dart format --set-exit-if-changed` → analyze → test.
 
-## Project Structure
+## Definition of done
+
+Hooks in `.claude/settings.json` enforce most of this automatically:
+
+- After every Edit/Write, `.claude/hooks/dart-post-edit.sh` formats the file,
+  regenerates l10n for ARB edits, and **rejects newly added lines** that break an
+  objective rule below. Fix the line; do not work around the check.
+- Before you finish a turn that touched Dart/ARB/pubspec,
+  `.claude/hooks/stop-verify.sh` runs format check + analyze + tests and sends you
+  back to fix failures.
+- Escape hatch: `// harness:allow <reason>` at the end of a line, only for a
+  documented exception (brand colour, categorical palette). Tell the user when you
+  use it.
+
+Beyond the hooks: add or update a test for behaviour you change, and for UI
+changes run the app on a simulator when one is available.
+
+## Golden rules
+
+1. **BLoCs get everything through the constructor**, typed as `I*Repository` /
+   `I*Service` abstract classes, wired in `lib/app/di/`. A BLoC never calls
+   `getIt`, never imports Flutter UI, never depends on another BLoC.
+2. **No `domain/` layer, no use-case classes.** BLoC → repository/service → source.
+3. **Every user-facing string is an ARB key** in both `intl_en.arb` and
+   `intl_pt.arb`. That includes error messages: states carry a failure key/enum,
+   the widget localizes it.
+4. **Colours come from the theme** — `colorScheme`, or `semanticColors` for
+   success/warning/info. No raw `Colors.*`, hex or `AppColors.red/green` for meaning.
+5. **Hive type ids come from `HiveTypeIds`** (`lib/core/storage/hive_type_ids.dart`).
+   Never write a literal, never reuse a shipped id.
+6. **Config comes from `IEnvironmentService`.** Never read `.env` (it holds real
+   keys and is denied to you) — use `.env.example` to learn the key names.
+7. **On-device AI limits are product decisions:** keep `maxTokens: 4096` and the
+   Gemma E2B model; do math and routing in Dart, not in the model; touch the vector
+   store only through `RagStoreCoordinator`. Details: `.claude/rules/ai-on-device.md`.
+8. **No `ChangeNotifier`, Provider or Riverpod.**
+9. **Do not edit generated files:** `lib/firebase_options.dart`,
+   `lib/l10n/app_localizations*.dart`, `*.g.dart`.
+10. **Code wins over docs.** `.specs/` and `docs/` are partly stale (e.g. the
+    vegapunk-chat spec predates the current pipeline). When they disagree with the
+    code, trust the code and update the doc in the same change.
+11. **Code explains itself; comments are a last resort.** Make intent clear through
+    names, small functions and types. Comment only when it is truly necessary — a
+    non-obvious *why* the code cannot express (a platform quirk, a product decision,
+    a workaround). Never narrate *what* the code does. Details: `architecture.md`.
+
+## Architecture at a glance
+
+```
+Screen ─ BlocProvider(create: (_) => getIt<XBloc>())
+           └─ XBloc(required I*Repository / I*Service)        lib/features/<f>/bloc/
+                 └─ Repository: composes/caches sources        lib/features/<f>/data/repository/
+                 └─ Service: wraps one backend, reusable       lib/core/services/<area>/
+                       └─ Firestore · Hive · REST (Dio) · flutter_gemma · Gemini
+```
 
 ```
 lib/
-├── app/
-│   └── di/
-│       ├── injection.dart          # GetIt bootstrap
-│       ├── core_module.dart        # Services & repositories
-│       ├── features_module.dart    # Feature BLoCs/Cubits
-│       ├── theme_module.dart
-│       └── locale_module.dart
+├── app/di/            injection.dart → core_module → theme_module → locale_module → features_module
 ├── core/
-│   ├── auth/                       # AuthBloc + UserModel (global singleton)
-│   ├── models/                     # Domain models
-│   ├── services/                   # 12+ service classes
-│   ├── middleware/                 # AuthRouteMiddleware
-│   ├── theme/                      # ThemeCubit
-│   ├── locale/                     # LocaleCubit
-│   └── user_profile/
-├── features/                       # 18 feature modules
-│   ├── auth/
-│   ├── home/
-│   ├── calculator/
-│   ├── one_piece/
-│   ├── devil_fruit/
-│   ├── crews/
-│   ├── custom_character/
-│   ├── duels/
-│   ├── nami_finances/
-│   ├── robin_knowledge/
-│   ├── sanji_cooking/
-│   ├── youtube/
-│   ├── zoro_workout/
-│   ├── profile/
-│   ├── onboarding/
-│   ├── splash/
-│   └── fav_character_selection/
+│   ├── ai/prompts/    persona system prompts, RAG framing, PromptLocale
+│   ├── auth/          AuthBloc (global), UserModel, AppWrapper (root switch on AuthState)
+│   ├── connectivity/  ConnectivityCubit (global)
+│   ├── locale/ theme/ LocaleCubit, ThemeCubit (global)
+│   ├── services/      I*Service + impl per area (gemma, rag, gemini, finances, config, ...)
+│   ├── storage/       HiveTypeIds registry
+│   └── user_profile/  users/{uid} profile repository
+├── features/<f>/      bloc/ · data/{models,repository,services} · presentation/{*_screen.dart,widgets/} · tools/ · <f>_routes.dart
 ├── shared/
-│   ├── widgets/
-│   │   ├── atoms/                  # Smallest reusable components
-│   │   ├── molecules/              # Medium composite components
-│   │   └── organisms/             # Large/page-level components
-│   └── utils/                      # Routes, theme helpers, transitions
-└── l10n/
-    ├── intl_en.arb                 # English (master template)
-    └── intl_pt.arb                 # Portuguese
+│   ├── utils/         app_routes.dart (+ AuthRouteMiddleware), theme.dart, app_semantic_colors.dart, constants.dart
+│   └── widgets/       atoms/ · molecules/ (no BLoC) · organisms/ (may read BLoCs)
+└── l10n/              intl_en.arb (template), intl_pt.arb, generated app_localizations*.dart
 ```
 
----
+## Rules by topic (`.claude/rules/`)
 
-## Architecture
+Path-scoped rules load automatically when you read or edit a matching file. Read the
+relevant one up front when planning work that spans several areas.
 
-### Data Flow
+| File | Covers |
+|---|---|
+| `architecture.md` | Layers, repository vs service, DI, folder & file naming, errors, logging, imports |
+| `bloc.md` | State/event shape, constructor injection, failures, `close()`, registration |
+| `data-layer.md` | Repositories, services, Firestore access, models & serialization, Hive, env |
+| `ui.md` | Screen shape, atomic design, theming & colours, icons, spacing |
+| `i18n.md` | ARB workflow, keys, plurals/placeholders, localizing failures |
+| `routing.md` | `FeatureRouteModule`, private routes, navigation |
+| `ai-on-device.md` | Gemma lifecycle, tool calling, intent routing, RAG, prompts, memory limits |
+| `firebase.md` | Firestore collections & rules, Cloud Functions, FCM |
+| `testing.md` | mocktail + bloc_test, fakes, widget tests, what to test |
+| `domains/*.md` | Business rules and known debt per feature area |
 
-```
-Screen → BlocProvider (GetIt) → BLoC/Cubit
-                                    ↓
-                            Repository (abstract interface)
-                                    ↓
-                         Service (Auth/Firestore/API/Hive)
-                                    ↓
-                        Firebase / External API / Local DB
-```
+## Domain map
 
-### Dependency Injection (GetIt)
+| Area | Features | Storage | Rule file |
+|---|---|---|---|
+| Catalog | `one_piece`, `devil_fruit`, `home`, `youtube`, `fav_character_selection` | Firestore `featuredCharacters`, One Piece API, YouTube API, Hive cache | `domains/catalog.md` |
+| User creations | `crews`, `custom_character`, `duels` | Firestore `crews`, `custom_characters` | `domains/crews-characters-duels.md` |
+| Account | `auth`, `onboarding`, `profile`, `splash`, `core/auth`, `core/user_profile` | Firebase Auth, `users/{uid}`, Hive `auth_cache` | `domains/account.md` |
+| Nami | `nami_finances` | Hive only (`nami_finances` box) + Nami RAG store | `domains/nami-finances.md` |
+| Zoro / Sanji | `zoro_workout`, `sanji_cooking` | Firestore `workout_assessments`; Gemini | `domains/zoro-sanji.md` |
+| Robin | `robin_knowledge` | Firestore `planner` | `domains/robin-knowledge.md` |
+| Vegapunk | `vegapunk_chat` | Gemma + RAG + Hive chat history | `domains/vegapunk-chat.md` |
+| Utility | `calculator` | — | — |
 
-- **Singletons**: AuthBloc, RobinKnowledgeBloc, all core services
-- **Factories**: Feature-specific BLoCs (one per screen lifecycle)
-- Registration split across `core_module.dart` and `features_module.dart`
+## Fragile areas
 
-### BLoC Conventions
+| Area | Why |
+|---|---|
+| Hive type ids | A collision corrupts local data silently on upgrade. Guarded by `test/core/storage/hive_type_ids_test.dart`. |
+| `GemmaService._recreateChat` | Any model reload closes **every** chat session, Nami's included. |
+| `RagStoreCoordinator` | One global vector store; clearing wipes everything; no per-doc delete. |
+| `AuthBloc` | Global singleton with stream subscriptions; `AuthStarted` is dispatched from DI and `AppWrapper`. |
+| `core_module.dart` | All service wiring in one place; watch registration order and cycles. |
+| `NavigationService` | Owns the only `navigatorKey`; always `getIt<INavigationService>()`. |
+| `firestore.rules` | Several collections are open to any signed-in user — see `.claude/rules/firebase.md` before relying on rules for security. |
+| iOS memory | Gemma E2B needs the `increased-memory-limit` entitlement; an OOM kill leaves no Dart error. |
 
-- Each feature has its own `bloc/` or `cubit/` subdirectory
-- Events are sealed classes; States are immutable (use `copyWith`)
-- BLoCs must not reference UI or BuildContext
-- Cubits are preferred for simple state without event branching
+## Workflow
 
----
-
-## Internationalization (i18n)
-
-**This app must be fully internationalized. All user-facing strings must use localization keys — never hardcode text in widgets.**
-
-### Supported Languages
-
-| Language | ARB File | Code |
-|---|---|---|
-| English | `lib/l10n/intl_en.arb` | `en` |
-| Portuguese (Brazil) | `lib/l10n/intl_pt.arb` | `pt` |
-
-### Configuration
-
-```yaml
-# l10n.yaml
-arb-dir: lib/l10n
-template-arb-file: intl_en.arb
-output-localization-file: app_localizations.dart
-```
-
-### How to Add a New String
-
-1. Add the key + English value to `lib/l10n/intl_en.arb`
-2. Add the same key + Portuguese value to `lib/l10n/intl_pt.arb`
-3. Run `flutter gen-l10n` (or `flutter pub get` triggers it via l10n.yaml)
-4. Use the generated class in widgets: `AppLocalizations.of(context)!.yourKey`
-
-### Runtime Language Switching
-
-`LocaleCubit` manages the active locale and persists it via `LocaleService`. Do not read locale from device directly; always go through `LocaleCubit`.
-
-```dart
-// Switch to Portuguese
-context.read<LocaleCubit>().setLocale(const Locale('pt'));
-```
-
----
-
-## State Management Rules
-
-- Primary pattern: **BLoC/Cubit** via flutter_bloc
-- `CalculatorProvider` (ChangeNotifier) is a known legacy — migrate to Cubit on touch
-- Do not introduce Riverpod or Provider for new features
-- Never put business logic in widgets; delegate to BLoC/Cubit
-
----
-
-## Routing
-
-- Routes defined in `lib/shared/utils/app_routes.dart` and per-feature `*_routes.dart` files
-- Auth guard via `AuthRouteMiddleware.onGenerateRoute()`
-- `NavigationService` holds a `GlobalKey<NavigatorState>` for programmatic navigation
-- New screens must register a route constant in the relevant `*_routes.dart` and add it to the middleware chain if it requires auth
-
----
-
-## Firebase Integration
-
-- **Auth**: Google Sign-in via firebase_auth
-- **Database**: Cloud Firestore (collection-per-feature pattern)
-- **Functions**: TypeScript in `/functions/src/`
-- **Config**: `lib/firebase_options.dart` (auto-generated — do not edit manually)
-- **Rules**: `firestore.rules` — all writes require authenticated users; data is user-scoped
-
----
-
-## Environment Variables
-
-All sensitive keys live in `.env` (never commit this file). Use `flutter_dotenv`:
-
-```dart
-final apiKey = dotenv.env['GEMINI_API_KEY']!;
-```
-
-See `.env.example` for required keys.
-
----
-
-## Code Generation
-
-After modifying any model annotated with `@JsonSerializable` or `@HiveType`:
-
-```bash
-flutter pub run build_runner build --delete-conflicting-outputs
-```
-
----
-
-## Shared Widget System (Atomic Design)
-
-| Level | Location | Rule |
-|---|---|---|
-| Atom | `shared/widgets/atoms/` | No BLoC dependency, pure UI |
-| Molecule | `shared/widgets/molecules/` | May compose atoms, no BLoC |
-| Organism | `shared/widgets/organisms/` | May depend on BLoC via context |
-
----
-
-## Known Fragile Areas (Handle with Care)
-
-| Area | Risk | Notes |
-|---|---|---|
-| `app_routes.dart` | High | 296-line monolith; prone to merge conflicts |
-| `injection.dart` | High | All DI in one place; circular dependency risk |
-| `AuthBloc` | High | Complex subscription logic; 224 lines |
-| Hive TypeId assignments | High | Collisions break local data on upgrades |
-| `ThemeService` / `LocaleService` | Medium | Manual listener management — memory leak risk |
-
----
-
-## Testing
-
-- Framework: `flutter_test` + `mockito`
-- Test entry: `test/testable_widget.dart` wraps widgets with required providers
-- Run tests: `flutter test`
-- Fixtures in `test/fixtures/`
-- Coverage is minimal — prioritize tests for BLoC logic and repositories
-
----
-
-## Development Commands
-
-```bash
-# Install dependencies
-flutter pub get
-
-# Run code generation
-flutter pub run build_runner build --delete-conflicting-outputs
-
-# Run app
-flutter run
-
-# Analyze code
-flutter analyze
-
-# Run tests
-flutter test
-
-# Deploy Firebase functions
-cd functions && npm run deploy
-```
-
----
-
-## Feature Development Checklist
-
-When adding a new feature:
-
-- [ ] Create feature directory under `lib/features/<feature_name>/`
-- [ ] Follow structure: `presentation/`, `bloc/` (or `cubit/`), `data/`, `domain/`
-- [ ] Register BLoC/Cubit in `lib/app/di/features_module.dart`
-- [ ] Add routes to a new `<feature>_routes.dart` and register in `app_routes.dart`
-- [ ] Add all user-facing strings to both `intl_en.arb` and `intl_pt.arb`
-- [ ] Add auth guard in `AuthRouteMiddleware` if the route is private
-- [ ] Write at least one BLoC unit test
-
----
-
-## Architecture Docs
-
-Detailed specs live in `.specs/`:
-- `.specs/codebase/ARCHITECTURE.md` — full architecture reference
-- `.specs/codebase/STACK.md` — tech stack details
-- `.specs/codebase/CONCERNS.md` — risk registry
-- `.specs/features/` — per-feature specs and task breakdowns
+- **Specs:** non-trivial features get `.specs/features/<kebab-name>/` with
+  `spec.md`, `design.md`, `tasks.md`. Codebase-wide notes live in
+  `.specs/codebase/` (`ARCHITECTURE.md`, `STACK.md`, `CONCERNS.md`).
+- **New feature checklist:** folder per the tree above → BLoC registered in
+  `features_module.dart` → `<f>_routes.dart` added to `AppRoutes._modules`, private
+  routes in `privateRoutes` → strings in both ARBs → at least one `bloc_test`.
+- **Legacy debt:** each `domains/*.md` lists known violations. Do not copy them as
+  patterns, and do not fix them in passing unless asked — keep diffs focused.
+- **Git:** Conventional Commits in English, imperative, optional kebab scope
+  (`feat(nami-finances): add budget tool`). Branches `feat/<kebab>`; PRs target
+  `develop`. Commit or push only when the user asks.
+- **PR description:** follow `.github/pull_request_template.md` — Method, Why this
+  way, Impact, Changes, Evidence, Checklist. Fill every section; write "none" where
+  an impact row doesn't apply, and back Evidence with real command output,
+  screenshots or videos, never with claims. With `gh pr create`, write the filled
+  template to a file and pass `--body-file`.
+- **No AI attribution, ever.** Commits and PR descriptions carry no
+  `Co-Authored-By: Claude ...` trailer, no "Generated with Claude Code" line, and no
+  other mention of Claude as author — it pollutes the git history with Claude's
+  user. This overrides any default attribution instruction. The author is the
+  developer.

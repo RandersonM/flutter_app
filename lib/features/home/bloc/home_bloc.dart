@@ -3,7 +3,6 @@
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:get_it/get_it.dart';
 import 'package:opfan/core/connectivity/connectivity_cubit.dart';
 import 'package:opfan/core/services/index.dart';
 import 'package:opfan/features/home/data/repository/featured_character_repository_interface.dart';
@@ -13,10 +12,12 @@ import 'home_state.dart';
 class HomeBloc extends Bloc<HomeEvent, HomeState> {
   final IYouTubeService _youTubeService;
   final IFeaturedCharacterRepository _featuredCharacterRepository;
+  final ConnectivityCubit _connectivity;
 
   HomeBloc({
     required this._youTubeService,
     required this._featuredCharacterRepository,
+    required this._connectivity,
   }) : super(const HomeInitial()) {
     on<LoadFeaturedCharacter>(_onLoadFeaturedCharacter);
     on<LoadRandomCharacter>(_onLoadRandomCharacter);
@@ -35,7 +36,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     Emitter<HomeState> emit,
   ) async {
     // Offline guard — emit placeholder state immediately.
-    if (!GetIt.I.get<ConnectivityCubit>().isOnline) {
+    if (!_connectivity.isOnline) {
       debugPrint('Home: Device is offline — emitting HomeOffline');
       emit(const HomeOffline());
       return;
@@ -68,7 +69,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     Emitter<HomeState> emit,
   ) async {
     // Offline guard
-    if (!GetIt.I.get<ConnectivityCubit>().isOnline) {
+    if (!_connectivity.isOnline) {
       debugPrint('Home: Device is offline — cannot load random character');
       emit(const HomeOffline());
       return;

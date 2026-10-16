@@ -3,12 +3,6 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'i_environment_service.dart';
 
 class EnvironmentService implements IEnvironmentService {
-  static EnvironmentService? _instance;
-  static EnvironmentService get instance {
-    _instance ??= EnvironmentService();
-    return _instance!;
-  }
-
   @override
   Future<void> initialize() async {
     await dotenv.load(fileName: '.env');

@@ -21,10 +21,10 @@ class AppLocalizationsPt extends AppLocalizations {
   }
 
   @override
-  String get beastsPirates => 'Beasts Pirates';
+  String get beastsPirates => 'Piratas das Feras';
 
   @override
-  String get bigMomPirates => 'Big Mom Pirates';
+  String get bigMomPirates => 'Piratas da Big Mom';
 
   @override
   String get bounty => 'Recompensa';
@@ -2564,6 +2564,28 @@ class AppLocalizationsPt extends AppLocalizations {
       'Ativa o raciocínio lógico (aumenta memória e latência)';
 
   @override
+  String get vegapunkToolSearchInternet => '🌐 Pesquisando na web…';
+
+  @override
+  String get vegapunkToolGetCharacterInfo =>
+      '🏴‍☠️ Buscando info do personagem…';
+
+  @override
+  String get vegapunkToolGetUserProfile => '👤 Buscando seu perfil…';
+
+  @override
+  String get vegapunkToolGetWorkoutHistory =>
+      '💪 Buscando histórico de treino…';
+
+  @override
+  String get vegapunkToolSaveWorkout => '💾 Salvando treino…';
+
+  @override
+  String vegapunkToolGeneric(String toolName) {
+    return '⚙️ Executando $toolName…';
+  }
+
+  @override
   String get cookingPersonalizedMealTitle =>
       'Refeição Personalizada com o Sanji';
 
@@ -2654,4 +2676,93 @@ class AppLocalizationsPt extends AppLocalizations {
   @override
   String get offlineScreenSubtitle =>
       'Esta função requer conexão com a internet.\nReconecte-se para continuar.';
+
+  @override
+  String get addReserve => 'Adicionar reserva';
+
+  @override
+  String get reserveGoalOptional => 'Meta de reserva mensal (opcional)';
+
+  @override
+  String get reservePurpose => 'Finalidade';
+
+  @override
+  String get reserveNote => 'Observação (opcional)';
+
+  @override
+  String get reservePurposeEmergency => 'Emergência';
+
+  @override
+  String get reservePurposeTravel => 'Viagem';
+
+  @override
+  String get reservePurposeGoal => 'Objetivo';
+
+  @override
+  String get reservePurposeInvestment => 'Investimento';
+
+  @override
+  String get reservePurposeOther => 'Outro';
+
+  @override
+  String reserveGoalLabel(String amount) {
+    return 'Meta: $amount';
+  }
+
+  @override
+  String reserveGoalProgressPct(String pct) {
+    return '$pct% da meta';
+  }
+
+  @override
+  String reserveGoalRemaining(String amount) {
+    return 'Faltam $amount';
+  }
+
+  @override
+  String get reserveGoalMetricLabel => 'Meta de reserva';
+
+  @override
+  String get previousMonth => 'Mês anterior';
+
+  @override
+  String get nextMonth => 'Próximo mês';
+
+  @override
+  String get editingPastMonth => 'Editando um mês passado';
+
+  @override
+  String get newCrewTitle => 'Nova Tripulação';
+
+  @override
+  String get descriptionLabel => 'Descrição';
+
+  @override
+  String get tagsLabel => 'Tags';
+
+  @override
+  String get generatingLabel => 'Gerando...';
+
+  @override
+  String get generateFlagLabel => 'Gerar Bandeira';
+
+  @override
+  String get generateBoatLabel => 'Gerar Barco';
+
+  @override
+  String get crewBoatTitle => 'Barco da Tripulação';
+
+  @override
+  String get aiImageHelpText =>
+      'Use prompts descritivos para gerar imagens únicas da sua tripulação. As imagens geradas serão salvas automaticamente.';
+
+  @override
+  String get flagPromptHint =>
+      'Ex: caveira com espadas cruzadas, bandeira negra';
+
+  @override
+  String get boatPromptHint => 'Ex: navio pirata de madeira com velas pretas';
+
+  @override
+  String get defaultCrewName => 'Tripulação';
 }

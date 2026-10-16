@@ -280,10 +280,10 @@ class _HomeScreenState extends State<HomeScreen> {
           padding: const EdgeInsets.all(Constants.margin),
           child: Column(
             children: [
-              const AppIcon(
+              AppIcon(
                 PhosphorIconsRegular.warningCircle,
                 size: 48,
-                color: Colors.red,
+                color: Theme.of(context).colorScheme.error,
               ),
               const SizedBox(height: Constants.margin),
               Text(

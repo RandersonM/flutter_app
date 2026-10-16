@@ -15,7 +15,7 @@ import 'firebase_options.dart';
 import 'package:opfan/features/one_piece/bloc/characters_cubit.dart';
 import 'package:opfan/core/auth/app_wrapper.dart';
 import 'package:opfan/core/auth/blocs/index.dart';
-import 'package:opfan/shared/widgets/atoms/offline_banner.dart';
+import 'package:opfan/shared/widgets/organisms/offline_banner.dart';
 
 import 'package:opfan/shared/utils/app_routes.dart';
 
@@ -47,9 +47,6 @@ void main() async {
     ]);
     debugPrint('MAIN: Firebase, Env, Theme initialized.');
 
-    debugPrint('MAIN: Inicializando NotificationService em background...');
-    // Não usamos "await" aqui. Assim, o pedido de permissão não bloqueia
-    // o Flutter de renderizar a primeira tela do aplicativo.
     getIt<INotificationService>().initialize().catchError((e) {
       debugPrint('MAIN: Erro ao inicializar NotificationService: $e');
     });
@@ -107,7 +104,7 @@ class MyApp extends StatelessWidget {
             theme: getLightTheme(),
             darkTheme: getDarkTheme(),
             themeMode: themeState.themeMode,
-            navigatorKey: NavigationService().navigatorKey,
+            navigatorKey: getIt<INavigationService>().navigatorKey,
             home: const OfflineBannerWrapper(child: AppWrapper()),
             onGenerateRoute: (settings) =>
                 AuthRouteMiddleware.onGenerateRoute(settings, authState),

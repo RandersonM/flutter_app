@@ -204,7 +204,7 @@ class _MonthlyBalanceDonutState extends State<_MonthlyBalanceDonut> {
   Widget build(BuildContext context) {
     final income = widget.finances.totalIncome;
     final expenses = widget.finances.totalExpenses;
-    final savings = widget.finances.savings;
+    final savings = widget.finances.totalReserves;
     final total = income;
 
     if (total == 0) return const SizedBox.shrink();
@@ -477,14 +477,33 @@ class _ExpensesCard extends StatelessWidget {
 
 class _SavingsGoalCard extends StatelessWidget {
   final NamiFinancesModel finances;
-  static const double _goalAmount = 5000.0;
 
   const _SavingsGoalCard({required this.finances});
 
+  static String _purposeLabel(ReservePurpose purpose, BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+    switch (purpose) {
+      case ReservePurpose.emergency:
+        return l10n.reservePurposeEmergency;
+      case ReservePurpose.travel:
+        return l10n.reservePurposeTravel;
+      case ReservePurpose.goal:
+        return l10n.reservePurposeGoal;
+      case ReservePurpose.investment:
+        return l10n.reservePurposeInvestment;
+      case ReservePurpose.other:
+        return l10n.reservePurposeOther;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    final progress = math.min(finances.savings / _goalAmount, 1.0);
-    final pct = (progress * 100).toStringAsFixed(0);
+    final l10n = AppLocalizations.of(context)!;
+    final total = finances.totalReserves;
+    final goal = finances.reserveGoal;
+    final progress = finances.reserveGoalProgress;
+    final byPurpose = finances.reservesByPurpose.entries.toList()
+      ..sort((a, b) => b.value.compareTo(a.value));
 
     return _DashboardCard(
       child: Column(
@@ -493,52 +512,70 @@ class _SavingsGoalCard extends StatelessWidget {
           _CardHeader(
             icon: PhosphorIconsRegular.piggyBank,
             iconColor: _purple,
-            title: AppLocalizations.of(context)!.reserves,
+            title: l10n.reserves,
           ),
           const SizedBox(height: Constants.margin),
           Text(
-            'R\$ ${finances.savings.toStringAsFixed(2)}',
+            'R\$ ${total.toStringAsFixed(2)}',
             style: Theme.of(context).textTheme.headlineSmall?.copyWith(
               color: _purple,
               fontWeight: FontWeight.bold,
             ),
           ),
-          const SizedBox(height: 4),
-          Text(
-            'Meta: R\$ ${_goalAmount.toStringAsFixed(0)}',
-            style: Theme.of(
-              context,
-            ).textTheme.bodySmall?.copyWith(color: Colors.white54),
-          ),
-          const SizedBox(height: Constants.margin),
-          ClipRRect(
-            borderRadius: BorderRadius.circular(100),
-            child: LinearProgressIndicator(
-              value: progress,
-              minHeight: 8,
-              backgroundColor: Colors.white12,
-              valueColor: const AlwaysStoppedAnimation<Color>(_purple),
+          if (goal != null && goal > 0) ...[
+            const SizedBox(height: 4),
+            Text(
+              l10n.reserveGoalLabel('R\$ ${goal.toStringAsFixed(0)}'),
+              style: Theme.of(
+                context,
+              ).textTheme.bodySmall?.copyWith(color: Colors.white54),
             ),
-          ),
-          const SizedBox(height: 8),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text(
-                '$pct% da meta',
-                style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                  color: _purple,
-                  fontWeight: FontWeight.w600,
+            const SizedBox(height: Constants.margin),
+            ClipRRect(
+              borderRadius: BorderRadius.circular(100),
+              child: LinearProgressIndicator(
+                value: math.min(progress ?? 0, 1.0),
+                minHeight: 8,
+                backgroundColor: Colors.white12,
+                valueColor: const AlwaysStoppedAnimation<Color>(_purple),
+              ),
+            ),
+            const SizedBox(height: 8),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  l10n.reserveGoalProgressPct(
+                    ((progress ?? 0) * 100).toStringAsFixed(0),
+                  ),
+                  style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                    color: _purple,
+                    fontWeight: FontWeight.w600,
+                  ),
                 ),
+                Text(
+                  l10n.reserveGoalRemaining(
+                    'R\$ ${math.max(goal - total, 0).toStringAsFixed(0)}',
+                  ),
+                  style: Theme.of(
+                    context,
+                  ).textTheme.bodySmall?.copyWith(color: Colors.white38),
+                ),
+              ],
+            ),
+          ],
+          if (byPurpose.isNotEmpty) ...[
+            const SizedBox(height: Constants.margin * 1.5),
+            Divider(color: Colors.white.withValues(alpha: 0.08), height: 1),
+            const SizedBox(height: Constants.margin),
+            ...byPurpose.map(
+              (entry) => _FinanceLineItem(
+                label: _purposeLabel(entry.key, context),
+                value: entry.value,
+                valueColor: _purple,
               ),
-              Text(
-                'Faltam R\$ ${math.max(_goalAmount - finances.savings, 0).toStringAsFixed(0)}',
-                style: Theme.of(
-                  context,
-                ).textTheme.bodySmall?.copyWith(color: Colors.white38),
-              ),
-            ],
-          ),
+            ),
+          ],
         ],
       ),
     );

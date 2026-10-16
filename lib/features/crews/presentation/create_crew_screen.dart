@@ -1,15 +1,19 @@
-import 'package:opfan/shared/widgets/atoms/app_icon.dart';
 import 'package:phosphoricons_flutter/phosphoricons_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:opfan/features/crews/bloc/index.dart';
+import 'package:opfan/shared/utils/app_semantic_colors.dart';
 import 'package:opfan/shared/utils/constants.dart';
-import 'package:opfan/shared/utils/theme.dart';
 import 'package:opfan/core/auth/blocs/index.dart';
 import 'package:opfan/core/services/index.dart';
-import 'package:opfan/shared/widgets/atoms/clickable_image.dart';
 import 'package:opfan/l10n/app_localizations.dart';
+import 'package:opfan/shared/widgets/atoms/app_icon.dart';
 import 'package:opfan/shared/widgets/molecules/default_app_bar.dart';
+import 'package:opfan/app/di/injection.dart';
+
+import 'widgets/crew_form_card.dart';
+import 'widgets/crew_image_generator_section.dart';
+import 'widgets/crew_tags_editor.dart';
 
 class CreateCrewScreen extends StatefulWidget {
   const CreateCrewScreen({super.key});
@@ -27,7 +31,7 @@ class _CreateCrewScreenState extends State<CreateCrewScreen> {
   final _boatNameController = TextEditingController();
   final List<String> _tags = [];
 
-  final ICrewImageService _crewImageService = CrewImageService();
+  final ICrewImageService _crewImageService = getIt<ICrewImageService>();
   String? _generatedJollyRogerUrl;
   String? _generatedBoatUrl;
   bool _isGeneratingJollyRoger = false;
@@ -44,207 +48,140 @@ class _CreateCrewScreenState extends State<CreateCrewScreen> {
   }
 
   void _addTag(String tag) {
-    if (tag.isNotEmpty && !_tags.contains(tag)) {
-      setState(() {
-        _tags.add(tag);
-      });
+    if (!_tags.contains(tag)) {
+      setState(() => _tags.add(tag));
     }
   }
 
   void _removeTag(String tag) {
-    setState(() {
-      _tags.remove(tag);
-    });
+    setState(() => _tags.remove(tag));
   }
 
-  void _showAddTagDialog() {
-    final tagController = TextEditingController();
-    showDialog(
-      context: context,
-      builder: (context) => AlertDialog(
-        title: Text(AppLocalizations.of(context)!.addTag),
-        content: TextField(
-          controller: tagController,
-          decoration: InputDecoration(
-            labelText: AppLocalizations.of(context)!.tagNameLabel,
-            hintText: AppLocalizations.of(context)!.crewTagsHint,
-          ),
-          autofocus: true,
-        ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(context),
-            child: Text(AppLocalizations.of(context)!.cancel),
-          ),
-          ElevatedButton(
-            onPressed: () {
-              _addTag(tagController.text.trim());
-              Navigator.pop(context);
-            },
-            child: Text(AppLocalizations.of(context)!.add),
-          ),
-        ],
-      ),
+  void _showSnack(String message, Color background) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text(message), backgroundColor: background),
     );
   }
 
-  Future<void> _generateJollyRoger() async {
-    if (_jollyRogerPromptController.text.trim().isEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(AppLocalizations.of(context)!.promptPirateFlag),
-          backgroundColor: Colors.orange,
-        ),
-      );
+  /// Shared driver for both generators: validate the prompt, flip the busy
+  /// flag, call [generate], then report success or failure.
+  Future<void> _runGeneration({
+    required TextEditingController promptController,
+    required String emptyPromptMessage,
+    required String successMessage,
+    required String Function(Object error) errorMessage,
+    required ValueChanged<bool> setBusy,
+    required Future<String?> Function(String prompt) generate,
+    required ValueChanged<String?> onResult,
+  }) async {
+    final theme = Theme.of(context);
+    final prompt = promptController.text.trim();
+
+    if (prompt.isEmpty) {
+      _showSnack(emptyPromptMessage, theme.semanticColors.warning);
       return;
     }
 
-    setState(() {
-      _isGeneratingJollyRoger = true;
-    });
+    setState(() => setBusy(true));
 
     try {
-      final imageUrl = await _crewImageService.generateJollyRogerImage(
-        crewName: _nameController.text.isNotEmpty
-            ? _nameController.text
-            : 'Tripulação',
-        prompt: _jollyRogerPromptController.text.trim(),
-        tags: _tags,
-        description: _descriptionController.text.isNotEmpty
-            ? _descriptionController.text
-            : null,
-      );
+      final imageUrl = await generate(prompt);
+      if (!mounted) return;
 
       setState(() {
-        _generatedJollyRogerUrl = imageUrl;
-        _isGeneratingJollyRoger = false;
+        onResult(imageUrl);
+        setBusy(false);
       });
 
-      if (imageUrl != null && mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text(AppLocalizations.of(context)!.flagGeneratedSuccess),
-            backgroundColor: Colors.green,
-          ),
-        );
+      if (imageUrl != null) {
+        _showSnack(successMessage, theme.semanticColors.success);
       }
     } catch (e) {
-      setState(() {
-        _isGeneratingJollyRoger = false;
-      });
-      if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text(
-              AppLocalizations.of(context)!.errorGeneratingFlag(e.toString()),
-            ),
-            backgroundColor: Theme.of(context).colorScheme.error,
-          ),
-        );
-      }
+      if (!mounted) return;
+      setState(() => setBusy(false));
+      _showSnack(errorMessage(e), theme.colorScheme.error);
     }
   }
 
-  Future<void> _generateBoat() async {
-    if (_boatPromptController.text.trim().isEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(AppLocalizations.of(context)!.promptShip),
-          backgroundColor: Colors.orange,
-        ),
-      );
-      return;
-    }
+  /// Crew name to seed the image prompt with, falling back to a generic label
+  /// while the name field is still empty.
+  String _crewNameForPrompt(AppLocalizations loc) =>
+      _nameController.text.isNotEmpty
+      ? _nameController.text
+      : loc.defaultCrewName;
 
-    setState(() {
-      _isGeneratingBoat = true;
-    });
+  String? get _descriptionOrNull =>
+      _descriptionController.text.isEmpty ? null : _descriptionController.text;
 
-    try {
-      final imageUrl = await _crewImageService.generateBoatImage(
-        crewName: _nameController.text.isNotEmpty
-            ? _nameController.text
-            : 'Tripulação',
-        prompt: _boatPromptController.text.trim(),
+  Future<void> _generateJollyRoger() {
+    final loc = AppLocalizations.of(context)!;
+    return _runGeneration(
+      promptController: _jollyRogerPromptController,
+      emptyPromptMessage: loc.promptPirateFlag,
+      successMessage: loc.flagGeneratedSuccess,
+      errorMessage: (e) => loc.errorGeneratingFlag(e.toString()),
+      setBusy: (busy) => _isGeneratingJollyRoger = busy,
+      generate: (prompt) => _crewImageService.generateJollyRogerImage(
+        crewName: _crewNameForPrompt(loc),
+        prompt: prompt,
         tags: _tags,
-        description: _descriptionController.text.isNotEmpty
-            ? _descriptionController.text
-            : null,
-      );
+        description: _descriptionOrNull,
+      ),
+      onResult: (url) => _generatedJollyRogerUrl = url,
+    );
+  }
 
-      setState(() {
-        _generatedBoatUrl = imageUrl;
-        _isGeneratingBoat = false;
-      });
+  Future<void> _generateBoat() {
+    final loc = AppLocalizations.of(context)!;
+    return _runGeneration(
+      promptController: _boatPromptController,
+      emptyPromptMessage: loc.promptShip,
+      successMessage: loc.shipGeneratedSuccess,
+      errorMessage: (e) => loc.errorGeneratingShip(e.toString()),
+      setBusy: (busy) => _isGeneratingBoat = busy,
+      generate: (prompt) => _crewImageService.generateBoatImage(
+        crewName: _crewNameForPrompt(loc),
+        prompt: prompt,
+        tags: _tags,
+        description: _descriptionOrNull,
+      ),
+      onResult: (url) => _generatedBoatUrl = url,
+    );
+  }
 
-      if (imageUrl != null && mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text(AppLocalizations.of(context)!.shipGeneratedSuccess),
-            backgroundColor: Colors.green,
-          ),
-        );
-      }
-    } catch (e) {
-      setState(() {
-        _isGeneratingBoat = false;
-      });
-      if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text(
-              AppLocalizations.of(context)!.errorGeneratingShip(e.toString()),
-            ),
-            backgroundColor: Theme.of(context).colorScheme.error,
-          ),
-        );
-      }
-    }
+  void _submit(BuildContext context) {
+    if (!_formKey.currentState!.validate()) return;
+
+    context.read<CreateCrewBloc>().add(
+      CreateCrewSubmitted(
+        name: _nameController.text,
+        description: _descriptionOrNull,
+        jollyRogerUrl: _generatedJollyRogerUrl,
+        boatImageUrl: _generatedBoatUrl,
+        tags: _tags,
+        boatName: _boatNameController.text.isEmpty
+            ? null
+            : _boatNameController.text,
+      ),
+    );
   }
 
   @override
   Widget build(BuildContext context) {
     final authState = context.read<AuthBloc>().state;
     final userId = authState is AuthAuthenticated ? authState.user.uid : null;
+    final loc = AppLocalizations.of(context)!;
 
     return BlocProvider(
-      create: (context) => CreateCrewBloc(userId: userId),
+      create: (context) => getIt<CreateCrewBloc>(param1: userId),
       child: Builder(
         builder: (context) {
           return Scaffold(
-            appBar: DefaultAppBar(
-              title: Text(AppLocalizations.of(context)!.createCrewTitle),
-            ),
+            appBar: DefaultAppBar(title: Text(loc.createCrewTitle)),
             body: BlocListener<CreateCrewBloc, CreateCrewState>(
-              listener: (context, state) {
-                if (state is CreateCrewSuccess) {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(
-                      content: Text(
-                        AppLocalizations.of(context)!.crewCreatedSuccess,
-                      ),
-                      backgroundColor: AppColors.green[500]!,
-                    ),
-                  );
-                  Navigator.pop(context, {
-                    'action': 'created',
-                    'crewId': state.crewId,
-                  });
-                } else if (state is CreateCrewFailure) {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(
-                      content: Text(
-                        AppLocalizations.of(context)!.errorPrefix(state.error),
-                      ),
-                      backgroundColor: Theme.of(context).colorScheme.error,
-                    ),
-                  );
-                }
-              },
-              child: Container(
-                decoration: BoxDecoration(
-                  color: Theme.of(context).colorScheme.surfaceContainer,
-                ),
+              listener: _onStateChange,
+              child: ColoredBox(
+                color: Theme.of(context).colorScheme.surfaceContainer,
                 child: SafeArea(
                   child: SingleChildScrollView(
                     padding: const EdgeInsets.all(16.0),
@@ -253,499 +190,55 @@ class _CreateCrewScreenState extends State<CreateCrewScreen> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.stretch,
                         children: [
-                          Container(
-                            height: 120,
-                            decoration: BoxDecoration(
-                              color: Theme.of(
-                                context,
-                              ).colorScheme.primaryContainer,
-                              borderRadius: BorderRadius.circular(12),
-                              border: Border.all(color: AppColors.purple[600]!),
-                            ),
-                            child: Column(
-                              spacing: Constants.margin,
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                const AppIcon(
-                                  PhosphorIconsRegular.sailboat,
-                                  size: 48,
-                                ),
-                                Text(
-                                  'Nova Tripulação',
-                                  style: Theme.of(context).textTheme.titleMedium
-                                      ?.copyWith(
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.w500,
-                                      ),
-                                ),
-                              ],
-                            ),
-                          ),
-
+                          _Header(title: loc.newCrewTitle),
                           const SizedBox(height: 24),
-
-                          TextFormField(
-                            controller: _nameController,
-                            decoration: InputDecoration(
-                              labelText: AppLocalizations.of(
-                                context,
-                              )!.crewNameRequired,
-                              hintText: AppLocalizations.of(
-                                context,
-                              )!.customCrewHint,
-                              prefixIcon: const AppIcon(
-                                PhosphorIconsRegular.flag,
-                              ),
-                              border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(12),
-                              ),
-                              filled: true,
-                            ),
-                            style: TextStyle(color: AppColors.purple[600]!),
-                            validator: (value) {
-                              if (value == null || value.trim().isEmpty) {
-                                return 'Nome é obrigatório';
-                              }
-                              if (value.trim().length < 3) {
-                                return 'Nome deve ter pelo menos 3 caracteres';
-                              }
-                              return null;
-                            },
-                          ),
-
+                          _NameField(controller: _nameController),
                           const SizedBox(height: 16),
-
-                          TextFormField(
-                            controller: _descriptionController,
-                            maxLines: 3,
-                            decoration: InputDecoration(
-                              labelText: 'Descrição',
-                              hintText: AppLocalizations.of(
-                                context,
-                              )!.crewDescriptionHint,
-                              prefixIcon: const AppIcon(
-                                PhosphorIconsRegular.fileText,
-                              ),
-                              border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(12),
-                              ),
-                              filled: true,
-                            ),
-                            style: TextStyle(color: AppColors.purple[600]!),
-                          ),
-
+                          _DescriptionField(controller: _descriptionController),
                           const SizedBox(height: 16),
-
-                          Container(
-                            padding: const EdgeInsets.all(16),
-                            decoration: BoxDecoration(
-                              color: Theme.of(
-                                context,
-                              ).colorScheme.primaryContainer,
-                              borderRadius: BorderRadius.circular(12),
-                              border: Border.all(color: AppColors.purple[600]!),
-                            ),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Text(
-                                      'Tags',
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .titleMedium
-                                          ?.copyWith(
-                                            fontSize: 16,
-                                            fontWeight: FontWeight.w500,
-                                          ),
-                                    ),
-                                    IconButton(
-                                      onPressed: _showAddTagDialog,
-                                      icon: const AppIcon(
-                                        PhosphorIconsRegular.plusCircle,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                                if (_tags.isEmpty)
-                                  Padding(
-                                    padding: const EdgeInsets.only(top: 8),
-                                    child: Text(
-                                      'Nenhuma tag adicionada',
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .bodyMedium
-                                          ?.copyWith(fontSize: 14),
-                                    ),
-                                  ),
-                                if (_tags.isNotEmpty) ...[
-                                  const SizedBox(height: 8),
-                                  Wrap(
-                                    spacing: 8,
-                                    runSpacing: 8,
-                                    children: _tags.map((tag) {
-                                      return Chip(
-                                        label: Text(tag),
-                                        deleteIcon: const AppIcon(
-                                          PhosphorIconsRegular.x,
-                                          size: 18,
-                                        ),
-                                        onDeleted: () => _removeTag(tag),
-                                      );
-                                    }).toList(),
-                                  ),
-                                ],
-                              ],
-                            ),
+                          CrewTagsEditor(
+                            tags: _tags,
+                            onAdd: _addTag,
+                            onRemove: _removeTag,
                           ),
-
                           const SizedBox(height: 24),
-
-                          // Seção de Geração de Jolly Roger
-                          Container(
-                            padding: const EdgeInsets.all(16),
-                            decoration: BoxDecoration(
-                              color: Theme.of(
-                                context,
-                              ).colorScheme.primaryContainer,
-                              borderRadius: BorderRadius.circular(12),
-                              border: Border.all(color: AppColors.purple[600]!),
-                            ),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Row(
-                                  children: [
-                                    const AppIcon(PhosphorIconsRegular.flag),
-                                    const SizedBox(width: 8),
-                                    Text(
-                                      AppLocalizations.of(
-                                        context,
-                                      )!.pirateFlagLabel,
-                                      style: const TextStyle(
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.w500,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                                const SizedBox(height: 12),
-                                TextFormField(
-                                  controller: _jollyRogerPromptController,
-                                  decoration: InputDecoration(
-                                    labelText: AppLocalizations.of(
-                                      context,
-                                    )!.aiPromptLabel,
-                                    hintText:
-                                        'Ex: caveira com espadas cruzadas, bandeira negra',
-                                    border: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(8),
-                                    ),
-                                    filled: true,
-                                  ),
-                                  style: TextStyle(
-                                    color: AppColors.purple[600]!,
-                                  ),
-                                ),
-                                const SizedBox(height: 12),
-                                Row(
-                                  children: [
-                                    Expanded(
-                                      child: ElevatedButton.icon(
-                                        onPressed: _isGeneratingJollyRoger
-                                            ? null
-                                            : _generateJollyRoger,
-                                        icon: _isGeneratingJollyRoger
-                                            ? const SizedBox(
-                                                width: 16,
-                                                height: 16,
-                                                child: CircularProgressIndicator(
-                                                  strokeWidth: 2,
-                                                  valueColor:
-                                                      AlwaysStoppedAnimation<
-                                                        Color
-                                                      >(Colors.white),
-                                                ),
-                                              )
-                                            : const AppIcon(
-                                                PhosphorIconsRegular.magicWand,
-                                              ),
-                                        label: Text(
-                                          _isGeneratingJollyRoger
-                                              ? 'Gerando...'
-                                              : 'Gerar Bandeira',
-                                        ),
-                                        style: ElevatedButton.styleFrom(
-                                          backgroundColor:
-                                              AppColors.purple[500],
-                                          foregroundColor: Colors.white,
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                                if (_generatedJollyRogerUrl != null) ...[
-                                  const SizedBox(height: 12),
-                                  Container(
-                                    height: 120,
-                                    decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(8),
-                                      border: Border.all(
-                                        color: AppColors.purple[600]!,
-                                      ),
-                                    ),
-                                    child: ClipRRect(
-                                      borderRadius: BorderRadius.circular(8),
-                                      child: ClickableImage(
-                                        imageUrl: _generatedJollyRogerUrl!,
-                                        height: 120,
-                                        fit: BoxFit.cover,
-                                        borderRadius: BorderRadius.circular(8),
-                                        title: 'Bandeira Pirata',
-                                      ),
-                                    ),
-                                  ),
-                                ],
-                              ],
-                            ),
+                          CrewImageGeneratorSection(
+                            icon: const AppIcon(PhosphorIconsRegular.flag),
+                            title: loc.pirateFlagLabel,
+                            promptController: _jollyRogerPromptController,
+                            promptHint: loc.flagPromptHint,
+                            generateLabel: loc.generateFlagLabel,
+                            isGenerating: _isGeneratingJollyRoger,
+                            onGenerate: _generateJollyRoger,
+                            imageUrl: _generatedJollyRogerUrl,
+                            previewTitle: loc.pirateFlagTitle,
                           ),
-
                           const SizedBox(height: 16),
-
-                          // Seção de Geração de Barco
-                          Container(
-                            padding: const EdgeInsets.all(16),
-                            decoration: BoxDecoration(
-                              color: Theme.of(
-                                context,
-                              ).colorScheme.primaryContainer,
-                              borderRadius: BorderRadius.circular(12),
-                              border: Border.all(color: AppColors.purple[600]!),
-                            ),
-                            child: Column(
-                              spacing: Constants.margin,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Row(
-                                  children: [
-                                    const AppIcon(PhosphorIconsRegular.boat),
-                                    Text(
-                                      AppLocalizations.of(
-                                        context,
-                                      )!.crewShipLabel,
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .titleMedium
-                                          ?.copyWith(
-                                            fontSize: 16,
-                                            fontWeight: FontWeight.w500,
-                                          ),
-                                    ),
-                                  ],
-                                ),
-                                const SizedBox(height: 12),
-                                TextFormField(
-                                  controller: _boatNameController,
-                                  decoration: InputDecoration(
-                                    labelText: AppLocalizations.of(
-                                      context,
-                                    )!.shipNameLabel,
-                                    hintText: AppLocalizations.of(
-                                      context,
-                                    )!.merryShipHint,
-                                    prefixIcon: const AppIcon(
-                                      PhosphorIconsRegular.boat,
-                                    ),
-                                    border: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(12),
-                                    ),
-                                    filled: true,
-                                  ),
-                                  style: TextStyle(
-                                    color: AppColors.purple[600]!,
-                                  ),
-                                ),
-                                const SizedBox(height: 12),
-                                TextFormField(
-                                  controller: _boatPromptController,
-                                  decoration: InputDecoration(
-                                    labelText: AppLocalizations.of(
-                                      context,
-                                    )!.aiPromptLabel,
-                                    hintText:
-                                        'Ex: navio pirata de madeira com velas pretas',
-                                    border: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(8),
-                                    ),
-                                    filled: true,
-                                  ),
-                                  style: TextStyle(
-                                    color: AppColors.purple[600]!,
-                                  ),
-                                ),
-                                const SizedBox(height: 12),
-                                Row(
-                                  children: [
-                                    Expanded(
-                                      child: ElevatedButton.icon(
-                                        onPressed: _isGeneratingBoat
-                                            ? null
-                                            : _generateBoat,
-                                        icon: _isGeneratingBoat
-                                            ? const SizedBox(
-                                                width: 16,
-                                                height: 16,
-                                                child: CircularProgressIndicator(
-                                                  strokeWidth: 2,
-                                                  valueColor:
-                                                      AlwaysStoppedAnimation<
-                                                        Color
-                                                      >(Colors.white),
-                                                ),
-                                              )
-                                            : const AppIcon(
-                                                PhosphorIconsRegular.magicWand,
-                                              ),
-                                        label: Text(
-                                          _isGeneratingBoat
-                                              ? 'Gerando...'
-                                              : 'Gerar Barco',
-                                        ),
-                                        style: ElevatedButton.styleFrom(
-                                          backgroundColor:
-                                              AppColors.purple[500],
-                                          foregroundColor: Colors.white,
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                                if (_generatedBoatUrl != null) ...[
-                                  const SizedBox(height: 12),
-                                  Container(
-                                    height: 120,
-                                    decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(8),
-                                      border: Border.all(
-                                        color: AppColors.purple[600]!,
-                                      ),
-                                    ),
-                                    child: ClipRRect(
-                                      borderRadius: BorderRadius.circular(8),
-                                      child: ClickableImage(
-                                        imageUrl: _generatedBoatUrl!,
-                                        height: 120,
-                                        fit: BoxFit.cover,
-                                        borderRadius: BorderRadius.circular(8),
-                                        title: 'Barco da Tripulação',
-                                      ),
-                                    ),
-                                  ),
-                                ],
-                              ],
+                          CrewImageGeneratorSection(
+                            icon: const AppIcon(PhosphorIconsRegular.boat),
+                            title: loc.crewShipLabel,
+                            promptController: _boatPromptController,
+                            promptHint: loc.boatPromptHint,
+                            generateLabel: loc.generateBoatLabel,
+                            isGenerating: _isGeneratingBoat,
+                            onGenerate: _generateBoat,
+                            imageUrl: _generatedBoatUrl,
+                            previewTitle: loc.crewBoatTitle,
+                            extraField: _BoatNameField(
+                              controller: _boatNameController,
                             ),
                           ),
-
                           const SizedBox(height: 24),
-
-                          Container(
-                            padding: const EdgeInsets.all(16),
-                            decoration: BoxDecoration(
-                              color: AppColors.purple[200]!.withValues(
-                                alpha: 0.1,
-                              ),
-                              borderRadius: BorderRadius.circular(12),
-                              border: Border.all(color: AppColors.purple[600]!),
-                            ),
-                            child: Row(
-                              children: [
-                                AppIcon(
-                                  PhosphorIconsRegular.info,
-                                  color: AppColors.purple[600]!,
-                                ),
-                                const SizedBox(width: 12),
-                                Expanded(
-                                  child: Text(
-                                    'Use prompts descritivos para gerar imagens únicas da sua tripulação. '
-                                    'As imagens geradas serão salvas automaticamente.',
-                                    style: TextStyle(
-                                      color: AppColors.purple[400]!,
-                                      fontSize: 14,
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
+                          const CrewImageHelpBanner(
+                            icon: AppIcon(PhosphorIconsRegular.info),
                           ),
-
                           const SizedBox(height: 32),
-
                           BlocBuilder<CreateCrewBloc, CreateCrewState>(
-                            builder: (context, state) {
-                              return ElevatedButton(
-                                onPressed: state is CreateCrewLoading
-                                    ? null
-                                    : () {
-                                        if (_formKey.currentState!.validate()) {
-                                          context.read<CreateCrewBloc>().add(
-                                            CreateCrewSubmitted(
-                                              name: _nameController.text,
-                                              description:
-                                                  _descriptionController
-                                                      .text
-                                                      .isEmpty
-                                                  ? null
-                                                  : _descriptionController.text,
-                                              jollyRogerUrl:
-                                                  _generatedJollyRogerUrl,
-                                              boatImageUrl: _generatedBoatUrl,
-                                              tags: _tags,
-                                              boatName:
-                                                  _boatNameController
-                                                      .text
-                                                      .isEmpty
-                                                  ? null
-                                                  : _boatNameController.text,
-                                            ),
-                                          );
-                                        }
-                                      },
-                                style: ElevatedButton.styleFrom(
-                                  backgroundColor: AppColors.purple[500],
-                                  foregroundColor: Colors.white,
-                                  padding: const EdgeInsets.symmetric(
-                                    vertical: 16,
-                                  ),
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(12),
-                                  ),
-                                ),
-                                child: state is CreateCrewLoading
-                                    ? const SizedBox(
-                                        height: 20,
-                                        width: 20,
-                                        child: CircularProgressIndicator(
-                                          strokeWidth: 2,
-                                          valueColor:
-                                              AlwaysStoppedAnimation<Color>(
-                                                Colors.white,
-                                              ),
-                                        ),
-                                      )
-                                    : Text(
-                                        AppLocalizations.of(
-                                          context,
-                                        )!.createCrewTitle,
-                                        style: const TextStyle(
-                                          fontSize: 16,
-                                          fontWeight: FontWeight.bold,
-                                        ),
-                                      ),
-                              );
-                            },
+                            builder: (context, state) => _SubmitButton(
+                              isLoading: state is CreateCrewLoading,
+                              label: loc.createCrewTitle,
+                              onPressed: () => _submit(context),
+                            ),
                           ),
                         ],
                       ),
@@ -757,6 +250,168 @@ class _CreateCrewScreenState extends State<CreateCrewScreen> {
           );
         },
       ),
+    );
+  }
+
+  void _onStateChange(BuildContext context, CreateCrewState state) {
+    final loc = AppLocalizations.of(context)!;
+    final theme = Theme.of(context);
+
+    if (state is CreateCrewSuccess) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(loc.crewCreatedSuccess),
+          backgroundColor: theme.semanticColors.success,
+        ),
+      );
+      Navigator.pop(context, {'action': 'created', 'crewId': state.crewId});
+    } else if (state is CreateCrewFailure) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(loc.errorPrefix(state.error)),
+          backgroundColor: theme.colorScheme.error,
+        ),
+      );
+    }
+  }
+}
+
+class _Header extends StatelessWidget {
+  const _Header({required this.title});
+
+  final String title;
+
+  @override
+  Widget build(BuildContext context) {
+    return CrewFormCard(
+      height: 120,
+      padding: EdgeInsets.zero,
+      child: Column(
+        spacing: Constants.margin,
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          const AppIcon(PhosphorIconsRegular.sailboat, size: 48),
+          Text(
+            title,
+            style: Theme.of(context).textTheme.titleMedium?.copyWith(
+              fontSize: 16,
+              fontWeight: FontWeight.w500,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _NameField extends StatelessWidget {
+  const _NameField({required this.controller});
+
+  final TextEditingController controller;
+
+  @override
+  Widget build(BuildContext context) {
+    final loc = AppLocalizations.of(context)!;
+
+    return TextFormField(
+      controller: controller,
+      decoration: InputDecoration(
+        labelText: loc.crewNameRequired,
+        hintText: loc.customCrewHint,
+        prefixIcon: const AppIcon(PhosphorIconsRegular.flag),
+        border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
+        filled: true,
+      ),
+      validator: (value) {
+        if (value == null || value.trim().isEmpty) return loc.nameRequired;
+        if (value.trim().length < 3) return loc.nameMinLength;
+        return null;
+      },
+    );
+  }
+}
+
+class _DescriptionField extends StatelessWidget {
+  const _DescriptionField({required this.controller});
+
+  final TextEditingController controller;
+
+  @override
+  Widget build(BuildContext context) {
+    final loc = AppLocalizations.of(context)!;
+
+    return TextFormField(
+      controller: controller,
+      maxLines: 3,
+      decoration: InputDecoration(
+        labelText: loc.descriptionLabel,
+        hintText: loc.crewDescriptionHint,
+        prefixIcon: const AppIcon(PhosphorIconsRegular.fileText),
+        border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
+        filled: true,
+      ),
+    );
+  }
+}
+
+class _BoatNameField extends StatelessWidget {
+  const _BoatNameField({required this.controller});
+
+  final TextEditingController controller;
+
+  @override
+  Widget build(BuildContext context) {
+    final loc = AppLocalizations.of(context)!;
+
+    return TextFormField(
+      controller: controller,
+      decoration: InputDecoration(
+        labelText: loc.shipNameLabel,
+        hintText: loc.merryShipHint,
+        prefixIcon: const AppIcon(PhosphorIconsRegular.boat),
+        border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
+        filled: true,
+      ),
+    );
+  }
+}
+
+class _SubmitButton extends StatelessWidget {
+  const _SubmitButton({
+    required this.isLoading,
+    required this.label,
+    required this.onPressed,
+  });
+
+  final bool isLoading;
+  final String label;
+  final VoidCallback onPressed;
+
+  @override
+  Widget build(BuildContext context) {
+    final colors = Theme.of(context).colorScheme;
+
+    return ElevatedButton(
+      onPressed: isLoading ? null : onPressed,
+      style: ElevatedButton.styleFrom(
+        backgroundColor: colors.primary,
+        foregroundColor: colors.onPrimary,
+        padding: const EdgeInsets.symmetric(vertical: 16),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+      ),
+      child: isLoading
+          ? SizedBox(
+              height: 20,
+              width: 20,
+              child: CircularProgressIndicator(
+                strokeWidth: 2,
+                valueColor: AlwaysStoppedAnimation<Color>(colors.onPrimary),
+              ),
+            )
+          : Text(
+              label,
+              style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+            ),
     );
   }
 }

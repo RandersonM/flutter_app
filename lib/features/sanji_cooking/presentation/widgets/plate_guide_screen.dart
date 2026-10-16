@@ -340,7 +340,7 @@ class _PlateGuideScreenState extends State<PlateGuideScreen> {
                         content: Text(
                           AppLocalizations.of(context)!.couldNotOpenLink,
                         ),
-                        backgroundColor: Colors.red,
+                        backgroundColor: Theme.of(context).colorScheme.error,
                       ),
                     );
                   }
@@ -352,7 +352,7 @@ class _PlateGuideScreenState extends State<PlateGuideScreen> {
                       content: Text(
                         AppLocalizations.of(context)!.errorPrefix(e.toString()),
                       ),
-                      backgroundColor: Colors.red,
+                      backgroundColor: Theme.of(context).colorScheme.error,
                     ),
                   );
                 }

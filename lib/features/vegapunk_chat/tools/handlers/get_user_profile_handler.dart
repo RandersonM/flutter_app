@@ -49,14 +49,23 @@ class GetUserProfileHandler extends ToolHandler {
       }
 
       final profileData = {
+        'note':
+            'These are the user\'s real saved values. Repeat them exactly as '
+            'given — never invent, guess, round, or convert a value. Fields '
+            'that say "not set" have not been filled in yet; say so, do not '
+            'make one up.',
         'name': user.displayName,
         'email': user.email,
-        'gender': user.gender,
-        'age': user.age,
-        'heightCm': user.heightCm,
-        'weightKg': user.weightKg,
-        'activityLevel': user.activityLevel,
-        'goal': user.goal,
+        'gender': user.gender ?? 'not set',
+        'age': user.age?.toString() ?? 'not set',
+        'height_formatted': user.heightCm != null
+            ? '${(user.heightCm! / 100).toStringAsFixed(2)} m'
+            : 'not set',
+        'weight_formatted': user.weightKg != null
+            ? '${user.weightKg!.toStringAsFixed(1)} kg'
+            : 'not set',
+        'activityLevel': user.activityLevel ?? 'not set',
+        'goal': user.goal ?? 'not set',
       };
 
       return ToolResult.success(

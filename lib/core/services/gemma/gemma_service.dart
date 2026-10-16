@@ -123,6 +123,49 @@ class GemmaService implements IGemmaService {
     }
   }
 
+  /// Gemma 4 E2B supports 128K context; 4096 balances context capacity against
+  /// memory usage on mobile.
+  static const int _maxTokens = 4096;
+
+  /// Backends to try, in order. GPU first for throughput, CPU as the last
+  /// resort so a Metal-init failure degrades performance instead of breaking
+  /// the feature outright.
+  static const List<PreferredBackend> _backendPreference = [
+    PreferredBackend.gpu,
+    PreferredBackend.cpu,
+  ];
+
+  /// Opens the active model, trying each backend in [_backendPreference].
+  ///
+  /// Rethrows the last error if every backend fails, so the caller still emits
+  /// [GemmaError] rather than silently continuing without a model.
+  Future<InferenceModel> _openModelWithFallback() async {
+    Object? lastError;
+    StackTrace? lastStackTrace;
+
+    for (final backend in _backendPreference) {
+      try {
+        final model = await FlutterGemma.getActiveModel(
+          maxTokens: _maxTokens,
+          preferredBackend: backend,
+        );
+        if (backend != _backendPreference.first) {
+          debugPrint(
+            'GemmaService: opened model on ${backend.name} after '
+            '${_backendPreference.first.name} failed — inference will be slower',
+          );
+        }
+        return model;
+      } catch (e, st) {
+        debugPrint('GemmaService: ${backend.name} backend failed: $e');
+        lastError = e;
+        lastStackTrace = st;
+      }
+    }
+
+    Error.throwWithStackTrace(lastError!, lastStackTrace!);
+  }
+
   /// Closes the current chat/session and creates a fresh one against the
   /// active model. [loadModel] and [resetChat] both go through here so the
   /// backend/model-type selection can never drift between the two call
@@ -144,12 +187,16 @@ class GemmaService implements IGemmaService {
     final env = GetIt.I.get<IEnvironmentService>();
     final modelType = _determineModelType(env.gemmaModelName);
 
-    // Gemma 4 E2B supports 128K context; use 4096 for a good balance of
-    // context capacity and memory usage on mobile devices.
-    final model = await FlutterGemma.getActiveModel(
-      maxTokens: 4096,
-      preferredBackend: PreferredBackend.gpu,
-    );
+    // GPU (Metal) is preferred for speed, but its init can fail on devices
+    // where the accelerator is unavailable or cannot fit the model — so fall
+    // back to CPU rather than leaving the chat unusable. The plugin resets its
+    // cached model instance when createModel throws, so the retry really does
+    // build a fresh one instead of replaying the failed attempt.
+    //
+    // Note: this only recovers *reported* failures. If the OS kills the process
+    // for exceeding its memory limit there is no Dart error to catch — that is
+    // what the increased-memory-limit entitlement in Runner.entitlements is for.
+    final model = await _openModelWithFallback();
     _model = model;
     _chat = await model.createChat(
       systemInstruction: _vegapunkPrompt,
@@ -262,6 +309,8 @@ class GemmaService implements IGemmaService {
     required String systemInstruction,
     required String text,
     List<String>? ragContext,
+    List<Tool>? tools,
+    int maxOutputTokens = 512,
   }) {
     final model = _model;
     if (model == null) {
@@ -282,10 +331,19 @@ class GemmaService implements IGemmaService {
       try {
         var session = _sessions[sessionId];
         if (session == null) {
+          final hasTools = tools != null && tools.isNotEmpty;
           session = await model.openChat(
             systemInstruction: systemInstruction,
-            temperature: 0.3,
-            maxOutputTokens: 512,
+            // Lower temperature for reliable function-call JSON emission when
+            // tools are attached (matches the main chat's tuning).
+            temperature: hasTools ? 0.2 : 0.3,
+            maxOutputTokens: maxOutputTokens,
+            tools: tools ?? const [],
+            supportsFunctionCalls: hasTools,
+            toolChoice: hasTools ? ToolChoice.auto : ToolChoice.none,
+            modelType: _determineModelType(
+              GetIt.I.get<IEnvironmentService>().gemmaModelName,
+            ),
           );
           _sessions[sessionId] = session;
         }
@@ -297,6 +355,48 @@ class GemmaService implements IGemmaService {
 
         await session.addQueryChunk(
           Message(text: '$contextBlock$text', isUser: true),
+        );
+        await for (final response in session.generateChatResponseAsync()) {
+          if (isCancelled) break;
+          controller.add(response);
+        }
+      } catch (e) {
+        if (!controller.isClosed) controller.addError(e);
+      } finally {
+        if (!controller.isClosed) await controller.close();
+      }
+    }();
+
+    return controller.stream;
+  }
+
+  @override
+  Stream<ModelResponse> sendSessionToolResult(
+    String sessionId, {
+    required String toolName,
+    required Map<String, dynamic> result,
+  }) {
+    final session = _sessions[sessionId];
+    if (session == null) {
+      return Stream.error(
+        StateError('GemmaService: session "$sessionId" not open'),
+      );
+    }
+
+    bool isCancelled = false;
+    late final StreamController<ModelResponse> controller;
+
+    controller = StreamController<ModelResponse>(
+      onCancel: () async {
+        isCancelled = true;
+        await session.stopGeneration();
+      },
+    );
+
+    () async {
+      try {
+        await session.addQueryChunk(
+          Message.toolResponse(toolName: toolName, response: result),
         );
         await for (final response in session.generateChatResponseAsync()) {
           if (isCancelled) break;

@@ -11,6 +11,7 @@ import 'package:opfan/features/nami_finances/bloc/index.dart';
 import 'package:opfan/app/di/injection.dart';
 import 'package:opfan/shared/utils/theme.dart';
 import 'package:opfan/shared/widgets/atoms/app_button.dart';
+import 'package:opfan/shared/utils/app_semantic_colors.dart';
 
 class NamiDetailedFinancesScreen extends StatefulWidget {
   final DateTime? selectedMonth;
@@ -202,8 +203,8 @@ class _NamiDetailedFinancesScreenState
             children: [
               Expanded(
                 child: _buildOverviewItem(
-                  AppLocalizations.of(context)!.savingsLabel,
-                  finances.savings,
+                  AppLocalizations.of(context)!.reservesLabel,
+                  finances.totalReserves,
                   PhosphorIconsRegular.piggyBank,
                   AppColors.blue[500]!,
                 ),
@@ -552,15 +553,16 @@ class _NamiDetailedFinancesScreenState
   Color _getCategoryColor(ExpenseCategory category) {
     switch (category) {
       case ExpenseCategory.fixed:
-        return AppColors.red[500] ?? Colors.red;
+        return AppColors.red[500] ?? Theme.of(context).colorScheme.error;
       case ExpenseCategory.food:
-        return AppColors.orange[500] ?? Colors.orange;
+        return AppColors.orange[500] ??
+            Theme.of(context).semanticColors.warning;
       case ExpenseCategory.transport:
         return AppColors.blue[500] ?? Colors.blue;
       case ExpenseCategory.entertainment:
         return AppColors.purple[500] ?? Colors.purple;
       case ExpenseCategory.health:
-        return AppColors.green[500] ?? Colors.green;
+        return AppColors.green[500] ?? Theme.of(context).semanticColors.success;
       case ExpenseCategory.other:
         return AppColors.grey[500] ?? Colors.grey;
     }
@@ -580,6 +582,22 @@ class _NamiDetailedFinancesScreenState
         return PhosphorIconsRegular.firstAid;
       case ExpenseCategory.other:
         return PhosphorIconsRegular.dotsThree;
+    }
+  }
+
+  String _reservePurposeLabel(ReservePurpose purpose) {
+    final l10n = AppLocalizations.of(context)!;
+    switch (purpose) {
+      case ReservePurpose.emergency:
+        return l10n.reservePurposeEmergency;
+      case ReservePurpose.travel:
+        return l10n.reservePurposeTravel;
+      case ReservePurpose.goal:
+        return l10n.reservePurposeGoal;
+      case ReservePurpose.investment:
+        return l10n.reservePurposeInvestment;
+      case ReservePurpose.other:
+        return l10n.reservePurposeOther;
     }
   }
 
@@ -613,9 +631,15 @@ class _NamiDetailedFinancesScreenState
             const SizedBox(height: Constants.margin),
             _buildSavingsMetric(
               AppLocalizations.of(context)!.monthSavings,
-              finances.savings,
+              finances.totalReserves,
               AppColors.blue[500]!,
             ),
+            if (finances.reserveGoal != null && finances.reserveGoal! > 0)
+              _buildSavingsMetric(
+                AppLocalizations.of(context)!.reserveGoalMetricLabel,
+                finances.reserveGoal!,
+                AppColors.purple[500]!,
+              ),
             _buildSavingsMetric(
               AppLocalizations.of(context)!.savingsPercentage,
               finances.savingsPercentage,
@@ -626,6 +650,19 @@ class _NamiDetailedFinancesScreenState
               finances.yearlySavings,
               Theme.of(context).colorScheme.primary,
             ),
+            // Per-reserve breakdown (purpose + optional note).
+            if (finances.reserves.isNotEmpty) ...[
+              const SizedBox(height: Constants.margin),
+              ...finances.reserves.map(
+                (reserve) => _buildSavingsMetric(
+                  reserve.note.isNotEmpty
+                      ? '${_reservePurposeLabel(reserve.purpose)} · ${reserve.note}'
+                      : _reservePurposeLabel(reserve.purpose),
+                  reserve.amount,
+                  AppColors.blue[400] ?? AppColors.blue[500]!,
+                ),
+              ),
+            ],
           ],
         ),
       ),

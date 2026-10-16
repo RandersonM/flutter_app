@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:opfan/shared/utils/app_semantic_colors.dart';
 
 class FuturisticBackground extends StatelessWidget {
   final Widget child;
@@ -33,8 +34,8 @@ class FuturisticBackground extends StatelessWidget {
       gradientColors = [
         Colors.purple.withValues(alpha: 0.8),
         Colors.blue.withValues(alpha: 0.6),
-        Colors.orange.withValues(alpha: 0.4),
-        Colors.red.withValues(alpha: 0.6),
+        Theme.of(context).semanticColors.warning.withValues(alpha: 0.4),
+        Theme.of(context).colorScheme.error.withValues(alpha: 0.6),
       ];
     }
 

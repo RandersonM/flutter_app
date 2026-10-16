@@ -4796,6 +4796,42 @@ abstract class AppLocalizations {
   /// **'Enable reasoning trace (increases memory and latency)'**
   String get vegapunkThinkingModeDesc;
 
+  /// Activity label shown while the searchInternet tool is executing
+  ///
+  /// In en, this message translates to:
+  /// **'🌐 Searching the web…'**
+  String get vegapunkToolSearchInternet;
+
+  /// Activity label shown while the getCharacterInfo tool is executing
+  ///
+  /// In en, this message translates to:
+  /// **'🏴‍☠️ Looking up character info…'**
+  String get vegapunkToolGetCharacterInfo;
+
+  /// Activity label shown while the getUserProfile tool is executing
+  ///
+  /// In en, this message translates to:
+  /// **'👤 Looking up your profile…'**
+  String get vegapunkToolGetUserProfile;
+
+  /// Activity label shown while the getWorkoutHistory tool is executing
+  ///
+  /// In en, this message translates to:
+  /// **'💪 Looking up workout history…'**
+  String get vegapunkToolGetWorkoutHistory;
+
+  /// Activity label shown while the saveWorkout tool is executing
+  ///
+  /// In en, this message translates to:
+  /// **'💾 Saving workout…'**
+  String get vegapunkToolSaveWorkout;
+
+  /// Fallback activity label shown while an unrecognized tool is executing
+  ///
+  /// In en, this message translates to:
+  /// **'⚙️ Running {toolName}…'**
+  String vegapunkToolGeneric(String toolName);
+
   /// Header card title on the cooking tips screen
   ///
   /// In en, this message translates to:
@@ -4963,6 +4999,168 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'This feature requires an internet connection.\nPlease reconnect to continue.'**
   String get offlineScreenSubtitle;
+
+  /// Button to add a new reserve item in the finances form
+  ///
+  /// In en, this message translates to:
+  /// **'Add reserve'**
+  String get addReserve;
+
+  /// Label for the optional monthly reserve goal field
+  ///
+  /// In en, this message translates to:
+  /// **'Monthly reserve goal (optional)'**
+  String get reserveGoalOptional;
+
+  /// Label for the reserve purpose dropdown
+  ///
+  /// In en, this message translates to:
+  /// **'Purpose'**
+  String get reservePurpose;
+
+  /// Label for the optional reserve note field
+  ///
+  /// In en, this message translates to:
+  /// **'Note (optional)'**
+  String get reserveNote;
+
+  /// Reserve purpose option
+  ///
+  /// In en, this message translates to:
+  /// **'Emergency'**
+  String get reservePurposeEmergency;
+
+  /// Reserve purpose option
+  ///
+  /// In en, this message translates to:
+  /// **'Travel'**
+  String get reservePurposeTravel;
+
+  /// Reserve purpose option
+  ///
+  /// In en, this message translates to:
+  /// **'Goal'**
+  String get reservePurposeGoal;
+
+  /// Reserve purpose option
+  ///
+  /// In en, this message translates to:
+  /// **'Investment'**
+  String get reservePurposeInvestment;
+
+  /// Reserve purpose option
+  ///
+  /// In en, this message translates to:
+  /// **'Other'**
+  String get reservePurposeOther;
+
+  /// Shows the monthly reserve goal amount
+  ///
+  /// In en, this message translates to:
+  /// **'Goal: {amount}'**
+  String reserveGoalLabel(String amount);
+
+  /// Percentage progress toward the reserve goal
+  ///
+  /// In en, this message translates to:
+  /// **'{pct}% of goal'**
+  String reserveGoalProgressPct(String pct);
+
+  /// Remaining amount to reach the reserve goal
+  ///
+  /// In en, this message translates to:
+  /// **'{amount} to go'**
+  String reserveGoalRemaining(String amount);
+
+  /// Metric label for the reserve goal in the detailed screen
+  ///
+  /// In en, this message translates to:
+  /// **'Reserve goal'**
+  String get reserveGoalMetricLabel;
+
+  /// Tooltip for the previous-month navigation button
+  ///
+  /// In en, this message translates to:
+  /// **'Previous month'**
+  String get previousMonth;
+
+  /// Tooltip for the next-month navigation button
+  ///
+  /// In en, this message translates to:
+  /// **'Next month'**
+  String get nextMonth;
+
+  /// Hint shown when the finances screen is viewing a non-current month
+  ///
+  /// In en, this message translates to:
+  /// **'Editing a past month'**
+  String get editingPastMonth;
+
+  /// No description provided for @newCrewTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'New Crew'**
+  String get newCrewTitle;
+
+  /// No description provided for @descriptionLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Description'**
+  String get descriptionLabel;
+
+  /// No description provided for @tagsLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Tags'**
+  String get tagsLabel;
+
+  /// No description provided for @generatingLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Generating...'**
+  String get generatingLabel;
+
+  /// No description provided for @generateFlagLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Generate Flag'**
+  String get generateFlagLabel;
+
+  /// No description provided for @generateBoatLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Generate Ship'**
+  String get generateBoatLabel;
+
+  /// No description provided for @crewBoatTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Crew\'s Ship'**
+  String get crewBoatTitle;
+
+  /// No description provided for @aiImageHelpText.
+  ///
+  /// In en, this message translates to:
+  /// **'Use descriptive prompts to generate unique images for your crew. Generated images are saved automatically.'**
+  String get aiImageHelpText;
+
+  /// No description provided for @flagPromptHint.
+  ///
+  /// In en, this message translates to:
+  /// **'E.g. skull with crossed swords, black flag'**
+  String get flagPromptHint;
+
+  /// No description provided for @boatPromptHint.
+  ///
+  /// In en, this message translates to:
+  /// **'E.g. wooden pirate ship with black sails'**
+  String get boatPromptHint;
+
+  /// No description provided for @defaultCrewName.
+  ///
+  /// In en, this message translates to:
+  /// **'Crew'**
+  String get defaultCrewName;
 }
 
 class _AppLocalizationsDelegate

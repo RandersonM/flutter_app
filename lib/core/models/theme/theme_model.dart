@@ -1,4 +1,5 @@
 import 'package:hive/hive.dart';
+import 'package:opfan/core/storage/hive_type_ids.dart';
 
 class ThemeSettings extends HiveObject {
   bool isDarkMode;
@@ -12,7 +13,7 @@ class ThemeSettings extends HiveObject {
 
 class ThemeSettingsAdapter extends TypeAdapter<ThemeSettings> {
   @override
-  final int typeId = 2;
+  final int typeId = HiveTypeIds.themeSettings;
 
   @override
   ThemeSettings read(BinaryReader reader) {

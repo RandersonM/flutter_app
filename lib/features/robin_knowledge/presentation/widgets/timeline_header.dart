@@ -5,6 +5,7 @@ import 'package:opfan/features/robin_knowledge/data/models/goal_model.dart';
 import 'package:opfan/app/di/injection.dart';
 import 'package:opfan/features/robin_knowledge/bloc/robin_knowledge_bloc.dart';
 import 'package:opfan/l10n/app_localizations.dart';
+import 'package:opfan/shared/utils/app_semantic_colors.dart';
 
 class TimelineHeader extends StatelessWidget {
   const TimelineHeader({super.key});
@@ -46,21 +47,21 @@ class TimelineHeader extends StatelessWidget {
           AppLocalizations.of(context)!.completed,
           completed.toString(),
           PhosphorIconsRegular.checkCircle,
-          Colors.green,
+          Theme.of(context).semanticColors.success,
         ),
         _buildStatCard(
           context,
           AppLocalizations.of(context)!.inProgress,
           inProgress.toString(),
           PhosphorIconsRegular.clock,
-          Colors.orange,
+          Theme.of(context).semanticColors.warning,
         ),
         _buildStatCard(
           context,
           AppLocalizations.of(context)!.overdue,
           overdue.toString(),
           PhosphorIconsRegular.warning,
-          Colors.red,
+          Theme.of(context).colorScheme.error,
         ),
       ],
     );

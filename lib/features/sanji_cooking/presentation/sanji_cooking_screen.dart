@@ -113,14 +113,16 @@ class _SanjiCookingScreenState extends State<SanjiCookingScreen> {
                                   AppIcon(
                                     PhosphorIconsRegular.warningCircle,
                                     size: 48,
-                                    color: Colors.red.shade300,
+                                    color: Theme.of(context).colorScheme.error,
                                   ),
                                   const SizedBox(height: 16),
                                   Text(
                                     state.message,
                                     textAlign: TextAlign.center,
                                     style: TextStyle(
-                                      color: Colors.red.shade700,
+                                      color: Theme.of(
+                                        context,
+                                      ).colorScheme.error,
                                     ),
                                   ),
                                   const SizedBox(height: 16),

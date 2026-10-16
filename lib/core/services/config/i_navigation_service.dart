@@ -1,6 +1,11 @@
 import 'package:flutter/material.dart';
 
 abstract class INavigationService {
+  /// Handed to `MaterialApp.navigatorKey`. Must come from the single
+  /// registered instance — a second key would silently detach programmatic
+  /// navigation from the live navigator.
+  GlobalKey<NavigatorState> get navigatorKey;
+
   NavigatorState? get navigator;
 
   Future<dynamic> navigateTo(String routeName, {Object? arguments});

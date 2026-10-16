@@ -156,10 +156,10 @@ class _CrewCardState extends State<CrewCard> {
                     if (widget.onDelete != null)
                       IconButton(
                         onPressed: widget.onDelete,
-                        icon: const AppIcon(
+                        icon: AppIcon(
                           PhosphorIconsRegular.trash,
                           size: 20,
-                          color: Colors.red,
+                          color: Theme.of(context).colorScheme.error,
                         ),
                         tooltip: AppLocalizations.of(context)!.delete,
                         padding: EdgeInsets.zero,

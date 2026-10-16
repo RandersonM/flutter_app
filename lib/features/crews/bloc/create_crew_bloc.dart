@@ -1,7 +1,6 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:opfan/features/crews/data/models/crew_model.dart';
 import 'package:opfan/features/crews/data/repository/crew_repository_interface.dart';
-import 'package:opfan/app/di/injection.dart';
 import 'package:opfan/features/crews/bloc/create_crew_event.dart';
 import 'package:opfan/features/crews/bloc/create_crew_state.dart';
 
@@ -9,9 +8,8 @@ class CreateCrewBloc extends Bloc<CreateCrewEvent, CreateCrewState> {
   final ICrewRepository _crewRepository;
   final String? _userId;
 
-  CreateCrewBloc({ICrewRepository? crewRepository, this._userId})
-    : _crewRepository = crewRepository ?? getIt<ICrewRepository>(),
-      super(CreateCrewInitial()) {
+  CreateCrewBloc({required this._crewRepository, this._userId})
+    : super(CreateCrewInitial()) {
     //
 
     on<CreateCrewSubmitted>(_onCreateCrewSubmitted);

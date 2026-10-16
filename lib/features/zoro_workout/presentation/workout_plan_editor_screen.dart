@@ -8,6 +8,7 @@ import 'package:opfan/features/zoro_workout/bloc/zoro_workout_event.dart';
 import 'package:opfan/features/zoro_workout/bloc/zoro_workout_state.dart';
 import 'package:opfan/l10n/app_localizations.dart';
 import 'package:opfan/shared/widgets/atoms/app_button.dart';
+import 'package:opfan/shared/utils/app_semantic_colors.dart';
 
 /// Full-screen editor for creating/editing a user's workout plan.
 /// Supports multiple named splits (A, B, C…), each with a list of exercises.
@@ -129,7 +130,7 @@ class _WorkoutPlanEditorScreenState extends State<WorkoutPlanEditorScreen> {
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
                 content: Text(AppLocalizations.of(context)!.workoutPlanSaved),
-                backgroundColor: Colors.green,
+                backgroundColor: Theme.of(context).semanticColors.success,
                 behavior: SnackBarBehavior.floating,
               ),
             );

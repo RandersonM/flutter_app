@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:opfan/features/robin_knowledge/data/models/goal_model.dart';
 import 'package:opfan/shared/utils/theme.dart';
 import 'package:opfan/l10n/app_localizations.dart';
+import 'package:opfan/shared/utils/app_semantic_colors.dart';
 
 class UpdateProgressDialog extends StatefulWidget {
   final GoalModel goal;
@@ -84,7 +85,9 @@ class _UpdateProgressDialogState extends State<UpdateProgressDialog> {
                   '${newProgress.toStringAsFixed(1)}%',
                   style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                     fontWeight: FontWeight.bold,
-                    color: isIncrement ? Colors.green : Colors.orange,
+                    color: isIncrement
+                        ? Theme.of(context).semanticColors.success
+                        : Theme.of(context).semanticColors.warning,
                   ),
                 ),
                 const SizedBox(width: 8),
@@ -93,7 +96,9 @@ class _UpdateProgressDialogState extends State<UpdateProgressDialog> {
                       ? PhosphorIconsRegular.arrowUp
                       : PhosphorIconsRegular.arrowDown,
                   size: 16,
-                  color: isIncrement ? Colors.green : Colors.orange,
+                  color: isIncrement
+                      ? Theme.of(context).semanticColors.success
+                      : Theme.of(context).semanticColors.warning,
                 ),
               ],
             ),

@@ -1,43 +1,80 @@
 import 'package:opfan/features/nami_finances/data/models/nami_finances_model.dart';
 import 'package:opfan/features/one_piece/data/models/today_character.dart';
+import 'package:opfan/features/vegapunk_chat/data/models/chat_message.dart';
 
 import 'i_storage_service.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:opfan/core/storage/hive_type_ids.dart';
 import 'package:opfan/core/auth/models/user_model.dart';
 import 'package:opfan/core/models/theme/theme_model.dart';
 
+/// One adapter plus the model type it decodes, bound together.
+///
+/// `Hive.registerAdapter<T>` resolves the adapter against `T`, and its match
+/// test is `value is T`. Passing a `TypeAdapter<dynamic>` therefore infers
+/// `T == dynamic`, making that adapter match *every* value — Hive then routes
+/// all writes to whichever adapter was registered first. (Hive prints a warning
+/// about this, but it is not an error.)
+///
+/// Capturing `T` at construction and registering from [register] keeps the
+/// concrete type, so a list of these can be looped over safely.
+abstract interface class HiveAdapterRegistration {
+  /// The id the bound adapter reports — read by the type-id guard test.
+  int get typeId;
+
+  /// The model type this adapter is registered under. Exposed so a test can
+  /// assert it is never `dynamic`, which is the failure this class prevents.
+  Type get modelType;
+
+  /// Registers the adapter under its concrete model type.
+  void register();
+}
+
+class _Registration<T> implements HiveAdapterRegistration {
+  const _Registration(this._adapter);
+
+  final TypeAdapter<T> _adapter;
+
+  @override
+  int get typeId => _adapter.typeId;
+
+  @override
+  Type get modelType => T;
+
+  @override
+  void register() => Hive.registerAdapter<T>(_adapter);
+}
+
 class HiveStorageService implements IStorageService {
-  /// Central Registry of Hive Type IDs to prevent collisions.
+  /// Every adapter the app persists with. Type ids are owned by
+  /// [HiveTypeIds] — see that file before adding a model here.
   ///
-  /// | Type ID | Model Class          | Description                      |
-  /// |---------|----------------------|----------------------------------|
-  /// | 0       | TodayCharacter       | Daily featured character model   |
-  /// | 1       | UserModel            | User authentication details      |
-  /// | 2       | ThemeSettings        | Custom application theme settings|
-  /// | 10      | NamiFinancesModel    | Financial tracker overall model  |
-  /// | 11      | MonthlyIncomeModel   | Monthly income list entry        |
-  /// | 12      | ExpenseModel         | Individual expense item          |
-  /// | 13      | ExpenseCategory      | Enum-like categories for expenses|
-  static const int todayCharacterTypeId = 0;
-  static const int userModelTypeId = 1;
-  static const int themeSettingsTypeId = 2;
-  static const int namiFinancesModelTypeId = 10;
-  static const int monthlyIncomeModelTypeId = 11;
-  static const int expenseModelTypeId = 12;
-  static const int expenseCategoryTypeId = 13;
+  /// The explicit type argument on each entry is what keeps Hive's dispatch
+  /// correct; do not let it be inferred. Exposed (rather than inlined into
+  /// [initialize]) so `test/core/storage/hive_type_ids_test.dart` can assert
+  /// the reported ids match the registry, catching a collision at test time
+  /// instead of on a user's device.
+  static List<HiveAdapterRegistration> get adapters =>
+      <HiveAdapterRegistration>[
+        _Registration<TodayCharacter>(TodayCharacterAdapter()),
+        _Registration<UserModel>(UserModelAdapter()),
+        _Registration<ThemeSettings>(ThemeSettingsAdapter()),
+        _Registration<NamiFinancesModel>(NamiFinancesModelAdapter()),
+        _Registration<MonthlyIncomeModel>(MonthlyIncomeModelAdapter()),
+        _Registration<ExpenseModel>(ExpenseModelAdapter()),
+        _Registration<ExpenseCategory>(ExpenseCategoryAdapter()),
+        _Registration<ReserveModel>(ReserveModelAdapter()),
+        _Registration<ReservePurpose>(ReservePurposeAdapter()),
+        _Registration<ChatMessage>(ChatMessageAdapter()),
+        _Registration<MessageRole>(MessageRoleAdapter()),
+      ];
 
   @override
   Future<void> initialize() async {
     await Hive.initFlutter();
 
-    // Register all Adapters
-    Hive.registerAdapter(TodayCharacterAdapter());
-    Hive.registerAdapter(UserModelAdapter());
-    Hive.registerAdapter(ThemeSettingsAdapter());
-
-    Hive.registerAdapter(NamiFinancesModelAdapter());
-    Hive.registerAdapter(MonthlyIncomeModelAdapter());
-    Hive.registerAdapter(ExpenseModelAdapter());
-    Hive.registerAdapter(ExpenseCategoryAdapter());
+    for (final registration in adapters) {
+      registration.register();
+    }
   }
 }

@@ -86,9 +86,9 @@ class ExpenseItemWidget extends StatelessWidget {
               ),
               IconButton(
                 onPressed: onRemove,
-                icon: const AppIcon(
+                icon: AppIcon(
                   PhosphorIconsRegular.minusCircle,
-                  color: Colors.red,
+                  color: Theme.of(context).colorScheme.error,
                 ),
                 tooltip: l10n.remove,
               ),

@@ -2,11 +2,25 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>com.apple.developer.kernel.extended-virtual-addressing</key>
-	<true/>
+	<!-- Raises the app's jetsam memory limit. Required to load the on-device
+	     Gemma model (see GemmaService): without it the OS kills the process
+	     during native model load with no catchable Dart error.
+
+	     Two sibling entitlements were deliberately removed rather than kept:
+
+	       com.apple.developer.kernel.extended-virtual-addressing
+	       com.apple.developer.kernel.increased-debugging-memory-limit
+
+	     Apple does not grant those to *personal* (free) development teams, so
+	     including them makes provisioning fail outright:
+	       "Personal development teams ... do not support the Extended Virtual
+	        Addressing and Increased Debugging Memory Limit capabilities"
+	     increased-memory-limit alone signs fine on a personal team (verified).
+
+	     If this project ever moves to a paid Apple Developer Program account,
+	     adding increased-debugging-memory-limit back is worthwhile — it raises
+	     the limit for debug builds specifically, which are the memory-hungriest. -->
 	<key>com.apple.developer.kernel.increased-memory-limit</key>
-	<true/>
-	<key>com.apple.developer.kernel.increased-debugging-memory-limit</key>
 	<true/>
 </dict>
 </plist>

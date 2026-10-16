@@ -6,6 +6,8 @@ import 'package:opfan/core/services/rag/i_rag_service.dart';
 import 'package:opfan/core/services/rag/rag_service.dart';
 import 'package:opfan/core/services/web_search/i_web_search_service.dart';
 import 'package:opfan/core/services/web_search/web_search_service.dart';
+import 'package:opfan/features/vegapunk_chat/data/repository/i_vegapunk_chat_repository.dart';
+import 'package:opfan/features/vegapunk_chat/data/repository/vegapunk_chat_repository.dart';
 import 'package:opfan/features/vegapunk_chat/tools/function_executor.dart';
 import 'package:opfan/features/vegapunk_chat/tools/function_registry.dart';
 import 'package:opfan/features/vegapunk_chat/tools/handlers/search_internet_handler.dart';
@@ -19,6 +21,8 @@ import 'package:opfan/features/custom_character/data/repository/custom_character
 import 'package:opfan/features/custom_character/data/repository/custom_character_repository_interface.dart';
 import 'package:opfan/features/crews/data/repository/crew_repository.dart';
 import 'package:opfan/features/crews/data/repository/crew_repository_interface.dart';
+import 'package:opfan/features/vegapunk_chat/data/repository/i_vegapunk_chat_history_repository.dart';
+import 'package:opfan/features/vegapunk_chat/data/repository/vegapunk_chat_history_repository.dart';
 import 'package:opfan/features/sanji_cooking/data/repository/cooking_repository.dart';
 import 'package:opfan/features/sanji_cooking/data/repository/cooking_repository_interface.dart';
 import 'package:opfan/features/robin_knowledge/data/repository/planner_repository.dart';
@@ -35,19 +39,31 @@ void registerCoreModule(GetIt getIt) {
   getIt.registerLazySingleton<ILocaleService>(() => LocaleService());
   getIt.registerLazySingleton<IThemeService>(() => ThemeService());
 
+  // NavigationService owns the app's single navigatorKey, so it must be a
+  // singleton and resolved from here — never constructed ad hoc.
+  getIt.registerLazySingleton<INavigationService>(() => NavigationService());
+
   getIt.registerLazySingleton<INotificationService>(
-    () => NotificationService(),
+    () => NotificationService(
+      navigationService: getIt<INavigationService>(),
+      firestoreService: getIt<IFirestoreService>(),
+    ),
   );
   getIt.registerLazySingleton<IDevilFruitService>(() => DevilFruitService());
   getIt.registerLazySingleton<IYouTubeService>(() => YouTubeService());
   getIt.registerLazySingleton<IGeminiService>(() => GeminiService());
   getIt.registerLazySingleton<ICharacterImageService>(
-    () => CharacterImageService(),
+    () => CharacterImageService(geminiService: getIt<IGeminiService>()),
+  );
+  getIt.registerLazySingleton<ICrewImageService>(
+    () => CrewImageService(geminiService: getIt<IGeminiService>()),
   );
 
   getIt.registerLazySingleton<ICookingRepository>(() => CookingRepository());
   getIt.registerLazySingleton<IFeaturedCharacterRepository>(
-    () => FeaturedCharacterRepository(),
+    () => FeaturedCharacterRepository(
+      firestoreService: getIt<IFirestoreService>(),
+    ),
   );
 
   getIt.registerLazySingleton<IUserProfileRepository>(
@@ -55,13 +71,24 @@ void registerCoreModule(GetIt getIt) {
   );
 
   getIt.registerLazySingleton<IAuthService>(
-    () => AuthService(userProfileRepository: getIt<IUserProfileRepository>()),
+    () => AuthService(
+      userProfileRepository: getIt<IUserProfileRepository>(),
+      notificationService: getIt<INotificationService>(),
+    ),
   );
   getIt.registerLazySingleton<IFirestoreService>(() => FirestoreService());
 
-  getIt.registerLazySingleton<ICrewRepository>(() => CrewRepository());
+  getIt.registerLazySingleton<ICrewRepository>(
+    () => CrewRepository(firestoreService: getIt<IFirestoreService>()),
+  );
   getIt.registerLazySingleton<ICustomCharacterRepository>(
-    () => CustomCharacterRepository(getIt<ICrewRepository>()),
+    () => CustomCharacterRepository(
+      getIt<ICrewRepository>(),
+      firestoreService: getIt<IFirestoreService>(),
+    ),
+  );
+  getIt.registerLazySingleton<IVegapunkChatHistoryRepository>(
+    () => VegapunkChatHistoryRepository(),
   );
   getIt.registerLazySingleton<PlannerRepositoryInterface>(
     () => PlannerRepository(firestoreService: getIt<IFirestoreService>()),
@@ -121,6 +148,17 @@ void registerCoreModule(GetIt getIt) {
     return gemma;
   });
 
+  // Registered after IGemmaService — the repository takes it as a constructor
+  // dependency, so the closure must be able to resolve it when first read.
+  getIt.registerLazySingleton<IVegapunkChatRepository>(
+    () => VegapunkChatRepository(
+      gemmaService: getIt<IGemmaService>(),
+      ragService: getIt<IRAGService>(),
+      functionRegistry: getIt<FunctionRegistry>(),
+      functionExecutor: getIt<FunctionExecutor>(),
+    ),
+  );
+
   getIt.registerLazySingleton<AuthBloc>(() {
     final authBloc = AuthBloc(authService: getIt<IAuthService>());
     authBloc.add(const AuthStarted());
@@ -140,6 +178,7 @@ extension CoreModuleExtensions on GetIt {
   IGeminiService get geminiService => get<IGeminiService>();
   ICharacterImageService get characterImageService =>
       get<ICharacterImageService>();
+  ICrewImageService get crewImageService => get<ICrewImageService>();
   ICookingRepository get cookingRepository => get<ICookingRepository>();
   IUserProfileRepository get userProfileRepository =>
       get<IUserProfileRepository>();
@@ -148,6 +187,8 @@ extension CoreModuleExtensions on GetIt {
   ICustomCharacterRepository get customCharacterRepository =>
       get<ICustomCharacterRepository>();
   ICrewRepository get crewRepository => get<ICrewRepository>();
+  IVegapunkChatHistoryRepository get vegapunkChatHistoryRepository =>
+      get<IVegapunkChatHistoryRepository>();
   PlannerRepositoryInterface get plannerRepository =>
       get<PlannerRepositoryInterface>();
   INamiFinancesService get namiFinancesService => get<INamiFinancesService>();

@@ -20,12 +20,14 @@ class AuthService implements IAuthService {
   final FirebaseAuth _firebaseAuth;
   final GoogleSignIn _googleSignIn;
   final IUserProfileRepository _userProfileRepository;
+  final INotificationService _notificationService;
   late Box<UserModel> _box;
 
   AuthService({
     FirebaseAuth? firebaseAuth,
     GoogleSignIn? googleSignIn,
     required this._userProfileRepository,
+    required this._notificationService,
   }) : _firebaseAuth = firebaseAuth ?? FirebaseAuth.instance,
        _googleSignIn = googleSignIn ?? GoogleSignIn();
 
@@ -214,7 +216,7 @@ class AuthService implements IAuthService {
         await _saveUser(finalUser);
 
         try {
-          final notificationService = NotificationService();
+          final notificationService = _notificationService;
           if (notificationService.isInitialized) {
             await notificationService.saveTokenToFirestore(user.uid);
           }
@@ -237,7 +239,7 @@ class AuthService implements IAuthService {
   Future<void> signOut() async {
     try {
       try {
-        final notificationService = NotificationService();
+        final notificationService = _notificationService;
         if (notificationService.isInitialized) {
           await notificationService.clearToken();
         }

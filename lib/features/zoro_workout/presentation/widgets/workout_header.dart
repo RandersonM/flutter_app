@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:opfan/features/zoro_workout/data/models/workout_assessment_model.dart';
 import 'package:opfan/l10n/app_localizations.dart';
+import 'package:opfan/shared/utils/app_semantic_colors.dart';
 
 class WorkoutHeader extends StatelessWidget {
   final WorkoutAssessmentModel? currentAssessment;
@@ -43,7 +44,7 @@ class WorkoutHeader extends StatelessWidget {
   Widget _buildGifWithBadge(BuildContext context, {required bool isDefeated}) {
     final statusColor = isDefeated
         ? Theme.of(context).colorScheme.error
-        : Colors.green.shade500;
+        : Theme.of(context).semanticColors.success;
     final statusLabel = isDefeated
         ? AppLocalizations.of(context)!.workoutStatusDefeated
         : AppLocalizations.of(context)!.workoutStatusOnTarget;
@@ -128,15 +129,15 @@ class WorkoutHeader extends StatelessWidget {
 
     final cardColor = isDefeated
         ? Theme.of(context).colorScheme.onErrorContainer.withValues(alpha: 0.6)
-        : Colors.green.shade900.withValues(alpha: 0.25);
+        : Theme.of(context).semanticColors.success.withValues(alpha: 0.25);
 
     final borderColor = isDefeated
         ? Theme.of(context).colorScheme.error.withValues(alpha: 0.4)
-        : Colors.green.shade600.withValues(alpha: 0.5);
+        : Theme.of(context).semanticColors.success.withValues(alpha: 0.5);
 
     final accentColor = isDefeated
         ? Theme.of(context).colorScheme.error
-        : Colors.green.shade400;
+        : Theme.of(context).semanticColors.success;
 
     final quoteText = isDefeated
         ? AppLocalizations.of(context)!.zoroQuoteDefeated

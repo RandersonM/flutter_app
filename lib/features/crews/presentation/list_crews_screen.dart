@@ -22,7 +22,7 @@ class ListCrewsScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
-        BlocProvider(create: (context) => ListCrewsBloc()),
+        BlocProvider(create: (context) => getIt<ListCrewsBloc>()),
         BlocProvider.value(value: getIt<ConnectivityCubit>()),
       ],
       child: const _ListCrewsScreenContent(),
@@ -185,7 +185,7 @@ class _ListCrewsScreenContentState extends State<_ListCrewsScreenContent>
         content: Text(
           AppLocalizations.of(context)!.crewDeletedMessage(crew.name),
         ),
-        backgroundColor: Colors.red,
+        backgroundColor: Theme.of(context).colorScheme.error,
         duration: const Duration(seconds: 2),
       ),
     );

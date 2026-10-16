@@ -2554,6 +2554,26 @@ class AppLocalizationsEn extends AppLocalizations {
       'Enable reasoning trace (increases memory and latency)';
 
   @override
+  String get vegapunkToolSearchInternet => '🌐 Searching the web…';
+
+  @override
+  String get vegapunkToolGetCharacterInfo => '🏴‍☠️ Looking up character info…';
+
+  @override
+  String get vegapunkToolGetUserProfile => '👤 Looking up your profile…';
+
+  @override
+  String get vegapunkToolGetWorkoutHistory => '💪 Looking up workout history…';
+
+  @override
+  String get vegapunkToolSaveWorkout => '💾 Saving workout…';
+
+  @override
+  String vegapunkToolGeneric(String toolName) {
+    return '⚙️ Running $toolName…';
+  }
+
+  @override
   String get cookingPersonalizedMealTitle => 'Personalized Meal with Sanji';
 
   @override
@@ -2643,4 +2663,92 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get offlineScreenSubtitle =>
       'This feature requires an internet connection.\nPlease reconnect to continue.';
+
+  @override
+  String get addReserve => 'Add reserve';
+
+  @override
+  String get reserveGoalOptional => 'Monthly reserve goal (optional)';
+
+  @override
+  String get reservePurpose => 'Purpose';
+
+  @override
+  String get reserveNote => 'Note (optional)';
+
+  @override
+  String get reservePurposeEmergency => 'Emergency';
+
+  @override
+  String get reservePurposeTravel => 'Travel';
+
+  @override
+  String get reservePurposeGoal => 'Goal';
+
+  @override
+  String get reservePurposeInvestment => 'Investment';
+
+  @override
+  String get reservePurposeOther => 'Other';
+
+  @override
+  String reserveGoalLabel(String amount) {
+    return 'Goal: $amount';
+  }
+
+  @override
+  String reserveGoalProgressPct(String pct) {
+    return '$pct% of goal';
+  }
+
+  @override
+  String reserveGoalRemaining(String amount) {
+    return '$amount to go';
+  }
+
+  @override
+  String get reserveGoalMetricLabel => 'Reserve goal';
+
+  @override
+  String get previousMonth => 'Previous month';
+
+  @override
+  String get nextMonth => 'Next month';
+
+  @override
+  String get editingPastMonth => 'Editing a past month';
+
+  @override
+  String get newCrewTitle => 'New Crew';
+
+  @override
+  String get descriptionLabel => 'Description';
+
+  @override
+  String get tagsLabel => 'Tags';
+
+  @override
+  String get generatingLabel => 'Generating...';
+
+  @override
+  String get generateFlagLabel => 'Generate Flag';
+
+  @override
+  String get generateBoatLabel => 'Generate Ship';
+
+  @override
+  String get crewBoatTitle => 'Crew\'s Ship';
+
+  @override
+  String get aiImageHelpText =>
+      'Use descriptive prompts to generate unique images for your crew. Generated images are saved automatically.';
+
+  @override
+  String get flagPromptHint => 'E.g. skull with crossed swords, black flag';
+
+  @override
+  String get boatPromptHint => 'E.g. wooden pirate ship with black sails';
+
+  @override
+  String get defaultCrewName => 'Crew';
 }

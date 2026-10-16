@@ -7,6 +7,7 @@ import 'package:opfan/features/robin_knowledge/bloc/robin_knowledge_bloc.dart';
 import 'package:opfan/features/robin_knowledge/presentation/goal_details_screen.dart';
 import 'package:opfan/shared/utils/theme.dart';
 import 'package:opfan/l10n/app_localizations.dart';
+import 'package:opfan/shared/utils/app_semantic_colors.dart';
 
 class GoalCard extends StatelessWidget {
   final GoalModel goal;
@@ -69,7 +70,7 @@ class GoalCard extends StatelessWidget {
             ],
           ),
         ),
-        _buildStatusIcon(),
+        _buildStatusIcon(context),
       ],
     );
   }
@@ -88,7 +89,7 @@ class GoalCard extends StatelessWidget {
     );
   }
 
-  Widget _buildStatusIcon() {
+  Widget _buildStatusIcon(BuildContext context) {
     IconData iconData;
     Color color;
 
@@ -99,11 +100,11 @@ class GoalCard extends StatelessWidget {
         break;
       case GoalStatus.inProgress:
         iconData = PhosphorIconsRegular.clock;
-        color = Colors.orange;
+        color = Theme.of(context).semanticColors.warning;
         break;
       case GoalStatus.overdue:
         iconData = PhosphorIconsRegular.warning;
-        color = Colors.red;
+        color = Theme.of(context).colorScheme.error;
         break;
       default:
         iconData = PhosphorIconsRegular.circle;
@@ -166,18 +167,20 @@ class GoalCard extends StatelessWidget {
       deadlineText = AppLocalizations.of(
         context,
       )!.overdueDays(daysUntilDeadline.abs());
-      textColor = Colors.red;
+      textColor = Theme.of(context).colorScheme.error;
     } else if (daysUntilDeadline == 0) {
       deadlineText = AppLocalizations.of(context)!.dueToday;
-      textColor = Colors.orange;
+      textColor = Theme.of(context).semanticColors.warning;
     } else if (daysUntilDeadline < 0) {
       deadlineText = AppLocalizations.of(
         context,
       )!.dueDaysAgo(daysUntilDeadline.abs());
-      textColor = Colors.red;
+      textColor = Theme.of(context).colorScheme.error;
     } else {
       deadlineText = AppLocalizations.of(context)!.dueInDays(daysUntilDeadline);
-      textColor = daysUntilDeadline <= 3 ? Colors.orange : Colors.grey[600]!;
+      textColor = daysUntilDeadline <= 3
+          ? Theme.of(context).semanticColors.warning
+          : Colors.grey[600]!;
     }
 
     return Row(
