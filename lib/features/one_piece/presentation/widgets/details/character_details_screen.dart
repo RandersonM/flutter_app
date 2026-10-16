@@ -39,7 +39,7 @@ class CharacterDetailsScreen extends StatelessWidget {
                 style: const TextStyle(
                   shadows: [
                     Shadow(
-                      color: Colors.black54,
+                      color: Colors.black54, // harness:allow decorative
                       blurRadius: 4,
                       offset: Offset(1, 1),
                     ),

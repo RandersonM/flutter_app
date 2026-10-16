@@ -7,7 +7,6 @@ import 'package:flutter/material.dart';
 import 'package:opfan/features/custom_character/data/models/custom_character_model.dart';
 import 'package:opfan/l10n/app_localizations.dart';
 import 'package:opfan/shared/utils/constants.dart';
-import 'package:opfan/shared/utils/theme.dart';
 import 'package:opfan/shared/widgets/atoms/clickable_image.dart';
 
 class DuelArena extends StatelessWidget {
@@ -36,12 +35,9 @@ class DuelArena extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(Constants.margin * 2),
       decoration: BoxDecoration(
-        color: Colors.black.withValues(alpha: 0.4),
+        color: theme.colorScheme.surfaceContainerHigh.withValues(alpha: 0.85),
         borderRadius: BorderRadius.circular(Constants.margin * 2),
-        border: Border.all(
-          color: Colors.white.withValues(alpha: 0.3),
-          width: 2,
-        ),
+        border: Border.all(color: theme.colorScheme.outlineVariant, width: 2),
         boxShadow: [
           BoxShadow(
             color: Theme.of(context).colorScheme.primary.withValues(alpha: 0.3),
@@ -56,16 +52,12 @@ class DuelArena extends StatelessWidget {
           Text(
             l10n.versus,
             style: theme.textTheme.headlineLarge?.copyWith(
-              color: Theme.of(
-                context,
-              ).colorScheme.onPrimary.withValues(alpha: 0.8),
+              color: theme.colorScheme.primary,
               fontWeight: FontWeight.bold,
               fontSize: 48,
               shadows: [
                 Shadow(
-                  color: Theme.of(
-                    context,
-                  ).colorScheme.primary.withValues(alpha: 0.8),
+                  color: theme.colorScheme.primary.withValues(alpha: 0.3),
                   offset: const Offset(2, 2),
                   blurRadius: 8,
                 ),
@@ -90,7 +82,9 @@ class DuelArena extends StatelessWidget {
                 height: 80,
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
-                  color: AppColors.red[100]!.withValues(alpha: 0.5),
+                  color: Theme.of(
+                    context,
+                  ).colorScheme.errorContainer.withValues(alpha: 0.5),
                   border: Border.all(
                     color: Theme.of(context).colorScheme.error,
                     width: 2,
@@ -303,7 +297,7 @@ class DuelArena extends StatelessWidget {
             backgroundColor: canStartDuel
                 ? Theme.of(context).colorScheme.error
                 : Theme.of(context).colorScheme.primary.withValues(alpha: 0.5),
-            foregroundColor: Colors.white,
+            foregroundColor: Theme.of(context).colorScheme.onError,
             padding: const EdgeInsets.symmetric(
               horizontal: Constants.margin * 3,
               vertical: Constants.margin * 1.5,
@@ -324,9 +318,9 @@ class DuelArena extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(Constants.margin),
       decoration: BoxDecoration(
-        color: Colors.white.withValues(alpha: 0.1),
+        color: theme.colorScheme.surface.withValues(alpha: 0.5),
         borderRadius: BorderRadius.circular(Constants.margin),
-        border: Border.all(color: Colors.white.withValues(alpha: 0.2)),
+        border: Border.all(color: theme.colorScheme.outlineVariant),
       ),
       child: Column(
         children: [
@@ -384,7 +378,9 @@ class DuelArena extends StatelessWidget {
           Expanded(
             child: Text(
               firstValue,
-              style: theme.textTheme.bodySmall?.copyWith(color: Colors.white70),
+              style: theme.textTheme.bodySmall?.copyWith(
+                color: theme.colorScheme.onSurfaceVariant,
+              ),
               maxLines: 3,
               textAlign: TextAlign.center,
             ),
@@ -405,7 +401,9 @@ class DuelArena extends StatelessWidget {
           Expanded(
             child: Text(
               secondValue,
-              style: theme.textTheme.bodySmall?.copyWith(color: Colors.white70),
+              style: theme.textTheme.bodySmall?.copyWith(
+                color: theme.colorScheme.onSurfaceVariant,
+              ),
               maxLines: 3,
               textAlign: TextAlign.center,
             ),

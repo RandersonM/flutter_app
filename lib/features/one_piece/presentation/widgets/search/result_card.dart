@@ -42,12 +42,12 @@ class _ResultCardState extends State<ResultCard> {
   Widget _buildAvatar() {
     return CircleAvatar(
       radius: 24,
-      backgroundColor: Colors.grey[300],
+      backgroundColor: Theme.of(context).colorScheme.surfaceContainerHigh,
       child: _imageLoadError
           ? AppIcon(
               PhosphorIconsRegular.user,
               size: 28,
-              color: Colors.grey[600],
+              color: Theme.of(context).colorScheme.onSurfaceVariant,
             )
           : ClipOval(
               child: Image.network(
@@ -76,7 +76,7 @@ class _ResultCardState extends State<ResultCard> {
                   return AppIcon(
                     PhosphorIconsRegular.user,
                     size: 28,
-                    color: Colors.grey[600],
+                    color: Theme.of(context).colorScheme.onSurfaceVariant,
                   );
                 },
               ),

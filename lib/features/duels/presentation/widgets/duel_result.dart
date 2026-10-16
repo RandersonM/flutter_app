@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:opfan/features/custom_character/data/models/custom_character_model.dart';
 import 'package:opfan/l10n/app_localizations.dart';
 import 'package:opfan/shared/utils/app_routes.dart';
+import 'package:opfan/shared/utils/app_semantic_colors.dart';
 import 'package:opfan/shared/utils/constants.dart';
 import 'package:opfan/shared/utils/theme.dart';
 import 'package:opfan/shared/widgets/atoms/clickable_image.dart';
@@ -21,6 +22,10 @@ class DuelResult extends StatelessWidget {
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
     final theme = Theme.of(context);
+    final colorScheme = theme.colorScheme;
+    final semanticColors = theme.semanticColors;
+    final celebrationGold =
+        AppColors.orange[1000]!; // harness:allow decorative art
 
     return Container(
       padding: const EdgeInsets.all(Constants.margin * 3),
@@ -29,19 +34,19 @@ class DuelResult extends StatelessWidget {
           begin: Alignment.topCenter,
           end: Alignment.bottomCenter,
           colors: [
-            Colors.white.withValues(alpha: 0.3),
-            AppColors.orange[1000]!.withValues(alpha: 0.3),
-            AppColors.orange[700]!.withValues(alpha: 0.2),
+            colorScheme.surfaceContainer.withValues(alpha: 0.3),
+            celebrationGold.withValues(alpha: 0.3),
+            colorScheme.tertiary.withValues(alpha: 0.2),
             Theme.of(context).colorScheme.primary.withValues(alpha: 0.1),
-            AppColors.orange[700]!.withValues(alpha: 0.2),
-            Colors.white.withValues(alpha: 0.3),
+            colorScheme.tertiary.withValues(alpha: 0.2),
+            colorScheme.surfaceContainer.withValues(alpha: 0.3),
           ],
         ),
         borderRadius: BorderRadius.circular(Constants.margin * 3),
-        border: Border.all(color: AppColors.orange[700]!, width: 3),
+        border: Border.all(color: colorScheme.tertiary, width: 3),
         boxShadow: [
           BoxShadow(
-            color: AppColors.orange[1000]!.withValues(alpha: 0.5),
+            color: celebrationGold.withValues(alpha: 0.5),
             blurRadius: 25,
             spreadRadius: 5,
           ),
@@ -55,7 +60,7 @@ class DuelResult extends StatelessWidget {
             children: [
               AppIcon(
                 PhosphorIconsRegular.trophy,
-                color: AppColors.orange[700],
+                color: colorScheme.tertiary,
                 size: 40,
               ),
               const SizedBox(width: Constants.margin),
@@ -79,7 +84,7 @@ class DuelResult extends StatelessWidget {
               const SizedBox(width: Constants.margin),
               AppIcon(
                 PhosphorIconsRegular.trophy,
-                color: AppColors.orange[700],
+                color: colorScheme.tertiary,
                 size: 40,
               ),
             ],
@@ -90,7 +95,7 @@ class DuelResult extends StatelessWidget {
           Container(
             padding: const EdgeInsets.all(Constants.margin * 2),
             decoration: BoxDecoration(
-              color: Colors.white.withValues(alpha: 0.1),
+              color: colorScheme.surfaceContainer.withValues(alpha: 0.1),
               borderRadius: BorderRadius.circular(Constants.margin * 2),
               border: Border.all(
                 color: Theme.of(
@@ -138,11 +143,11 @@ class DuelResult extends StatelessWidget {
                 Text(
                   winner.name,
                   style: theme.textTheme.headlineMedium?.copyWith(
-                    color: Colors.white,
+                    color: colorScheme.onSurface,
                     fontWeight: FontWeight.bold,
                     shadows: [
                       Shadow(
-                        color: Colors.black.withValues(alpha: 0.8),
+                        color: colorScheme.surface.withValues(alpha: 0.8),
                         offset: const Offset(2, 2),
                         blurRadius: 4,
                       ),
@@ -156,11 +161,11 @@ class DuelResult extends StatelessWidget {
                   Text(
                     '"${winner.nickname}"',
                     style: theme.textTheme.titleMedium?.copyWith(
-                      color: Colors.white70,
+                      color: colorScheme.onSurfaceVariant,
                       fontStyle: FontStyle.italic,
                       shadows: [
                         Shadow(
-                          color: Colors.black.withValues(alpha: 0.6),
+                          color: colorScheme.surface.withValues(alpha: 0.6),
                           offset: const Offset(1, 1),
                           blurRadius: 2,
                         ),
@@ -185,7 +190,7 @@ class DuelResult extends StatelessWidget {
           Container(
             padding: const EdgeInsets.all(Constants.margin * 1.5),
             decoration: BoxDecoration(
-              color: Colors.black.withValues(alpha: 0.3),
+              color: colorScheme.surfaceContainer.withValues(alpha: 0.6),
               borderRadius: BorderRadius.circular(Constants.margin * 1.5),
               border: Border.all(
                 color: Theme.of(
@@ -196,7 +201,7 @@ class DuelResult extends StatelessWidget {
             child: Text(
               _getVictoryMessage(context),
               style: theme.textTheme.bodyLarge?.copyWith(
-                color: Colors.white,
+                color: colorScheme.onSurface,
                 fontWeight: FontWeight.w500,
                 height: 1.4,
               ),
@@ -220,8 +225,8 @@ class DuelResult extends StatelessWidget {
                 icon: const AppIcon(PhosphorIconsRegular.info, size: 20),
                 label: Text(l10n.statistics),
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: AppColors.blue[500],
-                  foregroundColor: Colors.white,
+                  backgroundColor: semanticColors.info,
+                  foregroundColor: semanticColors.onInfo,
                   padding: const EdgeInsets.symmetric(
                     horizontal: Constants.margin * 2,
                     vertical: Constants.margin,
@@ -239,8 +244,8 @@ class DuelResult extends StatelessWidget {
                 ),
                 label: Text(l10n.newDuel),
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: AppColors.green[500],
-                  foregroundColor: Colors.white,
+                  backgroundColor: semanticColors.success,
+                  foregroundColor: semanticColors.onSuccess,
                   padding: const EdgeInsets.symmetric(
                     horizontal: Constants.margin * 2,
                     vertical: Constants.margin,

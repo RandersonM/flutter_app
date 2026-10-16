@@ -18,8 +18,8 @@ class DetailsStatusBadge extends StatelessWidget {
     if (statusLower.contains('captured') ||
         statusLower.contains('imprisoned')) {
       return {
-        'backgroundColor': Colors.grey,
-        'textColor': Colors.white,
+        'backgroundColor': Theme.of(context).semanticColors.warning,
+        'textColor': Theme.of(context).semanticColors.onWarning,
         'icon': PhosphorIconsRegular.lock,
         'displayText': l10n.captured,
       };
@@ -28,7 +28,7 @@ class DetailsStatusBadge extends StatelessWidget {
     if (statusLower.contains('deceased')) {
       return {
         'backgroundColor': Theme.of(context).colorScheme.error,
-        'textColor': Colors.white,
+        'textColor': Theme.of(context).colorScheme.onError,
         'icon': PhosphorIconsRegular.skull,
         'displayText': l10n.dead,
       };
@@ -37,15 +37,17 @@ class DetailsStatusBadge extends StatelessWidget {
     if (statusLower.contains('living') || statusLower.contains('live')) {
       return {
         'backgroundColor': Theme.of(context).semanticColors.success,
-        'textColor': Colors.white,
+        'textColor': Theme.of(context).semanticColors.onSuccess,
         'icon': PhosphorIconsRegular.wind,
         'displayText': l10n.alive,
       };
     }
 
     return {
-      'backgroundColor': Colors.grey.withValues(alpha: 0.6),
-      'textColor': Colors.white,
+      'backgroundColor': Theme.of(
+        context,
+      ).colorScheme.onSurfaceVariant.withValues(alpha: 0.6),
+      'textColor': Theme.of(context).colorScheme.surface,
       'icon': PhosphorIconsRegular.question,
       'displayText': l10n.unknown,
     };
@@ -63,7 +65,7 @@ class DetailsStatusBadge extends StatelessWidget {
         borderRadius: BorderRadius.circular(12),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withValues(alpha: 0.3),
+            color: Theme.of(context).colorScheme.shadow.withValues(alpha: 0.3),
             blurRadius: 8,
             offset: const Offset(0, 2),
           ),
