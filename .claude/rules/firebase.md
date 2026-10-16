@@ -45,7 +45,7 @@ deliberate exception: `allow read: if isSignedIn()` (public showcase for "list a
 crews"), while update/delete use `crewOwner` and an update cannot change the owner.
 
 - An unfiltered query over an owner-only collection is denied as a whole — e.g.
-  `getAllCustomCharacters()` in Duels (see `domains/crews-characters-duels.md`).
+  `getAllCustomCharacters()` — Duels uses `getUserCustomCharacters()` for that reason.
   Query with `where('userId', isEqualTo: uid)` (`getUserDocuments`).
 - Any new collection: add a `match` block with the same owner-scoped
   `read`/`create`/`update`/`delete` — never a blanket `allow read, write`.

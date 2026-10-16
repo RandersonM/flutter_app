@@ -75,4 +75,5 @@ and the ARBs.
   - Random 0–79; **tie goes to character 1**; 2 s suspense delay.
 - Keep scoring in a pure, testable function if you change it.
 - `DuelsBloc` is a DI factory.
-- Debt: `getAllCustomCharacters()` is unfiltered, which the `custom_characters` rule denies for other users' docs.
+- Loads only the signed-in user's custom characters (`getUserCustomCharacters()`);
+  the route is public, so a guest duels canon characters only.

@@ -35,8 +35,8 @@ and AMV videos. All routes here are public.
 - Source: One Piece API via Dio, base URL from `IEnvironmentService.devilFruitApiUrl`
   (default `https://api.api-onepiece.com/v2/fruits/en`). In-memory cache only.
 - `DevilFruitBloc` depends on `IDevilFruitService` directly (no repository).
-- Debt: `DevilFruitLoaded.copyWith` can't reset `selectedType`, so clearing the type
-  filter leaves the chip selected.
+- Clearing filters (or filtering by an empty type) resets `selectedType` via
+  `copyWith(clearSelectedType: true)`.
 
 ## home — dashboard
 

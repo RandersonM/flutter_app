@@ -38,9 +38,8 @@ Source of truth: `pubspec.yaml`, `.fvmrc`, `lib/main.dart`, `lib/app/di/`.
 - cloud_firestore ^5.4.0 — `users`, `crews`, `custom_characters`, `planner`,
   `workout_assessments`, `featuredCharacters`, `user_tokens` (rules: `firestore.rules`)
 - firebase_messaging ^15.1.3 + flutter_local_notifications ^22.0.0 — FCM push
-- Cloud Functions (`functions/`, TypeScript, v2, Node 22) — scheduled push notifications.
-  The client `cloud_functions ^5.4.0` is only imported by the unregistered
-  `NotificationManagerService`
+- Cloud Functions (`functions/`, TypeScript, v2, Node 22) — scheduled push notifications;
+  the app has no client-side `cloud_functions` calls
 
 ## Local Storage
 - hive ^2.2.3 + hive_flutter ^1.1.0 — hand-written adapters, type ids in
