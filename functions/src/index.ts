@@ -85,20 +85,7 @@ export const sendNamiMonthlyNotification = onSchedule({
 
     console.log(`Nami notification sent: ${response.successCount}/${tokens.length} successes`);
 
-    // Remove invalid tokens if there are failures
-    if (response.failureCount > 0) {
-      const failedTokens: string[] = [];
-      response.responses.forEach((resp, idx) => {
-        if (!resp.success) {
-          failedTokens.push(tokens[idx]);
-          console.log(`Failed to send to token: ${tokens[idx]}`);
-        }
-      });
-
-      if (failedTokens.length > 0) {
-        await removeInvalidTokens(failedTokens);
-      }
-    }
+    await pruneUnregisteredTokens(tokens, response);
   } catch (error) {
     console.error("Error sending Nami notification:", error);
   }
@@ -195,20 +182,7 @@ export const sendZoroWorkoutNotification = onSchedule({
     console.log(`Zoro notification sent: ${response.successCount}/${tokens.length} successes`);
     console.log(`Message sent: ${randomMessage.title}`);
 
-    // Remove invalid tokens if there are failures
-    if (response.failureCount > 0) {
-      const failedTokens: string[] = [];
-      response.responses.forEach((resp, idx) => {
-        if (!resp.success) {
-          failedTokens.push(tokens[idx]);
-          console.log(`Failed to send to token: ${tokens[idx]}`);
-        }
-      });
-
-      if (failedTokens.length > 0) {
-        await removeInvalidTokens(failedTokens);
-      }
-    }
+    await pruneUnregisteredTokens(tokens, response);
   } catch (error) {
     console.error("Error sending Zoro notification:", error);
   }
@@ -311,20 +285,7 @@ export const sendSanjiCookingNotification = onSchedule({
     console.log(`Sanji notification sent: ${response.successCount}/${tokens.length} successes`);
     console.log(`Message sent: ${randomMessage.title}`);
 
-    // Remove invalid tokens if there are failures
-    if (response.failureCount > 0) {
-      const failedTokens: string[] = [];
-      response.responses.forEach((resp, idx) => {
-        if (!resp.success) {
-          failedTokens.push(tokens[idx]);
-          console.log(`Failed to send to token: ${tokens[idx]}`);
-        }
-      });
-
-      if (failedTokens.length > 0) {
-        await removeInvalidTokens(failedTokens);
-      }
-    }
+    await pruneUnregisteredTokens(tokens, response);
   } catch (error) {
     console.error("Error sending Sanji notification:", error);
   }
@@ -435,14 +396,38 @@ export const sendCustomNotification = onCall(async (request) => {
 });
 
 // ============================================================================
-// HELPER FUNCTION: REMOVE INVALID TOKENS
+// HELPER FUNCTION: PRUNE UNREGISTERED TOKENS
 // ============================================================================
-// Removes FCM tokens that are no longer valid from Firestore
-async function removeInvalidTokens(failedTokens: string[]) {
+// A send can fail for transient reasons (quota, server error); only the codes
+// below mean the token itself is dead, so only those are deleted.
+const PERMANENT_TOKEN_ERRORS = new Set([
+  "messaging/registration-token-not-registered",
+  "messaging/invalid-registration-token",
+]);
+
+function maskToken(token: string): string {
+  return `${token.slice(0, 6)}…(${token.length})`;
+}
+
+async function pruneUnregisteredTokens(
+  tokens: string[],
+  response: admin.messaging.BatchResponse,
+) {
+  const deadTokens: string[] = [];
+  response.responses.forEach((resp, idx) => {
+    if (resp.success) return;
+    const code = resp.error?.code ?? "unknown";
+    console.log(`Failed to send to token ${maskToken(tokens[idx])}: ${code}`);
+    if (PERMANENT_TOKEN_ERRORS.has(code)) deadTokens.push(tokens[idx]);
+  });
+  if (deadTokens.length > 0) await removeTokens(deadTokens);
+}
+
+async function removeTokens(deadTokens: string[]) {
   try {
     const batch = db.batch();
 
-    for (const token of failedTokens) {
+    for (const token of deadTokens) {
       const tokenDocs = await db.collection("user_tokens")
         .where("fcmToken", "==", token)
         .get();
@@ -453,9 +438,9 @@ async function removeInvalidTokens(failedTokens: string[]) {
     }
 
     await batch.commit();
-    console.log(`Removed ${failedTokens.length} invalid tokens`);
+    console.log(`Removed ${deadTokens.length} unregistered tokens`);
   } catch (error) {
-    console.error("Error removing invalid tokens:", error);
+    console.error("Error removing unregistered tokens:", error);
   }
 }
 
@@ -488,21 +473,16 @@ export const testNotification = onRequest(async (req, res) => {
 
     const {title = "Test", body = "This is a test notification"} = req.body;
 
-    // Get only 5 tokens for testing
-    const tokensSnapshot = await db.collection("user_tokens").limit(5).get();
-    const tokens: string[] = [];
-
-    tokensSnapshot.forEach((doc) => {
-      const data = doc.data();
-      if (data.fcmToken) {
-        tokens.push(data.fcmToken);
-      }
-    });
-
-    if (tokens.length === 0) {
-      res.status(400).json({error: "No tokens found"});
+    // Only the calling admin's own device receives the test.
+    const ownTokenDoc = await db.collection("user_tokens")
+      .doc(decodedToken.uid)
+      .get();
+    const ownToken = ownTokenDoc.data()?.fcmToken as string | undefined;
+    if (!ownToken) {
+      res.status(400).json({error: "No token registered for this admin"});
       return;
     }
+    const tokens = [ownToken];
 
     // Configure test message
     const message = {
