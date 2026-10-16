@@ -80,7 +80,10 @@ void registerFeaturesModule(GetIt getIt) {
   );
 
   getIt.registerFactory<ListCrewsBloc>(
-    () => ListCrewsBloc(crewRepository: getIt<ICrewRepository>()),
+    () => ListCrewsBloc(
+      crewRepository: getIt<ICrewRepository>(),
+      authService: getIt<IAuthService>(),
+    ),
   );
   getIt.registerFactoryParam<CrewDetailsBloc, CrewModel, void>(
     (crew, _) => CrewDetailsBloc(
