@@ -48,7 +48,7 @@ each turn sends a per-satellite style block
 (`lib/core/ai/prompts/personas/vegapunk_satellite_prompt.dart`) — no chat recreation.
 
 **RAG** (`lib/core/services/rag/rag_service.dart`, store `opfan_rag.db`, owner
-`vegapunk`, always via `RagStoreCoordinator.ensureActive`): static lore from
+`vegapunk`, always inside `RagStoreCoordinator.withStore`): static lore from
 `data/knowledge/one_piece_knowledge_base.dart`, re-indexed only when the sorted-id
 fingerprint changes; session docs (`isSession`, `"User asked…\nAnswer:…"`, ≤ 512
 chars, max 20 per process) added 2 s after each turn.

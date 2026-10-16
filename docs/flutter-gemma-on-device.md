@@ -104,15 +104,15 @@ Isso já causou um bug real de produção (ver `.specs/features/gemma-performanc
 
 **`RagStoreCoordinator`** (`lib/core/services/rag/rag_store_coordinator.dart`) — dono exclusivo de:
 1. `ensureEmbedderInstalled()` — instala o modelo de embedding (Gecko 110M, ~64MB quantizado) uma única vez por processo, compartilhado pelas duas features.
-2. `ensureActive(owner, dbFileName)` — reaponta o vector store global para o banco do `owner` atual; é *no-op* se o mesmo owner já está ativo, e só reabre o SQLite quando a feature ativa muda.
+2. `withStore(owner, dbFileName, operação)` — reaponta o vector store global para o banco do `owner` (no-op se ele já está ativo; só reabre o SQLite quando a feature ativa muda) e roda a operação. As chamadas entram numa fila: troca + operação rodam juntas, uma por vez, então a outra feature não consegue reapontar o store no meio de uma busca ou escrita. Uma chamada aninhada do mesmo owner roda direto; aninhar outro owner é erro.
 
-Cada serviço RAG chama `_ensureActiveStore()` (que delega ao coordinator) **antes de toda operação** — não só na inicialização — para se re-afirmar como dono se a outra feature foi usada nesse meio-tempo.
+Cada serviço RAG passa **toda operação** no store por `_inStore(...)` (que delega ao `withStore`) — não só a inicialização. A geração de embeddings, que não usa o store, fica fora da fila.
 
 ```
                       ┌────────────────────────┐
                       │   RagStoreCoordinator  │  (dono do embedder + do "active pointer")
                       └───────────┬────────────┘
-              ensureActive(owner, dbFile) — memoizado
+          withStore(owner, dbFile, op) — fila única
         ┌────────────────────┼────────────────────┐
         ▼                                          ▼
 ┌───────────────────┐                    ┌──────────────────────┐
@@ -196,7 +196,7 @@ O produto fixa o **Gemma 4 E2B** e `maxTokens: 4096` — não troque por um mode
 
 ### Adicionar uma nova feature com RAG próprio
 1. Crie um serviço dedicado (como `NamiRagService`) com seu próprio `owner` id e nome de arquivo `.db`.
-2. **Nunca** chame `FlutterGemmaPlugin.instance.initializeVectorStore()` diretamente — sempre via `RagStoreCoordinator.ensureActive(owner, dbFileName)`, e chame isso antes de **toda** operação de leitura/escrita, não só na inicialização.
+2. **Nunca** chame `FlutterGemmaPlugin.instance.initializeVectorStore()` diretamente — sempre via `RagStoreCoordinator.withStore(owner, dbFileName, operação)`, com **toda** leitura/escrita dentro da operação, não só a inicialização.
 3. Se a feature precisa de um "assistente" com persona própria (não misturado ao Vegapunk), use `GemmaService.sendSessionMessage(sessionId, ...)` em vez do `sendMessage()` singleton.
 
 ### Diagnosticar lentidão

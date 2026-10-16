@@ -23,10 +23,10 @@ structure branch) are kept at the bottom so nobody re-reports them.
 
 ### 3. Global RAG vector store (`lib/core/services/rag/rag_store_coordinator.dart`)
 - flutter_gemma has one active store per process; Vegapunk (`opfan_rag.db`) and Nami
-  (`nami_finances_store.db`) switch it through `RagStoreCoordinator.ensureActive`
-- Clearing wipes the whole store; no per-document delete. `ensureActive` calls are
-  serialized, but a feature can still be switched away between its `ensureActive` and
-  its next store call if another feature activates in between
+  (`nami_finances_store.db`) use it only inside `RagStoreCoordinator.withStore`, which
+  runs one operation at a time, the store switch included
+- Clearing wipes the whole store; no per-document delete
+- A long operation (Nami indexing a month) makes the other feature's search wait
 - **Risk:** calling `initializeVectorStore` directly silently re-points the other feature's searches
 
 ### 4. `core_module.dart` (~240 lines)

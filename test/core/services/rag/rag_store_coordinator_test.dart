@@ -1,10 +1,12 @@
+import 'dart:async';
+
 import 'package:flutter/services.dart';
 import 'package:flutter_gemma/flutter_gemma_interface.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:opfan/core/services/rag/rag_store_coordinator.dart';
 
 /// Records which database the shared vector store was pointed at. Every other
-/// plugin member is unused by `ensureActive` and falls through to
+/// plugin member is unused by the coordinator and falls through to
 /// [noSuchMethod].
 class _FakeGemmaPlugin extends FlutterGemmaPlugin {
   final opened = <String>[];
@@ -24,6 +26,9 @@ class _FakeGemmaPlugin extends FlutterGemmaPlugin {
 }
 
 const _documentsPath = '/docs';
+
+Future<void> _switchTo(String owner, String dbFileName) =>
+    RagStoreCoordinator.withStore(owner, dbFileName, () async {});
 const _pathProviderChannel = MethodChannel('plugins.flutter.io/path_provider');
 
 void main() {
@@ -51,24 +56,24 @@ void main() {
   // every test activates owners no other test uses.
   group('RagStoreCoordinator behaviour', () {
     test('opens the owner database inside the documents directory', () async {
-      await RagStoreCoordinator.ensureActive('owner-a', 'a.db');
+      await _switchTo('owner-a', 'a.db');
 
       expect(plugin.opened, ['$_documentsPath/a.db']);
     });
 
     test('does nothing when the active owner asks again', () async {
-      await RagStoreCoordinator.ensureActive('owner-b', 'b.db');
-      await RagStoreCoordinator.ensureActive('owner-b', 'b.db');
-      await RagStoreCoordinator.ensureActive('owner-b', 'b.db');
+      await _switchTo('owner-b', 'b.db');
+      await _switchTo('owner-b', 'b.db');
+      await _switchTo('owner-b', 'b.db');
 
       expect(plugin.opened, ['$_documentsPath/b.db']);
     });
 
     test('reopens the store once per owner switch', () async {
-      await RagStoreCoordinator.ensureActive('owner-c', 'c.db');
-      await RagStoreCoordinator.ensureActive('owner-d', 'd.db');
-      await RagStoreCoordinator.ensureActive('owner-d', 'd.db');
-      await RagStoreCoordinator.ensureActive('owner-c', 'c.db');
+      await _switchTo('owner-c', 'c.db');
+      await _switchTo('owner-d', 'd.db');
+      await _switchTo('owner-d', 'd.db');
+      await _switchTo('owner-c', 'c.db');
 
       expect(plugin.opened, [
         '$_documentsPath/c.db',
@@ -78,8 +83,8 @@ void main() {
     });
 
     test('remembers the active owner, not the database file', () async {
-      await RagStoreCoordinator.ensureActive('owner-e', 'e.db');
-      await RagStoreCoordinator.ensureActive('owner-e', 'other.db');
+      await _switchTo('owner-e', 'e.db');
+      await _switchTo('owner-e', 'other.db');
 
       expect(plugin.opened, ['$_documentsPath/e.db']);
     });
@@ -87,12 +92,9 @@ void main() {
     test('retries the switch after a failed activation', () async {
       plugin.failuresLeft = 1;
 
-      await expectLater(
-        RagStoreCoordinator.ensureActive('owner-f', 'f.db'),
-        throwsException,
-      );
-      await RagStoreCoordinator.ensureActive('owner-f', 'f.db');
-      await RagStoreCoordinator.ensureActive('owner-f', 'f.db');
+      await expectLater(_switchTo('owner-f', 'f.db'), throwsException);
+      await _switchTo('owner-f', 'f.db');
+      await _switchTo('owner-f', 'f.db');
 
       expect(plugin.opened, ['$_documentsPath/f.db']);
     });
@@ -100,14 +102,11 @@ void main() {
     test(
       'still treats the previous owner as active when a switch fails',
       () async {
-        await RagStoreCoordinator.ensureActive('owner-g', 'g.db');
+        await _switchTo('owner-g', 'g.db');
         plugin.failuresLeft = 1;
-        await expectLater(
-          RagStoreCoordinator.ensureActive('owner-h', 'h.db'),
-          throwsException,
-        );
+        await expectLater(_switchTo('owner-h', 'h.db'), throwsException);
 
-        await RagStoreCoordinator.ensureActive('owner-g', 'g.db');
+        await _switchTo('owner-g', 'g.db');
 
         expect(plugin.opened, ['$_documentsPath/g.db']);
       },
@@ -115,9 +114,9 @@ void main() {
 
     test('opens once when the same owner asks concurrently', () async {
       await Future.wait([
-        RagStoreCoordinator.ensureActive('owner-i', 'i.db'),
-        RagStoreCoordinator.ensureActive('owner-i', 'i.db'),
-        RagStoreCoordinator.ensureActive('owner-i', 'i.db'),
+        _switchTo('owner-i', 'i.db'),
+        _switchTo('owner-i', 'i.db'),
+        _switchTo('owner-i', 'i.db'),
       ]);
 
       expect(plugin.opened, ['$_documentsPath/i.db']);
@@ -125,23 +124,89 @@ void main() {
 
     test('ends on the owner requested last when switches overlap', () async {
       await Future.wait([
-        RagStoreCoordinator.ensureActive('owner-j', 'j.db'),
-        RagStoreCoordinator.ensureActive('owner-k', 'k.db'),
+        _switchTo('owner-j', 'j.db'),
+        _switchTo('owner-k', 'k.db'),
       ]);
-      await RagStoreCoordinator.ensureActive('owner-k', 'k.db');
+      await _switchTo('owner-k', 'k.db');
 
       expect(plugin.opened, ['$_documentsPath/j.db', '$_documentsPath/k.db']);
     });
 
     test('keeps serving queued calls after one fails', () async {
       plugin.failuresLeft = 1;
-      final failing = RagStoreCoordinator.ensureActive('owner-l', 'l.db');
-      final queued = RagStoreCoordinator.ensureActive('owner-l', 'l.db');
+      final failing = _switchTo('owner-l', 'l.db');
+      final queued = _switchTo('owner-l', 'l.db');
 
       await expectLater(failing, throwsException);
       await queued;
 
       expect(plugin.opened, ['$_documentsPath/l.db']);
+    });
+
+    test('returns what the operation returns', () async {
+      final result = await RagStoreCoordinator.withStore(
+        'owner-m',
+        'm.db',
+        () async => 42,
+      );
+
+      expect(result, 42);
+    });
+
+    test('keeps another owner out until the operation finishes', () async {
+      final release = Completer<void>();
+      final first = RagStoreCoordinator.withStore(
+        'owner-n',
+        'n.db',
+        () => release.future,
+      );
+      final second = _switchTo('owner-o', 'o.db');
+      await pumpEventQueue();
+
+      expect(plugin.opened, ['$_documentsPath/n.db']);
+
+      release.complete();
+      await Future.wait([first, second]);
+      expect(plugin.opened, ['$_documentsPath/n.db', '$_documentsPath/o.db']);
+    });
+
+    test('runs a nested call for the same owner inline', () async {
+      final result = await RagStoreCoordinator.withStore(
+        'owner-p',
+        'p.db',
+        () => RagStoreCoordinator.withStore('owner-p', 'p.db', () async => 1),
+      );
+
+      expect(result, 1);
+      expect(plugin.opened, ['$_documentsPath/p.db']);
+    });
+
+    test('rejects a different owner nested inside an operation', () async {
+      await expectLater(
+        RagStoreCoordinator.withStore(
+          'owner-q',
+          'q.db',
+          () => _switchTo('owner-r', 'r.db'),
+        ),
+        throwsStateError,
+      );
+      await _switchTo('owner-r', 'r.db');
+
+      expect(plugin.opened, ['$_documentsPath/q.db', '$_documentsPath/r.db']);
+    });
+
+    test('releases the store when the operation throws', () async {
+      await expectLater(
+        RagStoreCoordinator.withStore(
+          'owner-s',
+          's.db',
+          () async => throw Exception('search failed'),
+        ),
+        throwsException,
+      );
+      await _switchTo('owner-t', 't.db');
+
+      expect(plugin.opened, ['$_documentsPath/s.db', '$_documentsPath/t.db']);
     });
   });
 }

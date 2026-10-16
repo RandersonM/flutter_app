@@ -221,22 +221,22 @@ O `switch` sobre `ModelResponse` é o trecho mais didático do arquivo: `TextRes
 
 ### 24. [`core/services/rag/rag_store_coordinator.dart`](../lib/core/services/rag/rag_store_coordinator.dart) ⭐ mostre inteiro
 
-71 linhas, e o docstring de cabeçalho já conta a história toda. **Se você só puder mostrar um arquivo de RAG, é este.**
+106 linhas, e o docstring de cabeçalho já conta a história toda. **Se você só puder mostrar um arquivo de RAG, é este.**
 
 **A frase:** "O `ServiceRegistry` do plugin guarda um único `vectorStoreRepository`. Sem coordenação, a última feature a inicializar reaponta o ponteiro global para o próprio banco — e a busca da outra passa a consultar o banco errado, sem erro nenhum."
 
 **O detalhe:**
-- `ensureActive(owner, dbFile)` é **memoizada**: no-op enquanto o mesmo dono continua usando, e só paga o custo de reabrir o SQLite quando a feature ativa muda.
+- `withStore(owner, dbFile, op)` é uma **fila única**: a troca de store e a operação rodam juntas, uma por vez, então a outra feature não reaponta o store no meio de uma busca. A troca é memoizada: só reabre o SQLite quando a feature ativa muda. Chamada aninhada do mesmo dono roda direto (via `Zone`).
 - `ensureEmbedderInstalled()` roda no máximo uma vez por processo — e resseta a memoização se falhar, para a próxima chamada tentar de novo.
-- Leia o comentário das linhas 49–56 em voz alta: instalar o embedder **não basta**, é preciso chamar `getActiveEmbedder()`, senão as APIs de auto-embed falham com "no embedding model is active". É o tipo de detalhe que só se aprende batendo a cabeça, e está documentado no lugar certo.
+- Leia o comentário das linhas 53–60 em voz alta: instalar o embedder **não basta**, é preciso chamar `getActiveEmbedder()`, senão as APIs de auto-embed falham com "no embedding model is active". É o tipo de detalhe que só se aprende batendo a cabeça, e está documentado no lugar certo.
 
 **A regra para levar para casa:** ninguém chama `initializeVectorStore()` direto. Um `grep initializeVectorStore lib/` deve retornar **só** o coordinator — e isso é uma verificação que dá para fazer ao vivo.
 
 ### 25. [`core/services/rag/rag_service.dart`](../lib/core/services/rag/rag_service.dart)
 
-**Mostre:** [20–42](../lib/core/services/rag/rag_service.dart#L20-L42) (cap e over-fetch), [84–89](../lib/core/services/rag/rag_service.dart#L84-L89) (`_ensureActiveStore`), [166–215](../lib/core/services/rag/rag_service.dart#L166-L215) (`searchLore` / `searchSession` / `_scopedSearch`).
+**Mostre:** [20–42](../lib/core/services/rag/rag_service.dart#L20-L42) (cap e over-fetch), [81–87](../lib/core/services/rag/rag_service.dart#L81-L87) (`_inStore`), [169–223](../lib/core/services/rag/rag_service.dart#L169-L223) (`searchLore` / `searchSession` / `_scopedSearch`).
 
-**A frase:** "Cada operação se reafirma como dona do store antes de tocar nele — não só na inicialização."
+**A frase:** "Cada operação roda dentro da fila do coordinator, já apontada para o próprio banco — não só na inicialização."
 
 **O detalhe:**
 - O cap de 20 documentos de sessão tem um comentário longo e honesto explicando que o cap é em memória e **não** é reverificado no disco, porque o plugin só tem `clearVectorStore()` (sem delete por documento). Trade-off registrado, não esquecido.

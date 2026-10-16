@@ -14,8 +14,8 @@ import 'package:opfan/core/services/rag/rag_service.dart';
 ///
 /// NOT covered here, for that reason: the "fingerprint changed → actually
 /// clears and reloads the store" transition. `setKnowledgeBase` only reaches
-/// `clearVectorStore()`/`addDocumentBatch()` after `_ensureActiveStore()`
-/// succeeds, which requires a real, installed embedding model. What IS
+/// `clearVectorStore()`/`addDocumentBatch()` once the vector store is ready,
+/// which requires a real, installed embedding model. What IS
 /// covered and fully precise: the fingerprint comparison itself (pure), and
 /// the "unchanged → skip, no clear attempted" path (observable hermetically
 /// because it returns before ever needing the store).

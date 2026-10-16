@@ -91,10 +91,12 @@ The small model often *describes* a tool call instead of emitting it. So:
 
 ## RAG
 
-- Always go through `RagStoreCoordinator.ensureActive(owner, dbFile)` before **every**
-  vector-store operation. There is one global store and one embedder (Gecko 110m,
-  ~110 MB); never call `initializeVectorStore` directly. `ensureActive` calls run one
-  at a time in call order (`rag_store_coordinator_test.dart`).
+- Touch the vector store only inside `RagStoreCoordinator.withStore(owner, dbFile, op)`.
+  There is one global store and one embedder (Gecko 110m, ~110 MB); never call
+  `initializeVectorStore` directly. Operations run one at a time in call order, the
+  store switch included, so no other feature re-points the store mid-operation
+  (`rag_store_coordinator_test.dart`). Keep embedding generation outside `op` when it
+  doesn't need the store, await everything inside it, and never nest another owner.
 - Stores: Vegapunk `opfan_rag.db` (owner `vegapunk`), Nami `nami_finances_store.db`
   (owner `nami_finances`).
 - Clearing wipes the whole store; there is no per-document delete. Readers must
