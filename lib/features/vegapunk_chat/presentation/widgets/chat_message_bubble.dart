@@ -168,7 +168,7 @@ class _ChatMessageBubbleState extends State<ChatMessageBubble> {
             ),
             boxShadow: [
               BoxShadow(
-                color: Colors.black.withValues(alpha: 0.06),
+                color: theme.colorScheme.shadow.withValues(alpha: 0.06),
                 blurRadius: 4,
                 offset: const Offset(0, 2),
               ),

@@ -80,7 +80,7 @@ class _CharacterSelectionGridView extends StatelessWidget {
                 AppIcon(
                   PhosphorIconsRegular.warningCircle,
                   size: 64,
-                  color: Colors.grey[600],
+                  color: Theme.of(context).colorScheme.onSurfaceVariant,
                 ),
                 const SizedBox(height: Constants.margin),
                 Text(
@@ -108,7 +108,7 @@ class _CharacterSelectionGridView extends StatelessWidget {
                   AppIcon(
                     PhosphorIconsRegular.magnifyingGlassMinus,
                     size: 64,
-                    color: Colors.grey[600],
+                    color: Theme.of(context).colorScheme.onSurfaceVariant,
                   ),
                   const SizedBox(height: Constants.margin),
                   Text(
@@ -156,7 +156,7 @@ class _CharacterSelectionGridView extends StatelessWidget {
   ) {
     return Card(
       shape: RoundedRectangleBorder(
-        side: const BorderSide(color: Colors.white),
+        side: BorderSide(color: Theme.of(context).colorScheme.surfaceContainer),
         borderRadius: BorderRadius.circular(Constants.margin * 2),
       ),
       child: Padding(
@@ -171,7 +171,9 @@ class _CharacterSelectionGridView extends StatelessWidget {
                 width: double.infinity,
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(Constants.margin * 2),
-                  color: Colors.grey[200],
+                  color: Theme.of(
+                    context,
+                  ).colorScheme.onSurface.withValues(alpha: 0.08),
                 ),
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(Constants.margin * 2),
@@ -193,21 +195,27 @@ class _CharacterSelectionGridView extends StatelessWidget {
                       return Container(
                         width: double.infinity,
                         height: double.infinity,
-                        color: Colors.grey[300],
+                        color: Theme.of(
+                          context,
+                        ).colorScheme.onSurface.withValues(alpha: 0.12),
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             AppIcon(
                               PhosphorIconsRegular.user,
                               size: 48,
-                              color: Colors.grey[600],
+                              color: Theme.of(
+                                context,
+                              ).colorScheme.onSurfaceVariant,
                             ),
                             const SizedBox(height: 8),
                             Text(
                               AppLocalizations.of(context)!.imageUnavailable,
                               textAlign: TextAlign.center,
                               style: TextStyle(
-                                color: Colors.grey[600],
+                                color: Theme.of(
+                                  context,
+                                ).colorScheme.onSurfaceVariant,
                                 fontSize: 12,
                                 fontWeight: FontWeight.w500,
                               ),

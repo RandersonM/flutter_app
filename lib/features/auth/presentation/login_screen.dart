@@ -13,6 +13,10 @@ import 'package:opfan/shared/utils/constants.dart';
 import 'package:opfan/shared/widgets/atoms/circle_indicator.dart';
 import 'package:opfan/shared/widgets/atoms/app_button.dart';
 
+// Text sits on a full-screen photo behind a dark scrim, in every theme.
+const _photoScrim = Colors.black; // harness:allow decorative
+const _onPhoto = Colors.white; // harness:allow decorative
+
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
 
@@ -111,7 +115,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     ),
                   ),
                 ),
-                Container(color: Colors.black.withValues(alpha: 0.45)),
+                Container(color: _photoScrim.withValues(alpha: 0.45)),
                 SafeArea(
                   child: Padding(
                     padding: const EdgeInsets.all(Constants.margin),
@@ -164,7 +168,7 @@ class _LoginScreenState extends State<LoginScreen> {
     return Text(
       AppLocalizations.of(context)!.welcomeToOpfan,
       style: Theme.of(context).textTheme.headlineMedium?.copyWith(
-        color: Colors.white,
+        color: _onPhoto,
         fontWeight: FontWeight.bold,
       ),
       textAlign: TextAlign.center,
@@ -174,9 +178,7 @@ class _LoginScreenState extends State<LoginScreen> {
   Widget _buildSubtitleText() {
     return Text(
       AppLocalizations.of(context)!.loginWelcomeSubtitle,
-      style: Theme.of(
-        context,
-      ).textTheme.bodyLarge?.copyWith(color: Colors.white),
+      style: Theme.of(context).textTheme.bodyLarge?.copyWith(color: _onPhoto),
       textAlign: TextAlign.center,
     );
   }
@@ -227,7 +229,7 @@ class _LoginScreenState extends State<LoginScreen> {
               child: CircleIndicator(
                 isActive: index == _currentImageIndex,
                 activeColor: Theme.of(context).colorScheme.primary,
-                inactiveColor: Colors.white,
+                inactiveColor: _onPhoto,
               ),
             );
           }),
@@ -236,7 +238,7 @@ class _LoginScreenState extends State<LoginScreen> {
         Text(
           '${AppLocalizations.of(context)!.version} 1.0.1',
           style: TextStyle(
-            color: Colors.white.withValues(alpha: 0.6),
+            color: _onPhoto.withValues(alpha: 0.6),
             fontSize: 12,
           ),
         ),

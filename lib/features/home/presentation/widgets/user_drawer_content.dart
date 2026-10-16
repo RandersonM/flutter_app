@@ -46,7 +46,9 @@ class UserDrawerContent extends StatelessWidget {
                             spreadRadius: 5,
                           ),
                           BoxShadow(
-                            color: Colors.purple.withValues(alpha: 0.2),
+                            color: Theme.of(
+                              context,
+                            ).colorScheme.primary.withValues(alpha: 0.2),
                             blurRadius: 30,
                             spreadRadius: 10,
                           ),
@@ -62,7 +64,7 @@ class UserDrawerContent extends StatelessWidget {
                       user.displayName,
                       style: Theme.of(context).textTheme.titleLarge?.copyWith(
                         fontWeight: FontWeight.bold,
-                        color: Colors.white,
+                        color: Theme.of(context).colorScheme.onPrimaryContainer,
                         shadows: [
                           Shadow(
                             color: Theme.of(
@@ -80,7 +82,7 @@ class UserDrawerContent extends StatelessWidget {
                       style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                         color: Theme.of(
                           context,
-                        ).colorScheme.onSecondary.withValues(alpha: 0.8),
+                        ).colorScheme.onPrimaryContainer.withValues(alpha: 0.8),
                       ),
                       textAlign: TextAlign.center,
                     ),
@@ -88,7 +90,7 @@ class UserDrawerContent extends StatelessWidget {
                 ),
               ),
               GomuGomuDivider(
-                color: Theme.of(context).colorScheme.onPrimary,
+                color: Theme.of(context).colorScheme.onPrimaryContainer,
                 height: 12,
                 thickness: 1.5,
               ),
@@ -162,7 +164,7 @@ class UserDrawerContent extends StatelessWidget {
                         vertical: Constants.margin,
                       ),
                       child: GomuGomuDivider(
-                        color: Theme.of(context).colorScheme.onPrimary,
+                        color: Theme.of(context).colorScheme.onPrimaryContainer,
                         height: 12,
                         thickness: 1.5,
                       ),
@@ -195,7 +197,7 @@ class UserDrawerContent extends StatelessWidget {
     bool isDestructive = false,
   }) {
     final color = isDestructive
-        ? Theme.of(context).colorScheme.onError
+        ? Theme.of(context).colorScheme.error
         : Theme.of(context).colorScheme.surfaceContainer;
 
     return Container(
@@ -219,29 +221,34 @@ class UserDrawerContent extends StatelessWidget {
           ),
         ],
       ),
-      child: ListTile(
-        leading: Container(
-          padding: const EdgeInsets.all(8),
-          decoration: BoxDecoration(
-            shape: BoxShape.circle,
-            color: color.withValues(alpha: 0.1),
-            border: Border.all(color: color.withValues(alpha: 0.3), width: 1),
+      child: Material(
+        type: MaterialType.transparency,
+        child: ListTile(
+          leading: Container(
+            padding: const EdgeInsets.all(8),
+            decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              color: color.withValues(alpha: 0.1),
+              border: Border.all(color: color.withValues(alpha: 0.3), width: 1),
+            ),
+            child: Icon(
+              icon,
+              color: Theme.of(context).colorScheme.primary,
+              size: 20,
+            ),
           ),
-          child: Icon(
-            icon,
-            color: Theme.of(context).colorScheme.primary,
-            size: 20,
+          title: Text(
+            title,
+            style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+              color: Theme.of(context).colorScheme.primary,
+              fontWeight: FontWeight.w500,
+            ),
+          ),
+          onTap: onTap,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(12),
           ),
         ),
-        title: Text(
-          title,
-          style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-            color: Theme.of(context).colorScheme.primary,
-            fontWeight: FontWeight.w500,
-          ),
-        ),
-        onTap: onTap,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
       ),
     );
   }

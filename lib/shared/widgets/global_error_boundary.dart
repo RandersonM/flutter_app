@@ -3,6 +3,7 @@ import 'package:phosphoricons_flutter/phosphoricons_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:opfan/l10n/app_localizations.dart';
 import 'package:opfan/shared/utils/app_routes.dart';
+import 'package:opfan/shared/utils/theme.dart';
 
 class GlobalErrorBoundary extends StatefulWidget {
   final Widget child;
@@ -53,6 +54,8 @@ class _GlobalErrorBoundaryState extends State<GlobalErrorBoundary> {
       // its own localizations to resolve AppLocalizations.
       return MaterialApp(
         debugShowCheckedModeBanner: false,
+        theme: getLightTheme(),
+        darkTheme: getDarkTheme(),
         localizationsDelegates: AppLocalizations.localizationsDelegates,
         supportedLocales: AppLocalizations.supportedLocales,
         home: Builder(builder: _buildErrorScreen),
@@ -64,12 +67,13 @@ class _GlobalErrorBoundaryState extends State<GlobalErrorBoundary> {
 
   Widget _buildErrorScreen(BuildContext localizedContext) {
     final l10n = AppLocalizations.of(localizedContext)!;
+    final colorScheme = Theme.of(localizedContext).colorScheme;
     return Scaffold(
       body: Container(
         padding: const EdgeInsets.all(24),
-        decoration: const BoxDecoration(
+        decoration: BoxDecoration(
           gradient: LinearGradient(
-            colors: [Color(0xFF1A1A2E), Color(0xFF16213E)],
+            colors: [colorScheme.surface, colorScheme.surfaceContainer],
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
           ),
@@ -80,16 +84,16 @@ class _GlobalErrorBoundaryState extends State<GlobalErrorBoundary> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  const AppIcon(
+                  AppIcon(
                     PhosphorIconsRegular.bug,
-                    color: Color(0xFFE94560),
+                    color: colorScheme.error,
                     size: 80,
                   ),
                   const SizedBox(height: 24),
                   Text(
                     l10n.errorBoundaryTitle,
-                    style: const TextStyle(
-                      color: Colors.white,
+                    style: TextStyle(
+                      color: colorScheme.onSurface,
                       fontSize: 24,
                       fontWeight: FontWeight.bold,
                     ),
@@ -98,7 +102,10 @@ class _GlobalErrorBoundaryState extends State<GlobalErrorBoundary> {
                   const SizedBox(height: 12),
                   Text(
                     l10n.errorBoundaryMessage,
-                    style: const TextStyle(color: Colors.white70, fontSize: 16),
+                    style: TextStyle(
+                      color: colorScheme.onSurface.withValues(alpha: 0.7),
+                      fontSize: 16,
+                    ),
                     textAlign: TextAlign.center,
                   ),
                   const SizedBox(height: 24),
@@ -106,17 +113,19 @@ class _GlobalErrorBoundaryState extends State<GlobalErrorBoundary> {
                     Container(
                       padding: const EdgeInsets.all(16),
                       decoration: BoxDecoration(
-                        color: Colors.black.withValues(alpha: 0.3),
+                        color: colorScheme.surfaceContainerHigh,
                         borderRadius: BorderRadius.circular(8),
-                        border: Border.all(color: Colors.white24),
+                        border: Border.all(
+                          color: colorScheme.onSurface.withValues(alpha: 0.24),
+                        ),
                       ),
                       constraints: const BoxConstraints(maxHeight: 200),
                       width: double.infinity,
                       child: SingleChildScrollView(
                         child: Text(
                           _errorDetails!.exceptionAsString(),
-                          style: const TextStyle(
-                            color: Colors.redAccent,
+                          style: TextStyle(
+                            color: colorScheme.error,
                             fontFamily: 'monospace',
                             fontSize: 12,
                           ),
@@ -126,8 +135,8 @@ class _GlobalErrorBoundaryState extends State<GlobalErrorBoundary> {
                   const SizedBox(height: 32),
                   ElevatedButton.icon(
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: const Color(0xFFE94560),
-                      foregroundColor: Colors.white,
+                      backgroundColor: colorScheme.error,
+                      foregroundColor: colorScheme.onError,
                       padding: const EdgeInsets.symmetric(
                         horizontal: 24,
                         vertical: 12,
@@ -148,8 +157,8 @@ class _GlobalErrorBoundaryState extends State<GlobalErrorBoundary> {
                   const SizedBox(height: 16),
                   ElevatedButton.icon(
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: Theme.of(context).primaryColor,
-                      foregroundColor: Colors.white,
+                      backgroundColor: colorScheme.primary,
+                      foregroundColor: colorScheme.onPrimary,
                       padding: const EdgeInsets.symmetric(
                         horizontal: 24,
                         vertical: 12,

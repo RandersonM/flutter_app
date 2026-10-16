@@ -82,15 +82,15 @@ class HomeAppBar extends StatelessWidget implements PreferredSizeWidget {
       isDismissible: true,
       enableDrag: true,
       backgroundColor: Colors.transparent,
-      barrierColor: Colors.black54,
+      barrierColor: Theme.of(context).colorScheme.scrim.withValues(alpha: 0.54),
       builder: (context) => DraggableScrollableSheet(
         initialChildSize: 0.7,
         minChildSize: 0.5,
         maxChildSize: 0.9,
-        builder: (context, scrollController) => Container(
-          decoration: BoxDecoration(
-            color: Theme.of(context).colorScheme.primaryContainer,
-            borderRadius: const BorderRadius.vertical(top: Radius.circular(20)),
+        builder: (context, scrollController) => Material(
+          color: Theme.of(context).colorScheme.primaryContainer,
+          shape: const RoundedRectangleBorder(
+            borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
           ),
           clipBehavior: Clip.antiAlias,
           child: SingleChildScrollView(

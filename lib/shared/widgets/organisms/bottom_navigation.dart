@@ -8,9 +8,10 @@ import 'package:opfan/shared/utils/app_routes.dart';
 import 'package:opfan/shared/utils/constants.dart';
 
 // Fixed dark plum color — identical for light and dark mode.
-const Color _kNavBarBackground = Color(0xFF2D1648);
+const _kNavBarBackground = Color(0xFF2D1648); // harness:allow brand bar
 // Active capsule — solid violet.
-const Color _kActiveCapsule = Color(0xFF7C3AED);
+const _kActiveCapsule = Color(0xFF7C3AED); // harness:allow brand bar
+const _kOnNavBar = Colors.white; // harness:allow brand bar
 
 enum BottomNavigationPages { home, finances, workout, cooking, vegapunkChat }
 
@@ -137,7 +138,7 @@ class BottomNavigationState extends State<BottomNavigation> {
                 child: Icon(
                   icon,
                   size: 20,
-                  color: Colors.white.withValues(alpha: isActive ? 1.0 : 0.55),
+                  color: _kOnNavBar.withValues(alpha: isActive ? 1.0 : 0.55),
                 ),
               ),
               const SizedBox(height: 5),
@@ -145,8 +146,8 @@ class BottomNavigationState extends State<BottomNavigation> {
                 label,
                 style: theme.textTheme.bodySmall?.copyWith(
                   color: isActive
-                      ? Colors.white
-                      : Colors.white.withValues(alpha: 0.55),
+                      ? _kOnNavBar
+                      : _kOnNavBar.withValues(alpha: 0.55),
                   fontWeight: isActive ? FontWeight.w700 : FontWeight.w400,
                   fontSize: 11,
                   letterSpacing: isActive ? 0.2 : 0,
@@ -167,18 +168,18 @@ class BottomNavigationState extends State<BottomNavigation> {
     final bottomInset = MediaQuery.of(context).padding.bottom;
 
     return Container(
-      decoration: const BoxDecoration(
+      decoration: BoxDecoration(
         color: _kNavBarBackground,
         // Only top corners are rounded — the bar is flush with the screen bottom.
-        borderRadius: BorderRadius.only(
+        borderRadius: const BorderRadius.only(
           topLeft: Radius.circular(Constants.size16),
           topRight: Radius.circular(Constants.size16),
         ),
         boxShadow: [
           BoxShadow(
-            color: Color(0x55000000),
+            color: Theme.of(context).colorScheme.shadow.withValues(alpha: 0.33),
             blurRadius: 20,
-            offset: Offset(0, -4),
+            offset: const Offset(0, -4),
           ),
         ],
       ),

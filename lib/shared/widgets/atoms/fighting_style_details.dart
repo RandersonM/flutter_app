@@ -189,7 +189,7 @@ class _AttackChip extends StatelessWidget {
         ),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withValues(alpha: 0.08),
+            color: theme.colorScheme.shadow.withValues(alpha: 0.08),
             offset: const Offset(1, 1),
             blurRadius: 3,
           ),

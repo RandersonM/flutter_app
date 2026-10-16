@@ -1,6 +1,7 @@
 import 'package:opfan/shared/widgets/atoms/app_icon.dart';
 import 'package:phosphoricons_flutter/phosphoricons_flutter.dart';
 import 'package:flutter/material.dart';
+import 'package:opfan/shared/utils/devil_fruit_type_palette.dart';
 import 'package:opfan/l10n/app_localizations.dart';
 import 'package:opfan/features/devil_fruit/data/models/devil_fruit.dart';
 
@@ -176,12 +177,14 @@ class _DevilFruitSearchDropdownState extends State<DevilFruitSearchDropdown> {
                                       width: 32,
                                       height: 32,
                                       decoration: BoxDecoration(
-                                        color: _getTypeColor(fruit.type),
+                                        color: DevilFruitTypePalette.of(
+                                          fruit.type,
+                                        ).accent,
                                         borderRadius: BorderRadius.circular(16),
                                       ),
                                       child: Icon(
                                         _getTypeIcon(fruit.type),
-                                        color: Colors.white,
+                                        color: DevilFruitTypePalette.onGradient,
                                         size: 18,
                                       ),
                                     ),
@@ -203,9 +206,9 @@ class _DevilFruitSearchDropdownState extends State<DevilFruitSearchDropdown> {
                                             vertical: 2,
                                           ),
                                           decoration: BoxDecoration(
-                                            color: _getTypeColor(
+                                            color: DevilFruitTypePalette.of(
                                               fruit.type,
-                                            ).withValues(alpha: 0.1),
+                                            ).accent.withValues(alpha: 0.1),
                                             borderRadius: BorderRadius.circular(
                                               4,
                                             ),
@@ -215,7 +218,9 @@ class _DevilFruitSearchDropdownState extends State<DevilFruitSearchDropdown> {
                                             style: TextStyle(
                                               fontSize: 10,
                                               fontWeight: FontWeight.bold,
-                                              color: _getTypeColor(fruit.type),
+                                              color: DevilFruitTypePalette.of(
+                                                fruit.type,
+                                              ).accent,
                                             ),
                                           ),
                                         ),
@@ -225,7 +230,10 @@ class _DevilFruitSearchDropdownState extends State<DevilFruitSearchDropdown> {
                                             fruit.name,
                                             style: TextStyle(
                                               fontSize: 11,
-                                              color: Colors.grey[600],
+                                              color: Theme.of(context)
+                                                  .colorScheme
+                                                  .onSurface
+                                                  .withValues(alpha: 0.6),
                                               fontStyle: FontStyle.italic,
                                             ),
                                           ),
@@ -263,10 +271,14 @@ class _DevilFruitSearchDropdownState extends State<DevilFruitSearchDropdown> {
           width: 24,
           height: 24,
           decoration: BoxDecoration(
-            color: _getTypeColor(fruit.type),
+            color: DevilFruitTypePalette.of(fruit.type).accent,
             borderRadius: BorderRadius.circular(12),
           ),
-          child: Icon(_getTypeIcon(fruit.type), color: Colors.white, size: 14),
+          child: Icon(
+            _getTypeIcon(fruit.type),
+            color: DevilFruitTypePalette.onGradient,
+            size: 14,
+          ),
         ),
         const SizedBox(width: 8),
         Expanded(
@@ -279,19 +291,6 @@ class _DevilFruitSearchDropdownState extends State<DevilFruitSearchDropdown> {
         ),
       ],
     );
-  }
-
-  Color _getTypeColor(String type) {
-    switch (type.toLowerCase()) {
-      case 'logia':
-        return const Color(0xFF667eea);
-      case 'paramecia':
-        return const Color(0xFF11998e);
-      case 'zoan':
-        return const Color(0xFFf093fb);
-      default:
-        return const Color(0xFF667eea);
-    }
   }
 
   IconData _getTypeIcon(String type) {

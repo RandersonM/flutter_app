@@ -37,7 +37,7 @@ class _CrewCardState extends State<CrewCard> {
         vertical: Constants.margin / 2,
       ),
       shape: RoundedRectangleBorder(
-        side: const BorderSide(color: Colors.white),
+        side: BorderSide(color: Theme.of(context).colorScheme.surfaceContainer),
         borderRadius: BorderRadius.circular(Constants.margin * 2),
       ),
       elevation: 4,
@@ -54,7 +54,9 @@ class _CrewCardState extends State<CrewCard> {
                 child: Container(
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(Constants.margin),
-                    color: Colors.grey[200],
+                    color: Theme.of(
+                      context,
+                    ).colorScheme.onSurface.withValues(alpha: 0.08),
                   ),
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(Constants.margin),
@@ -227,21 +229,23 @@ class _CrewCardState extends State<CrewCard> {
         return Container(
           width: double.infinity,
           height: double.infinity,
-          color: Colors.grey[300],
+          color: Theme.of(
+            context,
+          ).colorScheme.onSurface.withValues(alpha: 0.12),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               AppIcon(
                 PhosphorIconsRegular.sailboat,
                 size: 32,
-                color: Colors.grey[600],
+                color: Theme.of(context).colorScheme.onSurfaceVariant,
               ),
               const SizedBox(height: 4),
               Text(
                 l10n.crew(0),
                 textAlign: TextAlign.center,
                 style: TextStyle(
-                  color: Colors.grey[600],
+                  color: Theme.of(context).colorScheme.onSurfaceVariant,
                   fontSize: 10,
                   fontWeight: FontWeight.w500,
                 ),
@@ -254,16 +258,17 @@ class _CrewCardState extends State<CrewCard> {
   }
 
   Widget _buildInfoRow(BuildContext context, IconData icon, String text) {
+    final mutedColor = Theme.of(context).colorScheme.onSurfaceVariant;
     return Row(
       children: [
-        Icon(icon, size: 14, color: Colors.grey[600]),
+        Icon(icon, size: 14, color: mutedColor),
         const SizedBox(width: 4),
         Expanded(
           child: Text(
             text,
             style: Theme.of(
               context,
-            ).textTheme.bodySmall?.copyWith(color: Colors.grey[600]),
+            ).textTheme.bodySmall?.copyWith(color: mutedColor),
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
           ),

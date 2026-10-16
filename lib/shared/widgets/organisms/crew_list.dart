@@ -83,7 +83,7 @@ class _CrewListState extends State<CrewList> {
                       AppIcon(
                         PhosphorIconsRegular.warningCircle,
                         size: 64,
-                        color: Colors.grey[600],
+                        color: Theme.of(context).colorScheme.onSurfaceVariant,
                       ),
                       const SizedBox(height: Constants.margin),
                       Text(
@@ -125,7 +125,7 @@ class _CrewListState extends State<CrewList> {
                         AppIcon(
                           PhosphorIconsRegular.sailboat,
                           size: 64,
-                          color: Colors.grey[600],
+                          color: Theme.of(context).colorScheme.onSurfaceVariant,
                         ),
                         const SizedBox(height: Constants.margin),
                         Text(
@@ -221,7 +221,7 @@ class _CrewListState extends State<CrewList> {
             },
             style: ElevatedButton.styleFrom(
               backgroundColor: Theme.of(context).colorScheme.error,
-              foregroundColor: Colors.white,
+              foregroundColor: Theme.of(context).colorScheme.onError,
             ),
             child: Text(l10n.delete),
           ),

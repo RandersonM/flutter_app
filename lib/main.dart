@@ -66,7 +66,7 @@ void main() async {
   }
 
   SystemChrome.setSystemUIOverlayStyle(
-    const SystemUiOverlayStyle(statusBarColor: Colors.white24),
+    const SystemUiOverlayStyle(statusBarColor: Colors.transparent),
   );
 
   runApp(const GlobalErrorBoundary(child: MyApp()));
