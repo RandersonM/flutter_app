@@ -218,7 +218,10 @@ class VegapunkChatCubit extends Cubit<VegapunkChatState> {
               _emitTimer?.cancel();
               _tokenBuffer.clear();
               emit(
-                current.copyWith(activeToolName: parsedTool, streamingToken: ''),
+                current.copyWith(
+                  activeToolName: parsedTool,
+                  streamingToken: '',
+                ),
               );
               return;
             }
