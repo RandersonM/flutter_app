@@ -48,31 +48,36 @@ class _DevilFruitSearchHeaderState extends State<DevilFruitSearchHeader> {
           const SizedBox(height: Constants.margin / 2),
           Text(
             AppLocalizations.of(context)!.devilFruitHeaderSubtitle,
-            style: Theme.of(
-              context,
-            ).textTheme.bodyMedium?.copyWith(color: Colors.grey[600]),
+            style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+              color: Theme.of(context).colorScheme.onSurfaceVariant,
+            ),
           ),
           const SizedBox(height: Constants.margin * 2),
           Container(
             decoration: BoxDecoration(
-              color: Colors.grey[100],
+              color: Theme.of(context).colorScheme.surfaceContainerHigh,
               borderRadius: BorderRadius.circular(Constants.margin * 2),
-              border: Border.all(color: Colors.grey[300]!, width: 1),
+              border: Border.all(
+                color: Theme.of(context).colorScheme.outlineVariant,
+                width: 1,
+              ),
             ),
             child: TextField(
               controller: _searchController,
               decoration: InputDecoration(
                 hintText: AppLocalizations.of(context)!.searchPlaceholder,
-                hintStyle: TextStyle(color: Colors.grey[600]),
+                hintStyle: TextStyle(
+                  color: Theme.of(context).colorScheme.onSurfaceVariant,
+                ),
                 prefixIcon: AppIcon(
                   PhosphorIconsRegular.magnifyingGlass,
-                  color: Colors.grey[600],
+                  color: Theme.of(context).colorScheme.onSurfaceVariant,
                 ),
                 suffixIcon: _searchController.text.isNotEmpty
                     ? IconButton(
                         icon: AppIcon(
                           PhosphorIconsRegular.x,
-                          color: Colors.grey[600],
+                          color: Theme.of(context).colorScheme.onSurfaceVariant,
                         ),
                         onPressed: () {
                           _searchController.clear();
@@ -107,7 +112,10 @@ class _DevilFruitSearchHeaderState extends State<DevilFruitSearchHeader> {
                   const SizedBox(width: Constants.margin),
                   Text(
                     AppLocalizations.of(context)!.searching,
-                    style: const TextStyle(color: Colors.grey, fontSize: 12),
+                    style: TextStyle(
+                      color: Theme.of(context).colorScheme.onSurfaceVariant,
+                      fontSize: 12,
+                    ),
                   ),
                 ],
               ),

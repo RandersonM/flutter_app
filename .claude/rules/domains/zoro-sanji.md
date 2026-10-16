@@ -46,4 +46,5 @@ offline by `OfflineBlockerOverlay`.
   `cooking_repository.dart`, `sanji_prompt.dart`) — cloud, rate-limited, fallback
   in `dev_mode`.
 - Routes `/cooking`, `/cookingTips`, `/plateGuide`.
-- Debt: `_kAlertRed` / `_kAlertOrange` hex constants in `nutrition_results.dart`.
+- BMI / waist-ratio bands are semantic (normal → success, attention → warning, high
+  risk → error); plate sections use the categorical `PlateSectionPalette`.

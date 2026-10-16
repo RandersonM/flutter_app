@@ -12,6 +12,7 @@ import 'package:opfan/l10n/app_localizations.dart';
 
 import 'package:opfan/features/devil_fruit/bloc/index.dart';
 import 'package:opfan/features/devil_fruit/data/models/devil_fruit.dart';
+import 'package:opfan/shared/utils/devil_fruit_type_palette.dart';
 import 'package:opfan/features/devil_fruit/presentation/widgets/devil_fruit_card.dart';
 import 'package:opfan/features/devil_fruit/presentation/widgets/devil_fruit_search_header.dart';
 
@@ -287,22 +288,26 @@ class _DevilFruitListView extends StatelessWidget {
                         );
                       }
                     },
-                    selectedColor: _getTypeColor(type).withValues(alpha: 0.2),
-                    checkmarkColor: _getTypeColor(type),
+                    selectedColor: DevilFruitTypePalette.of(
+                      type,
+                    ).accent.withValues(alpha: 0.2),
+                    checkmarkColor: DevilFruitTypePalette.of(type).accent,
                     avatar: isSelected
                         ? null
                         : Icon(
                             _getTypeIcon(type),
                             size: 18,
-                            color: _getTypeColor(type),
+                            color: DevilFruitTypePalette.of(type).accent,
                           ),
-                    backgroundColor: Colors.grey[100],
+                    backgroundColor: Theme.of(
+                      context,
+                    ).colorScheme.surfaceContainerHigh,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(Constants.margin * 2),
                       side: BorderSide(
                         color: isSelected
-                            ? _getTypeColor(type)
-                            : Colors.grey[300]!,
+                            ? DevilFruitTypePalette.of(type).accent
+                            : Theme.of(context).colorScheme.outlineVariant,
                         width: isSelected ? 2 : 1,
                       ),
                     ),
@@ -315,19 +320,6 @@ class _DevilFruitListView extends StatelessWidget {
         ],
       ),
     );
-  }
-
-  Color _getTypeColor(String type) {
-    switch (type.toLowerCase()) {
-      case 'logia':
-        return const Color(0xFF667eea);
-      case 'paramecia':
-        return const Color(0xFF11998e);
-      case 'zoan':
-        return const Color(0xFFf093fb);
-      default:
-        return const Color(0xFF667eea);
-    }
   }
 
   IconData _getTypeIcon(String type) {

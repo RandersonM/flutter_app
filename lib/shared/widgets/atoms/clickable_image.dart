@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:opfan/l10n/app_localizations.dart';
 import 'package:opfan/shared/widgets/atoms/universal_image.dart';
 
+const _onScrim = Colors.white; // harness:allow decorative
+
 class ClickableImage extends StatelessWidget {
   final String imageUrl;
   final double? width;
@@ -103,7 +105,7 @@ class ClickableImage extends StatelessWidget {
     showDialog(
       context: context,
       barrierDismissible: true,
-      barrierColor: Colors.black.withValues(alpha: 0.7),
+      barrierColor: theme.colorScheme.scrim.withValues(alpha: 0.7),
       builder: (context) => Dialog(
         backgroundColor: Colors.transparent,
         insetPadding: EdgeInsets.zero,
@@ -145,7 +147,7 @@ class ClickableImage extends StatelessWidget {
                                       ? loadingProgress.cumulativeBytesLoaded /
                                             loadingProgress.expectedTotalBytes!
                                       : null,
-                                  color: Colors.white,
+                                  color: theme.colorScheme.onSurface,
                                 ),
                               ),
                             );
@@ -157,9 +159,9 @@ class ClickableImage extends StatelessWidget {
                                 child: Column(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
-                                    const AppIcon(
+                                    AppIcon(
                                       PhosphorIconsRegular.warningCircle,
-                                      color: Colors.white,
+                                      color: theme.colorScheme.onSurface,
                                       size: 48,
                                     ),
                                     const SizedBox(height: 8),
@@ -168,7 +170,9 @@ class ClickableImage extends StatelessWidget {
                                         context,
                                       )!.imageLoadError,
                                       style: theme.textTheme.bodyMedium
-                                          ?.copyWith(color: Colors.white),
+                                          ?.copyWith(
+                                            color: theme.colorScheme.onSurface,
+                                          ),
                                     ),
                                   ],
                                 ),
@@ -188,13 +192,13 @@ class ClickableImage extends StatelessWidget {
                   onTap: () => Navigator.of(context).pop(),
                   child: Container(
                     padding: const EdgeInsets.all(8),
-                    decoration: const BoxDecoration(
-                      color: Colors.black54,
+                    decoration: BoxDecoration(
+                      color: theme.colorScheme.scrim.withValues(alpha: 0.54),
                       shape: BoxShape.circle,
                     ),
                     child: const AppIcon(
                       PhosphorIconsRegular.x,
-                      color: Colors.white,
+                      color: _onScrim,
                       size: 24,
                     ),
                   ),
@@ -210,13 +214,13 @@ class ClickableImage extends StatelessWidget {
                       vertical: 8,
                     ),
                     decoration: BoxDecoration(
-                      color: Colors.black54,
+                      color: theme.colorScheme.scrim.withValues(alpha: 0.54),
                       borderRadius: BorderRadius.circular(20),
                     ),
                     child: Text(
                       title!,
                       style: theme.textTheme.bodyMedium?.copyWith(
-                        color: Colors.white,
+                        color: _onScrim,
                         fontWeight: FontWeight.w600,
                       ),
                     ),

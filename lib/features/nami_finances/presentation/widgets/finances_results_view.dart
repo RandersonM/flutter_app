@@ -4,9 +4,10 @@ import 'package:flutter/material.dart';
 import 'package:opfan/l10n/app_localizations.dart';
 import 'package:opfan/shared/utils/app_routes.dart' show AppRoutes;
 import 'package:opfan/shared/utils/constants.dart';
-import 'package:opfan/shared/utils/theme.dart';
+import 'package:opfan/shared/utils/app_semantic_colors.dart';
 import 'package:opfan/features/nami_finances/data/finance_math.dart';
 import 'package:opfan/features/nami_finances/data/models/nami_finances_model.dart';
+import 'package:opfan/features/nami_finances/presentation/expense_category_palette.dart';
 import 'package:opfan/core/services/index.dart';
 import 'package:opfan/shared/widgets/atoms/gomu_gomu_divider.dart';
 import 'package:opfan/features/nami_finances/presentation/widgets/finances_history_widget.dart';
@@ -143,7 +144,9 @@ class _FinancesResultsViewState extends State<FinancesResultsView> {
       height: 120,
       padding: const EdgeInsets.all(Constants.margin),
       decoration: BoxDecoration(
-        color: Colors.white.withValues(alpha: 0.3),
+        color: Theme.of(
+          context,
+        ).colorScheme.surfaceContainer.withValues(alpha: 0.3),
         borderRadius: BorderRadius.circular(Constants.margin),
       ),
       child: Column(
@@ -192,7 +195,7 @@ class _FinancesResultsViewState extends State<FinancesResultsView> {
             children: [
               AppIcon(
                 PhosphorIconsRegular.chartPieSlice,
-                color: AppColors.red[500],
+                color: Theme.of(context).colorScheme.error,
                 size: 24,
               ),
               const SizedBox(width: Constants.margin),
@@ -216,7 +219,7 @@ class _FinancesResultsViewState extends State<FinancesResultsView> {
                     width: 12,
                     height: 12,
                     decoration: BoxDecoration(
-                      color: _getCategoryColor(category),
+                      color: ExpenseCategoryPalette.of(context, category),
                       shape: BoxShape.circle,
                     ),
                   ),
@@ -309,7 +312,9 @@ class _FinancesResultsViewState extends State<FinancesResultsView> {
                   height: 120,
                   padding: const EdgeInsets.all(Constants.margin),
                   decoration: BoxDecoration(
-                    color: Colors.white.withValues(alpha: 0.3),
+                    color: Theme.of(
+                      context,
+                    ).colorScheme.surfaceContainer.withValues(alpha: 0.3),
                     borderRadius: BorderRadius.circular(Constants.margin),
                   ),
                   child: Column(
@@ -330,8 +335,8 @@ class _FinancesResultsViewState extends State<FinancesResultsView> {
                         style: TextTheme.of(context).bodySmall?.copyWith(
                           fontWeight: FontWeight.bold,
                           color: widget.finances.savingsPercentage >= 10
-                              ? AppColors.yellow[500]!
-                              : AppColors.red[500]!,
+                              ? Theme.of(context).semanticColors.success
+                              : Theme.of(context).colorScheme.error,
                         ),
                         textAlign: TextAlign.center,
                         maxLines: 2,
@@ -353,7 +358,9 @@ class _FinancesResultsViewState extends State<FinancesResultsView> {
       height: 120,
       padding: const EdgeInsets.all(Constants.margin),
       decoration: BoxDecoration(
-        color: Colors.white.withValues(alpha: 0.3),
+        color: Theme.of(
+          context,
+        ).colorScheme.surfaceContainer.withValues(alpha: 0.3),
         borderRadius: BorderRadius.circular(Constants.margin),
       ),
       child: Column(
@@ -400,7 +407,7 @@ class _FinancesResultsViewState extends State<FinancesResultsView> {
           icon: const AppIcon(PhosphorIconsRegular.pencil),
           label: l10n.edit,
           backgroundColor: Theme.of(context).colorScheme.primary,
-          foregroundColor: Colors.white,
+          foregroundColor: Theme.of(context).colorScheme.onPrimary,
           padding: const EdgeInsets.symmetric(vertical: 16),
           isFullWidth: true,
         ),
@@ -410,23 +417,6 @@ class _FinancesResultsViewState extends State<FinancesResultsView> {
 
   void _navigateToDetailedView(BuildContext context) {
     Navigator.pushNamed(context, AppRoutes.namiDetailedFinances);
-  }
-
-  Color _getCategoryColor(ExpenseCategory category) {
-    switch (category) {
-      case ExpenseCategory.fixed:
-        return AppColors.red[500]!;
-      case ExpenseCategory.food:
-        return AppColors.orange[500]!;
-      case ExpenseCategory.transport:
-        return AppColors.blue[500]!;
-      case ExpenseCategory.entertainment:
-        return AppColors.purple[500]!;
-      case ExpenseCategory.health:
-        return AppColors.green[500]!;
-      case ExpenseCategory.other:
-        return AppColors.grey[500]!;
-    }
   }
 
   String _getCategoryLabel(ExpenseCategory category, AppLocalizations l10n) {

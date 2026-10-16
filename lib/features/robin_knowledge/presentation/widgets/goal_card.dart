@@ -8,6 +8,7 @@ import 'package:opfan/features/robin_knowledge/presentation/goal_details_screen.
 import 'package:opfan/shared/utils/theme.dart';
 import 'package:opfan/l10n/app_localizations.dart';
 import 'package:opfan/shared/utils/app_semantic_colors.dart';
+import 'package:opfan/features/robin_knowledge/presentation/goal_colors.dart';
 
 class GoalCard extends StatelessWidget {
   final GoalModel goal;
@@ -60,9 +61,9 @@ class GoalCard extends StatelessWidget {
                 const SizedBox(height: 4),
                 Text(
                   goal.description,
-                  style: Theme.of(
-                    context,
-                  ).textTheme.bodyMedium?.copyWith(color: Colors.grey[600]),
+                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                    color: Theme.of(context).colorScheme.onSurfaceVariant,
+                  ),
                   maxLines: 2,
                   overflow: TextOverflow.ellipsis,
                 ),
@@ -77,7 +78,7 @@ class GoalCard extends StatelessWidget {
 
   Widget _buildCategoryIcon() {
     final iconData = _getCategoryIcon(goal.category);
-    final color = _getCategoryColor(goal.category);
+    final color = goalCategoryColor(goal.category);
 
     return Container(
       padding: const EdgeInsets.all(8),
@@ -91,27 +92,26 @@ class GoalCard extends StatelessWidget {
 
   Widget _buildStatusIcon(BuildContext context) {
     IconData iconData;
-    Color color;
 
     switch (goal.status) {
       case GoalStatus.completed:
         iconData = PhosphorIconsRegular.checkCircle;
-        color = AppColors.purple[350]!;
         break;
       case GoalStatus.inProgress:
         iconData = PhosphorIconsRegular.clock;
-        color = Theme.of(context).semanticColors.warning;
         break;
       case GoalStatus.overdue:
         iconData = PhosphorIconsRegular.warning;
-        color = Theme.of(context).colorScheme.error;
         break;
       default:
         iconData = PhosphorIconsRegular.circle;
-        color = Colors.grey;
     }
 
-    return Icon(iconData, color: color, size: 20);
+    return Icon(
+      iconData,
+      color: goalStatusColor(Theme.of(context), goal.status),
+      size: 20,
+    );
   }
 
   Widget _buildProgressSection(BuildContext context) {
@@ -142,7 +142,7 @@ class GoalCard extends StatelessWidget {
           backgroundColor: Theme.of(context).colorScheme.onSecondary,
           borderRadius: BorderRadius.circular(12),
           valueColor: AlwaysStoppedAnimation<Color>(
-            _getProgressColor(goal.progress),
+            goalProgressColor(Theme.of(context), goal.progress),
           ),
         ),
       ],
@@ -180,7 +180,7 @@ class GoalCard extends StatelessWidget {
       deadlineText = AppLocalizations.of(context)!.dueInDays(daysUntilDeadline);
       textColor = daysUntilDeadline <= 3
           ? Theme.of(context).semanticColors.warning
-          : Colors.grey[600]!;
+          : Theme.of(context).colorScheme.onSurfaceVariant;
     }
 
     return Row(
@@ -225,31 +225,6 @@ class GoalCard extends StatelessWidget {
       case GoalCategory.other:
         return PhosphorIconsRegular.star;
     }
-  }
-
-  Color _getCategoryColor(GoalCategory category) {
-    switch (category) {
-      case GoalCategory.study:
-        return AppColors.blue;
-      case GoalCategory.work:
-        return AppColors.purple;
-      case GoalCategory.personal:
-        return AppColors.brown[500]!;
-      case GoalCategory.health:
-        return AppColors.red;
-      case GoalCategory.finance:
-        return AppColors.orange;
-      case GoalCategory.other:
-        return AppColors.grey;
-    }
-  }
-
-  Color _getProgressColor(double progress) {
-    if (progress >= 100) return AppColors.purple[350]!;
-    if (progress >= 75) return AppColors.yellow[500]!;
-    if (progress >= 50) return AppColors.orange[500]!;
-    if (progress >= 25) return AppColors.red[500]!;
-    return AppColors.purple[350]!;
   }
 
   void _navigateToDetails(BuildContext context) {

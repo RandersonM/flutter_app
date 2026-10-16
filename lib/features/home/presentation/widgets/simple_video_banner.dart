@@ -10,6 +10,13 @@ import 'package:opfan/l10n/app_localizations.dart';
 
 enum SimpleBannerType { gif, image, youtube }
 
+// Media chrome stays dark in every theme: overlays contrast with the media.
+const _mediaBackdrop = Colors.black; // harness:allow decorative
+const _mediaPlaceholder = Color(0xFF212121); // harness:allow decorative
+const _mediaShade = Colors.black87; // harness:allow decorative
+const _onMedia = Colors.white; // harness:allow decorative
+const _onMediaMuted = Colors.white70; // harness:allow decorative
+
 class SimpleVideoBanner extends StatelessWidget {
   const SimpleVideoBanner({
     super.key,
@@ -40,7 +47,7 @@ class SimpleVideoBanner extends StatelessWidget {
         height: height,
         width: double.infinity,
         decoration: BoxDecoration(
-          color: Colors.black,
+          color: _mediaBackdrop,
           borderRadius: BorderRadius.circular(16),
           border: Border.all(
             color: Theme.of(context).colorScheme.primary.withValues(alpha: 0.6),
@@ -86,10 +93,10 @@ class SimpleVideoBanner extends StatelessWidget {
             imageUrl: url!,
             fit: BoxFit.cover,
             placeholder: (context, url) => Container(
-              color: Colors.grey[900],
+              color: _mediaPlaceholder,
               child: const Center(
                 child: CircularProgressIndicator(
-                  color: Colors.white,
+                  color: _onMedia,
                   strokeWidth: 2,
                 ),
               ),
@@ -108,9 +115,9 @@ class SimpleVideoBanner extends StatelessWidget {
       imageUrl: youTubeVideo!.thumbnailUrl,
       fit: BoxFit.cover,
       placeholder: (context, url) => Container(
-        color: Colors.grey[900],
+        color: _mediaPlaceholder,
         child: const Center(
-          child: CircularProgressIndicator(color: Colors.white, strokeWidth: 2),
+          child: CircularProgressIndicator(color: _onMedia, strokeWidth: 2),
         ),
       ),
       errorWidget: (context, url, error) => _buildFallback(context),
@@ -151,7 +158,7 @@ class SimpleVideoBanner extends StatelessWidget {
     if (fallbackUrl != null) {
       return Container(
         decoration: BoxDecoration(
-          color: Colors.grey[900],
+          color: _mediaPlaceholder,
           image: DecorationImage(
             image: AssetImage(fallbackUrl!),
             fit: BoxFit.cover,
@@ -162,7 +169,10 @@ class SimpleVideoBanner extends StatelessWidget {
             gradient: LinearGradient(
               begin: Alignment.topCenter,
               end: Alignment.bottomCenter,
-              colors: [Colors.transparent, Colors.black.withValues(alpha: 0.5)],
+              colors: [
+                Colors.transparent,
+                _mediaBackdrop.withValues(alpha: 0.5),
+              ],
             ),
           ),
         ),
@@ -172,7 +182,7 @@ class SimpleVideoBanner extends StatelessWidget {
     final l10n = AppLocalizations.of(context)!;
     return Container(
       decoration: BoxDecoration(
-        color: Colors.grey[900],
+        color: _mediaPlaceholder,
         image: const DecorationImage(
           image: AssetImage('assets/logo/splash_logo.png'),
           fit: BoxFit.contain,
@@ -185,14 +195,14 @@ class SimpleVideoBanner extends StatelessWidget {
           children: [
             const AppIcon(
               PhosphorIconsRegular.wifiNone,
-              color: Colors.white,
+              color: _onMedia,
               size: 48,
             ),
             const SizedBox(height: 8),
             Text(
               l10n.homeBannerUnavailableTitle,
               style: const TextStyle(
-                color: Colors.white,
+                color: _onMedia,
                 fontSize: 16,
                 fontWeight: FontWeight.bold,
               ),
@@ -200,7 +210,7 @@ class SimpleVideoBanner extends StatelessWidget {
             const SizedBox(height: 4),
             Text(
               l10n.homeBannerUnavailableSubtitle,
-              style: const TextStyle(color: Colors.white70, fontSize: 12),
+              style: const TextStyle(color: _onMediaMuted, fontSize: 12),
             ),
           ],
         ),
@@ -214,7 +224,7 @@ class SimpleVideoBanner extends StatelessWidget {
         gradient: LinearGradient(
           begin: Alignment.topCenter,
           end: Alignment.bottomCenter,
-          colors: [Colors.transparent, Colors.black.withValues(alpha: 0.7)],
+          colors: [Colors.transparent, _mediaBackdrop.withValues(alpha: 0.7)],
         ),
       ),
       child: Padding(
@@ -227,13 +237,13 @@ class SimpleVideoBanner extends StatelessWidget {
               Text(
                 title!,
                 style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                  color: Colors.white,
+                  color: _onMedia,
                   fontWeight: FontWeight.bold,
                   shadows: const [
                     Shadow(
                       offset: Offset(1, 1),
                       blurRadius: 4,
-                      color: Colors.black87,
+                      color: _mediaShade,
                     ),
                   ],
                 ),
@@ -245,13 +255,13 @@ class SimpleVideoBanner extends StatelessWidget {
               Text(
                 subtitle!,
                 style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                  color: Colors.white.withValues(alpha: 0.85),
+                  color: _onMedia.withValues(alpha: 0.85),
                   fontWeight: FontWeight.w500,
                   shadows: const [
                     Shadow(
                       offset: Offset(1, 1),
                       blurRadius: 3,
-                      color: Colors.black87,
+                      color: _mediaShade,
                     ),
                   ],
                 ),

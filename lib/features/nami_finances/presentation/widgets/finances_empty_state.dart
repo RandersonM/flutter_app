@@ -5,9 +5,6 @@ import 'package:opfan/shared/utils/constants.dart';
 import 'package:opfan/l10n/app_localizations.dart';
 import 'package:opfan/shared/widgets/atoms/app_button.dart';
 
-const _purple = Color(0xFF8B5CF6);
-const _cardBg = Color(0xFF16161C);
-
 /// Onboarding / empty state shown when no financial data exists for the month.
 class FinancesEmptyState extends StatelessWidget {
   final VoidCallback onSetup;
@@ -16,12 +13,14 @@ class FinancesEmptyState extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+
     return Center(
       child: Container(
         margin: const EdgeInsets.symmetric(horizontal: Constants.margin),
         padding: const EdgeInsets.all(Constants.margin * 3),
         decoration: BoxDecoration(
-          color: _cardBg,
+          color: colorScheme.surfaceContainer,
           borderRadius: BorderRadius.circular(24),
         ),
         child: Column(
@@ -30,12 +29,12 @@ class FinancesEmptyState extends StatelessWidget {
             Container(
               padding: const EdgeInsets.all(20),
               decoration: BoxDecoration(
-                color: _purple.withValues(alpha: 0.12),
+                color: colorScheme.primary.withValues(alpha: 0.12),
                 shape: BoxShape.circle,
               ),
-              child: const AppIcon(
+              child: AppIcon(
                 PhosphorIconsRegular.bank,
-                color: _purple,
+                color: colorScheme.primary,
                 size: 48,
               ),
             ),
@@ -43,7 +42,7 @@ class FinancesEmptyState extends StatelessWidget {
             Text(
               AppLocalizations.of(context)!.saveWithNami,
               style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                color: Colors.white,
+                color: colorScheme.onSurface,
                 fontWeight: FontWeight.bold,
               ),
               textAlign: TextAlign.center,
@@ -52,7 +51,7 @@ class FinancesEmptyState extends StatelessWidget {
             Text(
               AppLocalizations.of(context)!.configureYourFinances,
               style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                color: Colors.white54,
+                color: colorScheme.onSurfaceVariant,
                 height: 1.5,
               ),
               textAlign: TextAlign.center,
@@ -97,13 +96,13 @@ class _FeaturePill extends StatelessWidget {
     return Row(
       mainAxisSize: MainAxisSize.min,
       children: [
-        Icon(icon, color: _purple, size: 16),
+        Icon(icon, color: Theme.of(context).colorScheme.primary, size: 16),
         const SizedBox(width: 8),
         Text(
           label,
-          style: Theme.of(
-            context,
-          ).textTheme.bodySmall?.copyWith(color: Colors.white54),
+          style: Theme.of(context).textTheme.bodySmall?.copyWith(
+            color: Theme.of(context).colorScheme.onSurfaceVariant,
+          ),
         ),
       ],
     );

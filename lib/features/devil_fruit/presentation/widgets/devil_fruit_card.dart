@@ -4,6 +4,7 @@ import 'package:phosphoricons_flutter/phosphoricons_flutter.dart';
 
 import 'package:flutter/material.dart';
 import 'package:opfan/features/devil_fruit/data/models/devil_fruit.dart';
+import 'package:opfan/shared/utils/devil_fruit_type_palette.dart';
 import 'package:opfan/l10n/app_localizations.dart';
 import 'package:opfan/shared/utils/constants.dart';
 
@@ -26,7 +27,7 @@ class DevilFruitCard extends StatelessWidget {
         child: Container(
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(Constants.margin * 2),
-            gradient: _getTypeGradient(),
+            gradient: _palette.gradient,
           ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -44,7 +45,9 @@ class DevilFruitCard extends StatelessWidget {
                           vertical: Constants.margin / 2,
                         ),
                         decoration: BoxDecoration(
-                          color: Colors.white.withValues(alpha: 0.9),
+                          color: DevilFruitTypePalette.onGradient.withValues(
+                            alpha: 0.9,
+                          ),
                           borderRadius: BorderRadius.circular(Constants.margin),
                         ),
                         child: Row(
@@ -53,7 +56,7 @@ class DevilFruitCard extends StatelessWidget {
                             Icon(
                               _getTypeIcon(),
                               size: 16,
-                              color: _getTypeColor(),
+                              color: _palette.accent,
                             ),
                             const SizedBox(width: Constants.margin / 2),
                             Text(
@@ -61,7 +64,7 @@ class DevilFruitCard extends StatelessWidget {
                               style: Theme.of(context).textTheme.bodySmall
                                   ?.copyWith(
                                     fontWeight: FontWeight.bold,
-                                    color: _getTypeColor(),
+                                    color: _palette.accent,
                                   ),
                             ),
                           ],
@@ -72,7 +75,9 @@ class DevilFruitCard extends StatelessWidget {
                         child: Container(
                           width: double.infinity,
                           decoration: BoxDecoration(
-                            color: Colors.white.withValues(alpha: 0.1),
+                            color: DevilFruitTypePalette.onGradient.withValues(
+                              alpha: 0.1,
+                            ),
                             borderRadius: BorderRadius.circular(
                               Constants.margin,
                             ),
@@ -104,9 +109,9 @@ class DevilFruitCard extends StatelessWidget {
                                                             .expectedTotalBytes!
                                                   : null,
                                               strokeWidth: 2,
-                                              color: Colors.white.withValues(
-                                                alpha: 0.7,
-                                              ),
+                                              color: DevilFruitTypePalette
+                                                  .onGradient
+                                                  .withValues(alpha: 0.7),
                                             ),
                                           );
                                         },
@@ -135,7 +140,7 @@ class DevilFruitCard extends StatelessWidget {
                         devilFruit.romanName,
                         style: Theme.of(context).textTheme.titleSmall?.copyWith(
                           fontWeight: FontWeight.bold,
-                          color: Colors.white,
+                          color: DevilFruitTypePalette.onGradient,
                         ),
                         maxLines: 2,
                         overflow: TextOverflow.ellipsis,
@@ -144,7 +149,9 @@ class DevilFruitCard extends StatelessWidget {
                       Text(
                         devilFruit.name,
                         style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                          color: Colors.white.withValues(alpha: 0.8),
+                          color: DevilFruitTypePalette.onGradient.withValues(
+                            alpha: 0.8,
+                          ),
                           fontStyle: FontStyle.italic,
                         ),
                         maxLines: 1,
@@ -167,7 +174,7 @@ class DevilFruitCard extends StatelessWidget {
       width: double.infinity,
       height: double.infinity,
       decoration: BoxDecoration(
-        color: Colors.white.withValues(alpha: 0.1),
+        color: DevilFruitTypePalette.onGradient.withValues(alpha: 0.1),
         borderRadius: BorderRadius.circular(Constants.margin),
       ),
       child: Column(
@@ -175,14 +182,14 @@ class DevilFruitCard extends StatelessWidget {
         children: [
           Icon(
             _getTypeIcon(),
-            color: Colors.white.withValues(alpha: 0.7),
+            color: DevilFruitTypePalette.onGradient.withValues(alpha: 0.7),
             size: 32,
           ),
           const SizedBox(height: Constants.margin / 2),
           Text(
             l10n.devilFruit,
             style: TextStyle(
-              color: Colors.white.withValues(alpha: 0.7),
+              color: DevilFruitTypePalette.onGradient.withValues(alpha: 0.7),
               fontSize: 10,
               fontWeight: FontWeight.bold,
             ),
@@ -192,47 +199,8 @@ class DevilFruitCard extends StatelessWidget {
     );
   }
 
-  LinearGradient _getTypeGradient() {
-    switch (devilFruit.type.toLowerCase()) {
-      case 'logia':
-        return const LinearGradient(
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-          colors: [Color(0xFF667eea), Color(0xFF764ba2)],
-        );
-      case 'paramecia':
-        return const LinearGradient(
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-          colors: [Color(0xFF11998e), Color(0xFF38ef7d)],
-        );
-      case 'zoan':
-        return const LinearGradient(
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-          colors: [Color(0xFFf093fb), Color(0xFFf5576c)],
-        );
-      default:
-        return const LinearGradient(
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-          colors: [Color(0xFF667eea), Color(0xFF764ba2)],
-        );
-    }
-  }
-
-  Color _getTypeColor() {
-    switch (devilFruit.type.toLowerCase()) {
-      case 'logia':
-        return const Color(0xFF667eea);
-      case 'paramecia':
-        return const Color(0xFF11998e);
-      case 'zoan':
-        return const Color(0xFFf093fb);
-      default:
-        return const Color(0xFF667eea);
-    }
-  }
+  DevilFruitTypePalette get _palette =>
+      DevilFruitTypePalette.of(devilFruit.type);
 
   IconData _getTypeIcon() {
     switch (devilFruit.type.toLowerCase()) {

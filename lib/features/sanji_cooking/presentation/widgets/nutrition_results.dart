@@ -6,20 +6,8 @@ import 'package:opfan/features/sanji_cooking/data/models/nutrition_calculation_m
 import 'package:opfan/l10n/app_localizations.dart';
 import 'package:opfan/shared/utils/constants.dart';
 import 'package:opfan/shared/utils/app_routes.dart';
+import 'package:opfan/shared/utils/app_semantic_colors.dart';
 import 'package:opfan/shared/widgets/atoms/app_button.dart';
-
-// ─── Design tokens ────────────────────────────────────────────────────────────
-// 90% neutral + 8% violet + 2% amber
-const Color _kViolet = Color(0xFF7C3AED);
-const Color _kAmber = Color(0xFFFACC15);
-const Color _kCardDark = Color(0xFF1D1D24);
-const Color _kMuted = Color(0xFFA1A1AA);
-
-// Alert colors — only used for health classification chips
-const Color _kAlertRed = Color(0xFFEF4444);
-const Color _kAlertOrange = Color(0xFFF97316);
-
-// ──────────────────────────────────────────────────────────────────────────────
 
 class NutritionResults extends StatelessWidget {
   final NutritionCalculationModel results;
@@ -28,9 +16,9 @@ class NutritionResults extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final isDark = Theme.of(context).brightness == Brightness.dark;
-    final cardColor = isDark ? _kCardDark : const Color(0xFFFCFCFD);
-    final textPrimary = isDark ? Colors.white : const Color(0xFF09090B);
+    final colorScheme = Theme.of(context).colorScheme;
+    final cardColor = colorScheme.surfaceContainer;
+    final textPrimary = colorScheme.onSurface;
 
     return Column(
       spacing: Constants.margin,
@@ -64,7 +52,7 @@ class NutritionResults extends StatelessWidget {
             context,
           )!.kcalPerDay(results.tdee.toStringAsFixed(0)),
           AppLocalizations.of(context)!.tdeeSubtitle,
-          valueColor: _kAmber,
+          valueColor: colorScheme.tertiary,
           cardColor: cardColor,
           textPrimary: textPrimary,
         ),
@@ -171,9 +159,9 @@ class NutritionResults extends StatelessWidget {
                 const SizedBox(height: 2),
                 Text(
                   subtitle,
-                  style: Theme.of(
-                    context,
-                  ).textTheme.bodySmall?.copyWith(color: _kMuted),
+                  style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                    color: Theme.of(context).colorScheme.onSurfaceVariant,
+                  ),
                 ),
               ],
             ),
@@ -199,9 +187,14 @@ class NutritionResults extends StatelessWidget {
     required Color cardColor,
   }) {
     final isSelected = _isUserGoal(context, title);
-    final bg = isSelected ? _kViolet : cardColor;
-    final textColor = isSelected ? Colors.white : _kMuted;
-    final caloriesColor = isSelected ? Colors.white : Colors.white70;
+    final colorScheme = Theme.of(context).colorScheme;
+    final bg = isSelected ? colorScheme.primary : cardColor;
+    final textColor = isSelected
+        ? colorScheme.onPrimary
+        : colorScheme.onSurfaceVariant;
+    final caloriesColor = isSelected
+        ? colorScheme.onPrimary
+        : colorScheme.onSurface;
 
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
@@ -259,7 +252,7 @@ class NutritionResults extends StatelessWidget {
             context,
             label: AppLocalizations.of(context)!.bmi,
             value: _getLocalizedBMICategory(results.bmiCategory, context),
-            dotColor: _getBMIColor(results.bmiCategory),
+            dotColor: _getBMIColor(Theme.of(context), results.bmiCategory),
             cardColor: cardColor,
             textPrimary: textPrimary,
           ),
@@ -273,7 +266,10 @@ class NutritionResults extends StatelessWidget {
               results.waistToHeightCategory,
               context,
             ),
-            dotColor: _getWaistToHeightColor(results.waistToHeightCategory),
+            dotColor: _getWaistToHeightColor(
+              Theme.of(context),
+              results.waistToHeightCategory,
+            ),
             cardColor: cardColor,
             textPrimary: textPrimary,
           ),
@@ -302,7 +298,7 @@ class NutritionResults extends StatelessWidget {
           Text(
             label,
             style: Theme.of(context).textTheme.bodySmall?.copyWith(
-              color: _kMuted,
+              color: Theme.of(context).colorScheme.onSurfaceVariant,
               fontWeight: FontWeight.w500,
             ),
           ),
@@ -343,16 +339,19 @@ class NutritionResults extends StatelessWidget {
       decoration: BoxDecoration(
         color: cardColor,
         borderRadius: BorderRadius.circular(20),
-        border: Border.all(color: _kAmber.withValues(alpha: 0.6), width: 1.5),
+        border: Border.all(
+          color: Theme.of(context).colorScheme.tertiary.withValues(alpha: 0.6),
+          width: 1.5,
+        ),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Row(
             children: [
-              const AppIcon(
+              AppIcon(
                 PhosphorIconsRegular.bookOpenText,
-                color: _kAmber,
+                color: Theme.of(context).colorScheme.tertiary,
                 size: 22,
               ),
               const SizedBox(width: 10),
@@ -360,7 +359,7 @@ class NutritionResults extends StatelessWidget {
                 AppLocalizations.of(context)!.sanjiTipTitle,
                 style: Theme.of(context).textTheme.titleMedium?.copyWith(
                   fontWeight: FontWeight.bold,
-                  color: _kAmber,
+                  color: Theme.of(context).colorScheme.tertiary,
                 ),
               ),
             ],
@@ -369,7 +368,9 @@ class NutritionResults extends StatelessWidget {
           Text(
             AppLocalizations.of(context)!.sanjiTipText,
             style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-              color: Colors.white.withValues(alpha: 0.85),
+              color: Theme.of(
+                context,
+              ).colorScheme.onSurface.withValues(alpha: 0.85),
               height: 1.5,
             ),
           ),
@@ -403,16 +404,19 @@ class NutritionResults extends StatelessWidget {
       decoration: BoxDecoration(
         color: cardColor,
         borderRadius: BorderRadius.circular(20),
-        border: Border.all(color: _kViolet.withValues(alpha: 0.5), width: 1.5),
+        border: Border.all(
+          color: Theme.of(context).colorScheme.primary.withValues(alpha: 0.5),
+          width: 1.5,
+        ),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Row(
             children: [
-              const AppIcon(
+              AppIcon(
                 PhosphorIconsRegular.bookOpenText,
-                color: _kViolet,
+                color: Theme.of(context).colorScheme.primary,
                 size: 22,
               ),
               const SizedBox(width: 10),
@@ -421,7 +425,7 @@ class NutritionResults extends StatelessWidget {
                   AppLocalizations.of(context)!.plateGuideQuestion,
                   style: Theme.of(context).textTheme.titleMedium?.copyWith(
                     fontWeight: FontWeight.bold,
-                    color: _kViolet,
+                    color: Theme.of(context).colorScheme.primary,
                   ),
                 ),
               ),
@@ -430,9 +434,9 @@ class NutritionResults extends StatelessWidget {
           const SizedBox(height: 8),
           Text(
             AppLocalizations.of(context)!.plateGuideSubtitle,
-            style: Theme.of(
-              context,
-            ).textTheme.bodySmall?.copyWith(color: _kMuted),
+            style: Theme.of(context).textTheme.bodySmall?.copyWith(
+              color: Theme.of(context).colorScheme.onSurfaceVariant,
+            ),
           ),
           const SizedBox(height: 16),
           AppButton(
@@ -460,35 +464,32 @@ class NutritionResults extends StatelessWidget {
     return goalMapping[title]?.contains(results.goal) ?? false;
   }
 
-  Color _getBMIColor(String category) {
+  Color _getBMIColor(ThemeData theme, String category) {
     switch (category) {
-      case 'underweight':
-        return _kMuted;
       case 'normalWeight':
-        return _kViolet;
+        return theme.semanticColors.success;
       case 'overweight':
-        return _kAlertOrange;
+        return theme.semanticColors.warning;
       case 'obesityGrade1':
       case 'obesityGrade2':
       case 'obesityGrade3':
-        return _kAlertRed;
+        return theme.colorScheme.error;
       default:
-        return _kMuted;
+        return theme.colorScheme.onSurfaceVariant;
     }
   }
 
-  Color _getWaistToHeightColor(String category) {
+  Color _getWaistToHeightColor(ThemeData theme, String category) {
     switch (category) {
       case 'excellent':
-        return _kViolet;
       case 'good':
-        return _kViolet;
+        return theme.semanticColors.success;
       case 'attention':
-        return _kAlertOrange;
+        return theme.semanticColors.warning;
       case 'highRisk':
-        return _kAlertRed;
+        return theme.colorScheme.error;
       default:
-        return _kMuted;
+        return theme.colorScheme.onSurfaceVariant;
     }
   }
 

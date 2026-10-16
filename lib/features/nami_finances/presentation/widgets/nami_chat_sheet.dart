@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:markdown_widget/markdown_widget.dart';
+import 'package:phosphoricons_flutter/phosphoricons_flutter.dart';
+import 'package:opfan/shared/widgets/atoms/app_icon.dart';
 import 'package:opfan/shared/utils/constants.dart';
 import 'package:opfan/features/nami_finances/bloc/chat/nami_chat_bloc.dart';
 import 'package:opfan/features/nami_finances/bloc/chat/nami_chat_state.dart';
@@ -132,7 +134,7 @@ class _NamiChatSheetContentState extends State<_NamiChatSheetContent> {
             ],
           ),
           IconButton(
-            icon: const Icon(Icons.close),
+            icon: const AppIcon(PhosphorIconsRegular.x),
             onPressed: () => Navigator.pop(context),
           ),
         ],
@@ -270,7 +272,7 @@ class _NamiChatSheetContentState extends State<_NamiChatSheetContent> {
               ),
               const SizedBox(width: 8),
               IconButton(
-                icon: const Icon(Icons.send),
+                icon: const AppIcon(PhosphorIconsRegular.paperPlaneRight),
                 color: Theme.of(context).colorScheme.primary,
                 onPressed: canSend ? send : null,
               ),

@@ -46,6 +46,7 @@ RAG store. The chat is on-device — see `ai-on-device.md`.
 ## UI
 
 Screens `/finances`, `/namiDetailedFinances`; chat opens as `NamiChatSheet`.
-Debt: `_errorRed` / `_successGreen` hex constants in `finances_dashboard_view.dart`
-and `finances_setup_form.dart` — use `colorScheme.error` / `semanticColors.success`
-when touching them. `NamiFinancesEvent/State` don't use Equatable.
+Money colours: income / available / positive → `semanticColors.success`; expenses /
+negative → `colorScheme.error`; savings / reserves → `semanticColors.info`. Expense
+categories use `ExpenseCategoryPalette` (categorical, light and dark sets).
+Debt: `NamiFinancesEvent/State` don't use Equatable.

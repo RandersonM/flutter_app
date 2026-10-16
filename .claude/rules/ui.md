@@ -85,8 +85,11 @@ Allowed exceptions: third-party brand colours (YouTube red in
 `youtube_player_screen.dart`), categorical palettes (`RoleIconMapper`), decorative
 art (`futuristic_background.dart`). Anything else that is genuinely not semantic:
 add it to `theme.dart`, or mark the line `// harness:allow <reason>`.
-~270 legacy `Colors.white/grey/black` uses remain — migrate a file only when you
-are already reworking it.
+Categorical palettes live in one file each: `ExpenseCategoryPalette` (Nami),
+`goal_colors.dart` (Robin), `PlateSectionPalette` (Sanji),
+`shared/utils/devil_fruit_type_palette.dart`. Media overlays (white/black on video,
+photos, GIFs) are `// harness:allow decorative`. `test/shared/utils/theme_roles_test.dart`
+guards contrast for `onSurfaceVariant`, `outline*` and `error` in both themes.
 
 ## Typography, icons, spacing
 

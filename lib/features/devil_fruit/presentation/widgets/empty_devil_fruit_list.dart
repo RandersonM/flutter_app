@@ -27,7 +27,7 @@ class EmptyDevilFruitList extends StatelessWidget {
           Container(
             padding: const EdgeInsets.all(Constants.margin * 2),
             decoration: BoxDecoration(
-              color: Colors.grey[100],
+              color: Theme.of(context).colorScheme.surfaceContainerHigh,
               shape: BoxShape.circle,
             ),
             child: Icon(
@@ -35,7 +35,7 @@ class EmptyDevilFruitList extends StatelessWidget {
                   ? PhosphorIconsRegular.faders
                   : PhosphorIconsRegular.smileySad,
               size: 64,
-              color: Colors.grey[400],
+              color: Theme.of(context).colorScheme.onSurfaceVariant,
             ),
           ),
           const SizedBox(height: Constants.margin * 2),
@@ -45,7 +45,7 @@ class EmptyDevilFruitList extends StatelessWidget {
                 : AppLocalizations.of(context)!.noDevilFruitAvailable,
             style: Theme.of(context).textTheme.headlineSmall?.copyWith(
               fontWeight: FontWeight.bold,
-              color: Colors.grey[700],
+              color: Theme.of(context).colorScheme.onSurface,
             ),
             textAlign: TextAlign.center,
           ),
@@ -54,9 +54,9 @@ class EmptyDevilFruitList extends StatelessWidget {
             hasFilters
                 ? AppLocalizations.of(context)!.adjustFiltersOrSearch
                 : AppLocalizations.of(context)!.devilFruitEmptyListSubtitle,
-            style: Theme.of(
-              context,
-            ).textTheme.bodyMedium?.copyWith(color: Colors.grey[600]),
+            style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+              color: Theme.of(context).colorScheme.onSurfaceVariant,
+            ),
             textAlign: TextAlign.center,
           ),
           const SizedBox(height: Constants.margin * 2),

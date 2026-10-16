@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:opfan/features/nami_finances/data/finance_math.dart';
 import 'package:opfan/l10n/app_localizations.dart';
 import 'package:opfan/shared/utils/constants.dart';
-import 'package:opfan/shared/utils/theme.dart';
+import 'package:opfan/shared/utils/app_semantic_colors.dart';
 
 class FinancialResults extends StatelessWidget {
   final double totalExpenses;
@@ -20,17 +20,19 @@ class FinancialResults extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
+    final colorScheme = Theme.of(context).colorScheme;
+    final semanticColors = Theme.of(context).semanticColors;
 
     return _buildSection(
       title: l10n.results,
       icon: PhosphorIconsRegular.calculator,
-      color: AppColors.blue[500]!,
+      color: semanticColors.info,
       children: [
         _buildResultCard(
           title: l10n.totalExpenses,
           value: totalExpenses,
           icon: PhosphorIconsRegular.money,
-          color: AppColors.red[500]!,
+          color: colorScheme.error,
         ),
         const SizedBox(height: Constants.margin),
         _buildResultCard(
@@ -38,15 +40,15 @@ class FinancialResults extends StatelessWidget {
           value: availableAmount,
           icon: PhosphorIconsRegular.bank,
           color: availableAmount >= 0
-              ? AppColors.green[500]!
-              : AppColors.red[500]!,
+              ? semanticColors.success
+              : colorScheme.error,
         ),
         const SizedBox(height: Constants.margin),
         _buildResultCard(
           title: l10n.dailyAmount,
           value: dailyAmount,
           icon: PhosphorIconsRegular.calendarStar,
-          color: AppColors.orange[500]!,
+          color: colorScheme.tertiary,
           isDaily: true,
         ),
       ],

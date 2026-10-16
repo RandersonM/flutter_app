@@ -18,6 +18,7 @@ class CrewHeader extends StatelessWidget {
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
     final theme = Theme.of(context);
+    final dim = Colors.black.withValues(alpha: 0.3); // harness:allow decorative
 
     return Column(
       spacing: Constants.margin,
@@ -40,10 +41,7 @@ class CrewHeader extends StatelessWidget {
               image: DecorationImage(
                 image: _getBackgroundImageProvider(),
                 fit: BoxFit.cover,
-                colorFilter: ColorFilter.mode(
-                  Colors.black.withValues(alpha: 0.3),
-                  BlendMode.darken,
-                ),
+                colorFilter: ColorFilter.mode(dim, BlendMode.darken),
               ),
               borderRadius: BorderRadius.circular(Constants.margin * 2),
             ),
@@ -72,7 +70,9 @@ class CrewHeader extends StatelessWidget {
                     width: double.infinity,
                     padding: const EdgeInsets.all(Constants.margin),
                     decoration: BoxDecoration(
-                      color: Colors.white.withValues(alpha: 0.7),
+                      color: theme.colorScheme.surfaceContainer.withValues(
+                        alpha: 0.7,
+                      ),
                       borderRadius: BorderRadius.circular(Constants.margin),
                     ),
                     child: Text(

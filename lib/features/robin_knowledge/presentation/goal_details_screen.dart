@@ -5,7 +5,7 @@ import 'package:intl/intl.dart';
 import 'package:opfan/features/robin_knowledge/data/models/goal_model.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:opfan/features/robin_knowledge/bloc/robin_knowledge_bloc.dart';
-import 'package:opfan/shared/utils/theme.dart';
+import 'package:opfan/features/robin_knowledge/presentation/goal_colors.dart';
 import 'package:opfan/features/robin_knowledge/presentation/widgets/update_progress_dialog.dart';
 import 'package:opfan/shared/widgets/molecules/default_app_bar.dart';
 import 'package:opfan/l10n/app_localizations.dart';
@@ -85,7 +85,7 @@ class GoalDetailsScreen extends StatelessWidget {
 
   Widget _buildCategoryIcon() {
     final iconData = _getCategoryIcon(goal.category);
-    final color = _getCategoryColor(goal.category);
+    final color = goalCategoryColor(goal.category);
 
     return Container(
       padding: const EdgeInsets.all(12),
@@ -99,24 +99,20 @@ class GoalDetailsScreen extends StatelessWidget {
 
   Widget _buildStatusChip(BuildContext context) {
     String label;
-    Color color;
+    final color = goalStatusColor(Theme.of(context), goal.status);
 
     switch (goal.status) {
       case GoalStatus.completed:
         label = AppLocalizations.of(context)!.completed;
-        color = AppColors.purple[350]!;
         break;
       case GoalStatus.inProgress:
         label = AppLocalizations.of(context)!.inProgress;
-        color = AppColors.orange;
         break;
       case GoalStatus.overdue:
         label = AppLocalizations.of(context)!.overdue;
-        color = AppColors.red;
         break;
       default:
         label = AppLocalizations.of(context)!.notStarted;
-        color = AppColors.grey;
     }
 
     return Container(
@@ -168,7 +164,7 @@ class GoalDetailsScreen extends StatelessWidget {
               backgroundColor: Theme.of(context).colorScheme.onSecondary,
               borderRadius: BorderRadius.circular(12),
               valueColor: AlwaysStoppedAnimation<Color>(
-                _getProgressColor(context, goal.progress),
+                goalProgressColor(Theme.of(context), goal.progress),
               ),
               minHeight: 8,
             ),
@@ -284,13 +280,13 @@ class GoalDetailsScreen extends StatelessWidget {
           size: 16,
           color: isOverdue
               ? Theme.of(context).colorScheme.error
-              : Colors.grey[600],
+              : Theme.of(context).colorScheme.onSurfaceVariant,
         ),
         const SizedBox(width: 8),
         Text(
           '$label: ',
           style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-            color: Colors.grey[600],
+            color: Theme.of(context).colorScheme.onSurfaceVariant,
             fontWeight: FontWeight.w500,
           ),
         ),
@@ -319,7 +315,7 @@ class GoalDetailsScreen extends StatelessWidget {
                 AppIcon(
                   PhosphorIconsRegular.note,
                   size: 16,
-                  color: Colors.grey[600],
+                  color: Theme.of(context).colorScheme.onSurfaceVariant,
                 ),
                 const SizedBox(width: 8),
                 Text(
@@ -350,7 +346,7 @@ class GoalDetailsScreen extends StatelessWidget {
                 AppIcon(
                   PhosphorIconsRegular.tag,
                   size: 16,
-                  color: Colors.grey[600],
+                  color: Theme.of(context).colorScheme.onSurfaceVariant,
                 ),
                 const SizedBox(width: 8),
                 Text(
@@ -401,23 +397,6 @@ class GoalDetailsScreen extends StatelessWidget {
     }
   }
 
-  Color _getCategoryColor(GoalCategory category) {
-    switch (category) {
-      case GoalCategory.study:
-        return AppColors.blue;
-      case GoalCategory.work:
-        return AppColors.yellow;
-      case GoalCategory.personal:
-        return AppColors.brown[500]!;
-      case GoalCategory.health:
-        return AppColors.red;
-      case GoalCategory.finance:
-        return AppColors.orange;
-      case GoalCategory.other:
-        return AppColors.grey;
-    }
-  }
-
   String _getCategoryName(BuildContext context, GoalCategory category) {
     switch (category) {
       case GoalCategory.study:
@@ -433,13 +412,5 @@ class GoalDetailsScreen extends StatelessWidget {
       case GoalCategory.other:
         return AppLocalizations.of(context)!.other;
     }
-  }
-
-  Color _getProgressColor(BuildContext context, double progress) {
-    if (progress >= 100) return AppColors.purple[350]!;
-    if (progress >= 75) return AppColors.yellow[500]!;
-    if (progress >= 50) return AppColors.orange[500]!;
-    if (progress >= 25) return AppColors.red[500]!;
-    return Theme.of(context).colorScheme.error;
   }
 }

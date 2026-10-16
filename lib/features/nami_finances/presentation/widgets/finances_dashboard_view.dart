@@ -5,17 +5,12 @@ import 'dart:math' as math;
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:opfan/features/nami_finances/data/models/nami_finances_model.dart';
+import 'package:opfan/features/nami_finances/presentation/expense_category_palette.dart';
 import 'package:opfan/features/nami_finances/presentation/widgets/finances_history_widget.dart';
 import 'package:opfan/l10n/app_localizations.dart';
+import 'package:opfan/shared/utils/app_semantic_colors.dart';
 import 'package:opfan/shared/utils/constants.dart';
 import 'package:opfan/shared/widgets/atoms/app_button.dart';
-
-// ─── Design tokens ──────────────────────────────────────────────────────────
-const _purple = Color(0xFF8B5CF6);
-const _gold = Color(0xFFFACC15);
-const _cardBg = Color(0xFF16161C);
-const _errorRed = Color(0xFFEF4444);
-const _successGreen = Color(0xFF22C55E);
 
 // ─── Main dashboard widget ───────────────────────────────────────────────────
 
@@ -68,6 +63,8 @@ class _HeroBalanceCard extends StatelessWidget {
     final balance = finances.availableAmount;
     final isPositive = balance >= 0;
     final l10n = AppLocalizations.of(context)!;
+    final colorScheme = Theme.of(context).colorScheme;
+    final semanticColors = Theme.of(context).semanticColors;
 
     return Container(
       width: double.infinity,
@@ -77,12 +74,12 @@ class _HeroBalanceCard extends StatelessWidget {
       ),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(24),
-        gradient: const LinearGradient(
+        gradient: LinearGradient(
           begin: Alignment.topCenter,
           end: Alignment.bottomCenter,
           colors: [
-            Color(0x597C3AED), // rgba(124,58,237,.35)
-            Color(0xFF09090B),
+            colorScheme.primary.withValues(alpha: 0.35),
+            colorScheme.surfaceContainerLowest,
           ],
         ),
       ),
@@ -91,22 +88,22 @@ class _HeroBalanceCard extends StatelessWidget {
           Text(
             AppLocalizations.of(context)!.saveWithNami,
             style: Theme.of(context).textTheme.bodySmall?.copyWith(
-              color: Colors.white70,
+              color: colorScheme.onSurfaceVariant,
               letterSpacing: 0.5,
             ),
           ),
           const SizedBox(height: 8),
           Text(
             l10n.financialSummary,
-            style: Theme.of(
-              context,
-            ).textTheme.titleMedium?.copyWith(color: Colors.white60),
+            style: Theme.of(context).textTheme.titleMedium?.copyWith(
+              color: colorScheme.onSurfaceVariant,
+            ),
           ),
           const SizedBox(height: Constants.margin),
           Text(
             'R\$ ${balance.abs().toStringAsFixed(2)}',
             style: Theme.of(context).textTheme.displaySmall?.copyWith(
-              color: isPositive ? _successGreen : _errorRed,
+              color: isPositive ? semanticColors.success : colorScheme.error,
               fontWeight: FontWeight.bold,
               letterSpacing: -0.5,
             ),
@@ -117,14 +114,14 @@ class _HeroBalanceCard extends StatelessWidget {
             children: [
               _BalancePill(
                 icon: PhosphorIconsRegular.arrowUp,
-                color: _successGreen,
+                color: semanticColors.success,
                 label: AppLocalizations.of(context)!.incomesLabel,
                 value: finances.totalIncome,
               ),
               const SizedBox(width: Constants.margin * 2),
               _BalancePill(
                 icon: PhosphorIconsRegular.arrowDown,
-                color: _errorRed,
+                color: colorScheme.error,
                 label: AppLocalizations.of(context)!.expensesLabel,
                 value: finances.totalExpenses,
               ),
@@ -168,9 +165,9 @@ class _BalancePill extends StatelessWidget {
           children: [
             Text(
               label,
-              style: Theme.of(
-                context,
-              ).textTheme.labelSmall?.copyWith(color: Colors.white54),
+              style: Theme.of(context).textTheme.labelSmall?.copyWith(
+                color: Theme.of(context).colorScheme.onSurfaceVariant,
+              ),
             ),
             Text(
               'R\$ ${value.toStringAsFixed(2)}',
@@ -212,6 +209,8 @@ class _MonthlyBalanceDonutState extends State<_MonthlyBalanceDonut> {
     const incomePct = 100.0;
     final expensesPct = income > 0 ? (expenses / income * 100) : 0.0;
     final savingsPct = income > 0 ? (savings / income * 100) : 0.0;
+    final colorScheme = Theme.of(context).colorScheme;
+    final semanticColors = Theme.of(context).semanticColors;
 
     return _DashboardCard(
       child: Column(
@@ -219,7 +218,7 @@ class _MonthlyBalanceDonutState extends State<_MonthlyBalanceDonut> {
         children: [
           _CardHeader(
             icon: PhosphorIconsRegular.circle,
-            iconColor: _purple,
+            iconColor: colorScheme.primary,
             title: AppLocalizations.of(context)!.monthBalance,
           ),
           const SizedBox(height: Constants.margin * 2),
@@ -250,19 +249,22 @@ class _MonthlyBalanceDonutState extends State<_MonthlyBalanceDonut> {
                         _buildSection(
                           title: AppLocalizations.of(context)!.incomesLabel,
                           value: incomePct,
-                          color: _purple,
+                          color: semanticColors.success,
+                          labelColor: semanticColors.onSuccess,
                           index: 0,
                         ),
                         _buildSection(
                           title: AppLocalizations.of(context)!.expensesLabel,
                           value: expensesPct,
-                          color: _errorRed,
+                          color: colorScheme.error,
+                          labelColor: colorScheme.onError,
                           index: 1,
                         ),
                         _buildSection(
                           title: AppLocalizations.of(context)!.reservesLabel,
                           value: savingsPct,
-                          color: _gold,
+                          color: semanticColors.info,
+                          labelColor: semanticColors.onInfo,
                           index: 2,
                         ),
                       ],
@@ -275,19 +277,19 @@ class _MonthlyBalanceDonutState extends State<_MonthlyBalanceDonut> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     _DonutLegend(
-                      color: _purple,
+                      color: semanticColors.success,
                       label: AppLocalizations.of(context)!.incomesLabel,
                       value: 'R\$ ${income.toStringAsFixed(0)}',
                     ),
                     const SizedBox(height: 12),
                     _DonutLegend(
-                      color: _errorRed,
+                      color: colorScheme.error,
                       label: AppLocalizations.of(context)!.expensesLabel,
                       value: 'R\$ ${expenses.toStringAsFixed(0)}',
                     ),
                     const SizedBox(height: 12),
                     _DonutLegend(
-                      color: _gold,
+                      color: semanticColors.info,
                       label: AppLocalizations.of(context)!.reservesLabel,
                       value: 'R\$ ${savings.toStringAsFixed(0)}',
                     ),
@@ -305,6 +307,7 @@ class _MonthlyBalanceDonutState extends State<_MonthlyBalanceDonut> {
     required String title,
     required double value,
     required Color color,
+    required Color labelColor,
     required int index,
   }) {
     final isTouched = index == _touchedIndex;
@@ -314,10 +317,10 @@ class _MonthlyBalanceDonutState extends State<_MonthlyBalanceDonut> {
       value: value,
       title: '${value.toStringAsFixed(0)}%',
       radius: radius,
-      titleStyle: const TextStyle(
+      titleStyle: TextStyle(
         fontSize: 11,
         fontWeight: FontWeight.bold,
-        color: Colors.white,
+        color: labelColor,
       ),
     );
   }
@@ -350,14 +353,14 @@ class _DonutLegend extends StatelessWidget {
           children: [
             Text(
               label,
-              style: Theme.of(
-                context,
-              ).textTheme.labelSmall?.copyWith(color: Colors.white54),
+              style: Theme.of(context).textTheme.labelSmall?.copyWith(
+                color: Theme.of(context).colorScheme.onSurfaceVariant,
+              ),
             ),
             Text(
               value,
               style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                color: Colors.white,
+                color: Theme.of(context).colorScheme.onSurface,
                 fontWeight: FontWeight.w600,
               ),
             ),
@@ -383,7 +386,7 @@ class _IncomesCard extends StatelessWidget {
         children: [
           _CardHeader(
             icon: PhosphorIconsRegular.bank,
-            iconColor: _successGreen,
+            iconColor: Theme.of(context).semanticColors.success,
             title: AppLocalizations.of(context)!.incomes,
           ),
           const SizedBox(height: Constants.margin),
@@ -393,7 +396,7 @@ class _IncomesCard extends StatelessWidget {
                   ? income.description
                   : AppLocalizations.of(context)!.incomeLabel,
               value: income.amount,
-              valueColor: _successGreen,
+              valueColor: Theme.of(context).semanticColors.success,
             ),
           ),
           if (finances.monthlyIncomes.isEmpty)
@@ -404,7 +407,7 @@ class _IncomesCard extends StatelessWidget {
           _TotalRow(
             label: AppLocalizations.of(context)!.totalReceived,
             value: finances.totalIncome,
-            color: _successGreen,
+            color: Theme.of(context).semanticColors.success,
           ),
         ],
       ),
@@ -427,7 +430,7 @@ class _ExpensesCard extends StatelessWidget {
         children: [
           _CardHeader(
             icon: PhosphorIconsRegular.money,
-            iconColor: _errorRed,
+            iconColor: Theme.of(context).colorScheme.error,
             title: AppLocalizations.of(context)!.expenses,
           ),
           const SizedBox(height: Constants.margin),
@@ -437,7 +440,7 @@ class _ExpensesCard extends StatelessWidget {
                   ? expense.description
                   : _categoryLabel(expense.category, context),
               value: expense.amount,
-              valueColor: _errorRed,
+              valueColor: Theme.of(context).colorScheme.error,
             ),
           ),
           if (finances.expenses.isEmpty)
@@ -448,7 +451,7 @@ class _ExpensesCard extends StatelessWidget {
           _TotalRow(
             label: AppLocalizations.of(context)!.totalSpent,
             value: finances.totalExpenses,
-            color: _errorRed,
+            color: Theme.of(context).colorScheme.error,
           ),
         ],
       ),
@@ -504,6 +507,8 @@ class _SavingsGoalCard extends StatelessWidget {
     final progress = finances.reserveGoalProgress;
     final byPurpose = finances.reservesByPurpose.entries.toList()
       ..sort((a, b) => b.value.compareTo(a.value));
+    final colorScheme = Theme.of(context).colorScheme;
+    final reservesColor = Theme.of(context).semanticColors.info;
 
     return _DashboardCard(
       child: Column(
@@ -511,14 +516,14 @@ class _SavingsGoalCard extends StatelessWidget {
         children: [
           _CardHeader(
             icon: PhosphorIconsRegular.piggyBank,
-            iconColor: _purple,
+            iconColor: reservesColor,
             title: l10n.reserves,
           ),
           const SizedBox(height: Constants.margin),
           Text(
             'R\$ ${total.toStringAsFixed(2)}',
             style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-              color: _purple,
+              color: reservesColor,
               fontWeight: FontWeight.bold,
             ),
           ),
@@ -526,9 +531,9 @@ class _SavingsGoalCard extends StatelessWidget {
             const SizedBox(height: 4),
             Text(
               l10n.reserveGoalLabel('R\$ ${goal.toStringAsFixed(0)}'),
-              style: Theme.of(
-                context,
-              ).textTheme.bodySmall?.copyWith(color: Colors.white54),
+              style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                color: colorScheme.onSurfaceVariant,
+              ),
             ),
             const SizedBox(height: Constants.margin),
             ClipRRect(
@@ -536,8 +541,8 @@ class _SavingsGoalCard extends StatelessWidget {
               child: LinearProgressIndicator(
                 value: math.min(progress ?? 0, 1.0),
                 minHeight: 8,
-                backgroundColor: Colors.white12,
-                valueColor: const AlwaysStoppedAnimation<Color>(_purple),
+                backgroundColor: colorScheme.onSurface.withValues(alpha: 0.12),
+                valueColor: AlwaysStoppedAnimation<Color>(reservesColor),
               ),
             ),
             const SizedBox(height: 8),
@@ -549,7 +554,7 @@ class _SavingsGoalCard extends StatelessWidget {
                     ((progress ?? 0) * 100).toStringAsFixed(0),
                   ),
                   style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                    color: _purple,
+                    color: reservesColor,
                     fontWeight: FontWeight.w600,
                   ),
                 ),
@@ -557,22 +562,25 @@ class _SavingsGoalCard extends StatelessWidget {
                   l10n.reserveGoalRemaining(
                     'R\$ ${math.max(goal - total, 0).toStringAsFixed(0)}',
                   ),
-                  style: Theme.of(
-                    context,
-                  ).textTheme.bodySmall?.copyWith(color: Colors.white38),
+                  style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                    color: colorScheme.onSurfaceVariant,
+                  ),
                 ),
               ],
             ),
           ],
           if (byPurpose.isNotEmpty) ...[
             const SizedBox(height: Constants.margin * 1.5),
-            Divider(color: Colors.white.withValues(alpha: 0.08), height: 1),
+            Divider(
+              color: colorScheme.onSurface.withValues(alpha: 0.08),
+              height: 1,
+            ),
             const SizedBox(height: Constants.margin),
             ...byPurpose.map(
               (entry) => _FinanceLineItem(
                 label: _purposeLabel(entry.key, context),
                 value: entry.value,
-                valueColor: _purple,
+                valueColor: reservesColor,
               ),
             ),
           ],
@@ -615,15 +623,6 @@ class _SpendingCategoriesCard extends StatelessWidget {
     }
   }
 
-  static const _categoryColor = {
-    ExpenseCategory.fixed: Color(0xFFFC8181),
-    ExpenseCategory.food: Color(0xFFF6AD55),
-    ExpenseCategory.transport: Color(0xFF63B3ED),
-    ExpenseCategory.entertainment: _purple,
-    ExpenseCategory.health: _successGreen,
-    ExpenseCategory.other: Color(0xFF9CA3AF),
-  };
-
   @override
   Widget build(BuildContext context) {
     final total = finances.totalExpenses;
@@ -639,7 +638,7 @@ class _SpendingCategoriesCard extends StatelessWidget {
         children: [
           _CardHeader(
             icon: PhosphorIconsRegular.chartPieSlice,
-            iconColor: _gold,
+            iconColor: Theme.of(context).colorScheme.tertiary,
             title: AppLocalizations.of(context)!.categories,
           ),
           const SizedBox(height: Constants.margin),
@@ -650,7 +649,7 @@ class _SpendingCategoriesCard extends StatelessWidget {
               child: _CategoryBar(
                 emoji: _categoryEmoji[entry.key] ?? '📦',
                 name: _getCategoryName(entry.key, context),
-                color: _categoryColor[entry.key] ?? Colors.grey,
+                color: ExpenseCategoryPalette.of(context, entry.key),
                 percentage: pct,
                 amount: entry.value,
               ),
@@ -691,15 +690,15 @@ class _CategoryBar extends StatelessWidget {
             Expanded(
               child: Text(
                 name,
-                style: Theme.of(
-                  context,
-                ).textTheme.bodySmall?.copyWith(color: Colors.white70),
+                style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                  color: Theme.of(context).colorScheme.onSurfaceVariant,
+                ),
               ),
             ),
             Text(
               'R\$ ${amount.toStringAsFixed(0)}',
               style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                color: Colors.white,
+                color: Theme.of(context).colorScheme.onSurface,
                 fontWeight: FontWeight.w600,
               ),
             ),
@@ -722,7 +721,9 @@ class _CategoryBar extends StatelessWidget {
           child: LinearProgressIndicator(
             value: percentage,
             minHeight: 5,
-            backgroundColor: Colors.white10,
+            backgroundColor: Theme.of(
+              context,
+            ).colorScheme.onSurface.withValues(alpha: 0.10),
             valueColor: AlwaysStoppedAnimation<Color>(color),
           ),
         ),
@@ -748,7 +749,7 @@ class _DashboardActions extends StatelessWidget {
             variant: AppButtonVariant.outline,
             icon: const AppIcon(PhosphorIconsRegular.pencil, size: 16),
             label: AppLocalizations.of(context)!.editData,
-            foregroundColor: _purple,
+            foregroundColor: Theme.of(context).colorScheme.primary,
             padding: const EdgeInsets.symmetric(vertical: 12),
             borderRadius: 12,
             isFullWidth: true,
@@ -772,7 +773,7 @@ class _DashboardCard extends StatelessWidget {
       width: double.infinity,
       padding: const EdgeInsets.all(Constants.margin * 1.5),
       decoration: BoxDecoration(
-        color: _cardBg,
+        color: Theme.of(context).colorScheme.surfaceContainer,
         borderRadius: BorderRadius.circular(24),
       ),
       child: child,
@@ -807,7 +808,7 @@ class _CardHeader extends StatelessWidget {
         Text(
           title,
           style: Theme.of(context).textTheme.titleMedium?.copyWith(
-            color: Colors.white,
+            color: Theme.of(context).colorScheme.onSurface,
             fontWeight: FontWeight.w600,
           ),
         ),
@@ -836,9 +837,9 @@ class _FinanceLineItem extends StatelessWidget {
           Expanded(
             child: Text(
               label,
-              style: Theme.of(
-                context,
-              ).textTheme.bodyMedium?.copyWith(color: Colors.white70),
+              style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                color: Theme.of(context).colorScheme.onSurfaceVariant,
+              ),
               overflow: TextOverflow.ellipsis,
             ),
           ),
@@ -912,7 +913,7 @@ class _EmptyListHint extends StatelessWidget {
       child: Text(
         text,
         style: Theme.of(context).textTheme.bodySmall?.copyWith(
-          color: Colors.white30,
+          color: Theme.of(context).colorScheme.onSurfaceVariant,
           fontStyle: FontStyle.italic,
         ),
       ),

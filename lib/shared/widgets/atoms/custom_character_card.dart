@@ -27,7 +27,7 @@ class CustomCharacterCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Card(
       shape: RoundedRectangleBorder(
-        side: const BorderSide(color: Colors.white),
+        side: BorderSide(color: Theme.of(context).colorScheme.surfaceContainer),
         borderRadius: BorderRadius.circular(Constants.margin * 2),
       ),
       child: InkWell(
@@ -45,7 +45,9 @@ class CustomCharacterCard extends StatelessWidget {
                   width: double.infinity,
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(Constants.margin * 2),
-                    color: Colors.grey[200],
+                    color: Theme.of(
+                      context,
+                    ).colorScheme.onSurface.withValues(alpha: 0.08),
                   ),
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(Constants.margin * 2),
@@ -106,7 +108,9 @@ class CustomCharacterCard extends StatelessWidget {
                           overflow: TextOverflow.ellipsis,
                           style: Theme.of(context).textTheme.bodySmall!.merge(
                             TextStyle(
-                              color: Colors.grey[600],
+                              color: Theme.of(
+                                context,
+                              ).colorScheme.onSurfaceVariant,
                               fontStyle: FontStyle.italic,
                             ),
                           ),
@@ -152,20 +156,22 @@ class CustomCharacterCard extends StatelessWidget {
   }
 
   Widget _buildPlaceholderImage(BuildContext context) {
+    final colors = Theme.of(context).colorScheme;
+    final onSurfaceVariant = colors.onSurfaceVariant;
     return Container(
       width: double.infinity,
       height: double.infinity,
-      color: Colors.grey[300],
+      color: colors.surfaceContainerHighest,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          AppIcon(PhosphorIconsRegular.user, size: 48, color: Colors.grey[600]),
+          AppIcon(PhosphorIconsRegular.user, size: 48, color: onSurfaceVariant),
           const SizedBox(height: 8),
           Text(
             AppLocalizations.of(context)!.noImage,
             textAlign: TextAlign.center,
             style: TextStyle(
-              color: Colors.grey[600],
+              color: onSurfaceVariant,
               fontSize: 12,
               fontWeight: FontWeight.w500,
             ),

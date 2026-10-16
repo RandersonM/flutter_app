@@ -149,11 +149,11 @@ class CharacterInfoCard extends StatelessWidget {
         characterImage,
         fit: BoxFit.cover,
         errorBuilder: (context, error, stackTrace) => Container(
-          color: Colors.grey[300],
-          child: const AppIcon(
+          color: _placeholderFill(context),
+          child: AppIcon(
             PhosphorIconsRegular.user,
             size: 30,
-            color: Colors.grey,
+            color: _placeholderIcon(context),
           ),
         ),
       );
@@ -163,17 +163,23 @@ class CharacterInfoCard extends StatelessWidget {
       imageUrl: characterImage,
       fit: BoxFit.cover,
       placeholder: (context, url) => Container(
-        color: Colors.grey[300],
+        color: _placeholderFill(context),
         child: const Center(child: CircularProgressIndicator(strokeWidth: 2)),
       ),
       errorWidget: (context, url, error) => Container(
-        color: Colors.grey[300],
-        child: const AppIcon(
+        color: _placeholderFill(context),
+        child: AppIcon(
           PhosphorIconsRegular.user,
           size: 30,
-          color: Colors.grey,
+          color: _placeholderIcon(context),
         ),
       ),
     );
   }
+
+  Color _placeholderFill(BuildContext context) =>
+      Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.12);
+
+  Color _placeholderIcon(BuildContext context) =>
+      Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.5);
 }

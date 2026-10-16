@@ -86,7 +86,7 @@ class CharacterSelectionModalState extends State<CharacterSelectionModal> {
             width: 40,
             height: 4,
             decoration: BoxDecoration(
-              color: Colors.white54,
+              color: Theme.of(context).colorScheme.onSurfaceVariant,
               borderRadius: BorderRadius.circular(2),
             ),
           ),
@@ -127,7 +127,9 @@ class CharacterSelectionModalState extends State<CharacterSelectionModal> {
                 ? Center(
                     child: Text(
                       l10n.noResultsFound,
-                      style: const TextStyle(color: Colors.white54),
+                      style: TextStyle(
+                        color: Theme.of(context).colorScheme.onSurfaceVariant,
+                      ),
                     ),
                   )
                 : ListView(

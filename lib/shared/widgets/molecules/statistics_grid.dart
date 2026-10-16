@@ -121,7 +121,9 @@ class StatisticsGrid extends StatelessWidget {
       return Card(
         elevation: elevation,
         color: Colors.transparent,
-        shadowColor: Colors.black26,
+        shadowColor: Theme.of(
+          context,
+        ).colorScheme.shadow.withValues(alpha: 0.26),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(borderRadius),
         ),

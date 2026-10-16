@@ -108,16 +108,16 @@ class _DuelsView extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            const AppIcon(
+            AppIcon(
               PhosphorIconsRegular.warningCircle,
               size: 64,
-              color: Colors.white,
+              color: Theme.of(context).colorScheme.error,
             ),
             const SizedBox(height: Constants.margin),
             Text(
               l10n.error,
               style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                color: Colors.white,
+                color: Theme.of(context).colorScheme.onSurface,
                 fontWeight: FontWeight.bold,
               ),
             ),
@@ -127,9 +127,9 @@ class _DuelsView extends StatelessWidget {
                 DuelsFailure.loadFailed => l10n.duelsLoadError,
               },
               textAlign: TextAlign.center,
-              style: Theme.of(
-                context,
-              ).textTheme.bodyMedium?.copyWith(color: Colors.white70),
+              style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                color: Theme.of(context).colorScheme.onSurfaceVariant,
+              ),
             ),
             const SizedBox(height: Constants.margin * 2),
             ElevatedButton(
@@ -219,10 +219,12 @@ class _DuelsView extends StatelessWidget {
           l10n.duelsSubtitle,
           textAlign: TextAlign.center,
           style: Theme.of(context).textTheme.titleLarge?.copyWith(
-            color: Colors.black,
+            color: Theme.of(context).colorScheme.onSurface,
             shadows: [
               Shadow(
-                color: Colors.black.withValues(alpha: 0.5),
+                color: Theme.of(
+                  context,
+                ).colorScheme.shadow.withValues(alpha: 0.5),
                 offset: const Offset(1, 1),
                 blurRadius: 2,
               ),
@@ -242,7 +244,9 @@ class _DuelsView extends StatelessWidget {
           fontWeight: FontWeight.bold,
           shadows: [
             Shadow(
-              color: Colors.black.withValues(alpha: 0.5),
+              color: Theme.of(
+                context,
+              ).colorScheme.shadow.withValues(alpha: 0.5),
               offset: const Offset(3, 3),
               blurRadius: 6,
             ),

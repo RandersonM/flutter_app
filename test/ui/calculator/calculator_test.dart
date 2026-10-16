@@ -36,5 +36,23 @@ void main() {
 
       expect(find.byType(CalculatorHeader), findsOneWidget);
     });
+
+    testWidgets('colours keys with theme roles', (WidgetTester tester) async {
+      await tester.pumpWidget(getTestableWidget(const CalculatorScreen()));
+
+      final colors = Theme.of(
+        tester.element(find.byType(CalculatorHeader)),
+      ).colorScheme;
+      CalculatorButton key(String label) => tester.widget<CalculatorButton>(
+        find.widgetWithText(CalculatorButton, label),
+      );
+
+      expect(key('C').color, colors.primary);
+      expect(key('C').textColor, colors.onPrimary);
+      expect(key('/').color, colors.primaryContainer);
+      expect(key('/').textColor, colors.onPrimaryContainer);
+      expect(key('7').color, colors.surfaceContainer);
+      expect(key('7').textColor, colors.onSurface);
+    });
   });
 }

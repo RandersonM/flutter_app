@@ -21,7 +21,7 @@ BoxDecoration backgroundGradient() => BoxDecoration(
     end: const Alignment(1, 1),
     begin: Alignment.topRight,
     colors: <Color>[
-      Colors.white,
+      Colors.white, // harness:allow decorative gradient
       AppColors.purple[50]!,
       AppColors.purple[100]!,
     ],

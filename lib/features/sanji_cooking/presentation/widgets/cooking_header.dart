@@ -2,11 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:opfan/l10n/app_localizations.dart';
 import 'package:opfan/shared/utils/constants.dart';
 
-// Amber accent — only 2% usage as per design spec
-const Color _kAmber = Color(0xFFFACC15);
-// Violet glow for quote section shadow
-const Color _kVioletGlow = Color(0xFF7C3AED);
-
 class CookingHeader extends StatefulWidget {
   const CookingHeader({super.key});
 
@@ -75,7 +70,7 @@ class _CookingHeaderState extends State<CookingHeader>
 
   @override
   Widget build(BuildContext context) {
-    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final colorScheme = Theme.of(context).colorScheme;
 
     return Column(
       children: [
@@ -106,12 +101,10 @@ class _CookingHeaderState extends State<CookingHeader>
         Container(
           padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
           decoration: BoxDecoration(
-            color: isDark
-                ? const Color(0xFF16161C) // Surface dark
-                : const Color(0xFFFFFFFF), // Surface light
+            color: colorScheme.surfaceContainer,
             boxShadow: [
               BoxShadow(
-                color: _kVioletGlow.withValues(alpha: 0.12),
+                color: colorScheme.primary.withValues(alpha: 0.12),
                 blurRadius: 20,
                 offset: const Offset(0, -2),
               ),
@@ -132,7 +125,7 @@ class _CookingHeaderState extends State<CookingHeader>
                         textAlign: TextAlign.center,
                         style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                           fontWeight: FontWeight.bold,
-                          color: _kAmber,
+                          color: colorScheme.tertiary,
                           height: 1.4,
                           fontStyle: FontStyle.italic,
                         ),

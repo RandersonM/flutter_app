@@ -13,7 +13,7 @@ class GomuGomuDivider extends StatelessWidget {
   const GomuGomuDivider({
     super.key,
     this.height = 40.0,
-    this.color = const Color(0xFFE91E63),
+    this.color,
     this.thickness = 2.0,
     this.spiralRadius = 12.0,
     this.spiralSpacing = 30.0,
@@ -25,7 +25,7 @@ class GomuGomuDivider extends StatelessWidget {
   Widget build(BuildContext context) {
     return CustomPaint(
       painter: GomuGomuDividerPainter(
-        color: color ?? const Color(0xFFE91E63),
+        color: color ?? Theme.of(context).colorScheme.primary,
         thickness: thickness,
         spiralRadius: spiralRadius,
         spiralSpacing: spiralSpacing,

@@ -26,7 +26,7 @@ class UniversalImage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if (imageUrl == null || imageUrl!.trim().isEmpty) {
-      return placeholder ?? _buildDefaultPlaceholder();
+      return placeholder ?? _buildDefaultPlaceholder(context);
     }
 
     final trimmedUrl = imageUrl!.trim();
@@ -45,11 +45,11 @@ class UniversalImage extends StatelessWidget {
           errorBuilder:
               errorBuilder ??
               (context, error, stackTrace) =>
-                  placeholder ?? _buildDefaultPlaceholder(),
+                  placeholder ?? _buildDefaultPlaceholder(context),
         );
       } catch (e) {
         debugPrint('UniversalImage: Failed to decode base64 - $e');
-        return placeholder ?? _buildDefaultPlaceholder();
+        return placeholder ?? _buildDefaultPlaceholder(context);
       }
     }
 
@@ -63,7 +63,7 @@ class UniversalImage extends StatelessWidget {
         errorBuilder:
             errorBuilder ??
             (context, error, stackTrace) =>
-                placeholder ?? _buildDefaultPlaceholder(),
+                placeholder ?? _buildDefaultPlaceholder(context),
       );
     }
 
@@ -77,17 +77,21 @@ class UniversalImage extends StatelessWidget {
       errorBuilder:
           errorBuilder ??
           (context, error, stackTrace) =>
-              placeholder ?? _buildDefaultPlaceholder(),
+              placeholder ?? _buildDefaultPlaceholder(context),
     );
   }
 
-  Widget _buildDefaultPlaceholder() {
+  Widget _buildDefaultPlaceholder(BuildContext context) {
+    final onSurface = Theme.of(context).colorScheme.onSurface;
     return Container(
       width: width,
       height: height,
-      color: Colors.grey[300],
-      child: const Center(
-        child: AppIcon(PhosphorIconsRegular.image, color: Colors.grey),
+      color: onSurface.withValues(alpha: 0.12),
+      child: Center(
+        child: AppIcon(
+          PhosphorIconsRegular.image,
+          color: onSurface.withValues(alpha: 0.5),
+        ),
       ),
     );
   }

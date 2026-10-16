@@ -48,7 +48,7 @@ class SearchFilter extends StatelessWidget {
           style: Theme.of(context).textTheme.bodyMedium!.merge(
             TextStyle(
               color: statusFilters.contains(label)
-                  ? Colors.white
+                  ? Theme.of(context).colorScheme.primary
                   : Theme.of(context).colorScheme.onPrimary,
             ),
           ),

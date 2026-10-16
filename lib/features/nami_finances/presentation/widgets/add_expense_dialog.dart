@@ -3,7 +3,6 @@ import 'package:phosphoricons_flutter/phosphoricons_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:opfan/l10n/app_localizations.dart';
 import 'package:opfan/shared/utils/constants.dart';
-import 'package:opfan/shared/utils/theme.dart';
 import 'package:opfan/shared/widgets/atoms/custom_dropdown.dart';
 import 'package:opfan/shared/widgets/atoms/custom_text_field.dart';
 import 'package:opfan/shared/widgets/atoms/finance_currency_text_field.dart';
@@ -64,14 +63,15 @@ class _AddExpenseDialogState extends State<AddExpenseDialog> {
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
+    final colorScheme = Theme.of(context).colorScheme;
 
     return AlertDialog(
-      backgroundColor: const Color(0xFF16161C),
+      backgroundColor: colorScheme.surfaceContainer,
       surfaceTintColor: Colors.transparent,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24)),
       title: Row(
         children: [
-          AppIcon(PhosphorIconsRegular.plusCircle, color: AppColors.red[500]),
+          AppIcon(PhosphorIconsRegular.plusCircle, color: colorScheme.error),
           const SizedBox(width: 8),
           Text(l10n.addExpense),
         ],
@@ -131,13 +131,13 @@ class _AddExpenseDialogState extends State<AddExpenseDialog> {
           onPressed: () => Navigator.of(context).pop(),
           variant: AppButtonVariant.text,
           label: l10n.cancel,
-          foregroundColor: Colors.white54,
+          foregroundColor: colorScheme.onSurfaceVariant,
         ),
         AppButton(
           onPressed: _addExpense,
           label: l10n.add,
-          backgroundColor: AppColors.red[500],
-          foregroundColor: Colors.white,
+          backgroundColor: colorScheme.error,
+          foregroundColor: colorScheme.onError,
           borderRadius: 12,
         ),
       ],

@@ -2,6 +2,7 @@ import 'package:opfan/shared/widgets/atoms/app_icon.dart';
 import 'package:phosphoricons_flutter/phosphoricons_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:opfan/l10n/app_localizations.dart';
+import 'package:opfan/shared/utils/app_semantic_colors.dart';
 import 'package:opfan/shared/utils/constants.dart';
 import 'package:opfan/shared/widgets/atoms/finance_currency_text_field.dart';
 import 'package:opfan/shared/widgets/atoms/custom_dropdown.dart';
@@ -12,11 +13,6 @@ import 'package:opfan/features/nami_finances/presentation/widgets/expense_item_w
 import 'package:opfan/features/nami_finances/data/models/nami_finances_model.dart';
 import 'package:uuid/uuid.dart';
 import 'package:opfan/shared/widgets/atoms/app_button.dart';
-
-const _purple = Color(0xFF8B5CF6);
-const _cardBg = Color(0xFF16161C);
-const _errorRed = Color(0xFFEF4444);
-const _successGreen = Color(0xFF22C55E);
 
 class FinancesSetupForm extends StatefulWidget {
   final Function(
@@ -393,14 +389,14 @@ class _FinancesSetupFormState extends State<FinancesSetupForm> {
     return _buildSection(
       title: l10n.monthlyIncome,
       icon: PhosphorIconsRegular.bank,
-      color: _successGreen,
+      color: Theme.of(context).semanticColors.success,
       children: [
         AppButton(
           onPressed: _addIncomeItem,
           variant: AppButtonVariant.outline,
           icon: const AppIcon(PhosphorIconsRegular.plus, size: 16),
           label: l10n.addIncome,
-          foregroundColor: _successGreen,
+          foregroundColor: Theme.of(context).semanticColors.success,
           padding: const EdgeInsets.symmetric(vertical: 12),
           borderRadius: 12,
           isFullWidth: true,
@@ -437,9 +433,9 @@ class _FinancesSetupFormState extends State<FinancesSetupForm> {
                   const SizedBox(width: Constants.margin),
                   IconButton(
                     onPressed: () => _removeIncomeItem(index),
-                    icon: const AppIcon(
+                    icon: AppIcon(
                       PhosphorIconsRegular.minusCircle,
-                      color: _errorRed,
+                      color: Theme.of(context).colorScheme.error,
                     ),
                     tooltip: l10n.remove,
                   ),
@@ -472,7 +468,7 @@ class _FinancesSetupFormState extends State<FinancesSetupForm> {
     return _buildSection(
       title: l10n.reserves,
       icon: PhosphorIconsRegular.piggyBank,
-      color: _purple,
+      color: Theme.of(context).semanticColors.info,
       children: [
         // Optional monthly reserve target.
         FinanceCurrencyTextField(
@@ -485,7 +481,7 @@ class _FinancesSetupFormState extends State<FinancesSetupForm> {
           variant: AppButtonVariant.outline,
           icon: const AppIcon(PhosphorIconsRegular.plus, size: 16),
           label: l10n.addReserve,
-          foregroundColor: _purple,
+          foregroundColor: Theme.of(context).semanticColors.info,
           padding: const EdgeInsets.symmetric(vertical: 12),
           borderRadius: 12,
           isFullWidth: true,
@@ -501,7 +497,9 @@ class _FinancesSetupFormState extends State<FinancesSetupForm> {
             child: Container(
               padding: const EdgeInsets.all(Constants.margin),
               decoration: BoxDecoration(
-                color: Colors.white.withValues(alpha: 0.05),
+                color: Theme.of(
+                  context,
+                ).colorScheme.onSurface.withValues(alpha: 0.05),
                 borderRadius: BorderRadius.circular(16),
               ),
               child: Column(
@@ -524,9 +522,9 @@ class _FinancesSetupFormState extends State<FinancesSetupForm> {
                       const SizedBox(width: Constants.margin),
                       IconButton(
                         onPressed: () => _removeReserveItem(index),
-                        icon: const AppIcon(
+                        icon: AppIcon(
                           PhosphorIconsRegular.minusCircle,
-                          color: _errorRed,
+                          color: Theme.of(context).colorScheme.error,
                         ),
                         tooltip: l10n.remove,
                       ),
@@ -557,14 +555,14 @@ class _FinancesSetupFormState extends State<FinancesSetupForm> {
     return _buildSection(
       title: l10n.expenses,
       icon: PhosphorIconsRegular.money,
-      color: _errorRed,
+      color: Theme.of(context).colorScheme.error,
       children: [
         AppButton(
           onPressed: _showAddExpenseDialog,
           variant: AppButtonVariant.outline,
           icon: const AppIcon(PhosphorIconsRegular.plus, size: 16),
           label: l10n.addExpense,
-          foregroundColor: _errorRed,
+          foregroundColor: Theme.of(context).colorScheme.error,
           padding: const EdgeInsets.symmetric(vertical: 12),
           borderRadius: 12,
           isFullWidth: true,
@@ -594,8 +592,8 @@ class _FinancesSetupFormState extends State<FinancesSetupForm> {
       onPressed: _isFormValid ? _saveFinances : null,
       icon: const AppIcon(PhosphorIconsRegular.floppyDisk, size: 18),
       label: l10n.save,
-      backgroundColor: _purple,
-      foregroundColor: Colors.white,
+      backgroundColor: Theme.of(context).colorScheme.primary,
+      foregroundColor: Theme.of(context).colorScheme.onPrimary,
       padding: const EdgeInsets.symmetric(vertical: 16),
       borderRadius: 16,
       isFullWidth: true,
@@ -612,7 +610,7 @@ class _FinancesSetupFormState extends State<FinancesSetupForm> {
       width: double.infinity,
       padding: const EdgeInsets.all(Constants.margin * 1.5),
       decoration: BoxDecoration(
-        color: _cardBg,
+        color: Theme.of(context).colorScheme.surfaceContainer,
         borderRadius: BorderRadius.circular(24),
       ),
       child: Column(
@@ -632,7 +630,7 @@ class _FinancesSetupFormState extends State<FinancesSetupForm> {
               Text(
                 title,
                 style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                  color: Colors.white,
+                  color: Theme.of(context).colorScheme.onSurface,
                   fontWeight: FontWeight.w600,
                 ),
               ),

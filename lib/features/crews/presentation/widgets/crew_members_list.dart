@@ -34,13 +34,13 @@ class CrewMembersList extends StatelessWidget {
               AppIcon(
                 PhosphorIconsRegular.users,
                 size: 48,
-                color: Colors.grey[400],
+                color: theme.colorScheme.onSurfaceVariant,
               ),
               const SizedBox(height: Constants.margin),
               Text(
                 l10n.crewMembersEmptyTitle,
                 style: theme.textTheme.titleMedium?.copyWith(
-                  color: Colors.grey[600],
+                  color: theme.colorScheme.onSurfaceVariant,
                 ),
                 textAlign: TextAlign.center,
               ),
@@ -48,7 +48,7 @@ class CrewMembersList extends StatelessWidget {
               Text(
                 l10n.crewMembersEmptySubtitle,
                 style: theme.textTheme.bodyMedium?.copyWith(
-                  color: Colors.grey[500],
+                  color: theme.colorScheme.onSurfaceVariant,
                 ),
                 textAlign: TextAlign.center,
               ),
@@ -117,10 +117,10 @@ class CrewMembersList extends StatelessWidget {
         padding: const EdgeInsets.all(Constants.margin * 1.5),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(Constants.margin * 1.5),
-          border: Border.all(color: Colors.white, width: 1),
+          border: Border.all(color: theme.colorScheme.outlineVariant, width: 1),
           boxShadow: [
             BoxShadow(
-              color: Colors.grey.withValues(alpha: 0.1),
+              color: theme.colorScheme.shadow.withValues(alpha: 0.1),
               blurRadius: 4,
               offset: const Offset(0, 2),
             ),
@@ -190,7 +190,7 @@ class CrewMembersList extends StatelessWidget {
                     _formatMemberName(member),
                     style: theme.textTheme.bodyMedium?.copyWith(
                       fontWeight: FontWeight.w400,
-                      color: Colors.grey[600],
+                      color: theme.colorScheme.onSurfaceVariant,
                     ),
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,

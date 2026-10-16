@@ -150,8 +150,8 @@ class _UpdateProgressDialogState extends State<UpdateProgressDialog> {
             }
           },
           style: ElevatedButton.styleFrom(
-            backgroundColor: AppColors.purple[350],
-            foregroundColor: Colors.white,
+            backgroundColor: Theme.of(context).colorScheme.primary,
+            foregroundColor: Theme.of(context).colorScheme.onPrimary,
           ),
           child: Text(
             isIncrement

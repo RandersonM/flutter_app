@@ -30,7 +30,7 @@ class _CharacterCardState extends State<CharacterCard> {
     ),
     child: Card(
       shape: RoundedRectangleBorder(
-        side: const BorderSide(color: Colors.white),
+        side: BorderSide(color: Theme.of(context).colorScheme.outlineVariant),
         borderRadius: BorderRadius.circular(Constants.margin * 2),
       ),
       child: Padding(
@@ -45,7 +45,7 @@ class _CharacterCardState extends State<CharacterCard> {
                 width: double.infinity,
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(Constants.margin * 2),
-                  color: Colors.grey[200],
+                  color: Theme.of(context).colorScheme.surfaceContainerHigh,
                 ),
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(Constants.margin * 2),
@@ -114,17 +114,21 @@ class _CharacterCardState extends State<CharacterCard> {
     return Container(
       width: double.infinity,
       height: double.infinity,
-      color: Colors.grey[300],
+      color: Theme.of(context).colorScheme.surfaceContainerHigh,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          AppIcon(PhosphorIconsRegular.user, size: 48, color: Colors.grey[600]),
+          AppIcon(
+            PhosphorIconsRegular.user,
+            size: 48,
+            color: Theme.of(context).colorScheme.onSurfaceVariant,
+          ),
           const SizedBox(height: 8),
           Text(
             AppLocalizations.of(context)!.imageUnavailable,
             textAlign: TextAlign.center,
             style: TextStyle(
-              color: Colors.grey[600],
+              color: Theme.of(context).colorScheme.onSurfaceVariant,
               fontSize: 12,
               fontWeight: FontWeight.w500,
             ),

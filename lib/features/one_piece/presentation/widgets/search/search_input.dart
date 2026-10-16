@@ -13,18 +13,7 @@ import 'package:opfan/shared/utils/theme.dart';
 enum InputState { empty, filled }
 
 class SearchInput extends StatefulWidget {
-  SearchInput({super.key});
-
-  final Widget searchIcon = AppIcon(
-    PhosphorIconsRegular.magnifyingGlass,
-    color: AppColors.grey[700],
-    size: IconSize.small,
-  );
-  final Widget clearIcon = AppIcon(
-    PhosphorIconsRegular.xCircle,
-    size: IconSize.standard,
-    color: AppColors.grey[700]!,
-  );
+  const SearchInput({super.key});
 
   @override
   State<SearchInput> createState() => _SearchInputState();
@@ -47,10 +36,22 @@ class _SearchInputState extends State<SearchInput> {
   }
 
   Widget _inputIcon() {
+    final iconColor = Theme.of(context).colorScheme.onSurfaceVariant;
     if (state == InputState.filled) {
-      return IconButton(icon: widget.clearIcon, onPressed: _clearQuery);
+      return IconButton(
+        icon: AppIcon(
+          PhosphorIconsRegular.xCircle,
+          size: IconSize.standard,
+          color: iconColor,
+        ),
+        onPressed: _clearQuery,
+      );
     }
-    return widget.searchIcon;
+    return AppIcon(
+      PhosphorIconsRegular.magnifyingGlass,
+      color: iconColor,
+      size: IconSize.small,
+    );
   }
 
   @override

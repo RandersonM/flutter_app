@@ -9,6 +9,7 @@ import 'package:opfan/l10n/app_localizations.dart';
 import 'package:opfan/features/duels/presentation/widgets/character_selector_modal.dart'
     show CharacterSelectionModal;
 import 'package:opfan/shared/utils/app_routes.dart';
+import 'package:opfan/shared/utils/app_semantic_colors.dart';
 import 'package:opfan/shared/utils/constants.dart';
 import 'package:opfan/shared/widgets/atoms/clickable_image.dart';
 
@@ -40,12 +41,9 @@ class CharacterSelector extends StatelessWidget {
         constraints: const BoxConstraints(minHeight: 200, maxWidth: 350),
         padding: const EdgeInsets.all(Constants.margin * 2),
         decoration: BoxDecoration(
-          color: Colors.black.withValues(alpha: 0.3),
+          color: theme.colorScheme.surfaceContainerHigh.withValues(alpha: 0.85),
           borderRadius: BorderRadius.circular(Constants.margin * 2),
-          border: Border.all(
-            color: Colors.white.withValues(alpha: 0.2),
-            width: 1,
-          ),
+          border: Border.all(color: theme.colorScheme.outlineVariant, width: 1),
         ),
         child: Column(
           mainAxisSize: MainAxisSize.min,
@@ -82,7 +80,10 @@ class CharacterSelector extends StatelessWidget {
           height: 120,
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(Constants.margin * 2),
-            border: Border.all(color: Colors.white, width: 2),
+            border: Border.all(
+              color: theme.colorScheme.outlineVariant,
+              width: 2,
+            ),
           ),
           child: ClipRRect(
             borderRadius: BorderRadius.circular(Constants.margin * 2),
@@ -150,8 +151,10 @@ class CharacterSelector extends StatelessWidget {
                 icon: const AppIcon(PhosphorIconsRegular.info, size: 16),
                 label: Text(l10n.statistics),
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.blue.withValues(alpha: 0.7),
-                  foregroundColor: Colors.white,
+                  backgroundColor: theme.semanticColors.info.withValues(
+                    alpha: 0.7,
+                  ),
+                  foregroundColor: theme.semanticColors.onInfo,
                   padding: const EdgeInsets.symmetric(
                     horizontal: Constants.margin,
                     vertical: Constants.margin * 0.5,
@@ -169,7 +172,7 @@ class CharacterSelector extends StatelessWidget {
                   backgroundColor: Theme.of(
                     context,
                   ).colorScheme.error.withValues(alpha: 0.7),
-                  foregroundColor: Colors.white,
+                  foregroundColor: theme.colorScheme.onError,
                   padding: const EdgeInsets.symmetric(
                     horizontal: Constants.margin,
                     vertical: Constants.margin * 0.5,
@@ -191,15 +194,17 @@ class CharacterSelector extends StatelessWidget {
       return Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          const AppIcon(
+          AppIcon(
             PhosphorIconsRegular.userMinus,
             size: 64,
-            color: Colors.white54,
+            color: theme.colorScheme.onSurfaceVariant,
           ),
           const SizedBox(height: Constants.margin),
           Text(
             l10n.noCharactersAvailable,
-            style: theme.textTheme.bodyMedium?.copyWith(color: Colors.white54),
+            style: theme.textTheme.bodyMedium?.copyWith(
+              color: theme.colorScheme.onSurfaceVariant,
+            ),
             textAlign: TextAlign.center,
           ),
         ],

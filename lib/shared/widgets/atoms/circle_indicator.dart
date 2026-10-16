@@ -31,7 +31,8 @@ class CircleIndicator extends StatelessWidget {
         shape: BoxShape.circle,
         color: isActive
             ? (activeColor ?? theme.primaryColor)
-            : (inactiveColor ?? Colors.grey[300]),
+            : (inactiveColor ??
+                  theme.colorScheme.onSurface.withValues(alpha: 0.12)),
       ),
     );
   }

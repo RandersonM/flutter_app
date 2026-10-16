@@ -58,17 +58,17 @@ class _OfflineBannerTile extends StatelessWidget {
           padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
           child: Row(
             children: [
-              const AppIcon(
+              AppIcon(
                 PhosphorIconsRegular.wifiSlash,
                 size: 16,
-                color: Colors.white,
+                color: Theme.of(context).semanticColors.onWarning,
               ),
               const SizedBox(width: 8),
               Expanded(
                 child: Text(
                   AppLocalizations.of(context)!.offlineBannerMessage,
-                  style: const TextStyle(
-                    color: Colors.white,
+                  style: TextStyle(
+                    color: Theme.of(context).semanticColors.onWarning,
                     fontSize: 13,
                     fontWeight: FontWeight.w500,
                   ),

@@ -11,6 +11,11 @@ import 'package:opfan/l10n/app_localizations.dart';
 
 enum BannerType { youtube, networkVideo, gif }
 
+// Player chrome stays dark in every theme: overlays contrast with the video.
+const _mediaBackdrop = Colors.black; // harness:allow decorative
+const _mediaPlaceholder = Color(0xFF212121); // harness:allow decorative
+const _onMedia = Colors.white; // harness:allow decorative
+
 class VideoBanner extends StatefulWidget {
   const VideoBanner({
     super.key,
@@ -107,7 +112,7 @@ class _VideoBannerState extends State<VideoBanner> {
       height: widget.height,
       width: double.infinity,
       decoration: BoxDecoration(
-        color: Colors.black,
+        color: _mediaBackdrop,
         borderRadius: BorderRadius.circular(12),
       ),
       child: ClipRRect(
@@ -119,9 +124,7 @@ class _VideoBannerState extends State<VideoBanner> {
 
   Widget _buildContent() {
     if (_isLoading) {
-      return const Center(
-        child: CircularProgressIndicator(color: Colors.white),
-      );
+      return const Center(child: CircularProgressIndicator(color: _onMedia));
     }
 
     if (_hasError) {
@@ -144,9 +147,8 @@ class _VideoBannerState extends State<VideoBanner> {
         return CachedNetworkImage(
           imageUrl: widget.url,
           fit: BoxFit.cover,
-          placeholder: (context, url) => const Center(
-            child: CircularProgressIndicator(color: Colors.white),
-          ),
+          placeholder: (context, url) =>
+              const Center(child: CircularProgressIndicator(color: _onMedia)),
           errorWidget: (context, url, error) => _buildErrorWidget(),
         );
     }
@@ -154,20 +156,20 @@ class _VideoBannerState extends State<VideoBanner> {
 
   Widget _buildErrorWidget() {
     return Container(
-      color: Colors.grey[900],
+      color: _mediaPlaceholder,
       child: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             const AppIcon(
               PhosphorIconsRegular.warningCircle,
-              color: Colors.white,
+              color: _onMedia,
               size: 48,
             ),
             const SizedBox(height: 8),
             Text(
               AppLocalizations.of(context)!.errorLoadingContent,
-              style: const TextStyle(color: Colors.white, fontSize: 16),
+              style: const TextStyle(color: _onMedia, fontSize: 16),
             ),
           ],
         ),

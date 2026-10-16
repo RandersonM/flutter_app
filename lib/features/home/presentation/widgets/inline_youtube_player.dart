@@ -7,6 +7,10 @@ import 'package:flutter/material.dart';
 import 'package:opfan/features/youtube/data/models/youtube_video_model.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 
+// Player chrome stays dark in every theme: overlays contrast with the video.
+const _mediaBackdrop = Colors.black; // harness:allow decorative
+const _onMedia = Colors.white; // harness:allow decorative
+
 class InlineYouTubePlayer extends StatefulWidget {
   final YouTubeVideo video;
   final double height;
@@ -52,7 +56,7 @@ class _InlineYouTubePlayerState extends State<InlineYouTubePlayer> {
       height: widget.height,
       width: double.infinity,
       decoration: BoxDecoration(
-        color: Colors.black,
+        color: _mediaBackdrop,
         borderRadius: BorderRadius.circular(16),
         border: Border.all(
           color: Theme.of(context).colorScheme.surfaceContainerHigh,
@@ -60,7 +64,7 @@ class _InlineYouTubePlayerState extends State<InlineYouTubePlayer> {
         ),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withValues(alpha: 0.5),
+            color: Theme.of(context).colorScheme.shadow.withValues(alpha: 0.5),
             blurRadius: 24,
             spreadRadius: 4,
             offset: const Offset(0, 8),
@@ -77,13 +81,13 @@ class _InlineYouTubePlayerState extends State<InlineYouTubePlayer> {
               right: 8,
               child: Container(
                 decoration: BoxDecoration(
-                  color: Colors.black.withValues(alpha: 0.7),
+                  color: _mediaBackdrop.withValues(alpha: 0.7),
                   shape: BoxShape.circle,
                 ),
                 child: IconButton(
                   icon: const AppIcon(
                     PhosphorIconsRegular.x,
-                    color: Colors.white,
+                    color: _onMedia,
                     size: 20,
                   ),
                   onPressed: widget.onClose,
@@ -105,13 +109,13 @@ class _InlineYouTubePlayerState extends State<InlineYouTubePlayer> {
                   vertical: 6,
                 ),
                 decoration: BoxDecoration(
-                  color: Colors.black.withValues(alpha: 0.7),
+                  color: _mediaBackdrop.withValues(alpha: 0.7),
                   borderRadius: BorderRadius.circular(8),
                 ),
                 child: Text(
                   widget.video.title,
                   style: const TextStyle(
-                    color: Colors.white,
+                    color: _onMedia,
                     fontSize: 12,
                     fontWeight: FontWeight.w500,
                   ),

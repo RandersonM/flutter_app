@@ -8,6 +8,10 @@ import 'package:opfan/features/home/bloc/index.dart';
 import 'package:opfan/features/home/presentation/widgets/simple_video_banner.dart';
 import 'package:opfan/features/home/presentation/widgets/inline_youtube_player.dart';
 
+// Stands in for the video banner, so it keeps the dark media chrome in every theme.
+const _mediaPlaceholder = Color(0xFF212121); // harness:allow decorative
+const _onMedia = Colors.white; // harness:allow decorative
+
 class DynamicBanner extends StatelessWidget {
   final HomeState state;
   final double height;
@@ -47,18 +51,18 @@ class DynamicBanner extends StatelessWidget {
         return Container(
           height: height,
           decoration: BoxDecoration(
-            color: Colors.grey[900],
+            color: _mediaPlaceholder,
             borderRadius: BorderRadius.circular(12),
           ),
           child: Center(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                const CircularProgressIndicator(color: Colors.white),
+                const CircularProgressIndicator(color: _onMedia),
                 const SizedBox(height: 16),
                 Text(
                   AppLocalizations.of(context)!.searchingVideo,
-                  style: const TextStyle(color: Colors.white),
+                  style: const TextStyle(color: _onMedia),
                 ),
               ],
             ),
@@ -79,7 +83,7 @@ class DynamicBanner extends StatelessWidget {
     return Container(
       height: 200,
       decoration: BoxDecoration(
-        color: Colors.grey[300],
+        color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.12),
         borderRadius: BorderRadius.circular(12),
       ),
       child: const Center(child: CircularProgressIndicator()),
