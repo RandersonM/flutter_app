@@ -6,7 +6,6 @@ import 'package:phosphoricons_flutter/phosphoricons_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:opfan/core/auth/blocs/index.dart';
-import 'package:opfan/app/di/injection.dart';
 import 'package:opfan/l10n/app_localizations.dart';
 import 'package:opfan/features/auth/presentation/login_screen.dart';
 import 'package:opfan/features/home/presentation/home_screen.dart';
@@ -26,7 +25,7 @@ class _AppWrapperState extends State<AppWrapper> {
   @override
   void initState() {
     super.initState();
-    _authBloc = getIt<AuthBloc>();
+    _authBloc = context.read<AuthBloc>();
     _authBloc.add(const AuthStarted());
   }
 

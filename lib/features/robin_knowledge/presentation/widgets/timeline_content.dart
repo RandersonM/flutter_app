@@ -2,7 +2,6 @@ import 'package:opfan/shared/widgets/atoms/app_icon.dart';
 import 'package:phosphoricons_flutter/phosphoricons_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:opfan/app/di/injection.dart';
 import 'package:opfan/features/robin_knowledge/data/models/goal_model.dart';
 import 'package:opfan/features/robin_knowledge/bloc/robin_knowledge_bloc.dart';
 
@@ -17,7 +16,6 @@ class TimelineContent extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<RobinKnowledgeBloc, RobinKnowledgeState>(
-      bloc: getIt.robinKnowledgeBloc,
       builder: (context, state) {
         if (state is RobinKnowledgeLoading) {
           return const Center(child: CircularProgressIndicator());

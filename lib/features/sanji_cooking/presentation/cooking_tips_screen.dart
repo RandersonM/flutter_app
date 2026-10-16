@@ -26,18 +26,10 @@ class _CookingTipsScreenState extends State<CookingTipsScreen> {
   // mid-session never invalidates the stored value against the dropdown items.
   String? _mealTypeKey;
   String? _dietaryRestrictionsKey;
-  late SanjiCookingBloc _bloc;
-
-  @override
-  void initState() {
-    super.initState();
-    _bloc = getIt<SanjiCookingBloc>();
-  }
 
   @override
   void dispose() {
     _ingredientController.dispose();
-    _bloc.close();
     super.dispose();
   }
 
@@ -152,8 +144,8 @@ class _CookingTipsScreenState extends State<CookingTipsScreen> {
       localizations.dietaryRestrictionHighProtein,
     ];
 
-    return BlocProvider.value(
-      value: _bloc,
+    return BlocProvider(
+      create: (_) => getIt<SanjiCookingBloc>(),
       child: BlocBuilder<SanjiCookingBloc, SanjiCookingState>(
         builder: (context, state) {
           return Scaffold(

@@ -19,8 +19,22 @@ class RobinKnowledgeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    return BlocProvider.value(
+      value: getIt<RobinKnowledgeBloc>(),
+      child: const _RobinKnowledgeView(),
+    );
+  }
+}
+
+class _RobinKnowledgeView extends StatelessWidget {
+  const _RobinKnowledgeView();
+
+  @override
+  Widget build(BuildContext context) {
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      getIt.robinKnowledgeBloc.add(const LoadGoals());
+      if (context.mounted) {
+        context.read<RobinKnowledgeBloc>().add(const LoadGoals());
+      }
     });
 
     return Scaffold(
@@ -69,7 +83,10 @@ class RobinKnowledgeScreen extends StatelessWidget {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => const TimelineScreen(),
+                        builder: (_) => BlocProvider.value(
+                          value: context.read<RobinKnowledgeBloc>(),
+                          child: const TimelineScreen(),
+                        ),
                       ),
                     );
                   },
@@ -87,7 +104,6 @@ class RobinKnowledgeScreen extends StatelessWidget {
           ),
           const SizedBox(height: 16),
           BlocBuilder<RobinKnowledgeBloc, RobinKnowledgeState>(
-            bloc: getIt.robinKnowledgeBloc,
             builder: (context, state) {
               if (state is RobinKnowledgeLoading) {
                 return Container(

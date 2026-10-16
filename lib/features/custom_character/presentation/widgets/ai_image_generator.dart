@@ -1,11 +1,11 @@
 import 'package:opfan/shared/widgets/atoms/app_icon.dart';
 import 'package:phosphoricons_flutter/phosphoricons_flutter.dart';
 import 'package:flutter/material.dart';
-import 'package:opfan/app/di/injection.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:opfan/features/custom_character/bloc/index.dart';
 import 'package:opfan/l10n/app_localizations.dart';
-import '../atoms/custom_text_field.dart';
-import '../atoms/clickable_image.dart';
-import 'dart:math';
+import 'package:opfan/shared/widgets/atoms/clickable_image.dart';
+import 'package:opfan/shared/widgets/atoms/custom_text_field.dart';
 
 class AiImageGenerator extends StatefulWidget {
   final String? initialPrompt;
@@ -37,13 +37,9 @@ class AiImageGenerator extends StatefulWidget {
 
 class _AiImageGeneratorState extends State<AiImageGenerator> {
   final _promptController = TextEditingController();
-  final _characterImageService = getIt.characterImageService;
 
-  String? _generatedImageUrl;
-  bool _isGenerating = false;
-  String? _errorMessage;
+  bool _promptMissing = false;
   bool _isImageConfirmed = false;
-  int _regenerationCount = 0;
 
   @override
   void initState() {
@@ -61,9 +57,10 @@ class _AiImageGeneratorState extends State<AiImageGenerator> {
   }
 
   void _checkImageConfirmation() {
+    final generatedUrl = context.read<CharacterImageCubit>().state.imageUrl;
     if (widget.currentImageUrl != null &&
-        _generatedImageUrl != null &&
-        widget.currentImageUrl == _generatedImageUrl) {
+        generatedUrl != null &&
+        widget.currentImageUrl == generatedUrl) {
       setState(() {
         _isImageConfirmed = true;
       });
@@ -77,6 +74,14 @@ class _AiImageGeneratorState extends State<AiImageGenerator> {
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
+    final state = context.watch<CharacterImageCubit>().state;
+    final isGenerating = state.isGenerating;
+    final generatedImageUrl = state.imageUrl;
+    final errorMessage = _promptMissing
+        ? l10n.promptRequired
+        : state.failed
+        ? l10n.imageGenerationError
+        : null;
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -111,10 +116,8 @@ class _AiImageGeneratorState extends State<AiImageGenerator> {
         SizedBox(
           width: double.infinity,
           child: ElevatedButton.icon(
-            onPressed: _isGenerating || widget.isLoading
-                ? null
-                : _generateImage,
-            icon: _isGenerating
+            onPressed: isGenerating || widget.isLoading ? null : _generateImage,
+            icon: isGenerating
                 ? const SizedBox(
                     width: 16,
                     height: 16,
@@ -122,7 +125,7 @@ class _AiImageGeneratorState extends State<AiImageGenerator> {
                   )
                 : const AppIcon(PhosphorIconsRegular.magicWand),
             label: Text(
-              _isGenerating ? l10n.generatingImage : l10n.generateImage,
+              isGenerating ? l10n.generatingImage : l10n.generateImage,
             ),
             style: ElevatedButton.styleFrom(
               padding: const EdgeInsets.symmetric(vertical: 12),
@@ -130,7 +133,7 @@ class _AiImageGeneratorState extends State<AiImageGenerator> {
           ),
         ),
 
-        if (_errorMessage != null) ...[
+        if (errorMessage != null) ...[
           const SizedBox(height: 12),
           Container(
             padding: const EdgeInsets.all(12),
@@ -147,7 +150,7 @@ class _AiImageGeneratorState extends State<AiImageGenerator> {
                 const SizedBox(width: 8),
                 Expanded(
                   child: Text(
-                    _errorMessage!,
+                    errorMessage,
                     style: TextStyle(
                       color: Theme.of(context).colorScheme.onErrorContainer,
                     ),
@@ -158,7 +161,7 @@ class _AiImageGeneratorState extends State<AiImageGenerator> {
           ),
         ],
 
-        if (_generatedImageUrl != null) ...[
+        if (generatedImageUrl != null) ...[
           const SizedBox(height: 16),
           Container(
             width: double.infinity,
@@ -173,7 +176,7 @@ class _AiImageGeneratorState extends State<AiImageGenerator> {
             ),
             child: ClipRRect(
               borderRadius: BorderRadius.circular(12),
-              child: _buildImageWithSmartCrop(),
+              child: _buildImageWithSmartCrop(generatedImageUrl),
             ),
           ),
           const SizedBox(height: 12),
@@ -190,12 +193,10 @@ class _AiImageGeneratorState extends State<AiImageGenerator> {
               Expanded(
                 child: ElevatedButton.icon(
                   onPressed: () {
-                    if (_generatedImageUrl != null) {
-                      widget.onImageGenerated(_generatedImageUrl!);
-                      setState(() {
-                        _isImageConfirmed = true;
-                      });
-                    }
+                    widget.onImageGenerated(generatedImageUrl);
+                    setState(() {
+                      _isImageConfirmed = true;
+                    });
                   },
                   icon: _isImageConfirmed
                       ? const AppIcon(PhosphorIconsRegular.check)
@@ -212,73 +213,35 @@ class _AiImageGeneratorState extends State<AiImageGenerator> {
     );
   }
 
-  Widget _buildImageWithSmartCrop() {
+  Widget _buildImageWithSmartCrop(String imageUrl) {
     return ClickableImage(
-      imageUrl: _generatedImageUrl!,
+      imageUrl: imageUrl,
       width: double.infinity,
       height: 300,
       fit: BoxFit.fill,
       borderRadius: BorderRadius.circular(12),
-      title: 'Imagem Gerada por IA',
+      title: AppLocalizations.of(context)!.aiGeneratedImage,
       showTitleInDialog: true,
     );
   }
 
   Future<void> _generateImage({bool forceRegeneration = false}) async {
-    if (_promptController.text.trim().isEmpty) {
-      setState(() {
-        _errorMessage = AppLocalizations.of(context)!.promptRequired;
-      });
-      return;
-    }
-
+    final prompt = _promptController.text.trim();
     setState(() {
-      _isGenerating = true;
-      _errorMessage = null;
+      _promptMissing = prompt.isEmpty;
       _isImageConfirmed = false;
     });
+    if (prompt.isEmpty) return;
 
-    try {
-      // Se for uma regeneração forçada, adicionar um sufixo único ao prompt
-      String prompt = _promptController.text.trim();
-      if (forceRegeneration) {
-        _regenerationCount++;
-        final random = Random();
-        final timestamp = DateTime.now().millisecondsSinceEpoch;
-        final randomSuffix = random.nextInt(1000);
-        prompt =
-            '$prompt [regeneration_${_regenerationCount}_${timestamp}_$randomSuffix]';
-      }
-
-      final imageUrl = await _characterImageService.generateCharacterImage(
-        characterName: widget.characterName ?? '',
-        prompt: prompt,
-        race: widget.race,
-        haki: widget.haki,
-        status: widget.status,
-        occupations: widget.occupations,
-      );
-
-      if (!mounted) return;
-
-      if (imageUrl != null) {
-        setState(() {
-          _generatedImageUrl = imageUrl;
-          _isGenerating = false;
-        });
-      } else {
-        setState(() {
-          _errorMessage = AppLocalizations.of(context)!.imageGenerationError;
-          _isGenerating = false;
-        });
-      }
-    } catch (e) {
-      if (!mounted) return;
-      setState(() {
-        _errorMessage = AppLocalizations.of(context)!.imageGenerationError;
-        _isGenerating = false;
-      });
-    }
+    await context.read<CharacterImageCubit>().generate(
+      characterName: widget.characterName ?? '',
+      prompt: prompt,
+      race: widget.race,
+      haki: widget.haki,
+      status: widget.status,
+      occupations: widget.occupations,
+      forceRegeneration: forceRegeneration,
+    );
   }
 
   @override

@@ -5,7 +5,7 @@ import 'package:opfan/features/crews/data/models/crew_model.dart';
 import 'package:opfan/shared/widgets/atoms/custom_text_field.dart';
 import 'package:opfan/shared/widgets/atoms/custom_dropdown.dart';
 import 'package:opfan/shared/widgets/atoms/custom_chip_selector.dart';
-import 'package:opfan/shared/widgets/molecules/ai_image_generator.dart';
+import 'ai_image_generator.dart';
 import 'package:opfan/shared/widgets/atoms/clickable_image.dart';
 
 class CharacterBackgroundSection extends StatelessWidget {

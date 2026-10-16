@@ -3,7 +3,7 @@ import 'package:phosphoricons_flutter/phosphoricons_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:opfan/features/robin_knowledge/data/models/goal_model.dart';
-import 'package:opfan/app/di/injection.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:opfan/features/robin_knowledge/bloc/robin_knowledge_bloc.dart';
 import 'package:opfan/shared/utils/theme.dart';
 import 'package:opfan/features/robin_knowledge/presentation/widgets/update_progress_dialog.dart';
@@ -209,6 +209,7 @@ class GoalDetailsScreen extends StatelessWidget {
   }
 
   void _showUpdateProgressDialog(BuildContext context, int increment) async {
+    final bloc = context.read<RobinKnowledgeBloc>();
     final result = await showDialog<Map<String, dynamic>>(
       context: context,
       builder: (context) =>
@@ -219,9 +220,7 @@ class GoalDetailsScreen extends StatelessWidget {
       final newProgress = result['progress'] as double;
       final notes = result['notes'] as String;
 
-      getIt.robinKnowledgeBloc.add(
-        UpdateGoalProgress(goal.id, newProgress, notes: notes),
-      );
+      bloc.add(UpdateGoalProgress(goal.id, newProgress, notes: notes));
       if (context.mounted) {
         Navigator.pop(context);
       }
