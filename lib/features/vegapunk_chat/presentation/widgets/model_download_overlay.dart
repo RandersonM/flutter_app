@@ -3,7 +3,7 @@ import 'package:phosphoricons_flutter/phosphoricons_flutter.dart';
 import 'package:opfan/l10n/app_localizations.dart';
 import 'package:opfan/shared/utils/constants.dart';
 
-import '../../cubit/vegapunk_chat_state.dart';
+import '../../bloc/vegapunk_chat_state.dart';
 
 /// Full-screen overlay for model lifecycle states (not installed / downloading /
 /// loading / error). Rendered on top of the empty chat scaffold.

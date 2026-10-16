@@ -6,6 +6,79 @@
 
 ---
 
+## Status / current implementation (checked against code 2026-10-16)
+
+This design is the **Phase 1 plan** and is kept for history. The shipped pipeline
+went further; where this file and the code disagree, the code wins. Rules for
+changing it: `.claude/rules/ai-on-device.md`, `.claude/rules/domains/vegapunk-chat.md`.
+
+**Stack actually used:** Gemma 4 E2B `.litertlm` (`GEMMA_MODEL_NAME`), engine
+`LiteRtLmEngine` only (no mediapipe, no `.task`), `maxTokens: 4096` with GPU→CPU
+fallback, Gecko 110m embeddings + SQLite vector store. All registered in
+`lib/main.dart` (`FlutterGemma.initialize`). Model size and `maxTokens` are fixed
+product decisions.
+
+**Per-turn pipeline** (`lib/features/vegapunk_chat/data/repository/vegapunk_chat_repository.dart`):
+
+1. `ToolIntentDetector.detect` (`tools/tool_intent_detector.dart`) — a
+   high-confidence intent runs the tool directly in Dart, before the model; the
+   result (≤ 1500 chars) is injected as `[SEARCH RESULTS for "<tool>"]` into a
+   normal `sendMessage`.
+2. Otherwise RAG context (`IRAGService.searchLore` + `searchSession`) goes into
+   `IGemmaService.sendMessage` with native tools attached; a `FunctionCallResponse`
+   (or the first of a `ParallelFunctionCallResponse`) is executed via
+   `FunctionRegistry` and fed back with `sendToolResult` (`Message.toolResponse`).
+3. If no native call arrives, `FunctionExecutor.tryParse` (`tools/function_executor.dart`)
+   parses a tool call out of the streamed text and runs it as in step 1.
+4. The repository yields UI sentinels `\x00TOOL_START:<name>\x00` /
+   `\x00TOOL_DONE\x00`; the cubit turns them into `activeToolName`.
+
+Tools (`FunctionRegistry`, wired in `lib/app/di/core_module.dart`): `searchInternet`
+(Tavily), `getUserProfile`, `getWorkoutHistory`, `saveWorkout`, `getCharacterInfo`.
+
+**Cubit** (`lib/features/vegapunk_chat/bloc/vegapunk_chat_cubit.dart`, DI factory in
+`features_module.dart`): states `VegapunkModelNotInstalled`, `VegapunkModelDownloading`,
+`VegapunkModelLoading`, `VegapunkChatReady{messages, streamingToken, isGenerating,
+selectedSatellite, isThinkingMode, activeToolName}`, `VegapunkChatError`. Tokens are
+emitted in **80 ms batches**; a **90 s watchdog** (re-armed on every event) stops a
+stuck generation. Thinking mode: temperature 0.15 / 512 output tokens (normal 0.2 / 768).
+
+**Satellites:** 7 personas (`data/models/vegapunk_satellite.dart`) share one chat;
+each turn sends a per-satellite style block
+(`lib/core/ai/prompts/personas/vegapunk_satellite_prompt.dart`) — no chat recreation.
+
+**RAG** (`lib/core/services/rag/rag_service.dart`, store `opfan_rag.db`, owner
+`vegapunk`, always via `RagStoreCoordinator.ensureActive`): static lore from
+`data/knowledge/one_piece_knowledge_base.dart`, re-indexed only when the sorted-id
+fingerprint changes; session docs (`isSession`, `"User asked…\nAnswer:…"`, ≤ 512
+chars, max 20 per process) added 2 s after each turn.
+
+**History:** Hive `LazyBox` `vegapunk_chat_history`
+(`data/repository/vegapunk_chat_history_repository.dart`, `ChatMessage` type ids 50/51).
+The last 20 messages are shown on open but **not replayed into the model**; when the
+store is wiped, `setOnStoreCleared` rebuilds session docs from history.
+
+**Model lifecycle** (`lib/core/services/gemma/gemma_service.dart`): `initialize()`
+loads the model only when it isn't open yet; re-entering the screen or `reset()`
+only recreates the Vegapunk chat (`_refreshVegapunkChat`), so Nami's session
+survives. A full reload (`_recreateChat`) closes every session.
+
+**Superseded below:** the directory tree (`core/services/gemma_service.dart`,
+`cubit/` folder — now `lib/core/services/gemma/` with `i_gemma_service.dart`, and
+`vegapunk_chat/bloc/`), the `GemmaService` API (`ensureModelReady`,
+`createVegapunkSession`, `GemmaChatSession`, `GemmaIdle`), `MediaPipeEngine` and
+`ModelType.custom`, `maxTokens: 2048`, the cubit states and methods, the
+repository API, the route path (current: `/vegapunkChat`, private), the DI snippets
+(current: `IGemmaService`/`IVegapunkChatRepository` in `core_module.dart`), the
+`main.dart` init snippet (current: `LiteRtLmEngine` only, plus embedding backend and
+vector store), per-token emits (current: 80 ms batches), the pubspec block (current:
+no mediapipe; `flutter_gemma_embeddings` and `flutter_gemma_rag_sqlite` added), the
+Podfile static linking (current: dynamic, `platform :ios, '16.0'`), the Qwen3 0.6B /
+SmolLM assumptions in the risk register, and the "single chat, no tools, no RAG"
+scope. The iOS entitlement (`increased-memory-limit` only) still matches.
+
+---
+
 ## Data Flow
 
 ```

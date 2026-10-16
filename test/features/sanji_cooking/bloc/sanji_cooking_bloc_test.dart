@@ -7,7 +7,7 @@ import 'package:opfan/core/services/nutrition/i_nutrition_calculation_service.da
 import 'package:opfan/core/services/workout/i_workout_assessment_service.dart';
 import 'package:opfan/features/sanji_cooking/bloc/index.dart';
 import 'package:opfan/features/sanji_cooking/data/models/nutrition_calculation_model.dart';
-import 'package:opfan/features/sanji_cooking/data/repository/cooking_repository_interface.dart';
+import 'package:opfan/features/sanji_cooking/data/repository/i_cooking_repository.dart';
 
 class _MockWorkoutAssessmentService extends Mock
     implements IWorkoutAssessmentService {}

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:opfan/features/sanji_cooking/presentation/cooking_tips_screen.dart';
 import 'package:opfan/features/sanji_cooking/presentation/sanji_cooking_screen.dart';
-import 'package:opfan/features/sanji_cooking/presentation/widgets/plate_guide_screen.dart';
+import 'package:opfan/features/sanji_cooking/presentation/plate_guide_screen.dart';
 import 'package:opfan/shared/utils/feature_route_module.dart';
 import 'package:opfan/shared/utils/transitions/material_page_route_without_transition.dart';
 

@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:opfan/core/auth/models/user_model.dart';
-import 'package:opfan/features/sanji_cooking/data/repository/cooking_repository_interface.dart';
+import 'package:opfan/features/sanji_cooking/data/repository/i_cooking_repository.dart';
 import 'package:opfan/core/services/index.dart';
 import 'sanji_cooking_event.dart';
 import 'sanji_cooking_state.dart';

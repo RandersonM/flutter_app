@@ -146,7 +146,7 @@ relevant one up front when planning work that spans several areas.
 | Hive type ids | A collision corrupts local data silently on upgrade. Guarded by `test/core/storage/hive_type_ids_test.dart`. |
 | `GemmaService._recreateChat` | Any model reload closes **every** chat session, Nami's included. |
 | `RagStoreCoordinator` | One global vector store; clearing wipes everything; no per-doc delete. |
-| `AuthBloc` | Global singleton with stream subscriptions; `AuthStarted` is dispatched from DI and `AppWrapper`. |
+| `AuthBloc` | Global singleton with stream subscriptions; `AuthStarted` is dispatched only from `AppWrapper`. |
 | `core_module.dart` | All service wiring in one place; watch registration order and cycles. |
 | `NavigationService` | Owns the only `navigatorKey`; always `getIt<INavigationService>()`. |
 | `firestore.rules` | Several collections are open to any signed-in user — see `.claude/rules/firebase.md` before relying on rules for security. |

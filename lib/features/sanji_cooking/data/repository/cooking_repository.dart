@@ -1,6 +1,6 @@
 import 'package:opfan/core/ai/prompts/index.dart';
 import 'package:opfan/core/services/index.dart';
-import 'package:opfan/features/sanji_cooking/data/repository/cooking_repository_interface.dart';
+import 'package:opfan/features/sanji_cooking/data/repository/i_cooking_repository.dart';
 
 class CookingRepository implements ICookingRepository {
   CookingRepository({

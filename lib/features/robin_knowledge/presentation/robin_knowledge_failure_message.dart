@@ -1,4 +1,4 @@
-import 'package:opfan/features/robin_knowledge/bloc/robin_knowledge_bloc.dart';
+import 'package:opfan/features/robin_knowledge/bloc/index.dart';
 import 'package:opfan/l10n/app_localizations.dart';
 
 String robinKnowledgeFailureMessage(

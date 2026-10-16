@@ -2,10 +2,10 @@ import 'package:bloc_test/bloc_test.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:opfan/features/crews/data/models/crew_model.dart';
-import 'package:opfan/features/crews/data/repository/crew_repository_interface.dart';
+import 'package:opfan/features/crews/data/repository/i_crew_repository.dart';
 import 'package:opfan/features/custom_character/bloc/index.dart';
 import 'package:opfan/features/custom_character/data/models/custom_character_model.dart';
-import 'package:opfan/features/custom_character/data/repository/custom_character_repository_interface.dart';
+import 'package:opfan/features/custom_character/data/repository/i_custom_character_repository.dart';
 
 class _MockCustomCharacterRepository extends Mock
     implements ICustomCharacterRepository {}

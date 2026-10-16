@@ -2,7 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:opfan/core/services/one_piece/i_devil_fruit_service.dart';
 import 'package:opfan/features/crews/data/models/crew_model.dart';
-import 'package:opfan/features/crews/data/repository/crew_repository_interface.dart';
+import 'package:opfan/features/crews/data/repository/i_crew_repository.dart';
 import 'package:opfan/features/devil_fruit/data/models/devil_fruit.dart';
 
 import 'character_form_options_state.dart';

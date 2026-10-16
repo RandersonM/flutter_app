@@ -2,9 +2,9 @@ import 'package:bloc_test/bloc_test.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:opfan/features/custom_character/data/models/custom_character_model.dart';
-import 'package:opfan/features/custom_character/data/repository/custom_character_repository_interface.dart';
+import 'package:opfan/features/custom_character/data/repository/i_custom_character_repository.dart';
 import 'package:opfan/features/duels/bloc/index.dart';
-import 'package:opfan/features/home/data/repository/featured_character_repository_interface.dart';
+import 'package:opfan/features/home/data/repository/i_featured_character_repository.dart';
 
 class _MockFeaturedCharacterRepository extends Mock
     implements IFeaturedCharacterRepository {}

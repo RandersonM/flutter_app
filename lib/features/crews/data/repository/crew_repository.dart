@@ -2,7 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'package:opfan/core/errors/app_exceptions.dart';
 import 'package:opfan/features/crews/data/models/crew_model.dart';
 import 'package:opfan/core/services/index.dart';
-import 'package:opfan/features/crews/data/repository/crew_repository_interface.dart';
+import 'package:opfan/features/crews/data/repository/i_crew_repository.dart';
 
 class CrewRepository implements ICrewRepository {
   CrewRepository({required this._firestoreService});

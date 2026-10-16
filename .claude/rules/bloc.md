@@ -98,4 +98,4 @@ fine (`VegapunkChatReady.activeToolName`).
 - Runtime args → `registerFactoryParam`. App-wide singletons are the exception
   and belong in `core_module.dart` / their own module.
 - Golden examples: `lib/features/crews/bloc/list_crews_bloc.dart` (+ event/state),
-  `lib/features/home/bloc/home_state.dart`, `lib/features/vegapunk_chat/cubit/vegapunk_chat_cubit.dart`.
+  `lib/features/home/bloc/home_state.dart`, `lib/features/vegapunk_chat/bloc/vegapunk_chat_cubit.dart`.

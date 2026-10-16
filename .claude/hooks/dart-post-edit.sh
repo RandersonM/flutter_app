@@ -104,6 +104,23 @@ case "$rel" in
       'Hardcoded user-facing text. Add the key to lib/l10n/intl_en.arb AND intl_pt.arb and use AppLocalizations.of(context)! (.claude/rules/i18n.md).'
     flag "(hintText|labelText|helperText|errorText|tooltip|semanticLabel|semanticsLabel|title|subtitle|message|content)[[:space:]]*:[[:space:]]*['\"][^'\"\$]*[A-Za-zÀ-ÿ]" \
       'Hardcoded user-facing text in a widget property. Use an ARB key (.claude/rules/i18n.md).'
+    # The two patterns above miss ternaries (`Text(a ? 'X' : 'Y')`), literals on
+    # their own line and validator returns, so also flag any literal that reads
+    # like prose (two words) once interpolations are stripped.
+    prose=$(printf '%s\n' "$added" | perl -CSD -e '
+      use utf8;
+      while (my $line = <STDIN>) {
+        next if $line =~ /debugPrint|\bprint\(|\blog\(|assert\(|^\s*(import|export|part)\s|Key\(|RegExp\(|DateFormat|throw\s|Exception\(|Error\(/;
+        while ($line =~ /([\x27"])((?:\\.|(?!\1).)*)\1/g) {
+          my $text = $2;
+          $text =~ s/\$\{(?:[^{}]|\{[^{}]*\})*\}|\$\w+//g;
+          next if $text =~ m{https?://|[dMyHhms]{2,}[/:.\-][dMyHhms]};
+          if ($text =~ /\p{L}{2,}[\p{L}.\x27]*\s+\p{L}{2,}/) { print $line; last; }
+        }
+      }' | head -3)
+    if [ -n "$prose" ]; then
+      violations+="- Hardcoded user-facing text (a string literal that reads like prose). Use an ARB key (.claude/rules/i18n.md). Proper nouns may carry // harness:allow proper noun."$'\n'"$(printf '%s\n' "$prose" | sed 's/^[[:space:]]*/      /')"$'\n'
+    fi
     flag 'getIt<I[A-Za-z0-9_]*(Repository|Service)>|getIt\.[a-z][A-Za-z0-9_]*(Repository|Service)\b' \
       'Widgets do not call repositories/services. Go through a BLoC/Cubit (.claude/rules/ui.md).'
     flag 'FirebaseAuth\.instance|FirebaseFirestore\.instance' \

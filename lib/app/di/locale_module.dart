@@ -1,5 +1,5 @@
 import 'package:get_it/get_it.dart';
-import 'package:opfan/core/locale/cubit/locale_cubit.dart';
+import 'package:opfan/core/locale/bloc/locale_cubit.dart';
 import 'package:opfan/core/services/index.dart';
 
 void registerLocaleModule(GetIt getIt) {

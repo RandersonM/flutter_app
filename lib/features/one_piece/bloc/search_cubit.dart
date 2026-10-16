@@ -4,7 +4,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:opfan/features/custom_character/data/models/custom_character_model.dart';
-import 'package:opfan/features/home/data/repository/featured_character_repository_interface.dart';
+import 'package:opfan/features/home/data/repository/i_featured_character_repository.dart';
 
 abstract class SearchState extends Equatable {
   const SearchState();

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:opfan/features/devil_fruit/presentation/devil_fruit_list.dart';
+import 'package:opfan/features/devil_fruit/presentation/devil_fruit_list_screen.dart';
 import 'package:opfan/shared/utils/feature_route_module.dart';
 
 class DevilFruitRoutes implements FeatureRouteModule {

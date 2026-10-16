@@ -296,9 +296,7 @@ class _CreateCustomCharacterScreenState
             : null,
       );
 
-      debugPrint(
-        'CreateCharacter: Character birth date: ${newCharacter.birthDate}',
-      );
+      debugPrint('CreateCharacter: birth date ${newCharacter.birthDate}');
       debugPrint('CreateCharacter: Character age: ${newCharacter.age}');
       debugPrint('CreateCharacter: Character signo: ${newCharacter.signo}');
 

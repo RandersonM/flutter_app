@@ -35,6 +35,8 @@ and the ARBs.
 - **A character belongs to at most one of the user's crews.** Adding a member also
   writes `character.crew = crew.name`.
 - Crew name ≥ 3 characters. `captain`/`viceCaptain` store names, not ids.
+- Firestore rule: any signed-in user can read crews (public listing); only the owner
+  (`userId`, legacy `ownerId`) can update or delete one (`firebase.md`).
 - Images come from `ICrewImageService` (Gemini) with a placeholder fallback.
 - BLoCs: `ListCrewsBloc`, `CrewDetailsBloc` (`registerFactoryParam` with the crew;
   owns delete / add member / ownership via `IAuthService`), `CreateCrewBloc`

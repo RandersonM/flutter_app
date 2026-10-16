@@ -3,7 +3,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:opfan/features/crews/bloc/index.dart';
 import 'package:opfan/features/crews/data/models/crew_model.dart';
-import 'package:opfan/features/crews/data/repository/crew_repository_interface.dart';
+import 'package:opfan/features/crews/data/repository/i_crew_repository.dart';
 
 class _MockCrewRepository extends Mock implements ICrewRepository {}
 

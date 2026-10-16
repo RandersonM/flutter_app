@@ -1,4 +1,5 @@
-part of 'robin_knowledge_bloc.dart';
+import 'package:equatable/equatable.dart';
+import 'package:opfan/features/robin_knowledge/data/models/goal_model.dart';
 
 abstract class RobinKnowledgeEvent extends Equatable {
   const RobinKnowledgeEvent();

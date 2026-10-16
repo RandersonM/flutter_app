@@ -13,34 +13,44 @@ paths:
 
 ## Collections
 
-| Collection | Owner field | Used by | Notes |
+| Collection | Owner field | Used by | Rule (`firestore.rules`) |
 |---|---|---|---|
-| `users/{uid}` | doc id | `UserProfileRepository` | body profile, snake_case |
-| `crews` | `userId` | crews | open rule (see below) |
-| `custom_characters` | `userId` | custom_character, duels | strict owner-only rule |
-| `featuredCharacters` | — | home, one_piece | global canon catalog, public read |
-| `planner` | `userId` | robin_knowledge | open rule |
-| `workout_assessments` | `user_id` | zoro_workout, sanji_cooking | one doc per user per month (`month_year`) |
-| `user_tokens` | — | FCM / functions | **no rule** — client writes are denied |
+| `users/{uid}` | doc id | `UserProfileRepository` | owner only; body profile, snake_case |
+| `user_tokens/{uid}` | doc id | `NotificationService` → functions | owner only (functions use the Admin SDK) |
+| `crews` | `userId` (legacy `ownerId`) | crews | **read: any signed-in user**; create/update/delete: owner |
+| `custom_characters` | `userId` | custom_character, duels | owner only |
+| `planner` | `userId` | robin_knowledge | owner only |
+| `workout_assessments` | `user_id` | zoro_workout, sanji_cooking | owner only; one doc per user per month (`month_year`) |
+| `featuredCharacters` | — | home, one_piece | public read, no client writes (seeded with the Admin SDK) |
 
-`formData`, `onePieceCharacters`, `devilFruits`, `duels`, `userSettings`,
-`userFavorites`, `userActivity` have rules but no client code. Nami finances are
-Hive-only — never add a Firestore collection for them without a spec.
+Any other collection has no `match` block and is denied to clients. Nami finances
+are Hive-only — never add a Firestore collection for them without a spec.
 
 ## Security rules — current state
 
-- Helpers: `isAuthenticated()`, `isOwner(uid)`, `isDocumentOwner()`
-  (`resource.data.userId == request.auth.uid`).
-- **Known hole:** `crews`, `planner`, `formData`, `duels`, `userSettings`,
-  `userFavorites`, `userActivity` include `allow read, write: if isAuthenticated()`.
-  Rules OR together, so that line overrides the stricter create/update rules: any
-  signed-in user can edit or delete another user's crew or goals. Client-side
-  ownership checks in the crews screens do not protect data.
-- Any new collection: owner-scoped `read`, `create` (with
-  `request.resource.data.userId == request.auth.uid`), `update`, `delete` — never a
-  blanket `allow read, write`.
-- Do not change rules for existing collections without telling the user: tightening
-  `crews` breaks "list all crews" and `DuelsBloc`'s unfiltered character query.
+Owner-scoped since #25. Helpers in `firestore.rules`:
+
+- `isSignedIn()` — `request.auth != null`.
+- `isOwner(userId)` — signed in and `request.auth.uid == userId`.
+- `createsOwn()` — `isOwner(request.resource.data.userId)`: a create must stamp the
+  caller's uid (`IFirestoreService.createUserDocument` does this).
+- `keepsUserId()` — an update cannot change `userId`.
+- `crewOwner(data)` — `userId`, falling back to `ownerId` for crews created before
+  `userId` existed.
+
+Per collection: `read`/`delete` require `isOwner(resource.data.userId)`, `create`
+requires `createsOwn()`, `update` requires owner + `keepsUserId()`.
+`workout_assessments` applies the same pattern to `user_id`. `crews` is the one
+deliberate exception: `allow read: if isSignedIn()` (public showcase for "list all
+crews"), while update/delete use `crewOwner` and an update cannot change the owner.
+
+- An unfiltered query over an owner-only collection is denied as a whole — e.g.
+  `getAllCustomCharacters()` in Duels (see `domains/crews-characters-duels.md`).
+  Query with `where('userId', isEqualTo: uid)` (`getUserDocuments`).
+- Any new collection: add a `match` block with the same owner-scoped
+  `read`/`create`/`update`/`delete` — never a blanket `allow read, write`.
+- Do not loosen or tighten rules for existing collections without telling the user;
+  rules changes need `firebase deploy --only firestore:rules` to take effect.
 
 ## Cloud Functions (`functions/src/index.ts`)
 

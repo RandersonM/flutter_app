@@ -4,7 +4,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/foundation.dart';
 import 'package:opfan/core/auth/models/user_model.dart';
-import 'package:opfan/core/user_profile/repository/user_profile_repository_interface.dart';
+import 'package:opfan/core/user_profile/repository/i_user_profile_repository.dart';
 
 /// Firestore implementation of [IUserProfileRepository].
 ///

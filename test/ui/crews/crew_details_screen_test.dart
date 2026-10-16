@@ -6,10 +6,10 @@ import 'package:opfan/core/auth/models/user_model.dart';
 import 'package:opfan/core/services/auth_db/i_auth_service.dart';
 import 'package:opfan/features/crews/bloc/index.dart';
 import 'package:opfan/features/crews/data/models/crew_model.dart';
-import 'package:opfan/features/crews/data/repository/crew_repository_interface.dart';
+import 'package:opfan/features/crews/data/repository/i_crew_repository.dart';
 import 'package:opfan/features/crews/presentation/crew_details_screen.dart';
 import 'package:opfan/features/custom_character/data/models/custom_character_model.dart';
-import 'package:opfan/features/custom_character/data/repository/custom_character_repository_interface.dart';
+import 'package:opfan/features/custom_character/data/repository/i_custom_character_repository.dart';
 import 'package:phosphoricons_flutter/phosphoricons_flutter.dart';
 
 import '../../testable_widget.dart';

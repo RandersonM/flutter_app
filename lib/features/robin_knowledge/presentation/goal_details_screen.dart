@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:opfan/features/robin_knowledge/data/models/goal_model.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:opfan/features/robin_knowledge/bloc/robin_knowledge_bloc.dart';
+import 'package:opfan/features/robin_knowledge/bloc/index.dart';
 import 'package:opfan/features/robin_knowledge/presentation/goal_colors.dart';
 import 'package:opfan/features/robin_knowledge/presentation/widgets/update_progress_dialog.dart';
 import 'package:opfan/shared/widgets/molecules/default_app_bar.dart';

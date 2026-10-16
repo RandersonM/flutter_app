@@ -5,8 +5,9 @@ import 'dart:math';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:opfan/features/custom_character/data/models/custom_character_model.dart';
-import 'package:opfan/features/home/data/repository/featured_character_repository_interface.dart';
-import 'package:opfan/features/custom_character/data/repository/custom_character_repository_interface.dart';
+import 'package:opfan/features/home/data/repository/i_featured_character_repository.dart';
+import 'package:opfan/features/custom_character/data/repository/i_custom_character_repository.dart';
+import 'duel_scoring.dart';
 import 'duels_event.dart';
 import 'duels_state.dart';
 
@@ -118,9 +119,11 @@ class DuelsBloc extends Bloc<DuelsEvent, DuelsState> {
 
       await Future.delayed(const Duration(seconds: 2));
 
-      final winner = _determineWinner(
+      final winner = DuelScoring.winner(
         currentState.firstCharacter!,
         currentState.secondCharacter!,
+        roll1: _random.nextInt(DuelScoring.rollRange),
+        roll2: _random.nextInt(DuelScoring.rollRange),
       );
 
       emit(currentState.copyWith(isDuelInProgress: false, winner: winner));
@@ -163,144 +166,5 @@ class DuelsBloc extends Bloc<DuelsEvent, DuelsState> {
         );
       }
     }
-  }
-
-  CustomCharacterModel _determineWinner(
-    CustomCharacterModel character1,
-    CustomCharacterModel character2,
-  ) {
-    int score1 = _calculateCharacterScore(character1);
-    int score2 = _calculateCharacterScore(character2);
-
-    score1 += _calculateStrategicBonus(character1, character2);
-    score2 += _calculateStrategicBonus(character2, character1);
-
-    score1 += _random.nextInt(80);
-    score2 += _random.nextInt(80);
-
-    return score1 >= score2 ? character1 : character2;
-  }
-
-  int _calculateCharacterScore(CustomCharacterModel character) {
-    int score = 0;
-
-    if (character.haki != null) {
-      for (final hakiType in character.haki!) {
-        final normalizedHaki = hakiType.toLowerCase();
-
-        if (normalizedHaki.contains('haoshoku') ||
-            normalizedHaki.contains('king')) {
-          score += 50;
-        }
-
-        if (normalizedHaki.contains('busoshoku') ||
-            normalizedHaki.contains('armament')) {
-          score += 40;
-        }
-
-        if (normalizedHaki.contains('kenbunshoku') ||
-            normalizedHaki.contains('observation')) {
-          score += 30;
-        }
-      }
-    }
-
-    if (character.devilFruit != null && character.devilFruit!.isNotEmpty) {
-      score += 25;
-    }
-
-    final importantAffiliations = [
-      'yonkou',
-      'admiral',
-      'shichibukai',
-      'four emperors',
-    ];
-    for (final affiliation in character.affiliations) {
-      if (importantAffiliations.any(
-        (important) => affiliation.toLowerCase().contains(important),
-      )) {
-        score += 30;
-      }
-    }
-
-    if (character.fightingStyle != null) {
-      final fightingType = character.fightingStyle!.type.toLowerCase();
-      switch (fightingType) {
-        case 'swordsman':
-          score += 20;
-          break;
-        case 'martial_arts':
-          score += 15;
-          break;
-        default:
-          score += 10;
-      }
-    }
-
-    return score;
-  }
-
-  int _calculateStrategicBonus(
-    CustomCharacterModel attacker,
-    CustomCharacterModel defender,
-  ) {
-    int bonus = 0;
-
-    if (attacker.haki != null &&
-        defender.devilFruit != null &&
-        defender.devilFruit!.isNotEmpty) {
-      for (final hakiType in attacker.haki!) {
-        if (hakiType.toLowerCase().contains('busoshoku') ||
-            hakiType.toLowerCase().contains('armament')) {
-          bonus += 20;
-          break;
-        }
-      }
-    }
-
-    if (attacker.haki != null &&
-        (defender.fightingStyle?.type == 'martial_arts' ||
-            defender.fightingStyle?.type == 'swordsman')) {
-      for (final hakiType in attacker.haki!) {
-        if (hakiType.toLowerCase().contains('kenbunshoku') ||
-            hakiType.toLowerCase().contains('observation')) {
-          bonus += 10;
-          break;
-        }
-      }
-    }
-
-    bool attackerHasKingsHaki =
-        attacker.haki?.any(
-          (h) =>
-              h.toLowerCase().contains('haoshoku') ||
-              h.toLowerCase().contains('king'),
-        ) ??
-        false;
-    bool defenderHasKingsHaki =
-        defender.haki?.any(
-          (h) =>
-              h.toLowerCase().contains('haoshoku') ||
-              h.toLowerCase().contains('king'),
-        ) ??
-        false;
-
-    if (attackerHasKingsHaki && !defenderHasKingsHaki) {
-      bonus += 20;
-    }
-
-    if (attacker.devilFruit != null &&
-        attacker.devilFruit!.isNotEmpty &&
-        defender.haki != null) {
-      for (final hakiType in defender.haki!) {
-        if (hakiType.toLowerCase().contains('busoshoku') ||
-            hakiType.toLowerCase().contains('armament')) {
-          bonus -= 20;
-          break;
-        }
-      }
-    }
-
-    return bonus;
   }
 }
