@@ -69,7 +69,12 @@ void main() async {
     const SystemUiOverlayStyle(statusBarColor: Colors.transparent),
   );
 
-  runApp(const GlobalErrorBoundary(child: MyApp()));
+  runApp(
+    GlobalErrorBoundary(
+      onGoHome: () => getIt<INavigationService>().popToFirst(),
+      child: const MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {
