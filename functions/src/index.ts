@@ -5,6 +5,8 @@ import * as admin from "firebase-admin";
 // Initialize Firebase Admin SDK
 admin.initializeApp();
 
+export {geminiGenerateImage, geminiGenerateText, webSearch} from "./ai_proxy.js";
+
 // References for Firestore and Firebase Messaging
 const db = admin.firestore();
 const messaging = admin.messaging();
