@@ -151,7 +151,7 @@ class TimelineHeader extends StatelessWidget {
         onSelected: (selected) {
           // TODO: Implementar filtro
         },
-        backgroundColor: Colors.grey[200],
+        backgroundColor: Theme.of(context).colorScheme.surfaceContainerHigh,
         selectedColor: Theme.of(
           context,
         ).colorScheme.primary.withValues(alpha: 0.2),

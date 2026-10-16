@@ -6,7 +6,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:opfan/l10n/app_localizations.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:opfan/shared/utils/theme.dart';
 import '../../bloc/index.dart';
 import '../zoro_workout_failure_message.dart';
 import 'package:opfan/shared/utils/app_semantic_colors.dart';
@@ -174,14 +173,16 @@ class _WorkoutCalendarState extends State<WorkoutCalendar> {
                   ? Theme.of(context).colorScheme.primary.withValues(alpha: 0.1)
                   : isEditable
                   ? Colors.transparent
-                  : AppColors.grey[700]!,
+                  : Theme.of(
+                      context,
+                    ).colorScheme.onSurface.withValues(alpha: 0.12),
               borderRadius: BorderRadius.circular(6),
               border: Border.all(
                 color: isToday
                     ? Theme.of(context).colorScheme.primary
                     : isEditable
-                    ? AppColors.grey[300]!
-                    : AppColors.grey[200]!,
+                    ? Theme.of(context).colorScheme.outline
+                    : Theme.of(context).colorScheme.outlineVariant,
                 width: isToday ? 2 : 1,
               ),
             ),
@@ -199,7 +200,9 @@ class _WorkoutCalendarState extends State<WorkoutCalendar> {
                           ? Theme.of(context).colorScheme.primary
                           : isEditable
                           ? Theme.of(context).colorScheme.onSecondary
-                          : Colors.grey.shade400,
+                          : Theme.of(
+                              context,
+                            ).colorScheme.onSurface.withValues(alpha: 0.38),
                     ),
             ),
           ),
@@ -229,7 +232,7 @@ class _WorkoutCalendarState extends State<WorkoutCalendar> {
                         textAlign: TextAlign.center,
                         style: Theme.of(context).textTheme.bodySmall?.copyWith(
                           fontWeight: FontWeight.bold,
-                          color: Colors.grey.shade600,
+                          color: Theme.of(context).colorScheme.onSurfaceVariant,
                           fontSize: 10,
                         ),
                       ),

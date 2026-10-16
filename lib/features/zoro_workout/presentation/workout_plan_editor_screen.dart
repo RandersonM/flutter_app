@@ -237,14 +237,14 @@ class _WorkoutPlanEditorScreenState extends State<WorkoutPlanEditorScreen> {
         floatingActionButton: FloatingActionButton.extended(
           onPressed: _saving ? null : _save,
           backgroundColor: primary,
-          foregroundColor: Colors.white,
+          foregroundColor: Theme.of(context).colorScheme.onPrimary,
           icon: _saving
-              ? const SizedBox(
+              ? SizedBox(
                   width: 18,
                   height: 18,
                   child: CircularProgressIndicator(
                     strokeWidth: 2,
-                    color: Colors.white,
+                    color: Theme.of(context).colorScheme.onPrimary,
                   ),
                 )
               : const AppIcon(PhosphorIconsRegular.check),
@@ -334,8 +334,8 @@ class _SplitCard extends StatelessWidget {
                   ),
                   child: Text(
                     String.fromCharCode('A'.codeUnitAt(0) + splitIndex),
-                    style: const TextStyle(
-                      color: Colors.white,
+                    style: TextStyle(
+                      color: Theme.of(context).colorScheme.onPrimary,
                       fontWeight: FontWeight.bold,
                       fontSize: 16,
                     ),

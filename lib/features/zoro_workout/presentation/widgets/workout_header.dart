@@ -45,9 +45,14 @@ class WorkoutHeader extends StatelessWidget {
     final statusColor = isDefeated
         ? Theme.of(context).colorScheme.error
         : Theme.of(context).semanticColors.success;
+    final onStatusColor = isDefeated
+        ? Theme.of(context).colorScheme.onError
+        : Theme.of(context).semanticColors.onSuccess;
     final statusLabel = isDefeated
         ? AppLocalizations.of(context)!.workoutStatusDefeated
         : AppLocalizations.of(context)!.workoutStatusOnTarget;
+
+    const gifShade = Colors.black; // harness:allow decorative, over GIF
 
     return Stack(
       children: [
@@ -78,10 +83,7 @@ class WorkoutHeader extends StatelessWidget {
               gradient: LinearGradient(
                 begin: Alignment.topCenter,
                 end: Alignment.bottomCenter,
-                colors: [
-                  Colors.transparent,
-                  Colors.black.withValues(alpha: 0.7),
-                ],
+                colors: [Colors.transparent, gifShade.withValues(alpha: 0.7)],
               ),
             ),
           ),
@@ -105,8 +107,8 @@ class WorkoutHeader extends StatelessWidget {
             ),
             child: Text(
               statusLabel,
-              style: const TextStyle(
-                color: Colors.white,
+              style: TextStyle(
+                color: onStatusColor,
                 fontWeight: FontWeight.bold,
                 fontSize: 13,
               ),
