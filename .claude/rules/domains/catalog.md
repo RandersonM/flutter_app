@@ -25,7 +25,8 @@ and AMV videos. All routes here are public.
   to the full list. "Straw Hat" is special-cased.
 - Routes: `/onePiece`, `/characterDetails` (arg `CustomCharacterModel`).
 - Debt: no data/ folder; `hasMoreData` is just `_characters.isEmpty`; a hardcoded
-  1 s delay; `character_selection_grid.dart` calls `getIt<SearchCubit>()` directly.
+  1 s delay. `CharacterSelectionGrid` owns a private `SearchCubit` (from
+  `BlocProvider(create:)`) so its query never leaks into the app-wide search.
 
 ## devil_fruit — encyclopedia
 
