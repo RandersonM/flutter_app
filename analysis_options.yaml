@@ -31,4 +31,5 @@ linter:
 analyzer:
   exclude:
     - "build/**"
+    - "tool/firestore_rules_test/node_modules/**"
     - lib/core/one_piece/models/character.g.dart
