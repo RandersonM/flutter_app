@@ -1,5 +1,6 @@
 export 'auth_db/index.dart';
 export 'config/index.dart';
+export 'connectivity/index.dart';
 export 'finances/index.dart';
 export 'gemini/index.dart';
 export 'gemma/index.dart';

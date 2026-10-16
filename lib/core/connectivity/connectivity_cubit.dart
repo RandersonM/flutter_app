@@ -1,55 +1,43 @@
 import 'dart:async';
 
-import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:opfan/core/services/connectivity/i_connectivity_service.dart';
 
 import 'connectivity_state.dart';
 
-/// Global singleton Cubit that tracks network connectivity.
+/// Global singleton Cubit that tracks network connectivity for the UI.
 ///
 /// Uses a 1500ms debounce to avoid flicker when the device rapidly switches
 /// between online/offline states (e.g., switching Wi-Fi networks).
-///
-/// Register via GetIt:
-/// ```dart
-/// getIt.registerSingleton<ConnectivityCubit>(ConnectivityCubit());
-/// ```
 class ConnectivityCubit extends Cubit<ConnectivityState> {
-  ConnectivityCubit() : super(const ConnectivityOnline()) {
+  ConnectivityCubit({required this._connectivityService})
+    : super(const ConnectivityOnline()) {
     _init();
   }
 
-  StreamSubscription<List<ConnectivityResult>>? _subscription;
+  final IConnectivityService _connectivityService;
+  StreamSubscription<bool>? _subscription;
   Timer? _debounce;
 
   static const _debounceDuration = Duration(milliseconds: 1500);
 
   void _init() {
-    // Subscribe to connectivity changes
-    _subscription = Connectivity().onConnectivityChanged.listen(
+    _subscription = _connectivityService.onStatusChanged.listen(
       _onConnectivityChanged,
     );
 
-    // Check initial state without debounce
-    Connectivity().checkConnectivity().then((results) {
-      final isOnline = results.any((r) => r != ConnectivityResult.none);
-      if (!isOnline) {
-        emit(const ConnectivityOffline());
-      }
+    // The first check skips the debounce so an offline start shows at once.
+    _connectivityService.isOnline().then((isOnline) {
+      if (!isOnline && !isClosed) emit(const ConnectivityOffline());
     });
   }
 
-  void _onConnectivityChanged(List<ConnectivityResult> results) {
+  void _onConnectivityChanged(bool isOnline) {
     _debounce?.cancel();
     _debounce = Timer(_debounceDuration, () {
-      final isOnline = results.any((r) => r != ConnectivityResult.none);
       debugPrint('ConnectivityCubit: ${isOnline ? "online" : "offline"}');
-      if (isOnline) {
-        emit(const ConnectivityOnline());
-      } else {
-        emit(const ConnectivityOffline());
-      }
+      emit(isOnline ? const ConnectivityOnline() : const ConnectivityOffline());
     });
   }
 

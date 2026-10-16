@@ -1,4 +1,5 @@
 import 'package:flutter/foundation.dart';
+import 'package:opfan/core/services/connectivity/i_connectivity_service.dart';
 import 'package:opfan/core/services/web_search/i_web_search_service.dart';
 
 import '../models/tool_call.dart';
@@ -11,16 +12,15 @@ import '../tool_handler.dart';
 /// ```json
 /// {"name": "searchInternet", "arguments": {"query": "..."}}
 /// ```
-import 'package:opfan/core/connectivity/connectivity_cubit.dart';
 
 class SearchInternetHandler extends ToolHandler {
   SearchInternetHandler({
     required this.webSearch,
-    required this.connectivityCubit,
+    required this.connectivityService,
   });
 
   final IWebSearchService webSearch;
-  final ConnectivityCubit connectivityCubit;
+  final IConnectivityService connectivityService;
 
   @override
   String get name => 'searchInternet';
@@ -68,7 +68,7 @@ class SearchInternetHandler extends ToolHandler {
       'SearchInternetHandler: searching for "$query" (topic: ${searchTopic.name})',
     );
 
-    if (!connectivityCubit.isOnline) {
+    if (!await connectivityService.isOnline()) {
       return ToolResult.error(
         toolName: name,
         reason:
