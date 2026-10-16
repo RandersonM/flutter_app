@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:opfan/shared/widgets/atoms/app_icon.dart';
 import 'package:phosphoricons_flutter/phosphoricons_flutter.dart';
 import 'package:flutter/material.dart';
@@ -19,6 +21,7 @@ class _WorkoutCalendarState extends State<WorkoutCalendar> {
   final Set<int> _workoutDays = <int>{};
   late DateTime _currentMonth;
   late ZoroWorkoutBloc _bloc;
+  StreamSubscription<ZoroWorkoutState>? _stateSub;
   final Map<String, List<int>> _monthlyWorkoutDays = {};
 
   @override
@@ -39,6 +42,12 @@ class _WorkoutCalendarState extends State<WorkoutCalendar> {
     } else {
       _bloc.add(const InitializeWorkoutAssessment());
     }
+  }
+
+  @override
+  void dispose() {
+    _stateSub?.cancel();
+    super.dispose();
   }
 
   void _loadAssessmentData(ZoroWorkoutLoaded state) {
@@ -62,7 +71,7 @@ class _WorkoutCalendarState extends State<WorkoutCalendar> {
   }
 
   void _loadWorkoutDays() {
-    _bloc.stream.listen((state) {
+    _stateSub = _bloc.stream.listen((state) {
       if (state is ZoroWorkoutLoaded) {
         _loadAssessmentData(state);
       } else if (state is ZoroWorkoutError) {

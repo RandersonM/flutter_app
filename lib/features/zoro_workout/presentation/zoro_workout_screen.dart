@@ -10,43 +10,49 @@ import 'package:opfan/shared/widgets/organisms/offline_blocker_overlay.dart';
 import 'package:opfan/features/zoro_workout/presentation/widgets/index.dart';
 import 'package:opfan/app/di/injection.dart';
 import 'package:opfan/features/zoro_workout/data/models/workout_assessment_model.dart';
-import 'package:opfan/core/services/index.dart';
+import 'package:opfan/core/auth/models/user_model.dart';
 import 'package:opfan/core/auth/blocs/index.dart';
 import '../bloc/index.dart';
 import 'workout_constants.dart';
 
-class WorkoutScreen extends StatefulWidget {
+class WorkoutScreen extends StatelessWidget {
   const WorkoutScreen({super.key});
 
   @override
-  State<WorkoutScreen> createState() => _WorkoutScreenState();
+  Widget build(BuildContext context) {
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(
+          create: (_) =>
+              getIt<ZoroWorkoutBloc>()
+                ..add(const InitializeWorkoutAssessment()),
+        ),
+        BlocProvider.value(value: getIt<ConnectivityCubit>()),
+      ],
+      child: const _WorkoutView(),
+    );
+  }
 }
 
-class _WorkoutScreenState extends State<WorkoutScreen> {
+class _WorkoutView extends StatefulWidget {
+  const _WorkoutView();
+
+  @override
+  State<_WorkoutView> createState() => _WorkoutViewState();
+}
+
+class _WorkoutViewState extends State<_WorkoutView> {
   Map<String, dynamic>? _healthResults;
   List<Map<String, dynamic>> _recommendedExercises = [];
   bool _showResults = false;
   bool _isLoading = true;
   Map<String, dynamic>? _existingData;
   WorkoutAssessmentModel? _currentAssessment;
-  late final ZoroWorkoutBloc _bloc;
 
   @override
   void initState() {
     super.initState();
-    _bloc = getIt.zoroWorkoutBloc;
-    _initializeAssessment();
-  }
-
-  @override
-  void dispose() {
-    _bloc.close();
-    super.dispose();
-  }
-
-  Future<void> _initializeAssessment() async {
-    final user = getIt<IAuthService>().currentUser;
-
+    final user = _currentUser;
     if (user != null) {
       _existingData = {
         'age': user.age,
@@ -56,35 +62,38 @@ class _WorkoutScreenState extends State<WorkoutScreen> {
         'waist': user.waistCm,
       };
     }
+  }
 
-    _bloc.stream.listen((state) {
-      if (state is ZoroWorkoutLoading) {
-        setState(() {
-          _isLoading = true;
-        });
-      } else if (state is ZoroWorkoutLoaded) {
-        setState(() {
-          _isLoading = false;
-          _currentAssessment = state.currentAssessment;
-          if (state.hasCurrentAssessment && state.currentAssessment != null) {
-            final assessment = state.currentAssessment!;
-            if (assessment.workoutDaysGoal != null) {
-              _healthResults = assessment.toJson();
-              _recommendedExercises = _getRecommendedExercises(
-                assessment.toJson(),
-              );
-              _showResults = true;
-            }
+  UserModel? get _currentUser {
+    final authState = context.read<AuthBloc>().state;
+    return authState is AuthAuthenticated ? authState.user : null;
+  }
+
+  void _onBlocState(BuildContext context, ZoroWorkoutState state) {
+    if (state is ZoroWorkoutLoading) {
+      setState(() {
+        _isLoading = true;
+      });
+    } else if (state is ZoroWorkoutLoaded) {
+      setState(() {
+        _isLoading = false;
+        _currentAssessment = state.currentAssessment;
+        if (state.hasCurrentAssessment && state.currentAssessment != null) {
+          final assessment = state.currentAssessment!;
+          if (assessment.workoutDaysGoal != null) {
+            _healthResults = assessment.toJson();
+            _recommendedExercises = _getRecommendedExercises(
+              assessment.toJson(),
+            );
+            _showResults = true;
           }
-        });
-      } else if (state is ZoroWorkoutError) {
-        setState(() {
-          _isLoading = false;
-        });
-      }
-    });
-
-    _bloc.add(const InitializeWorkoutAssessment());
+        }
+      });
+    } else if (state is ZoroWorkoutError) {
+      setState(() {
+        _isLoading = false;
+      });
+    }
   }
 
   void _onCalculate(Map<String, dynamic> results) {
@@ -93,7 +102,7 @@ class _WorkoutScreenState extends State<WorkoutScreen> {
     });
 
     // Auto-save global profile when calculating
-    final user = getIt<IAuthService>().currentUser;
+    final user = _currentUser;
     if (user != null) {
       final updatedUser = user.copyWith(
         gender: results['gender'] as String?,
@@ -105,7 +114,9 @@ class _WorkoutScreenState extends State<WorkoutScreen> {
             results['activity_level'] as String? ?? user.activityLevel,
         goal: results['goal'] as String? ?? user.goal,
       );
-      getIt<AuthBloc>().add(AuthProfileBodyUpdated(updatedUser: updatedUser));
+      context.read<AuthBloc>().add(
+        AuthProfileBodyUpdated(updatedUser: updatedUser),
+      );
     }
 
     Future.delayed(const Duration(milliseconds: 800), () {
@@ -331,11 +342,8 @@ class _WorkoutScreenState extends State<WorkoutScreen> {
       bottomNavigationBar: const BottomNavigation(
         BottomNavigationPages.workout,
       ),
-      body: MultiBlocProvider(
-        providers: [
-          BlocProvider.value(value: _bloc),
-          BlocProvider.value(value: getIt<ConnectivityCubit>()),
-        ],
+      body: BlocListener<ZoroWorkoutBloc, ZoroWorkoutState>(
+        listener: _onBlocState,
         child: OfflineBlockerOverlay(
           child: Container(
             color: Theme.of(context).colorScheme.surface,
