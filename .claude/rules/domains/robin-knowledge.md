@@ -21,8 +21,9 @@ tags, notes}`
 
 - `updateGoalProgress` appends a timestamped note and **derives** status from
   progress — don't set status independently of progress.
-- Semantic status colours must come from `semanticColors` / `colorScheme.error`
-  (`goal_card.dart` still uses `AppColors.red/green` — debt).
+- Status and progress colours come from `goal_colors.dart` (`goalStatusColor`,
+  `goalProgressColor`: ≥75 success, ≥50 warning, else error); category colours are
+  the categorical `goalCategoryColor` palette.
 
 ## Debt
 
