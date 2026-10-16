@@ -7,7 +7,6 @@ import 'package:opfan/features/crews/data/models/crew_model.dart';
 import 'package:opfan/l10n/app_localizations.dart';
 import 'package:opfan/features/crews/bloc/index.dart';
 import 'package:opfan/shared/utils/app_routes.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 
 import 'package:opfan/shared/widgets/molecules/default_app_bar.dart';
 import 'package:opfan/shared/widgets/organisms/crew_list.dart';
@@ -76,7 +75,6 @@ class _ListCrewsScreenContentState extends State<_ListCrewsScreenContent>
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
-    final currentUser = FirebaseAuth.instance.currentUser;
 
     return Scaffold(
       appBar: DefaultAppBar(
@@ -105,8 +103,7 @@ class _ListCrewsScreenContentState extends State<_ListCrewsScreenContent>
               onCrewTap: (crew) => _onCrewTap(context, crew),
               onCrewEdit: (crew) => _onCrewEdit(context, crew),
               onCrewDelete: (crew) => _onCrewDelete(context, crew),
-              showEditDeleteButtons: (crew) =>
-                  _canEditCrew(crew, currentUser?.uid),
+              showEditDeleteButtons: (crew) => _canEditCrew(context, crew),
               isUserCrews: true,
               onSearch: (query) {
                 if (query.isEmpty) {
@@ -121,8 +118,7 @@ class _ListCrewsScreenContentState extends State<_ListCrewsScreenContent>
               onCrewTap: (crew) => _onCrewTap(context, crew),
               onCrewEdit: (crew) => _onCrewEdit(context, crew),
               onCrewDelete: (crew) => _onCrewDelete(context, crew),
-              showEditDeleteButtons: (crew) =>
-                  _canEditCrew(crew, currentUser?.uid),
+              showEditDeleteButtons: (crew) => _canEditCrew(context, crew),
               isUserCrews: false,
               onSearch: (query) {
                 if (query.isEmpty) {
@@ -138,8 +134,9 @@ class _ListCrewsScreenContentState extends State<_ListCrewsScreenContent>
     );
   }
 
-  bool _canEditCrew(CrewModel crew, String? currentUserId) {
-    return crew.userId == currentUserId;
+  bool _canEditCrew(BuildContext context, CrewModel crew) {
+    final state = context.read<ListCrewsBloc>().state;
+    return state is ListCrewsLoaded && state.canEdit(crew);
   }
 
   Future<void> _navigateToCreateCrew(BuildContext context) async {

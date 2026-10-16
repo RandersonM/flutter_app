@@ -14,11 +14,15 @@ class ListCrewsLoading extends ListCrewsState {}
 
 class ListCrewsLoaded extends ListCrewsState {
   final List<CrewModel> crews;
+  final String? currentUserId;
 
-  const ListCrewsLoaded(this.crews);
+  const ListCrewsLoaded(this.crews, {this.currentUserId});
+
+  bool canEdit(CrewModel crew) =>
+      currentUserId != null && crew.userId == currentUserId;
 
   @override
-  List<Object?> get props => [crews];
+  List<Object?> get props => [crews, currentUserId];
 }
 
 class ListCrewsError extends ListCrewsState {

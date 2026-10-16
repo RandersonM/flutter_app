@@ -897,20 +897,10 @@ class AppLocalizationsEn extends AppLocalizations {
       'Pirate flag generated successfully!';
 
   @override
-  String pirateFlagGenerationError(String error) {
-    return 'Error generating flag: $error';
-  }
-
-  @override
   String get generateBoatPrompt => 'Enter a prompt to generate the boat';
 
   @override
   String get boatGeneratedSuccess => 'Boat generated successfully!';
-
-  @override
-  String boatGenerationError(String error) {
-    return 'Error generating boat: $error';
-  }
 
   @override
   String get profilePhotoTapped => 'Profile photo tapped';
@@ -2011,18 +2001,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String get categories => 'Categories';
 
   @override
-  String get promptPirateFlag => 'Enter a prompt to generate the pirate flag';
-
-  @override
-  String get flagGeneratedSuccess => 'Pirate flag generated successfully!';
-
-  @override
-  String get promptShip => 'Enter a prompt to generate the ship';
-
-  @override
-  String get shipGeneratedSuccess => 'Ship generated successfully!';
-
-  @override
   String get createCrewTitle => 'Create Crew';
 
   @override
@@ -2236,16 +2214,6 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String errorPrefix(String error) {
     return 'Error: $error';
-  }
-
-  @override
-  String errorGeneratingFlag(String error) {
-    return 'Error generating flag: $error';
-  }
-
-  @override
-  String errorGeneratingShip(String error) {
-    return 'Error generating ship: $error';
   }
 
   @override

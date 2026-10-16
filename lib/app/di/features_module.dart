@@ -1,7 +1,9 @@
 import 'package:get_it/get_it.dart';
 import 'package:opfan/features/calculator/bloc/calculator_cubit.dart';
 import 'package:opfan/features/home/data/repository/featured_character_repository_interface.dart';
+import 'package:opfan/features/crews/data/models/crew_model.dart';
 import 'package:opfan/features/crews/data/repository/crew_repository_interface.dart';
+import 'package:opfan/features/custom_character/data/repository/custom_character_repository_interface.dart';
 import 'package:opfan/features/robin_knowledge/data/repository/planner_repository_interface.dart';
 import 'package:opfan/core/services/index.dart';
 import 'package:opfan/core/services/rag/i_rag_service.dart';
@@ -78,7 +80,26 @@ void registerFeaturesModule(GetIt getIt) {
   );
 
   getIt.registerFactory<ListCrewsBloc>(
-    () => ListCrewsBloc(crewRepository: getIt<ICrewRepository>()),
+    () => ListCrewsBloc(
+      crewRepository: getIt<ICrewRepository>(),
+      authService: getIt<IAuthService>(),
+    ),
+  );
+  getIt.registerFactoryParam<CrewDetailsBloc, CrewModel, void>(
+    (crew, _) => CrewDetailsBloc(
+      crew: crew,
+      crewRepository: getIt<ICrewRepository>(),
+      customCharacterRepository: getIt<ICustomCharacterRepository>(),
+      authService: getIt<IAuthService>(),
+    ),
+  );
+  // The edit screen seeds the cubit with the crew's current images.
+  getIt.registerFactoryParam<CrewImageCubit, CrewModel?, void>(
+    (crew, _) => CrewImageCubit(
+      crewImageService: getIt<ICrewImageService>(),
+      jollyRogerUrl: crew?.jollyRogerUrl,
+      boatUrl: crew?.boatImageUrl,
+    ),
   );
   getIt.registerFactory<EditCrewBloc>(
     () => EditCrewBloc(crewRepository: getIt<ICrewRepository>()),
@@ -147,6 +168,10 @@ extension FeaturesModuleExtensions on GetIt {
   HomeBloc get homeBloc => get<HomeBloc>();
   DevilFruitBloc get devilFruitBloc => get<DevilFruitBloc>();
   ListCrewsBloc get listCrewsBloc => get<ListCrewsBloc>();
+  CrewDetailsBloc crewDetailsBloc(CrewModel crew) =>
+      get<CrewDetailsBloc>(param1: crew);
+  CrewImageCubit crewImageCubit([CrewModel? crew]) =>
+      get<CrewImageCubit>(param1: crew);
   ZoroWorkoutBloc get zoroWorkoutBloc => get<ZoroWorkoutBloc>();
   SanjiCookingBloc get sanjiCookingBloc => get<SanjiCookingBloc>();
   RobinKnowledgeBloc get robinKnowledgeBloc => get<RobinKnowledgeBloc>();

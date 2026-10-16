@@ -4,14 +4,13 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:opfan/features/crews/data/models/crew_model.dart';
 import 'package:opfan/l10n/app_localizations.dart';
 import 'package:opfan/features/crews/bloc/index.dart';
-import 'package:opfan/shared/utils/app_semantic_colors.dart';
 import 'package:opfan/shared/widgets/atoms/app_icon.dart';
 import 'package:opfan/shared/widgets/molecules/default_app_bar.dart';
 import 'package:opfan/shared/widgets/organisms/form_actions.dart';
-import 'package:opfan/core/services/index.dart';
 import 'package:opfan/app/di/injection.dart';
 
 import 'widgets/crew_image_generator_section.dart';
+import 'widgets/crew_image_generators.dart';
 import 'widgets/crew_tags_editor.dart';
 
 class EditCrewScreen extends StatefulWidget {
@@ -27,16 +26,8 @@ class _EditCrewScreenState extends State<EditCrewScreen> {
   final _formKey = GlobalKey<FormState>();
   final _nameController = TextEditingController();
   final _descriptionController = TextEditingController();
-  final _jollyRogerPromptController = TextEditingController();
-  final _boatPromptController = TextEditingController();
   final _boatNameController = TextEditingController();
   List<String> _tags = [];
-
-  final ICrewImageService _crewImageService = getIt<ICrewImageService>();
-  String? _generatedJollyRogerUrl;
-  String? _generatedBoatUrl;
-  bool _isGeneratingJollyRoger = false;
-  bool _isGeneratingBoat = false;
 
   @override
   void initState() {
@@ -53,16 +44,12 @@ class _EditCrewScreenState extends State<EditCrewScreen> {
     _descriptionController.text = crew.description ?? '';
     _boatNameController.text = crew.boatName ?? '';
     _tags = List.from(crew.tags);
-    _generatedJollyRogerUrl = crew.jollyRogerUrl;
-    _generatedBoatUrl = crew.boatImageUrl;
   }
 
   @override
   void dispose() {
     _nameController.dispose();
     _descriptionController.dispose();
-    _jollyRogerPromptController.dispose();
-    _boatPromptController.dispose();
     _boatNameController.dispose();
     super.dispose();
   }
@@ -77,106 +64,20 @@ class _EditCrewScreenState extends State<EditCrewScreen> {
     setState(() => _tags.remove(tag));
   }
 
-  void _showSnack(String message, Color background) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text(message), backgroundColor: background),
-    );
-  }
-
-  /// Shared driver for both generators: validate the prompt, flip the busy
-  /// flag, call [generate], then report success or failure.
-  Future<void> _runGeneration({
-    required TextEditingController promptController,
-    required String emptyPromptMessage,
-    required String successMessage,
-    required String Function(Object error) errorMessage,
-    required ValueChanged<bool> setBusy,
-    required Future<String?> Function(String prompt) generate,
-    required ValueChanged<String?> onResult,
-  }) async {
-    final theme = Theme.of(context);
-    final prompt = promptController.text.trim();
-
-    if (prompt.isEmpty) {
-      _showSnack(emptyPromptMessage, theme.semanticColors.warning);
-      return;
-    }
-
-    setState(() => setBusy(true));
-
-    try {
-      final imageUrl = await generate(prompt);
-      if (!mounted) return;
-
-      setState(() {
-        onResult(imageUrl);
-        setBusy(false);
-      });
-
-      if (imageUrl != null) {
-        _showSnack(successMessage, theme.semanticColors.success);
-      }
-    } catch (e) {
-      if (!mounted) return;
-      setState(() => setBusy(false));
-      _showSnack(errorMessage(e), theme.colorScheme.error);
-    }
-  }
-
-  String _crewNameForPrompt(AppLocalizations loc) =>
-      _nameController.text.isNotEmpty
-      ? _nameController.text
-      : loc.defaultCrewName;
-
   String? get _descriptionOrNull =>
       _descriptionController.text.isEmpty ? null : _descriptionController.text;
-
-  Future<void> _generateJollyRoger() {
-    final loc = AppLocalizations.of(context)!;
-    return _runGeneration(
-      promptController: _jollyRogerPromptController,
-      emptyPromptMessage: loc.generatePirateFlagPrompt,
-      successMessage: loc.pirateFlagGeneratedSuccess,
-      errorMessage: (e) => loc.pirateFlagGenerationError(e.toString()),
-      setBusy: (busy) => _isGeneratingJollyRoger = busy,
-      generate: (prompt) => _crewImageService.generateJollyRogerImage(
-        crewName: _crewNameForPrompt(loc),
-        prompt: prompt,
-        tags: _tags,
-        description: _descriptionOrNull,
-      ),
-      onResult: (url) => _generatedJollyRogerUrl = url,
-    );
-  }
-
-  Future<void> _generateBoat() {
-    final loc = AppLocalizations.of(context)!;
-    return _runGeneration(
-      promptController: _boatPromptController,
-      emptyPromptMessage: loc.generateBoatPrompt,
-      successMessage: loc.boatGeneratedSuccess,
-      errorMessage: (e) => loc.boatGenerationError(e.toString()),
-      setBusy: (busy) => _isGeneratingBoat = busy,
-      generate: (prompt) => _crewImageService.generateBoatImage(
-        crewName: _crewNameForPrompt(loc),
-        prompt: prompt,
-        tags: _tags,
-        description: _descriptionOrNull,
-      ),
-      onResult: (url) => _generatedBoatUrl = url,
-    );
-  }
 
   void _submitForm(BuildContext context) {
     if (!_formKey.currentState!.validate()) return;
 
+    final images = context.read<CrewImageCubit>().state;
     context.read<EditCrewBloc>().add(
       EditCrewSubmitted(
         crewId: widget.crew.id!,
         name: _nameController.text,
         description: _descriptionOrNull,
-        jollyRogerUrl: _generatedJollyRogerUrl,
-        boatImageUrl: _generatedBoatUrl,
+        jollyRogerUrl: images.jollyRogerUrl,
+        boatImageUrl: images.boatUrl,
         tags: _tags,
         boatName: _boatNameController.text.isEmpty
             ? null
@@ -190,8 +91,11 @@ class _EditCrewScreenState extends State<EditCrewScreen> {
     final theme = Theme.of(context);
     final loc = AppLocalizations.of(context)!;
 
-    return BlocProvider(
-      create: (context) => getIt<EditCrewBloc>(),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(create: (_) => getIt<EditCrewBloc>()),
+        BlocProvider(create: (_) => getIt<CrewImageCubit>(param1: widget.crew)),
+      ],
       child: Builder(
         builder: (context) {
           return Scaffold(
@@ -238,29 +142,11 @@ class _EditCrewScreenState extends State<EditCrewScreen> {
                               onRemove: _removeTag,
                             ),
                             const SizedBox(height: 24),
-                            CrewImageGeneratorSection(
-                              icon: const AppIcon(PhosphorIconsRegular.flag),
-                              title: loc.pirateFlagLabel,
-                              promptController: _jollyRogerPromptController,
-                              promptHint: loc.flagPromptHint,
-                              generateLabel: loc.generateFlagLabel,
-                              isGenerating: _isGeneratingJollyRoger,
-                              onGenerate: _generateJollyRoger,
-                              imageUrl: _generatedJollyRogerUrl,
-                              previewTitle: loc.pirateFlagTitle,
-                            ),
-                            const SizedBox(height: 16),
-                            CrewImageGeneratorSection(
-                              icon: const AppIcon(PhosphorIconsRegular.boat),
-                              title: loc.crewShipLabel,
-                              promptController: _boatPromptController,
-                              promptHint: loc.boatPromptHint,
-                              generateLabel: loc.generateBoatLabel,
-                              isGenerating: _isGeneratingBoat,
-                              onGenerate: _generateBoat,
-                              imageUrl: _generatedBoatUrl,
-                              previewTitle: loc.crewBoatTitle,
-                              extraField: _BoatNameField(
+                            CrewImageGenerators(
+                              nameController: _nameController,
+                              descriptionController: _descriptionController,
+                              tags: _tags,
+                              boatNameField: _BoatNameField(
                                 controller: _boatNameController,
                               ),
                             ),

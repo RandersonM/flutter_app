@@ -1,12 +1,16 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:opfan/core/services/auth_db/i_auth_service.dart';
+import 'package:opfan/features/crews/data/models/crew_model.dart';
 import 'package:opfan/features/crews/data/repository/crew_repository_interface.dart';
 import 'list_crews_event.dart';
 import 'list_crews_state.dart';
 
 class ListCrewsBloc extends Bloc<ListCrewsEvent, ListCrewsState> {
   final ICrewRepository _crewRepository;
+  final IAuthService _authService;
 
-  ListCrewsBloc({required this._crewRepository}) : super(ListCrewsInitial()) {
+  ListCrewsBloc({required this._crewRepository, required this._authService})
+    : super(ListCrewsInitial()) {
     on<LoadCrews>(_onLoadCrews);
     on<LoadUserCrews>(_onLoadUserCrews);
     on<SearchCrews>(_onSearchCrews);
@@ -22,7 +26,7 @@ class ListCrewsBloc extends Bloc<ListCrewsEvent, ListCrewsState> {
 
     try {
       final crews = await _crewRepository.getAllCrews();
-      emit(ListCrewsLoaded(crews));
+      emit(_loaded(crews));
     } catch (e) {
       emit(ListCrewsError(e.toString()));
     }
@@ -36,7 +40,7 @@ class ListCrewsBloc extends Bloc<ListCrewsEvent, ListCrewsState> {
 
     try {
       final crews = await _crewRepository.getUserCrews();
-      emit(ListCrewsLoaded(crews));
+      emit(_loaded(crews));
     } catch (e) {
       emit(ListCrewsError(e.toString()));
     }
@@ -56,7 +60,7 @@ class ListCrewsBloc extends Bloc<ListCrewsEvent, ListCrewsState> {
                 crew.name.toLowerCase().contains(event.query.toLowerCase()),
           )
           .toList();
-      emit(ListCrewsLoaded(filteredCrews));
+      emit(_loaded(filteredCrews));
     } catch (e) {
       emit(ListCrewsError(e.toString()));
     }
@@ -76,7 +80,7 @@ class ListCrewsBloc extends Bloc<ListCrewsEvent, ListCrewsState> {
                 crew.name.toLowerCase().contains(event.query.toLowerCase()),
           )
           .toList();
-      emit(ListCrewsLoaded(filteredCrews));
+      emit(_loaded(filteredCrews));
     } catch (e) {
       emit(ListCrewsError(e.toString()));
     }
@@ -94,4 +98,7 @@ class ListCrewsBloc extends Bloc<ListCrewsEvent, ListCrewsState> {
       emit(ListCrewsError(e.toString()));
     }
   }
+
+  ListCrewsLoaded _loaded(List<CrewModel> crews) =>
+      ListCrewsLoaded(crews, currentUserId: _authService.currentUser?.uid);
 }

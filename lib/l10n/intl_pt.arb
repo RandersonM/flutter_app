@@ -1690,17 +1690,6 @@
     "type": "text",
     "placeholders": {}
   },
-  "pirateFlagGenerationError": "Erro ao gerar bandeira: {error}",
-  "@pirateFlagGenerationError": {
-    "description": "Error message when pirate flag generation fails",
-    "type": "text",
-    "placeholders": {
-      "error": {
-        "type": "String",
-        "example": "Erro de rede"
-      }
-    }
-  },
   "generateBoatPrompt": "Digite um prompt para gerar o barco",
   "@generateBoatPrompt": {
     "description": "Prompt text for generating boat",
@@ -1712,17 +1701,6 @@
     "description": "Success message when boat is generated",
     "type": "text",
     "placeholders": {}
-  },
-  "boatGenerationError": "Erro ao gerar barco: {error}",
-  "@boatGenerationError": {
-    "description": "Error message when boat generation fails",
-    "type": "text",
-    "placeholders": {
-      "error": {
-        "type": "String",
-        "example": "Erro de rede"
-      }
-    }
   },
   "profilePhotoTapped": "Foto do perfil tocada",
   "@profilePhotoTapped": {
@@ -3598,10 +3576,6 @@
   "incomes": "Receitas",
   "reserves": "Reserva",
   "categories": "Categorias",
-  "promptPirateFlag": "Digite um prompt para gerar a bandeira pirata",
-  "flagGeneratedSuccess": "Bandeira pirata gerada com sucesso!",
-  "promptShip": "Digite um prompt para gerar o barco",
-  "shipGeneratedSuccess": "Barco gerado com sucesso!",
   "createCrewTitle": "Criar Tripulação",
   "crewCreatedSuccess": "Tripulação criada com sucesso!",
   "crewTagsHint": "Ex: Piratas, Aventureiros, etc.",
@@ -3669,8 +3643,6 @@
   "totalSpent": "Total gasto",
   "noIncomesRegistered": "Nenhuma receita registrada",
   "errorPrefix": "Erro: {error}",
-  "errorGeneratingFlag": "Erro ao gerar bandeira: {error}",
-  "errorGeneratingShip": "Erro ao gerar barco: {error}",
   "crewDeletedMessage": "Tripulação \"{name}\" excluída",
   "averageBountyLabel": "Bounty Média",
   "rolesLabel": "Funções",
