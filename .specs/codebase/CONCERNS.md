@@ -22,8 +22,8 @@ structure branch) are kept at the bottom so nobody re-reports them.
 - **Risk:** a second feature calling `initialize()`/`loadModel()` at the wrong time kills Nami's session
 
 ### 3. Global RAG vector store (`lib/core/services/rag/rag_store_coordinator.dart`)
-- flutter_gemma has one active store per process; Vegapunk (`opfan_rag.db`) and Nami
-  (`nami_finances_store.db`) use it only inside `RagStoreCoordinator.withStore`, which
+- flutter_gemma has one active store per process; Vegapunk (`opfan_rag_<uid>.db`) and
+  Nami (`nami_finances_store_<uid>.db`) use it only inside `RagStoreCoordinator.withStore`, which
   runs one operation at a time, the store switch included
 - Clearing wipes the whole store; no per-document delete
 - A long operation (Nami indexing a month) makes the other feature's search wait
@@ -57,6 +57,9 @@ structure branch) are kept at the bottom so nobody re-reports them.
 
 ## Fixed (no longer concerns)
 
+- Local data shared between accounts and stored in plain text → per-user, AES-encrypted
+  Hive boxes and per-user RAG databases (`IUserStorageService`)
+- Account deletion left Firestore data behind → `IUserDataEraser` runs before the Auth delete
 - Unused `palette_generator`, `image`, `stylish_bottom_bar` dependencies → removed
 - `service_locator.dart` with 40+ getters → split into `lib/app/di/` modules
 - `ThemeService`/`LocaleService` `ChangeNotifier` listeners in `MyApp` → `ThemeCubit`/`LocaleCubit`

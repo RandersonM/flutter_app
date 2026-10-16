@@ -97,8 +97,10 @@ The small model often *describes* a tool call instead of emitting it. So:
   store switch included, so no other feature re-points the store mid-operation
   (`rag_store_coordinator_test.dart`). Keep embedding generation outside `op` when it
   doesn't need the store, await everything inside it, and never nest another owner.
-- Stores: Vegapunk `opfan_rag.db` (owner `vegapunk`), Nami `nami_finances_store.db`
-  (owner `nami_finances`).
+- Stores are per user (`IUserStorageService.userDatabaseFileName`): Vegapunk
+  `opfan_rag_<uid>.db`, Nami `nami_finances_store_<uid>.db` (`guest` when signed
+  out). The file name is the coordinator owner, so signing in as someone else
+  reopens the store.
 - Clearing wipes the whole store; there is no per-document delete. Readers must
   tolerate stale ids (golden: `FindExpensesHandler` drops ids that no longer resolve).
 - Vegapunk re-indexes the static knowledge base only when its fingerprint (sorted

@@ -16,7 +16,14 @@ paths:
 
 - Google Sign-In through `IAuthService` (`lib/core/services/auth_db/auth_service.dart`).
   The session is validated by forcing a token refresh; on `SocketException` it falls
-  back to the cached user in Hive box `auth_cache` (key `current_user`).
+  back to the cached user in the encrypted device box `auth_cache_encrypted`
+  (key `current_user`, `IUserStorageService.openDeviceBox`).
+- Local data is per user (`IUserStorageService`): signing out keeps it on the
+  device under the uid, and the next account sees only its own.
+- `deleteAccount` signs in with Google again, erases the user's Firestore
+  documents (`IUserDataEraser`), deletes the Auth user, then the local boxes and
+  RAG databases. Firestore goes first because the rules deny deletes once the
+  Auth user is gone. No screen dispatches `AuthDeleteAccount` yet.
 - `AuthBloc` (`lib/core/auth/blocs/`) is a global lazy singleton. States: `Initial`,
   `Loading`, `Authenticated(user, isFirstLogin)`, `NeedsOnboarding`,
   `Unauthenticated`, `Error`, `ProfileUpdating/Updated`, `DeletingAccount`,

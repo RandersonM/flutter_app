@@ -252,7 +252,7 @@ O `switch` sobre `ModelResponse` é o trecho mais didático do arquivo: `TextRes
 
 ### 27. [`features/nami_finances/data/services/nami_rag_service.dart`](../lib/features/nami_finances/data/services/nami_rag_service.dart)
 
-**Mostre:** [11–41](../lib/features/nami_finances/data/services/nami_rag_service.dart#L11-L41) (owner, schema version, threshold) e [89–141](../lib/features/nami_finances/data/services/nami_rag_service.dart#L89-L141) (`syncMonth` / `_indexExpense`).
+**Mostre:** [13–40](../lib/features/nami_finances/data/services/nami_rag_service.dart#L13-L40) (store por usuário, schema version, threshold) e [96–148](../lib/features/nami_finances/data/services/nami_rag_service.dart#L96-L148) (`syncMonth` / `_indexExpense`).
 
 **A frase:** "O segundo consumidor, com `owner` e `.db` próprios. Cada despesa vira um documento indexado."
 

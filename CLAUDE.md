@@ -132,8 +132,8 @@ relevant one up front when planning work that spans several areas.
 |---|---|---|---|
 | Catalog | `one_piece`, `devil_fruit`, `home`, `youtube`, `fav_character_selection` | Firestore `featuredCharacters`, One Piece API, YouTube API, Hive cache | `domains/catalog.md` |
 | User creations | `crews`, `custom_character`, `duels` | Firestore `crews`, `custom_characters` | `domains/crews-characters-duels.md` |
-| Account | `auth`, `onboarding`, `profile`, `splash`, `core/auth`, `core/user_profile` | Firebase Auth, `users/{uid}`, Hive `auth_cache` | `domains/account.md` |
-| Nami | `nami_finances` | Hive only (`nami_finances` box) + Nami RAG store | `domains/nami-finances.md` |
+| Account | `auth`, `onboarding`, `profile`, `splash`, `core/auth`, `core/user_profile` | Firebase Auth, `users/{uid}`, encrypted Hive `auth_cache_encrypted` | `domains/account.md` |
+| Nami | `nami_finances` | Hive only (encrypted per-user `nami_finances_<uid>`) + Nami RAG store | `domains/nami-finances.md` |
 | Zoro / Sanji | `zoro_workout`, `sanji_cooking` | Firestore `workout_assessments`; Gemini | `domains/zoro-sanji.md` |
 | Robin | `robin_knowledge` | Firestore `planner` | `domains/robin-knowledge.md` |
 | Vegapunk | `vegapunk_chat` | Gemma + RAG + Hive chat history | `domains/vegapunk-chat.md` |
@@ -146,6 +146,7 @@ relevant one up front when planning work that spans several areas.
 | Hive type ids | A collision corrupts local data silently on upgrade. Guarded by `test/core/storage/hive_type_ids_test.dart`. |
 | `GemmaService._recreateChat` | Any model reload closes **every** chat session, Nami's included. |
 | `RagStoreCoordinator` | One global vector store; clearing wipes everything; no per-doc delete. |
+| `UserStorageService` / `UserDataNames` | Per-user, encrypted local data. A box or database missing from `UserDataNames` leaks across accounts and survives account deletion; losing the keychain key resets the boxes. |
 | `AuthBloc` | Global singleton with stream subscriptions; `AuthStarted` is dispatched only from `AppWrapper`. |
 | `core_module.dart` | All service wiring in one place; watch registration order and cycles. |
 | `NavigationService` | Owns the only `navigatorKey`; always `getIt<INavigationService>()`. |

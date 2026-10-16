@@ -63,8 +63,20 @@ paths:
 - Never reuse a shipped id; move dropped ids to `HiveTypeIds.retired`.
 - Adding a field to an adapter: read it defensively (`fields[n] as T? ?? default`)
   so old boxes still decode.
-- Open boxes with `Hive.isBoxOpen(name) ? Hive.box(name) : await Hive.openBox(name)`.
+- **Data that belongs to a user** (finances, chat history, RAG metadata) goes
+  through `IUserStorageService` (`lib/core/services/storage/`):
+  `openUserBox` / `openUserLazyBox` give an encrypted box named `<name>_<uid>`
+  (`guest` when signed out), and `userDatabaseFileName` the user's SQLite file.
+  Add every new per-user box or database to `UserDataNames`
+  (`lib/core/storage/user_data_names.dart`) — that list drives the legacy
+  migration and account deletion. Resolve the box on every call; don't cache it,
+  the scope changes on sign-in/out.
+- Sensitive data shared by the device (the auth cache) uses `openDeviceBox`.
+- Non-sensitive device data (theme, locale, featured-character cache) keeps
+  `Hive.isBoxOpen(name) ? Hive.box(name) : await Hive.openBox(name)`.
   Box names are `snake_case` constants next to the code that owns them.
+- The AES key lives in the keychain/keystore (`flutter_secure_storage`, via
+  `IEncryptionKeyStore`). A box that can't be decrypted is reset, not crashed on.
 
 ## Configuration & secrets
 

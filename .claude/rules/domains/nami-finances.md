@@ -18,7 +18,8 @@ RAG store. The chat is on-device — see `ai-on-device.md`.
   `transport`, `entertainment`, `health`, `other`.
 - `ReserveModel{purpose, note}`; purposes `emergency`, `travel`, `goal`,
   `investment`, `other`.
-- Hive typeIds 10–15; box `nami_finances`, **keyed by `"YYYY-MM"`**
+- Hive typeIds 10–15; encrypted per-user box `nami_finances_<uid>`
+  (`IUserStorageService`), **keyed by `"YYYY-MM"`**
   (`lib/core/services/finances/nami_finances_service.dart`).
 
 ## Business rules

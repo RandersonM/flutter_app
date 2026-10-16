@@ -65,6 +65,10 @@ function reads FCM tokens from `user_tokens`, sends multicast, prunes invalid to
 | `sendCustomNotification` | callable |
 | `testNotification` | HTTP |
 
+Sends prune a token only for `registration-token-not-registered` /
+`invalid-registration-token`, and log it masked. `testNotification` (admin only)
+sends to the caller's own token, never to other users.
+
 Deploy with `cd functions && npm run deploy` — only when the user asks; it hits the
 real project.
 

@@ -97,8 +97,10 @@ O modelo abre com `maxTokens: 4096` e backend **GPU com fallback para CPU** (`_b
 
 `flutter_gemma`/`flutter_gemma_rag_sqlite` expõe **um único vector store ativo por processo** (não é multi-tenant). Duas features usam RAG de forma independente:
 
-- **Vegapunk chat** → `RAGService` (`lib/core/services/rag/rag_service.dart`), base `opfan_rag.db`
-- **Nami Finances** → `NamiRagService` (`lib/features/nami_finances/data/services/nami_rag_service.dart`), base `nami_finances_store.db`
+- **Vegapunk chat** → `RAGService` (`lib/core/services/rag/rag_service.dart`), base `opfan_rag_<uid>.db`
+- **Nami Finances** → `NamiRagService` (`lib/features/nami_finances/data/services/nami_rag_service.dart`), base `nami_finances_store_<uid>.db`
+
+Cada usuário tem o próprio arquivo (`IUserStorageService.userDatabaseFileName`; `guest` sem login), e o nome do arquivo é o `owner` no coordinator — trocar de conta reabre o store.
 
 Isso já causou um bug real de produção (ver `.specs/features/gemma-performance-audit/`): quem inicializava o vector store por último "roubava" o ponteiro global, e a busca da outra feature silenciosamente passava a consultar o banco errado (ou nenhum). A correção foi extrair um coordenador único:
 
@@ -117,8 +119,8 @@ Cada serviço RAG passa **toda operação** no store por `_inStore(...)` (que de
         ▼                                          ▼
 ┌───────────────────┐                    ┌──────────────────────┐
 │ RAGService         │                    │ NamiRagService        │
-│ owner="vegapunk"    │                    │ owner="nami_finances" │
-│ db=opfan_rag.db     │                    │ db=nami_finances_store.db │
+│ owner=db do usuário │                    │ owner=db do usuário   │
+│ opfan_rag_<uid>.db  │                    │ nami_finances_store_<uid>.db │
 └───────────────────┘                    └──────────────────────┘
 ```
 
@@ -128,7 +130,7 @@ Cada serviço RAG passa **toda operação** no store por `_inStore(...)` (que de
 - Após cada resposta, um documento de sessão (prefixo `sess:`, `"User asked…\nAnswer:…"`, resposta truncada em 512 chars) é agendado com um `Timer` de 2 s (para não competir com a inferência) — capado em **20 documentos por processo** (`_maxSessionDocs`).
 - A busca é separada: `searchLore` e `searchSession`, cada uma com seu `topK` (over-fetch 4× e filtro por namespace).
 - `clearSession()` limpa a store inteira e **restaura a knowledge base** a partir de um snapshot em memória. Quando a store é limpa por mudança de KB, o hook `setOnStoreCleared` reconstrói os documentos de sessão a partir do histórico em Hive.
-- O histórico do chat fica num Hive `LazyBox` (`vegapunk_chat_history`); as últimas 20 mensagens são carregadas **só para exibição** — não são reenviadas ao modelo.
+- O histórico do chat fica num Hive `LazyBox` cifrado e por usuário (`vegapunk_chat_history_<uid>`); as últimas 20 mensagens são carregadas **só para exibição** — não são reenviadas ao modelo.
 
 ### 4.2 Nami Finances — RAG sobre dados financeiros do próprio usuário
 

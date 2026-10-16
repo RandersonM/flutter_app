@@ -21,7 +21,8 @@ Source of truth: `pubspec.yaml`, `.fvmrc`, `lib/main.dart`, `lib/app/di/`.
   `GEMMA_MODEL_URL` with the HuggingFace token), `maxTokens: 4096`, GPU→CPU fallback
 - flutter_gemma_litertlm ^1.0.2 — LiteRT-LM inference engine (the only engine; no mediapipe)
 - flutter_gemma_embeddings ^1.0.1 — Gecko 110m embedder for RAG
-- flutter_gemma_rag_sqlite ^1.1.0 — SQLite vector store (`opfan_rag.db`, `nami_finances_store.db`)
+- flutter_gemma_rag_sqlite ^1.1.0 — SQLite vector store, one file per user
+  (`opfan_rag_<uid>.db`, `nami_finances_store_<uid>.db`)
 - Registered once in `main.dart` (`FlutterGemma.initialize(inferenceEngines:
   [LiteRtLmEngine()], embeddingBackends: [LiteRtEmbeddingBackend()], vectorStore:
   SqliteVectorStore())`); wrapped by `lib/core/services/gemma/` and `lib/core/services/rag/`
@@ -64,6 +65,7 @@ Source of truth: `pubspec.yaml`, `.fvmrc`, `lib/main.dart`, `lib/app/di/`.
   flutter_svg ^2.0.10, url_launcher ^6.2.5, uuid ^4.5.1
 - math_expressions ^2.4.0 (calculator)
 - flutter_dotenv ^5.1.0 — read only inside `EnvironmentService`
+- flutter_secure_storage ^11.2.0 — keychain/keystore holder of the Hive AES key
 
 ## Testing
 - flutter_test, test ^1.24.6, mocktail ^1.0.5, bloc_test ^10.0.0, flutter_lints ^5.0.0
