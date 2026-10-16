@@ -1,5 +1,5 @@
 import 'package:equatable/equatable.dart';
-import 'package:flutter/material.dart';
+import 'dart:ui' show Locale;
 
 class LocaleState extends Equatable {
   final Locale? locale;
