@@ -1415,7 +1415,7 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String savings_formatted_total(String amount, String period) {
-    return 'R\$ $amount em $period';
+    return '$amount em $period';
   }
 
   @override

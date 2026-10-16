@@ -2626,14 +2626,14 @@
     "type": "text",
     "placeholders": {}
   },
-  "savings_formatted_total": "R$ {amount} in {period}",
+  "savings_formatted_total": "{amount} in {period}",
   "@savings_formatted_total": {
     "description": "Formatted total savings with period.",
     "type": "text",
     "placeholders": {
       "amount": {
         "type": "String",
-        "example": "1,234.56"
+        "example": "R$ 1.234,56"
       },
       "period": {
         "type": "String",

@@ -170,7 +170,7 @@ class _FinancesHistoryWidgetState extends State<FinancesHistoryWidget> {
                     reservedSize: 60,
                     getTitlesWidget: (value, meta) {
                       return Text(
-                        'R\$ ${value.toInt()}',
+                        FinanceMath.formatBrl(value, withCents: false),
                         style: Theme.of(
                           context,
                         ).textTheme.bodySmall?.copyWith(fontSize: 10),

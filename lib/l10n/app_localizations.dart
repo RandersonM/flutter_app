@@ -2675,7 +2675,7 @@ abstract class AppLocalizations {
   /// Formatted total savings with period.
   ///
   /// In en, this message translates to:
-  /// **'R\$ {amount} in {period}'**
+  /// **'{amount} in {period}'**
   String savings_formatted_total(String amount, String period);
 
   /// Workout calendar title.

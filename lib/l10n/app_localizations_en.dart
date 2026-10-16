@@ -1412,7 +1412,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String savings_formatted_total(String amount, String period) {
-    return 'R\$ $amount in $period';
+    return '$amount in $period';
   }
 
   @override

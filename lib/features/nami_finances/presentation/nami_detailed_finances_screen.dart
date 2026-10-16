@@ -13,6 +13,7 @@ import 'package:opfan/features/nami_finances/bloc/index.dart';
 import 'package:opfan/app/di/injection.dart';
 import 'package:opfan/shared/widgets/atoms/app_button.dart';
 import 'package:opfan/shared/utils/app_semantic_colors.dart';
+import 'package:opfan/features/nami_finances/data/finance_math.dart';
 
 class NamiDetailedFinancesScreen extends StatefulWidget {
   final DateTime? selectedMonth;
@@ -254,7 +255,7 @@ class _NamiDetailedFinancesScreenState
           ),
           const SizedBox(height: Constants.margin),
           Text(
-            'R\$ ${value.toStringAsFixed(2)}',
+            FinanceMath.formatBrl(value),
             style: TextTheme.of(context).titleMedium?.copyWith(
               color: Theme.of(context).colorScheme.onPrimary,
               fontWeight: FontWeight.bold,
@@ -321,7 +322,7 @@ class _NamiDetailedFinancesScreenState
                     ).titleMedium?.copyWith(fontWeight: FontWeight.bold),
                   ),
                   Text(
-                    'R\$ ${(finances.totalIncome).toStringAsFixed(2)}',
+                    FinanceMath.formatBrl(finances.totalIncome),
                     style: TextTheme.of(context).titleMedium?.copyWith(
                       fontWeight: FontWeight.bold,
                       color: Theme.of(context).semanticColors.success,
@@ -350,7 +351,7 @@ class _NamiDetailedFinancesScreenState
           ),
           Expanded(
             child: Text(
-              'R\$ ${(income.amount).toStringAsFixed(2)}',
+              FinanceMath.formatBrl(income.amount),
               style: TextTheme.of(context).bodyMedium?.copyWith(
                 fontWeight: FontWeight.w500,
                 color: Theme.of(context).semanticColors.success,
@@ -428,7 +429,7 @@ class _NamiDetailedFinancesScreenState
                       ],
                     ),
                     Text(
-                      'R\$ ${finances.totalExpenses.toStringAsFixed(2)}',
+                      FinanceMath.formatBrl(finances.totalExpenses),
                       style: TextTheme.of(context).titleMedium?.copyWith(
                         fontWeight: FontWeight.bold,
                         color: Theme.of(context).colorScheme.error,
@@ -553,7 +554,7 @@ class _NamiDetailedFinancesScreenState
           ),
           const SizedBox(width: Constants.margin),
           Text(
-            'R\$ ${expense.amount.toStringAsFixed(2)}',
+            FinanceMath.formatBrl(expense.amount),
             style: TextTheme.of(context).titleMedium?.copyWith(
               fontWeight: FontWeight.bold,
               color: Theme.of(context).colorScheme.error,
@@ -687,7 +688,7 @@ class _NamiDetailedFinancesScreenState
           Text(
             label == AppLocalizations.of(context)!.savingsPercentage
                 ? '${value.toStringAsFixed(1)}%'
-                : 'R\$ ${value.toStringAsFixed(2)}',
+                : FinanceMath.formatBrl(value),
             style: TextTheme.of(
               context,
             ).bodyMedium?.copyWith(fontWeight: FontWeight.w500, color: color),
@@ -761,9 +762,7 @@ class _NamiDetailedFinancesScreenState
           const SizedBox(width: Constants.margin),
           Expanded(child: Text(label, style: TextTheme.of(context).bodyMedium)),
           Text(
-            value is double
-                ? 'R\$ ${value.toStringAsFixed(2)}'
-                : value.toString(),
+            value is double ? FinanceMath.formatBrl(value) : value.toString(),
             style: TextTheme.of(context).bodyMedium?.copyWith(
               fontWeight: FontWeight.w500,
               color: Theme.of(context).colorScheme.tertiary,

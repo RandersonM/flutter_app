@@ -163,7 +163,7 @@ class _FinancesResultsViewState extends State<FinancesResultsView> {
           ),
           const SizedBox(height: 4),
           Text(
-            'R\$ ${value.toStringAsFixed(2)}',
+            FinanceMath.formatBrl(value),
             style: TextTheme.of(
               context,
             ).bodyMedium?.copyWith(fontWeight: FontWeight.bold),
@@ -231,7 +231,7 @@ class _FinancesResultsViewState extends State<FinancesResultsView> {
                     ),
                   ),
                   Text(
-                    'R\$ ${amount.toStringAsFixed(2)}',
+                    FinanceMath.formatBrl(amount),
                     style: TextTheme.of(context).bodyMedium,
                   ),
                   const SizedBox(width: 8),
@@ -272,7 +272,7 @@ class _FinancesResultsViewState extends State<FinancesResultsView> {
               Expanded(
                 child: _buildSavingsItem(
                   l10n.monthlySavings,
-                  'R\$ ${widget.finances.savings.toStringAsFixed(2)}',
+                  FinanceMath.formatBrl(widget.finances.savings),
                   PhosphorIconsRegular.piggyBank,
                 ),
               ),

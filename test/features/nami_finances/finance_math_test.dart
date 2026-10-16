@@ -14,6 +14,12 @@ void main() {
     test('handles negatives', () {
       expect(FinanceMath.formatBrl(-250.5), '-R\$ 250,50');
     });
+
+    test('rounds to whole reais without cents', () {
+      expect(FinanceMath.formatBrl(8400.4, withCents: false), 'R\$ 8.400');
+      expect(FinanceMath.formatBrl(999.5, withCents: false), 'R\$ 1.000');
+      expect(FinanceMath.formatBrl(-1250, withCents: false), '-R\$ 1.250');
+    });
   });
 
   group('parseAmount', () {
