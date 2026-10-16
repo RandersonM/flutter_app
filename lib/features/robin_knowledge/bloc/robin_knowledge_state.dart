@@ -21,10 +21,18 @@ class RobinKnowledgeLoaded extends RobinKnowledgeState {
 }
 
 class RobinKnowledgeError extends RobinKnowledgeState {
-  final String message;
+  final RobinKnowledgeFailure failure;
 
-  const RobinKnowledgeError({required this.message});
+  const RobinKnowledgeError({required this.failure});
 
   @override
-  List<Object?> get props => [message];
+  List<Object?> get props => [failure];
+}
+
+enum RobinKnowledgeFailure {
+  loadFailed,
+  createFailed,
+  updateFailed,
+  deleteFailed,
+  progressUpdateFailed,
 }

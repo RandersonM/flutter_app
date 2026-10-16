@@ -47,7 +47,14 @@ class DevilFruitService implements IDevilFruitService {
 
         return _cachedFruits;
       } else {
-        throw Exception('Failed to load devil fruits: ${response.statusCode}');
+        debugPrint(
+          'DevilFruitService: unexpected status ${response.statusCode}',
+        );
+        throw DioException.badResponse(
+          statusCode: response.statusCode ?? 0,
+          requestOptions: response.requestOptions,
+          response: response,
+        );
       }
     } on DioException catch (e) {
       debugPrint('DevilFruitService: DioException - ${e.message}');

@@ -115,7 +115,7 @@ class _VegapunkChatViewState extends State<_VegapunkChatView> {
               }
               return IconButton(
                 icon: const Icon(PhosphorIconsRegular.arrowCounterClockwise),
-                tooltip: 'Reset chat',
+                tooltip: l10n.vegapunkResetChat,
                 onPressed: () => context.read<VegapunkChatCubit>().reset(),
               );
             },

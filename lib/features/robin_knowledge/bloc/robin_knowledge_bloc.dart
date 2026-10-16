@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:opfan/features/robin_knowledge/data/models/goal_model.dart';
@@ -28,7 +29,10 @@ class RobinKnowledgeBloc
       final goals = await _plannerRepository.getGoals();
       emit(RobinKnowledgeLoaded(goals: goals));
     } catch (e) {
-      emit(RobinKnowledgeError(message: e.toString()));
+      debugPrint('RobinKnowledgeBloc: loading goals failed: $e');
+      emit(
+        const RobinKnowledgeError(failure: RobinKnowledgeFailure.loadFailed),
+      );
     }
   }
 
@@ -41,7 +45,10 @@ class RobinKnowledgeBloc
       final goals = await _plannerRepository.getGoals();
       emit(RobinKnowledgeLoaded(goals: goals));
     } catch (e) {
-      emit(RobinKnowledgeError(message: e.toString()));
+      debugPrint('RobinKnowledgeBloc: creating a goal failed: $e');
+      emit(
+        const RobinKnowledgeError(failure: RobinKnowledgeFailure.createFailed),
+      );
     }
   }
 
@@ -54,7 +61,10 @@ class RobinKnowledgeBloc
       final goals = await _plannerRepository.getGoals();
       emit(RobinKnowledgeLoaded(goals: goals));
     } catch (e) {
-      emit(RobinKnowledgeError(message: e.toString()));
+      debugPrint('RobinKnowledgeBloc: updating a goal failed: $e');
+      emit(
+        const RobinKnowledgeError(failure: RobinKnowledgeFailure.updateFailed),
+      );
     }
   }
 
@@ -67,7 +77,10 @@ class RobinKnowledgeBloc
       final goals = await _plannerRepository.getGoals();
       emit(RobinKnowledgeLoaded(goals: goals));
     } catch (e) {
-      emit(RobinKnowledgeError(message: e.toString()));
+      debugPrint('RobinKnowledgeBloc: deleting a goal failed: $e');
+      emit(
+        const RobinKnowledgeError(failure: RobinKnowledgeFailure.deleteFailed),
+      );
     }
   }
 
@@ -84,7 +97,12 @@ class RobinKnowledgeBloc
       final goals = await _plannerRepository.getGoals();
       emit(RobinKnowledgeLoaded(goals: goals));
     } catch (e) {
-      emit(RobinKnowledgeError(message: e.toString()));
+      debugPrint('RobinKnowledgeBloc: updating goal progress failed: $e');
+      emit(
+        const RobinKnowledgeError(
+          failure: RobinKnowledgeFailure.progressUpdateFailed,
+        ),
+      );
     }
   }
 }

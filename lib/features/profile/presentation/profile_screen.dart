@@ -5,6 +5,7 @@ import 'package:phosphoricons_flutter/phosphoricons_flutter.dart';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:intl/intl.dart';
 import 'package:opfan/core/auth/blocs/index.dart';
 import 'package:opfan/core/auth/models/user_model.dart';
 import 'package:opfan/core/theme/cubit/theme_cubit.dart';
@@ -119,8 +120,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   context,
                   icon: PhosphorIconsRegular.barbell,
                   title: AppLocalizations.of(context)!.bodyData,
-                  subtitle:
-                      '${user.weightKg} kg • ${user.heightCm} cm • IMC: ${(user.weightKg! / ((user.heightCm! / 100) * (user.heightCm! / 100))).toStringAsFixed(1)}',
+                  subtitle: _bodyDataSummary(context, user),
                   onTap: () {
                     Navigator.of(
                       context,
@@ -318,6 +318,18 @@ class _ProfileScreenState extends State<ProfileScreen> {
           child: Column(children: items),
         ),
       ],
+    );
+  }
+
+  String _bodyDataSummary(BuildContext context, UserModel user) {
+    final locale = Localizations.localeOf(context).toString();
+    final measure = NumberFormat.decimalPattern(locale);
+    final weightKg = user.weightKg!;
+    final heightM = user.heightCm! / 100;
+    return AppLocalizations.of(context)!.profileBodyDataSummary(
+      measure.format(weightKg),
+      measure.format(user.heightCm),
+      NumberFormat('0.0', locale).format(weightKg / (heightM * heightM)),
     );
   }
 

@@ -35,8 +35,8 @@ class DevilFruitBloc extends Bloc<DevilFruitEvent, DevilFruitState> {
         ),
       );
     } catch (e) {
-      debugPrint('DevilFruitBloc: Error loading devil fruits - $e');
-      emit(DevilFruitError('Erro ao carregar Akuma no Mi: $e'));
+      debugPrint('DevilFruitBloc: loading devil fruits failed: $e');
+      emit(const DevilFruitError(DevilFruitFailure.loadFailed));
     }
   }
 
@@ -59,8 +59,8 @@ class DevilFruitBloc extends Bloc<DevilFruitEvent, DevilFruitState> {
         ),
       );
     } catch (e) {
-      debugPrint('DevilFruitBloc: Error refreshing devil fruits - $e');
-      emit(DevilFruitError('Erro ao atualizar Akuma no Mi: $e'));
+      debugPrint('DevilFruitBloc: refreshing devil fruits failed: $e');
+      emit(const DevilFruitError(DevilFruitFailure.refreshFailed));
     }
   }
 
@@ -94,11 +94,11 @@ class DevilFruitBloc extends Bloc<DevilFruitEvent, DevilFruitState> {
         ),
       );
     } catch (e) {
-      debugPrint('DevilFruitBloc: Error searching devil fruits - $e');
+      debugPrint('DevilFruitBloc: searching devil fruits failed: $e');
       emit(
         currentState.copyWith(
           isSearching: false,
-          error: 'Erro ao buscar Akuma no Mi: $e',
+          failure: DevilFruitFailure.searchFailed,
         ),
       );
     }
@@ -142,11 +142,11 @@ class DevilFruitBloc extends Bloc<DevilFruitEvent, DevilFruitState> {
         ),
       );
     } catch (e) {
-      debugPrint('DevilFruitBloc: Error filtering devil fruits - $e');
+      debugPrint('DevilFruitBloc: filtering devil fruits failed: $e');
       emit(
         currentState.copyWith(
           isSearching: false,
-          error: 'Error filtering Devil Fruits: $e',
+          failure: DevilFruitFailure.filterFailed,
         ),
       );
     }

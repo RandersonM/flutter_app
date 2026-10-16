@@ -6,6 +6,7 @@ import 'package:phosphoricons_flutter/phosphoricons_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:opfan/features/youtube/data/models/youtube_video_model.dart';
+import 'package:opfan/l10n/app_localizations.dart';
 
 enum SimpleBannerType { gif, image, youtube }
 
@@ -61,7 +62,7 @@ class SimpleVideoBanner extends StatelessWidget {
           child: Stack(
             fit: StackFit.expand,
             children: [
-              _buildContent(),
+              _buildContent(context),
               if (title != null || subtitle != null) _buildOverlay(context),
               if (bannerType == SimpleBannerType.youtube)
                 _buildPlayButton(context),
@@ -72,7 +73,7 @@ class SimpleVideoBanner extends StatelessWidget {
     );
   }
 
-  Widget _buildContent() {
+  Widget _buildContent(BuildContext context) {
     if (bannerType == SimpleBannerType.youtube && youTubeVideo != null) {
       return _buildYouTubeThumbnail();
     }
@@ -93,13 +94,13 @@ class SimpleVideoBanner extends StatelessWidget {
                 ),
               ),
             ),
-            errorWidget: (context, url, error) => _buildFallback(),
+            errorWidget: (context, url, error) => _buildFallback(context),
           ),
         ],
       );
     }
 
-    return _buildFallback();
+    return _buildFallback(context);
   }
 
   Widget _buildYouTubeThumbnail() {
@@ -112,7 +113,7 @@ class SimpleVideoBanner extends StatelessWidget {
           child: CircularProgressIndicator(color: Colors.white, strokeWidth: 2),
         ),
       ),
-      errorWidget: (context, url, error) => _buildFallback(),
+      errorWidget: (context, url, error) => _buildFallback(context),
     );
   }
 
@@ -146,7 +147,7 @@ class SimpleVideoBanner extends StatelessWidget {
     );
   }
 
-  Widget _buildFallback() {
+  Widget _buildFallback(BuildContext context) {
     if (fallbackUrl != null) {
       return Container(
         decoration: BoxDecoration(
@@ -168,6 +169,7 @@ class SimpleVideoBanner extends StatelessWidget {
       );
     }
 
+    final l10n = AppLocalizations.of(context)!;
     return Container(
       decoration: BoxDecoration(
         color: Colors.grey[900],
@@ -177,28 +179,28 @@ class SimpleVideoBanner extends StatelessWidget {
           opacity: 0.3,
         ),
       ),
-      child: const Center(
+      child: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            AppIcon(
+            const AppIcon(
               PhosphorIconsRegular.wifiNone,
               color: Colors.white,
               size: 48,
             ),
-            SizedBox(height: 8),
+            const SizedBox(height: 8),
             Text(
-              'Conteúdo indisponível',
-              style: TextStyle(
+              l10n.homeBannerUnavailableTitle,
+              style: const TextStyle(
                 color: Colors.white,
                 fontSize: 16,
                 fontWeight: FontWeight.bold,
               ),
             ),
-            SizedBox(height: 4),
+            const SizedBox(height: 4),
             Text(
-              'Verifique sua conexão',
-              style: TextStyle(color: Colors.white70, fontSize: 12),
+              l10n.homeBannerUnavailableSubtitle,
+              style: const TextStyle(color: Colors.white70, fontSize: 12),
             ),
           ],
         ),

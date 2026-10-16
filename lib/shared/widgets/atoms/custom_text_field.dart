@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:opfan/l10n/app_localizations.dart';
 
 class CustomTextField extends StatelessWidget {
   final String label;
@@ -79,7 +80,7 @@ class DateTextField extends StatelessWidget {
         ],
         decoration: InputDecoration(
           labelText: label,
-          hintText: hint ?? 'DD/MM/AAAA',
+          hintText: hint ?? AppLocalizations.of(context)!.dateFormat,
           border: OutlineInputBorder(borderRadius: BorderRadius.circular(8)),
           filled: true,
         ),

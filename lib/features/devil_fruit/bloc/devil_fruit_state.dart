@@ -26,7 +26,7 @@ class DevilFruitLoaded extends DevilFruitState {
   final String searchQuery;
   final String? selectedType;
   final bool isSearching;
-  final String? error;
+  final DevilFruitFailure? failure;
 
   const DevilFruitLoaded({
     required this.fruits,
@@ -35,7 +35,7 @@ class DevilFruitLoaded extends DevilFruitState {
     this.searchQuery = '',
     this.selectedType,
     this.isSearching = false,
-    this.error,
+    this.failure,
   });
 
   @override
@@ -46,7 +46,7 @@ class DevilFruitLoaded extends DevilFruitState {
     searchQuery,
     selectedType,
     isSearching,
-    error,
+    failure,
   ];
 
   DevilFruitLoaded copyWith({
@@ -56,7 +56,7 @@ class DevilFruitLoaded extends DevilFruitState {
     String? searchQuery,
     String? selectedType,
     bool? isSearching,
-    String? error,
+    DevilFruitFailure? failure,
   }) {
     return DevilFruitLoaded(
       fruits: fruits ?? this.fruits,
@@ -65,16 +65,18 @@ class DevilFruitLoaded extends DevilFruitState {
       searchQuery: searchQuery ?? this.searchQuery,
       selectedType: selectedType ?? this.selectedType,
       isSearching: isSearching ?? this.isSearching,
-      error: error ?? this.error,
+      failure: failure ?? this.failure,
     );
   }
 }
 
 class DevilFruitError extends DevilFruitState {
-  final String message;
+  final DevilFruitFailure failure;
 
-  const DevilFruitError(this.message);
+  const DevilFruitError(this.failure);
 
   @override
-  List<Object?> get props => [message];
+  List<Object?> get props => [failure];
 }
+
+enum DevilFruitFailure { loadFailed, refreshFailed, searchFailed, filterFailed }

@@ -53,7 +53,7 @@ class EmptyDevilFruitList extends StatelessWidget {
           Text(
             hasFilters
                 ? AppLocalizations.of(context)!.adjustFiltersOrSearch
-                : 'No devil fruits to display at the moment',
+                : AppLocalizations.of(context)!.devilFruitEmptyListSubtitle,
             style: Theme.of(
               context,
             ).textTheme.bodyMedium?.copyWith(color: Colors.grey[600]),

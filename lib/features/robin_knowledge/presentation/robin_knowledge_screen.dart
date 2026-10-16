@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:opfan/l10n/app_localizations.dart';
 import 'package:opfan/features/robin_knowledge/bloc/robin_knowledge_bloc.dart';
+import 'package:opfan/features/robin_knowledge/presentation/robin_knowledge_failure_message.dart';
 import 'package:opfan/shared/utils/constants.dart';
 import 'package:opfan/shared/utils/theme.dart';
 import 'package:opfan/shared/widgets/molecules/default_app_bar.dart';
@@ -244,7 +245,10 @@ class _RobinKnowledgeView extends StatelessWidget {
                         ),
                         const SizedBox(height: 4),
                         Text(
-                          state.message,
+                          robinKnowledgeFailureMessage(
+                            AppLocalizations.of(context)!,
+                            state.failure,
+                          ),
                           style: TextStyle(
                             fontSize: 14,
                             color: Theme.of(context).colorScheme.error,

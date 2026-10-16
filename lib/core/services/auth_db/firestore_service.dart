@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:opfan/core/errors/app_exceptions.dart';
 
 import 'i_firestore_service.dart';
 
@@ -28,7 +29,10 @@ class FirestoreService implements IFirestoreService {
       final docRef = await _firestore.collection(collection).add(data);
       return docRef.id;
     } catch (e) {
-      throw Exception('Erro ao criar documento: $e');
+      debugPrint(
+        'FirestoreService: creating a document in $collection failed: $e',
+      );
+      rethrow;
     }
   }
 
@@ -41,7 +45,10 @@ class FirestoreService implements IFirestoreService {
     try {
       await _firestore.collection(collection).doc(documentId).set(data);
     } catch (e) {
-      throw Exception('Erro ao criar documento com ID: $e');
+      debugPrint(
+        'FirestoreService: creating document $documentId in $collection failed: $e',
+      );
+      rethrow;
     }
   }
 
@@ -57,7 +64,10 @@ class FirestoreService implements IFirestoreService {
       }
       return null;
     } catch (e) {
-      throw Exception('Erro ao buscar documento: $e');
+      debugPrint(
+        'FirestoreService: reading document $documentId in $collection failed: $e',
+      );
+      rethrow;
     }
   }
 
@@ -91,7 +101,10 @@ class FirestoreService implements IFirestoreService {
           'FirestoreService: Error permission detected. Check the Firestore rules.',
         );
       }
-      throw Exception('Erro ao buscar documentos: $e');
+      debugPrint(
+        'FirestoreService: reading documents in $collection failed: $e',
+      );
+      rethrow;
     }
   }
 
@@ -104,7 +117,10 @@ class FirestoreService implements IFirestoreService {
     try {
       await _firestore.collection(collection).doc(documentId).update(data);
     } catch (e) {
-      throw Exception('Erro ao atualizar documento: $e');
+      debugPrint(
+        'FirestoreService: updating document $documentId in $collection failed: $e',
+      );
+      rethrow;
     }
   }
 
@@ -116,7 +132,10 @@ class FirestoreService implements IFirestoreService {
     try {
       await _firestore.collection(collection).doc(documentId).delete();
     } catch (e) {
-      throw Exception('Erro ao deletar documento: $e');
+      debugPrint(
+        'FirestoreService: deleting document $documentId in $collection failed: $e',
+      );
+      rethrow;
     }
   }
 
@@ -150,7 +169,10 @@ class FirestoreService implements IFirestoreService {
 
       return result;
     } catch (e) {
-      throw Exception('Erro ao consultar documentos: $e');
+      debugPrint(
+        'FirestoreService: querying documents in $collection failed: $e',
+      );
+      rethrow;
     }
   }
 
@@ -164,7 +186,7 @@ class FirestoreService implements IFirestoreService {
     final userId = currentUserId;
 
     if (userId == null) {
-      throw Exception('Usuário não autenticado');
+      throw const NotSignedInException();
     }
 
     return queryDocuments(
@@ -184,7 +206,7 @@ class FirestoreService implements IFirestoreService {
   }) async {
     final userId = currentUserId;
     if (userId == null) {
-      throw Exception('Usuário não autenticado');
+      throw const NotSignedInException();
     }
 
     final userData = {
@@ -205,7 +227,7 @@ class FirestoreService implements IFirestoreService {
   }) async {
     final userId = currentUserId;
     if (userId == null) {
-      throw Exception('Usuário não autenticado');
+      throw const NotSignedInException();
     }
 
     final updateData = {...data, 'updatedAt': FieldValue.serverTimestamp()};

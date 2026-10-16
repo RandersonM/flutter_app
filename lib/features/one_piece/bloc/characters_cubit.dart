@@ -41,14 +41,16 @@ class CharactersLoaded extends CharactersState {
 }
 
 class CharactersError extends CharactersState {
-  final String message;
+  final CharactersFailure failure;
   final List<CustomCharacterModel> characters;
 
-  const CharactersError({required this.message, required this.characters});
+  const CharactersError({required this.failure, required this.characters});
 
   @override
-  List<Object?> get props => [message, characters];
+  List<Object?> get props => [failure, characters];
 }
+
+enum CharactersFailure { loadFailed }
 
 class CharactersCubit extends Cubit<CharactersState> {
   CharactersCubit(this.backend) : super(CharactersInitial());
@@ -95,8 +97,13 @@ class CharactersCubit extends Cubit<CharactersState> {
         CharactersLoaded(characters: _characters, hasMoreData: newHasMoreData),
       );
     } catch (e) {
-      debugPrint('CharactersCubit: Error - $e');
-      emit(CharactersError(message: e.toString(), characters: _characters));
+      debugPrint('CharactersCubit: loading characters failed: $e');
+      emit(
+        CharactersError(
+          failure: CharactersFailure.loadFailed,
+          characters: _characters,
+        ),
+      );
     }
   }
 
