@@ -47,9 +47,6 @@ void main() async {
     ]);
     debugPrint('MAIN: Firebase, Env, Theme initialized.');
 
-    debugPrint('MAIN: Inicializando NotificationService em background...');
-    // Não usamos "await" aqui. Assim, o pedido de permissão não bloqueia
-    // o Flutter de renderizar a primeira tela do aplicativo.
     getIt<INotificationService>().initialize().catchError((e) {
       debugPrint('MAIN: Erro ao inicializar NotificationService: $e');
     });
