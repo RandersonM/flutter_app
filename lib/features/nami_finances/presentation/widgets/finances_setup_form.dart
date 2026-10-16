@@ -417,17 +417,17 @@ class _FinancesSetupFormState extends State<FinancesSetupForm> {
               children: [
                 Expanded(
                   child: FinanceCurrencyTextField(
-                    label: '${l10n.monthlyIncome} ${index + 1}',
+                    label: l10n.namiMonthlyIncomeNumbered(index + 1),
                     controller: item.controller,
                     validator: (value) {
                       if (value == null || value.isEmpty) {
-                        return 'Por favor, insira um valor';
+                        return l10n.namiAmountRequired;
                       }
                       final amount = double.tryParse(
                         value.replaceAll(RegExp(r'[^\d]'), ''),
                       );
                       if (amount == null || amount <= 0) {
-                        return 'Por favor, insira um valor válido';
+                        return l10n.namiAmountInvalid;
                       }
                       return null;
                     },

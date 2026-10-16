@@ -5,6 +5,7 @@ import 'package:opfan/l10n/app_localizations.dart';
 import 'package:opfan/shared/utils/app_routes.dart' show AppRoutes;
 import 'package:opfan/shared/utils/constants.dart';
 import 'package:opfan/shared/utils/theme.dart';
+import 'package:opfan/features/nami_finances/data/finance_math.dart';
 import 'package:opfan/features/nami_finances/data/models/nami_finances_model.dart';
 import 'package:opfan/core/services/index.dart';
 import 'package:opfan/shared/widgets/atoms/gomu_gomu_divider.dart';
@@ -289,12 +290,16 @@ class _FinancesResultsViewState extends State<FinancesResultsView> {
                 child: _buildSavingsItem(
                   _accumulatedInfo != null &&
                           _accumulatedInfo!['totalSavings'] > 0
-                      ? '${l10n.accumulatedSavings} ${_accumulatedInfo!['periodText']}'
+                      ? l10n.namiAccumulatedSavingsPeriod(
+                          _accumulatedInfo!['periodText'] as String,
+                        )
                       : l10n.yearlySavings,
                   _accumulatedInfo != null &&
                           _accumulatedInfo!['totalSavings'] > 0
-                      ? '${l10n.currency} ${_accumulatedInfo!['totalSavings'].toStringAsFixed(2)}'
-                      : '${l10n.currency} ${widget.finances.yearlySavings.toStringAsFixed(2)}',
+                      ? FinanceMath.formatBrl(
+                          _accumulatedInfo!['totalSavings'] as num,
+                        )
+                      : FinanceMath.formatBrl(widget.finances.yearlySavings),
                   PhosphorIconsRegular.trendUp,
                 ),
               ),

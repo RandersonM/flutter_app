@@ -93,7 +93,7 @@ class _AddExpenseDialogState extends State<AddExpenseDialog> {
               },
               validator: (value) {
                 if (value == null) {
-                  return 'Por favor, selecione uma categoria';
+                  return l10n.namiSelectCategoryRequired;
                 }
                 return null;
               },
@@ -105,13 +105,13 @@ class _AddExpenseDialogState extends State<AddExpenseDialog> {
               controller: _valueController,
               validator: (value) {
                 if (value == null || value.isEmpty) {
-                  return 'Por favor, insira um valor';
+                  return l10n.namiAmountRequired;
                 }
                 final amount = double.tryParse(
                   value.replaceAll(RegExp(r'[^\d]'), ''),
                 );
                 if (amount == null || amount <= 0) {
-                  return 'Por favor, insira um valor válido';
+                  return l10n.namiAmountInvalid;
                 }
                 return null;
               },
@@ -119,7 +119,7 @@ class _AddExpenseDialogState extends State<AddExpenseDialog> {
             const SizedBox(height: Constants.margin),
             CustomTextField(
               label: l10n.description,
-              hint: 'Descrição (opcional)',
+              hint: l10n.namiDescriptionOptionalHint,
               controller: _descriptionController,
               maxLines: 2,
             ),

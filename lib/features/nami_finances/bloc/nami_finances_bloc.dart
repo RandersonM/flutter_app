@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:uuid/uuid.dart';
 import 'package:opfan/features/nami_finances/data/models/nami_finances_model.dart';
@@ -29,7 +30,8 @@ class NamiFinancesBloc extends Bloc<NamiFinancesEvent, NamiFinancesState> {
       final finances = await _service.getFinancesForMonth(event.month);
       emit(NamiFinancesLoaded(finances: finances, hasData: finances != null));
     } catch (e) {
-      emit(NamiFinancesError('Erro ao carregar finanças: $e'));
+      debugPrint('NamiFinancesBloc: load month failed: $e');
+      emit(NamiFinancesError(NamiFinancesFailure.loadFailed));
     }
   }
 
@@ -43,7 +45,8 @@ class NamiFinancesBloc extends Bloc<NamiFinancesEvent, NamiFinancesState> {
       final finances = await _service.getCurrentMonthFinances();
       emit(NamiFinancesLoaded(finances: finances, hasData: finances != null));
     } catch (e) {
-      emit(NamiFinancesError('Erro ao carregar finanças do mês atual: $e'));
+      debugPrint('NamiFinancesBloc: load current month failed: $e');
+      emit(NamiFinancesError(NamiFinancesFailure.loadFailed));
     }
   }
 
@@ -57,7 +60,8 @@ class NamiFinancesBloc extends Bloc<NamiFinancesEvent, NamiFinancesState> {
       );
       emit(NamiFinancesHistoryLoaded(financesHistory));
     } catch (e) {
-      emit(NamiFinancesError('Erro ao carregar histórico de finanças: $e'));
+      debugPrint('NamiFinancesBloc: load history failed: $e');
+      emit(NamiFinancesError(NamiFinancesFailure.historyLoadFailed));
     }
   }
 
@@ -70,9 +74,7 @@ class NamiFinancesBloc extends Bloc<NamiFinancesEvent, NamiFinancesState> {
     try {
       final canEdit = await _service.canEditFinances(event.month);
       if (!canEdit) {
-        emit(
-          NamiFinancesError('Não é possível editar finanças de meses futuros'),
-        );
+        emit(NamiFinancesError(NamiFinancesFailure.futureMonthNotEditable));
         return;
       }
 
@@ -102,7 +104,8 @@ class NamiFinancesBloc extends Bloc<NamiFinancesEvent, NamiFinancesState> {
 
       emit(NamiFinancesLoaded(finances: finances, hasData: true));
     } catch (e) {
-      emit(NamiFinancesError('Erro ao salvar finanças: $e'));
+      debugPrint('NamiFinancesBloc: save failed: $e');
+      emit(NamiFinancesError(NamiFinancesFailure.saveFailed));
     }
   }
 
@@ -116,7 +119,8 @@ class NamiFinancesBloc extends Bloc<NamiFinancesEvent, NamiFinancesState> {
       await _service.deleteFinances(event.id);
       emit(NamiFinancesLoaded(finances: null, hasData: false));
     } catch (e) {
-      emit(NamiFinancesError('Erro ao deletar finanças: $e'));
+      debugPrint('NamiFinancesBloc: delete failed: $e');
+      emit(NamiFinancesError(NamiFinancesFailure.deleteFailed));
     }
   }
 }

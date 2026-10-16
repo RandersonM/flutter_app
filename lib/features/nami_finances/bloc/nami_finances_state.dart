@@ -25,8 +25,16 @@ class NamiFinancesSaved extends NamiFinancesState {
   NamiFinancesSaved(this.finances);
 }
 
-class NamiFinancesError extends NamiFinancesState {
-  final String message;
+enum NamiFinancesFailure {
+  loadFailed,
+  historyLoadFailed,
+  saveFailed,
+  deleteFailed,
+  futureMonthNotEditable,
+}
 
-  NamiFinancesError(this.message);
+class NamiFinancesError extends NamiFinancesState {
+  final NamiFinancesFailure failure;
+
+  NamiFinancesError(this.failure);
 }

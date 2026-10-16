@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:uuid/uuid.dart';
 import 'package:opfan/core/ai/prompts/index.dart';
@@ -67,7 +68,7 @@ class NamiChatBloc extends Cubit<NamiChatState> {
     // race an empty store.
     _backfillFuture = _backfillRag();
 
-    String? readyError;
+    NamiChatFailure? readyFailure;
     try {
       // The Gemma model is a shared singleton — Vegapunk's chat screen is
       // usually what loads it into memory. Nami's sheet can be opened first
@@ -75,26 +76,16 @@ class NamiChatBloc extends Cubit<NamiChatState> {
       // sendSessionMessage() fails silently (stream error, no UI feedback)
       // if `_model` is still null.
       await _ensureGemmaReady();
+    } on _GemmaModelNotInstalled {
+      readyFailure = NamiChatFailure.modelNotInstalled;
     } catch (e) {
-      readyError = 'Não foi possível carregar o modelo de IA: $e';
+      debugPrint('NamiChatBloc: model load failed: $e');
+      readyFailure = NamiChatFailure.modelLoadFailed;
     }
     await _backfillFuture;
 
     if (isClosed) return;
-    emit(
-      NamiChatReady(
-        messages: [
-          ChatMessage(
-            id: 'welcome_nami',
-            text:
-                'Oi! Eu sou a Nami. Posso analisar suas finanças que salvamos! Pergunte o que quiser sobre os meses registrados.',
-            role: MessageRole.assistant,
-            timestamp: DateTime.now(),
-          ),
-        ],
-        error: readyError,
-      ),
-    );
+    emit(NamiChatReady(failure: readyFailure));
   }
 
   /// Waits for the shared [IGemmaService] model to reach [GemmaReady].
@@ -122,11 +113,7 @@ class NamiChatBloc extends Cubit<NamiChatState> {
         // instead of leaving the sheet stuck in a loading state forever.
         sub.cancel();
         if (!completer.isCompleted) {
-          completer.completeError(
-            StateError(
-              'Modelo de IA ainda não foi baixado — abra o chat do Vegapunk para instalá-lo.',
-            ),
-          );
+          completer.completeError(const _GemmaModelNotInstalled());
         }
       }
     });
@@ -219,11 +206,12 @@ class NamiChatBloc extends Cubit<NamiChatState> {
       }
     } catch (e) {
       _emitTimer?.cancel();
+      debugPrint('NamiChatBloc: answer generation failed: $e');
       if (state is NamiChatReady) {
         emit(
           (state as NamiChatReady).copyWith(
             isGenerating: false,
-            error: 'Erro na conexão com Nami: $e',
+            failure: NamiChatFailure.connectionFailed,
           ),
         );
       }
@@ -310,4 +298,11 @@ class NamiChatBloc extends Cubit<NamiChatState> {
     await _gemmaService.closeSession(_sessionId);
     return super.close();
   }
+}
+
+class _GemmaModelNotInstalled implements Exception {
+  const _GemmaModelNotInstalled();
+
+  @override
+  String toString() => 'GemmaModelNotInstalled';
 }

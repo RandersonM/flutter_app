@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:opfan/shared/utils/constants.dart';
 import 'package:opfan/shared/utils/theme.dart';
+import 'package:opfan/features/nami_finances/data/finance_math.dart';
 import 'package:opfan/features/nami_finances/data/models/nami_finances_model.dart';
 import 'package:opfan/features/nami_finances/bloc/index.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -76,6 +77,7 @@ class _FinancesHistoryWidgetState extends State<FinancesHistoryWidget> {
       );
     }
 
+    final l10n = AppLocalizations.of(context)!;
     final sortedHistory = List<NamiFinancesModel>.from(financesHistory)
       ..sort((a, b) => a.month.compareTo(b.month));
 
@@ -96,7 +98,9 @@ class _FinancesHistoryWidgetState extends State<FinancesHistoryWidget> {
                     switch (rodIndex) {
                       case 0:
                         return BarTooltipItem(
-                          'Despesas: R\$ ${finance.totalExpenses.toStringAsFixed(0)}',
+                          l10n.namiHistoryTooltipExpenses(
+                            FinanceMath.formatBrl(finance.totalExpenses),
+                          ),
                           TextStyle(
                             color: AppColors.red[500],
                             fontWeight: FontWeight.bold,
@@ -104,7 +108,9 @@ class _FinancesHistoryWidgetState extends State<FinancesHistoryWidget> {
                         );
                       case 1:
                         return BarTooltipItem(
-                          'Disponível: R\$ ${finance.availableAmount.toStringAsFixed(0)}',
+                          l10n.namiHistoryTooltipAvailable(
+                            FinanceMath.formatBrl(finance.availableAmount),
+                          ),
                           TextStyle(
                             color: AppColors.green[500],
                             fontWeight: FontWeight.bold,
@@ -112,7 +118,9 @@ class _FinancesHistoryWidgetState extends State<FinancesHistoryWidget> {
                         );
                       case 2:
                         return BarTooltipItem(
-                          'Poupança: R\$ ${finance.totalReserves.toStringAsFixed(0)}',
+                          l10n.namiHistoryTooltipSavings(
+                            FinanceMath.formatBrl(finance.totalReserves),
+                          ),
                           TextStyle(
                             color: AppColors.orange[500],
                             fontWeight: FontWeight.bold,

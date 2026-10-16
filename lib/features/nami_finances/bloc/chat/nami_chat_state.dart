@@ -1,6 +1,8 @@
 import 'package:equatable/equatable.dart';
 import 'package:opfan/features/vegapunk_chat/data/models/chat_message.dart';
 
+enum NamiChatFailure { modelNotInstalled, modelLoadFailed, connectionFailed }
+
 abstract class NamiChatState extends Equatable {
   const NamiChatState();
 
@@ -20,29 +22,29 @@ class NamiChatReady extends NamiChatState {
   final List<ChatMessage> messages;
   final bool isGenerating;
   final String streamingToken;
-  final String? error;
+  final NamiChatFailure? failure;
 
   const NamiChatReady({
     this.messages = const [],
     this.isGenerating = false,
     this.streamingToken = '',
-    this.error,
+    this.failure,
   });
 
   NamiChatReady copyWith({
     List<ChatMessage>? messages,
     bool? isGenerating,
     String? streamingToken,
-    String? error,
+    NamiChatFailure? failure,
   }) {
     return NamiChatReady(
       messages: messages ?? this.messages,
       isGenerating: isGenerating ?? this.isGenerating,
       streamingToken: streamingToken ?? this.streamingToken,
-      error: error, // Clear error by default unless explicitly provided
+      failure: failure, // Clear failure by default unless explicitly provided
     );
   }
 
   @override
-  List<Object?> get props => [messages, isGenerating, streamingToken, error];
+  List<Object?> get props => [messages, isGenerating, streamingToken, failure];
 }
