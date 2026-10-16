@@ -3,7 +3,7 @@ import 'package:phosphoricons_flutter/phosphoricons_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:opfan/shared/utils/constants.dart';
-import 'package:opfan/shared/utils/theme.dart';
+import 'package:opfan/shared/utils/app_semantic_colors.dart';
 import 'package:opfan/features/nami_finances/data/finance_math.dart';
 import 'package:opfan/features/nami_finances/data/models/nami_finances_model.dart';
 import 'package:opfan/features/nami_finances/bloc/index.dart';
@@ -39,7 +39,7 @@ class _FinancesHistoryWidgetState extends State<FinancesHistoryWidget> {
               children: [
                 AppIcon(
                   PhosphorIconsRegular.chartLine,
-                  color: AppColors.blue[500],
+                  color: Theme.of(context).semanticColors.info,
                   size: 24,
                 ),
                 const SizedBox(width: Constants.margin),
@@ -78,6 +78,7 @@ class _FinancesHistoryWidgetState extends State<FinancesHistoryWidget> {
     }
 
     final l10n = AppLocalizations.of(context)!;
+    final seriesColors = _HistorySeriesColors.of(context);
     final sortedHistory = List<NamiFinancesModel>.from(financesHistory)
       ..sort((a, b) => a.month.compareTo(b.month));
 
@@ -102,7 +103,7 @@ class _FinancesHistoryWidgetState extends State<FinancesHistoryWidget> {
                             FinanceMath.formatBrl(finance.totalExpenses),
                           ),
                           TextStyle(
-                            color: AppColors.red[500],
+                            color: seriesColors.expenses,
                             fontWeight: FontWeight.bold,
                           ),
                         );
@@ -112,7 +113,7 @@ class _FinancesHistoryWidgetState extends State<FinancesHistoryWidget> {
                             FinanceMath.formatBrl(finance.availableAmount),
                           ),
                           TextStyle(
-                            color: AppColors.green[500],
+                            color: seriesColors.available,
                             fontWeight: FontWeight.bold,
                           ),
                         );
@@ -122,7 +123,7 @@ class _FinancesHistoryWidgetState extends State<FinancesHistoryWidget> {
                             FinanceMath.formatBrl(finance.totalReserves),
                           ),
                           TextStyle(
-                            color: AppColors.orange[500],
+                            color: seriesColors.savings,
                             fontWeight: FontWeight.bold,
                           ),
                         );
@@ -216,15 +217,15 @@ class _FinancesHistoryWidgetState extends State<FinancesHistoryWidget> {
           children: [
             _buildLegendItem(
               AppLocalizations.of(context)!.expensesLabel,
-              AppColors.red[500]!,
+              seriesColors.expenses,
             ),
             _buildLegendItem(
               AppLocalizations.of(context)!.availableLabel,
-              AppColors.green[500]!,
+              seriesColors.available,
             ),
             _buildLegendItem(
               AppLocalizations.of(context)!.savingsLabel,
-              AppColors.orange[500]!,
+              seriesColors.savings,
             ),
           ],
         ),
@@ -258,6 +259,7 @@ class _FinancesHistoryWidgetState extends State<FinancesHistoryWidget> {
   List<BarChartGroupData> _buildBarGroups(
     List<NamiFinancesModel> financesHistory,
   ) {
+    final seriesColors = _HistorySeriesColors.of(context);
     return List.generate(financesHistory.length, (index) {
       final finance = financesHistory[index];
       final total = finance.totalIncome;
@@ -265,7 +267,7 @@ class _FinancesHistoryWidgetState extends State<FinancesHistoryWidget> {
       if (total == 0) {
         return BarChartGroupData(
           x: index,
-          barRods: [BarChartRodData(toY: 0, color: AppColors.grey[300])],
+          barRods: [BarChartRodData(toY: 0, color: seriesColors.empty)],
         );
       }
 
@@ -274,7 +276,7 @@ class _FinancesHistoryWidgetState extends State<FinancesHistoryWidget> {
         barRods: [
           BarChartRodData(
             toY: finance.totalExpenses,
-            color: AppColors.red[500],
+            color: seriesColors.expenses,
             width: 24,
             borderRadius: const BorderRadius.only(
               topLeft: Radius.circular(4),
@@ -283,7 +285,7 @@ class _FinancesHistoryWidgetState extends State<FinancesHistoryWidget> {
           ),
           BarChartRodData(
             toY: finance.availableAmount,
-            color: AppColors.green[500],
+            color: seriesColors.available,
             width: 24,
             borderRadius: const BorderRadius.only(
               topLeft: Radius.circular(4),
@@ -292,7 +294,7 @@ class _FinancesHistoryWidgetState extends State<FinancesHistoryWidget> {
           ),
           BarChartRodData(
             toY: finance.totalReserves,
-            color: AppColors.orange[500],
+            color: seriesColors.savings,
             width: 24,
             borderRadius: const BorderRadius.only(
               topLeft: Radius.circular(4),
@@ -346,4 +348,28 @@ class _FinancesHistoryWidgetState extends State<FinancesHistoryWidget> {
         return '';
     }
   }
+}
+
+class _HistorySeriesColors {
+  const _HistorySeriesColors({
+    required this.expenses,
+    required this.available,
+    required this.savings,
+    required this.empty,
+  });
+
+  factory _HistorySeriesColors.of(BuildContext context) {
+    final theme = Theme.of(context);
+    return _HistorySeriesColors(
+      expenses: theme.colorScheme.error,
+      available: theme.semanticColors.success,
+      savings: theme.semanticColors.info,
+      empty: theme.colorScheme.onSurface.withValues(alpha: 0.12),
+    );
+  }
+
+  final Color expenses;
+  final Color available;
+  final Color savings;
+  final Color empty;
 }

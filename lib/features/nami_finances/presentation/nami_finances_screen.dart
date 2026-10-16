@@ -51,7 +51,7 @@ class _NamiFinancesScreenState extends State<NamiFinancesScreen> {
             builder: (context) => const NamiChatSheet(),
           );
         },
-        child: const Icon(Icons.chat),
+        child: const AppIcon(PhosphorIconsRegular.chatCircle),
       ),
       body: Container(
         color: Theme.of(context).colorScheme.surface,

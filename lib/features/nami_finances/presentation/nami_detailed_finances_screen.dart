@@ -8,9 +8,9 @@ import 'package:opfan/shared/widgets/organisms/bottom_navigation.dart';
 import 'package:opfan/shared/utils/constants.dart';
 import 'package:opfan/l10n/app_localizations.dart';
 import 'package:opfan/features/nami_finances/data/models/nami_finances_model.dart';
+import 'package:opfan/features/nami_finances/presentation/expense_category_palette.dart';
 import 'package:opfan/features/nami_finances/bloc/index.dart';
 import 'package:opfan/app/di/injection.dart';
-import 'package:opfan/shared/utils/theme.dart';
 import 'package:opfan/shared/widgets/atoms/app_button.dart';
 import 'package:opfan/shared/utils/app_semantic_colors.dart';
 
@@ -186,7 +186,7 @@ class _NamiDetailedFinancesScreenState
                   l10n.totalIncome,
                   finances.totalIncome,
                   PhosphorIconsRegular.bank,
-                  AppColors.green[500]!,
+                  Theme.of(context).semanticColors.success,
                 ),
               ),
               Expanded(
@@ -207,7 +207,7 @@ class _NamiDetailedFinancesScreenState
                   AppLocalizations.of(context)!.reservesLabel,
                   finances.totalReserves,
                   PhosphorIconsRegular.piggyBank,
-                  AppColors.blue[500]!,
+                  Theme.of(context).semanticColors.info,
                 ),
               ),
               Expanded(
@@ -215,7 +215,9 @@ class _NamiDetailedFinancesScreenState
                   AppLocalizations.of(context)!.availableLabel,
                   finances.availableAmount,
                   PhosphorIconsRegular.bank,
-                  AppColors.orange[500]!,
+                  finances.availableAmount >= 0
+                      ? Theme.of(context).semanticColors.success
+                      : Theme.of(context).colorScheme.error,
                 ),
               ),
             ],
@@ -279,7 +281,7 @@ class _NamiDetailedFinancesScreenState
               children: [
                 AppIcon(
                   PhosphorIconsRegular.bank,
-                  color: AppColors.green[500]!,
+                  color: Theme.of(context).semanticColors.success,
                 ),
                 const SizedBox(width: Constants.margin),
                 Text(
@@ -304,7 +306,9 @@ class _NamiDetailedFinancesScreenState
             Container(
               padding: const EdgeInsets.all(Constants.margin),
               decoration: BoxDecoration(
-                color: AppColors.green[500]!.withValues(alpha: 0.1),
+                color: Theme.of(
+                  context,
+                ).semanticColors.success.withValues(alpha: 0.1),
                 borderRadius: BorderRadius.circular(Constants.margin),
               ),
               child: Row(
@@ -320,7 +324,7 @@ class _NamiDetailedFinancesScreenState
                     'R\$ ${(finances.totalIncome).toStringAsFixed(2)}',
                     style: TextTheme.of(context).titleMedium?.copyWith(
                       fontWeight: FontWeight.bold,
-                      color: AppColors.green[500]!,
+                      color: Theme.of(context).semanticColors.success,
                     ),
                   ),
                 ],
@@ -349,7 +353,7 @@ class _NamiDetailedFinancesScreenState
               'R\$ ${(income.amount).toStringAsFixed(2)}',
               style: TextTheme.of(context).bodyMedium?.copyWith(
                 fontWeight: FontWeight.w500,
-                color: AppColors.green[500]!,
+                color: Theme.of(context).semanticColors.success,
               ),
               textAlign: TextAlign.end,
             ),
@@ -437,10 +441,12 @@ class _NamiDetailedFinancesScreenState
               Container(
                 padding: const EdgeInsets.all(Constants.margin * 2),
                 decoration: BoxDecoration(
-                  color: AppColors.grey[100] ?? Colors.grey[100],
+                  color: Theme.of(context).colorScheme.surfaceContainerHigh,
                   borderRadius: BorderRadius.circular(Constants.margin),
                   border: Border.all(
-                    color: AppColors.grey[300] ?? Colors.grey[300]!,
+                    color: Theme.of(
+                      context,
+                    ).colorScheme.onSurface.withValues(alpha: 0.12),
                     width: 1,
                   ),
                 ),
@@ -449,14 +455,14 @@ class _NamiDetailedFinancesScreenState
                   children: [
                     AppIcon(
                       PhosphorIconsRegular.info,
-                      color: AppColors.grey[600] ?? Colors.grey[600]!,
+                      color: Theme.of(context).colorScheme.onSurfaceVariant,
                       size: Constants.iconSize,
                     ),
                     const SizedBox(width: Constants.margin),
                     Text(
                       AppLocalizations.of(context)!.noExpensesRegistered,
                       style: TextTheme.of(context).bodyMedium?.copyWith(
-                        color: AppColors.grey[600] ?? Colors.grey[600]!,
+                        color: Theme.of(context).colorScheme.onSurfaceVariant,
                       ),
                     ),
                   ],
@@ -492,12 +498,15 @@ class _NamiDetailedFinancesScreenState
           Container(
             padding: const EdgeInsets.all(Constants.margin),
             decoration: BoxDecoration(
-              color: _getCategoryColor(expense.category).withValues(alpha: 0.1),
+              color: ExpenseCategoryPalette.of(
+                context,
+                expense.category,
+              ).withValues(alpha: 0.1),
               borderRadius: BorderRadius.circular(Constants.margin / 2),
             ),
             child: Icon(
               _getCategoryIcon(expense.category),
-              color: _getCategoryColor(expense.category),
+              color: ExpenseCategoryPalette.of(context, expense.category),
               size: Constants.iconSize,
             ),
           ),
@@ -521,7 +530,8 @@ class _NamiDetailedFinancesScreenState
                     vertical: Constants.margin / 2,
                   ),
                   decoration: BoxDecoration(
-                    color: _getCategoryColor(
+                    color: ExpenseCategoryPalette.of(
+                      context,
                       expense.category,
                     ).withValues(alpha: 0.1),
                     borderRadius: BorderRadius.circular(Constants.margin),
@@ -529,7 +539,10 @@ class _NamiDetailedFinancesScreenState
                   child: Text(
                     _categoryLabel(expense.category).toUpperCase(),
                     style: TextTheme.of(context).bodySmall?.copyWith(
-                      color: _getCategoryColor(expense.category),
+                      color: ExpenseCategoryPalette.of(
+                        context,
+                        expense.category,
+                      ),
                       fontWeight: FontWeight.w600,
                       fontSize: 10,
                     ),
@@ -549,24 +562,6 @@ class _NamiDetailedFinancesScreenState
         ],
       ),
     );
-  }
-
-  Color _getCategoryColor(ExpenseCategory category) {
-    switch (category) {
-      case ExpenseCategory.fixed:
-        return AppColors.red[500] ?? Theme.of(context).colorScheme.error;
-      case ExpenseCategory.food:
-        return AppColors.orange[500] ??
-            Theme.of(context).semanticColors.warning;
-      case ExpenseCategory.transport:
-        return AppColors.blue[500] ?? Colors.blue;
-      case ExpenseCategory.entertainment:
-        return AppColors.purple[500] ?? Colors.purple;
-      case ExpenseCategory.health:
-        return AppColors.green[500] ?? Theme.of(context).semanticColors.success;
-      case ExpenseCategory.other:
-        return AppColors.grey[500] ?? Colors.grey;
-    }
   }
 
   IconData _getCategoryIcon(ExpenseCategory category) {
@@ -629,7 +624,7 @@ class _NamiDetailedFinancesScreenState
               children: [
                 AppIcon(
                   PhosphorIconsRegular.piggyBank,
-                  color: AppColors.blue[500]!,
+                  color: Theme.of(context).semanticColors.info,
                 ),
                 const SizedBox(width: Constants.margin),
                 Text(
@@ -645,18 +640,18 @@ class _NamiDetailedFinancesScreenState
             _buildSavingsMetric(
               AppLocalizations.of(context)!.monthSavings,
               finances.totalReserves,
-              AppColors.blue[500]!,
+              Theme.of(context).semanticColors.info,
             ),
             if (finances.reserveGoal != null && finances.reserveGoal! > 0)
               _buildSavingsMetric(
                 AppLocalizations.of(context)!.reserveGoalMetricLabel,
                 finances.reserveGoal!,
-                AppColors.purple[500]!,
+                Theme.of(context).colorScheme.primary,
               ),
             _buildSavingsMetric(
               AppLocalizations.of(context)!.savingsPercentage,
               finances.savingsPercentage,
-              AppColors.green[500]!,
+              Theme.of(context).semanticColors.success,
             ),
             _buildSavingsMetric(
               AppLocalizations.of(context)!.yearlySavings,
@@ -672,7 +667,7 @@ class _NamiDetailedFinancesScreenState
                       ? '${_reservePurposeLabel(reserve.purpose)} · ${reserve.note}'
                       : _reservePurposeLabel(reserve.purpose),
                   reserve.amount,
-                  AppColors.blue[400] ?? AppColors.blue[500]!,
+                  Theme.of(context).semanticColors.info,
                 ),
               ),
             ],
@@ -717,7 +712,7 @@ class _NamiDetailedFinancesScreenState
               children: [
                 AppIcon(
                   PhosphorIconsRegular.chartLineUp,
-                  color: AppColors.orange[500]!,
+                  color: Theme.of(context).colorScheme.tertiary,
                 ),
                 const SizedBox(width: Constants.margin),
                 Text(
@@ -758,7 +753,11 @@ class _NamiDetailedFinancesScreenState
       padding: const EdgeInsets.symmetric(vertical: Constants.margin / 2),
       child: Row(
         children: [
-          Icon(icon, size: Constants.iconSize, color: AppColors.orange[500]!),
+          Icon(
+            icon,
+            size: Constants.iconSize,
+            color: Theme.of(context).colorScheme.tertiary,
+          ),
           const SizedBox(width: Constants.margin),
           Expanded(child: Text(label, style: TextTheme.of(context).bodyMedium)),
           Text(
@@ -767,7 +766,7 @@ class _NamiDetailedFinancesScreenState
                 : value.toString(),
             style: TextTheme.of(context).bodyMedium?.copyWith(
               fontWeight: FontWeight.w500,
-              color: AppColors.orange[500]!,
+              color: Theme.of(context).colorScheme.tertiary,
             ),
           ),
         ],
@@ -783,14 +782,14 @@ class _NamiDetailedFinancesScreenState
           AppIcon(
             PhosphorIconsRegular.bank,
             size: Constants.iconSize * 4,
-            color: AppColors.grey[400]!,
+            color: Theme.of(context).colorScheme.onSurfaceVariant,
           ),
           const SizedBox(height: Constants.margin * 2),
           Text(
             l10n.namiNoFinancialDataForMonth(_formatMonth(_selectedMonth)),
-            style: TextTheme.of(
-              context,
-            ).titleMedium?.copyWith(color: AppColors.grey[600]!),
+            style: TextTheme.of(context).titleMedium?.copyWith(
+              color: Theme.of(context).colorScheme.onSurfaceVariant,
+            ),
             textAlign: TextAlign.center,
           ),
           const SizedBox(height: Constants.margin * 2),
@@ -836,9 +835,9 @@ class _NamiDetailedFinancesScreenState
           const SizedBox(height: Constants.margin),
           Text(
             _failureMessage(l10n, failure),
-            style: TextTheme.of(
-              context,
-            ).bodyMedium?.copyWith(color: AppColors.grey[700]!),
+            style: TextTheme.of(context).bodyMedium?.copyWith(
+              color: Theme.of(context).colorScheme.onSurfaceVariant,
+            ),
             textAlign: TextAlign.center,
           ),
           const SizedBox(height: Constants.margin * 2),
