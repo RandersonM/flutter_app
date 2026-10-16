@@ -14,8 +14,8 @@ class NotificationService implements INotificationService {
   NotificationService({
     required this._navigationService,
     required this._firestoreService,
-    FirebaseMessaging? firebaseMessaging,
-  }) : _firebaseMessaging = firebaseMessaging ?? FirebaseMessaging.instance;
+    required this._firebaseMessaging,
+  });
 
   final INavigationService _navigationService;
   final IFirestoreService _firestoreService;

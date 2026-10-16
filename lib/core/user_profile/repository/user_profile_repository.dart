@@ -13,8 +13,7 @@ import 'package:opfan/core/user_profile/repository/user_profile_repository_inter
 class UserProfileRepository implements IUserProfileRepository {
   final FirebaseFirestore _firestore;
 
-  UserProfileRepository({FirebaseFirestore? firestore})
-    : _firestore = firestore ?? FirebaseFirestore.instance;
+  UserProfileRepository({required this._firestore});
 
   // ── Internal helpers ───────────────────────────────────────────────────────
 

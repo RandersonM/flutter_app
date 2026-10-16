@@ -26,12 +26,11 @@ class AuthService implements IAuthService {
   final _profileChanges = StreamController<UserModel>.broadcast();
 
   AuthService({
-    FirebaseAuth? firebaseAuth,
-    GoogleSignIn? googleSignIn,
+    required this._firebaseAuth,
+    required this._googleSignIn,
     required this._userProfileRepository,
     required this._notificationService,
-  }) : _firebaseAuth = firebaseAuth ?? FirebaseAuth.instance,
-       _googleSignIn = googleSignIn ?? GoogleSignIn();
+  });
 
   @override
   Future<void> init() async {
