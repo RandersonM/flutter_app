@@ -13,6 +13,7 @@ import 'auth_state.dart';
 class AuthBloc extends Bloc<AuthEvent, AuthState> {
   final IAuthService _authService;
   StreamSubscription<AuthStatus>? _authStatusSubscription;
+  late final StreamSubscription<UserModel> _profileSubscription;
 
   AuthBloc({required this._authService}) : super(const AuthInitial()) {
     //
@@ -23,9 +24,14 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     on<AuthStatusChanged>(_onAuthStatusChanged);
     on<AuthUpdateProfile>(_onAuthUpdateProfile);
     on<AuthProfileBodyUpdated>(_onAuthProfileBodyUpdated);
+    on<AuthProfileChanged>(_onAuthProfileChanged);
     on<AuthDeleteAccount>(_onAuthDeleteAccount);
     on<AuthCheckStatus>(_onAuthCheckStatus);
     on<AuthClearCache>(_onAuthClearCache);
+
+    _profileSubscription = _authService.profileChanges.listen(
+      (user) => add(AuthProfileChanged(user)),
+    );
   }
 
   Future<void> _onAuthStarted(
@@ -174,6 +180,13 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     }
   }
 
+  void _onAuthProfileChanged(
+    AuthProfileChanged event,
+    Emitter<AuthState> emit,
+  ) {
+    if (state is AuthAuthenticated) emit(AuthAuthenticated(user: event.user));
+  }
+
   Future<void> _onAuthDeleteAccount(
     AuthDeleteAccount event,
     Emitter<AuthState> emit,
@@ -257,6 +270,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   @override
   Future<void> close() {
     _authStatusSubscription?.cancel();
+    _profileSubscription.cancel();
     return super.close();
   }
 }

@@ -10,8 +10,10 @@ paths:
 
 # Domain — Zoro (workout) and Sanji (nutrition)
 
-Both read the user's body profile (`domains/account.md`) and share Firestore
-`workout_assessments`. Both screens are blocked offline by `OfflineBlockerOverlay`.
+Both read the user's body profile (`domains/account.md`) and save changes to it
+through `IAuthService.updateBodyProfile` (not awaited, so a failed sync never blocks
+the flow). Both share Firestore `workout_assessments`. Both screens are blocked
+offline by `OfflineBlockerOverlay`.
 
 ## workout_assessments
 
@@ -33,7 +35,7 @@ Both read the user's body profile (`domains/account.md`) and share Firestore
   `workoutPlan` in history) for the on-device model.
 - `ZoroWorkoutBloc` state `Loaded{currentAssessment, history, ...}`. Route `/workout`.
 - Debt: `_calculateProgress` / `_calculateRemainingDays` are stubs returning 0;
-  hardcoded Portuguese error strings; the bloc injects `AuthBloc`.
+  hardcoded Portuguese error strings.
 
 ## Sanji
 
@@ -43,6 +45,4 @@ Both read the user's body profile (`domains/account.md`) and share Firestore
   `cooking_repository.dart`, `sanji_prompt.dart`) — cloud, rate-limited, fallback
   in `dev_mode`.
 - Routes `/cooking`, `/cookingTips`, `/plateGuide`.
-- Debt: the screen holds a factory bloc in State and never closes it (leak);
-  `_kAlertRed` / `_kAlertOrange` hex constants in `nutrition_results.dart`; the bloc
-  injects `AuthBloc`.
+- Debt: `_kAlertRed` / `_kAlertOrange` hex constants in `nutrition_results.dart`.

@@ -20,13 +20,12 @@ paths:
 - `AuthBloc` (`lib/core/auth/blocs/`) is a global lazy singleton. States: `Initial`,
   `Loading`, `Authenticated(user, isFirstLogin)`, `NeedsOnboarding`,
   `Unauthenticated`, `Error`, `ProfileUpdating/Updated`, `DeletingAccount`,
-  `AccountDeleted`.
+  `AccountDeleted`. It listens to `IAuthService.profileChanges`, so a body profile
+  saved by another feature replaces the user in `Authenticated`.
 - `AppWrapper` (`lib/core/auth/app_wrapper.dart`) is the root switch on `AuthState`:
   Splash → Home / Onboarding / Login / Error. Splash never navigates.
 - **Guest mode exists:** login offers "skip for now"; public routes must work signed out.
 - Login honours `returnRoute` / `returnArguments` from the route guard (`routing.md`).
-- Debt: `AuthStarted` is dispatched twice (in `core_module.dart` and
-  `AppWrapper.initState`).
 
 ## User profile
 

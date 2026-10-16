@@ -51,6 +51,17 @@ class AuthProfileBodyUpdated extends AuthEvent {
   List<Object?> get props => [updatedUser];
 }
 
+/// The body profile was saved by another feature (Sanji, Zoro) through the
+/// auth service.
+class AuthProfileChanged extends AuthEvent {
+  final UserModel user;
+
+  const AuthProfileChanged(this.user);
+
+  @override
+  List<Object?> get props => [user];
+}
+
 class AuthDeleteAccount extends AuthEvent {
   const AuthDeleteAccount();
 }

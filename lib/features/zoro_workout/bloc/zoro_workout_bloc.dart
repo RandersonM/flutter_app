@@ -1,20 +1,19 @@
+import 'dart:async';
+
+import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:opfan/core/auth/models/user_model.dart';
 import 'package:opfan/core/services/index.dart';
 import 'package:opfan/features/zoro_workout/data/models/workout_assessment_model.dart';
-import '../../../core/auth/blocs/index.dart';
 import 'zoro_workout_event.dart';
 import 'zoro_workout_state.dart';
 
 class ZoroWorkoutBloc extends Bloc<ZoroWorkoutEvent, ZoroWorkoutState> {
   final IWorkoutAssessmentService _service;
   final IAuthService _authService;
-  final AuthBloc _authBloc;
 
-  ZoroWorkoutBloc({
-    required this._service,
-    required this._authService,
-    required this._authBloc,
-  }) : super(const ZoroWorkoutInitial()) {
+  ZoroWorkoutBloc({required this._service, required this._authService})
+    : super(const ZoroWorkoutInitial()) {
     on<InitializeWorkoutAssessment>(_onInitializeWorkoutAssessment);
     on<CheckAndCreateNewMonth>(_onCheckAndCreateNewMonth);
     on<SaveNewAssessment>(_onSaveNewAssessment);
@@ -77,7 +76,7 @@ class ZoroWorkoutBloc extends Bloc<ZoroWorkoutEvent, ZoroWorkoutState> {
               user.activityLevel,
           goal: event.healthResults['goal'] as String? ?? user.goal,
         );
-        _authBloc.add(AuthProfileBodyUpdated(updatedUser: updatedUser));
+        unawaited(_saveBodyProfile(updatedUser));
       }
 
       await _service.saveWorkoutAssessment(
@@ -210,5 +209,15 @@ class ZoroWorkoutBloc extends Bloc<ZoroWorkoutEvent, ZoroWorkoutState> {
     if (assessment == null || assessment.workoutDaysGoal == null) return 0;
 
     return 0;
+  }
+
+  /// Not awaited: the user's flow must not wait on, or fail with, the profile
+  /// sync.
+  Future<void> _saveBodyProfile(UserModel user) async {
+    try {
+      await _authService.updateBodyProfile(user);
+    } catch (e) {
+      debugPrint('ZoroWorkoutBloc: saving the body profile failed: $e');
+    }
   }
 }

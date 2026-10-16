@@ -7,7 +7,6 @@ import 'package:opfan/features/custom_character/data/repository/custom_character
 import 'package:opfan/features/robin_knowledge/data/repository/planner_repository_interface.dart';
 import 'package:opfan/core/services/index.dart';
 import 'package:opfan/core/services/rag/i_rag_service.dart';
-import 'package:opfan/core/auth/blocs/index.dart';
 import 'package:opfan/features/sanji_cooking/data/repository/cooking_repository_interface.dart';
 import 'package:opfan/features/vegapunk_chat/data/repository/i_vegapunk_chat_history_repository.dart';
 import 'package:opfan/features/vegapunk_chat/data/repository/i_vegapunk_chat_repository.dart';
@@ -132,7 +131,6 @@ void registerFeaturesModule(GetIt getIt) {
     () => ZoroWorkoutBloc(
       service: getIt<IWorkoutAssessmentService>(),
       authService: getIt<IAuthService>(),
-      authBloc: getIt<AuthBloc>(),
     ),
   );
   getIt.registerFactory<SanjiCookingBloc>(
@@ -141,7 +139,6 @@ void registerFeaturesModule(GetIt getIt) {
       cookingRepository: getIt<ICookingRepository>(),
       nutritionService: getIt<INutritionCalculationService>(),
       authService: getIt<IAuthService>(),
-      authBloc: getIt<AuthBloc>(),
     ),
   );
 

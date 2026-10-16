@@ -1,8 +1,10 @@
+import 'dart:async';
+
 import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:opfan/core/auth/models/user_model.dart';
 import 'package:opfan/features/sanji_cooking/data/repository/cooking_repository_interface.dart';
 import 'package:opfan/core/services/index.dart';
-import 'package:opfan/core/auth/blocs/index.dart';
 import 'sanji_cooking_event.dart';
 import 'sanji_cooking_state.dart';
 
@@ -11,14 +13,12 @@ class SanjiCookingBloc extends Bloc<SanjiCookingEvent, SanjiCookingState> {
   final ICookingRepository _cookingRepository;
   final INutritionCalculationService _nutritionService;
   final IAuthService _authService;
-  final AuthBloc _authBloc;
 
   SanjiCookingBloc({
     required this._workoutService,
     required this._cookingRepository,
     required this._nutritionService,
     required this._authService,
-    required this._authBloc,
   }) : super(const SanjiCookingInitial()) {
     on<InitializeSanjiCooking>(_onInitializeSanjiCooking);
     on<CalculateNutrition>(_onCalculateNutrition);
@@ -108,7 +108,7 @@ class SanjiCookingBloc extends Bloc<SanjiCookingEvent, SanjiCookingState> {
           activityLevel: event.nutritionData['activityLevel'],
           goal: event.nutritionData['goal'],
         );
-        _authBloc.add(AuthProfileBodyUpdated(updatedUser: updatedUser));
+        unawaited(_saveBodyProfile(updatedUser));
       }
 
       emit(
@@ -141,7 +141,7 @@ class SanjiCookingBloc extends Bloc<SanjiCookingEvent, SanjiCookingState> {
           activityLevel: event.nutritionData['activityLevel'],
           goal: event.nutritionData['goal'],
         );
-        _authBloc.add(AuthProfileBodyUpdated(updatedUser: updatedUser));
+        unawaited(_saveBodyProfile(updatedUser));
       }
 
       await _workoutService.updateNutritionData(
@@ -339,6 +339,16 @@ class SanjiCookingBloc extends Bloc<SanjiCookingEvent, SanjiCookingState> {
           errorMessage: 'Erro ao gerar refeição: $e',
         ),
       );
+    }
+  }
+
+  /// Not awaited: the user's flow must not wait on, or fail with, the profile
+  /// sync.
+  Future<void> _saveBodyProfile(UserModel user) async {
+    try {
+      await _authService.updateBodyProfile(user);
+    } catch (e) {
+      debugPrint('SanjiCookingBloc: saving the body profile failed: $e');
     }
   }
 }
