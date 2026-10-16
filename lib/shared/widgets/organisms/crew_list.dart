@@ -9,6 +9,7 @@ import 'package:opfan/features/crews/data/models/crew_model.dart';
 import 'package:opfan/l10n/app_localizations.dart';
 import 'package:opfan/features/crews/bloc/list_crews_bloc.dart';
 import 'package:opfan/features/crews/bloc/list_crews_event.dart';
+import 'package:opfan/features/crews/bloc/crews_failure.dart';
 import 'package:opfan/features/crews/bloc/list_crews_state.dart';
 import 'package:opfan/shared/utils/constants.dart';
 import 'package:opfan/shared/widgets/atoms/crew_card.dart';
@@ -92,7 +93,10 @@ class _CrewListState extends State<CrewList> {
                       ),
                       const SizedBox(height: Constants.margin),
                       Text(
-                        state.message,
+                        switch (state.failure) {
+                          CrewsFailure.deleteFailed => l10n.crewDeletionError,
+                          _ => l10n.errorLoadingCrews,
+                        },
                         style: Theme.of(context).textTheme.bodySmall,
                         textAlign: TextAlign.center,
                       ),

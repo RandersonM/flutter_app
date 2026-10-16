@@ -1,3 +1,5 @@
+import 'package:flutter/foundation.dart';
+import 'package:opfan/core/errors/app_exceptions.dart';
 import 'package:opfan/features/crews/data/models/crew_model.dart';
 import 'package:opfan/core/services/index.dart';
 import 'package:opfan/features/crews/data/repository/crew_repository_interface.dart';
@@ -24,7 +26,8 @@ class CrewRepository implements ICrewRepository {
       );
       return documentId;
     } catch (e) {
-      throw Exception('Erro ao criar tripulação: $e');
+      debugPrint('CrewRepository: create failed: $e');
+      rethrow;
     }
   }
 
@@ -41,7 +44,8 @@ class CrewRepository implements ICrewRepository {
       }
       return null;
     } catch (e) {
-      throw Exception('Erro ao buscar tripulação: $e');
+      debugPrint('CrewRepository: getCrew failed: $e');
+      rethrow;
     }
   }
 
@@ -87,7 +91,8 @@ class CrewRepository implements ICrewRepository {
 
       return crews;
     } catch (e) {
-      throw Exception('Erro ao buscar tripulações do usuário: $e');
+      debugPrint('CrewRepository: getUserCrews failed: $e');
+      rethrow;
     }
   }
 
@@ -133,7 +138,8 @@ class CrewRepository implements ICrewRepository {
 
       return crews;
     } catch (e) {
-      throw Exception('Erro ao buscar todas as tripulações: $e');
+      debugPrint('CrewRepository: getAllCrews failed: $e');
+      rethrow;
     }
   }
 
@@ -147,7 +153,8 @@ class CrewRepository implements ICrewRepository {
         data: data,
       );
     } catch (e) {
-      throw Exception('Erro ao atualizar tripulação: $e');
+      debugPrint('CrewRepository: update failed: $e');
+      rethrow;
     }
   }
 
@@ -159,7 +166,8 @@ class CrewRepository implements ICrewRepository {
         documentId: documentId,
       );
     } catch (e) {
-      throw Exception('Erro ao deletar tripulação: $e');
+      debugPrint('CrewRepository: delete failed: $e');
+      rethrow;
     }
   }
 
@@ -209,7 +217,8 @@ class CrewRepository implements ICrewRepository {
 
       return crews;
     } catch (e) {
-      throw Exception('Erro ao buscar tripulações: $e');
+      debugPrint('CrewRepository: search failed: $e');
+      rethrow;
     }
   }
 
@@ -265,7 +274,8 @@ class CrewRepository implements ICrewRepository {
           .where((crew) => crew.name.toLowerCase().contains(name.toLowerCase()))
           .toList();
     } catch (e) {
-      throw Exception('Erro ao buscar tripulações por nome: $e');
+      debugPrint('CrewRepository: searchByName failed: $e');
+      rethrow;
     }
   }
 
@@ -285,7 +295,8 @@ class CrewRepository implements ICrewRepository {
       final allCrews = await getUserCrews();
       return allCrews.where((crew) => crew.tags.contains(tag)).toList();
     } catch (e) {
-      throw Exception('Erro ao buscar tripulações por tag: $e');
+      debugPrint('CrewRepository: getByTag failed: $e');
+      rethrow;
     }
   }
 
@@ -295,7 +306,8 @@ class CrewRepository implements ICrewRepository {
       final allCrews = await getUserCrews();
       return allCrews.where((crew) => crew.members.isNotEmpty).toList();
     } catch (e) {
-      throw Exception('Erro ao buscar tripulações com membros: $e');
+      debugPrint('CrewRepository: getWithMembers failed: $e');
+      rethrow;
     }
   }
 
@@ -311,9 +323,8 @@ class CrewRepository implements ICrewRepository {
         return memberCount >= minMembers && memberCount <= maxMembers;
       }).toList();
     } catch (e) {
-      throw Exception(
-        'Erro ao buscar tripulações por quantidade de membros: $e',
-      );
+      debugPrint('CrewRepository: getByMemberCount failed: $e');
+      rethrow;
     }
   }
 
@@ -328,7 +339,8 @@ class CrewRepository implements ICrewRepository {
           )
           .toList();
     } catch (e) {
-      throw Exception('Erro ao buscar tripulações por membro: $e');
+      debugPrint('CrewRepository: getByMember failed: $e');
+      rethrow;
     }
   }
 
@@ -337,7 +349,7 @@ class CrewRepository implements ICrewRepository {
     try {
       final crew = await getCrew(crewId);
       if (crew == null) {
-        throw Exception('Tripulação não encontrada');
+        throw NotFoundException('crew $crewId');
       }
 
       final updatedMembers = List<CrewMember>.from(crew.members)..add(member);
@@ -366,7 +378,8 @@ class CrewRepository implements ICrewRepository {
 
       await updateCrew(crewId, updatedCrew);
     } catch (e) {
-      throw Exception('Erro ao adicionar membro à tripulação: $e');
+      debugPrint('CrewRepository: addMember failed: $e');
+      rethrow;
     }
   }
 
@@ -375,7 +388,7 @@ class CrewRepository implements ICrewRepository {
     try {
       final crew = await getCrew(crewId);
       if (crew == null) {
-        throw Exception('Tripulação não encontrada');
+        throw NotFoundException('crew $crewId');
       }
 
       final removed = crew.members
@@ -397,7 +410,8 @@ class CrewRepository implements ICrewRepository {
       );
       await updateCrew(crewId, updatedCrew);
     } catch (e) {
-      throw Exception('Erro ao remover membro da tripulação: $e');
+      debugPrint('CrewRepository: removeMember failed: $e');
+      rethrow;
     }
   }
 
@@ -410,7 +424,7 @@ class CrewRepository implements ICrewRepository {
     try {
       final crew = await getCrew(crewId);
       if (crew == null) {
-        throw Exception('Tripulação não encontrada');
+        throw NotFoundException('crew $crewId');
       }
 
       final updatedMembers = crew.members.map((member) {
@@ -454,7 +468,8 @@ class CrewRepository implements ICrewRepository {
       );
       await updateCrew(crewId, updatedCrew);
     } catch (e) {
-      throw Exception('Erro ao atualizar membro da tripulação: $e');
+      debugPrint('CrewRepository: updateMember failed: $e');
+      rethrow;
     }
   }
 
@@ -463,13 +478,14 @@ class CrewRepository implements ICrewRepository {
     try {
       final crew = await getCrew(crewId);
       if (crew == null) {
-        throw Exception('Tripulação não encontrada');
+        throw NotFoundException('crew $crewId');
       }
 
       final updatedCrew = crew.copyWith(captain: captainName);
       await updateCrew(crewId, updatedCrew);
     } catch (e) {
-      throw Exception('Erro ao definir capitão da tripulação: $e');
+      debugPrint('CrewRepository: setCaptain failed: $e');
+      rethrow;
     }
   }
 
@@ -478,13 +494,14 @@ class CrewRepository implements ICrewRepository {
     try {
       final crew = await getCrew(crewId);
       if (crew == null) {
-        throw Exception('Tripulação não encontrada');
+        throw NotFoundException('crew $crewId');
       }
 
       final updatedCrew = crew.copyWith(viceCaptain: viceCaptainName);
       await updateCrew(crewId, updatedCrew);
     } catch (e) {
-      throw Exception('Erro ao definir vice-capitão da tripulação: $e');
+      debugPrint('CrewRepository: setViceCaptain failed: $e');
+      rethrow;
     }
   }
 
@@ -493,7 +510,7 @@ class CrewRepository implements ICrewRepository {
     try {
       final crew = await getCrew(crewId);
       if (crew == null) {
-        throw Exception('Tripulação não encontrada');
+        throw NotFoundException('crew $crewId');
       }
 
       if (!crew.rolesFilled.contains(role)) {
@@ -502,7 +519,8 @@ class CrewRepository implements ICrewRepository {
         await updateCrew(crewId, updatedCrew);
       }
     } catch (e) {
-      throw Exception('Erro ao adicionar cargo à tripulação: $e');
+      debugPrint('CrewRepository: addRole failed: $e');
+      rethrow;
     }
   }
 
@@ -511,7 +529,7 @@ class CrewRepository implements ICrewRepository {
     try {
       final crew = await getCrew(crewId);
       if (crew == null) {
-        throw Exception('Tripulação não encontrada');
+        throw NotFoundException('crew $crewId');
       }
 
       final updatedRoles = crew.rolesFilled
@@ -521,7 +539,8 @@ class CrewRepository implements ICrewRepository {
       final updatedCrew = crew.copyWith(rolesFilled: updatedRoles);
       await updateCrew(crewId, updatedCrew);
     } catch (e) {
-      throw Exception('Erro ao remover cargo da tripulação: $e');
+      debugPrint('CrewRepository: removeRole failed: $e');
+      rethrow;
     }
   }
 }

@@ -6,6 +6,7 @@ import 'package:markdown_widget/markdown_widget.dart';
 import 'package:opfan/l10n/app_localizations.dart';
 import 'package:opfan/app/di/injection.dart';
 import 'package:opfan/features/sanji_cooking/bloc/index.dart';
+import 'package:opfan/features/sanji_cooking/presentation/sanji_cooking_failure_message.dart';
 import 'package:opfan/shared/utils/constants.dart';
 import 'package:opfan/shared/widgets/molecules/default_app_bar.dart';
 import 'package:opfan/shared/widgets/atoms/app_button.dart';
@@ -402,7 +403,7 @@ class _CookingTipsScreenState extends State<CookingTipsScreen> {
 
                   // Error Message - Personalized Meal
                   if (state is SanjiCookingPersonalizedMealLoaded &&
-                      state.errorMessage != null) ...[
+                      state.failure != null) ...[
                     Card(
                       color: colorScheme.errorContainer,
                       child: Padding(
@@ -416,7 +417,10 @@ class _CookingTipsScreenState extends State<CookingTipsScreen> {
                             const SizedBox(width: 8),
                             Expanded(
                               child: Text(
-                                state.errorMessage!,
+                                sanjiCookingFailureMessage(
+                                  localizations,
+                                  state.failure!,
+                                ),
                                 style: TextStyle(
                                   color: colorScheme.onErrorContainer,
                                 ),
@@ -458,7 +462,10 @@ class _CookingTipsScreenState extends State<CookingTipsScreen> {
                             ),
                             const SizedBox(height: 8),
                             Text(
-                              '${state.targetCalories.toStringAsFixed(0)} kcal | ${_getLocalizedGoal(localizations, state.goal)}',
+                              localizations.sanjiCookingMealCaloriesGoal(
+                                state.targetCalories.toStringAsFixed(0),
+                                _getLocalizedGoal(localizations, state.goal),
+                              ),
                               style: theme.textTheme.bodySmall?.copyWith(
                                 color: colorScheme.onSurface.withValues(
                                   alpha: 0.7,

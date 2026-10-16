@@ -7,6 +7,7 @@ import 'package:opfan/features/nami_finances/bloc/chat/nami_chat_state.dart';
 import 'package:opfan/app/di/injection.dart';
 import 'package:opfan/features/vegapunk_chat/data/models/chat_message.dart';
 import 'package:opfan/shared/widgets/atoms/chat_loading_bubbles.dart';
+import 'package:opfan/l10n/app_localizations.dart';
 
 class NamiChatSheet extends StatelessWidget {
   const NamiChatSheet({super.key});
@@ -70,10 +71,14 @@ class _NamiChatSheetContentState extends State<_NamiChatSheetContent> {
                     controller: _scrollController,
                     padding: const EdgeInsets.all(Constants.margin),
                     itemCount:
+                        1 +
                         state.messages.length +
                         (state.isGenerating ? 1 : 0) +
-                        (state.error != null ? 1 : 0),
+                        (state.failure != null ? 1 : 0),
                     itemBuilder: (context, index) {
+                      if (index == 0) return _buildWelcomeBubble(context);
+                      index -= 1;
+
                       if (index < state.messages.length) {
                         return _buildMessageBubble(
                           context,
@@ -93,7 +98,7 @@ class _NamiChatSheetContentState extends State<_NamiChatSheetContent> {
                         index -= 1;
                       }
 
-                      return _buildErrorBubble(context, state.error!);
+                      return _buildErrorBubble(context, state.failure!);
                     },
                   );
                 }
@@ -121,7 +126,7 @@ class _NamiChatSheetContentState extends State<_NamiChatSheetContent> {
               ),
               const SizedBox(width: Constants.margin),
               Text(
-                'Nami Finances AI',
+                AppLocalizations.of(context)!.namiChatTitle,
                 style: Theme.of(context).textTheme.titleLarge,
               ),
             ],
@@ -191,7 +196,24 @@ class _NamiChatSheetContentState extends State<_NamiChatSheetContent> {
     );
   }
 
-  Widget _buildErrorBubble(BuildContext context, String error) {
+  Widget _buildWelcomeBubble(BuildContext context) => _buildMessageBubble(
+    context,
+    ChatMessage(
+      id: 'welcome_nami',
+      text: AppLocalizations.of(context)!.namiChatWelcome,
+      role: MessageRole.assistant,
+      timestamp: DateTime.fromMillisecondsSinceEpoch(0),
+    ),
+  );
+
+  String _failureMessage(AppLocalizations l10n, NamiChatFailure failure) =>
+      switch (failure) {
+        NamiChatFailure.modelNotInstalled => l10n.namiChatModelNotInstalled,
+        NamiChatFailure.modelLoadFailed => l10n.namiChatModelLoadFailed,
+        NamiChatFailure.connectionFailed => l10n.namiChatConnectionFailed,
+      };
+
+  Widget _buildErrorBubble(BuildContext context, NamiChatFailure failure) {
     final theme = Theme.of(context);
     return Align(
       alignment: Alignment.centerLeft,
@@ -208,7 +230,7 @@ class _NamiChatSheetContentState extends State<_NamiChatSheetContent> {
           ).copyWith(bottomLeft: Radius.zero),
         ),
         child: Text(
-          error,
+          _failureMessage(AppLocalizations.of(context)!, failure),
           style: TextStyle(color: theme.colorScheme.onErrorContainer),
         ),
       ),
@@ -237,7 +259,7 @@ class _NamiChatSheetContentState extends State<_NamiChatSheetContent> {
                   controller: _controller,
                   enabled: isReady,
                   decoration: InputDecoration(
-                    hintText: 'Pergunte sobre suas finanças...',
+                    hintText: AppLocalizations.of(context)!.namiChatInputHint,
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(24),
                     ),
@@ -272,7 +294,7 @@ class _NamiChatLoadingView extends StatelessWidget {
           const CircularProgressIndicator(),
           const SizedBox(height: Constants.margin),
           Text(
-            'Preparando Nami...',
+            AppLocalizations.of(context)!.namiChatPreparing,
             style: Theme.of(context).textTheme.bodyMedium?.copyWith(
               color: Theme.of(context).colorScheme.onSurfaceVariant,
             ),

@@ -4,7 +4,9 @@ import 'package:phosphoricons_flutter/phosphoricons_flutter.dart';
 // Copyright © 2022.
 
 import 'package:flutter/material.dart';
+import 'package:opfan/core/utils/character_localization_mapper.dart';
 import 'package:opfan/features/crews/data/models/crew_model.dart';
+import 'package:opfan/l10n/app_localizations.dart';
 import 'package:opfan/shared/utils/constants.dart';
 import 'package:intl/intl.dart';
 
@@ -15,6 +17,7 @@ class CrewInfoSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     final theme = Theme.of(context);
     final dateFormat = DateFormat('dd/MM/yyyy HH:mm');
 
@@ -34,7 +37,7 @@ class CrewInfoSection extends StatelessWidget {
                 ),
                 const SizedBox(width: Constants.margin),
                 Text(
-                  'Informações',
+                  l10n.crewInfoTitle,
                   style: theme.textTheme.titleLarge?.copyWith(
                     fontWeight: FontWeight.bold,
                     color: theme.colorScheme.primary,
@@ -46,17 +49,17 @@ class CrewInfoSection extends StatelessWidget {
             _buildInfoRow(
               context,
               PhosphorIconsRegular.calendarBlank,
-              'Criada em',
+              l10n.crewInfoCreatedAt,
               crew.createdAt != null
                   ? dateFormat.format(crew.createdAt!)
-                  : 'Data não disponível',
+                  : l10n.crewInfoDateUnavailable,
             ),
             if (crew.updatedAt != null) ...[
               const SizedBox(height: Constants.margin),
               _buildInfoRow(
                 context,
                 PhosphorIconsRegular.clockCounterClockwise,
-                'Atualizada em',
+                l10n.crewInfoUpdatedAt,
                 dateFormat.format(crew.updatedAt!),
               ),
             ],
@@ -65,15 +68,23 @@ class CrewInfoSection extends StatelessWidget {
               _buildInfoRow(
                 context,
                 PhosphorIconsRegular.briefcase,
-                'Funções preenchidas',
-                crew.rolesFilled.join(', '),
+                l10n.crewInfoRolesFilled,
+                crew.rolesFilled
+                    .map(
+                      (role) =>
+                          CharacterLocalizationMapper.mapOccupationToLocalized(
+                            role,
+                            l10n,
+                          ),
+                    )
+                    .join(', '),
               ),
             ],
             const SizedBox(height: Constants.margin),
             _buildInfoRow(
               context,
               PhosphorIconsRegular.user,
-              'Proprietário',
+              l10n.crewInfoOwner,
               crew.userId,
             ),
           ],

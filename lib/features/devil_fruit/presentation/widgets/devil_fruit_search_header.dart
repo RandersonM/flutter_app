@@ -40,14 +40,14 @@ class _DevilFruitSearchHeaderState extends State<DevilFruitSearchHeader> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            'Explore as Akuma no Mi',
+            AppLocalizations.of(context)!.devilFruitHeaderTitle,
             style: Theme.of(
               context,
             ).textTheme.headlineSmall?.copyWith(fontWeight: FontWeight.bold),
           ),
           const SizedBox(height: Constants.margin / 2),
           Text(
-            'Descubra os poderes místicos das frutas do diabo',
+            AppLocalizations.of(context)!.devilFruitHeaderSubtitle,
             style: Theme.of(
               context,
             ).textTheme.bodyMedium?.copyWith(color: Colors.grey[600]),

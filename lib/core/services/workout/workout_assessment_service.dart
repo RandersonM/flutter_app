@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
+import 'package:opfan/core/errors/app_exceptions.dart';
 import 'package:opfan/features/zoro_workout/data/models/workout_assessment_model.dart';
 import 'package:opfan/features/zoro_workout/data/models/workout_plan_model.dart';
 
@@ -36,7 +37,7 @@ class WorkoutAssessmentService implements IWorkoutAssessmentService {
     try {
       final userId = _auth.currentUser?.uid;
       if (userId == null) {
-        throw Exception('Usuário não autenticado');
+        throw const NotSignedInException();
       }
 
       final currentMonthYear = _currentMonthYear;
@@ -335,7 +336,7 @@ class WorkoutAssessmentService implements IWorkoutAssessmentService {
     try {
       final userId = _auth.currentUser?.uid;
       if (userId == null) {
-        throw Exception('Usuário não autenticado');
+        throw const NotSignedInException();
       }
 
       final currentMonthYear = _currentMonthYear;
@@ -361,7 +362,7 @@ class WorkoutAssessmentService implements IWorkoutAssessmentService {
     try {
       final userId = _auth.currentUser?.uid;
       if (userId == null) {
-        throw Exception('Usuário não autenticado');
+        throw const NotSignedInException();
       }
 
       final docs = await _firestore
@@ -385,7 +386,7 @@ class WorkoutAssessmentService implements IWorkoutAssessmentService {
     try {
       final userId = _auth.currentUser?.uid;
       if (userId == null) {
-        throw Exception('Usuário não autenticado');
+        throw const NotSignedInException();
       }
 
       final currentMonthYear = _currentMonthYear;
@@ -397,7 +398,7 @@ class WorkoutAssessmentService implements IWorkoutAssessmentService {
           .get();
 
       if (doc.docs.isEmpty) {
-        throw Exception('Nenhuma avaliação encontrada para o mês atual');
+        throw NotFoundException('assessment $currentMonthYear');
       }
 
       final docId = doc.docs.first.id;
@@ -418,7 +419,7 @@ class WorkoutAssessmentService implements IWorkoutAssessmentService {
   Future<void> updateWorkoutPlan(WorkoutPlanModel plan) async {
     try {
       final userId = _auth.currentUser?.uid;
-      if (userId == null) throw Exception('Usuário não autenticado');
+      if (userId == null) throw const NotSignedInException();
 
       final currentMonthYear = _currentMonthYear;
       final doc = await _firestore
@@ -429,7 +430,7 @@ class WorkoutAssessmentService implements IWorkoutAssessmentService {
           .get();
 
       if (doc.docs.isEmpty) {
-        throw Exception('Nenhuma avaliação encontrada para o mês atual');
+        throw NotFoundException('assessment $currentMonthYear');
       }
 
       final docId = doc.docs.first.id;
@@ -458,7 +459,7 @@ class WorkoutAssessmentService implements IWorkoutAssessmentService {
     try {
       final userId = _auth.currentUser?.uid;
       if (userId == null) {
-        throw Exception('Usuário não autenticado');
+        throw const NotSignedInException();
       }
 
       final currentMonthYear = _currentMonthYear;

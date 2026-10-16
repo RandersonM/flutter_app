@@ -293,7 +293,7 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
               const SizedBox(height: Constants.margin / 2),
               Text(
-                state.message,
+                _failureMessage(AppLocalizations.of(context)!, state.failure),
                 style: Theme.of(context).textTheme.bodySmall,
                 textAlign: TextAlign.center,
               ),
@@ -332,6 +332,13 @@ class _HomeScreenState extends State<HomeScreen> {
       onTap: () {},
     );
   }
+
+  String _failureMessage(AppLocalizations l10n, HomeFailure failure) =>
+      switch (failure) {
+        HomeFailure.loadFeaturedFailed => l10n.homeLoadFeaturedCharacterError,
+        HomeFailure.loadRandomFailed => l10n.homeLoadRandomCharacterError,
+        HomeFailure.refreshFailed => l10n.homeRefreshError,
+      };
 
   Widget _buildCharacterStatistics(BuildContext context, HomeState state) {
     // Offline placeholder statistics

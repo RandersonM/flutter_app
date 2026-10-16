@@ -1,6 +1,15 @@
 import 'package:equatable/equatable.dart';
 import 'package:opfan/features/sanji_cooking/data/models/nutrition_calculation_model.dart';
 
+enum SanjiCookingFailure {
+  loadFailed,
+  calculationFailed,
+  saveFailed,
+  noIngredients,
+  tipsFailed,
+  mealFailed,
+}
+
 abstract class SanjiCookingState extends Equatable {
   const SanjiCookingState();
 
@@ -53,12 +62,12 @@ class SanjiCookingFormWithData extends SanjiCookingState {
 }
 
 class SanjiCookingError extends SanjiCookingState {
-  final String message;
+  final SanjiCookingFailure failure;
 
-  const SanjiCookingError({required this.message});
+  const SanjiCookingError(this.failure);
 
   @override
-  List<Object?> get props => [message];
+  List<Object?> get props => [failure];
 }
 
 class SanjiCookingTipsLoaded extends SanjiCookingState {
@@ -66,14 +75,14 @@ class SanjiCookingTipsLoaded extends SanjiCookingState {
   final String? cookingMethod;
   final String? difficulty;
   final String? cookingTips;
-  final String? errorMessage;
+  final SanjiCookingFailure? failure;
 
   const SanjiCookingTipsLoaded({
     required this.ingredients,
     this.cookingMethod,
     this.difficulty,
     this.cookingTips,
-    this.errorMessage,
+    this.failure,
   });
 
   @override
@@ -82,7 +91,7 @@ class SanjiCookingTipsLoaded extends SanjiCookingState {
     cookingMethod,
     difficulty,
     cookingTips,
-    errorMessage,
+    failure,
   ];
 
   SanjiCookingTipsLoaded copyWith({
@@ -90,14 +99,14 @@ class SanjiCookingTipsLoaded extends SanjiCookingState {
     String? cookingMethod,
     String? difficulty,
     String? cookingTips,
-    String? errorMessage,
+    SanjiCookingFailure? failure,
   }) {
     return SanjiCookingTipsLoaded(
       ingredients: ingredients ?? this.ingredients,
       cookingMethod: cookingMethod ?? this.cookingMethod,
       difficulty: difficulty ?? this.difficulty,
       cookingTips: cookingTips ?? this.cookingTips,
-      errorMessage: errorMessage ?? this.errorMessage,
+      failure: failure ?? this.failure,
     );
   }
 }
@@ -136,7 +145,7 @@ class SanjiCookingPersonalizedMealLoaded extends SanjiCookingState {
   final String goal;
   final String? dietaryRestrictions;
   final String? personalizedMeal;
-  final String? errorMessage;
+  final SanjiCookingFailure? failure;
 
   const SanjiCookingPersonalizedMealLoaded({
     required this.ingredients,
@@ -145,7 +154,7 @@ class SanjiCookingPersonalizedMealLoaded extends SanjiCookingState {
     required this.goal,
     this.dietaryRestrictions,
     this.personalizedMeal,
-    this.errorMessage,
+    this.failure,
   });
 
   @override
@@ -156,7 +165,7 @@ class SanjiCookingPersonalizedMealLoaded extends SanjiCookingState {
     goal,
     dietaryRestrictions,
     personalizedMeal,
-    errorMessage,
+    failure,
   ];
 
   SanjiCookingPersonalizedMealLoaded copyWith({
@@ -166,7 +175,7 @@ class SanjiCookingPersonalizedMealLoaded extends SanjiCookingState {
     String? goal,
     String? dietaryRestrictions,
     String? personalizedMeal,
-    String? errorMessage,
+    SanjiCookingFailure? failure,
   }) {
     return SanjiCookingPersonalizedMealLoaded(
       ingredients: ingredients ?? this.ingredients,
@@ -175,7 +184,7 @@ class SanjiCookingPersonalizedMealLoaded extends SanjiCookingState {
       goal: goal ?? this.goal,
       dietaryRestrictions: dietaryRestrictions ?? this.dietaryRestrictions,
       personalizedMeal: personalizedMeal ?? this.personalizedMeal,
-      errorMessage: errorMessage ?? this.errorMessage,
+      failure: failure ?? this.failure,
     );
   }
 }

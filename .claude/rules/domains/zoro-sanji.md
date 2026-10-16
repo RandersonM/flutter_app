@@ -34,8 +34,9 @@ offline by `OfflineBlockerOverlay`.
   `getWorkoutHistory` returns a markdown table — keep payloads lean (no
   `workoutPlan` in history) for the on-device model.
 - `ZoroWorkoutBloc` state `Loaded{currentAssessment, history, ...}`. Route `/workout`.
-- Debt: `_calculateProgress` / `_calculateRemainingDays` are stubs returning 0;
-  hardcoded Portuguese error strings.
+- Failures are `ZoroWorkoutFailure` / `SanjiCookingFailure`, mapped to ARB keys in
+  `zoro_workout_failure_message.dart` / `sanji_cooking_failure_message.dart`.
+- Debt: `_calculateProgress` / `_calculateRemainingDays` are stubs returning 0.
 
 ## Sanji
 

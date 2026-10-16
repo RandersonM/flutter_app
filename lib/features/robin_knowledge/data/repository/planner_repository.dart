@@ -1,4 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/foundation.dart';
+import 'package:opfan/core/errors/app_exceptions.dart';
 import 'package:opfan/features/robin_knowledge/data/models/goal_model.dart';
 import 'package:opfan/features/robin_knowledge/data/repository/planner_repository_interface.dart';
 import 'package:opfan/core/services/index.dart';
@@ -21,7 +23,8 @@ class PlannerRepository implements PlannerRepositoryInterface {
 
       return goals;
     } catch (e) {
-      throw Exception('Failed to get goals: $e');
+      debugPrint('PlannerRepository: loading goals failed: $e');
+      rethrow;
     }
   }
 
@@ -36,7 +39,8 @@ class PlannerRepository implements PlannerRepositoryInterface {
       if (document == null) return null;
       return _documentToGoalModel({'id': id, ...document});
     } catch (e) {
-      throw Exception('Failed to get goal by id: $e');
+      debugPrint('PlannerRepository: loading a goal by id failed: $e');
+      rethrow;
     }
   }
 
@@ -49,7 +53,8 @@ class PlannerRepository implements PlannerRepositoryInterface {
         data: goalData,
       );
     } catch (e) {
-      throw Exception('Failed to create goal: $e');
+      debugPrint('PlannerRepository: creating a goal failed: $e');
+      rethrow;
     }
   }
 
@@ -63,7 +68,8 @@ class PlannerRepository implements PlannerRepositoryInterface {
         data: goalData,
       );
     } catch (e) {
-      throw Exception('Failed to update goal: $e');
+      debugPrint('PlannerRepository: updating a goal failed: $e');
+      rethrow;
     }
   }
 
@@ -75,7 +81,8 @@ class PlannerRepository implements PlannerRepositoryInterface {
         documentId: id,
       );
     } catch (e) {
-      throw Exception('Failed to delete goal: $e');
+      debugPrint('PlannerRepository: deleting a goal failed: $e');
+      rethrow;
     }
   }
 
@@ -88,7 +95,7 @@ class PlannerRepository implements PlannerRepositoryInterface {
     try {
       final goal = await getGoalById(id);
       if (goal == null) {
-        throw Exception('Goal not found');
+        throw NotFoundException('goal $id');
       }
 
       String updatedNotes = goal.notes ?? '';
@@ -119,7 +126,8 @@ class PlannerRepository implements PlannerRepositoryInterface {
         },
       );
     } catch (e) {
-      throw Exception('Failed to update goal progress: $e');
+      debugPrint('PlannerRepository: updating goal progress failed: $e');
+      rethrow;
     }
   }
 
@@ -136,7 +144,8 @@ class PlannerRepository implements PlannerRepositoryInterface {
         },
       );
     } catch (e) {
-      throw Exception('Failed to stream goals: $e');
+      debugPrint('PlannerRepository: streaming goals failed: $e');
+      rethrow;
     }
   }
 
@@ -185,6 +194,6 @@ class PlannerRepository implements PlannerRepositoryInterface {
     } else if (value is Timestamp) {
       return value.toDate();
     }
-    throw Exception('Invalid date format: $value');
+    throw FormatException('Invalid date format: $value');
   }
 }

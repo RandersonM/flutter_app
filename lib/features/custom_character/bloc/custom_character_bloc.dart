@@ -38,7 +38,8 @@ class CustomCharacterBloc
 
       emit(CustomCharacterLoaded(characters));
     } catch (e) {
-      emit(CustomCharacterError(e.toString()));
+      debugPrint('CustomCharacterBloc: load characters failed: $e');
+      emit(const CustomCharacterError(CustomCharacterFailure.loadFailed));
     }
   }
 
@@ -63,7 +64,7 @@ class CustomCharacterBloc
 
           await _crewRepository.addMemberToCrew(event.crewId!, crewMember);
         } catch (e) {
-          debugPrint('Erro ao adicionar personagem à tripulação: $e');
+          debugPrint('CustomCharacterBloc: add to crew failed: $e');
         }
       }
 
@@ -76,14 +77,14 @@ class CustomCharacterBloc
             .getUserCustomCharacters();
         emit(CustomCharacterLoaded(characters));
       } catch (e) {
+        debugPrint('CustomCharacterBloc: list refresh after create failed: $e');
         emit(
-          CustomCharacterError(
-            'Personagem criado com sucesso, mas houve um erro ao atualizar a lista: $e',
-          ),
+          const CustomCharacterError(CustomCharacterFailure.listRefreshFailed),
         );
       }
     } catch (e) {
-      emit(CustomCharacterError(e.toString()));
+      debugPrint('CustomCharacterBloc: create character failed: $e');
+      emit(const CustomCharacterError(CustomCharacterFailure.createFailed));
     }
   }
 
@@ -106,14 +107,14 @@ class CustomCharacterBloc
             .getUserCustomCharacters();
         emit(CustomCharacterLoaded(characters));
       } catch (e) {
+        debugPrint('CustomCharacterBloc: list refresh after update failed: $e');
         emit(
-          CustomCharacterError(
-            'Personagem atualizado com sucesso, mas houve um erro ao atualizar a lista: $e',
-          ),
+          const CustomCharacterError(CustomCharacterFailure.listRefreshFailed),
         );
       }
     } catch (e) {
-      emit(CustomCharacterError(e.toString()));
+      debugPrint('CustomCharacterBloc: update character failed: $e');
+      emit(const CustomCharacterError(CustomCharacterFailure.updateFailed));
     }
   }
 
@@ -133,14 +134,14 @@ class CustomCharacterBloc
             .getUserCustomCharacters();
         emit(CustomCharacterLoaded(characters));
       } catch (e) {
+        debugPrint('CustomCharacterBloc: list refresh after delete failed: $e');
         emit(
-          CustomCharacterError(
-            'Personagem deletado com sucesso, mas houve um erro ao atualizar a lista: $e',
-          ),
+          const CustomCharacterError(CustomCharacterFailure.listRefreshFailed),
         );
       }
     } catch (e) {
-      emit(CustomCharacterError(e.toString()));
+      debugPrint('CustomCharacterBloc: delete character failed: $e');
+      emit(const CustomCharacterError(CustomCharacterFailure.deleteFailed));
     }
   }
 
@@ -154,7 +155,8 @@ class CustomCharacterBloc
           .searchCustomCharactersByName(event.query);
       emit(CustomCharacterLoaded(characters));
     } catch (e) {
-      emit(CustomCharacterError(e.toString()));
+      debugPrint('CustomCharacterBloc: search characters failed: $e');
+      emit(const CustomCharacterError(CustomCharacterFailure.loadFailed));
     }
   }
 
@@ -168,7 +170,8 @@ class CustomCharacterBloc
           .getCustomCharactersByDevilFruit(event.devilFruit);
       emit(CustomCharacterLoaded(characters));
     } catch (e) {
-      emit(CustomCharacterError(e.toString()));
+      debugPrint('CustomCharacterBloc: filter by devil fruit failed: $e');
+      emit(const CustomCharacterError(CustomCharacterFailure.loadFailed));
     }
   }
 
@@ -182,7 +185,8 @@ class CustomCharacterBloc
           .getCustomCharactersByCrew(event.crew);
       emit(CustomCharacterLoaded(characters));
     } catch (e) {
-      emit(CustomCharacterError(e.toString()));
+      debugPrint('CustomCharacterBloc: filter by crew failed: $e');
+      emit(const CustomCharacterError(CustomCharacterFailure.loadFailed));
     }
   }
 }

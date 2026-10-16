@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:opfan/core/connectivity/connectivity_cubit.dart';
 import 'package:opfan/l10n/app_localizations.dart';
 import 'package:opfan/features/sanji_cooking/bloc/index.dart';
+import 'package:opfan/features/sanji_cooking/presentation/sanji_cooking_failure_message.dart';
 import 'package:opfan/features/sanji_cooking/presentation/widgets/cooking_header.dart';
 import 'package:opfan/app/di/injection.dart';
 import 'package:opfan/features/sanji_cooking/presentation/widgets/nutrition_form.dart';
@@ -120,7 +121,10 @@ class _SanjiCookingView extends StatelessWidget {
                                 ),
                                 const SizedBox(height: 16),
                                 Text(
-                                  state.message,
+                                  sanjiCookingFailureMessage(
+                                    AppLocalizations.of(context)!,
+                                    state.failure,
+                                  ),
                                   textAlign: TextAlign.center,
                                   style: TextStyle(
                                     color: Theme.of(context).colorScheme.error,

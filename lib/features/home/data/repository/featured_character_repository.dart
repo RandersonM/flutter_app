@@ -40,7 +40,10 @@ class FeaturedCharacterRepository implements IFeaturedCharacterRepository {
       await _box.put(_currentCharacterKey, character);
       return 'local_${DateTime.now().millisecondsSinceEpoch}';
     } catch (e) {
-      throw Exception('Error creating featured character: $e');
+      debugPrint(
+        'FeaturedCharacterRepository: creating the featured character failed: $e',
+      );
+      rethrow;
     }
   }
 
@@ -50,7 +53,10 @@ class FeaturedCharacterRepository implements IFeaturedCharacterRepository {
       await _initHive();
       return _box.get(_currentCharacterKey);
     } catch (e) {
-      throw Exception('Error getting featured character: $e');
+      debugPrint(
+        'FeaturedCharacterRepository: getting the featured character failed: $e',
+      );
+      rethrow;
     }
   }
 
@@ -87,7 +93,10 @@ class FeaturedCharacterRepository implements IFeaturedCharacterRepository {
       await _box.put(_currentCharacterKey, featuredCharacter);
       return randomCharacter;
     } catch (e) {
-      throw Exception('Error getting featured character for today: $e');
+      debugPrint(
+        'FeaturedCharacterRepository: getting today\'s featured character failed: $e',
+      );
+      rethrow;
     }
   }
 
@@ -104,7 +113,10 @@ class FeaturedCharacterRepository implements IFeaturedCharacterRepository {
 
       return _createDefaultCharacter();
     } catch (e) {
-      throw Exception('Error getting random character: $e');
+      debugPrint(
+        'FeaturedCharacterRepository: getting a random character failed: $e',
+      );
+      rethrow;
     }
   }
 
@@ -119,7 +131,10 @@ class FeaturedCharacterRepository implements IFeaturedCharacterRepository {
       );
       await _box.put(_currentCharacterKey, featuredCharacter);
     } catch (e) {
-      throw Exception('Error saving selected character: $e');
+      debugPrint(
+        'FeaturedCharacterRepository: saving the selected character failed: $e',
+      );
+      rethrow;
     }
   }
 
@@ -132,7 +147,10 @@ class FeaturedCharacterRepository implements IFeaturedCharacterRepository {
       await _initHive();
       await _box.put(_currentCharacterKey, character);
     } catch (e) {
-      throw Exception('Error updating featured character: $e');
+      debugPrint(
+        'FeaturedCharacterRepository: updating the featured character failed: $e',
+      );
+      rethrow;
     }
   }
 
@@ -142,7 +160,10 @@ class FeaturedCharacterRepository implements IFeaturedCharacterRepository {
       await _initHive();
       await _box.delete(_currentCharacterKey);
     } catch (e) {
-      throw Exception('Error deleting featured character: $e');
+      debugPrint(
+        'FeaturedCharacterRepository: deleting the featured character failed: $e',
+      );
+      rethrow;
     }
   }
 
@@ -162,7 +183,10 @@ class FeaturedCharacterRepository implements IFeaturedCharacterRepository {
       }
       return [];
     } catch (e) {
-      throw Exception('Error searching featured characters: $e');
+      debugPrint(
+        'FeaturedCharacterRepository: searching featured characters failed: $e',
+      );
+      rethrow;
     }
   }
 
@@ -211,7 +235,8 @@ class FeaturedCharacterRepository implements IFeaturedCharacterRepository {
       await _initHive();
       await _box.clear();
     } catch (e) {
-      throw Exception('Error clearing cache: $e');
+      debugPrint('FeaturedCharacterRepository: clearing the cache failed: $e');
+      rethrow;
     }
   }
 
@@ -221,7 +246,10 @@ class FeaturedCharacterRepository implements IFeaturedCharacterRepository {
       await _initHive();
       await _box.delete(_currentCharacterKey);
     } catch (e) {
-      throw Exception('Error clearing today\'s character: $e');
+      debugPrint(
+        'FeaturedCharacterRepository: clearing today\'s character failed: $e',
+      );
+      rethrow;
     }
   }
 

@@ -722,12 +722,6 @@ abstract class AppLocalizations {
   /// **'Error'**
   String get error;
 
-  /// Error message when character creation fails
-  ///
-  /// In en, this message translates to:
-  /// **'Error creating character: {message}'**
-  String characterCreationError(String message);
-
   /// Button text for OK action
   ///
   /// In en, this message translates to:
@@ -1069,12 +1063,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Character updated successfully'**
   String get characterUpdatedSuccess;
-
-  /// Error message when character update fails
-  ///
-  /// In en, this message translates to:
-  /// **'Error updating character: {message}'**
-  String characterUpdateError(String message);
 
   /// Text shown for total berries in crew card
   ///
@@ -2138,18 +2126,6 @@ abstract class AppLocalizations {
   /// **'Daily Available Amount'**
   String get dailyAmount;
 
-  /// Currency symbol for the current locale.
-  ///
-  /// In en, this message translates to:
-  /// **'R\$'**
-  String get currency;
-
-  /// Suffix for daily amounts.
-  ///
-  /// In en, this message translates to:
-  /// **'/day'**
-  String get perDay;
-
   /// Category name for health
   ///
   /// In en, this message translates to:
@@ -2227,12 +2203,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Yearly Savings'**
   String get yearlySavings;
-
-  /// Title for total accumulated savings.
-  ///
-  /// In en, this message translates to:
-  /// **'Accumulated'**
-  String get accumulatedSavings;
 
   /// Title for savings period section.
   ///
@@ -2767,18 +2737,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Select your workout days goal'**
   String get workout_validation_workout_days_required;
-
-  /// Singular of day.
-  ///
-  /// In en, this message translates to:
-  /// **'day'**
-  String get workout_day;
-
-  /// Plural of days.
-  ///
-  /// In en, this message translates to:
-  /// **'days'**
-  String get workout_days;
 
   /// Cooking screen title for bottom navigation.
   ///
@@ -5113,6 +5071,690 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Crew'**
   String get defaultCrewName;
+
+  /// Nami finances: error shown when loading a month's finances fails
+  ///
+  /// In en, this message translates to:
+  /// **'Couldn\'t load your finances.'**
+  String get namiFinancesLoadFailed;
+
+  /// Nami finances: error shown when loading the finances history fails
+  ///
+  /// In en, this message translates to:
+  /// **'Couldn\'t load your finance history.'**
+  String get namiFinancesHistoryLoadFailed;
+
+  /// Nami finances: error shown when saving a month's finances fails
+  ///
+  /// In en, this message translates to:
+  /// **'Couldn\'t save your finances.'**
+  String get namiFinancesSaveFailed;
+
+  /// Nami finances: error shown when deleting a month's finances fails
+  ///
+  /// In en, this message translates to:
+  /// **'Couldn\'t delete your finances.'**
+  String get namiFinancesDeleteFailed;
+
+  /// Nami finances: error shown when the user tries to save a month after the current one
+  ///
+  /// In en, this message translates to:
+  /// **'Finances for future months can\'t be edited.'**
+  String get namiFinancesFutureMonthNotEditable;
+
+  /// Nami detailed finances: label before the total income amount in the income card
+  ///
+  /// In en, this message translates to:
+  /// **'Total income:'**
+  String get namiTotalIncomeLabel;
+
+  /// Nami detailed finances: empty state for a month without data; month is the localized month and year
+  ///
+  /// In en, this message translates to:
+  /// **'No financial data found for {month}'**
+  String namiNoFinancialDataForMonth(String month);
+
+  /// Nami detailed finances: title of the error view, above the specific failure message
+  ///
+  /// In en, this message translates to:
+  /// **'Error loading data'**
+  String get namiErrorLoadingData;
+
+  /// Nami add expense dialog: validation when no category is selected
+  ///
+  /// In en, this message translates to:
+  /// **'Please select a category'**
+  String get namiSelectCategoryRequired;
+
+  /// Nami finances forms: validation when the amount field is empty
+  ///
+  /// In en, this message translates to:
+  /// **'Please enter an amount'**
+  String get namiAmountRequired;
+
+  /// Nami finances forms: validation when the amount is not a positive number
+  ///
+  /// In en, this message translates to:
+  /// **'Please enter a valid amount'**
+  String get namiAmountInvalid;
+
+  /// Nami add expense dialog: hint of the optional description field
+  ///
+  /// In en, this message translates to:
+  /// **'Description (optional)'**
+  String get namiDescriptionOptionalHint;
+
+  /// Nami setup form: label of each income field, numbered from 1
+  ///
+  /// In en, this message translates to:
+  /// **'Monthly income {number}'**
+  String namiMonthlyIncomeNumbered(int number);
+
+  /// Nami history chart: tooltip of the expenses bar; amount is a formatted BRL value
+  ///
+  /// In en, this message translates to:
+  /// **'Expenses: {amount}'**
+  String namiHistoryTooltipExpenses(String amount);
+
+  /// Nami history chart: tooltip of the available-amount bar; amount is a formatted BRL value
+  ///
+  /// In en, this message translates to:
+  /// **'Available: {amount}'**
+  String namiHistoryTooltipAvailable(String amount);
+
+  /// Nami history chart: tooltip of the savings bar; amount is a formatted BRL value
+  ///
+  /// In en, this message translates to:
+  /// **'Savings: {amount}'**
+  String namiHistoryTooltipSavings(String amount);
+
+  /// Nami chat sheet: header title (product name, same in every language)
+  ///
+  /// In en, this message translates to:
+  /// **'Nami Finances AI'**
+  String get namiChatTitle;
+
+  /// Nami chat sheet: hint of the message input
+  ///
+  /// In en, this message translates to:
+  /// **'Ask about your finances...'**
+  String get namiChatInputHint;
+
+  /// Nami chat sheet: shown while the on-device model and finances store load
+  ///
+  /// In en, this message translates to:
+  /// **'Preparing Nami...'**
+  String get namiChatPreparing;
+
+  /// Nami chat sheet: first assistant bubble greeting the user
+  ///
+  /// In en, this message translates to:
+  /// **'Hi! I\'m Nami. I can analyze the finances we\'ve saved! Ask me anything about the months you\'ve recorded.'**
+  String get namiChatWelcome;
+
+  /// Nami chat sheet: error bubble when the on-device model is not installed
+  ///
+  /// In en, this message translates to:
+  /// **'The AI model hasn\'t been downloaded yet — open Vegapunk\'s chat to install it.'**
+  String get namiChatModelNotInstalled;
+
+  /// Nami chat sheet: error bubble when loading the on-device model fails
+  ///
+  /// In en, this message translates to:
+  /// **'Couldn\'t load the AI model.'**
+  String get namiChatModelLoadFailed;
+
+  /// Nami chat sheet: error bubble when generating an answer fails
+  ///
+  /// In en, this message translates to:
+  /// **'Couldn\'t reach Nami. Please try again.'**
+  String get namiChatConnectionFailed;
+
+  /// Nami results view: savings label; period is a localized duration like '2 years and 3 months'
+  ///
+  /// In en, this message translates to:
+  /// **'Accumulated over {period}'**
+  String namiAccumulatedSavingsPeriod(String period);
+
+  /// Nami financial results: daily amount; amount is a formatted BRL value
+  ///
+  /// In en, this message translates to:
+  /// **'{amount}/day'**
+  String namiAmountPerDay(String amount);
+
+  /// Zoro workout: error shown when loading the monthly assessment fails
+  ///
+  /// In en, this message translates to:
+  /// **'Couldn\'t load your workout data.'**
+  String get zoroWorkoutLoadError;
+
+  /// Zoro workout: error shown when saving the health assessment fails
+  ///
+  /// In en, this message translates to:
+  /// **'Couldn\'t save your assessment.'**
+  String get zoroWorkoutSaveAssessmentError;
+
+  /// Zoro workout: error shown when refreshing the assessment fails
+  ///
+  /// In en, this message translates to:
+  /// **'Couldn\'t refresh your workout data.'**
+  String get zoroWorkoutRefreshError;
+
+  /// Zoro workout calendar: error shown when saving the marked workout days fails
+  ///
+  /// In en, this message translates to:
+  /// **'Couldn\'t update your workout days.'**
+  String get zoroWorkoutUpdateDaysError;
+
+  /// Zoro workout plan editor: error shown when saving the plan fails
+  ///
+  /// In en, this message translates to:
+  /// **'Couldn\'t save the workout plan.'**
+  String get zoroWorkoutSavePlanError;
+
+  /// Zoro plan editor: default name of a new workout split (A, B, C...)
+  ///
+  /// In en, this message translates to:
+  /// **'Workout {letter}'**
+  String zoroPlanSplitName(String letter);
+
+  /// Zoro plan editor: validation when a split has no name
+  ///
+  /// In en, this message translates to:
+  /// **'Give each workout split a name.'**
+  String get zoroPlanSplitNameRequired;
+
+  /// Zoro plan editor: validation when an exercise has no name
+  ///
+  /// In en, this message translates to:
+  /// **'Fill in the name of every exercise.'**
+  String get zoroPlanExerciseNameRequired;
+
+  /// Zoro plan editor: validation when an exercise has no volume (sets x reps)
+  ///
+  /// In en, this message translates to:
+  /// **'Fill in the volume of every exercise (e.g. 3x15).'**
+  String get zoroPlanExerciseVolumeRequired;
+
+  /// Zoro plan editor: app bar title in edit mode (create mode reuses createWorkoutPlan)
+  ///
+  /// In en, this message translates to:
+  /// **'Edit Workout Plan'**
+  String get zoroPlanEditTitle;
+
+  /// Zoro plan editor: helper text at the top of the screen
+  ///
+  /// In en, this message translates to:
+  /// **'Create splits (A, B, C…) with exercises. The app rotates them automatically across your workout days.'**
+  String get zoroPlanHelp;
+
+  /// Zoro plan editor: floating button label while the plan is being saved
+  ///
+  /// In en, this message translates to:
+  /// **'Saving…'**
+  String get zoroPlanSaving;
+
+  /// Zoro plan editor: floating button label to save the plan
+  ///
+  /// In en, this message translates to:
+  /// **'Save Plan'**
+  String get zoroPlanSave;
+
+  /// Zoro plan editor: button inside a split card that adds an exercise row
+  ///
+  /// In en, this message translates to:
+  /// **'Add exercise'**
+  String get zoroPlanAddExercise;
+
+  /// Zoro setup: option in the weekly workout days goal dropdown
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{1 day} other{{count} days}}'**
+  String zoroWorkoutDaysCount(int count);
+
+  /// Zoro workout calendar: notice shown when browsing a month other than the current one
+  ///
+  /// In en, this message translates to:
+  /// **'Only the current month\'s workout days can be edited'**
+  String get zoroCalendarCurrentMonthOnly;
+
+  /// Zoro week progress card: workouts done this week out of the weekly goal
+  ///
+  /// In en, this message translates to:
+  /// **'{done} / {goal, plural, =1{1 workout} other{{goal} workouts}}'**
+  String zoroWeekProgressCount(int done, int goal);
+
+  /// Sanji cooking: error shown when loading the user's nutrition data fails
+  ///
+  /// In en, this message translates to:
+  /// **'Couldn\'t load your nutrition data.'**
+  String get sanjiCookingLoadError;
+
+  /// Sanji cooking: error shown when the nutrition calculation fails
+  ///
+  /// In en, this message translates to:
+  /// **'Couldn\'t calculate your nutrition plan.'**
+  String get sanjiCookingCalculationError;
+
+  /// Sanji cooking: error shown when saving the nutrition data fails
+  ///
+  /// In en, this message translates to:
+  /// **'Couldn\'t save your nutrition data.'**
+  String get sanjiCookingSaveError;
+
+  /// Sanji cooking tips: shown when generating tips or a meal with no ingredients
+  ///
+  /// In en, this message translates to:
+  /// **'Add at least one ingredient.'**
+  String get sanjiCookingNoIngredients;
+
+  /// Sanji cooking: error shown when the AI cooking tips request fails
+  ///
+  /// In en, this message translates to:
+  /// **'Couldn\'t generate cooking tips. Please try again.'**
+  String get sanjiCookingTipsError;
+
+  /// Sanji cooking tips: error shown when the AI personalized meal request fails or returns nothing
+  ///
+  /// In en, this message translates to:
+  /// **'Couldn\'t generate the meal. Please try again.'**
+  String get sanjiCookingMealError;
+
+  /// Sanji personalized recipe card: target calories and the localized goal
+  ///
+  /// In en, this message translates to:
+  /// **'{calories} kcal | {goal}'**
+  String sanjiCookingMealCaloriesGoal(String calories, String goal);
+
+  /// Onboarding: app bar title when editing an existing body profile
+  ///
+  /// In en, this message translates to:
+  /// **'Update Profile'**
+  String get onboardingUpdateProfileTitle;
+
+  /// Onboarding: app bar title on first sign-up
+  ///
+  /// In en, this message translates to:
+  /// **'Complete Your Profile'**
+  String get onboardingCompleteProfileTitle;
+
+  /// Onboarding: button that goes to the next step
+  ///
+  /// In en, this message translates to:
+  /// **'Next'**
+  String get onboardingNext;
+
+  /// Onboarding: last-step button when editing an existing profile
+  ///
+  /// In en, this message translates to:
+  /// **'Save Changes'**
+  String get onboardingSaveChanges;
+
+  /// Onboarding: last-step button on first sign-up
+  ///
+  /// In en, this message translates to:
+  /// **'Finish Sign-up'**
+  String get onboardingFinish;
+
+  /// Onboarding step 1: explanation under the Personal Data title
+  ///
+  /// In en, this message translates to:
+  /// **'This information is essential for us to calculate your nutrition plan accurately.'**
+  String get onboardingPersonalDataDescription;
+
+  /// Onboarding: suffix shown inside the age field
+  ///
+  /// In en, this message translates to:
+  /// **'years'**
+  String get onboardingAgeSuffix;
+
+  /// Onboarding: validation message when a number field holds a non-number
+  ///
+  /// In en, this message translates to:
+  /// **'Invalid value'**
+  String get onboardingInvalidValue;
+
+  /// Create crew snackbar when there is no signed-in user
+  ///
+  /// In en, this message translates to:
+  /// **'Sign in to create a crew'**
+  String get crewNotSignedInError;
+
+  /// Edit crew error dialog when the crew no longer exists
+  ///
+  /// In en, this message translates to:
+  /// **'Crew not found'**
+  String get crewNotFoundError;
+
+  /// Custom character list error detail when loading, searching or filtering fails
+  ///
+  /// In en, this message translates to:
+  /// **'Couldn\'t load your characters'**
+  String get customCharacterLoadError;
+
+  /// Create custom character error dialog
+  ///
+  /// In en, this message translates to:
+  /// **'Couldn\'t create the character'**
+  String get customCharacterCreateError;
+
+  /// Edit custom character error dialog
+  ///
+  /// In en, this message translates to:
+  /// **'Couldn\'t update the character'**
+  String get customCharacterUpdateError;
+
+  /// Custom character list error detail when deleting fails
+  ///
+  /// In en, this message translates to:
+  /// **'Couldn\'t delete the character'**
+  String get customCharacterDeleteError;
+
+  /// Custom character list error detail when a create/update/delete succeeded but reloading the list failed
+  ///
+  /// In en, this message translates to:
+  /// **'Saved, but the character list couldn\'t be refreshed'**
+  String get customCharacterListRefreshError;
+
+  /// Duels screen error detail when loading characters fails
+  ///
+  /// In en, this message translates to:
+  /// **'Couldn\'t load the characters for the duel'**
+  String get duelsLoadError;
+
+  /// Title of the info card on crew details
+  ///
+  /// In en, this message translates to:
+  /// **'Information'**
+  String get crewInfoTitle;
+
+  /// Crew details info row label for the creation date
+  ///
+  /// In en, this message translates to:
+  /// **'Created on'**
+  String get crewInfoCreatedAt;
+
+  /// Crew details info value when the creation date is missing
+  ///
+  /// In en, this message translates to:
+  /// **'Date not available'**
+  String get crewInfoDateUnavailable;
+
+  /// Crew details info row label for the last update date
+  ///
+  /// In en, this message translates to:
+  /// **'Updated on'**
+  String get crewInfoUpdatedAt;
+
+  /// Crew details info row label listing the filled crew roles
+  ///
+  /// In en, this message translates to:
+  /// **'Roles filled'**
+  String get crewInfoRolesFilled;
+
+  /// Crew details info row label for the crew owner
+  ///
+  /// In en, this message translates to:
+  /// **'Owner'**
+  String get crewInfoOwner;
+
+  /// Crew details members card title when the crew has no members
+  ///
+  /// In en, this message translates to:
+  /// **'No members in the crew'**
+  String get crewMembersEmptyTitle;
+
+  /// Crew details members card subtitle when the crew has no members
+  ///
+  /// In en, this message translates to:
+  /// **'Add members to start your journey!'**
+  String get crewMembersEmptySubtitle;
+
+  /// Custom character form birth date validator: wrong format
+  ///
+  /// In en, this message translates to:
+  /// **'Invalid date. Use the DD/MM/YYYY format'**
+  String get customCharacterBirthDateInvalid;
+
+  /// Custom character form birth date validator: year out of range
+  ///
+  /// In en, this message translates to:
+  /// **'Year must be between 1900 and 2100'**
+  String get customCharacterBirthYearOutOfRange;
+
+  /// Custom character form birth date validator: month out of range
+  ///
+  /// In en, this message translates to:
+  /// **'Invalid month'**
+  String get customCharacterBirthMonthInvalid;
+
+  /// Custom character form birth date validator: day out of range
+  ///
+  /// In en, this message translates to:
+  /// **'Invalid day'**
+  String get customCharacterBirthDayInvalid;
+
+  /// Custom character form race dropdown validator
+  ///
+  /// In en, this message translates to:
+  /// **'Race is required'**
+  String get customCharacterRaceRequired;
+
+  /// Custom character form fighting type dropdown validator
+  ///
+  /// In en, this message translates to:
+  /// **'Fighting type is required'**
+  String get customCharacterFightingTypeRequired;
+
+  /// Filter button on the custom character grid
+  ///
+  /// In en, this message translates to:
+  /// **'Filter by Fruit/Crew'**
+  String get customCharacterFilterLabel;
+
+  /// Delete confirmation dialog on the custom character grid
+  ///
+  /// In en, this message translates to:
+  /// **'Are you sure you want to delete the character \"{name}\"?'**
+  String customCharacterConfirmDelete(String name);
+
+  /// Snackbar after deleting a custom character
+  ///
+  /// In en, this message translates to:
+  /// **'Character \"{name}\" deleted'**
+  String customCharacterDeletedWithName(String name);
+
+  /// Winner banner in the duel arena
+  ///
+  /// In en, this message translates to:
+  /// **'{name} wins!'**
+  String duelWinnerWithName(String name);
+
+  /// Duel result victory phrase (one of five, picked per winner)
+  ///
+  /// In en, this message translates to:
+  /// **'A crushing victory! {name} showed their true strength!'**
+  String duelVictoryCrushing(String name);
+
+  /// Duel result victory phrase (one of five, picked per winner)
+  ///
+  /// In en, this message translates to:
+  /// **'Incredible! {name} completely dominated this duel!'**
+  String duelVictoryDominated(String name);
+
+  /// Duel result victory phrase (one of five, picked per winner)
+  ///
+  /// In en, this message translates to:
+  /// **'{name} proved to be a true warrior of the seas!'**
+  String duelVictoryTrueWarrior(String name);
+
+  /// Duel result victory phrase (one of five, picked per winner)
+  ///
+  /// In en, this message translates to:
+  /// **'What an epic battle! {name} emerged victorious!'**
+  String duelVictoryEpicBattle(String name);
+
+  /// Duel result victory phrase (one of five, picked per winner)
+  ///
+  /// In en, this message translates to:
+  /// **'{name}\'s power was decisive in this fight!'**
+  String duelVictoryDecisivePower(String name);
+
+  /// Home: detail under the error card when the featured character fails to load
+  ///
+  /// In en, this message translates to:
+  /// **'Couldn\'t load today\'s featured character.'**
+  String get homeLoadFeaturedCharacterError;
+
+  /// Home: detail under the error card when picking a random character fails
+  ///
+  /// In en, this message translates to:
+  /// **'Couldn\'t load a random character.'**
+  String get homeLoadRandomCharacterError;
+
+  /// Home: detail under the error card when the pull-to-refresh fails
+  ///
+  /// In en, this message translates to:
+  /// **'Couldn\'t refresh the home screen.'**
+  String get homeRefreshError;
+
+  /// Home video banner fallback title when the banner image/video can't load
+  ///
+  /// In en, this message translates to:
+  /// **'Content unavailable'**
+  String get homeBannerUnavailableTitle;
+
+  /// Home video banner fallback subtitle when the banner image/video can't load
+  ///
+  /// In en, this message translates to:
+  /// **'Check your connection'**
+  String get homeBannerUnavailableSubtitle;
+
+  /// Devil fruit list: title of the full-screen error state
+  ///
+  /// In en, this message translates to:
+  /// **'Error loading Devil Fruits'**
+  String get devilFruitLoadErrorTitle;
+
+  /// Devil fruit list: detail when the initial load fails
+  ///
+  /// In en, this message translates to:
+  /// **'Couldn\'t load the Devil Fruits. Check your connection and try again.'**
+  String get devilFruitLoadError;
+
+  /// Devil fruit list: detail when refreshing the list fails
+  ///
+  /// In en, this message translates to:
+  /// **'Couldn\'t refresh the Devil Fruits. Try again.'**
+  String get devilFruitRefreshError;
+
+  /// Devil fruit list: searching by name failed
+  ///
+  /// In en, this message translates to:
+  /// **'Couldn\'t search the Devil Fruits.'**
+  String get devilFruitSearchFailed;
+
+  /// Devil fruit list: filtering by type failed
+  ///
+  /// In en, this message translates to:
+  /// **'Couldn\'t filter the Devil Fruits.'**
+  String get devilFruitFilterError;
+
+  /// Devil fruit list: empty state subtitle when there are no filters
+  ///
+  /// In en, this message translates to:
+  /// **'No Devil Fruits to display at the moment'**
+  String get devilFruitEmptyListSubtitle;
+
+  /// Devil fruit list: header title above the search field
+  ///
+  /// In en, this message translates to:
+  /// **'Explore the Devil Fruits'**
+  String get devilFruitHeaderTitle;
+
+  /// Devil fruit list: header subtitle above the search field
+  ///
+  /// In en, this message translates to:
+  /// **'Discover the mystical powers of the Devil Fruits'**
+  String get devilFruitHeaderSubtitle;
+
+  /// Robin planner: detail when loading the goals fails
+  ///
+  /// In en, this message translates to:
+  /// **'Couldn\'t load your goals. Try again later.'**
+  String get robinLoadGoalsError;
+
+  /// Robin planner: detail when creating a goal fails
+  ///
+  /// In en, this message translates to:
+  /// **'Couldn\'t create the goal. Try again.'**
+  String get robinCreateGoalError;
+
+  /// Robin planner: detail when editing a goal fails
+  ///
+  /// In en, this message translates to:
+  /// **'Couldn\'t update the goal. Try again.'**
+  String get robinUpdateGoalError;
+
+  /// Robin planner: detail when deleting a goal fails
+  ///
+  /// In en, this message translates to:
+  /// **'Couldn\'t delete the goal. Try again.'**
+  String get robinDeleteGoalError;
+
+  /// Robin planner: detail when updating a goal's progress fails
+  ///
+  /// In en, this message translates to:
+  /// **'Couldn\'t update the goal\'s progress. Try again.'**
+  String get robinUpdateProgressError;
+
+  /// YouTube player: channel that published the video
+  ///
+  /// In en, this message translates to:
+  /// **'By: {channel}'**
+  String youtubeByChannel(String channel);
+
+  /// YouTube player: label above the video description
+  ///
+  /// In en, this message translates to:
+  /// **'Description:'**
+  String get youtubeDescriptionLabel;
+
+  /// YouTube player: button that opens the video in the YouTube app
+  ///
+  /// In en, this message translates to:
+  /// **'Open in YouTube'**
+  String get youtubeOpenInApp;
+
+  /// YouTube player: snackbar shown because opening in YouTube isn't implemented yet
+  ///
+  /// In en, this message translates to:
+  /// **'Open in YouTube is still in development'**
+  String get youtubeOpenInAppComingSoon;
+
+  /// Profile: body data row subtitle; numbers are already locale-formatted in Dart
+  ///
+  /// In en, this message translates to:
+  /// **'{weight} kg • {height} cm • BMI: {bmi}'**
+  String profileBodyDataSummary(String weight, String height, String bmi);
+
+  /// Vegapunk chat: tooltip of the app bar button that clears the conversation
+  ///
+  /// In en, this message translates to:
+  /// **'Reset chat'**
+  String get vegapunkResetChat;
+
+  /// Global error screen shown when a widget crashes: title
+  ///
+  /// In en, this message translates to:
+  /// **'Oops! Something went wrong.'**
+  String get errorBoundaryTitle;
+
+  /// Global error screen shown when a widget crashes: explanation under the title
+  ///
+  /// In en, this message translates to:
+  /// **'An unexpected error occurred in the user interface. Don\'t worry, the Straw Hats are on it!'**
+  String get errorBoundaryMessage;
 }
 
 class _AppLocalizationsDelegate

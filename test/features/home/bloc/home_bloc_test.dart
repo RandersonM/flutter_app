@@ -92,4 +92,49 @@ void main() {
       verify: (_) => verifyNever(() => characters.getRandomCharacter()),
     );
   });
+
+  group('HomeBloc failures', () {
+    setUp(
+      () => when(() => connectivity.isOnline()).thenAnswer((_) async => true),
+    );
+
+    blocTest<HomeBloc, HomeState>(
+      'emits a featured-character failure, not a message, when loading throws',
+      setUp: () => when(
+        () => characters.getTodaysFeaturedCharacter(),
+      ).thenThrow(Exception('firestore')),
+      build: build,
+      act: (bloc) => bloc.add(const LoadFeaturedCharacter()),
+      expect: () => [
+        const HomeLoading(),
+        const HomeError(HomeFailure.loadFeaturedFailed),
+      ],
+    );
+
+    blocTest<HomeBloc, HomeState>(
+      'emits a random-character failure when the pick throws',
+      setUp: () => when(
+        () => characters.getRandomCharacter(),
+      ).thenThrow(Exception('firestore')),
+      build: build,
+      act: (bloc) => bloc.add(const LoadRandomCharacter()),
+      expect: () => [
+        const HomeLoading(),
+        const HomeError(HomeFailure.loadRandomFailed),
+      ],
+    );
+
+    blocTest<HomeBloc, HomeState>(
+      'emits a refresh failure when refreshing throws',
+      setUp: () => when(
+        () => characters.getTodaysFeaturedCharacter(),
+      ).thenThrow(Exception('firestore')),
+      build: build,
+      act: (bloc) => bloc.add(const RefreshHome()),
+      expect: () => [
+        const HomeLoading(),
+        const HomeError(HomeFailure.refreshFailed),
+      ],
+    );
+  });
 }

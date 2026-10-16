@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:opfan/core/errors/app_exceptions.dart';
 import 'package:opfan/features/custom_character/data/models/custom_character_model.dart';
 import 'package:opfan/core/services/index.dart';
 import 'package:opfan/features/custom_character/data/repository/custom_character_repository_interface.dart';
@@ -25,7 +26,8 @@ class CustomCharacterRepository implements ICustomCharacterRepository {
       );
       return documentId;
     } catch (e) {
-      throw Exception('Erro ao criar personagem customizado: $e');
+      debugPrint('CustomCharacterRepository: create failed: $e');
+      rethrow;
     }
   }
 
@@ -42,7 +44,8 @@ class CustomCharacterRepository implements ICustomCharacterRepository {
       }
       return null;
     } catch (e) {
-      throw Exception('Erro ao buscar personagem customizado: $e');
+      debugPrint('CustomCharacterRepository: get failed: $e');
+      rethrow;
     }
   }
 
@@ -91,7 +94,8 @@ class CustomCharacterRepository implements ICustomCharacterRepository {
 
       return characters;
     } catch (e) {
-      throw Exception('Erro ao buscar personagens customizados do usuário: $e');
+      debugPrint('CustomCharacterRepository: getUserCharacters failed: $e');
+      rethrow;
     }
   }
 
@@ -140,7 +144,8 @@ class CustomCharacterRepository implements ICustomCharacterRepository {
 
       return characters;
     } catch (e) {
-      throw Exception('Erro ao buscar todos os personagens customizados: $e');
+      debugPrint('CustomCharacterRepository: getAll failed: $e');
+      rethrow;
     }
   }
 
@@ -157,7 +162,8 @@ class CustomCharacterRepository implements ICustomCharacterRepository {
         data: data,
       );
     } catch (e) {
-      throw Exception('Erro ao atualizar personagem customizado: $e');
+      debugPrint('CustomCharacterRepository: update failed: $e');
+      rethrow;
     }
   }
 
@@ -166,7 +172,7 @@ class CustomCharacterRepository implements ICustomCharacterRepository {
     try {
       final character = await getCustomCharacter(documentId);
       if (character == null) {
-        throw Exception('Personagem não encontrado');
+        throw NotFoundException('custom character $documentId');
       }
 
       final crewsWithCharacter = await _crewRepository.getCrewsByMember(
@@ -178,8 +184,9 @@ class CustomCharacterRepository implements ICustomCharacterRepository {
           try {
             final member = crew.members.firstWhere(
               (member) => member.characterId == documentId,
-              orElse: () =>
-                  throw Exception('Membro não encontrado na tripulação'),
+              orElse: () => throw NotFoundException(
+                'member $documentId in crew ${crew.id}',
+              ),
             );
 
             await _crewRepository.removeMemberFromCrew(crew.id!, documentId);
@@ -194,7 +201,7 @@ class CustomCharacterRepository implements ICustomCharacterRepository {
             }
           } catch (e) {
             debugPrint(
-              'Erro ao remover personagem da tripulação ${crew.id}: $e',
+              'CustomCharacterRepository: crew ${crew.id} cleanup failed: $e',
             );
           }
         }
@@ -205,7 +212,8 @@ class CustomCharacterRepository implements ICustomCharacterRepository {
         documentId: documentId,
       );
     } catch (e) {
-      throw Exception('Erro ao deletar personagem customizado: $e');
+      debugPrint('CustomCharacterRepository: delete failed: $e');
+      rethrow;
     }
   }
 
@@ -258,7 +266,8 @@ class CustomCharacterRepository implements ICustomCharacterRepository {
 
       return characters;
     } catch (e) {
-      throw Exception('Erro ao buscar personagens customizados: $e');
+      debugPrint('CustomCharacterRepository: search failed: $e');
+      rethrow;
     }
   }
 
@@ -329,7 +338,8 @@ class CustomCharacterRepository implements ICustomCharacterRepository {
           )
           .toList();
     } catch (e) {
-      throw Exception('Erro ao buscar personagens por nome: $e');
+      debugPrint('CustomCharacterRepository: searchByName failed: $e');
+      rethrow;
     }
   }
 
@@ -371,7 +381,8 @@ class CustomCharacterRepository implements ICustomCharacterRepository {
           )
           .toList();
     } catch (e) {
-      throw Exception('Erro ao buscar personagens com haki: $e');
+      debugPrint('CustomCharacterRepository: getWithHaki failed: $e');
+      rethrow;
     }
   }
 
@@ -388,7 +399,8 @@ class CustomCharacterRepository implements ICustomCharacterRepository {
           .where((c) => c.bountyValue >= min && c.bountyValue <= max)
           .toList();
     } catch (e) {
-      throw Exception('Erro ao buscar personagens por faixa de recompensa: $e');
+      debugPrint('CustomCharacterRepository: getByBountyRange failed: $e');
+      rethrow;
     }
   }
 }

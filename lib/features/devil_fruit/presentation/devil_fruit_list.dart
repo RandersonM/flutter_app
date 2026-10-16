@@ -72,7 +72,7 @@ class _DevilFruitListView extends StatelessWidget {
             }
 
             if (state is DevilFruitError) {
-              return _buildErrorState(context, state.message);
+              return _buildErrorState(context, state.failure);
             }
 
             if (state is DevilFruitLoaded) {
@@ -85,7 +85,8 @@ class _DevilFruitListView extends StatelessWidget {
     );
   }
 
-  Widget _buildErrorState(BuildContext context, String message) {
+  Widget _buildErrorState(BuildContext context, DevilFruitFailure failure) {
+    final l10n = AppLocalizations.of(context)!;
     return Center(
       child: Padding(
         padding: const EdgeInsets.all(Constants.margin * 2),
@@ -99,7 +100,7 @@ class _DevilFruitListView extends StatelessWidget {
             ),
             const SizedBox(height: Constants.margin * 2),
             Text(
-              'Error loading Devil Fruits',
+              l10n.devilFruitLoadErrorTitle,
               style: Theme.of(
                 context,
               ).textTheme.headlineSmall?.copyWith(fontWeight: FontWeight.bold),
@@ -107,7 +108,7 @@ class _DevilFruitListView extends StatelessWidget {
             ),
             const SizedBox(height: Constants.margin),
             Text(
-              message,
+              _failureMessage(l10n, failure),
               style: Theme.of(context).textTheme.bodyMedium,
               textAlign: TextAlign.center,
             ),
@@ -116,13 +117,21 @@ class _DevilFruitListView extends StatelessWidget {
               onPressed: () =>
                   context.read<DevilFruitBloc>().add(const LoadDevilFruits()),
               icon: const AppIcon(PhosphorIconsRegular.arrowsClockwise),
-              label: Text(AppLocalizations.of(context)!.tryAgain),
+              label: Text(l10n.tryAgain),
             ),
           ],
         ),
       ),
     );
   }
+
+  String _failureMessage(AppLocalizations l10n, DevilFruitFailure failure) =>
+      switch (failure) {
+        DevilFruitFailure.loadFailed => l10n.devilFruitLoadError,
+        DevilFruitFailure.refreshFailed => l10n.devilFruitRefreshError,
+        DevilFruitFailure.searchFailed => l10n.devilFruitSearchFailed,
+        DevilFruitFailure.filterFailed => l10n.devilFruitFilterError,
+      };
 
   Widget _buildLoadedState(BuildContext context, DevilFruitLoaded state) {
     return RefreshIndicator(

@@ -44,8 +44,8 @@ class DuelsBloc extends Bloc<DuelsEvent, DuelsState> {
 
       emit(DuelsReady(availableCharacters: allCharacters));
     } catch (e) {
-      debugPrint('DuelsBloc: Error loading characters - $e');
-      emit(DuelsError('Erro ao carregar personagens: $e'));
+      debugPrint('DuelsBloc: load characters failed: $e');
+      emit(const DuelsError(DuelsFailure.loadFailed));
     }
   }
 

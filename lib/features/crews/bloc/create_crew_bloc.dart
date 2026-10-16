@@ -1,7 +1,9 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:opfan/features/crews/data/models/crew_model.dart';
 import 'package:opfan/features/crews/data/repository/crew_repository_interface.dart';
 import 'package:opfan/features/crews/bloc/create_crew_event.dart';
+import 'package:opfan/features/crews/bloc/crews_failure.dart';
 import 'package:opfan/features/crews/bloc/create_crew_state.dart';
 
 class CreateCrewBloc extends Bloc<CreateCrewEvent, CreateCrewState> {
@@ -22,14 +24,16 @@ class CreateCrewBloc extends Bloc<CreateCrewEvent, CreateCrewState> {
   ) async {
     emit(CreateCrewLoading());
 
-    try {
-      if (_userId == null) {
-        throw Exception('Usuário não autenticado');
-      }
+    final userId = _userId;
+    if (userId == null) {
+      emit(const CreateCrewFailure(CrewsFailure.notSignedIn));
+      return;
+    }
 
+    try {
       final crew = CrewModel(
         name: event.name.trim(),
-        userId: _userId,
+        userId: userId,
         description: event.description?.trim(),
         jollyRogerUrl: event.jollyRogerUrl?.trim(),
         boatImageUrl: event.boatImageUrl?.trim(),
@@ -44,7 +48,8 @@ class CreateCrewBloc extends Bloc<CreateCrewEvent, CreateCrewState> {
       final crewId = await _crewRepository.createCrew(crew);
       emit(CreateCrewSuccess(crewId));
     } catch (e) {
-      emit(CreateCrewFailure(e.toString()));
+      debugPrint('CreateCrewBloc: create crew failed: $e');
+      emit(const CreateCrewFailure(CrewsFailure.saveFailed));
     }
   }
 

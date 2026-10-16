@@ -1,6 +1,7 @@
 import 'package:opfan/shared/widgets/atoms/app_icon.dart';
 import 'package:phosphoricons_flutter/phosphoricons_flutter.dart';
 import 'package:flutter/material.dart';
+import 'package:opfan/l10n/app_localizations.dart';
 import 'package:opfan/shared/widgets/atoms/universal_image.dart';
 
 class ClickableImage extends StatelessWidget {
@@ -72,7 +73,7 @@ class ClickableImage extends StatelessWidget {
                     ),
                     const SizedBox(height: 8),
                     Text(
-                      'Erro ao carregar imagem',
+                      AppLocalizations.of(context)!.imageLoadError,
                       style: theme.textTheme.bodyMedium?.copyWith(
                         color: theme.colorScheme.error,
                       ),
@@ -163,7 +164,9 @@ class ClickableImage extends StatelessWidget {
                                     ),
                                     const SizedBox(height: 8),
                                     Text(
-                                      'Erro ao carregar imagem',
+                                      AppLocalizations.of(
+                                        context,
+                                      )!.imageLoadError,
                                       style: theme.textTheme.bodyMedium
                                           ?.copyWith(color: Colors.white),
                                     ),

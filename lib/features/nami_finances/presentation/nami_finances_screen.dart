@@ -137,7 +137,7 @@ class _NamiFinancesScreenState extends State<NamiFinancesScreen> {
 
                     if (state is NamiFinancesError) {
                       return Center(
-                        child: Text(l10n.errorPrefix(state.message)),
+                        child: Text(_failureMessage(l10n, state.failure)),
                       );
                     }
 
@@ -151,6 +151,17 @@ class _NamiFinancesScreenState extends State<NamiFinancesScreen> {
       ),
     );
   }
+
+  String _failureMessage(AppLocalizations l10n, NamiFinancesFailure failure) =>
+      switch (failure) {
+        NamiFinancesFailure.loadFailed => l10n.namiFinancesLoadFailed,
+        NamiFinancesFailure.historyLoadFailed =>
+          l10n.namiFinancesHistoryLoadFailed,
+        NamiFinancesFailure.saveFailed => l10n.namiFinancesSaveFailed,
+        NamiFinancesFailure.deleteFailed => l10n.namiFinancesDeleteFailed,
+        NamiFinancesFailure.futureMonthNotEditable =>
+          l10n.namiFinancesFutureMonthNotEditable,
+      };
 
   Widget _buildMonthSelector(BuildContext context, AppLocalizations l10n) {
     final theme = Theme.of(context);

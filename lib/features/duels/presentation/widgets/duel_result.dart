@@ -258,12 +258,13 @@ class DuelResult extends StatelessWidget {
   }
 
   String _getVictoryMessage(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     final messages = [
-      "Uma vitória esmagadora! ${winner.name} mostrou sua força verdadeira!",
-      "Incrível! ${winner.name} dominou completamente este duelo!",
-      "${winner.name} provou ser um verdadeiro guerreiro dos mares!",
-      "Que batalha épica! ${winner.name} emergiu como o vencedor!",
-      "O poder de ${winner.name} foi decisivo nesta luta!",
+      l10n.duelVictoryCrushing(winner.name),
+      l10n.duelVictoryDominated(winner.name),
+      l10n.duelVictoryTrueWarrior(winner.name),
+      l10n.duelVictoryEpicBattle(winner.name),
+      l10n.duelVictoryDecisivePower(winner.name),
     ];
 
     final messageIndex = (winner.id?.hashCode ?? 0).abs() % messages.length;

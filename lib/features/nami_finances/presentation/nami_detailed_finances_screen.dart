@@ -2,6 +2,7 @@ import 'package:opfan/shared/widgets/atoms/app_icon.dart';
 import 'package:phosphoricons_flutter/phosphoricons_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:intl/intl.dart';
 import 'package:opfan/shared/widgets/molecules/default_app_bar.dart';
 import 'package:opfan/shared/widgets/organisms/bottom_navigation.dart';
 import 'package:opfan/shared/utils/constants.dart';
@@ -111,7 +112,7 @@ class _NamiDetailedFinancesScreenState
                       }
 
                       if (state is NamiFinancesError) {
-                        return _buildErrorView(state.message, l10n);
+                        return _buildErrorView(state.failure, l10n);
                       }
 
                       return const SizedBox.shrink();
@@ -310,7 +311,7 @@ class _NamiDetailedFinancesScreenState
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    'Total da Renda:',
+                    l10n.namiTotalIncomeLabel,
                     style: TextTheme.of(
                       context,
                     ).titleMedium?.copyWith(fontWeight: FontWeight.bold),
@@ -526,7 +527,7 @@ class _NamiDetailedFinancesScreenState
                     borderRadius: BorderRadius.circular(Constants.margin),
                   ),
                   child: Text(
-                    expense.category.name.toUpperCase(),
+                    _categoryLabel(expense.category).toUpperCase(),
                     style: TextTheme.of(context).bodySmall?.copyWith(
                       color: _getCategoryColor(expense.category),
                       fontWeight: FontWeight.w600,
@@ -583,6 +584,18 @@ class _NamiDetailedFinancesScreenState
       case ExpenseCategory.other:
         return PhosphorIconsRegular.dotsThree;
     }
+  }
+
+  String _categoryLabel(ExpenseCategory category) {
+    final l10n = AppLocalizations.of(context)!;
+    return switch (category) {
+      ExpenseCategory.fixed => l10n.categoryFixed,
+      ExpenseCategory.food => l10n.categoryFood,
+      ExpenseCategory.transport => l10n.categoryTransport,
+      ExpenseCategory.entertainment => l10n.categoryEntertainment,
+      ExpenseCategory.health => l10n.categoryHealth,
+      ExpenseCategory.other => l10n.categoryOther,
+    };
   }
 
   String _reservePurposeLabel(ReservePurpose purpose) {
@@ -774,7 +787,7 @@ class _NamiDetailedFinancesScreenState
           ),
           const SizedBox(height: Constants.margin * 2),
           Text(
-            'Nenhum dado financeiro encontrado para ${_formatMonth(_selectedMonth)}',
+            l10n.namiNoFinancialDataForMonth(_formatMonth(_selectedMonth)),
             style: TextTheme.of(
               context,
             ).titleMedium?.copyWith(color: AppColors.grey[600]!),
@@ -792,7 +805,18 @@ class _NamiDetailedFinancesScreenState
     );
   }
 
-  Widget _buildErrorView(String message, AppLocalizations l10n) {
+  String _failureMessage(AppLocalizations l10n, NamiFinancesFailure failure) =>
+      switch (failure) {
+        NamiFinancesFailure.loadFailed => l10n.namiFinancesLoadFailed,
+        NamiFinancesFailure.historyLoadFailed =>
+          l10n.namiFinancesHistoryLoadFailed,
+        NamiFinancesFailure.saveFailed => l10n.namiFinancesSaveFailed,
+        NamiFinancesFailure.deleteFailed => l10n.namiFinancesDeleteFailed,
+        NamiFinancesFailure.futureMonthNotEditable =>
+          l10n.namiFinancesFutureMonthNotEditable,
+      };
+
+  Widget _buildErrorView(NamiFinancesFailure failure, AppLocalizations l10n) {
     return Center(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -804,14 +828,14 @@ class _NamiDetailedFinancesScreenState
           ),
           const SizedBox(height: Constants.margin * 2),
           Text(
-            'Erro ao carregar dados',
+            l10n.namiErrorLoadingData,
             style: TextTheme.of(
               context,
             ).titleMedium?.copyWith(color: Theme.of(context).colorScheme.error),
           ),
           const SizedBox(height: Constants.margin),
           Text(
-            message,
+            _failureMessage(l10n, failure),
             style: TextTheme.of(
               context,
             ).bodyMedium?.copyWith(color: AppColors.grey[700]!),
@@ -872,21 +896,11 @@ class _NamiDetailedFinancesScreenState
   }
 
   String _formatMonth(DateTime date) {
-    final months = [
-      'Janeiro',
-      'Fevereiro',
-      'Março',
-      'Abril',
-      'Maio',
-      'Junho',
-      'Julho',
-      'Agosto',
-      'Setembro',
-      'Outubro',
-      'Novembro',
-      'Dezembro',
-    ];
-    return '${months[date.month - 1]} ${date.year}';
+    final locale = Localizations.localeOf(context).toString();
+    final formatted = DateFormat.yMMMM(locale).format(date);
+    return formatted.isEmpty
+        ? formatted
+        : formatted[0].toUpperCase() + formatted.substring(1);
   }
 
   @override

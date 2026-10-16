@@ -5,6 +5,7 @@ import 'package:phosphoricons_flutter/phosphoricons_flutter.dart';
 
 import 'package:flutter/material.dart';
 import 'package:opfan/features/crews/data/models/crew_model.dart';
+import 'package:opfan/l10n/app_localizations.dart';
 import 'package:opfan/shared/utils/constants.dart';
 
 class CrewTagsSection extends StatelessWidget {
@@ -36,7 +37,7 @@ class CrewTagsSection extends StatelessWidget {
                 ),
                 const SizedBox(width: Constants.margin),
                 Text(
-                  'Tags',
+                  AppLocalizations.of(context)!.tags,
                   style: theme.textTheme.titleLarge?.copyWith(
                     fontWeight: FontWeight.bold,
                     color: theme.colorScheme.primary,

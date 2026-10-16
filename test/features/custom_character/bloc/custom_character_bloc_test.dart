@@ -65,7 +65,10 @@ void main() {
       ).thenThrow(Exception('boom')),
       build: build,
       act: (bloc) => bloc.add(const LoadCustomCharacters()),
-      expect: () => [CustomCharacterLoading(), isA<CustomCharacterError>()],
+      expect: () => [
+        CustomCharacterLoading(),
+        const CustomCharacterError(CustomCharacterFailure.loadFailed),
+      ],
     );
   });
 
@@ -129,6 +132,34 @@ void main() {
         CustomCharacterLoaded([luffy]),
       ],
     );
+
+    blocTest<CustomCharacterBloc, CustomCharacterState>(
+      'emits createFailed when saving the character throws',
+      setUp: () => when(
+        () => characters.createCustomCharacter(any()),
+      ).thenThrow(Exception('boom')),
+      build: build,
+      act: (bloc) => bloc.add(CreateCustomCharacter(luffy)),
+      expect: () => [
+        CustomCharacterCreating(),
+        const CustomCharacterError(CustomCharacterFailure.createFailed),
+      ],
+    );
+
+    blocTest<CustomCharacterBloc, CustomCharacterState>(
+      'emits listRefreshFailed after the success when the refresh throws',
+      setUp: () => when(
+        () => characters.getUserCustomCharacters(),
+      ).thenThrow(Exception('offline')),
+      build: build,
+      act: (bloc) => bloc.add(CreateCustomCharacter(luffy)),
+      wait: listRefreshDelay,
+      expect: () => [
+        CustomCharacterCreating(),
+        const CustomCharacterCreated('new-id'),
+        const CustomCharacterError(CustomCharacterFailure.listRefreshFailed),
+      ],
+    );
   });
 
   group('CustomCharacterBloc update and delete', () {
@@ -165,6 +196,32 @@ void main() {
         CustomCharacterDeleting(),
         const CustomCharacterDeleted('luffy'),
         CustomCharacterLoaded([luffy]),
+      ],
+    );
+
+    blocTest<CustomCharacterBloc, CustomCharacterState>(
+      'emits updateFailed when saving the update throws',
+      setUp: () => when(
+        () => characters.updateCustomCharacter('luffy', any()),
+      ).thenThrow(Exception('boom')),
+      build: build,
+      act: (bloc) => bloc.add(UpdateCustomCharacter('luffy', luffy)),
+      expect: () => [
+        CustomCharacterUpdating(),
+        const CustomCharacterError(CustomCharacterFailure.updateFailed),
+      ],
+    );
+
+    blocTest<CustomCharacterBloc, CustomCharacterState>(
+      'emits deleteFailed when deleting throws',
+      setUp: () => when(
+        () => characters.deleteCustomCharacter('luffy'),
+      ).thenThrow(Exception('boom')),
+      build: build,
+      act: (bloc) => bloc.add(const DeleteCustomCharacter('luffy')),
+      expect: () => [
+        CustomCharacterDeleting(),
+        const CustomCharacterError(CustomCharacterFailure.deleteFailed),
       ],
     );
   });

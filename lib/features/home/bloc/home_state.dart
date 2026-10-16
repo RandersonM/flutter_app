@@ -69,10 +69,12 @@ class HomeLoaded extends HomeState {
 }
 
 class HomeError extends HomeState {
-  final String message;
+  final HomeFailure failure;
 
-  const HomeError(this.message);
+  const HomeError(this.failure);
 
   @override
-  List<Object?> get props => [message];
+  List<Object?> get props => [failure];
 }
+
+enum HomeFailure { loadFeaturedFailed, loadRandomFailed, refreshFailed }

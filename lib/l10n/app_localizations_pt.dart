@@ -342,11 +342,6 @@ class AppLocalizationsPt extends AppLocalizations {
   String get error => 'Erro';
 
   @override
-  String characterCreationError(String message) {
-    return 'Erro ao criar personagem: $message';
-  }
-
-  @override
   String get ok => 'OK';
 
   @override
@@ -533,11 +528,6 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get characterUpdatedSuccess => 'Personagem atualizado com sucesso';
-
-  @override
-  String characterUpdateError(String message) {
-    return 'Erro ao atualizar personagem: $message';
-  }
 
   @override
   String get berriesTotal => 'Berries total';
@@ -1113,12 +1103,6 @@ class AppLocalizationsPt extends AppLocalizations {
   String get dailyAmount => 'Valor Diário Disponível';
 
   @override
-  String get currency => 'R\$';
-
-  @override
-  String get perDay => '/dia';
-
-  @override
   String get health => 'Saúde';
 
   @override
@@ -1156,9 +1140,6 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get yearlySavings => 'Economias Anuais';
-
-  @override
-  String get accumulatedSavings => 'Acumulado';
 
   @override
   String get savingsPeriod => 'Período de Economia';
@@ -1401,10 +1382,10 @@ class AppLocalizationsPt extends AppLocalizations {
     String _temp1 = intl.Intl.pluralLogic(
       months,
       locale: localeName,
-      other: 'es',
-      one: '',
+      other: 'meses',
+      one: 'mês',
     );
-    return '$years ano$_temp0 e $months mês$_temp1';
+    return '$years ano$_temp0 e $months $_temp1';
   }
 
   @override
@@ -1423,10 +1404,10 @@ class AppLocalizationsPt extends AppLocalizations {
     String _temp0 = intl.Intl.pluralLogic(
       months,
       locale: localeName,
-      other: 'es',
-      one: '',
+      other: 'meses',
+      one: 'mês',
     );
-    return '$months mês$_temp0';
+    return '$months $_temp0';
   }
 
   @override
@@ -1468,12 +1449,6 @@ class AppLocalizationsPt extends AppLocalizations {
   @override
   String get workout_validation_workout_days_required =>
       'Selecione sua meta de dias de exercício';
-
-  @override
-  String get workout_day => 'dia';
-
-  @override
-  String get workout_days => 'dias';
 
   @override
   String get cooking => 'Culinária';
@@ -2732,4 +2707,450 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get defaultCrewName => 'Tripulação';
+
+  @override
+  String get namiFinancesLoadFailed =>
+      'Não foi possível carregar suas finanças.';
+
+  @override
+  String get namiFinancesHistoryLoadFailed =>
+      'Não foi possível carregar o histórico de finanças.';
+
+  @override
+  String get namiFinancesSaveFailed => 'Não foi possível salvar suas finanças.';
+
+  @override
+  String get namiFinancesDeleteFailed =>
+      'Não foi possível excluir suas finanças.';
+
+  @override
+  String get namiFinancesFutureMonthNotEditable =>
+      'Não é possível editar finanças de meses futuros.';
+
+  @override
+  String get namiTotalIncomeLabel => 'Total da renda:';
+
+  @override
+  String namiNoFinancialDataForMonth(String month) {
+    return 'Nenhum dado financeiro encontrado para $month';
+  }
+
+  @override
+  String get namiErrorLoadingData => 'Erro ao carregar dados';
+
+  @override
+  String get namiSelectCategoryRequired => 'Por favor, selecione uma categoria';
+
+  @override
+  String get namiAmountRequired => 'Por favor, insira um valor';
+
+  @override
+  String get namiAmountInvalid => 'Por favor, insira um valor válido';
+
+  @override
+  String get namiDescriptionOptionalHint => 'Descrição (opcional)';
+
+  @override
+  String namiMonthlyIncomeNumbered(int number) {
+    return 'Renda mensal $number';
+  }
+
+  @override
+  String namiHistoryTooltipExpenses(String amount) {
+    return 'Despesas: $amount';
+  }
+
+  @override
+  String namiHistoryTooltipAvailable(String amount) {
+    return 'Disponível: $amount';
+  }
+
+  @override
+  String namiHistoryTooltipSavings(String amount) {
+    return 'Poupança: $amount';
+  }
+
+  @override
+  String get namiChatTitle => 'Nami Finances AI';
+
+  @override
+  String get namiChatInputHint => 'Pergunte sobre suas finanças...';
+
+  @override
+  String get namiChatPreparing => 'Preparando Nami...';
+
+  @override
+  String get namiChatWelcome =>
+      'Oi! Eu sou a Nami. Posso analisar suas finanças que salvamos! Pergunte o que quiser sobre os meses registrados.';
+
+  @override
+  String get namiChatModelNotInstalled =>
+      'Modelo de IA ainda não foi baixado — abra o chat do Vegapunk para instalá-lo.';
+
+  @override
+  String get namiChatModelLoadFailed =>
+      'Não foi possível carregar o modelo de IA.';
+
+  @override
+  String get namiChatConnectionFailed =>
+      'Erro na conexão com a Nami. Tente novamente.';
+
+  @override
+  String namiAccumulatedSavingsPeriod(String period) {
+    return 'Acumulado em $period';
+  }
+
+  @override
+  String namiAmountPerDay(String amount) {
+    return '$amount/dia';
+  }
+
+  @override
+  String get zoroWorkoutLoadError =>
+      'Não foi possível carregar seus dados de treino.';
+
+  @override
+  String get zoroWorkoutSaveAssessmentError =>
+      'Não foi possível salvar sua avaliação.';
+
+  @override
+  String get zoroWorkoutRefreshError =>
+      'Não foi possível atualizar seus dados de treino.';
+
+  @override
+  String get zoroWorkoutUpdateDaysError =>
+      'Não foi possível atualizar seus dias de treino.';
+
+  @override
+  String get zoroWorkoutSavePlanError =>
+      'Não foi possível salvar o plano de treino.';
+
+  @override
+  String zoroPlanSplitName(String letter) {
+    return 'Treino $letter';
+  }
+
+  @override
+  String get zoroPlanSplitNameRequired =>
+      'Dê um nome para cada split de treino.';
+
+  @override
+  String get zoroPlanExerciseNameRequired =>
+      'Preencha o nome de todos os exercícios.';
+
+  @override
+  String get zoroPlanExerciseVolumeRequired =>
+      'Preencha o volume de todos os exercícios (ex: 3x15).';
+
+  @override
+  String get zoroPlanEditTitle => 'Editar Plano de Treino';
+
+  @override
+  String get zoroPlanHelp =>
+      'Crie splits (A, B, C…) com exercícios. O app vai fazer o rodízio automaticamente conforme seus dias de treino.';
+
+  @override
+  String get zoroPlanSaving => 'Salvando…';
+
+  @override
+  String get zoroPlanSave => 'Salvar Plano';
+
+  @override
+  String get zoroPlanAddExercise => 'Adicionar exercício';
+
+  @override
+  String zoroWorkoutDaysCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count dias',
+      one: '1 dia',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get zoroCalendarCurrentMonthOnly =>
+      'Apenas o mês atual permite edição dos dias de exercício';
+
+  @override
+  String zoroWeekProgressCount(int done, int goal) {
+    String _temp0 = intl.Intl.pluralLogic(
+      goal,
+      locale: localeName,
+      other: '$goal treinos',
+      one: '1 treino',
+    );
+    return '$done / $_temp0';
+  }
+
+  @override
+  String get sanjiCookingLoadError =>
+      'Não foi possível carregar seus dados nutricionais.';
+
+  @override
+  String get sanjiCookingCalculationError =>
+      'Não foi possível calcular seu plano nutricional.';
+
+  @override
+  String get sanjiCookingSaveError =>
+      'Não foi possível salvar seus dados nutricionais.';
+
+  @override
+  String get sanjiCookingNoIngredients => 'Adicione pelo menos um ingrediente.';
+
+  @override
+  String get sanjiCookingTipsError =>
+      'Não foi possível gerar as dicas. Tente novamente.';
+
+  @override
+  String get sanjiCookingMealError =>
+      'Não foi possível gerar a refeição. Tente novamente.';
+
+  @override
+  String sanjiCookingMealCaloriesGoal(String calories, String goal) {
+    return '$calories kcal | $goal';
+  }
+
+  @override
+  String get onboardingUpdateProfileTitle => 'Atualizar Perfil';
+
+  @override
+  String get onboardingCompleteProfileTitle => 'Complete seu Perfil';
+
+  @override
+  String get onboardingNext => 'Próximo';
+
+  @override
+  String get onboardingSaveChanges => 'Salvar Alterações';
+
+  @override
+  String get onboardingFinish => 'Concluir Cadastro';
+
+  @override
+  String get onboardingPersonalDataDescription =>
+      'Essas informações são essenciais para calcularmos seu plano nutricional de forma precisa.';
+
+  @override
+  String get onboardingAgeSuffix => 'anos';
+
+  @override
+  String get onboardingInvalidValue => 'Valor inválido';
+
+  @override
+  String get crewNotSignedInError =>
+      'Entre na sua conta para criar uma tripulação';
+
+  @override
+  String get crewNotFoundError => 'Tripulação não encontrada';
+
+  @override
+  String get customCharacterLoadError =>
+      'Não foi possível carregar seus personagens';
+
+  @override
+  String get customCharacterCreateError =>
+      'Não foi possível criar o personagem';
+
+  @override
+  String get customCharacterUpdateError =>
+      'Não foi possível atualizar o personagem';
+
+  @override
+  String get customCharacterDeleteError =>
+      'Não foi possível excluir o personagem';
+
+  @override
+  String get customCharacterListRefreshError =>
+      'Salvo, mas não foi possível atualizar a lista de personagens';
+
+  @override
+  String get duelsLoadError =>
+      'Não foi possível carregar os personagens do duelo';
+
+  @override
+  String get crewInfoTitle => 'Informações';
+
+  @override
+  String get crewInfoCreatedAt => 'Criada em';
+
+  @override
+  String get crewInfoDateUnavailable => 'Data não disponível';
+
+  @override
+  String get crewInfoUpdatedAt => 'Atualizada em';
+
+  @override
+  String get crewInfoRolesFilled => 'Funções preenchidas';
+
+  @override
+  String get crewInfoOwner => 'Proprietário';
+
+  @override
+  String get crewMembersEmptyTitle => 'Nenhum membro na tripulação';
+
+  @override
+  String get crewMembersEmptySubtitle =>
+      'Adicione membros para começar sua jornada!';
+
+  @override
+  String get customCharacterBirthDateInvalid =>
+      'Data inválida. Use o formato DD/MM/AAAA';
+
+  @override
+  String get customCharacterBirthYearOutOfRange =>
+      'Ano deve estar entre 1900 e 2100';
+
+  @override
+  String get customCharacterBirthMonthInvalid => 'Mês inválido';
+
+  @override
+  String get customCharacterBirthDayInvalid => 'Dia inválido';
+
+  @override
+  String get customCharacterRaceRequired => 'Raça é obrigatória';
+
+  @override
+  String get customCharacterFightingTypeRequired =>
+      'Tipo de luta é obrigatório';
+
+  @override
+  String get customCharacterFilterLabel => 'Filtrar por Fruta/Equipe';
+
+  @override
+  String customCharacterConfirmDelete(String name) {
+    return 'Tem certeza que deseja excluir o personagem \"$name\"?';
+  }
+
+  @override
+  String customCharacterDeletedWithName(String name) {
+    return 'Personagem \"$name\" excluído';
+  }
+
+  @override
+  String duelWinnerWithName(String name) {
+    return '$name venceu!';
+  }
+
+  @override
+  String duelVictoryCrushing(String name) {
+    return 'Uma vitória esmagadora! $name mostrou sua força verdadeira!';
+  }
+
+  @override
+  String duelVictoryDominated(String name) {
+    return 'Incrível! $name dominou completamente este duelo!';
+  }
+
+  @override
+  String duelVictoryTrueWarrior(String name) {
+    return '$name provou ser um verdadeiro guerreiro dos mares!';
+  }
+
+  @override
+  String duelVictoryEpicBattle(String name) {
+    return 'Que batalha épica! $name emergiu como o vencedor!';
+  }
+
+  @override
+  String duelVictoryDecisivePower(String name) {
+    return 'O poder de $name foi decisivo nesta luta!';
+  }
+
+  @override
+  String get homeLoadFeaturedCharacterError =>
+      'Não foi possível carregar o personagem do dia.';
+
+  @override
+  String get homeLoadRandomCharacterError =>
+      'Não foi possível carregar um personagem aleatório.';
+
+  @override
+  String get homeRefreshError => 'Não foi possível atualizar a tela inicial.';
+
+  @override
+  String get homeBannerUnavailableTitle => 'Conteúdo indisponível';
+
+  @override
+  String get homeBannerUnavailableSubtitle => 'Verifique sua conexão';
+
+  @override
+  String get devilFruitLoadErrorTitle => 'Erro ao carregar as Akuma no Mi';
+
+  @override
+  String get devilFruitLoadError =>
+      'Não foi possível carregar as Akuma no Mi. Verifique sua conexão e tente novamente.';
+
+  @override
+  String get devilFruitRefreshError =>
+      'Não foi possível atualizar as Akuma no Mi. Tente novamente.';
+
+  @override
+  String get devilFruitSearchFailed =>
+      'Não foi possível buscar as Akuma no Mi.';
+
+  @override
+  String get devilFruitFilterError =>
+      'Não foi possível filtrar as Akuma no Mi.';
+
+  @override
+  String get devilFruitEmptyListSubtitle =>
+      'Nenhuma Akuma no Mi para exibir no momento';
+
+  @override
+  String get devilFruitHeaderTitle => 'Explore as Akuma no Mi';
+
+  @override
+  String get devilFruitHeaderSubtitle =>
+      'Descubra os poderes místicos das frutas do diabo';
+
+  @override
+  String get robinLoadGoalsError =>
+      'Não foi possível carregar seus objetivos. Tente novamente mais tarde.';
+
+  @override
+  String get robinCreateGoalError =>
+      'Não foi possível criar o objetivo. Tente novamente.';
+
+  @override
+  String get robinUpdateGoalError =>
+      'Não foi possível atualizar o objetivo. Tente novamente.';
+
+  @override
+  String get robinDeleteGoalError =>
+      'Não foi possível excluir o objetivo. Tente novamente.';
+
+  @override
+  String get robinUpdateProgressError =>
+      'Não foi possível atualizar o progresso do objetivo. Tente novamente.';
+
+  @override
+  String youtubeByChannel(String channel) {
+    return 'Por: $channel';
+  }
+
+  @override
+  String get youtubeDescriptionLabel => 'Descrição:';
+
+  @override
+  String get youtubeOpenInApp => 'Abrir no YouTube';
+
+  @override
+  String get youtubeOpenInAppComingSoon =>
+      'Abrir no YouTube ainda está em desenvolvimento';
+
+  @override
+  String profileBodyDataSummary(String weight, String height, String bmi) {
+    return '$weight kg • $height cm • IMC: $bmi';
+  }
+
+  @override
+  String get vegapunkResetChat => 'Reiniciar conversa';
+
+  @override
+  String get errorBoundaryTitle => 'Ops! Algo deu errado.';
+
+  @override
+  String get errorBoundaryMessage =>
+      'Ocorreu um erro inesperado na interface. Não se preocupe, os Chapéus de Palha já estão cuidando disso!';
 }

@@ -14,6 +14,8 @@ import 'package:opfan/shared/widgets/organisms/form_actions.dart';
 import 'package:opfan/shared/utils/zodiac_icons.dart';
 import 'package:opfan/core/utils/character_localization_mapper.dart';
 
+import 'custom_character_failure_message.dart';
+
 class EditCustomCharacterScreen extends StatefulWidget {
   final CustomCharacterModel character;
 
@@ -153,15 +155,14 @@ class _EditCustomCharacterScreenState extends State<EditCustomCharacterScreen> {
                 listenWhen: (previous, current) {
                   return current is CustomCharacterUpdated ||
                       (current is CustomCharacterError &&
-                          !current.message.contains(
-                            'mas houve um erro ao atualizar a lista',
-                          ));
+                          current.failure !=
+                              CustomCharacterFailure.listRefreshFailed);
                 },
                 listener: (context, state) {
                   if (state is CustomCharacterUpdated) {
                     _showSuccessDialog(context);
                   } else if (state is CustomCharacterError) {
-                    _showErrorDialog(context, state.message);
+                    _showErrorDialog(context, state.failure);
                   }
                 },
                 child: BlocBuilder<CustomCharacterBloc, CustomCharacterState>(
@@ -402,14 +403,14 @@ class _EditCustomCharacterScreenState extends State<EditCustomCharacterScreen> {
     );
   }
 
-  void _showErrorDialog(BuildContext context, String message) {
+  void _showErrorDialog(BuildContext context, CustomCharacterFailure failure) {
     final l10n = AppLocalizations.of(context)!;
 
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
         title: Text(l10n.error),
-        content: Text(l10n.characterUpdateError(message)),
+        content: Text(customCharacterFailureMessage(l10n, failure)),
         actions: [
           TextButton(
             onPressed: () {

@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 import 'package:video_player/video_player.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:opfan/l10n/app_localizations.dart';
 
 enum BannerType { youtube, networkVideo, gif }
 
@@ -154,19 +155,19 @@ class _VideoBannerState extends State<VideoBanner> {
   Widget _buildErrorWidget() {
     return Container(
       color: Colors.grey[900],
-      child: const Center(
+      child: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            AppIcon(
+            const AppIcon(
               PhosphorIconsRegular.warningCircle,
               color: Colors.white,
               size: 48,
             ),
-            SizedBox(height: 8),
+            const SizedBox(height: 8),
             Text(
-              'Error loading content',
-              style: TextStyle(color: Colors.white, fontSize: 16),
+              AppLocalizations.of(context)!.errorLoadingContent,
+              style: const TextStyle(color: Colors.white, fontSize: 16),
             ),
           ],
         ),

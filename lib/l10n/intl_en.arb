@@ -633,17 +633,6 @@
     "type": "text",
     "placeholders": {}
   },
-  "characterCreationError": "Error creating character: {message}",
-  "@characterCreationError": {
-    "description": "Error message when character creation fails",
-    "type": "text",
-    "placeholders": {
-      "message": {
-        "type": "String",
-        "example": "Network error"
-      }
-    }
-  },
   "ok": "OK",
   "@ok": {
     "description": "Button text for OK action",
@@ -995,17 +984,6 @@
     "description": "Success message when character is updated",
     "type": "text",
     "placeholders": {}
-  },
-  "characterUpdateError": "Error updating character: {message}",
-  "@characterUpdateError": {
-    "description": "Error message when character update fails",
-    "type": "text",
-    "placeholders": {
-      "message": {
-        "type": "String",
-        "example": "Network error"
-      }
-    }
   },
   "berriesTotal": "Berries total",
   "@berriesTotal": {
@@ -2088,18 +2066,6 @@
     "type": "text",
     "placeholders": {}
   },
-  "currency": "R$",
-  "@currency": {
-    "description": "Currency symbol for the current locale.",
-    "type": "text",
-    "placeholders": {}
-  },
-  "perDay": "/day",
-  "@perDay": {
-    "description": "Suffix for daily amounts.",
-    "type": "text",
-    "placeholders": {}
-  },
   "health": "Health",
   "@health": {
     "description": "Category name for health",
@@ -2175,12 +2141,6 @@
   "yearlySavings": "Yearly Savings",
   "@yearlySavings": {
     "description": "Label for accumulated value in one year.",
-    "type": "text",
-    "placeholders": {}
-  },
-  "accumulatedSavings": "Accumulated",
-  "@accumulatedSavings": {
-    "description": "Title for total accumulated savings.",
     "type": "text",
     "placeholders": {}
   },
@@ -2738,18 +2698,6 @@
   "workout_validation_workout_days_required": "Select your workout days goal",
   "@workout_validation_workout_days_required": {
     "description": "Validation for required workout days goal.",
-    "type": "text",
-    "placeholders": {}
-  },
-  "workout_day": "day",
-  "@workout_day": {
-    "description": "Singular of day.",
-    "type": "text",
-    "placeholders": {}
-  },
-  "workout_days": "days",
-  "@workout_days": {
-    "description": "Plural of days.",
     "type": "text",
     "placeholders": {}
   },
@@ -4412,5 +4360,603 @@
   "aiImageHelpText": "Use descriptive prompts to generate unique images for your crew. Generated images are saved automatically.",
   "flagPromptHint": "E.g. skull with crossed swords, black flag",
   "boatPromptHint": "E.g. wooden pirate ship with black sails",
-  "defaultCrewName": "Crew"
+  "defaultCrewName": "Crew",
+  "namiFinancesLoadFailed": "Couldn't load your finances.",
+  "@namiFinancesLoadFailed": {
+    "description": "Nami finances: error shown when loading a month's finances fails"
+  },
+  "namiFinancesHistoryLoadFailed": "Couldn't load your finance history.",
+  "@namiFinancesHistoryLoadFailed": {
+    "description": "Nami finances: error shown when loading the finances history fails"
+  },
+  "namiFinancesSaveFailed": "Couldn't save your finances.",
+  "@namiFinancesSaveFailed": {
+    "description": "Nami finances: error shown when saving a month's finances fails"
+  },
+  "namiFinancesDeleteFailed": "Couldn't delete your finances.",
+  "@namiFinancesDeleteFailed": {
+    "description": "Nami finances: error shown when deleting a month's finances fails"
+  },
+  "namiFinancesFutureMonthNotEditable": "Finances for future months can't be edited.",
+  "@namiFinancesFutureMonthNotEditable": {
+    "description": "Nami finances: error shown when the user tries to save a month after the current one"
+  },
+  "namiTotalIncomeLabel": "Total income:",
+  "@namiTotalIncomeLabel": {
+    "description": "Nami detailed finances: label before the total income amount in the income card"
+  },
+  "namiNoFinancialDataForMonth": "No financial data found for {month}",
+  "@namiNoFinancialDataForMonth": {
+    "description": "Nami detailed finances: empty state for a month without data; month is the localized month and year",
+    "placeholders": {
+      "month": {
+        "type": "String",
+        "example": "October 2026"
+      }
+    }
+  },
+  "namiErrorLoadingData": "Error loading data",
+  "@namiErrorLoadingData": {
+    "description": "Nami detailed finances: title of the error view, above the specific failure message"
+  },
+  "namiSelectCategoryRequired": "Please select a category",
+  "@namiSelectCategoryRequired": {
+    "description": "Nami add expense dialog: validation when no category is selected"
+  },
+  "namiAmountRequired": "Please enter an amount",
+  "@namiAmountRequired": {
+    "description": "Nami finances forms: validation when the amount field is empty"
+  },
+  "namiAmountInvalid": "Please enter a valid amount",
+  "@namiAmountInvalid": {
+    "description": "Nami finances forms: validation when the amount is not a positive number"
+  },
+  "namiDescriptionOptionalHint": "Description (optional)",
+  "@namiDescriptionOptionalHint": {
+    "description": "Nami add expense dialog: hint of the optional description field"
+  },
+  "namiMonthlyIncomeNumbered": "Monthly income {number}",
+  "@namiMonthlyIncomeNumbered": {
+    "description": "Nami setup form: label of each income field, numbered from 1",
+    "placeholders": {
+      "number": {
+        "type": "int",
+        "example": "2"
+      }
+    }
+  },
+  "namiHistoryTooltipExpenses": "Expenses: {amount}",
+  "@namiHistoryTooltipExpenses": {
+    "description": "Nami history chart: tooltip of the expenses bar; amount is a formatted BRL value",
+    "placeholders": {
+      "amount": {
+        "type": "String",
+        "example": "R$ 1.200,00"
+      }
+    }
+  },
+  "namiHistoryTooltipAvailable": "Available: {amount}",
+  "@namiHistoryTooltipAvailable": {
+    "description": "Nami history chart: tooltip of the available-amount bar; amount is a formatted BRL value",
+    "placeholders": {
+      "amount": {
+        "type": "String",
+        "example": "R$ 800,00"
+      }
+    }
+  },
+  "namiHistoryTooltipSavings": "Savings: {amount}",
+  "@namiHistoryTooltipSavings": {
+    "description": "Nami history chart: tooltip of the savings bar; amount is a formatted BRL value",
+    "placeholders": {
+      "amount": {
+        "type": "String",
+        "example": "R$ 300,00"
+      }
+    }
+  },
+  "namiChatTitle": "Nami Finances AI",
+  "@namiChatTitle": {
+    "description": "Nami chat sheet: header title (product name, same in every language)"
+  },
+  "namiChatInputHint": "Ask about your finances...",
+  "@namiChatInputHint": {
+    "description": "Nami chat sheet: hint of the message input"
+  },
+  "namiChatPreparing": "Preparing Nami...",
+  "@namiChatPreparing": {
+    "description": "Nami chat sheet: shown while the on-device model and finances store load"
+  },
+  "namiChatWelcome": "Hi! I'm Nami. I can analyze the finances we've saved! Ask me anything about the months you've recorded.",
+  "@namiChatWelcome": {
+    "description": "Nami chat sheet: first assistant bubble greeting the user"
+  },
+  "namiChatModelNotInstalled": "The AI model hasn't been downloaded yet — open Vegapunk's chat to install it.",
+  "@namiChatModelNotInstalled": {
+    "description": "Nami chat sheet: error bubble when the on-device model is not installed"
+  },
+  "namiChatModelLoadFailed": "Couldn't load the AI model.",
+  "@namiChatModelLoadFailed": {
+    "description": "Nami chat sheet: error bubble when loading the on-device model fails"
+  },
+  "namiChatConnectionFailed": "Couldn't reach Nami. Please try again.",
+  "@namiChatConnectionFailed": {
+    "description": "Nami chat sheet: error bubble when generating an answer fails"
+  },
+  "namiAccumulatedSavingsPeriod": "Accumulated over {period}",
+  "@namiAccumulatedSavingsPeriod": {
+    "description": "Nami results view: savings label; period is a localized duration like '2 years and 3 months'",
+    "placeholders": {
+      "period": {
+        "type": "String",
+        "example": "2 years"
+      }
+    }
+  },
+  "namiAmountPerDay": "{amount}/day",
+  "@namiAmountPerDay": {
+    "description": "Nami financial results: daily amount; amount is a formatted BRL value",
+    "placeholders": {
+      "amount": {
+        "type": "String",
+        "example": "R$ 50,00"
+      }
+    }
+  },
+  "zoroWorkoutLoadError": "Couldn't load your workout data.",
+  "@zoroWorkoutLoadError": {
+    "description": "Zoro workout: error shown when loading the monthly assessment fails"
+  },
+  "zoroWorkoutSaveAssessmentError": "Couldn't save your assessment.",
+  "@zoroWorkoutSaveAssessmentError": {
+    "description": "Zoro workout: error shown when saving the health assessment fails"
+  },
+  "zoroWorkoutRefreshError": "Couldn't refresh your workout data.",
+  "@zoroWorkoutRefreshError": {
+    "description": "Zoro workout: error shown when refreshing the assessment fails"
+  },
+  "zoroWorkoutUpdateDaysError": "Couldn't update your workout days.",
+  "@zoroWorkoutUpdateDaysError": {
+    "description": "Zoro workout calendar: error shown when saving the marked workout days fails"
+  },
+  "zoroWorkoutSavePlanError": "Couldn't save the workout plan.",
+  "@zoroWorkoutSavePlanError": {
+    "description": "Zoro workout plan editor: error shown when saving the plan fails"
+  },
+  "zoroPlanSplitName": "Workout {letter}",
+  "@zoroPlanSplitName": {
+    "description": "Zoro plan editor: default name of a new workout split (A, B, C...)",
+    "placeholders": {
+      "letter": {
+        "type": "String",
+        "example": "A"
+      }
+    }
+  },
+  "zoroPlanSplitNameRequired": "Give each workout split a name.",
+  "@zoroPlanSplitNameRequired": {
+    "description": "Zoro plan editor: validation when a split has no name"
+  },
+  "zoroPlanExerciseNameRequired": "Fill in the name of every exercise.",
+  "@zoroPlanExerciseNameRequired": {
+    "description": "Zoro plan editor: validation when an exercise has no name"
+  },
+  "zoroPlanExerciseVolumeRequired": "Fill in the volume of every exercise (e.g. 3x15).",
+  "@zoroPlanExerciseVolumeRequired": {
+    "description": "Zoro plan editor: validation when an exercise has no volume (sets x reps)"
+  },
+  "zoroPlanEditTitle": "Edit Workout Plan",
+  "@zoroPlanEditTitle": {
+    "description": "Zoro plan editor: app bar title in edit mode (create mode reuses createWorkoutPlan)"
+  },
+  "zoroPlanHelp": "Create splits (A, B, C…) with exercises. The app rotates them automatically across your workout days.",
+  "@zoroPlanHelp": {
+    "description": "Zoro plan editor: helper text at the top of the screen"
+  },
+  "zoroPlanSaving": "Saving…",
+  "@zoroPlanSaving": {
+    "description": "Zoro plan editor: floating button label while the plan is being saved"
+  },
+  "zoroPlanSave": "Save Plan",
+  "@zoroPlanSave": {
+    "description": "Zoro plan editor: floating button label to save the plan"
+  },
+  "zoroPlanAddExercise": "Add exercise",
+  "@zoroPlanAddExercise": {
+    "description": "Zoro plan editor: button inside a split card that adds an exercise row"
+  },
+  "zoroWorkoutDaysCount": "{count, plural, =1{1 day} other{{count} days}}",
+  "@zoroWorkoutDaysCount": {
+    "description": "Zoro setup: option in the weekly workout days goal dropdown",
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "3"
+      }
+    }
+  },
+  "zoroCalendarCurrentMonthOnly": "Only the current month's workout days can be edited",
+  "@zoroCalendarCurrentMonthOnly": {
+    "description": "Zoro workout calendar: notice shown when browsing a month other than the current one"
+  },
+  "zoroWeekProgressCount": "{done} / {goal, plural, =1{1 workout} other{{goal} workouts}}",
+  "@zoroWeekProgressCount": {
+    "description": "Zoro week progress card: workouts done this week out of the weekly goal",
+    "placeholders": {
+      "done": {
+        "type": "int",
+        "example": "2"
+      },
+      "goal": {
+        "type": "int",
+        "example": "4"
+      }
+    }
+  },
+  "sanjiCookingLoadError": "Couldn't load your nutrition data.",
+  "@sanjiCookingLoadError": {
+    "description": "Sanji cooking: error shown when loading the user's nutrition data fails"
+  },
+  "sanjiCookingCalculationError": "Couldn't calculate your nutrition plan.",
+  "@sanjiCookingCalculationError": {
+    "description": "Sanji cooking: error shown when the nutrition calculation fails"
+  },
+  "sanjiCookingSaveError": "Couldn't save your nutrition data.",
+  "@sanjiCookingSaveError": {
+    "description": "Sanji cooking: error shown when saving the nutrition data fails"
+  },
+  "sanjiCookingNoIngredients": "Add at least one ingredient.",
+  "@sanjiCookingNoIngredients": {
+    "description": "Sanji cooking tips: shown when generating tips or a meal with no ingredients"
+  },
+  "sanjiCookingTipsError": "Couldn't generate cooking tips. Please try again.",
+  "@sanjiCookingTipsError": {
+    "description": "Sanji cooking: error shown when the AI cooking tips request fails"
+  },
+  "sanjiCookingMealError": "Couldn't generate the meal. Please try again.",
+  "@sanjiCookingMealError": {
+    "description": "Sanji cooking tips: error shown when the AI personalized meal request fails or returns nothing"
+  },
+  "sanjiCookingMealCaloriesGoal": "{calories} kcal | {goal}",
+  "@sanjiCookingMealCaloriesGoal": {
+    "description": "Sanji personalized recipe card: target calories and the localized goal",
+    "placeholders": {
+      "calories": {
+        "type": "String",
+        "example": "2000"
+      },
+      "goal": {
+        "type": "String",
+        "example": "Weight loss"
+      }
+    }
+  },
+  "onboardingUpdateProfileTitle": "Update Profile",
+  "@onboardingUpdateProfileTitle": {
+    "description": "Onboarding: app bar title when editing an existing body profile"
+  },
+  "onboardingCompleteProfileTitle": "Complete Your Profile",
+  "@onboardingCompleteProfileTitle": {
+    "description": "Onboarding: app bar title on first sign-up"
+  },
+  "onboardingNext": "Next",
+  "@onboardingNext": {
+    "description": "Onboarding: button that goes to the next step"
+  },
+  "onboardingSaveChanges": "Save Changes",
+  "@onboardingSaveChanges": {
+    "description": "Onboarding: last-step button when editing an existing profile"
+  },
+  "onboardingFinish": "Finish Sign-up",
+  "@onboardingFinish": {
+    "description": "Onboarding: last-step button on first sign-up"
+  },
+  "onboardingPersonalDataDescription": "This information is essential for us to calculate your nutrition plan accurately.",
+  "@onboardingPersonalDataDescription": {
+    "description": "Onboarding step 1: explanation under the Personal Data title"
+  },
+  "onboardingAgeSuffix": "years",
+  "@onboardingAgeSuffix": {
+    "description": "Onboarding: suffix shown inside the age field"
+  },
+  "onboardingInvalidValue": "Invalid value",
+  "@onboardingInvalidValue": {
+    "description": "Onboarding: validation message when a number field holds a non-number"
+  },
+  "crewNotSignedInError": "Sign in to create a crew",
+  "@crewNotSignedInError": {
+    "description": "Create crew snackbar when there is no signed-in user"
+  },
+  "crewNotFoundError": "Crew not found",
+  "@crewNotFoundError": {
+    "description": "Edit crew error dialog when the crew no longer exists"
+  },
+  "customCharacterLoadError": "Couldn't load your characters",
+  "@customCharacterLoadError": {
+    "description": "Custom character list error detail when loading, searching or filtering fails"
+  },
+  "customCharacterCreateError": "Couldn't create the character",
+  "@customCharacterCreateError": {
+    "description": "Create custom character error dialog"
+  },
+  "customCharacterUpdateError": "Couldn't update the character",
+  "@customCharacterUpdateError": {
+    "description": "Edit custom character error dialog"
+  },
+  "customCharacterDeleteError": "Couldn't delete the character",
+  "@customCharacterDeleteError": {
+    "description": "Custom character list error detail when deleting fails"
+  },
+  "customCharacterListRefreshError": "Saved, but the character list couldn't be refreshed",
+  "@customCharacterListRefreshError": {
+    "description": "Custom character list error detail when a create/update/delete succeeded but reloading the list failed"
+  },
+  "duelsLoadError": "Couldn't load the characters for the duel",
+  "@duelsLoadError": {
+    "description": "Duels screen error detail when loading characters fails"
+  },
+  "crewInfoTitle": "Information",
+  "@crewInfoTitle": {
+    "description": "Title of the info card on crew details"
+  },
+  "crewInfoCreatedAt": "Created on",
+  "@crewInfoCreatedAt": {
+    "description": "Crew details info row label for the creation date"
+  },
+  "crewInfoDateUnavailable": "Date not available",
+  "@crewInfoDateUnavailable": {
+    "description": "Crew details info value when the creation date is missing"
+  },
+  "crewInfoUpdatedAt": "Updated on",
+  "@crewInfoUpdatedAt": {
+    "description": "Crew details info row label for the last update date"
+  },
+  "crewInfoRolesFilled": "Roles filled",
+  "@crewInfoRolesFilled": {
+    "description": "Crew details info row label listing the filled crew roles"
+  },
+  "crewInfoOwner": "Owner",
+  "@crewInfoOwner": {
+    "description": "Crew details info row label for the crew owner"
+  },
+  "crewMembersEmptyTitle": "No members in the crew",
+  "@crewMembersEmptyTitle": {
+    "description": "Crew details members card title when the crew has no members"
+  },
+  "crewMembersEmptySubtitle": "Add members to start your journey!",
+  "@crewMembersEmptySubtitle": {
+    "description": "Crew details members card subtitle when the crew has no members"
+  },
+  "customCharacterBirthDateInvalid": "Invalid date. Use the DD/MM/YYYY format",
+  "@customCharacterBirthDateInvalid": {
+    "description": "Custom character form birth date validator: wrong format"
+  },
+  "customCharacterBirthYearOutOfRange": "Year must be between 1900 and 2100",
+  "@customCharacterBirthYearOutOfRange": {
+    "description": "Custom character form birth date validator: year out of range"
+  },
+  "customCharacterBirthMonthInvalid": "Invalid month",
+  "@customCharacterBirthMonthInvalid": {
+    "description": "Custom character form birth date validator: month out of range"
+  },
+  "customCharacterBirthDayInvalid": "Invalid day",
+  "@customCharacterBirthDayInvalid": {
+    "description": "Custom character form birth date validator: day out of range"
+  },
+  "customCharacterRaceRequired": "Race is required",
+  "@customCharacterRaceRequired": {
+    "description": "Custom character form race dropdown validator"
+  },
+  "customCharacterFightingTypeRequired": "Fighting type is required",
+  "@customCharacterFightingTypeRequired": {
+    "description": "Custom character form fighting type dropdown validator"
+  },
+  "customCharacterFilterLabel": "Filter by Fruit/Crew",
+  "@customCharacterFilterLabel": {
+    "description": "Filter button on the custom character grid"
+  },
+  "customCharacterConfirmDelete": "Are you sure you want to delete the character \"{name}\"?",
+  "@customCharacterConfirmDelete": {
+    "description": "Delete confirmation dialog on the custom character grid",
+    "placeholders": {
+      "name": {
+        "type": "String",
+        "example": "Luffy"
+      }
+    }
+  },
+  "customCharacterDeletedWithName": "Character \"{name}\" deleted",
+  "@customCharacterDeletedWithName": {
+    "description": "Snackbar after deleting a custom character",
+    "placeholders": {
+      "name": {
+        "type": "String",
+        "example": "Luffy"
+      }
+    }
+  },
+  "duelWinnerWithName": "{name} wins!",
+  "@duelWinnerWithName": {
+    "description": "Winner banner in the duel arena",
+    "placeholders": {
+      "name": {
+        "type": "String",
+        "example": "Luffy"
+      }
+    }
+  },
+  "duelVictoryCrushing": "A crushing victory! {name} showed their true strength!",
+  "@duelVictoryCrushing": {
+    "description": "Duel result victory phrase (one of five, picked per winner)",
+    "placeholders": {
+      "name": {
+        "type": "String",
+        "example": "Luffy"
+      }
+    }
+  },
+  "duelVictoryDominated": "Incredible! {name} completely dominated this duel!",
+  "@duelVictoryDominated": {
+    "description": "Duel result victory phrase (one of five, picked per winner)",
+    "placeholders": {
+      "name": {
+        "type": "String",
+        "example": "Luffy"
+      }
+    }
+  },
+  "duelVictoryTrueWarrior": "{name} proved to be a true warrior of the seas!",
+  "@duelVictoryTrueWarrior": {
+    "description": "Duel result victory phrase (one of five, picked per winner)",
+    "placeholders": {
+      "name": {
+        "type": "String",
+        "example": "Luffy"
+      }
+    }
+  },
+  "duelVictoryEpicBattle": "What an epic battle! {name} emerged victorious!",
+  "@duelVictoryEpicBattle": {
+    "description": "Duel result victory phrase (one of five, picked per winner)",
+    "placeholders": {
+      "name": {
+        "type": "String",
+        "example": "Luffy"
+      }
+    }
+  },
+  "duelVictoryDecisivePower": "{name}'s power was decisive in this fight!",
+  "@duelVictoryDecisivePower": {
+    "description": "Duel result victory phrase (one of five, picked per winner)",
+    "placeholders": {
+      "name": {
+        "type": "String",
+        "example": "Luffy"
+      }
+    }
+  },
+  "homeLoadFeaturedCharacterError": "Couldn't load today's featured character.",
+  "@homeLoadFeaturedCharacterError": {
+    "description": "Home: detail under the error card when the featured character fails to load"
+  },
+  "homeLoadRandomCharacterError": "Couldn't load a random character.",
+  "@homeLoadRandomCharacterError": {
+    "description": "Home: detail under the error card when picking a random character fails"
+  },
+  "homeRefreshError": "Couldn't refresh the home screen.",
+  "@homeRefreshError": {
+    "description": "Home: detail under the error card when the pull-to-refresh fails"
+  },
+  "homeBannerUnavailableTitle": "Content unavailable",
+  "@homeBannerUnavailableTitle": {
+    "description": "Home video banner fallback title when the banner image/video can't load"
+  },
+  "homeBannerUnavailableSubtitle": "Check your connection",
+  "@homeBannerUnavailableSubtitle": {
+    "description": "Home video banner fallback subtitle when the banner image/video can't load"
+  },
+  "devilFruitLoadErrorTitle": "Error loading Devil Fruits",
+  "@devilFruitLoadErrorTitle": {
+    "description": "Devil fruit list: title of the full-screen error state"
+  },
+  "devilFruitLoadError": "Couldn't load the Devil Fruits. Check your connection and try again.",
+  "@devilFruitLoadError": {
+    "description": "Devil fruit list: detail when the initial load fails"
+  },
+  "devilFruitRefreshError": "Couldn't refresh the Devil Fruits. Try again.",
+  "@devilFruitRefreshError": {
+    "description": "Devil fruit list: detail when refreshing the list fails"
+  },
+  "devilFruitSearchFailed": "Couldn't search the Devil Fruits.",
+  "@devilFruitSearchFailed": {
+    "description": "Devil fruit list: searching by name failed"
+  },
+  "devilFruitFilterError": "Couldn't filter the Devil Fruits.",
+  "@devilFruitFilterError": {
+    "description": "Devil fruit list: filtering by type failed"
+  },
+  "devilFruitEmptyListSubtitle": "No Devil Fruits to display at the moment",
+  "@devilFruitEmptyListSubtitle": {
+    "description": "Devil fruit list: empty state subtitle when there are no filters"
+  },
+  "devilFruitHeaderTitle": "Explore the Devil Fruits",
+  "@devilFruitHeaderTitle": {
+    "description": "Devil fruit list: header title above the search field"
+  },
+  "devilFruitHeaderSubtitle": "Discover the mystical powers of the Devil Fruits",
+  "@devilFruitHeaderSubtitle": {
+    "description": "Devil fruit list: header subtitle above the search field"
+  },
+  "robinLoadGoalsError": "Couldn't load your goals. Try again later.",
+  "@robinLoadGoalsError": {
+    "description": "Robin planner: detail when loading the goals fails"
+  },
+  "robinCreateGoalError": "Couldn't create the goal. Try again.",
+  "@robinCreateGoalError": {
+    "description": "Robin planner: detail when creating a goal fails"
+  },
+  "robinUpdateGoalError": "Couldn't update the goal. Try again.",
+  "@robinUpdateGoalError": {
+    "description": "Robin planner: detail when editing a goal fails"
+  },
+  "robinDeleteGoalError": "Couldn't delete the goal. Try again.",
+  "@robinDeleteGoalError": {
+    "description": "Robin planner: detail when deleting a goal fails"
+  },
+  "robinUpdateProgressError": "Couldn't update the goal's progress. Try again.",
+  "@robinUpdateProgressError": {
+    "description": "Robin planner: detail when updating a goal's progress fails"
+  },
+  "youtubeByChannel": "By: {channel}",
+  "@youtubeByChannel": {
+    "description": "YouTube player: channel that published the video",
+    "placeholders": {
+      "channel": {
+        "type": "String",
+        "example": "One Piece AMV"
+      }
+    }
+  },
+  "youtubeDescriptionLabel": "Description:",
+  "@youtubeDescriptionLabel": {
+    "description": "YouTube player: label above the video description"
+  },
+  "youtubeOpenInApp": "Open in YouTube",
+  "@youtubeOpenInApp": {
+    "description": "YouTube player: button that opens the video in the YouTube app"
+  },
+  "youtubeOpenInAppComingSoon": "Open in YouTube is still in development",
+  "@youtubeOpenInAppComingSoon": {
+    "description": "YouTube player: snackbar shown because opening in YouTube isn't implemented yet"
+  },
+  "profileBodyDataSummary": "{weight} kg • {height} cm • BMI: {bmi}",
+  "@profileBodyDataSummary": {
+    "description": "Profile: body data row subtitle; numbers are already locale-formatted in Dart",
+    "placeholders": {
+      "weight": {
+        "type": "String",
+        "example": "72,5"
+      },
+      "height": {
+        "type": "String",
+        "example": "178"
+      },
+      "bmi": {
+        "type": "String",
+        "example": "22.9"
+      }
+    }
+  },
+  "vegapunkResetChat": "Reset chat",
+  "@vegapunkResetChat": {
+    "description": "Vegapunk chat: tooltip of the app bar button that clears the conversation"
+  },
+  "errorBoundaryTitle": "Oops! Something went wrong.",
+  "@errorBoundaryTitle": {
+    "description": "Global error screen shown when a widget crashes: title"
+  },
+  "errorBoundaryMessage": "An unexpected error occurred in the user interface. Don't worry, the Straw Hats are on it!",
+  "@errorBoundaryMessage": {
+    "description": "Global error screen shown when a widget crashes: explanation under the title"
+  }
 }

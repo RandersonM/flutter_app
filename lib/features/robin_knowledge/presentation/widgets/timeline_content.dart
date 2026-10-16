@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:opfan/features/robin_knowledge/data/models/goal_model.dart';
 import 'package:opfan/features/robin_knowledge/bloc/robin_knowledge_bloc.dart';
+import 'package:opfan/features/robin_knowledge/presentation/robin_knowledge_failure_message.dart';
+import 'package:opfan/l10n/app_localizations.dart';
 
 import 'package:opfan/shared/utils/constants.dart';
 
@@ -33,12 +35,15 @@ class TimelineContent extends StatelessWidget {
                 ),
                 const SizedBox(height: Constants.margin * 2),
                 Text(
-                  'Erro ao carregar objetivos',
+                  AppLocalizations.of(context)!.errorLoadingObjectives,
                   style: Theme.of(context).textTheme.titleMedium,
                 ),
                 const SizedBox(height: Constants.margin),
                 Text(
-                  state.message,
+                  robinKnowledgeFailureMessage(
+                    AppLocalizations.of(context)!,
+                    state.failure,
+                  ),
                   style: Theme.of(context).textTheme.bodyMedium?.copyWith(),
                   textAlign: TextAlign.center,
                 ),

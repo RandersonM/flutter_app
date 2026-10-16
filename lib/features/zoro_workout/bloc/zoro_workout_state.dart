@@ -1,6 +1,15 @@
 import 'package:equatable/equatable.dart';
 import 'package:opfan/features/zoro_workout/data/models/workout_assessment_model.dart';
 
+enum ZoroWorkoutFailure {
+  loadFailed,
+  saveAssessmentFailed,
+  refreshFailed,
+  noAssessmentFound,
+  updateDaysFailed,
+  savePlanFailed,
+}
+
 abstract class ZoroWorkoutState extends Equatable {
   const ZoroWorkoutState();
 
@@ -64,19 +73,10 @@ class ZoroWorkoutLoaded extends ZoroWorkoutState {
 }
 
 class ZoroWorkoutError extends ZoroWorkoutState {
-  final String message;
+  final ZoroWorkoutFailure failure;
 
-  const ZoroWorkoutError({required this.message});
-
-  @override
-  List<Object?> get props => [message];
-}
-
-class ZoroWorkoutSuccess extends ZoroWorkoutState {
-  final String message;
-
-  const ZoroWorkoutSuccess({required this.message});
+  const ZoroWorkoutError(this.failure);
 
   @override
-  List<Object?> get props => [message];
+  List<Object?> get props => [failure];
 }

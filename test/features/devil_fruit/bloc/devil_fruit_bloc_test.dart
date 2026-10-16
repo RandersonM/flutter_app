@@ -57,11 +57,38 @@ void main() {
     );
 
     blocTest<DevilFruitBloc, DevilFruitState>(
-      'emits an error when loading throws',
+      'emits a load failure, not a message, when loading throws',
       setUp: () => when(() => service.fetchAll()).thenThrow(Exception('api')),
       build: build,
       act: (bloc) => bloc.add(const LoadDevilFruits()),
-      expect: () => [const DevilFruitLoading(), isA<DevilFruitError>()],
+      expect: () => [
+        const DevilFruitLoading(),
+        const DevilFruitError(DevilFruitFailure.loadFailed),
+      ],
+    );
+
+    blocTest<DevilFruitBloc, DevilFruitState>(
+      'emits a refresh failure when refreshing throws',
+      setUp: () => when(() => service.fetchAll()).thenThrow(Exception('api')),
+      build: build,
+      act: (bloc) => bloc.add(const RefreshDevilFruits()),
+      expect: () => [
+        const DevilFruitLoading(),
+        const DevilFruitError(DevilFruitFailure.refreshFailed),
+      ],
+    );
+
+    blocTest<DevilFruitBloc, DevilFruitState>(
+      'keeps the list and records a filter failure when filtering throws',
+      setUp: () =>
+          when(() => service.fetchByType('Logia')).thenThrow(Exception('api')),
+      build: build,
+      seed: () => loaded,
+      act: (bloc) => bloc.add(const FilterDevilFruitsByType('Logia')),
+      expect: () => [
+        loaded.copyWith(isSearching: true),
+        loaded.copyWith(failure: DevilFruitFailure.filterFailed),
+      ],
     );
 
     blocTest<DevilFruitBloc, DevilFruitState>(

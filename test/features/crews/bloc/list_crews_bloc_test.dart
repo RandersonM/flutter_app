@@ -70,7 +70,19 @@ void main() {
           when(() => repository.getAllCrews()).thenThrow(Exception('boom')),
       build: build,
       act: (bloc) => bloc.add(LoadCrews()),
-      expect: () => [ListCrewsLoading(), isA<ListCrewsError>()],
+      expect: () => [
+        ListCrewsLoading(),
+        const ListCrewsError(CrewsFailure.loadFailed),
+      ],
+    );
+
+    blocTest<ListCrewsBloc, ListCrewsState>(
+      'emits deleteFailed when deleting a crew throws',
+      setUp: () =>
+          when(() => repository.deleteCrew('c1')).thenThrow(Exception('boom')),
+      build: build,
+      act: (bloc) => bloc.add(const DeleteCrew('c1')),
+      expect: () => [const ListCrewsError(CrewsFailure.deleteFailed)],
     );
   });
 

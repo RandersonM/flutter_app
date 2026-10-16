@@ -1,7 +1,9 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:opfan/core/services/auth_db/i_auth_service.dart';
 import 'package:opfan/features/crews/data/models/crew_model.dart';
 import 'package:opfan/features/crews/data/repository/crew_repository_interface.dart';
+import 'crews_failure.dart';
 import 'list_crews_event.dart';
 import 'list_crews_state.dart';
 
@@ -28,7 +30,8 @@ class ListCrewsBloc extends Bloc<ListCrewsEvent, ListCrewsState> {
       final crews = await _crewRepository.getAllCrews();
       emit(_loaded(crews));
     } catch (e) {
-      emit(ListCrewsError(e.toString()));
+      debugPrint('ListCrewsBloc: load crews failed: $e');
+      emit(const ListCrewsError(CrewsFailure.loadFailed));
     }
   }
 
@@ -42,7 +45,8 @@ class ListCrewsBloc extends Bloc<ListCrewsEvent, ListCrewsState> {
       final crews = await _crewRepository.getUserCrews();
       emit(_loaded(crews));
     } catch (e) {
-      emit(ListCrewsError(e.toString()));
+      debugPrint('ListCrewsBloc: load user crews failed: $e');
+      emit(const ListCrewsError(CrewsFailure.loadFailed));
     }
   }
 
@@ -62,7 +66,8 @@ class ListCrewsBloc extends Bloc<ListCrewsEvent, ListCrewsState> {
           .toList();
       emit(_loaded(filteredCrews));
     } catch (e) {
-      emit(ListCrewsError(e.toString()));
+      debugPrint('ListCrewsBloc: search crews failed: $e');
+      emit(const ListCrewsError(CrewsFailure.loadFailed));
     }
   }
 
@@ -82,7 +87,8 @@ class ListCrewsBloc extends Bloc<ListCrewsEvent, ListCrewsState> {
           .toList();
       emit(_loaded(filteredCrews));
     } catch (e) {
-      emit(ListCrewsError(e.toString()));
+      debugPrint('ListCrewsBloc: search user crews failed: $e');
+      emit(const ListCrewsError(CrewsFailure.loadFailed));
     }
   }
 
@@ -95,7 +101,8 @@ class ListCrewsBloc extends Bloc<ListCrewsEvent, ListCrewsState> {
       // Recarregar a lista após deletar
       add(LoadCrews());
     } catch (e) {
-      emit(ListCrewsError(e.toString()));
+      debugPrint('ListCrewsBloc: delete crew failed: $e');
+      emit(const ListCrewsError(CrewsFailure.deleteFailed));
     }
   }
 

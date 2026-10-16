@@ -57,7 +57,9 @@ class CustomCharacterSearchHeader extends StatelessWidget {
                   child: OutlinedButton.icon(
                     onPressed: onFilter,
                     icon: const AppIcon(PhosphorIconsRegular.faders),
-                    label: Text(filterLabel ?? 'Filtrar'),
+                    label: Text(
+                      filterLabel ?? AppLocalizations.of(context)!.filter,
+                    ),
                     style: OutlinedButton.styleFrom(
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(12),

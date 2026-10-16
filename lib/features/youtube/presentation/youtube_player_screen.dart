@@ -94,7 +94,9 @@ class _YouTubePlayerScreenState extends State<YouTubePlayerScreen> {
                       ),
                       const SizedBox(height: 8),
                       Text(
-                        'Por: ${widget.video.channelTitle}',
+                        AppLocalizations.of(
+                          context,
+                        )!.youtubeByChannel(widget.video.channelTitle),
                         style: const TextStyle(
                           color: Colors.grey,
                           fontSize: 14,
@@ -102,9 +104,9 @@ class _YouTubePlayerScreenState extends State<YouTubePlayerScreen> {
                       ),
                       const SizedBox(height: 16),
                       if (widget.video.description.isNotEmpty) ...[
-                        const Text(
-                          'Descrição:',
-                          style: TextStyle(
+                        Text(
+                          AppLocalizations.of(context)!.youtubeDescriptionLabel,
+                          style: const TextStyle(
                             color: Colors.white,
                             fontSize: 16,
                             fontWeight: FontWeight.bold,
@@ -127,9 +129,11 @@ class _YouTubePlayerScreenState extends State<YouTubePlayerScreen> {
                             child: OutlinedButton.icon(
                               onPressed: () {
                                 ScaffoldMessenger.of(context).showSnackBar(
-                                  const SnackBar(
+                                  SnackBar(
                                     content: Text(
-                                      'Abrir no YouTube - Em desenvolvimento',
+                                      AppLocalizations.of(
+                                        context,
+                                      )!.youtubeOpenInAppComingSoon,
                                     ),
                                   ),
                                 );
@@ -138,9 +142,9 @@ class _YouTubePlayerScreenState extends State<YouTubePlayerScreen> {
                                 PhosphorIconsRegular.arrowSquareOut,
                                 color: Colors.red,
                               ),
-                              label: const Text(
-                                'Abrir no YouTube',
-                                style: TextStyle(color: Colors.white),
+                              label: Text(
+                                AppLocalizations.of(context)!.youtubeOpenInApp,
+                                style: const TextStyle(color: Colors.white),
                               ),
                               style: OutlinedButton.styleFrom(
                                 side: const BorderSide(color: Colors.red),

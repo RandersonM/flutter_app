@@ -10,6 +10,7 @@ import 'package:opfan/features/custom_character/data/models/custom_character_mod
 import 'package:opfan/features/custom_character/bloc/custom_character_bloc.dart';
 import 'package:opfan/features/custom_character/bloc/custom_character_event.dart';
 import 'package:opfan/features/custom_character/bloc/custom_character_state.dart';
+import 'package:opfan/features/custom_character/presentation/custom_character_failure_message.dart';
 import 'package:opfan/shared/utils/constants.dart';
 import 'package:opfan/shared/widgets/atoms/custom_character_card.dart';
 import 'package:opfan/shared/widgets/molecules/custom_character_search_header.dart';
@@ -56,7 +57,7 @@ class _CustomCharacterGridListState extends State<CustomCharacterGridList> {
           searchController: _searchController,
           onSearch: _onSearch,
           onFilter: _showFilterDialog,
-          filterLabel: 'Filtrar por Fruta/Equipe',
+          filterLabel: AppLocalizations.of(context)!.customCharacterFilterLabel,
         ),
         Expanded(
           child: BlocBuilder<CustomCharacterBloc, CustomCharacterState>(
@@ -83,7 +84,10 @@ class _CustomCharacterGridListState extends State<CustomCharacterGridList> {
                       ),
                       const SizedBox(height: Constants.margin),
                       Text(
-                        state.message,
+                        customCharacterFailureMessage(
+                          AppLocalizations.of(context)!,
+                          state.failure,
+                        ),
                         style: Theme.of(context).textTheme.bodySmall,
                         textAlign: TextAlign.center,
                       ),
@@ -303,7 +307,7 @@ class _CustomCharacterGridListState extends State<CustomCharacterGridList> {
       context: context,
       builder: (context) => AlertDialog(
         title: Text(l10n.confirmDelete),
-        content: Text(l10n.confirmDeleteCrew(character.name)),
+        content: Text(l10n.customCharacterConfirmDelete(character.name)),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),

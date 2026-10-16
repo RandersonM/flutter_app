@@ -33,7 +33,7 @@ class CharacterRaceSection extends StatelessWidget {
                 ),
                 const SizedBox(width: Constants.margin),
                 Text(
-                  'Raça',
+                  l10n.race,
                   style: Theme.of(context).textTheme.titleMedium?.copyWith(
                     fontWeight: FontWeight.bold,
                   ),
@@ -58,7 +58,7 @@ class CharacterRaceSection extends StatelessWidget {
               onChanged: onRaceChanged,
               validator: (value) {
                 if (value == null || value.isEmpty) {
-                  return 'Raça é obrigatória';
+                  return l10n.customCharacterRaceRequired;
                 }
                 return null;
               },

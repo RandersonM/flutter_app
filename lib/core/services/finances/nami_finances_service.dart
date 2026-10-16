@@ -43,7 +43,8 @@ class NamiFinancesService implements INamiFinancesService {
       final box = await _getBox;
       await box.put(monthKey, finances);
     } catch (e) {
-      throw Exception('Erro ao salvar finanças: $e');
+      debugPrint('NamiFinancesService: save failed: $e');
+      rethrow;
     }
   }
 
@@ -70,7 +71,8 @@ class NamiFinancesService implements INamiFinancesService {
         await box.delete(key);
       }
     } catch (e) {
-      throw Exception('Erro ao deletar finanças: $e');
+      debugPrint('NamiFinancesService: delete failed: $e');
+      rethrow;
     }
   }
 
@@ -82,7 +84,8 @@ class NamiFinancesService implements INamiFinancesService {
       finances.sort((a, b) => b.month.compareTo(a.month));
       return finances;
     } catch (e) {
-      throw Exception('Erro ao buscar todas as finanças: $e');
+      debugPrint('NamiFinancesService: get all failed: $e');
+      rethrow;
     }
   }
 
@@ -96,7 +99,8 @@ class NamiFinancesService implements INamiFinancesService {
       finances.sort((a, b) => b.month.compareTo(a.month));
       return finances;
     } catch (e) {
-      throw Exception('Erro ao buscar finanças do ano: $e');
+      debugPrint('NamiFinancesService: get year failed: $e');
+      rethrow;
     }
   }
 
@@ -118,7 +122,8 @@ class NamiFinancesService implements INamiFinancesService {
           )
           .toList();
     } catch (e) {
-      throw Exception('Erro ao buscar finanças dos últimos meses: $e');
+      debugPrint('NamiFinancesService: get last months failed: $e');
+      rethrow;
     }
   }
 

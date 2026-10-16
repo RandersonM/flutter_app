@@ -51,7 +51,7 @@ class CharacterBasicInfoSection extends StatelessWidget {
           validator: (value) {
             if (value != null && value.isNotEmpty) {
               if (!RegExp(r'^\d{2}/\d{2}/\d{4}$').hasMatch(value)) {
-                return 'Data inválida. Use o formato DD/MM/AAAA';
+                return l10n.customCharacterBirthDateInvalid;
               }
 
               final parts = value.split('/');
@@ -60,15 +60,15 @@ class CharacterBasicInfoSection extends StatelessWidget {
               final year = int.parse(parts[2]);
 
               if (year < 1900 || year > 2100) {
-                return 'Ano deve estar entre 1900 e 2100';
+                return l10n.customCharacterBirthYearOutOfRange;
               }
 
               if (month < 1 || month > 12) {
-                return 'Mês inválido';
+                return l10n.customCharacterBirthMonthInvalid;
               }
 
               if (day < 1 || day > 31) {
-                return 'Dia inválido';
+                return l10n.customCharacterBirthDayInvalid;
               }
             }
             return null;

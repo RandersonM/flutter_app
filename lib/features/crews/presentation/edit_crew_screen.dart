@@ -102,20 +102,11 @@ class _EditCrewScreenState extends State<EditCrewScreen> {
             backgroundColor: theme.colorScheme.surfaceContainer,
             appBar: DefaultAppBar(title: Text(loc.editCrewTitle)),
             body: BlocListener<EditCrewBloc, EditCrewState>(
-              // A partial failure (crew saved, list refresh failed) must not
-              // pop the screen with an error dialog.
-              listenWhen: (previous, current) {
-                return current is EditCrewSuccess ||
-                    (current is EditCrewFailure &&
-                        !current.error.contains(
-                          'mas houve um erro ao atualizar a lista',
-                        ));
-              },
               listener: (context, state) {
                 if (state is EditCrewSuccess) {
                   _showSuccessDialog(context);
                 } else if (state is EditCrewFailure) {
-                  _showErrorDialog(context, state.error);
+                  _showErrorDialog(context, state.failure);
                 }
               },
               child: BlocBuilder<EditCrewBloc, EditCrewState>(
@@ -197,14 +188,17 @@ class _EditCrewScreenState extends State<EditCrewScreen> {
     );
   }
 
-  void _showErrorDialog(BuildContext context, String message) {
+  void _showErrorDialog(BuildContext context, CrewsFailure failure) {
     final l10n = AppLocalizations.of(context)!;
 
     showDialog(
       context: context,
       builder: (dialogContext) => AlertDialog(
         title: Text(l10n.error),
-        content: Text('${l10n.crewUpdateError}: $message'),
+        content: Text(switch (failure) {
+          CrewsFailure.notFound => l10n.crewNotFoundError,
+          _ => l10n.crewUpdateError,
+        }),
         actions: [
           TextButton(
             onPressed: () => Navigator.of(dialogContext).pop(),

@@ -73,11 +73,13 @@ class DuelsReady extends DuelsState {
       firstCharacter != null || secondCharacter != null;
 }
 
-class DuelsError extends DuelsState {
-  final String message;
+enum DuelsFailure { loadFailed }
 
-  const DuelsError(this.message);
+class DuelsError extends DuelsState {
+  final DuelsFailure failure;
+
+  const DuelsError(this.failure);
 
   @override
-  List<Object?> get props => [message];
+  List<Object?> get props => [failure];
 }
