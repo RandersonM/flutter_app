@@ -112,5 +112,36 @@ void main() {
         expect(plugin.opened, ['$_documentsPath/g.db']);
       },
     );
+
+    test('opens once when the same owner asks concurrently', () async {
+      await Future.wait([
+        RagStoreCoordinator.ensureActive('owner-i', 'i.db'),
+        RagStoreCoordinator.ensureActive('owner-i', 'i.db'),
+        RagStoreCoordinator.ensureActive('owner-i', 'i.db'),
+      ]);
+
+      expect(plugin.opened, ['$_documentsPath/i.db']);
+    });
+
+    test('ends on the owner requested last when switches overlap', () async {
+      await Future.wait([
+        RagStoreCoordinator.ensureActive('owner-j', 'j.db'),
+        RagStoreCoordinator.ensureActive('owner-k', 'k.db'),
+      ]);
+      await RagStoreCoordinator.ensureActive('owner-k', 'k.db');
+
+      expect(plugin.opened, ['$_documentsPath/j.db', '$_documentsPath/k.db']);
+    });
+
+    test('keeps serving queued calls after one fails', () async {
+      plugin.failuresLeft = 1;
+      final failing = RagStoreCoordinator.ensureActive('owner-l', 'l.db');
+      final queued = RagStoreCoordinator.ensureActive('owner-l', 'l.db');
+
+      await expectLater(failing, throwsException);
+      await queued;
+
+      expect(plugin.opened, ['$_documentsPath/l.db']);
+    });
   });
 }

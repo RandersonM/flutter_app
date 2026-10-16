@@ -27,6 +27,7 @@ class RagStoreCoordinator {
 
   static Future<EmbeddingModel>? _embedderReady;
   static String? _activeOwner;
+  static Future<void> _pendingSwitch = Future<void>.value();
 
   /// Installs AND activates the shared Gecko embedding model, returning the
   /// ready-to-use instance. Safe to call from every RAG service — runs at
@@ -59,7 +60,17 @@ class RagStoreCoordinator {
 
   /// Points the shared vector store at [owner]'s database file. No-op when
   /// [owner] is already the active store.
-  static Future<void> ensureActive(String owner, String dbFileName) async {
+  ///
+  /// Calls run one at a time in call order: [_activeOwner] is only known
+  /// after the store reopens, so overlapping calls would otherwise reopen the
+  /// same database twice or leave the store on whichever owner finished last.
+  static Future<void> ensureActive(String owner, String dbFileName) {
+    final switched = _pendingSwitch.then((_) => _activate(owner, dbFileName));
+    _pendingSwitch = switched.catchError((Object _) {});
+    return switched;
+  }
+
+  static Future<void> _activate(String owner, String dbFileName) async {
     if (_activeOwner == owner) return;
     final appDir = await getApplicationDocumentsDirectory();
     await FlutterGemmaPlugin.instance.initializeVectorStore(
