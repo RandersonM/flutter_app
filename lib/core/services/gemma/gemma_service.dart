@@ -6,9 +6,10 @@ import 'package:opfan/core/ai/prompts/index.dart';
 import 'package:opfan/core/services/index.dart';
 
 class GemmaService implements IGemmaService {
-  GemmaService({required this._env});
+  GemmaService({required this._env, required this._localeService});
 
   final IEnvironmentService _env;
+  final ILocaleService _localeService;
 
   final _statusController = StreamController<GemmaServiceStatus>.broadcast();
 
@@ -456,6 +457,7 @@ class GemmaService implements IGemmaService {
     _statusController.close();
   }
 
-  String get _vegapunkPrompt =>
-      VegapunkPrompt.system(isPortuguese: PromptLocale.isPortuguese());
+  String get _vegapunkPrompt => VegapunkPrompt.system(
+    isPortuguese: PromptLocale.isPortuguese(_localeService),
+  );
 }

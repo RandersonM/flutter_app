@@ -1,3 +1,5 @@
+import 'dart:ui' as ui;
+
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 
@@ -19,6 +21,10 @@ class LocaleService implements ILocaleService {
 
   @override
   Locale? get locale => _locale;
+
+  @override
+  String get languageCode =>
+      (_locale ?? ui.PlatformDispatcher.instance.locale).languageCode;
 
   @override
   Future<void> persistLocale(Locale locale) async {

@@ -3,9 +3,13 @@ import 'package:opfan/core/services/index.dart';
 import 'package:opfan/features/sanji_cooking/data/repository/cooking_repository_interface.dart';
 
 class CookingRepository implements ICookingRepository {
-  CookingRepository({required this._geminiService});
+  CookingRepository({
+    required this._geminiService,
+    required this._localeService,
+  });
 
   final IGeminiService _geminiService;
+  final ILocaleService _localeService;
 
   /// Removes control characters and caps length to prevent prompt injection.
   static String _sanitize(String input, {int maxLength = 200}) {
@@ -24,7 +28,7 @@ class CookingRepository implements ICookingRepository {
         ? _sanitize(cookingMethod)
         : null;
     final safeDifficulty = difficulty != null ? _sanitize(difficulty) : null;
-    final isPortuguese = PromptLocale.isPortuguese();
+    final isPortuguese = PromptLocale.isPortuguese(_localeService);
 
     final prompt = SanjiPrompt.cookingTipsPrompt(
       ingredient: safeIngredient,
@@ -51,7 +55,7 @@ class CookingRepository implements ICookingRepository {
     String? dietaryRestrictions,
   }) async {
     final ingredientsText = ingredients.map((i) => _sanitize(i)).join(', ');
-    final isPortuguese = PromptLocale.isPortuguese();
+    final isPortuguese = PromptLocale.isPortuguese(_localeService);
 
     final prompt = SanjiPrompt.personalizedMealPrompt(
       mealType: mealType,

@@ -21,6 +21,7 @@ class VegapunkChatCubit extends Cubit<VegapunkChatState> {
     required this._repository,
     required IRAGService ragService,
     required this._historyRepository,
+    required this._localeService,
   }) : _rag = ragService,
        super(const VegapunkModelNotInstalled()) {
     _modelStatusSub = _repository.modelStatusStream.listen(_onModelStatus);
@@ -32,6 +33,7 @@ class VegapunkChatCubit extends Cubit<VegapunkChatState> {
   final IVegapunkChatRepository _repository;
   final IRAGService _rag;
   final IVegapunkChatHistoryRepository _historyRepository;
+  final ILocaleService _localeService;
   late final StreamSubscription<GemmaServiceStatus> _modelStatusSub;
   StreamSubscription<String>? _streamSub;
   bool _isThinkingMode = false;
@@ -177,7 +179,7 @@ class VegapunkChatCubit extends Cubit<VegapunkChatState> {
 
     final instruction = VegapunkSatellitePrompt.forMessage(
       ready.selectedSatellite.name,
-      isPortuguese: PromptLocale.isPortuguese(),
+      isPortuguese: PromptLocale.isPortuguese(_localeService),
     );
 
     _tokenBuffer.clear();

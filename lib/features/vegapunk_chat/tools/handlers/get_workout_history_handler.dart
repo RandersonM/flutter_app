@@ -14,9 +14,13 @@ import '../tool_handler.dart';
 /// {"name": "getWorkoutHistory", "arguments": {}}
 /// ```
 class GetWorkoutHistoryHandler extends ToolHandler {
-  GetWorkoutHistoryHandler({required this._workoutService});
+  GetWorkoutHistoryHandler({
+    required this._workoutService,
+    required this._localeService,
+  });
 
   final IWorkoutAssessmentService _workoutService;
+  final ILocaleService _localeService;
 
   @override
   String get name => 'getWorkoutHistory';
@@ -91,8 +95,8 @@ class GetWorkoutHistoryHandler extends ToolHandler {
   /// Renders the full history as a Markdown table in Dart — not by the
   /// model — so numbers and month labels can never be mistyped when a
   /// multi-row table is actually warranted.
-  static String _buildMarkdownTable(List<Map<String, dynamic>> months) {
-    final isPt = PromptLocale.isPortuguese();
+  String _buildMarkdownTable(List<Map<String, dynamic>> months) {
+    final isPt = PromptLocale.isPortuguese(_localeService);
     final headers = isPt
         ? const [
             'Mês',

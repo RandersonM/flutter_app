@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:flutter/material.dart' show Locale;
 import 'package:flutter_test/flutter_test.dart';
-import 'package:get_it/get_it.dart';
 import 'package:opfan/core/models/rag/rag_document.dart';
 import 'package:opfan/core/services/config/i_locale_service.dart';
 import 'package:opfan/core/services/gemma/gemma_service_status.dart';
@@ -91,6 +90,8 @@ class _FakeLocaleService implements ILocaleService {
   @override
   Locale? locale = const Locale('pt');
   @override
+  String get languageCode => locale!.languageCode;
+  @override
   Future<void> loadLocale() async {}
   @override
   Future<void> persistLocale(Locale locale) async {}
@@ -130,14 +131,6 @@ ChatMessage _msg(String id, MessageRole role, String text, int minute) =>
     );
 
 void main() {
-  setUp(() {
-    GetIt.I.registerSingleton<ILocaleService>(_FakeLocaleService());
-  });
-
-  tearDown(() {
-    GetIt.I.reset();
-  });
-
   group('VegapunkChatCubit session reindex', () {
     test('rebuilds one session document per (user, assistant) turn', () async {
       final history = _FakeHistoryRepository([
@@ -151,6 +144,7 @@ void main() {
         repository: _FakeVegapunkChatRepository(),
         ragService: rag,
         historyRepository: history,
+        localeService: _FakeLocaleService(),
       );
 
       await rag.simulateStoreCleared();
@@ -188,6 +182,7 @@ void main() {
           repository: _FakeVegapunkChatRepository(),
           ragService: rag,
           historyRepository: history,
+          localeService: _FakeLocaleService(),
         );
 
         await rag.simulateStoreCleared();
@@ -205,6 +200,7 @@ void main() {
         repository: _FakeVegapunkChatRepository(),
         ragService: rag,
         historyRepository: _FakeHistoryRepository(),
+        localeService: _FakeLocaleService(),
       );
 
       await expectLater(rag.simulateStoreCleared(), completes);
@@ -232,6 +228,7 @@ void main() {
         repository: _FakeVegapunkChatRepository(),
         ragService: rag,
         historyRepository: history,
+        localeService: _FakeLocaleService(),
       );
 
       await rag.simulateStoreCleared();
@@ -265,6 +262,7 @@ void main() {
         repository: _FakeVegapunkChatRepository(),
         ragService: rag,
         historyRepository: history,
+        localeService: _FakeLocaleService(),
       );
 
       await rag.simulateStoreCleared();

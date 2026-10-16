@@ -84,7 +84,10 @@ void registerCoreModule(GetIt getIt) {
   );
 
   getIt.registerLazySingleton<ICookingRepository>(
-    () => CookingRepository(geminiService: getIt<IGeminiService>()),
+    () => CookingRepository(
+      geminiService: getIt<IGeminiService>(),
+      localeService: getIt<ILocaleService>(),
+    ),
   );
   getIt.registerLazySingleton<IFeaturedCharacterRepository>(
     () => FeaturedCharacterRepository(
@@ -162,6 +165,7 @@ void registerCoreModule(GetIt getIt) {
     registry.register(
       GetWorkoutHistoryHandler(
         workoutService: getIt<IWorkoutAssessmentService>(),
+        localeService: getIt<ILocaleService>(),
       ),
     );
     registry.register(
@@ -178,7 +182,10 @@ void registerCoreModule(GetIt getIt) {
   getIt.registerLazySingleton<FunctionExecutor>(() => FunctionExecutor());
 
   getIt.registerLazySingleton<IGemmaService>(() {
-    final gemma = GemmaService(env: getIt<IEnvironmentService>());
+    final gemma = GemmaService(
+      env: getIt<IEnvironmentService>(),
+      localeService: getIt<ILocaleService>(),
+    );
     // Register native tools from FunctionRegistry so the Gemma 4 SDK
     // handles function calling at the SDK level (structured JSON Schema).
     final registry = getIt<FunctionRegistry>();
