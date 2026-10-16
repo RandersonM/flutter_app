@@ -6,7 +6,6 @@ import 'package:opfan/l10n/app_localizations.dart';
 import 'package:opfan/features/robin_knowledge/bloc/index.dart';
 import 'package:opfan/features/robin_knowledge/presentation/robin_knowledge_failure_message.dart';
 import 'package:opfan/shared/utils/constants.dart';
-import 'package:opfan/shared/utils/theme.dart';
 import 'package:opfan/shared/widgets/molecules/default_app_bar.dart';
 import 'package:opfan/app/di/injection.dart';
 import 'package:opfan/core/connectivity/connectivity_cubit.dart';
@@ -92,7 +91,7 @@ class _RobinKnowledgeView extends StatelessWidget {
                     );
                   },
                   style: TextButton.styleFrom(
-                    foregroundColor: AppColors.purple[350],
+                    foregroundColor: Theme.of(context).colorScheme.primary,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(12),
                     ),
@@ -126,7 +125,9 @@ class _RobinKnowledgeView extends StatelessWidget {
                     height: 200,
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(12),
-                      border: Border.all(color: AppColors.purple[350]!),
+                      border: Border.all(
+                        color: Theme.of(context).colorScheme.primary,
+                      ),
                     ),
                     child: Center(
                       child: Column(

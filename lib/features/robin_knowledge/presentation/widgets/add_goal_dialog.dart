@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:opfan/features/robin_knowledge/data/models/goal_model.dart';
 import 'package:opfan/features/robin_knowledge/bloc/index.dart';
-import 'package:opfan/shared/utils/theme.dart';
 import 'package:opfan/shared/widgets/atoms/custom_dropdown.dart';
 import 'package:opfan/shared/widgets/atoms/custom_text_field.dart';
 import 'package:opfan/l10n/app_localizations.dart';
@@ -92,13 +91,16 @@ class _AddGoalDialogState extends State<AddGoalDialog> {
       ),
       child: Row(
         children: [
-          AppIcon(PhosphorIconsRegular.book, color: AppColors.purple[350]),
+          AppIcon(
+            PhosphorIconsRegular.book,
+            color: Theme.of(context).colorScheme.primary,
+          ),
           const SizedBox(width: 12),
           Text(
             AppLocalizations.of(context)!.newGoal,
             style: Theme.of(context).textTheme.titleLarge?.copyWith(
               fontWeight: FontWeight.bold,
-              color: AppColors.purple[350],
+              color: Theme.of(context).colorScheme.primary,
             ),
           ),
         ],
@@ -184,8 +186,8 @@ class _AddGoalDialogState extends State<AddGoalDialog> {
           value: _progress,
           min: 0,
           max: 100,
-          activeColor: AppColors.purple[350],
-          thumbColor: AppColors.purple[350],
+          activeColor: Theme.of(context).colorScheme.primary,
+          thumbColor: Theme.of(context).colorScheme.primary,
           divisions: 20,
           label: '${_progress.toInt()}%',
           onChanged: (value) {
@@ -219,7 +221,7 @@ class _AddGoalDialogState extends State<AddGoalDialog> {
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: AppColors.purple[350],
+        color: Theme.of(context).colorScheme.primary,
         borderRadius: const BorderRadius.only(
           bottomLeft: Radius.circular(12),
           bottomRight: Radius.circular(12),
@@ -231,7 +233,7 @@ class _AddGoalDialogState extends State<AddGoalDialog> {
           TextButton(
             onPressed: () => Navigator.pop(context),
             style: OutlinedButton.styleFrom(
-              foregroundColor: Theme.of(context).colorScheme.onSurface,
+              foregroundColor: Theme.of(context).colorScheme.onPrimary,
             ),
             child: Text(AppLocalizations.of(context)!.cancelAction),
           ),

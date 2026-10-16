@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'dart:math';
 
-import 'package:opfan/shared/utils/theme.dart';
-
 class RobinKnowledgeHeader extends StatefulWidget {
   const RobinKnowledgeHeader({super.key});
 
@@ -32,7 +30,7 @@ class _RobinKnowledgeHeaderState extends State<RobinKnowledgeHeader> {
         borderRadius: BorderRadius.circular(20),
         boxShadow: [
           BoxShadow(
-            color: AppColors.purple[350]!.withValues(alpha: 0.2),
+            color: Theme.of(context).colorScheme.primary.withValues(alpha: 0.2),
             blurRadius: 15,
             spreadRadius: 2,
           ),
