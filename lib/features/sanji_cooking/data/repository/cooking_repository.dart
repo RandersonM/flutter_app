@@ -1,10 +1,11 @@
 import 'package:opfan/core/ai/prompts/index.dart';
 import 'package:opfan/core/services/index.dart';
-import 'package:opfan/app/di/injection.dart';
 import 'package:opfan/features/sanji_cooking/data/repository/cooking_repository_interface.dart';
 
 class CookingRepository implements ICookingRepository {
-  final IGeminiService _geminiService = getIt<IGeminiService>();
+  CookingRepository({required this._geminiService});
+
+  final IGeminiService _geminiService;
 
   /// Removes control characters and caps length to prevent prompt injection.
   static String _sanitize(String input, {int maxLength = 200}) {

@@ -1,4 +1,3 @@
-import 'package:get_it/get_it.dart';
 import 'dart:async';
 
 import 'package:flutter/foundation.dart';
@@ -7,7 +6,9 @@ import 'package:opfan/core/ai/prompts/index.dart';
 import 'package:opfan/core/services/index.dart';
 
 class GemmaService implements IGemmaService {
-  GemmaService();
+  GemmaService({required this._env});
+
+  final IEnvironmentService _env;
 
   final _statusController = StreamController<GemmaServiceStatus>.broadcast();
 
@@ -38,7 +39,7 @@ class GemmaService implements IGemmaService {
   Future<void> initialize({bool isThinkingMode = false}) async {
     _isThinkingMode = isThinkingMode;
     try {
-      final modelName = GetIt.I.get<IEnvironmentService>().gemmaModelName;
+      final modelName = _env.gemmaModelName;
       final installed = await FlutterGemma.isModelInstalled(modelName);
       if (!installed) {
         _emit(const GemmaNotInstalled());
@@ -69,18 +70,17 @@ class GemmaService implements IGemmaService {
 
   @override
   Future<void> downloadModel() async {
-    final env = GetIt.I.get<IEnvironmentService>();
     try {
       _emit(const GemmaDownloading(0));
 
-      final modelType = _determineModelType(env.gemmaModelName);
-      final fileType = _determineModelFileType(env.gemmaModelName);
+      final modelType = _determineModelType(_env.gemmaModelName);
+      final fileType = _determineModelFileType(_env.gemmaModelName);
 
       await FlutterGemma.installModel(modelType: modelType, fileType: fileType)
           .fromNetwork(
-            env.gemmaModelUrl,
-            token: env.huggingFaceApiKey.isNotEmpty
-                ? env.huggingFaceApiKey
+            _env.gemmaModelUrl,
+            token: _env.huggingFaceApiKey.isNotEmpty
+                ? _env.huggingFaceApiKey
                 : null,
           )
           .withProgress((progress) => _emit(GemmaDownloading(progress)))
@@ -217,9 +217,7 @@ class GemmaService implements IGemmaService {
     _chat = null;
     await oldChat?.close();
 
-    final modelType = _determineModelType(
-      GetIt.I.get<IEnvironmentService>().gemmaModelName,
-    );
+    final modelType = _determineModelType(_env.gemmaModelName);
     _chat = await _model!.createChat(
       systemInstruction: _vegapunkPrompt,
       // Lower temperature = more deterministic = more reliable function calling.
@@ -363,9 +361,7 @@ class GemmaService implements IGemmaService {
             tools: tools ?? const [],
             supportsFunctionCalls: hasTools,
             toolChoice: hasTools ? ToolChoice.auto : ToolChoice.none,
-            modelType: _determineModelType(
-              GetIt.I.get<IEnvironmentService>().gemmaModelName,
-            ),
+            modelType: _determineModelType(_env.gemmaModelName),
           );
           _sessions[sessionId] = session;
         }

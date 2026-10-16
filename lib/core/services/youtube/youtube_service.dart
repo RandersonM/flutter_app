@@ -1,4 +1,3 @@
-import 'package:get_it/get_it.dart';
 // Developed by Randerson Mayllon
 // Copyright © 2022.
 
@@ -11,7 +10,7 @@ import 'package:opfan/core/services/index.dart';
 
 class YouTubeService implements IYouTubeService {
   late final Dio _dio;
-  final IEnvironmentService _env = GetIt.I.get<IEnvironmentService>();
+  final IEnvironmentService _env;
 
   final Map<String, YouTubeVideo> _videoCache = {};
   final Map<String, List<YouTubeVideo>> _multipleVideoCache = {};
@@ -23,7 +22,7 @@ class YouTubeService implements IYouTubeService {
   DateTime? _quotaExceededTime;
   static const Duration _quotaResetDuration = Duration(hours: 24);
 
-  YouTubeService() {
+  YouTubeService({required this._env}) {
     _dio = Dio(
       BaseOptions(
         baseUrl: _env.youtubeBaseUrl,

@@ -67,9 +67,15 @@ void registerCoreModule(GetIt getIt) {
       firebaseMessaging: getIt<FirebaseMessaging>(),
     ),
   );
-  getIt.registerLazySingleton<IDevilFruitService>(() => DevilFruitService());
-  getIt.registerLazySingleton<IYouTubeService>(() => YouTubeService());
-  getIt.registerLazySingleton<IGeminiService>(() => GeminiService());
+  getIt.registerLazySingleton<IDevilFruitService>(
+    () => DevilFruitService(env: getIt<IEnvironmentService>()),
+  );
+  getIt.registerLazySingleton<IYouTubeService>(
+    () => YouTubeService(env: getIt<IEnvironmentService>()),
+  );
+  getIt.registerLazySingleton<IGeminiService>(
+    () => GeminiService(env: getIt<IEnvironmentService>()),
+  );
   getIt.registerLazySingleton<ICharacterImageService>(
     () => CharacterImageService(geminiService: getIt<IGeminiService>()),
   );
@@ -77,7 +83,9 @@ void registerCoreModule(GetIt getIt) {
     () => CrewImageService(geminiService: getIt<IGeminiService>()),
   );
 
-  getIt.registerLazySingleton<ICookingRepository>(() => CookingRepository());
+  getIt.registerLazySingleton<ICookingRepository>(
+    () => CookingRepository(geminiService: getIt<IGeminiService>()),
+  );
   getIt.registerLazySingleton<IFeaturedCharacterRepository>(
     () => FeaturedCharacterRepository(
       firestoreService: getIt<IFirestoreService>(),
@@ -132,7 +140,9 @@ void registerCoreModule(GetIt getIt) {
   );
 
   getIt.registerLazySingleton<IRAGService>(() => RAGService());
-  getIt.registerLazySingleton<IWebSearchService>(() => WebSearchService());
+  getIt.registerLazySingleton<IWebSearchService>(
+    () => WebSearchService(env: getIt<IEnvironmentService>()),
+  );
 
   // ── Function Calling (Gemma tool registry) ─────────────────────────────────
   // FunctionRegistry and FunctionExecutor are lazy singletons. The factory
@@ -168,7 +178,7 @@ void registerCoreModule(GetIt getIt) {
   getIt.registerLazySingleton<FunctionExecutor>(() => FunctionExecutor());
 
   getIt.registerLazySingleton<IGemmaService>(() {
-    final gemma = GemmaService();
+    final gemma = GemmaService(env: getIt<IEnvironmentService>());
     // Register native tools from FunctionRegistry so the Gemma 4 SDK
     // handles function calling at the SDK level (structured JSON Schema).
     final registry = getIt<FunctionRegistry>();
