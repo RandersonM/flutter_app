@@ -104,5 +104,30 @@ void main() {
         loaded.copyWith(filteredFruits: [mera], selectedType: 'Logia'),
       ],
     );
+
+    blocTest<DevilFruitBloc, DevilFruitState>(
+      'clears the selected type with the other filters',
+      build: build,
+      seed: () =>
+          loaded.copyWith(filteredFruits: [mera], selectedType: 'Logia'),
+      act: (bloc) => bloc.add(const ClearDevilFruitFilters()),
+      expect: () => [loaded],
+    );
+
+    blocTest<DevilFruitBloc, DevilFruitState>(
+      'deselects the type when filtering by an empty type',
+      build: build,
+      seed: () =>
+          loaded.copyWith(filteredFruits: [mera], selectedType: 'Logia'),
+      act: (bloc) => bloc.add(const FilterDevilFruitsByType('')),
+      expect: () => [
+        loaded.copyWith(
+          filteredFruits: [mera],
+          selectedType: 'Logia',
+          isSearching: true,
+        ),
+        loaded,
+      ],
+    );
   });
 }

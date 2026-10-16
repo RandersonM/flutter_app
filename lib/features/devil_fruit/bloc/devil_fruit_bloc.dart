@@ -138,6 +138,7 @@ class DevilFruitBloc extends Bloc<DevilFruitEvent, DevilFruitState> {
         currentState.copyWith(
           filteredFruits: filteredFruits,
           selectedType: event.type.isNotEmpty ? event.type : null,
+          clearSelectedType: event.type.isEmpty,
           isSearching: false,
         ),
       );
@@ -163,7 +164,7 @@ class DevilFruitBloc extends Bloc<DevilFruitEvent, DevilFruitState> {
       currentState.copyWith(
         filteredFruits: currentState.fruits,
         searchQuery: '',
-        selectedType: null,
+        clearSelectedType: true,
         isSearching: false,
       ),
     );
