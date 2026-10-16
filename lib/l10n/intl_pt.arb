@@ -4067,5 +4067,8 @@
   "membersCount": "{count, plural, =0{Nenhum membro} =1{1 membro} other{{count} membros}}",
   "hakiTypesCount": "{count, plural, =1{1 tipo} other{{count} tipos}}",
   "goalsTotal": "{count} no total",
-  "noResultsFoundFor": "Nenhum resultado encontrado para \"{query}\""
+  "noResultsFoundFor": "Nenhum resultado encontrado para \"{query}\"",
+  "openExternalLinkTitle": "Abrir link externo?",
+  "openExternalLinkMessage": "Este link veio de uma resposta da IA e abre fora do app:\n{url}",
+  "openExternalLinkAction": "Abrir"
 }

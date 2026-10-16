@@ -3173,4 +3173,15 @@ class AppLocalizationsPt extends AppLocalizations {
   String noResultsFoundFor(String query) {
     return 'Nenhum resultado encontrado para \"$query\"';
   }
+
+  @override
+  String get openExternalLinkTitle => 'Abrir link externo?';
+
+  @override
+  String openExternalLinkMessage(String url) {
+    return 'Este link veio de uma resposta da IA e abre fora do app:\n$url';
+  }
+
+  @override
+  String get openExternalLinkAction => 'Abrir';
 }

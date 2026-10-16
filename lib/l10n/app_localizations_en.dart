@@ -3138,4 +3138,15 @@ class AppLocalizationsEn extends AppLocalizations {
   String noResultsFoundFor(String query) {
     return 'No results found for \"$query\"';
   }
+
+  @override
+  String get openExternalLinkTitle => 'Open external link?';
+
+  @override
+  String openExternalLinkMessage(String url) {
+    return 'This link came from an AI answer and opens outside the app:\n$url';
+  }
+
+  @override
+  String get openExternalLinkAction => 'Open';
 }

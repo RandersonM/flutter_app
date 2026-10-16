@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:opfan/shared/widgets/molecules/untrusted_markdown_configs.dart';
 import 'package:opfan/features/vegapunk_chat/data/models/chat_message.dart';
 import 'package:opfan/shared/utils/constants.dart';
 
@@ -72,6 +73,8 @@ class _ChatMessageBubbleState extends State<ChatMessageBubble> {
 
     return base.copy(
       configs: [
+        ...untrustedMarkdownConfigs(context),
+
         // Paragraphs
         PConfig(textStyle: baseTextStyle),
 

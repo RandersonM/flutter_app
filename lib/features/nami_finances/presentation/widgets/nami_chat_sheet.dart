@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:markdown_widget/markdown_widget.dart';
 import 'package:phosphoricons_flutter/phosphoricons_flutter.dart';
+import 'package:opfan/shared/widgets/molecules/untrusted_markdown_configs.dart';
 import 'package:opfan/shared/widgets/atoms/app_icon.dart';
 import 'package:opfan/shared/utils/constants.dart';
 import 'package:opfan/features/nami_finances/bloc/chat/nami_chat_bloc.dart';
@@ -185,6 +186,7 @@ class _NamiChatSheetContentState extends State<_NamiChatSheetContent> {
           (isDark ? MarkdownConfig.darkConfig : MarkdownConfig.defaultConfig)
               .copy(
                 configs: [
+                  ...untrustedMarkdownConfigs(context),
                   PConfig(
                     textStyle:
                         theme.textTheme.bodyMedium?.copyWith(

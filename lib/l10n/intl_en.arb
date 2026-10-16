@@ -4989,5 +4989,23 @@
         "example": "Luffy"
       }
     }
+  },
+  "openExternalLinkTitle": "Open external link?",
+  "@openExternalLinkTitle": {
+    "description": "Title of the confirmation dialog shown before opening a link that came from an AI answer."
+  },
+  "openExternalLinkMessage": "This link came from an AI answer and opens outside the app:\n{url}",
+  "@openExternalLinkMessage": {
+    "description": "Body of the confirmation dialog before opening a link from an AI answer.",
+    "placeholders": {
+      "url": {
+        "type": "String",
+        "example": "https://onepiece.fandom.com"
+      }
+    }
+  },
+  "openExternalLinkAction": "Open",
+  "@openExternalLinkAction": {
+    "description": "Confirm button that opens a link from an AI answer in the browser."
   }
 }
