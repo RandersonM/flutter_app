@@ -1736,12 +1736,6 @@ abstract class AppLocalizations {
   /// **'Pirate flag generated successfully!'**
   String get pirateFlagGeneratedSuccess;
 
-  /// Error message when pirate flag generation fails
-  ///
-  /// In en, this message translates to:
-  /// **'Error generating flag: {error}'**
-  String pirateFlagGenerationError(String error);
-
   /// Prompt text for generating boat
   ///
   /// In en, this message translates to:
@@ -1753,12 +1747,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Boat generated successfully!'**
   String get boatGeneratedSuccess;
-
-  /// Error message when boat generation fails
-  ///
-  /// In en, this message translates to:
-  /// **'Error generating boat: {error}'**
-  String boatGenerationError(String error);
 
   /// Snackbar message when profile photo is tapped
   ///
@@ -3788,30 +3776,6 @@ abstract class AppLocalizations {
   /// **'Categories'**
   String get categories;
 
-  /// Instruction to generate pirate flag
-  ///
-  /// In en, this message translates to:
-  /// **'Enter a prompt to generate the pirate flag'**
-  String get promptPirateFlag;
-
-  /// Success message for generated flag
-  ///
-  /// In en, this message translates to:
-  /// **'Pirate flag generated successfully!'**
-  String get flagGeneratedSuccess;
-
-  /// Instruction to generate ship
-  ///
-  /// In en, this message translates to:
-  /// **'Enter a prompt to generate the ship'**
-  String get promptShip;
-
-  /// Success message for generated ship
-  ///
-  /// In en, this message translates to:
-  /// **'Ship generated successfully!'**
-  String get shipGeneratedSuccess;
-
   /// Title for create crew screen
   ///
   /// In en, this message translates to:
@@ -4213,18 +4177,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Error: {error}'**
   String errorPrefix(String error);
-
-  /// No description provided for @errorGeneratingFlag.
-  ///
-  /// In en, this message translates to:
-  /// **'Error generating flag: {error}'**
-  String errorGeneratingFlag(String error);
-
-  /// No description provided for @errorGeneratingShip.
-  ///
-  /// In en, this message translates to:
-  /// **'Error generating ship: {error}'**
-  String errorGeneratingShip(String error);
 
   /// No description provided for @crewDeletedMessage.
   ///

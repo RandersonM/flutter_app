@@ -93,6 +93,14 @@ void registerFeaturesModule(GetIt getIt) {
       authService: getIt<IAuthService>(),
     ),
   );
+  // The edit screen seeds the cubit with the crew's current images.
+  getIt.registerFactoryParam<CrewImageCubit, CrewModel?, void>(
+    (crew, _) => CrewImageCubit(
+      crewImageService: getIt<ICrewImageService>(),
+      jollyRogerUrl: crew?.jollyRogerUrl,
+      boatUrl: crew?.boatImageUrl,
+    ),
+  );
   getIt.registerFactory<EditCrewBloc>(
     () => EditCrewBloc(crewRepository: getIt<ICrewRepository>()),
   );
@@ -162,6 +170,8 @@ extension FeaturesModuleExtensions on GetIt {
   ListCrewsBloc get listCrewsBloc => get<ListCrewsBloc>();
   CrewDetailsBloc crewDetailsBloc(CrewModel crew) =>
       get<CrewDetailsBloc>(param1: crew);
+  CrewImageCubit crewImageCubit([CrewModel? crew]) =>
+      get<CrewImageCubit>(param1: crew);
   ZoroWorkoutBloc get zoroWorkoutBloc => get<ZoroWorkoutBloc>();
   SanjiCookingBloc get sanjiCookingBloc => get<SanjiCookingBloc>();
   RobinKnowledgeBloc get robinKnowledgeBloc => get<RobinKnowledgeBloc>();

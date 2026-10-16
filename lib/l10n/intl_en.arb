@@ -1697,17 +1697,6 @@
     "type": "text",
     "placeholders": {}
   },
-  "pirateFlagGenerationError": "Error generating flag: {error}",
-  "@pirateFlagGenerationError": {
-    "description": "Error message when pirate flag generation fails",
-    "type": "text",
-    "placeholders": {
-      "error": {
-        "type": "String",
-        "example": "Network error"
-      }
-    }
-  },
   "generateBoatPrompt": "Enter a prompt to generate the boat",
   "@generateBoatPrompt": {
     "description": "Prompt text for generating boat",
@@ -1719,17 +1708,6 @@
     "description": "Success message when boat is generated",
     "type": "text",
     "placeholders": {}
-  },
-  "boatGenerationError": "Error generating boat: {error}",
-  "@boatGenerationError": {
-    "description": "Error message when boat generation fails",
-    "type": "text",
-    "placeholders": {
-      "error": {
-        "type": "String",
-        "example": "Network error"
-      }
-    }
   },
   "profilePhotoTapped": "Profile photo tapped",
   "@profilePhotoTapped": {
@@ -3806,30 +3784,6 @@
     "type": "text",
     "placeholders": {}
   },
-  "promptPirateFlag": "Enter a prompt to generate the pirate flag",
-  "@promptPirateFlag": {
-    "description": "Instruction to generate pirate flag",
-    "type": "text",
-    "placeholders": {}
-  },
-  "flagGeneratedSuccess": "Pirate flag generated successfully!",
-  "@flagGeneratedSuccess": {
-    "description": "Success message for generated flag",
-    "type": "text",
-    "placeholders": {}
-  },
-  "promptShip": "Enter a prompt to generate the ship",
-  "@promptShip": {
-    "description": "Instruction to generate ship",
-    "type": "text",
-    "placeholders": {}
-  },
-  "shipGeneratedSuccess": "Ship generated successfully!",
-  "@shipGeneratedSuccess": {
-    "description": "Success message for generated ship",
-    "type": "text",
-    "placeholders": {}
-  },
   "createCrewTitle": "Create Crew",
   "@createCrewTitle": {
     "description": "Title for create crew screen",
@@ -4022,22 +3976,6 @@
   "noIncomesRegistered": "No incomes registered",
   "errorPrefix": "Error: {error}",
   "@errorPrefix": {
-    "placeholders": {
-      "error": {
-        "type": "String"
-      }
-    }
-  },
-  "errorGeneratingFlag": "Error generating flag: {error}",
-  "@errorGeneratingFlag": {
-    "placeholders": {
-      "error": {
-        "type": "String"
-      }
-    }
-  },
-  "errorGeneratingShip": "Error generating ship: {error}",
-  "@errorGeneratingShip": {
     "placeholders": {
       "error": {
         "type": "String"
