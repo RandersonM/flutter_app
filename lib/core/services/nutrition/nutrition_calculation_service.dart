@@ -82,49 +82,4 @@ class NutritionCalculationService implements INutritionCalculationService {
     if (ratio < 0.6) return ('attention');
     return ('highRisk');
   }
-
-  @override
-  List<String> getActivityLevels() {
-    return _activityFactors.keys.toList();
-  }
-
-  @override
-  List<String> getGoals() {
-    return _goalFactors.keys.toList();
-  }
-
-  @override
-  String getActivityLevelDisplayName(
-    String key,
-    Function(String) getLocalizedString,
-  ) {
-    switch (key) {
-      case 'sedentary':
-        return getLocalizedString('sedentary');
-      case 'light':
-        return getLocalizedString('light');
-      case 'moderate':
-        return getLocalizedString('moderate');
-      case 'active':
-        return getLocalizedString('active');
-      case 'very_active':
-        return getLocalizedString('veryActive');
-      default:
-        return key;
-    }
-  }
-
-  @override
-  String getGoalDisplayName(String key, Function(String) getLocalizedString) {
-    switch (key) {
-      case 'weight_loss':
-        return getLocalizedString('weightLoss');
-      case 'maintenance':
-        return getLocalizedString('maintenance');
-      case 'muscle_gain':
-        return getLocalizedString('muscleGain');
-      default:
-        return key;
-    }
-  }
 }

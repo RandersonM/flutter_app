@@ -1,6 +1,5 @@
 import 'dart:async';
 
-import 'package:get_it/get_it.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:opfan/core/services/index.dart';
@@ -240,9 +239,7 @@ class _NutritionFormState extends State<NutritionForm> {
           CustomDropdown<String>(
             value: _selectedActivityLevel,
             label: AppLocalizations.of(context)!.selectActivityLevel,
-            items: GetIt.I
-                .get<INutritionCalculationService>()
-                .getActivityLevels(),
+            items: NutritionOptions.activityLevels,
             onChanged: (value) {
               setState(() {
                 _selectedActivityLevel = value;
@@ -256,24 +253,8 @@ class _NutritionFormState extends State<NutritionForm> {
               }
               return null;
             },
-            itemToString: (level) => GetIt.I
-                .get<INutritionCalculationService>()
-                .getActivityLevelDisplayName(level, (key) {
-                  switch (key) {
-                    case 'sedentary':
-                      return AppLocalizations.of(context)!.sedentary;
-                    case 'light':
-                      return AppLocalizations.of(context)!.light;
-                    case 'moderate':
-                      return AppLocalizations.of(context)!.moderate;
-                    case 'active':
-                      return AppLocalizations.of(context)!.active;
-                    case 'veryActive':
-                      return AppLocalizations.of(context)!.veryActive;
-                    default:
-                      return key;
-                  }
-                }),
+            itemToString: (level) =>
+                _activityLevelLabel(AppLocalizations.of(context)!, level),
           ),
           const SizedBox(height: 24),
           Text(
@@ -286,7 +267,7 @@ class _NutritionFormState extends State<NutritionForm> {
           CustomDropdown<String>(
             value: _selectedGoal,
             label: AppLocalizations.of(context)!.selectGoal,
-            items: GetIt.I.get<INutritionCalculationService>().getGoals(),
+            items: NutritionOptions.goals,
             onChanged: (value) {
               setState(() {
                 _selectedGoal = value;
@@ -298,20 +279,8 @@ class _NutritionFormState extends State<NutritionForm> {
               }
               return null;
             },
-            itemToString: (goal) => GetIt.I
-                .get<INutritionCalculationService>()
-                .getGoalDisplayName(goal, (key) {
-                  switch (key) {
-                    case 'weightLoss':
-                      return AppLocalizations.of(context)!.weightLoss;
-                    case 'maintenance':
-                      return AppLocalizations.of(context)!.maintenance;
-                    case 'muscleGain':
-                      return AppLocalizations.of(context)!.muscleGain;
-                    default:
-                      return key;
-                  }
-                }),
+            itemToString: (goal) =>
+                _goalLabel(AppLocalizations.of(context)!, goal),
           ),
           const SizedBox(height: 32),
           AppButton(
@@ -323,4 +292,21 @@ class _NutritionFormState extends State<NutritionForm> {
       ),
     );
   }
+
+  String _activityLevelLabel(AppLocalizations l10n, String level) =>
+      switch (level) {
+        'sedentary' => l10n.sedentary,
+        'light' => l10n.light,
+        'moderate' => l10n.moderate,
+        'active' => l10n.active,
+        'very_active' => l10n.veryActive,
+        _ => level,
+      };
+
+  String _goalLabel(AppLocalizations l10n, String goal) => switch (goal) {
+    'weight_loss' => l10n.weightLoss,
+    'maintenance' => l10n.maintenance,
+    'muscle_gain' => l10n.muscleGain,
+    _ => goal,
+  };
 }
