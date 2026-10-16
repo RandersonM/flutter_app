@@ -1,6 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:get_it/get_it.dart';
 import 'package:opfan/core/services/index.dart';
@@ -44,6 +46,26 @@ void registerCoreModule(GetIt getIt) {
     () => FirebaseMessaging.instance,
   );
   getIt.registerLazySingleton<GoogleSignIn>(() => GoogleSignIn());
+  getIt.registerLazySingleton<FlutterSecureStorage>(
+    () => const FlutterSecureStorage(
+      // Readable after the first unlock so background work can open the
+      // boxes; not `this_device`, so an encrypted backup restores the key too.
+      iOptions: IOSOptions(accessibility: KeychainAccessibility.first_unlock),
+    ),
+  );
+
+  // ── Local storage (per user, encrypted) ────────────────────────────────────
+  getIt.registerLazySingleton<IEncryptionKeyStore>(
+    () =>
+        SecureEncryptionKeyStore(secureStorage: getIt<FlutterSecureStorage>()),
+  );
+  getIt.registerLazySingleton<IUserStorageService>(
+    () => UserStorageService(
+      auth: getIt<FirebaseAuth>(),
+      keyStore: getIt<IEncryptionKeyStore>(),
+      documentsDirectory: getApplicationDocumentsDirectory,
+    ),
+  );
 
   // ── Connectivity (must be first — other services may depend on it) ──────────
   getIt.registerSingleton<IConnectivityService>(ConnectivityService());
@@ -105,6 +127,7 @@ void registerCoreModule(GetIt getIt) {
       googleSignIn: getIt<GoogleSignIn>(),
       userProfileRepository: getIt<IUserProfileRepository>(),
       notificationService: getIt<INotificationService>(),
+      storage: getIt<IUserStorageService>(),
     ),
   );
   getIt.registerLazySingleton<IFirestoreService>(
@@ -124,13 +147,13 @@ void registerCoreModule(GetIt getIt) {
     ),
   );
   getIt.registerLazySingleton<IVegapunkChatHistoryRepository>(
-    () => VegapunkChatHistoryRepository(),
+    () => VegapunkChatHistoryRepository(storage: getIt<IUserStorageService>()),
   );
   getIt.registerLazySingleton<IPlannerRepository>(
     () => PlannerRepository(firestoreService: getIt<IFirestoreService>()),
   );
   getIt.registerLazySingleton<INamiFinancesService>(
-    () => NamiFinancesService(),
+    () => NamiFinancesService(storage: getIt<IUserStorageService>()),
   );
   getIt.registerLazySingleton<INutritionCalculationService>(
     () => NutritionCalculationService(),
@@ -142,7 +165,9 @@ void registerCoreModule(GetIt getIt) {
     ),
   );
 
-  getIt.registerLazySingleton<IRAGService>(() => RAGService());
+  getIt.registerLazySingleton<IRAGService>(
+    () => RAGService(storage: getIt<IUserStorageService>()),
+  );
   getIt.registerLazySingleton<IWebSearchService>(
     () => WebSearchService(env: getIt<IEnvironmentService>()),
   );

@@ -10,18 +10,19 @@ import 'package:google_sign_in/google_sign_in.dart';
 import 'package:hive/hive.dart';
 import 'package:opfan/core/auth/models/user_model.dart';
 import 'package:opfan/core/services/index.dart';
+import 'package:opfan/core/storage/user_data_names.dart';
 import 'package:opfan/core/user_profile/repository/i_user_profile_repository.dart';
 
 enum AuthStatus { unknown, authenticated, unauthenticated }
 
 class AuthService implements IAuthService {
-  static const String _boxName = 'auth_cache';
   static const String _userKey = 'current_user';
 
   final FirebaseAuth _firebaseAuth;
   final GoogleSignIn _googleSignIn;
   final IUserProfileRepository _userProfileRepository;
   final INotificationService _notificationService;
+  final IUserStorageService _storage;
   late Box<UserModel> _box;
   final _profileChanges = StreamController<UserModel>.broadcast();
 
@@ -30,12 +31,15 @@ class AuthService implements IAuthService {
     required this._googleSignIn,
     required this._userProfileRepository,
     required this._notificationService,
+    required this._storage,
   });
 
   @override
   Future<void> init() async {
     try {
-      _box = await Hive.openBox<UserModel>(_boxName);
+      _box = await _storage.openDeviceBox<UserModel>(
+        UserDataNames.authCacheBox,
+      );
 
       final cachedUser = currentUser;
       if (cachedUser != null) {

@@ -8,5 +8,6 @@ export 'http/index.dart';
 export 'notification/index.dart';
 export 'nutrition/index.dart';
 export 'one_piece/index.dart';
+export 'storage/index.dart';
 export 'workout/index.dart';
 export 'youtube/index.dart';

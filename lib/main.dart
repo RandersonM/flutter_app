@@ -47,6 +47,12 @@ void main() async {
     ]);
     debugPrint('MAIN: Firebase, Env, Theme initialized.');
 
+    // Needs Firebase (current user) and must run before any feature opens
+    // its local data. A failure here is retried on the first box opened.
+    await getIt<IUserStorageService>().initialize().catchError((Object e) {
+      debugPrint('MAIN: user storage initialization failed: $e');
+    });
+
     getIt<INotificationService>().initialize().catchError((e) {
       debugPrint('MAIN: Erro ao inicializar NotificationService: $e');
     });
