@@ -4,6 +4,7 @@
 import 'dart:math';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:opfan/core/errors/app_exceptions.dart';
 import 'package:opfan/features/custom_character/data/models/custom_character_model.dart';
 import 'package:opfan/features/home/data/repository/i_featured_character_repository.dart';
 import 'package:opfan/features/custom_character/data/repository/i_custom_character_repository.dart';
@@ -39,14 +40,23 @@ class DuelsBloc extends Bloc<DuelsEvent, DuelsState> {
       final onePieceCharacters = await _featuredCharacterRepository
           .getAllOnePieceCharacters(limit: 100);
 
-      final customCharacters = await _customCharacterRepository
-          .getAllCustomCharacters();
+      final customCharacters = await _loadOwnCustomCharacters();
       final allCharacters = [...customCharacters, ...onePieceCharacters];
 
       emit(DuelsReady(availableCharacters: allCharacters));
     } catch (e) {
       debugPrint('DuelsBloc: load characters failed: $e');
       emit(const DuelsError(DuelsFailure.loadFailed));
+    }
+  }
+
+  /// Only the signed-in user's characters: the Firestore rules deny a query
+  /// over everyone's. Guests (the route is public) duel canon characters only.
+  Future<List<CustomCharacterModel>> _loadOwnCustomCharacters() async {
+    try {
+      return await _customCharacterRepository.getUserCustomCharacters();
+    } on NotSignedInException {
+      return const [];
     }
   }
 
