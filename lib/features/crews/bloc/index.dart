@@ -1,3 +1,6 @@
+export 'crew_details_bloc.dart';
+export 'crew_details_event.dart';
+export 'crew_details_state.dart';
 export 'create_crew_bloc.dart';
 export 'create_crew_event.dart';
 export 'create_crew_state.dart';
