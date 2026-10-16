@@ -34,7 +34,7 @@ class CalculatorContent extends StatelessWidget {
                           buttontapped: cubit.clear,
                           buttonText: button,
                           color: Theme.of(context).colorScheme.primary,
-                          textColor: cubit.getButtonTextColor(button),
+                          textColor: _textColor(cubit, button),
                         );
 
                       // x^2 Button
@@ -42,7 +42,7 @@ class CalculatorContent extends StatelessWidget {
                         return CalculatorButton(
                           buttonText: button,
                           color: Theme.of(context).colorScheme.primary,
-                          textColor: cubit.getButtonTextColor(button),
+                          textColor: _textColor(cubit, button),
                           buttontapped: () => cubit.appendInput('^2'),
                         );
 
@@ -52,7 +52,7 @@ class CalculatorContent extends StatelessWidget {
                           buttontapped: () => cubit.appendInput(button),
                           buttonText: button,
                           color: Theme.of(context).colorScheme.primary,
-                          textColor: cubit.getButtonTextColor(button),
+                          textColor: _textColor(cubit, button),
                         );
 
                       // Delete Button
@@ -61,7 +61,7 @@ class CalculatorContent extends StatelessWidget {
                           buttontapped: cubit.deleteLastChar,
                           buttonText: button,
                           color: Theme.of(context).colorScheme.primary,
-                          textColor: cubit.getButtonTextColor(button),
+                          textColor: _textColor(cubit, button),
                         );
 
                       // Result Button
@@ -70,7 +70,7 @@ class CalculatorContent extends StatelessWidget {
                           buttontapped: cubit.evaluate,
                           buttonText: button,
                           color: Theme.of(context).colorScheme.onSecondary,
-                          textColor: cubit.getButtonTextColor(button),
+                          textColor: _textColor(cubit, button),
                         );
 
                       // Other Buttons
@@ -81,7 +81,7 @@ class CalculatorContent extends StatelessWidget {
                           color: cubit.isOperator(button)
                               ? Theme.of(context).colorScheme.onSecondary
                               : Colors.white,
-                          textColor: cubit.getButtonTextColor(button),
+                          textColor: _textColor(cubit, button),
                         );
                     }
                   },
@@ -91,4 +91,11 @@ class CalculatorContent extends StatelessWidget {
           );
         },
       );
+
+  // Keys have fixed fills (white / onSecondary), so labels need fixed contrast.
+  Color _textColor(CalculatorCubit cubit, String button) {
+    const operatorLabel = Colors.white; // harness:allow fixed contrast
+    const digitLabel = Colors.black; // harness:allow fixed contrast
+    return cubit.isOperator(button) ? operatorLabel : digitLabel;
+  }
 }

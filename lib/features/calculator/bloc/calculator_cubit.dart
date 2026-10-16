@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:math_expressions/math_expressions.dart';
 import 'package:opfan/features/calculator/bloc/calculator_state.dart';
@@ -33,7 +32,4 @@ class CalculatorCubit extends Cubit<CalculatorState> {
   }
 
   bool isOperator(String button) => ['/', 'x', '-', '+', '='].contains(button);
-
-  Color getButtonTextColor(String button) =>
-      isOperator(button) ? Colors.white : Colors.black;
 }

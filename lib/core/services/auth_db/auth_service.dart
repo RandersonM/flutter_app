@@ -1,6 +1,7 @@
 // Developed by Randerson Mayllon
 // Copyright © 2025.
 
+import 'dart:async';
 import 'dart:io';
 
 import 'package:firebase_auth/firebase_auth.dart';
@@ -22,6 +23,7 @@ class AuthService implements IAuthService {
   final IUserProfileRepository _userProfileRepository;
   final INotificationService _notificationService;
   late Box<UserModel> _box;
+  final _profileChanges = StreamController<UserModel>.broadcast();
 
   AuthService({
     FirebaseAuth? firebaseAuth,
@@ -393,7 +395,11 @@ class AuthService implements IAuthService {
   Future<void> updateBodyProfile(UserModel updatedProfile) async {
     await _userProfileRepository.saveProfile(updatedProfile);
     await _saveUser(updatedProfile);
+    _profileChanges.add(updatedProfile);
   }
+
+  @override
+  Stream<UserModel> get profileChanges => _profileChanges.stream;
 
   Future<void> _saveUser(UserModel user) async {
     await _box.put(_userKey, user);

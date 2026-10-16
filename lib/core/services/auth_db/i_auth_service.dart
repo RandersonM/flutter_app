@@ -16,6 +16,10 @@ abstract class IAuthService {
   Future<UserModel?> updateProfile({String? displayName, String? photoUrl});
   Future<bool> hasCompleteProfile(String uid);
   Future<void> updateBodyProfile(UserModel updatedProfile);
+
+  /// Emits each profile saved through [updateBodyProfile], so the global auth
+  /// state can follow updates made by any feature.
+  Stream<UserModel> get profileChanges;
   Future<void> clearCache();
   Map<String, dynamic> getServiceStatus();
 }

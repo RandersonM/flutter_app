@@ -20,12 +20,13 @@ paths:
   (`I*Repository` / `I*Service`). Never `getIt`, never `FirebaseAuth.instance`,
   never `new Connectivity()` inline.
 - **Never depend on another BLoC/Cubit.** Need the current uid? Inject `IAuthService`.
-  Need connectivity? Inject the connectivity service, or let the screen react with
-  a `BlocListener` and dispatch an event. Existing `AuthBloc`/`ConnectivityCubit`
-  injections (Home, Sanji, Zoro) are debt.
+  Need connectivity? Inject `IConnectivityService`, or let the screen react with
+  a `BlocListener` and dispatch an event. Changing the user's profile? Call
+  `IAuthService.updateBodyProfile`; `AuthBloc` follows through `profileChanges`
+  (golden: Sanji / Zoro).
 - No `package:flutter/material.dart` / `widgets.dart` / `BuildContext`. Use
-  `dart:ui` (`Locale`) or `package:flutter/foundation.dart`. No colours or widgets
-  in state (`CalculatorCubit.getButtonTextColor` is debt).
+  `dart:ui` (`Locale`) or `package:flutter/foundation.dart`. No colours, widgets or
+  `ThemeMode` in state — map them in the widget.
 
 ## State
 

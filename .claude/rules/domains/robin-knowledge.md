@@ -27,7 +27,9 @@ tags, notes}`
 ## Debt
 
 - `RobinKnowledgeBloc` is a lazy **singleton** (state survives leaving the screen),
-  unlike every other feature BLoC.
+  unlike every other feature BLoC. Intended: the timeline, its widgets and the goal
+  details route share one goals list. The debt is that those widgets reach it via
+  `getIt` instead of a provider.
 - `PlannerRepositoryInterface` lacks the `I` prefix; the bloc uses `part`/`part of`.
 - `updateGoal` never writes `completed`.
 - The Firestore `planner` rule is open to any signed-in user (`firebase.md`).

@@ -32,7 +32,10 @@ import 'package:opfan/core/connectivity/connectivity_cubit.dart';
 
 void registerCoreModule(GetIt getIt) {
   // ── Connectivity (must be first — other services may depend on it) ──────────
-  getIt.registerSingleton<ConnectivityCubit>(ConnectivityCubit());
+  getIt.registerSingleton<IConnectivityService>(ConnectivityService());
+  getIt.registerSingleton<ConnectivityCubit>(
+    ConnectivityCubit(connectivityService: getIt<IConnectivityService>()),
+  );
 
   getIt.registerSingleton<IStorageService>(HiveStorageService());
   getIt.registerSingleton<IEnvironmentService>(EnvironmentService());
@@ -115,7 +118,7 @@ void registerCoreModule(GetIt getIt) {
     registry.register(
       SearchInternetHandler(
         webSearch: getIt<IWebSearchService>(),
-        connectivityCubit: getIt<ConnectivityCubit>(),
+        connectivityService: getIt<IConnectivityService>(),
       ),
     );
     registry.register(
