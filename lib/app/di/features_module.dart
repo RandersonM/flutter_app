@@ -1,13 +1,13 @@
 import 'package:get_it/get_it.dart';
 import 'package:opfan/features/calculator/bloc/calculator_cubit.dart';
-import 'package:opfan/features/home/data/repository/featured_character_repository_interface.dart';
+import 'package:opfan/features/home/data/repository/i_featured_character_repository.dart';
 import 'package:opfan/features/crews/data/models/crew_model.dart';
-import 'package:opfan/features/crews/data/repository/crew_repository_interface.dart';
-import 'package:opfan/features/custom_character/data/repository/custom_character_repository_interface.dart';
-import 'package:opfan/features/robin_knowledge/data/repository/planner_repository_interface.dart';
+import 'package:opfan/features/crews/data/repository/i_crew_repository.dart';
+import 'package:opfan/features/custom_character/data/repository/i_custom_character_repository.dart';
+import 'package:opfan/features/robin_knowledge/data/repository/i_planner_repository.dart';
 import 'package:opfan/core/services/index.dart';
 import 'package:opfan/core/services/rag/i_rag_service.dart';
-import 'package:opfan/features/sanji_cooking/data/repository/cooking_repository_interface.dart';
+import 'package:opfan/features/sanji_cooking/data/repository/i_cooking_repository.dart';
 import 'package:opfan/features/vegapunk_chat/data/repository/i_vegapunk_chat_history_repository.dart';
 import 'package:opfan/features/vegapunk_chat/data/repository/i_vegapunk_chat_repository.dart';
 import 'package:opfan/features/one_piece/bloc/characters_cubit.dart';
@@ -172,9 +172,7 @@ void registerFeaturesModule(GetIt getIt) {
   // A singleton on purpose: the timeline, its widgets and the goal details
   // route all read and mutate the same goals list.
   getIt.registerLazySingleton<RobinKnowledgeBloc>(
-    () => RobinKnowledgeBloc(
-      plannerRepository: getIt<PlannerRepositoryInterface>(),
-    ),
+    () => RobinKnowledgeBloc(plannerRepository: getIt<IPlannerRepository>()),
   );
 
   getIt.registerFactory<VegapunkChatCubit>(

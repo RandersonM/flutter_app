@@ -1,8 +1,8 @@
 import 'dart:convert';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/foundation.dart';
-import 'package:opfan/features/home/data/repository/featured_character_repository_interface.dart';
-import 'package:opfan/features/custom_character/data/repository/custom_character_repository_interface.dart';
+import 'package:opfan/features/home/data/repository/i_featured_character_repository.dart';
+import 'package:opfan/features/custom_character/data/repository/i_custom_character_repository.dart';
 
 import '../models/tool_call.dart';
 import '../models/tool_result.dart';

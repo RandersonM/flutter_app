@@ -10,7 +10,7 @@ import 'package:google_sign_in/google_sign_in.dart';
 import 'package:hive/hive.dart';
 import 'package:opfan/core/auth/models/user_model.dart';
 import 'package:opfan/core/services/index.dart';
-import 'package:opfan/core/user_profile/repository/user_profile_repository_interface.dart';
+import 'package:opfan/core/user_profile/repository/i_user_profile_repository.dart';
 
 enum AuthStatus { unknown, authenticated, unauthenticated }
 

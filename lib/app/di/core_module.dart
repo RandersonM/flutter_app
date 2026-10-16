@@ -5,7 +5,7 @@ import 'package:google_sign_in/google_sign_in.dart';
 import 'package:get_it/get_it.dart';
 import 'package:opfan/core/services/index.dart';
 import 'package:opfan/core/user_profile/repository/user_profile_repository.dart';
-import 'package:opfan/core/user_profile/repository/user_profile_repository_interface.dart';
+import 'package:opfan/core/user_profile/repository/i_user_profile_repository.dart';
 import 'package:opfan/core/services/rag/i_rag_service.dart';
 import 'package:opfan/core/services/rag/rag_service.dart';
 import 'package:opfan/core/services/web_search/i_web_search_service.dart';
@@ -20,17 +20,17 @@ import 'package:opfan/features/vegapunk_chat/tools/handlers/get_workout_history_
 import 'package:opfan/features/vegapunk_chat/tools/handlers/save_workout_handler.dart';
 import 'package:opfan/features/vegapunk_chat/tools/handlers/get_character_info_handler.dart';
 import 'package:opfan/features/home/data/repository/featured_character_repository.dart';
-import 'package:opfan/features/home/data/repository/featured_character_repository_interface.dart';
+import 'package:opfan/features/home/data/repository/i_featured_character_repository.dart';
 import 'package:opfan/features/custom_character/data/repository/custom_character_repository.dart';
-import 'package:opfan/features/custom_character/data/repository/custom_character_repository_interface.dart';
+import 'package:opfan/features/custom_character/data/repository/i_custom_character_repository.dart';
 import 'package:opfan/features/crews/data/repository/crew_repository.dart';
-import 'package:opfan/features/crews/data/repository/crew_repository_interface.dart';
+import 'package:opfan/features/crews/data/repository/i_crew_repository.dart';
 import 'package:opfan/features/vegapunk_chat/data/repository/i_vegapunk_chat_history_repository.dart';
 import 'package:opfan/features/vegapunk_chat/data/repository/vegapunk_chat_history_repository.dart';
 import 'package:opfan/features/sanji_cooking/data/repository/cooking_repository.dart';
-import 'package:opfan/features/sanji_cooking/data/repository/cooking_repository_interface.dart';
+import 'package:opfan/features/sanji_cooking/data/repository/i_cooking_repository.dart';
 import 'package:opfan/features/robin_knowledge/data/repository/planner_repository.dart';
-import 'package:opfan/features/robin_knowledge/data/repository/planner_repository_interface.dart';
+import 'package:opfan/features/robin_knowledge/data/repository/i_planner_repository.dart';
 import 'package:opfan/core/auth/blocs/index.dart';
 import 'package:opfan/core/connectivity/connectivity_cubit.dart';
 
@@ -126,7 +126,7 @@ void registerCoreModule(GetIt getIt) {
   getIt.registerLazySingleton<IVegapunkChatHistoryRepository>(
     () => VegapunkChatHistoryRepository(),
   );
-  getIt.registerLazySingleton<PlannerRepositoryInterface>(
+  getIt.registerLazySingleton<IPlannerRepository>(
     () => PlannerRepository(firestoreService: getIt<IFirestoreService>()),
   );
   getIt.registerLazySingleton<INamiFinancesService>(
@@ -232,8 +232,7 @@ extension CoreModuleExtensions on GetIt {
   ICrewRepository get crewRepository => get<ICrewRepository>();
   IVegapunkChatHistoryRepository get vegapunkChatHistoryRepository =>
       get<IVegapunkChatHistoryRepository>();
-  PlannerRepositoryInterface get plannerRepository =>
-      get<PlannerRepositoryInterface>();
+  IPlannerRepository get plannerRepository => get<IPlannerRepository>();
   INamiFinancesService get namiFinancesService => get<INamiFinancesService>();
   IGemmaService get gemmaService => get<IGemmaService>();
   IRAGService get ragService => get<IRAGService>();

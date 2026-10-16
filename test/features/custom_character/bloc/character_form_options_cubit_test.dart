@@ -3,7 +3,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:opfan/core/services/one_piece/i_devil_fruit_service.dart';
 import 'package:opfan/features/crews/data/models/crew_model.dart';
-import 'package:opfan/features/crews/data/repository/crew_repository_interface.dart';
+import 'package:opfan/features/crews/data/repository/i_crew_repository.dart';
 import 'package:opfan/features/custom_character/bloc/index.dart';
 import 'package:opfan/features/devil_fruit/data/models/devil_fruit.dart';
 

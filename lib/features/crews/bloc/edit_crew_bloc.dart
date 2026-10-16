@@ -1,6 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:opfan/features/crews/data/repository/crew_repository_interface.dart';
+import 'package:opfan/features/crews/data/repository/i_crew_repository.dart';
 import 'package:opfan/features/crews/bloc/crews_failure.dart';
 import 'package:opfan/features/crews/bloc/edit_crew_event.dart';
 import 'package:opfan/features/crews/bloc/edit_crew_state.dart';

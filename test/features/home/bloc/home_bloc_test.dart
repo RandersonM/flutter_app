@@ -7,7 +7,7 @@ import 'package:opfan/features/custom_character/data/models/custom_character_mod
 import 'package:opfan/features/home/bloc/home_bloc.dart';
 import 'package:opfan/features/home/bloc/home_event.dart';
 import 'package:opfan/features/home/bloc/home_state.dart';
-import 'package:opfan/features/home/data/repository/featured_character_repository_interface.dart';
+import 'package:opfan/features/home/data/repository/i_featured_character_repository.dart';
 
 class _MockYouTubeService extends Mock implements IYouTubeService {}
 

@@ -1,6 +1,6 @@
 import 'package:opfan/features/robin_knowledge/data/models/goal_model.dart';
 
-abstract class PlannerRepositoryInterface {
+abstract class IPlannerRepository {
   Future<List<GoalModel>> getGoals();
   Future<GoalModel?> getGoalById(String id);
   Future<String> createGoal(GoalModel goal);

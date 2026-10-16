@@ -4,10 +4,9 @@ import 'package:mocktail/mocktail.dart';
 import 'package:opfan/core/errors/app_exceptions.dart';
 import 'package:opfan/features/robin_knowledge/bloc/robin_knowledge_bloc.dart';
 import 'package:opfan/features/robin_knowledge/data/models/goal_model.dart';
-import 'package:opfan/features/robin_knowledge/data/repository/planner_repository_interface.dart';
+import 'package:opfan/features/robin_knowledge/data/repository/i_planner_repository.dart';
 
-class _MockPlannerRepository extends Mock
-    implements PlannerRepositoryInterface {}
+class _MockPlannerRepository extends Mock implements IPlannerRepository {}
 
 void main() {
   late _MockPlannerRepository repository;

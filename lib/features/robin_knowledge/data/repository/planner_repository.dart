@@ -2,10 +2,10 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/foundation.dart';
 import 'package:opfan/core/errors/app_exceptions.dart';
 import 'package:opfan/features/robin_knowledge/data/models/goal_model.dart';
-import 'package:opfan/features/robin_knowledge/data/repository/planner_repository_interface.dart';
+import 'package:opfan/features/robin_knowledge/data/repository/i_planner_repository.dart';
 import 'package:opfan/core/services/index.dart';
 
-class PlannerRepository implements PlannerRepositoryInterface {
+class PlannerRepository implements IPlannerRepository {
   final IFirestoreService _firestoreService;
   static const String _collection = 'planner';
 
