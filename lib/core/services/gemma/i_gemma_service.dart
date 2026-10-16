@@ -30,6 +30,13 @@ abstract class IGemmaService {
     List<String>? ragContext,
   });
 
+  /// Feed a tool result back into the Vegapunk chat (second pass) after a
+  /// [FunctionCallResponse] from [sendMessage], and stream the final answer.
+  Stream<ModelResponse> sendToolResult({
+    required String toolName,
+    required Map<String, dynamic> result,
+  });
+
   /// Set the native tools for the Gemma 4 SDK function calling.
   ///
   /// Must be called before [loadModel] or [initialize] to take effect.

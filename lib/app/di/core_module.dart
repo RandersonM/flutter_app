@@ -1,3 +1,7 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:get_it/get_it.dart';
 import 'package:opfan/core/services/index.dart';
 import 'package:opfan/core/user_profile/repository/user_profile_repository.dart';
@@ -31,6 +35,16 @@ import 'package:opfan/core/auth/blocs/index.dart';
 import 'package:opfan/core/connectivity/connectivity_cubit.dart';
 
 void registerCoreModule(GetIt getIt) {
+  // ── Platform SDK handles (lazy: resolved after Firebase.initializeApp) ──────
+  getIt.registerLazySingleton<FirebaseAuth>(() => FirebaseAuth.instance);
+  getIt.registerLazySingleton<FirebaseFirestore>(
+    () => FirebaseFirestore.instance,
+  );
+  getIt.registerLazySingleton<FirebaseMessaging>(
+    () => FirebaseMessaging.instance,
+  );
+  getIt.registerLazySingleton<GoogleSignIn>(() => GoogleSignIn());
+
   // ── Connectivity (must be first — other services may depend on it) ──────────
   getIt.registerSingleton<IConnectivityService>(ConnectivityService());
   getIt.registerSingleton<ConnectivityCubit>(
@@ -50,11 +64,18 @@ void registerCoreModule(GetIt getIt) {
     () => NotificationService(
       navigationService: getIt<INavigationService>(),
       firestoreService: getIt<IFirestoreService>(),
+      firebaseMessaging: getIt<FirebaseMessaging>(),
     ),
   );
-  getIt.registerLazySingleton<IDevilFruitService>(() => DevilFruitService());
-  getIt.registerLazySingleton<IYouTubeService>(() => YouTubeService());
-  getIt.registerLazySingleton<IGeminiService>(() => GeminiService());
+  getIt.registerLazySingleton<IDevilFruitService>(
+    () => DevilFruitService(env: getIt<IEnvironmentService>()),
+  );
+  getIt.registerLazySingleton<IYouTubeService>(
+    () => YouTubeService(env: getIt<IEnvironmentService>()),
+  );
+  getIt.registerLazySingleton<IGeminiService>(
+    () => GeminiService(env: getIt<IEnvironmentService>()),
+  );
   getIt.registerLazySingleton<ICharacterImageService>(
     () => CharacterImageService(geminiService: getIt<IGeminiService>()),
   );
@@ -62,7 +83,12 @@ void registerCoreModule(GetIt getIt) {
     () => CrewImageService(geminiService: getIt<IGeminiService>()),
   );
 
-  getIt.registerLazySingleton<ICookingRepository>(() => CookingRepository());
+  getIt.registerLazySingleton<ICookingRepository>(
+    () => CookingRepository(
+      geminiService: getIt<IGeminiService>(),
+      localeService: getIt<ILocaleService>(),
+    ),
+  );
   getIt.registerLazySingleton<IFeaturedCharacterRepository>(
     () => FeaturedCharacterRepository(
       firestoreService: getIt<IFirestoreService>(),
@@ -70,16 +96,23 @@ void registerCoreModule(GetIt getIt) {
   );
 
   getIt.registerLazySingleton<IUserProfileRepository>(
-    () => UserProfileRepository(),
+    () => UserProfileRepository(firestore: getIt<FirebaseFirestore>()),
   );
 
   getIt.registerLazySingleton<IAuthService>(
     () => AuthService(
+      firebaseAuth: getIt<FirebaseAuth>(),
+      googleSignIn: getIt<GoogleSignIn>(),
       userProfileRepository: getIt<IUserProfileRepository>(),
       notificationService: getIt<INotificationService>(),
     ),
   );
-  getIt.registerLazySingleton<IFirestoreService>(() => FirestoreService());
+  getIt.registerLazySingleton<IFirestoreService>(
+    () => FirestoreService(
+      firestore: getIt<FirebaseFirestore>(),
+      auth: getIt<FirebaseAuth>(),
+    ),
+  );
 
   getIt.registerLazySingleton<ICrewRepository>(
     () => CrewRepository(firestoreService: getIt<IFirestoreService>()),
@@ -103,11 +136,16 @@ void registerCoreModule(GetIt getIt) {
     () => NutritionCalculationService(),
   );
   getIt.registerLazySingleton<IWorkoutAssessmentService>(
-    () => WorkoutAssessmentService(),
+    () => WorkoutAssessmentService(
+      firestore: getIt<FirebaseFirestore>(),
+      auth: getIt<FirebaseAuth>(),
+    ),
   );
 
   getIt.registerLazySingleton<IRAGService>(() => RAGService());
-  getIt.registerLazySingleton<IWebSearchService>(() => WebSearchService());
+  getIt.registerLazySingleton<IWebSearchService>(
+    () => WebSearchService(env: getIt<IEnvironmentService>()),
+  );
 
   // ── Function Calling (Gemma tool registry) ─────────────────────────────────
   // FunctionRegistry and FunctionExecutor are lazy singletons. The factory
@@ -127,6 +165,7 @@ void registerCoreModule(GetIt getIt) {
     registry.register(
       GetWorkoutHistoryHandler(
         workoutService: getIt<IWorkoutAssessmentService>(),
+        localeService: getIt<ILocaleService>(),
       ),
     );
     registry.register(
@@ -143,7 +182,10 @@ void registerCoreModule(GetIt getIt) {
   getIt.registerLazySingleton<FunctionExecutor>(() => FunctionExecutor());
 
   getIt.registerLazySingleton<IGemmaService>(() {
-    final gemma = GemmaService();
+    final gemma = GemmaService(
+      env: getIt<IEnvironmentService>(),
+      localeService: getIt<ILocaleService>(),
+    );
     // Register native tools from FunctionRegistry so the Gemma 4 SDK
     // handles function calling at the SDK level (structured JSON Schema).
     final registry = getIt<FunctionRegistry>();

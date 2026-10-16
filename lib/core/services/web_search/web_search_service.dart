@@ -1,4 +1,3 @@
-import 'package:get_it/get_it.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:opfan/core/services/index.dart';
@@ -7,7 +6,7 @@ import 'i_web_search_service.dart';
 import 'web_search_result.dart';
 
 class WebSearchService implements IWebSearchService {
-  WebSearchService() : _env = GetIt.I.get<IEnvironmentService>() {
+  WebSearchService({required this._env}) {
     _dio = Dio(
       BaseOptions(
         connectTimeout: const Duration(seconds: 5),

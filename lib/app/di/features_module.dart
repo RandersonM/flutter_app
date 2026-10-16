@@ -145,6 +145,7 @@ void registerFeaturesModule(GetIt getIt) {
       getIt<IGemmaService>(),
       getIt<INamiFinancesService>(),
       getIt<FunctionRegistry>(instanceName: kNamiToolsRegistry),
+      localeService: getIt<ILocaleService>(),
     ),
   );
 
@@ -176,6 +177,7 @@ void registerFeaturesModule(GetIt getIt) {
       repository: getIt<IVegapunkChatRepository>(),
       ragService: getIt<IRAGService>(),
       historyRepository: getIt<IVegapunkChatHistoryRepository>(),
+      localeService: getIt<ILocaleService>(),
     ),
   );
 }

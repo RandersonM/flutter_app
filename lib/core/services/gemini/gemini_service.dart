@@ -1,4 +1,3 @@
-import 'package:get_it/get_it.dart';
 import 'dart:convert';
 import 'dart:math';
 import 'package:dio/dio.dart';
@@ -7,7 +6,7 @@ import 'package:google_generative_ai/google_generative_ai.dart';
 import 'package:opfan/core/services/index.dart';
 
 class GeminiService implements IGeminiService {
-  final IEnvironmentService _env = GetIt.I.get<IEnvironmentService>();
+  final IEnvironmentService _env;
 
   static const String _baseUrl =
       'https://generativelanguage.googleapis.com/v1beta';
@@ -24,7 +23,7 @@ class GeminiService implements IGeminiService {
 
   late final Dio _dio;
 
-  GeminiService() {
+  GeminiService({required this._env}) {
     _initializeDio();
   }
 

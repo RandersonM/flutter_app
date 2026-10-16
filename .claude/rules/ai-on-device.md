@@ -46,8 +46,6 @@ both predate parts of the current pipeline (sentinel names, entitlements, Qwen).
   Close your session in the BLoC's `close()`.
 - No generation lock: one generation at a time is the caller's job (the cubits
   track `isGenerating`). Cancelling the stream calls `stopGeneration`.
-- `sendToolResult` is not on the interface (the repository downcasts) — debt; add
-  it to `IGemmaService` rather than adding more downcasts.
 
 ## Tool calling
 
@@ -111,7 +109,8 @@ The small model often *describes* a tool call instead of emitting it. So:
 
 - `personas/` (Nami, Vegapunk, Vegapunk satellites, Sanji), `framing/`
   (`[INTERNAL REFERENCE]` lore vs `[AVAILABLE DATA]` facts), `image_generation/`.
-- Every prompt has `_en` and `_pt` variants; pick with `PromptLocale.isPortuguese()`.
+- Every prompt has `_en` and `_pt` variants; pick with
+  `PromptLocale.isPortuguese(localeService)` (inject `ILocaleService`).
   The Vegapunk system prompt's locale is fixed when the chat is created.
 - Keep prompts short and rule-based; temperature ~0.2 for tool emission.
 - Prompts are code: changing one changes behaviour — mention it in the PR.

@@ -85,8 +85,9 @@ class CrewRepository implements ICrewRepository {
 }
 ```
 
-Do not default to a global (`_auth = auth ?? FirebaseAuth.instance`) in new code;
-let DI pass it.
+Do not default to a global (`_auth = auth ?? FirebaseAuth.instance`); let DI pass
+it. SDK handles (`FirebaseAuth`, `FirebaseFirestore`, `FirebaseMessaging`,
+`GoogleSignIn`) are lazy singletons at the top of `core_module.dart`.
 
 ## Errors
 

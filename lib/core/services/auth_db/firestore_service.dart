@@ -5,11 +5,7 @@ import 'package:flutter/material.dart';
 import 'i_firestore_service.dart';
 
 class FirestoreService implements IFirestoreService {
-  /// Firebase handles default to the ambient instances so production wiring
-  /// stays a bare `FirestoreService()`, while tests can pass fakes.
-  FirestoreService({FirebaseFirestore? firestore, FirebaseAuth? auth})
-    : _firestore = firestore ?? FirebaseFirestore.instance,
-      _auth = auth ?? FirebaseAuth.instance;
+  FirestoreService({required this._firestore, required this._auth});
 
   final FirebaseFirestore _firestore;
   final FirebaseAuth _auth;

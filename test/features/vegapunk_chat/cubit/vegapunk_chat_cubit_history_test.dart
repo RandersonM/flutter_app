@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:flutter/material.dart' show Locale;
 import 'package:flutter_test/flutter_test.dart';
-import 'package:get_it/get_it.dart';
 import 'package:opfan/core/models/rag/rag_document.dart';
 import 'package:opfan/core/services/config/i_locale_service.dart';
 import 'package:opfan/core/services/gemma/gemma_service_status.dart';
@@ -88,6 +87,8 @@ class _FakeLocaleService implements ILocaleService {
   @override
   Locale? locale = const Locale('pt');
   @override
+  String get languageCode => locale!.languageCode;
+  @override
   Future<void> loadLocale() async {}
   @override
   Future<void> persistLocale(Locale locale) async {}
@@ -126,19 +127,6 @@ ChatMessage _message(String id, MessageRole role) => ChatMessage(
 );
 
 void main() {
-  // `sendMessage` builds its style instruction via `PromptLocale.isPortuguese()`,
-  // which reaches `GetIt.I<ILocaleService>()` directly rather than through
-  // the cubit's own constructor injection — a pre-existing coupling in
-  // `PromptLocale`, out of scope for this feature to fix. Registering a fake
-  // here is the minimal way to make `sendMessage` exercisable in isolation.
-  setUp(() {
-    GetIt.I.registerSingleton<ILocaleService>(_FakeLocaleService());
-  });
-
-  tearDown(() {
-    GetIt.I.reset();
-  });
-
   group('VegapunkChatCubit history', () {
     test(
       'initialize() populates VegapunkChatReady with persisted history',
@@ -152,6 +140,7 @@ void main() {
           repository: fakeRepo,
           ragService: _FakeRagService(),
           historyRepository: history,
+          localeService: _FakeLocaleService(),
         );
 
         await cubit.initialize();
@@ -178,6 +167,7 @@ void main() {
         repository: fakeRepo,
         ragService: _FakeRagService(),
         historyRepository: history,
+        localeService: _FakeLocaleService(),
       );
 
       await cubit.initialize();
@@ -206,6 +196,7 @@ void main() {
           repository: fakeRepo,
           ragService: _FakeRagService(),
           historyRepository: history,
+          localeService: _FakeLocaleService(),
         );
 
         await cubit.initialize();
