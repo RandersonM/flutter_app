@@ -165,6 +165,11 @@ relevant one up front when planning work that spans several areas.
 - **Git:** Conventional Commits in English, imperative, optional kebab scope
   (`feat(nami-finances): add budget tool`). Branches `feat/<kebab>`; PRs target
   `develop`. Commit or push only when the user asks.
+- **PR description:** follow `.github/pull_request_template.md` — Method, Why this
+  way, Impact, Changes, Evidence, Checklist. Fill every section; write "none" where
+  an impact row doesn't apply, and back Evidence with real command output,
+  screenshots or videos, never with claims. With `gh pr create`, write the filled
+  template to a file and pass `--body-file`.
 - **No AI attribution, ever.** Commits and PR descriptions carry no
   `Co-Authored-By: Claude ...` trailer, no "Generated with Claude Code" line, and no
   other mention of Claude as author — it pollutes the git history with Claude's
