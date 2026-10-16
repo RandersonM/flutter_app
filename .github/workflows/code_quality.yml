@@ -19,13 +19,10 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      # .env and lib/firebase_options.dart are gitignored (never committed —
-      # see CLAUDE.md), so a fresh CI checkout has neither. Without them,
-      # `flutter analyze`/`build_runner`/`flutter test` fail before they even
-      # get to check anything of ours.
-      - name: Create .env file
-        run: cp .env.example .env
-
+      # lib/firebase_options.dart is gitignored (never committed — see
+      # CLAUDE.md), so a fresh CI checkout lacks it and analyze/test would fail
+      # before checking anything of ours. Config keys are build-time
+      # --dart-define values; tests don't need them.
       - name: Create firebase_options.dart
         run: echo "${{ secrets.FIREBASE_OPTIONS_DART_B64 }}" | base64 --decode > lib/firebase_options.dart
 

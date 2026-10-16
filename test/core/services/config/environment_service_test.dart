@@ -1,21 +1,34 @@
-import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:opfan/core/services/config/environment_service.dart';
 
 void main() {
-  final service = EnvironmentService();
-
   group('EnvironmentService behaviour', () {
-    test('reads the Imgur client id from the environment', () {
-      dotenv.testLoad(fileInput: 'IMGUR_CLIENT_ID=abc123');
+    test('returns empty API keys instead of throwing when undefined', () {
+      final env = EnvironmentService(values: const {});
 
-      expect(service.imgurClientId, 'abc123');
+      expect(env.huggingFaceApiKey, isEmpty);
+      expect(env.gemmaModelUrl, isEmpty);
+      expect(env.youtubeApiKey, isEmpty);
     });
 
-    test('leaves the Imgur client id empty when the key is missing', () {
-      dotenv.testLoad();
+    test('falls back to the declared defaults', () {
+      final env = EnvironmentService(values: const {'NETWORK_TIMEOUT': 'x'});
 
-      expect(service.imgurClientId, isEmpty);
+      expect(env.gemmaModelName, 'gemma3_1b_it.litertlm');
+      expect(env.appName, 'One Piece Simple App');
+      expect(env.networkTimeout, 30000);
+    });
+
+    test('returns the values defined at build time', () {
+      final env = EnvironmentService(
+        values: const {
+          'GEMMA_MODEL_NAME': 'e2b.litertlm',
+          'NETWORK_TIMEOUT': '5000',
+        },
+      );
+
+      expect(env.gemmaModelName, 'e2b.litertlm');
+      expect(env.networkTimeout, 5000);
     });
   });
 }

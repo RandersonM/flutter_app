@@ -41,13 +41,12 @@ void main() async {
   await getIt<ILocaleService>().loadLocale();
 
   try {
-    debugPrint('MAIN: Starting Firebase, Env, Theme initialize...');
+    debugPrint('MAIN: Starting Firebase and Theme initialize...');
     await Future.wait([
       Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform),
-      getIt<IEnvironmentService>().initialize(),
       getIt<IThemeService>().initialize(),
     ]);
-    debugPrint('MAIN: Firebase, Env, Theme initialized.');
+    debugPrint('MAIN: Firebase and Theme initialized.');
 
     // Attaches App Check tokens to Cloud Functions calls. Debug builds use the
     // debug provider (register the printed token in the console); the

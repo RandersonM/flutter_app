@@ -27,8 +27,8 @@ by lowering the constraint.
 | Format | `fvm dart format lib test` (CI fails on any diff) |
 | l10n | `fvm flutter gen-l10n` (output is committed in `lib/l10n/`) |
 | Codegen | `fvm dart run build_runner build -d` (only `@JsonSerializable` models) |
-| Run | `fvm flutter devices` then `fvm flutter run -d <id>` |
-| Build check | `fvm flutter build apk --debug` · `fvm flutter build ios --debug --no-codesign` |
+| Run | `fvm flutter devices` then `fvm flutter run -d <id> --dart-define-from-file=.env` |
+| Build check | `fvm flutter build apk --debug --dart-define-from-file=.env` · `fvm flutter build ios --debug --no-codesign --dart-define-from-file=.env` |
 | Functions | `cd functions && npm run deploy` |
 
 CI (`.github/workflows/code_quality.yml`) runs: gen-l10n → build_runner →
@@ -65,7 +65,10 @@ changes run the app on a simulator when one is available.
 5. **Hive type ids come from `HiveTypeIds`** (`lib/core/storage/hive_type_ids.dart`).
    Never write a literal, never reuse a shipped id.
 6. **Config comes from `IEnvironmentService`.** Never read `.env` (it holds real
-   keys and is denied to you) — use `.env.example` to learn the key names.
+   keys and is denied to you) — use `.env.example` to learn the key names. It is
+   passed with `--dart-define-from-file=.env`, never bundled as an asset. Keys
+   the server can hold (Gemini, Tavily, Imgur) are Cloud Functions secrets,
+   called through the AI proxy — never add them back to the app.
 7. **On-device AI limits are product decisions:** keep `maxTokens: 4096` and the
    Gemma E2B model; do math and routing in Dart, not in the model; touch the vector
    store only through `RagStoreCoordinator`. Details: `.claude/rules/ai-on-device.md`.
