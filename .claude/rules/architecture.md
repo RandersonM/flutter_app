@@ -102,10 +102,29 @@ let DI pass it.
 `debugPrint('ClassName: message')` — no logger package, no emojis, no `print`.
 Never log secrets, tokens or full user payloads.
 
-## Imports & comments
+## Imports
 
-- `package:opfan/...` for cross-folder imports; relative only for siblings (a BLoC
-  importing its own event/state files, barrels). No `../../` chains.
-- Comments in English, explaining *why*. Cite the spec when a decision comes from
-  one (`// see .specs/features/<name>/design.md`). New files do not need the old
-  `// Developed by ...` header.
+`package:opfan/...` for cross-folder imports; relative only for siblings (a BLoC
+importing its own event/state files, barrels). No `../../` chains.
+
+## Comments — only when truly necessary
+
+The code must explain itself. Before writing a comment, try to make it unnecessary:
+rename the variable, extract a well-named function, introduce a type or enum,
+replace a magic number with a named constant.
+
+Write a comment only for what the code cannot say:
+- a non-obvious **why** — a product decision, a platform/plugin quirk, a workaround
+  for a bug (link it), a constraint that would look like a mistake otherwise;
+- a reference to the spec behind a decision (`// see .specs/features/<name>/design.md`);
+- `///` docs on a public interface member whose contract isn't evident from its
+  signature.
+
+Never:
+- narrate what the next line does (`// load the crews`, `// increment counter`);
+- leave commented-out code, TODOs without an owner/issue, or section banners in
+  short files;
+- add the old `// Developed by ...` / copyright header to new files.
+
+Keep comments in English, one or two lines. When you change code, update or delete
+the comments around it — a stale comment is worse than none.

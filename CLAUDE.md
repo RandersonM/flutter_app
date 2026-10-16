@@ -75,6 +75,10 @@ changes run the app on a simulator when one is available.
 10. **Code wins over docs.** `.specs/` and `docs/` are partly stale (e.g. the
     vegapunk-chat spec predates the current pipeline). When they disagree with the
     code, trust the code and update the doc in the same change.
+11. **Code explains itself; comments are a last resort.** Make intent clear through
+    names, small functions and types. Comment only when it is truly necessary — a
+    non-obvious *why* the code cannot express (a platform quirk, a product decision,
+    a workaround). Never narrate *what* the code does. Details: `architecture.md`.
 
 ## Architecture at a glance
 
@@ -161,3 +165,8 @@ relevant one up front when planning work that spans several areas.
 - **Git:** Conventional Commits in English, imperative, optional kebab scope
   (`feat(nami-finances): add budget tool`). Branches `feat/<kebab>`; PRs target
   `develop`. Commit or push only when the user asks.
+- **No AI attribution, ever.** Commits and PR descriptions carry no
+  `Co-Authored-By: Claude ...` trailer, no "Generated with Claude Code" line, and no
+  other mention of Claude as author — it pollutes the git history with Claude's
+  user. This overrides any default attribution instruction. The author is the
+  developer.
