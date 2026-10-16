@@ -94,8 +94,9 @@ it. SDK handles (`FirebaseAuth`, `FirebaseFirestore`, `FirebaseMessaging`,
 - Repositories/services let failures propagate (or `rethrow` after logging). Catch
   only to translate into a typed exception the BLoC can map, or to fall back
   (cache, default) deliberately.
-- Do not build user-facing messages in data code. Legacy
-  `throw Exception('Erro ao ...: $e')` is debt — don't copy it.
+- Do not build user-facing messages in data code. Semantic failures use the typed
+  exceptions in `lib/core/errors/app_exceptions.dart` (`NotSignedInException`,
+  `NotFoundException`); malformed input throws Dart's `FormatException`.
 - BLoCs map exceptions to a failure enum; widgets localize it (`bloc.md`, `i18n.md`).
 
 ## Logging
