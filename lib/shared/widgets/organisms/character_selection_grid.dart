@@ -13,46 +13,41 @@ import 'package:opfan/l10n/app_localizations.dart';
 import 'package:opfan/shared/utils/constants.dart';
 import 'package:opfan/shared/widgets/atoms/universal_image.dart';
 
-class CharacterSelectionGrid extends StatefulWidget {
+/// Owns its own [SearchCubit] so a query typed here never leaks into the
+/// app-wide character search.
+class CharacterSelectionGrid extends StatelessWidget {
   const CharacterSelectionGrid({super.key, required this.onCharacterSelected});
 
   final Function(CustomCharacterModel) onCharacterSelected;
 
   @override
-  State<CharacterSelectionGrid> createState() => _CharacterSelectionGridState();
-}
-
-class _CharacterSelectionGridState extends State<CharacterSelectionGrid> {
-  late final SearchCubit _searchCubit;
-
-  @override
-  void initState() {
-    super.initState();
-    _searchCubit = getIt<SearchCubit>();
-    _searchCubit.filter();
-  }
-
-  @override
-  void dispose() {
-    _searchCubit.close();
-    super.dispose();
-  }
-
-  @override
   Widget build(BuildContext context) {
-    return BlocProvider.value(
-      value: _searchCubit,
-      child: Column(
-        children: [
-          _buildSearchHeader(),
-          const SizedBox(height: Constants.margin),
-          Expanded(child: _buildCharacterList()),
-        ],
+    return BlocProvider(
+      create: (_) => getIt<SearchCubit>()..filter(),
+      child: _CharacterSelectionGridView(
+        onCharacterSelected: onCharacterSelected,
       ),
     );
   }
+}
 
-  Widget _buildSearchHeader() {
+class _CharacterSelectionGridView extends StatelessWidget {
+  const _CharacterSelectionGridView({required this.onCharacterSelected});
+
+  final Function(CustomCharacterModel) onCharacterSelected;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        _buildSearchHeader(context),
+        const SizedBox(height: Constants.margin),
+        Expanded(child: _buildCharacterList()),
+      ],
+    );
+  }
+
+  Widget _buildSearchHeader(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: Constants.margin),
       child: TextField(
@@ -64,7 +59,7 @@ class _CharacterSelectionGridState extends State<CharacterSelectionGrid> {
           fillColor: Theme.of(context).colorScheme.surface,
         ),
         onChanged: (value) {
-          _searchCubit.setQuery(value);
+          context.read<SearchCubit>().setQuery(value);
         },
       ),
     );
@@ -138,8 +133,8 @@ class _CharacterSelectionGridState extends State<CharacterSelectionGrid> {
             itemBuilder: (context, index) {
               final character = state.queryResults[index];
               return GestureDetector(
-                onTap: () => widget.onCharacterSelected(character),
-                child: _buildSelectableCharacterCard(character),
+                onTap: () => onCharacterSelected(character),
+                child: _buildSelectableCharacterCard(context, character),
               );
             },
           );
@@ -155,7 +150,10 @@ class _CharacterSelectionGridState extends State<CharacterSelectionGrid> {
     );
   }
 
-  Widget _buildSelectableCharacterCard(CustomCharacterModel character) {
+  Widget _buildSelectableCharacterCard(
+    BuildContext context,
+    CustomCharacterModel character,
+  ) {
     return Card(
       shape: RoundedRectangleBorder(
         side: const BorderSide(color: Colors.white),

@@ -19,6 +19,7 @@ class NamiChatBloc extends Cubit<NamiChatState> {
   /// Nami-scoped tool registry (finances data + financial calculators). Kept
   /// separate from the Vegapunk registry so these tools are wired only here.
   final FunctionRegistry _registry;
+  final ILocaleService _localeService;
 
   /// Fallback parser for tool calls the on-device model emits as plain-text
   /// JSON (the SDK's native parser misses that format) — same defense the
@@ -51,8 +52,9 @@ class NamiChatBloc extends Cubit<NamiChatState> {
     this._ragService,
     this._gemmaService,
     this._financesService,
-    this._registry,
-  ) : super(NamiChatInitial()) {
+    this._registry, {
+    required this._localeService,
+  }) : super(NamiChatInitial()) {
     _init();
   }
 
@@ -238,7 +240,7 @@ class NamiChatBloc extends Cubit<NamiChatState> {
   /// attached to the generation pass, so the model can't wander into an
   /// unparseable text tool-call.
   Future<void> _generateAnswer(String text) async {
-    final isPt = PromptLocale.isPortuguese();
+    final isPt = PromptLocale.isPortuguese(_localeService);
     final systemInstruction = NamiPrompt.system(isPortuguese: isPt);
 
     final toolCall = _router.resolve(text);

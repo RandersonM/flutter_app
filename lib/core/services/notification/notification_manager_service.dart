@@ -5,9 +5,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'i_notification_manager_service.dart';
 
 class NotificationManagerService implements INotificationManagerService {
-  NotificationManagerService({FirebaseFunctions? functions, FirebaseAuth? auth})
-    : _functions = functions ?? FirebaseFunctions.instance,
-      _auth = auth ?? FirebaseAuth.instance;
+  NotificationManagerService({required this._functions, required this._auth});
 
   final FirebaseFunctions _functions;
   final FirebaseAuth _auth;

@@ -1,4 +1,3 @@
-import 'package:get_it/get_it.dart';
 // Developed by Randerson Mayllon
 // Copyright © 2022.
 
@@ -9,11 +8,11 @@ import 'package:opfan/core/services/index.dart';
 
 class DevilFruitService implements IDevilFruitService {
   late final Dio _dio;
-  final IEnvironmentService _env = GetIt.I.get<IEnvironmentService>();
+  final IEnvironmentService _env;
   List<DevilFruit> _cachedFruits = [];
   bool _isLoaded = false;
 
-  DevilFruitService() {
+  DevilFruitService({required this._env}) {
     _dio = Dio(
       BaseOptions(
         connectTimeout: Duration(milliseconds: _env.networkTimeout),

@@ -7,9 +7,7 @@ import 'package:opfan/features/zoro_workout/data/models/workout_plan_model.dart'
 import 'i_workout_assessment_service.dart';
 
 class WorkoutAssessmentService implements IWorkoutAssessmentService {
-  WorkoutAssessmentService({FirebaseFirestore? firestore, FirebaseAuth? auth})
-    : _firestore = firestore ?? FirebaseFirestore.instance,
-      _auth = auth ?? FirebaseAuth.instance;
+  WorkoutAssessmentService({required this._firestore, required this._auth});
 
   final FirebaseFirestore _firestore;
   final FirebaseAuth _auth;
