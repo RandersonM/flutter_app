@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter_test/flutter_test.dart';
 import 'package:opfan/core/services/config/storage_service.dart';
 import 'package:opfan/core/storage/hive_type_ids.dart';
@@ -107,6 +109,28 @@ void main() {
         reason:
             'Two registrations claim the same model type — one of them will '
             'never receive a write.',
+      );
+    });
+
+    test('no adapter hardcodes a literal typeId', () {
+      // The registry checks above only see ids that reach HiveTypeIds. An
+      // adapter writing `typeId = 7` bypasses it entirely, so scan the source.
+      final literal = RegExp(r'typeId\s*(=>|=)\s*\d');
+      final offenders = Directory('lib')
+          .listSync(recursive: true)
+          .whereType<File>()
+          .where((f) => f.path.endsWith('.dart'))
+          .where((f) => !f.path.endsWith('hive_type_ids.dart'))
+          .where((f) => literal.hasMatch(f.readAsStringSync()))
+          .map((f) => f.path)
+          .toList();
+
+      expect(
+        offenders,
+        isEmpty,
+        reason:
+            'Adapters in $offenders declare a literal typeId. Add the id to '
+            'HiveTypeIds and reference the constant instead.',
       );
     });
 
