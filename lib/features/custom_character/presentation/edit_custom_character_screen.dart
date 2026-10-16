@@ -137,6 +137,7 @@ class _EditCustomCharacterScreenState extends State<EditCustomCharacterScreen> {
       providers: [
         BlocProvider(create: (_) => getIt<CustomCharacterBloc>()),
         BlocProvider(create: (_) => getIt<CharacterFormOptionsCubit>()..load()),
+        BlocProvider(create: (_) => getIt<CharacterImageCubit>()),
       ],
       child: BlocListener<CharacterFormOptionsCubit, CharacterFormOptionsState>(
         listener: (_, options) => _applyFormOptions(options),

@@ -91,6 +91,11 @@ void registerFeaturesModule(GetIt getIt) {
       crewRepository: getIt<ICrewRepository>(),
     ),
   );
+  getIt.registerFactory<CharacterImageCubit>(
+    () => CharacterImageCubit(
+      characterImageService: getIt<ICharacterImageService>(),
+    ),
+  );
   getIt.registerFactory<DuelsBloc>(
     () => DuelsBloc(
       featuredCharacterRepository: getIt<IFeaturedCharacterRepository>(),
@@ -191,6 +196,7 @@ extension FeaturesModuleExtensions on GetIt {
   CustomCharacterBloc get customCharacterBloc => get<CustomCharacterBloc>();
   CharacterFormOptionsCubit get characterFormOptionsCubit =>
       get<CharacterFormOptionsCubit>();
+  CharacterImageCubit get characterImageCubit => get<CharacterImageCubit>();
   DuelsBloc get duelsBloc => get<DuelsBloc>();
   ListCrewsBloc get listCrewsBloc => get<ListCrewsBloc>();
   CrewDetailsBloc crewDetailsBloc(CrewModel crew) =>
