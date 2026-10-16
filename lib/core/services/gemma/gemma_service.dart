@@ -281,10 +281,7 @@ class GemmaService implements IGemmaService {
     return controller.stream;
   }
 
-  /// Send a tool result back to the model for the second pass.
-  ///
-  /// After a [FunctionCallResponse] is received and the tool is executed,
-  /// call this to inject the tool result and get the model's final answer.
+  @override
   Stream<ModelResponse> sendToolResult({
     required String toolName,
     required Map<String, dynamic> result,

@@ -1,6 +1,5 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_gemma/core/model_response.dart';
-import 'package:opfan/core/services/gemma/gemma_service.dart';
 import 'package:opfan/core/services/gemma/gemma_service_status.dart';
 import 'package:opfan/core/services/gemma/i_gemma_service.dart';
 import 'package:opfan/core/services/rag/i_rag_service.dart';
@@ -196,32 +195,12 @@ class VegapunkChatRepository implements IVegapunkChatRepository {
         safeContent = '${safeContent.substring(0, 1500)}\n...[TRUNCATED]';
       }
 
-      if (_gemma is GemmaService) {
-        await for (final response in (_gemma).sendToolResult(
-          toolName: nativeFunctionCall.name,
-          result: {'result': safeContent},
-        )) {
-          if (response is TextResponse) {
-            yield response.token;
-          }
-        }
-      } else {
-        // Fallback: re-send as context injection
-        final toolContext =
-            '[SEARCH RESULTS for "${nativeFunctionCall.name}"]\n'
-            '$safeContent\n'
-            '[END SEARCH RESULTS]\n\n'
-            'Answer the original question using the results above:\n'
-            '$text';
-
-        await for (final response in _gemma.sendMessage(
-          toolContext,
-          styleInstruction: styleInstruction,
-          ragContext: ragContext,
-        )) {
-          if (response is TextResponse) {
-            yield response.token;
-          }
+      await for (final response in _gemma.sendToolResult(
+        toolName: nativeFunctionCall.name,
+        result: {'result': safeContent},
+      )) {
+        if (response is TextResponse) {
+          yield response.token;
         }
       }
       return;

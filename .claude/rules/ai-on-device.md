@@ -46,8 +46,6 @@ both predate parts of the current pipeline (sentinel names, entitlements, Qwen).
   Close your session in the BLoC's `close()`.
 - No generation lock: one generation at a time is the caller's job (the cubits
   track `isGenerating`). Cancelling the stream calls `stopGeneration`.
-- `sendToolResult` is not on the interface (the repository downcasts) — debt; add
-  it to `IGemmaService` rather than adding more downcasts.
 
 ## Tool calling
 
