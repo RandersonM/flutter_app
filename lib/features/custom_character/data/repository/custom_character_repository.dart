@@ -80,7 +80,7 @@ class CustomCharacterRepository implements ICustomCharacterRepository {
               comparison = a.name.compareTo(b.name);
               break;
             case 'bounty':
-              comparison = a.bounty.compareTo(b.bounty);
+              comparison = a.bountyValue.compareTo(b.bountyValue);
               break;
             default:
               comparison = 0;
@@ -129,7 +129,7 @@ class CustomCharacterRepository implements ICustomCharacterRepository {
               comparison = a.name.compareTo(b.name);
               break;
             case 'bounty':
-              comparison = a.bounty.compareTo(b.bounty);
+              comparison = a.bountyValue.compareTo(b.bountyValue);
               break;
             default:
               comparison = 0;
@@ -247,7 +247,7 @@ class CustomCharacterRepository implements ICustomCharacterRepository {
               comparison = a.name.compareTo(b.name);
               break;
             case 'bounty':
-              comparison = a.bounty.compareTo(b.bounty);
+              comparison = a.bountyValue.compareTo(b.bountyValue);
               break;
             default:
               comparison = 0;
@@ -299,7 +299,7 @@ class CustomCharacterRepository implements ICustomCharacterRepository {
                   comparison = a.name.compareTo(b.name);
                   break;
                 case 'bounty':
-                  comparison = a.bounty.compareTo(b.bounty);
+                  comparison = a.bountyValue.compareTo(b.bountyValue);
                   break;
                 default:
                   comparison = 0;
@@ -381,12 +381,12 @@ class CustomCharacterRepository implements ICustomCharacterRepository {
     required String maxBounty,
   }) async {
     try {
+      final min = CustomCharacterModel.parseBounty(minBounty);
+      final max = CustomCharacterModel.parseBounty(maxBounty);
       final allCharacters = await getUserCustomCharacters();
-      return allCharacters.where((character) {
-        final bounty = character.bounty;
-        return bounty.compareTo(minBounty) >= 0 &&
-            bounty.compareTo(maxBounty) <= 0;
-      }).toList();
+      return allCharacters
+          .where((c) => c.bountyValue >= min && c.bountyValue <= max)
+          .toList();
     } catch (e) {
       throw Exception('Erro ao buscar personagens por faixa de recompensa: $e');
     }

@@ -61,14 +61,11 @@ class EnvironmentService implements IEnvironmentService {
   @override
   int get cacheExpiryTime => _getInt('CACHE_EXPIRY_TIME', 3600000);
 
+  /// Never throws: a missing key yields [defaultValue] (empty for API keys),
+  /// and each service treats an empty key as "not configured" and degrades.
   String _getString(String key, [String defaultValue = '']) {
     final value = dotenv.env[key];
-    if (value == null || value.isEmpty) {
-      if (defaultValue.isEmpty) {
-        throw Exception('Environment variable $key is required but not set');
-      }
-      return defaultValue;
-    }
+    if (value == null || value.isEmpty) return defaultValue;
     return value;
   }
 

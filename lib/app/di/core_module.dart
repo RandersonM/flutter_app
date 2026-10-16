@@ -159,11 +159,9 @@ void registerCoreModule(GetIt getIt) {
     ),
   );
 
-  getIt.registerLazySingleton<AuthBloc>(() {
-    final authBloc = AuthBloc(authService: getIt<IAuthService>());
-    authBloc.add(const AuthStarted());
-    return authBloc;
-  });
+  getIt.registerLazySingleton<AuthBloc>(
+    () => AuthBloc(authService: getIt<IAuthService>()),
+  );
 }
 
 extension CoreModuleExtensions on GetIt {
