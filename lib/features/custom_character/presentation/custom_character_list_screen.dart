@@ -6,8 +6,6 @@ import 'package:opfan/core/connectivity/connectivity_cubit.dart';
 import 'package:opfan/l10n/app_localizations.dart';
 import 'package:opfan/features/custom_character/data/models/custom_character_model.dart';
 import 'package:opfan/app/di/injection.dart';
-import 'package:opfan/features/custom_character/data/repository/custom_character_repository_interface.dart';
-import 'package:opfan/features/crews/data/repository/crew_repository_interface.dart';
 import 'package:opfan/features/custom_character/bloc/custom_character_bloc.dart';
 import 'package:opfan/features/custom_character/bloc/custom_character_event.dart';
 import 'package:opfan/shared/utils/app_routes.dart';
@@ -23,12 +21,7 @@ class CustomCharacterListScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
-        BlocProvider(
-          create: (context) => CustomCharacterBloc(
-            customCharacterService: getIt<ICustomCharacterRepository>(),
-            crewRepository: getIt<ICrewRepository>(),
-          ),
-        ),
+        BlocProvider(create: (_) => getIt<CustomCharacterBloc>()),
         BlocProvider.value(value: getIt<ConnectivityCubit>()),
       ],
       child: const _CustomCharacterListScreenContent(),

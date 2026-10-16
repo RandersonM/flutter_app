@@ -8,11 +8,11 @@ import 'custom_character_state.dart';
 
 class CustomCharacterBloc
     extends Bloc<CustomCharacterEvent, CustomCharacterState> {
-  final ICustomCharacterRepository _customCharacterService;
+  final ICustomCharacterRepository _customCharacterRepository;
   final ICrewRepository _crewRepository;
 
   CustomCharacterBloc({
-    required this._customCharacterService,
+    required this._customCharacterRepository,
     required this._crewRepository,
   }) : super(CustomCharacterInitial()) {
     on<LoadCustomCharacters>(_onLoadCustomCharacters);
@@ -33,7 +33,7 @@ class CustomCharacterBloc
     emit(CustomCharacterLoading());
 
     try {
-      final characters = await _customCharacterService
+      final characters = await _customCharacterRepository
           .getUserCustomCharacters();
 
       emit(CustomCharacterLoaded(characters));
@@ -48,9 +48,8 @@ class CustomCharacterBloc
   ) async {
     emit(CustomCharacterCreating());
     try {
-      final characterId = await _customCharacterService.createCustomCharacter(
-        event.character,
-      );
+      final characterId = await _customCharacterRepository
+          .createCustomCharacter(event.character);
 
       if (event.crewId != null && event.crewRole != null) {
         try {
@@ -73,7 +72,7 @@ class CustomCharacterBloc
       await Future.delayed(const Duration(milliseconds: 500));
 
       try {
-        final characters = await _customCharacterService
+        final characters = await _customCharacterRepository
             .getUserCustomCharacters();
         emit(CustomCharacterLoaded(characters));
       } catch (e) {
@@ -94,7 +93,7 @@ class CustomCharacterBloc
   ) async {
     emit(CustomCharacterUpdating());
     try {
-      await _customCharacterService.updateCustomCharacter(
+      await _customCharacterRepository.updateCustomCharacter(
         event.characterId,
         event.character,
       );
@@ -103,7 +102,7 @@ class CustomCharacterBloc
       await Future.delayed(const Duration(milliseconds: 500));
 
       try {
-        final characters = await _customCharacterService
+        final characters = await _customCharacterRepository
             .getUserCustomCharacters();
         emit(CustomCharacterLoaded(characters));
       } catch (e) {
@@ -124,13 +123,13 @@ class CustomCharacterBloc
   ) async {
     emit(CustomCharacterDeleting());
     try {
-      await _customCharacterService.deleteCustomCharacter(event.characterId);
+      await _customCharacterRepository.deleteCustomCharacter(event.characterId);
       emit(CustomCharacterDeleted(event.characterId));
 
       await Future.delayed(const Duration(milliseconds: 500));
 
       try {
-        final characters = await _customCharacterService
+        final characters = await _customCharacterRepository
             .getUserCustomCharacters();
         emit(CustomCharacterLoaded(characters));
       } catch (e) {
@@ -151,7 +150,7 @@ class CustomCharacterBloc
   ) async {
     emit(CustomCharacterLoading());
     try {
-      final characters = await _customCharacterService
+      final characters = await _customCharacterRepository
           .searchCustomCharactersByName(event.query);
       emit(CustomCharacterLoaded(characters));
     } catch (e) {
@@ -165,7 +164,7 @@ class CustomCharacterBloc
   ) async {
     emit(CustomCharacterLoading());
     try {
-      final characters = await _customCharacterService
+      final characters = await _customCharacterRepository
           .getCustomCharactersByDevilFruit(event.devilFruit);
       emit(CustomCharacterLoaded(characters));
     } catch (e) {
@@ -179,7 +178,7 @@ class CustomCharacterBloc
   ) async {
     emit(CustomCharacterLoading());
     try {
-      final characters = await _customCharacterService
+      final characters = await _customCharacterRepository
           .getCustomCharactersByCrew(event.crew);
       emit(CustomCharacterLoaded(characters));
     } catch (e) {

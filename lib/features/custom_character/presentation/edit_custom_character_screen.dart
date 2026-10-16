@@ -6,9 +6,6 @@ import 'package:opfan/features/devil_fruit/data/models/devil_fruit.dart';
 import 'package:opfan/features/crews/data/models/crew_model.dart';
 import 'package:opfan/features/duels/data/models/fighting_style_model.dart';
 import 'package:opfan/app/di/injection.dart';
-import 'package:opfan/features/custom_character/data/repository/custom_character_repository_interface.dart';
-import 'package:opfan/features/crews/data/repository/crew_repository_interface.dart';
-import 'package:opfan/core/services/index.dart';
 import 'package:opfan/l10n/app_localizations.dart';
 import 'package:opfan/features/custom_character/bloc/index.dart';
 import 'package:opfan/shared/widgets/molecules/default_app_bar.dart';
@@ -54,8 +51,6 @@ class _EditCustomCharacterScreenState extends State<EditCustomCharacterScreen> {
   void initState() {
     super.initState();
     _populateFormWithCharacterData();
-    _loadDevilFruits();
-    _loadCrews();
   }
 
   void _populateFormWithCharacterData() {
@@ -109,232 +104,222 @@ class _EditCustomCharacterScreenState extends State<EditCustomCharacterScreen> {
     }
   }
 
-  Future<void> _loadDevilFruits() async {
-    try {
-      final devilFruitService = getIt<IDevilFruitService>();
-      final fruits = await devilFruitService.fetchAll();
-      setState(() {
-        _devilFruits = fruits;
-        if (widget.character.devilFruit != null && fruits.isNotEmpty) {
-          try {
-            _selectedDevilFruit = fruits.firstWhere(
-              (fruit) => fruit.romanName == widget.character.devilFruit,
-            );
-          } catch (e) {
-            _selectedDevilFruit = fruits.first;
-          }
-        }
-      });
-    } catch (e) {
-      setState(() {
-        _devilFruits = [];
-      });
-    }
-  }
+  void _applyFormOptions(CharacterFormOptionsState options) {
+    final character = widget.character;
+    final fruits = options.devilFruits;
+    final crews = options.crews;
 
-  Future<void> _loadCrews() async {
-    try {
-      final crewRepository = getIt<ICrewRepository>();
-      final crews = await crewRepository.getUserCrews();
-      setState(() {
-        _availableCrews = crews;
-        if (widget.character.crew != null) {
-          final selectedCrew = crews.firstWhere(
-            (crew) => crew.name == widget.character.crew,
-            orElse: () => crews.first,
-          );
-          _selectedCrewId = selectedCrew.id;
-        }
-      });
-    } catch (e) {
-      setState(() {
-        _availableCrews = [];
-      });
-    }
+    setState(() {
+      _devilFruits = fruits;
+      _availableCrews = crews;
+      if (character.devilFruit != null && fruits.isNotEmpty) {
+        _selectedDevilFruit = fruits.firstWhere(
+          (fruit) => fruit.romanName == character.devilFruit,
+          orElse: () => fruits.first,
+        );
+      }
+      if (character.crew != null && crews.isNotEmpty) {
+        _selectedCrewId = crews
+            .firstWhere(
+              (crew) => crew.name == character.crew,
+              orElse: () => crews.first,
+            )
+            .id;
+      }
+    });
   }
 
   @override
   Widget build(BuildContext context) {
     _mapHakiDataIfNeeded();
 
-    return BlocProvider(
-      create: (context) => CustomCharacterBloc(
-        customCharacterService: getIt<ICustomCharacterRepository>(),
-        crewRepository: getIt<ICrewRepository>(),
-      ),
-      child: Builder(
-        builder: (context) {
-          return Scaffold(
-            appBar: DefaultAppBar(
-              title: Text(
-                AppLocalizations.of(context)!.editCustomCharacterTitle,
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(create: (_) => getIt<CustomCharacterBloc>()),
+        BlocProvider(create: (_) => getIt<CharacterFormOptionsCubit>()..load()),
+      ],
+      child: BlocListener<CharacterFormOptionsCubit, CharacterFormOptionsState>(
+        listener: (_, options) => _applyFormOptions(options),
+        child: Builder(
+          builder: (context) {
+            return Scaffold(
+              appBar: DefaultAppBar(
+                title: Text(
+                  AppLocalizations.of(context)!.editCustomCharacterTitle,
+                ),
               ),
-            ),
-            body: BlocListener<CustomCharacterBloc, CustomCharacterState>(
-              listenWhen: (previous, current) {
-                return current is CustomCharacterUpdated ||
-                    (current is CustomCharacterError &&
-                        !current.message.contains(
-                          'mas houve um erro ao atualizar a lista',
-                        ));
-              },
-              listener: (context, state) {
-                if (state is CustomCharacterUpdated) {
-                  _showSuccessDialog(context);
-                } else if (state is CustomCharacterError) {
-                  _showErrorDialog(context, state.message);
-                }
-              },
-              child: BlocBuilder<CustomCharacterBloc, CustomCharacterState>(
-                builder: (context, state) {
-                  final isLoading = state is CustomCharacterUpdating;
-
-                  return SingleChildScrollView(
-                    padding: const EdgeInsets.all(16.0),
-                    child: Column(
-                      children: [
-                        Container(
-                          width: double.infinity,
-                          padding: const EdgeInsets.all(16),
-                          decoration: BoxDecoration(
-                            color: Theme.of(
-                              context,
-                            ).primaryColor.withValues(alpha: 0.1),
-                            borderRadius: BorderRadius.circular(8),
-                          ),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                AppLocalizations.of(
-                                  context,
-                                )!.editCustomCharacterTitle,
-                                style: Theme.of(context).textTheme.headlineSmall
-                                    ?.copyWith(
-                                      fontWeight: FontWeight.bold,
-                                      color: Theme.of(context).primaryColor,
-                                    ),
-                              ),
-                              const SizedBox(height: 8),
-                              Text(
-                                AppLocalizations.of(
-                                  context,
-                                )!.editCustomCharacterSubtitle,
-                                style: Theme.of(context).textTheme.bodyMedium,
-                              ),
-                            ],
-                          ),
-                        ),
-                        const SizedBox(height: 24),
-                        CharacterForm(
-                          formKey: _formKey,
-                          nameController: _nameController,
-                          nicknameController: _nicknameController,
-                          birthDateController: _birthDateController,
-                          devilFruits: _devilFruits,
-                          selectedDevilFruit: _selectedDevilFruit,
-                          onDevilFruitChanged: (fruit) {
-                            setState(() {
-                              _selectedDevilFruit = fruit;
-                            });
-                          },
-                          availableCrews: _availableCrews,
-                          selectedCrewId: _selectedCrewId,
-                          onCrewChanged: (crewId) {
-                            setState(() {
-                              _selectedCrewId = crewId;
-                              if (crewId == null) {
-                                _selectedCrewRole = null;
-                              }
-                            });
-                          },
-                          selectedCrewRole: _selectedCrewRole,
-                          onCrewRoleChanged: (role) {
-                            setState(() {
-                              _selectedCrewRole = role;
-                            });
-                          },
-                          bountyController: _bountyController,
-                          imageUrlController: _imageUrlController,
-                          descriptionController: _descriptionController,
-                          selectedStatus: _selectedStatus,
-                          selectedHaki: _selectedHaki,
-                          selectedAffiliations: _selectedAffiliations,
-                          selectedOccupations: _selectedOccupations,
-                          onStatusChanged: (status) {
-                            setState(() {
-                              _selectedStatus = status;
-                            });
-                          },
-                          onHakiSelected: (haki) {
-                            setState(() {
-                              if (!_selectedHaki.contains(haki)) {
-                                _selectedHaki.add(haki);
-                              }
-                            });
-                          },
-                          onHakiDeselected: (haki) {
-                            setState(() {
-                              _selectedHaki.remove(haki);
-                            });
-                          },
-                          onAffiliationSelected: (affiliation) {
-                            setState(() {
-                              if (!_selectedAffiliations.contains(
-                                affiliation,
-                              )) {
-                                _selectedAffiliations.add(affiliation);
-                              }
-                            });
-                          },
-                          onAffiliationDeselected: (affiliation) {
-                            setState(() {
-                              _selectedAffiliations.remove(affiliation);
-                            });
-                          },
-                          onOccupationSelected: (occupation) {
-                            setState(() {
-                              if (_selectedOccupations.length < 3 &&
-                                  !_selectedOccupations.contains(occupation)) {
-                                _selectedOccupations.add(occupation);
-                              }
-                            });
-                          },
-                          onOccupationDeselected: (occupation) {
-                            setState(() {
-                              _selectedOccupations.remove(occupation);
-                            });
-                          },
-                          selectedRace: _selectedRace,
-                          onRaceChanged: (race) {
-                            setState(() {
-                              _selectedRace = race;
-                            });
-                          },
-                          fightingStyle: _fightingStyle,
-                          onFightingStyleChanged: (fightingStyle) {
-                            setState(() {
-                              _fightingStyle = fightingStyle;
-                            });
-                          },
-                          showAiGenerator: true,
-                        ),
-                        const SizedBox(height: 24),
-                        FormActions(
-                          onSave: () => _submitForm(context),
-                          onCancel: _cancelForm,
-                          isLoading: isLoading,
-                          saveButtonText: AppLocalizations.of(context)!.update,
-                        ),
-                        const SizedBox(height: 24),
-                      ],
-                    ),
-                  );
+              body: BlocListener<CustomCharacterBloc, CustomCharacterState>(
+                listenWhen: (previous, current) {
+                  return current is CustomCharacterUpdated ||
+                      (current is CustomCharacterError &&
+                          !current.message.contains(
+                            'mas houve um erro ao atualizar a lista',
+                          ));
                 },
+                listener: (context, state) {
+                  if (state is CustomCharacterUpdated) {
+                    _showSuccessDialog(context);
+                  } else if (state is CustomCharacterError) {
+                    _showErrorDialog(context, state.message);
+                  }
+                },
+                child: BlocBuilder<CustomCharacterBloc, CustomCharacterState>(
+                  builder: (context, state) {
+                    final isLoading = state is CustomCharacterUpdating;
+
+                    return SingleChildScrollView(
+                      padding: const EdgeInsets.all(16.0),
+                      child: Column(
+                        children: [
+                          Container(
+                            width: double.infinity,
+                            padding: const EdgeInsets.all(16),
+                            decoration: BoxDecoration(
+                              color: Theme.of(
+                                context,
+                              ).primaryColor.withValues(alpha: 0.1),
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  AppLocalizations.of(
+                                    context,
+                                  )!.editCustomCharacterTitle,
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .headlineSmall
+                                      ?.copyWith(
+                                        fontWeight: FontWeight.bold,
+                                        color: Theme.of(context).primaryColor,
+                                      ),
+                                ),
+                                const SizedBox(height: 8),
+                                Text(
+                                  AppLocalizations.of(
+                                    context,
+                                  )!.editCustomCharacterSubtitle,
+                                  style: Theme.of(context).textTheme.bodyMedium,
+                                ),
+                              ],
+                            ),
+                          ),
+                          const SizedBox(height: 24),
+                          CharacterForm(
+                            formKey: _formKey,
+                            nameController: _nameController,
+                            nicknameController: _nicknameController,
+                            birthDateController: _birthDateController,
+                            devilFruits: _devilFruits,
+                            selectedDevilFruit: _selectedDevilFruit,
+                            onDevilFruitChanged: (fruit) {
+                              setState(() {
+                                _selectedDevilFruit = fruit;
+                              });
+                            },
+                            availableCrews: _availableCrews,
+                            selectedCrewId: _selectedCrewId,
+                            onCrewChanged: (crewId) {
+                              setState(() {
+                                _selectedCrewId = crewId;
+                                if (crewId == null) {
+                                  _selectedCrewRole = null;
+                                }
+                              });
+                            },
+                            selectedCrewRole: _selectedCrewRole,
+                            onCrewRoleChanged: (role) {
+                              setState(() {
+                                _selectedCrewRole = role;
+                              });
+                            },
+                            bountyController: _bountyController,
+                            imageUrlController: _imageUrlController,
+                            descriptionController: _descriptionController,
+                            selectedStatus: _selectedStatus,
+                            selectedHaki: _selectedHaki,
+                            selectedAffiliations: _selectedAffiliations,
+                            selectedOccupations: _selectedOccupations,
+                            onStatusChanged: (status) {
+                              setState(() {
+                                _selectedStatus = status;
+                              });
+                            },
+                            onHakiSelected: (haki) {
+                              setState(() {
+                                if (!_selectedHaki.contains(haki)) {
+                                  _selectedHaki.add(haki);
+                                }
+                              });
+                            },
+                            onHakiDeselected: (haki) {
+                              setState(() {
+                                _selectedHaki.remove(haki);
+                              });
+                            },
+                            onAffiliationSelected: (affiliation) {
+                              setState(() {
+                                if (!_selectedAffiliations.contains(
+                                  affiliation,
+                                )) {
+                                  _selectedAffiliations.add(affiliation);
+                                }
+                              });
+                            },
+                            onAffiliationDeselected: (affiliation) {
+                              setState(() {
+                                _selectedAffiliations.remove(affiliation);
+                              });
+                            },
+                            onOccupationSelected: (occupation) {
+                              setState(() {
+                                if (_selectedOccupations.length < 3 &&
+                                    !_selectedOccupations.contains(
+                                      occupation,
+                                    )) {
+                                  _selectedOccupations.add(occupation);
+                                }
+                              });
+                            },
+                            onOccupationDeselected: (occupation) {
+                              setState(() {
+                                _selectedOccupations.remove(occupation);
+                              });
+                            },
+                            selectedRace: _selectedRace,
+                            onRaceChanged: (race) {
+                              setState(() {
+                                _selectedRace = race;
+                              });
+                            },
+                            fightingStyle: _fightingStyle,
+                            onFightingStyleChanged: (fightingStyle) {
+                              setState(() {
+                                _fightingStyle = fightingStyle;
+                              });
+                            },
+                            showAiGenerator: true,
+                          ),
+                          const SizedBox(height: 24),
+                          FormActions(
+                            onSave: () => _submitForm(context),
+                            onCancel: _cancelForm,
+                            isLoading: isLoading,
+                            saveButtonText: AppLocalizations.of(
+                              context,
+                            )!.update,
+                          ),
+                          const SizedBox(height: 24),
+                        ],
+                      ),
+                    );
+                  },
+                ),
               ),
-            ),
-          );
-        },
+            );
+          },
+        ),
       ),
     );
   }

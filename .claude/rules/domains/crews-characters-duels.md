@@ -36,17 +36,15 @@ and the ARBs.
   writes `character.crew = crew.name`.
 - Crew name ≥ 3 characters. `captain`/`viceCaptain` store names, not ids.
 - Images come from `ICrewImageService` (Gemini) with a placeholder fallback.
-- BLoCs: `ListCrewsBloc`, `CreateCrewBloc` (`registerFactoryParam` with `userId`),
-  `EditCrewBloc`. Routes `/createCrew`, `/editCrew`, `/listCrews` are private;
+- BLoCs: `ListCrewsBloc`, `CrewDetailsBloc` (`registerFactoryParam` with the crew;
+  owns delete / add member / ownership via `IAuthService`), `CreateCrewBloc`
+  (`registerFactoryParam` with `userId`), `EditCrewBloc`, `CrewImageCubit` (shared
+  by create/edit). Routes `/createCrew`, `/editCrew`, `/listCrews` are private;
   `/crewDetails` is public.
 - Debt — don't copy, flag if relevant:
   - Role spelling disagrees: UI writes `viceCaptain`, the repository checks
     `vice-captain`/`vicecaptain`, `updateCrewMember` checks `vice captain`. Use
     `viceCaptain` and normalize at the boundary when you touch it.
-  - `removeMemberFromCrew` doesn't clear `rolesFilled`.
-  - Ownership is checked only client-side and the Firestore rule is open
-    (`firebase.md`).
-  - `crew_details_screen.dart` calls repositories via `getIt` for delete/add-member.
   - `DeleteCrew` reloads *all* crews, not the user's.
 
 ## Custom characters (Firestore `custom_characters`)
@@ -57,9 +55,9 @@ and the ARBs.
 - Create can attach to a crew (`crewId`, `crewRole`) in the same flow.
 - Routes `/createCustomCharacter`, `/customCharacterList`, `/editCustomCharacter`
   — all private.
-- Debt: bounty range comparisons are lexicographic on the String (bug — parse
-  before comparing); screens construct `CustomCharacterBloc` manually; fields named
-  `_customCharacterService` hold repositories.
+- BLoCs: `CustomCharacterBloc` (factory) and `CharacterFormOptionsCubit` (devil
+  fruits + user crews for the create/edit form). Bounties are compared as numbers
+  (`bountyValue`).
 
 ## Duels (no persistence)
 
@@ -74,5 +72,5 @@ and the ARBs.
     King's vs no haki +20; fruit user vs Armament −20
   - Random 0–79; **tie goes to character 1**; 2 s suspense delay.
 - Keep scoring in a pure, testable function if you change it.
-- Debt: `duels_screen.dart` builds the bloc manually; `getAllCustomCharacters()` is
-  unfiltered, which the `custom_characters` rule denies for other users' docs.
+- `DuelsBloc` is a DI factory.
+- Debt: `getAllCustomCharacters()` is unfiltered, which the `custom_characters` rule denies for other users' docs.

@@ -48,8 +48,8 @@ class _CrewsView extends StatelessWidget {
   snackbars), `BlocConsumer` for both. Use `context.select` when a widget needs one
   field of a big state.
 - **No business logic, repositories, services or Firebase in widgets** (hook-
-  enforced). Ownership checks, deletes and "add member" belong in a BLoC — the
-  crews screens that call `getIt<ICrewRepository>` are debt.
+  enforced). Ownership checks, deletes and "add member" belong in a BLoC (golden:
+  `CrewDetailsBloc`).
 - Prefer small private widget classes over `Widget _buildX()` methods for anything
   with its own state or more than a few lines.
 - Golden: `lib/features/crews/presentation/list_crews_screen.dart`,
