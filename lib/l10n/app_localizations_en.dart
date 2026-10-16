@@ -341,11 +341,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String get error => 'Error';
 
   @override
-  String characterCreationError(String message) {
-    return 'Error creating character: $message';
-  }
-
-  @override
   String get ok => 'OK';
 
   @override
@@ -532,11 +527,6 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get characterUpdatedSuccess => 'Character updated successfully';
-
-  @override
-  String characterUpdateError(String message) {
-    return 'Error updating character: $message';
-  }
 
   @override
   String get berriesTotal => 'Berries total';
@@ -1109,12 +1099,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String get dailyAmount => 'Daily Available Amount';
 
   @override
-  String get currency => 'R\$';
-
-  @override
-  String get perDay => '/day';
-
-  @override
   String get health => 'Health';
 
   @override
@@ -1152,9 +1136,6 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get yearlySavings => 'Yearly Savings';
-
-  @override
-  String get accumulatedSavings => 'Accumulated';
 
   @override
   String get savingsPeriod => 'Savings Period';
@@ -1464,12 +1445,6 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get workout_validation_workout_days_required =>
       'Select your workout days goal';
-
-  @override
-  String get workout_day => 'day';
-
-  @override
-  String get workout_days => 'days';
 
   @override
   String get cooking => 'Cooking';

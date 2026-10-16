@@ -722,12 +722,6 @@ abstract class AppLocalizations {
   /// **'Error'**
   String get error;
 
-  /// Error message when character creation fails
-  ///
-  /// In en, this message translates to:
-  /// **'Error creating character: {message}'**
-  String characterCreationError(String message);
-
   /// Button text for OK action
   ///
   /// In en, this message translates to:
@@ -1069,12 +1063,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Character updated successfully'**
   String get characterUpdatedSuccess;
-
-  /// Error message when character update fails
-  ///
-  /// In en, this message translates to:
-  /// **'Error updating character: {message}'**
-  String characterUpdateError(String message);
 
   /// Text shown for total berries in crew card
   ///
@@ -2138,18 +2126,6 @@ abstract class AppLocalizations {
   /// **'Daily Available Amount'**
   String get dailyAmount;
 
-  /// Currency symbol for the current locale.
-  ///
-  /// In en, this message translates to:
-  /// **'R\$'**
-  String get currency;
-
-  /// Suffix for daily amounts.
-  ///
-  /// In en, this message translates to:
-  /// **'/day'**
-  String get perDay;
-
   /// Category name for health
   ///
   /// In en, this message translates to:
@@ -2227,12 +2203,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Yearly Savings'**
   String get yearlySavings;
-
-  /// Title for total accumulated savings.
-  ///
-  /// In en, this message translates to:
-  /// **'Accumulated'**
-  String get accumulatedSavings;
 
   /// Title for savings period section.
   ///
@@ -2767,18 +2737,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Select your workout days goal'**
   String get workout_validation_workout_days_required;
-
-  /// Singular of day.
-  ///
-  /// In en, this message translates to:
-  /// **'day'**
-  String get workout_day;
-
-  /// Plural of days.
-  ///
-  /// In en, this message translates to:
-  /// **'days'**
-  String get workout_days;
 
   /// Cooking screen title for bottom navigation.
   ///

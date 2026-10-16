@@ -342,11 +342,6 @@ class AppLocalizationsPt extends AppLocalizations {
   String get error => 'Erro';
 
   @override
-  String characterCreationError(String message) {
-    return 'Erro ao criar personagem: $message';
-  }
-
-  @override
   String get ok => 'OK';
 
   @override
@@ -533,11 +528,6 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get characterUpdatedSuccess => 'Personagem atualizado com sucesso';
-
-  @override
-  String characterUpdateError(String message) {
-    return 'Erro ao atualizar personagem: $message';
-  }
 
   @override
   String get berriesTotal => 'Berries total';
@@ -1113,12 +1103,6 @@ class AppLocalizationsPt extends AppLocalizations {
   String get dailyAmount => 'Valor Diário Disponível';
 
   @override
-  String get currency => 'R\$';
-
-  @override
-  String get perDay => '/dia';
-
-  @override
   String get health => 'Saúde';
 
   @override
@@ -1156,9 +1140,6 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get yearlySavings => 'Economias Anuais';
-
-  @override
-  String get accumulatedSavings => 'Acumulado';
 
   @override
   String get savingsPeriod => 'Período de Economia';
@@ -1468,12 +1449,6 @@ class AppLocalizationsPt extends AppLocalizations {
   @override
   String get workout_validation_workout_days_required =>
       'Selecione sua meta de dias de exercício';
-
-  @override
-  String get workout_day => 'dia';
-
-  @override
-  String get workout_days => 'dias';
 
   @override
   String get cooking => 'Culinária';

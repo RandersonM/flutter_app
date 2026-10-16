@@ -633,17 +633,6 @@
     "type": "text",
     "placeholders": {}
   },
-  "characterCreationError": "Error creating character: {message}",
-  "@characterCreationError": {
-    "description": "Error message when character creation fails",
-    "type": "text",
-    "placeholders": {
-      "message": {
-        "type": "String",
-        "example": "Network error"
-      }
-    }
-  },
   "ok": "OK",
   "@ok": {
     "description": "Button text for OK action",
@@ -995,17 +984,6 @@
     "description": "Success message when character is updated",
     "type": "text",
     "placeholders": {}
-  },
-  "characterUpdateError": "Error updating character: {message}",
-  "@characterUpdateError": {
-    "description": "Error message when character update fails",
-    "type": "text",
-    "placeholders": {
-      "message": {
-        "type": "String",
-        "example": "Network error"
-      }
-    }
   },
   "berriesTotal": "Berries total",
   "@berriesTotal": {
@@ -2088,18 +2066,6 @@
     "type": "text",
     "placeholders": {}
   },
-  "currency": "R$",
-  "@currency": {
-    "description": "Currency symbol for the current locale.",
-    "type": "text",
-    "placeholders": {}
-  },
-  "perDay": "/day",
-  "@perDay": {
-    "description": "Suffix for daily amounts.",
-    "type": "text",
-    "placeholders": {}
-  },
   "health": "Health",
   "@health": {
     "description": "Category name for health",
@@ -2175,12 +2141,6 @@
   "yearlySavings": "Yearly Savings",
   "@yearlySavings": {
     "description": "Label for accumulated value in one year.",
-    "type": "text",
-    "placeholders": {}
-  },
-  "accumulatedSavings": "Accumulated",
-  "@accumulatedSavings": {
-    "description": "Title for total accumulated savings.",
     "type": "text",
     "placeholders": {}
   },
@@ -2738,18 +2698,6 @@
   "workout_validation_workout_days_required": "Select your workout days goal",
   "@workout_validation_workout_days_required": {
     "description": "Validation for required workout days goal.",
-    "type": "text",
-    "placeholders": {}
-  },
-  "workout_day": "day",
-  "@workout_day": {
-    "description": "Singular of day.",
-    "type": "text",
-    "placeholders": {}
-  },
-  "workout_days": "days",
-  "@workout_days": {
-    "description": "Plural of days.",
     "type": "text",
     "placeholders": {}
   },
