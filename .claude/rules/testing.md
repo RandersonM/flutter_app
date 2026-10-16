@@ -55,7 +55,7 @@ void main() {
   `registerFallbackValue` for custom argument types used with `any()`.
 - Hand-written `_FakeX implements IX` classes are still fine when a fake with real
   behaviour (in-memory store, controllable stream) reads better than stubs — golden:
-  `test/features/vegapunk_chat/cubit/vegapunk_chat_cubit_history_test.dart`.
+  `test/features/vegapunk_chat/bloc/vegapunk_chat_cubit_history_test.dart`.
 - Close BLoCs you build manually (`await cubit.close()`).
 
 ## Widget tests

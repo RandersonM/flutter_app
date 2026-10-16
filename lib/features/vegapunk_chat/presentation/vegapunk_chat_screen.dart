@@ -8,7 +8,7 @@ import 'package:opfan/shared/utils/constants.dart';
 import 'package:opfan/shared/widgets/molecules/default_app_bar.dart';
 import 'package:opfan/shared/widgets/organisms/bottom_navigation.dart';
 
-import '../cubit/index.dart';
+import '../bloc/index.dart';
 import '../data/models/vegapunk_satellite.dart';
 import 'widgets/index.dart';
 

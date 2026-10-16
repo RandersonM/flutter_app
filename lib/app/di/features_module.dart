@@ -22,7 +22,7 @@ import 'package:opfan/features/nami_finances/bloc/nami_finances_bloc.dart';
 import 'package:opfan/features/zoro_workout/bloc/index.dart';
 import 'package:opfan/features/sanji_cooking/bloc/index.dart';
 import 'package:opfan/features/robin_knowledge/bloc/robin_knowledge_bloc.dart';
-import 'package:opfan/features/vegapunk_chat/cubit/index.dart';
+import 'package:opfan/features/vegapunk_chat/bloc/index.dart';
 import 'package:opfan/features/vegapunk_chat/tools/function_registry.dart';
 import 'package:opfan/features/nami_finances/data/services/i_nami_rag_service.dart';
 import 'package:opfan/features/nami_finances/data/services/nami_rag_service.dart';

@@ -1,6 +1,6 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:opfan/core/services/index.dart';
-import 'package:opfan/core/theme/cubit/theme_state.dart';
+import 'package:opfan/core/theme/bloc/theme_state.dart';
 
 class ThemeCubit extends Cubit<ThemeState> {
   ThemeCubit(this._themeService)

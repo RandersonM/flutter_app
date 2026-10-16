@@ -37,7 +37,7 @@ service directly.
 
 ```
 lib/features/<feature>/
-├── bloc/                 BLoCs and Cubits (also for Cubits; `cubit/` is legacy)
+├── bloc/                 BLoCs and Cubits (no `cubit/` folders)
 │   ├── x_bloc.dart  x_event.dart  x_state.dart
 ├── data/
 │   ├── models/

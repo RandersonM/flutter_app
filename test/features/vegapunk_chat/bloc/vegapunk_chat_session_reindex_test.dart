@@ -6,7 +6,7 @@ import 'package:opfan/core/models/rag/rag_document.dart';
 import 'package:opfan/core/services/config/i_locale_service.dart';
 import 'package:opfan/core/services/gemma/gemma_service_status.dart';
 import 'package:opfan/core/services/rag/i_rag_service.dart';
-import 'package:opfan/features/vegapunk_chat/cubit/vegapunk_chat_cubit.dart';
+import 'package:opfan/features/vegapunk_chat/bloc/vegapunk_chat_cubit.dart';
 import 'package:opfan/features/vegapunk_chat/data/models/chat_message.dart';
 import 'package:opfan/features/vegapunk_chat/data/repository/i_vegapunk_chat_history_repository.dart';
 import 'package:opfan/features/vegapunk_chat/data/repository/i_vegapunk_chat_repository.dart';
