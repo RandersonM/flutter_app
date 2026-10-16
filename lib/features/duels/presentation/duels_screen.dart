@@ -85,7 +85,7 @@ class _DuelsView extends StatelessWidget {
             }
 
             if (state is DuelsError) {
-              return _buildErrorState(context, state.message);
+              return _buildErrorState(context, state.failure);
             }
 
             if (state is DuelsReady) {
@@ -99,7 +99,7 @@ class _DuelsView extends StatelessWidget {
     );
   }
 
-  Widget _buildErrorState(BuildContext context, String message) {
+  Widget _buildErrorState(BuildContext context, DuelsFailure failure) {
     final l10n = AppLocalizations.of(context)!;
 
     return Center(
@@ -123,7 +123,9 @@ class _DuelsView extends StatelessWidget {
             ),
             const SizedBox(height: Constants.margin),
             Text(
-              message,
+              switch (failure) {
+                DuelsFailure.loadFailed => l10n.duelsLoadError,
+              },
               textAlign: TextAlign.center,
               style: Theme.of(
                 context,

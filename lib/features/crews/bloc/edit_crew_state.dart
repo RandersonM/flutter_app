@@ -1,4 +1,5 @@
 import 'package:equatable/equatable.dart';
+import 'package:opfan/features/crews/bloc/crews_failure.dart';
 
 abstract class EditCrewState extends Equatable {
   const EditCrewState();
@@ -21,10 +22,10 @@ class EditCrewSuccess extends EditCrewState {
 }
 
 class EditCrewFailure extends EditCrewState {
-  final String error;
+  final CrewsFailure failure;
 
-  const EditCrewFailure(this.error);
+  const EditCrewFailure(this.failure);
 
   @override
-  List<Object?> get props => [error];
+  List<Object?> get props => [failure];
 }

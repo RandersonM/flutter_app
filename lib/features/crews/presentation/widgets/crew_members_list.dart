@@ -38,7 +38,7 @@ class CrewMembersList extends StatelessWidget {
               ),
               const SizedBox(height: Constants.margin),
               Text(
-                'Nenhum membro na tripulação',
+                l10n.crewMembersEmptyTitle,
                 style: theme.textTheme.titleMedium?.copyWith(
                   color: Colors.grey[600],
                 ),
@@ -46,7 +46,7 @@ class CrewMembersList extends StatelessWidget {
               ),
               const SizedBox(height: Constants.margin / 2),
               Text(
-                'Adicione membros para começar sua jornada!',
+                l10n.crewMembersEmptySubtitle,
                 style: theme.textTheme.bodyMedium?.copyWith(
                   color: Colors.grey[500],
                 ),
@@ -206,29 +206,22 @@ class CrewMembersList extends StatelessWidget {
 
   List<CrewMember> _sortMembersByRole(List<CrewMember> members) {
     return List.from(members)..sort((a, b) {
-      final roleA = a.role?.toLowerCase() ?? '';
-      final roleB = b.role?.toLowerCase() ?? '';
-
-      // Prioridade para capitão
-      if (roleA.contains('capitão') ||
-          roleA.contains('capitao') ||
-          roleA.contains('captain')) {
-        return -1;
-      }
-      if (roleB.contains('capitão') ||
-          roleB.contains('capitao') ||
-          roleB.contains('captain')) {
-        return 1;
-      }
-
-      // Prioridade para vice-capitão
-      if (roleA.contains('vice')) return -1;
-      if (roleB.contains('vice')) return 1;
-
-      // Ordem alfabética para os demais
-      return roleA.compareTo(roleB);
+      final roleA = _roleKey(a.role);
+      final roleB = _roleKey(b.role);
+      final byRank = _roleRank(roleA).compareTo(_roleRank(roleB));
+      return byRank != 0 ? byRank : roleA.compareTo(roleB);
     });
   }
+
+  /// Role keys arrive as `viceCaptain`, `vice-captain` or `vice captain`.
+  static String _roleKey(String? role) =>
+      (role ?? '').toLowerCase().replaceAll(RegExp(r'[^a-z]'), '');
+
+  static int _roleRank(String roleKey) => switch (roleKey) {
+    'captain' => 0,
+    'vicecaptain' => 1,
+    _ => 2,
+  };
 
   String _formatMemberName(CrewMember member) {
     final nickname = member.nickname?.trim();

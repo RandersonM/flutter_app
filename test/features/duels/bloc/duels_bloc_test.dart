@@ -65,7 +65,10 @@ void main() {
       ).thenThrow(Exception('offline')),
       build: build,
       act: (bloc) => bloc.add(const LoadDuelsScreen()),
-      expect: () => [const DuelsLoading(), isA<DuelsError>()],
+      expect: () => [
+        const DuelsLoading(),
+        const DuelsError(DuelsFailure.loadFailed),
+      ],
     );
   });
 

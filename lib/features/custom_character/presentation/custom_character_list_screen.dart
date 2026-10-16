@@ -99,9 +99,7 @@ class _CustomCharacterListScreenContent extends StatelessWidget {
 
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
-        content: Text(
-          '${l10n.featuredCharacter} "${character.name}" ${l10n.delete}',
-        ),
+        content: Text(l10n.customCharacterDeletedWithName(character.name)),
         backgroundColor: Theme.of(context).colorScheme.error,
         duration: const Duration(seconds: 2),
       ),

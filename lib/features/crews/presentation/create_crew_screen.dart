@@ -155,7 +155,10 @@ class _CreateCrewScreenState extends State<CreateCrewScreen> {
     } else if (state is CreateCrewFailure) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text(loc.errorPrefix(state.error)),
+          content: Text(switch (state.failure) {
+            CrewsFailure.notSignedIn => loc.crewNotSignedInError,
+            _ => loc.crewCreationError,
+          }),
           backgroundColor: theme.colorScheme.error,
         ),
       );

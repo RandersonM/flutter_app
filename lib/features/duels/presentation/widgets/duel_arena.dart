@@ -263,7 +263,7 @@ class DuelArena extends StatelessWidget {
             children: [
               Flexible(
                 child: Text(
-                  '${winner!.name} ${l10n.winner}',
+                  l10n.duelWinnerWithName(winner!.name),
                   maxLines: 2,
                   overflow: TextOverflow.ellipsis,
                   textAlign: TextAlign.center,

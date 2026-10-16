@@ -21,13 +21,23 @@ class CustomCharacterLoaded extends CustomCharacterState {
   List<Object?> get props => [characters];
 }
 
-class CustomCharacterError extends CustomCharacterState {
-  final String message;
+/// [listRefreshFailed]: the create/update/delete succeeded but reloading the
+/// list afterwards did not, so screens that already reported success skip it.
+enum CustomCharacterFailure {
+  loadFailed,
+  createFailed,
+  updateFailed,
+  deleteFailed,
+  listRefreshFailed,
+}
 
-  const CustomCharacterError(this.message);
+class CustomCharacterError extends CustomCharacterState {
+  final CustomCharacterFailure failure;
+
+  const CustomCharacterError(this.failure);
 
   @override
-  List<Object?> get props => [message];
+  List<Object?> get props => [failure];
 }
 
 class CustomCharacterCreating extends CustomCharacterState {}

@@ -1,5 +1,7 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:opfan/features/crews/data/repository/crew_repository_interface.dart';
+import 'package:opfan/features/crews/bloc/crews_failure.dart';
 import 'package:opfan/features/crews/bloc/edit_crew_event.dart';
 import 'package:opfan/features/crews/bloc/edit_crew_state.dart';
 
@@ -21,7 +23,8 @@ class EditCrewBloc extends Bloc<EditCrewEvent, EditCrewState> {
       // Buscar a crew atual para manter os dados que não estão sendo editados
       final currentCrew = await _crewRepository.getCrew(event.crewId);
       if (currentCrew == null) {
-        throw Exception('Tripulação não encontrada');
+        emit(const EditCrewFailure(CrewsFailure.notFound));
+        return;
       }
 
       final updatedCrew = currentCrew.copyWith(
@@ -36,7 +39,8 @@ class EditCrewBloc extends Bloc<EditCrewEvent, EditCrewState> {
       await _crewRepository.updateCrew(event.crewId, updatedCrew);
       emit(EditCrewSuccess(event.crewId));
     } catch (e) {
-      emit(EditCrewFailure(e.toString()));
+      debugPrint('EditCrewBloc: update crew failed: $e');
+      emit(const EditCrewFailure(CrewsFailure.saveFailed));
     }
   }
 

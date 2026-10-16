@@ -111,7 +111,7 @@ class _CharacterFightingStyleSectionState
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              'Estilo de Luta',
+              l10n.fightingStyleSectionTitle,
               style: Theme.of(
                 context,
               ).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
@@ -156,7 +156,7 @@ class _CharacterFightingStyleSectionState
               },
               validator: (value) {
                 if (value == null || value.isEmpty) {
-                  return 'Tipo de luta é obrigatório';
+                  return l10n.customCharacterFightingTypeRequired;
                 }
                 return null;
               },
@@ -165,7 +165,7 @@ class _CharacterFightingStyleSectionState
 
             // Armas
             Text(
-              'Armas',
+              l10n.fightingStyleWeaponsLabel,
               style: Theme.of(
                 context,
               ).textTheme.titleSmall?.copyWith(fontWeight: FontWeight.bold),
@@ -207,7 +207,7 @@ class _CharacterFightingStyleSectionState
 
             // Ataques
             Text(
-              'Ataques',
+              l10n.fightingStyleAttacksLabel,
               style: Theme.of(
                 context,
               ).textTheme.titleSmall?.copyWith(fontWeight: FontWeight.bold),
