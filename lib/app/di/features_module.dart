@@ -142,6 +142,8 @@ void registerFeaturesModule(GetIt getIt) {
     ),
   );
 
+  // A singleton on purpose: the timeline, its widgets and the goal details
+  // route all read and mutate the same goals list.
   getIt.registerLazySingleton<RobinKnowledgeBloc>(
     () => RobinKnowledgeBloc(
       plannerRepository: getIt<PlannerRepositoryInterface>(),
