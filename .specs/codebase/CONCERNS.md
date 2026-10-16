@@ -55,11 +55,9 @@ structure branch) are kept at the bottom so nobody re-reports them.
 ### 8. String-based routes
 - Per-feature `FeatureRouteModule`s aggregated in `AppRoutes._modules`; no compile-time safety
 
-### 9. Dead code
-- `palette_generator`, `image`, `stylish_bottom_bar` are declared but unused
-
 ## Fixed (no longer concerns)
 
+- Unused `palette_generator`, `image`, `stylish_bottom_bar` dependencies → removed
 - `service_locator.dart` with 40+ getters → split into `lib/app/di/` modules
 - `ThemeService`/`LocaleService` `ChangeNotifier` listeners in `MyApp` → `ThemeCubit`/`LocaleCubit`
 - `CalculatorProvider` (Provider/`ChangeNotifier`) → `CalculatorCubit`

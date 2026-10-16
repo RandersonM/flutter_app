@@ -64,7 +64,6 @@ Source of truth: `pubspec.yaml`, `.fvmrc`, `lib/main.dart`, `lib/app/di/`.
   flutter_svg ^2.0.10, url_launcher ^6.2.5, uuid ^4.5.1
 - math_expressions ^2.4.0 (calculator)
 - flutter_dotenv ^5.1.0 — read only inside `EnvironmentService`
-- Declared but not imported in `lib/`: palette_generator, image, stylish_bottom_bar
 
 ## Testing
 - flutter_test, test ^1.24.6, mocktail ^1.0.5, bloc_test ^10.0.0, flutter_lints ^5.0.0
