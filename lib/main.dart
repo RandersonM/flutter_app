@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:firebase_app_check/firebase_app_check.dart';
+import 'package:flutter/foundation.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:opfan/features/one_piece/bloc/search_cubit.dart';
 import 'package:opfan/core/services/index.dart';
@@ -46,6 +48,22 @@ void main() async {
       getIt<IThemeService>().initialize(),
     ]);
     debugPrint('MAIN: Firebase, Env, Theme initialized.');
+
+    // Attaches App Check tokens to Cloud Functions calls. Debug builds use the
+    // debug provider (register the printed token in the console); the
+    // functions only reject calls without a token once REQUIRE_APP_CHECK is on.
+    await FirebaseAppCheck.instance
+        .activate(
+          androidProvider: kDebugMode
+              ? AndroidProvider.debug
+              : AndroidProvider.playIntegrity,
+          appleProvider: kDebugMode
+              ? AppleProvider.debug
+              : AppleProvider.deviceCheck,
+        )
+        .catchError((Object e) {
+          debugPrint('MAIN: App Check activation failed: $e');
+        });
 
     // Needs Firebase (current user) and must run before any feature opens
     // its local data. A failure here is retried on the first box opened.

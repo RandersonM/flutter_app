@@ -74,13 +74,6 @@ class SearchInternetHandler extends ToolHandler {
       );
     }
 
-    if (!webSearch.isConfigured) {
-      return ToolResult.error(
-        toolName: name,
-        reason: 'Tavily API key is not configured.',
-      );
-    }
-
     try {
       final results = await webSearch.search(
         query,

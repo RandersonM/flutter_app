@@ -9,8 +9,6 @@ enum SearchTopic {
 }
 
 abstract class IWebSearchService {
-  bool get isConfigured;
-
   /// Search the web for [query].
   ///
   /// [maxResults] limits the number of results returned.

@@ -1,27 +1,15 @@
-import 'package:dio/dio.dart';
+import 'package:cloud_functions/cloud_functions.dart';
 import 'package:flutter/foundation.dart';
-import 'package:opfan/core/services/index.dart';
 
 import 'i_web_search_service.dart';
 import 'web_search_result.dart';
 
+/// Tavily through the `webSearch` Cloud Function, which holds the API key,
+/// requires a signed-in user and enforces the daily quota.
 class WebSearchService implements IWebSearchService {
-  WebSearchService({required this._env}) {
-    _dio = Dio(
-      BaseOptions(
-        connectTimeout: const Duration(seconds: 5),
-        receiveTimeout: const Duration(seconds: 10),
-      ),
-    );
-  }
+  WebSearchService({required this._functions});
 
-  final IEnvironmentService _env;
-  late final Dio _dio;
-
-  static const _url = 'https://api.tavily.com/search';
-
-  @override
-  bool get isConfigured => _env.tavilyApiKey.isNotEmpty;
+  final FirebaseFunctions _functions;
 
   @override
   Future<List<WebSearchResult>> search(
@@ -31,60 +19,59 @@ class WebSearchService implements IWebSearchService {
     String includeAnswer = 'advanced',
     SearchTopic searchTopic = SearchTopic.general,
   }) async {
-    if (!isConfigured) return [];
-
     try {
-      final response = await _dio.post(
-        _url,
-        data: {
-          'api_key': _env.tavilyApiKey,
-          'query': query,
-          'search_depth': searchDepth,
-          'max_results': maxResults,
-          'search_topic': searchTopic.value,
-          'include_answer': includeAnswer,
-          'include_raw_content': false,
-        },
-        options: Options(headers: {'Content-Type': 'application/json'}),
-      );
-
-      if (response.statusCode == 200 && response.data != null) {
-        final data = response.data as Map<String, dynamic>;
-        final raw = data['results'] as List?;
-        if (raw == null) return [];
-
-        // Tavily returns a single top-level answer when include_answer=true.
-        final topAnswer = data['answer'] as String?;
-
-        final results = raw
-            .map(
-              (r) => WebSearchResult(
-                title: r['title'] as String? ?? '',
-                url: r['url'] as String? ?? '',
-                content: r['content'] as String? ?? '',
-                score: (r['score'] as num?)?.toDouble() ?? 0.0,
-              ),
-            )
-            .where((r) => r.content.isNotEmpty)
-            .toList();
-
-        // Attach the top-level answer to the first result.
-        if (results.isNotEmpty && topAnswer != null && topAnswer.isNotEmpty) {
-          results[0] = WebSearchResult(
-            title: results[0].title,
-            url: results[0].url,
-            content: results[0].content,
-            score: results[0].score,
-            answer: topAnswer,
-          );
-        }
-
-        return results;
-      }
+      final response = await _functions
+          .httpsCallable(
+            'webSearch',
+            options: HttpsCallableOptions(timeout: const Duration(seconds: 20)),
+          )
+          .call<Object?>({
+            'query': query,
+            'maxResults': maxResults,
+            'searchDepth': searchDepth,
+            'includeAnswer': includeAnswer,
+            'topic': searchTopic.value,
+          });
+      final data = response.data;
+      if (data is! Map) return [];
+      return resultsFromResponse(Map<String, dynamic>.from(data));
+    } on FirebaseFunctionsException catch (e) {
+      debugPrint('WebSearchService: webSearch failed (${e.code})');
       return [];
     } catch (e) {
       debugPrint('WebSearchService: error: $e');
       return [];
     }
+  }
+
+  /// Tavily returns one top-level answer; it rides on the first result.
+  @visibleForTesting
+  static List<WebSearchResult> resultsFromResponse(Map<String, dynamic> data) {
+    final raw = data['results'] as List? ?? const [];
+    final results = raw
+        .whereType<Map>()
+        .map(
+          (r) => WebSearchResult(
+            title: r['title'] as String? ?? '',
+            url: r['url'] as String? ?? '',
+            content: r['content'] as String? ?? '',
+            score: (r['score'] as num?)?.toDouble() ?? 0.0,
+          ),
+        )
+        .where((r) => r.content.isNotEmpty)
+        .toList();
+
+    final answer = data['answer'] as String?;
+    if (results.isNotEmpty && answer != null && answer.isNotEmpty) {
+      final first = results.first;
+      results[0] = WebSearchResult(
+        title: first.title,
+        url: first.url,
+        content: first.content,
+        score: first.score,
+        answer: answer,
+      );
+    }
+    return results;
   }
 }

@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:cloud_functions/cloud_functions.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
@@ -46,6 +47,9 @@ void registerCoreModule(GetIt getIt) {
     () => FirebaseMessaging.instance,
   );
   getIt.registerLazySingleton<GoogleSignIn>(() => GoogleSignIn());
+  getIt.registerLazySingleton<FirebaseFunctions>(
+    () => FirebaseFunctions.instance,
+  );
   getIt.registerLazySingleton<FlutterSecureStorage>(
     () => const FlutterSecureStorage(
       // Readable after the first unlock so background work can open the
@@ -96,7 +100,7 @@ void registerCoreModule(GetIt getIt) {
     () => YouTubeService(env: getIt<IEnvironmentService>()),
   );
   getIt.registerLazySingleton<IGeminiService>(
-    () => GeminiService(env: getIt<IEnvironmentService>()),
+    () => GeminiService(functions: getIt<FirebaseFunctions>()),
   );
   getIt.registerLazySingleton<ICharacterImageService>(
     () => CharacterImageService(geminiService: getIt<IGeminiService>()),
@@ -173,7 +177,7 @@ void registerCoreModule(GetIt getIt) {
     () => RAGService(storage: getIt<IUserStorageService>()),
   );
   getIt.registerLazySingleton<IWebSearchService>(
-    () => WebSearchService(env: getIt<IEnvironmentService>()),
+    () => WebSearchService(functions: getIt<FirebaseFunctions>()),
   );
 
   // ── Function Calling (Gemma tool registry) ─────────────────────────────────
