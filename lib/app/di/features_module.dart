@@ -18,6 +18,7 @@ import 'package:opfan/features/home/bloc/home_bloc.dart';
 import 'package:opfan/features/devil_fruit/bloc/devil_fruit_bloc.dart';
 import 'package:opfan/features/crews/bloc/index.dart';
 import 'package:opfan/features/custom_character/bloc/index.dart';
+import 'package:opfan/features/duels/bloc/index.dart';
 import 'package:opfan/features/nami_finances/bloc/chat/nami_chat_bloc.dart';
 import 'package:opfan/features/nami_finances/bloc/nami_finances_bloc.dart';
 import 'package:opfan/features/zoro_workout/bloc/index.dart';
@@ -90,6 +91,12 @@ void registerFeaturesModule(GetIt getIt) {
     () => CharacterFormOptionsCubit(
       devilFruitService: getIt<IDevilFruitService>(),
       crewRepository: getIt<ICrewRepository>(),
+    ),
+  );
+  getIt.registerFactory<DuelsBloc>(
+    () => DuelsBloc(
+      featuredCharacterRepository: getIt<IFeaturedCharacterRepository>(),
+      customCharacterRepository: getIt<ICustomCharacterRepository>(),
     ),
   );
 
@@ -184,6 +191,7 @@ extension FeaturesModuleExtensions on GetIt {
   CustomCharacterBloc get customCharacterBloc => get<CustomCharacterBloc>();
   CharacterFormOptionsCubit get characterFormOptionsCubit =>
       get<CharacterFormOptionsCubit>();
+  DuelsBloc get duelsBloc => get<DuelsBloc>();
   ListCrewsBloc get listCrewsBloc => get<ListCrewsBloc>();
   CrewDetailsBloc crewDetailsBloc(CrewModel crew) =>
       get<CrewDetailsBloc>(param1: crew);
