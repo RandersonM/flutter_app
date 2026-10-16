@@ -1,11 +1,9 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:equatable/equatable.dart';
-import 'package:opfan/features/robin_knowledge/data/models/goal_model.dart';
 import 'package:opfan/features/robin_knowledge/data/repository/i_planner_repository.dart';
 
-part 'robin_knowledge_event.dart';
-part 'robin_knowledge_state.dart';
+import 'robin_knowledge_event.dart';
+import 'robin_knowledge_state.dart';
 
 class RobinKnowledgeBloc
     extends Bloc<RobinKnowledgeEvent, RobinKnowledgeState> {

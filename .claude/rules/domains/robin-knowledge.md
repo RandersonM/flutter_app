@@ -32,6 +32,5 @@ tags, notes}`
   details route share one goals list. `RobinKnowledgeScreen` provides it with
   `BlocProvider.value(getIt<RobinKnowledgeBloc>())`; pushed routes receive it with
   `BlocProvider.value(value: context.read<RobinKnowledgeBloc>())`.
-- `PlannerRepositoryInterface` lacks the `I` prefix; the bloc uses `part`/`part of`.
 - `updateGoal` never writes `completed`.
 - The Firestore `planner` rule is open to any signed-in user (`firebase.md`).

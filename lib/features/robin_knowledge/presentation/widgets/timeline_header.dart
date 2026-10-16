@@ -2,7 +2,7 @@ import 'package:phosphoricons_flutter/phosphoricons_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:opfan/features/robin_knowledge/data/models/goal_model.dart';
-import 'package:opfan/features/robin_knowledge/bloc/robin_knowledge_bloc.dart';
+import 'package:opfan/features/robin_knowledge/bloc/index.dart';
 import 'package:opfan/l10n/app_localizations.dart';
 import 'package:opfan/shared/utils/app_semantic_colors.dart';
 

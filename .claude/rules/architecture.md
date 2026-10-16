@@ -54,8 +54,7 @@ lib/features/<feature>/
 
 - Interfaces: `abstract class IName` in `i_name.dart`, in the same folder as the
   impl. The impl drops the prefix: `CrewRepository implements ICrewRepository`.
-  No `*Impl`, no backend prefix (`FirestoreCrewRepository`). Legacy
-  `*_repository_interface.dart` files and `PlannerRepositoryInterface` are debt.
+  No `*Impl`, no backend prefix (`FirestoreCrewRepository`).
 - Files `snake_case.dart`, one public class per file (event/state/model files may
   hold a family of related classes). Private helper widgets `_Name` may share the file.
 - Barrel `index.dart` files exist for services, blocs and widget folders; add new

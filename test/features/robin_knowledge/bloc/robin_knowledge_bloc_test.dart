@@ -2,7 +2,7 @@ import 'package:bloc_test/bloc_test.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:opfan/core/errors/app_exceptions.dart';
-import 'package:opfan/features/robin_knowledge/bloc/robin_knowledge_bloc.dart';
+import 'package:opfan/features/robin_knowledge/bloc/index.dart';
 import 'package:opfan/features/robin_knowledge/data/models/goal_model.dart';
 import 'package:opfan/features/robin_knowledge/data/repository/i_planner_repository.dart';
 
