@@ -40,15 +40,31 @@ class GemmaService implements IGemmaService {
     try {
       final modelName = GetIt.I.get<IEnvironmentService>().gemmaModelName;
       final installed = await FlutterGemma.isModelInstalled(modelName);
-      if (installed) {
+      if (!installed) {
+        _emit(const GemmaNotInstalled());
+      } else if (_model == null) {
         await loadModel(isThinkingMode: isThinkingMode);
       } else {
-        _emit(const GemmaNotInstalled());
+        await _refreshVegapunkChat(isThinkingMode: isThinkingMode);
       }
     } catch (e) {
       debugPrint('GemmaService.initialize error: $e');
       _emit(GemmaError(e));
     }
+  }
+
+  /// Re-entering Vegapunk (or toggling thinking mode) only needs a fresh
+  /// singleton chat — current locale, clean context. Reopening the model would
+  /// also close every named session, Nami's included.
+  Future<void> _refreshVegapunkChat({required bool isThinkingMode}) async {
+    _emit(const GemmaLoading());
+    try {
+      await _createVegapunkChat(isThinkingMode: isThinkingMode);
+    } catch (e) {
+      debugPrint('GemmaService: chat refresh failed, reloading model: $e');
+      await _recreateChat(isThinkingMode: isThinkingMode);
+    }
+    _emit(const GemmaReady());
   }
 
   @override
@@ -166,11 +182,10 @@ class GemmaService implements IGemmaService {
     Error.throwWithStackTrace(lastError!, lastStackTrace!);
   }
 
-  /// Closes the current chat/session and creates a fresh one against the
-  /// active model. [loadModel] and [resetChat] both go through here so the
-  /// backend/model-type selection can never drift between the two call
-  /// sites — resetChat used to omit `preferredBackend: gpu`, which risked a
-  /// silent fallback to CPU-only inference on every new conversation.
+  /// Full reload: closes the chat and every named session, reopens the model
+  /// through [_openModelWithFallback], then creates the Vegapunk chat. Only
+  /// needed when no model is open yet or a refresh failed — routine resets use
+  /// [_refreshVegapunkChat], which keeps the model and other sessions alive.
   Future<void> _recreateChat({required bool isThinkingMode}) async {
     final oldChat = _chat;
     _chat = null;
@@ -184,9 +199,6 @@ class GemmaService implements IGemmaService {
       await session.close();
     }
 
-    final env = GetIt.I.get<IEnvironmentService>();
-    final modelType = _determineModelType(env.gemmaModelName);
-
     // GPU (Metal) is preferred for speed, but its init can fail on devices
     // where the accelerator is unavailable or cannot fit the model — so fall
     // back to CPU rather than leaving the chat unusable. The plugin resets its
@@ -196,9 +208,19 @@ class GemmaService implements IGemmaService {
     // Note: this only recovers *reported* failures. If the OS kills the process
     // for exceeding its memory limit there is no Dart error to catch — that is
     // what the increased-memory-limit entitlement in Runner.entitlements is for.
-    final model = await _openModelWithFallback();
-    _model = model;
-    _chat = await model.createChat(
+    _model = await _openModelWithFallback();
+    await _createVegapunkChat(isThinkingMode: isThinkingMode);
+  }
+
+  Future<void> _createVegapunkChat({required bool isThinkingMode}) async {
+    final oldChat = _chat;
+    _chat = null;
+    await oldChat?.close();
+
+    final modelType = _determineModelType(
+      GetIt.I.get<IEnvironmentService>().gemmaModelName,
+    );
+    _chat = await _model!.createChat(
       systemInstruction: _vegapunkPrompt,
       // Lower temperature = more deterministic = more reliable function calling.
       // Normal mode: 0.2 (was 0.5) — essential for JSON tool call emission.
@@ -428,11 +450,9 @@ class GemmaService implements IGemmaService {
     // No guard on _currentStatus: allow reset from any non-error state.
     // The previous guard (is! GemmaReady) caused deadlocks when the status
     // changed between the time resetChat was scheduled and executed.
+    _isThinkingMode = isThinkingMode;
     try {
-      _emit(const GemmaLoading());
-      _isThinkingMode = isThinkingMode;
-      await _recreateChat(isThinkingMode: isThinkingMode);
-      _emit(const GemmaReady());
+      await _refreshVegapunkChat(isThinkingMode: isThinkingMode);
     } catch (e) {
       _emit(GemmaError(e));
     }
