@@ -77,3 +77,5 @@ firestore.rules
 firebase_options.dart
 google-services.json
 GoogleService-Info.plist
+# Claude Code harness runtime state (hook markers)
+.claude/.state/

@@ -1,0 +1,33 @@
+---
+paths:
+  - "lib/features/robin_knowledge/**"
+---
+
+# Domain — Robin knowledge (goals planner)
+
+No AI. A goals/timeline planner stored in Firestore `planner` (filtered by `userId`
+through `IFirestoreService.getUserDocuments`). Blocked offline by
+`OfflineBlockerOverlay`. Route `/knowledge`.
+
+## Model (`lib/features/robin_knowledge/data/models/goal_model.dart` — golden model)
+
+`GoalModel{title, description, deadline, createdAt, category, status, progress,
+tags, notes}`
+- `category`: `study`, `work`, `personal`, `health`, `finance`, `other`.
+- `status`: `notStarted`, `inProgress`, `completed`, `overdue`.
+- `progress`: 0–100.
+
+## Rules
+
+- `updateGoalProgress` appends a timestamped note and **derives** status from
+  progress — don't set status independently of progress.
+- Semantic status colours must come from `semanticColors` / `colorScheme.error`
+  (`goal_card.dart` still uses `AppColors.red/green` — debt).
+
+## Debt
+
+- `RobinKnowledgeBloc` is a lazy **singleton** (state survives leaving the screen),
+  unlike every other feature BLoC.
+- `PlannerRepositoryInterface` lacks the `I` prefix; the bloc uses `part`/`part of`.
+- `updateGoal` never writes `completed`.
+- The Firestore `planner` rule is open to any signed-in user (`firebase.md`).
