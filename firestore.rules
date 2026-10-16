@@ -1,0 +1,118 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Função para verificar se o usuário está autenticado
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+    
+    // Função para verificar se o usuário é o proprietário do documento
+    function isOwner(userId) {
+      return isAuthenticated() && request.auth.uid == userId;
+    }
+    
+    // Função para verificar se o documento pertence ao usuário atual
+    function isDocumentOwner() {
+      return isAuthenticated() && request.auth.uid == resource.data.userId;
+    }
+    
+    // Regras para personagens customizados
+    match /custom_characters/{document} {
+      allow read: if isAuthenticated() && request.auth.uid == resource.data.userId;
+      allow create: if isAuthenticated() && request.auth.uid == request.resource.data.userId;
+      allow update, delete: if isDocumentOwner();
+    }
+    
+    // Regras para dados de formulário
+    match /formData/{document} {
+      allow read, write: if isAuthenticated();
+      allow create: if isAuthenticated() && request.auth.uid == request.resource.data.userId;
+      allow update, delete: if isDocumentOwner();
+    }
+    
+    // Regras para tripulações (crews)
+    match /crews/{document} {
+      allow read, write: if isAuthenticated();
+      allow create: if isAuthenticated() && request.auth.uid == request.resource.data.userId;
+      allow update, delete: if isDocumentOwner();
+    }
+    
+    // Regras para personagens em destaque (featured characters)
+    match /featuredCharacters/{document} {
+      allow read: if true; // Permitir leitura pública
+      allow write: if isAuthenticated() && request.auth.uid == request.resource.data.userId;
+      allow update, delete: if isAuthenticated() && request.auth.uid == resource.data.userId;
+    }
+    
+    // Regras para personagens One Piece (dados públicos)
+    match /onePieceCharacters/{document} {
+      allow read: if true; // Permitir leitura pública
+      allow write: if isAuthenticated(); // Apenas usuários autenticados podem escrever
+    }
+    
+    // Regras para frutas do diabo (dados públicos)
+    match /devilFruits/{document} {
+      allow read: if true; // Permitir leitura pública
+      allow write: if isAuthenticated(); // Apenas usuários autenticados podem escrever
+    }
+    
+    // Regras para duelos
+    match /duels/{document} {
+      allow read, write: if isAuthenticated();
+      allow create: if isAuthenticated() && request.auth.uid == request.resource.data.userId;
+      allow update, delete: if isDocumentOwner();
+    }
+    
+    // Regras para configurações de usuário
+    match /userSettings/{document} {
+      allow read, write: if isAuthenticated();
+      allow create: if isAuthenticated() && request.auth.uid == request.resource.data.userId;
+      allow update, delete: if isDocumentOwner();
+    }
+    
+    // Regras para favoritos do usuário
+    match /userFavorites/{document} {
+      allow read, write: if isAuthenticated();
+      allow create: if isAuthenticated() && request.auth.uid == request.resource.data.userId;
+      allow update, delete: if isDocumentOwner();
+    }
+    
+    // Regras para histórico de atividades
+    match /userActivity/{document} {
+      allow read, write: if isAuthenticated();
+      allow create: if isAuthenticated() && request.auth.uid == request.resource.data.userId;
+      allow update, delete: if isDocumentOwner();
+    }
+    
+    // Regras para avaliações de treino
+    match /workout_assessments/{document} {
+      // Permitir leitura se o usuário está autenticado e é o dono do documento
+      allow read: if request.auth != null && 
+                   request.auth.uid == resource.data.user_id;
+      
+      // Permitir criação se o usuário está autenticado e é o dono
+      allow create: if request.auth != null && 
+                     request.auth.uid == request.resource.data.user_id;
+      
+      // Permitir atualização se o usuário está autenticado e é o dono
+      allow update: if request.auth != null && 
+                     request.auth.uid == resource.data.user_id;
+      
+      // Permitir exclusão apenas para o dono
+      allow delete: if request.auth != null && 
+                     request.auth.uid == resource.data.user_id;
+    }
+    
+    // Regras para planner (objetivos/metas)
+    match /planner/{document} {
+      allow read, write: if isAuthenticated();
+      allow create: if isAuthenticated() && request.auth.uid == request.resource.data.userId;
+      allow update, delete: if isDocumentOwner();
+    }
+    
+    // Regras para perfis de usuário (nova arquitetura)
+    match /users/{userId} {
+      allow read, write: if isOwner(userId);
+    }
+  }
+}

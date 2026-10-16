@@ -73,7 +73,6 @@ app.*.map.json
 !.env.example
 local.properties
 firebase.json
-firestore.rules
 firebase_options.dart
 google-services.json
 GoogleService-Info.plist
