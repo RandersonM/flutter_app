@@ -4,6 +4,7 @@ export 'connectivity/index.dart';
 export 'finances/index.dart';
 export 'gemini/index.dart';
 export 'gemma/index.dart';
+export 'http/index.dart';
 export 'notification/index.dart';
 export 'nutrition/index.dart';
 export 'one_piece/index.dart';
