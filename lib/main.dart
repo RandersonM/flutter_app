@@ -15,7 +15,7 @@ import 'firebase_options.dart';
 import 'package:opfan/features/one_piece/bloc/characters_cubit.dart';
 import 'package:opfan/core/auth/app_wrapper.dart';
 import 'package:opfan/core/auth/blocs/index.dart';
-import 'package:opfan/shared/widgets/atoms/offline_banner.dart';
+import 'package:opfan/shared/widgets/organisms/offline_banner.dart';
 
 import 'package:opfan/shared/utils/app_routes.dart';
 
