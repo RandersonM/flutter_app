@@ -161,6 +161,41 @@ void main() {
     );
 
     blocTest<NamiFinancesBloc, NamiFinancesState>(
+      'ignores a second save while the first is still writing',
+      setUp: () {
+        stubSavableMonth();
+        when(() => rag.syncMonth(any())).thenAnswer((_) async {});
+      },
+      build: build,
+      act: (bloc) {
+        bloc
+          ..add(save())
+          ..add(save());
+      },
+      expect: () => [saved],
+      verify: (_) {
+        verify(() => service.saveFinances(any())).called(1);
+        verify(() => rag.syncMonth(any())).called(1);
+      },
+    );
+
+    blocTest<NamiFinancesBloc, NamiFinancesState>(
+      'saves again once the previous save finished',
+      setUp: () {
+        stubSavableMonth();
+        when(() => rag.syncMonth(any())).thenAnswer((_) async {});
+      },
+      build: build,
+      act: (bloc) async {
+        bloc.add(save());
+        await bloc.stream.first;
+        bloc.add(save());
+      },
+      expect: () => [saved, saved],
+      verify: (_) => verify(() => service.saveFinances(any())).called(2),
+    );
+
+    blocTest<NamiFinancesBloc, NamiFinancesState>(
       'reports the save when the search index sync fails',
       setUp: () {
         stubSavableMonth();

@@ -162,5 +162,21 @@ void main() {
     test('does not read "mil" inside another word as thousands', () {
       expect(router.extractAmounts('algo similar por 500'), [500]);
     });
+
+    test('reads "mm" as millimetres, not millions', () {
+      expect(router.extractAmounts('parafuso de 8 mm por 50'), [8, 50]);
+    });
+
+    test('does not scale by words with accented letters', () {
+      expect(router.extractAmounts('3 milímetros'), [3]);
+      expect(router.extractAmounts('milésimo pedido de 50'), [50]);
+    });
+
+    test('still scales the standalone shorthands', () {
+      expect(router.extractAmounts('1,5 mil'), [1500]);
+      expect(router.extractAmounts('2k'), [2000]);
+      expect(router.extractAmounts('1 mi'), [1000000]);
+      expect(router.extractAmounts('500 milhas'), [500]);
+    });
   });
 }
