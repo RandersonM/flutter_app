@@ -18,7 +18,7 @@ class CharacterSelector extends StatelessWidget {
   final CustomCharacterModel? selectedCharacter;
   final List<CustomCharacterModel> availableCharacters;
   final Function(CustomCharacterModel) onCharacterSelected;
-  final VoidCallback onClearSelection;
+  final VoidCallback? onClearSelection;
   final int position;
 
   const CharacterSelector({
