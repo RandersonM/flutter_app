@@ -4,6 +4,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/foundation.dart';
 import 'package:opfan/core/auth/models/user_model.dart';
+import 'package:opfan/core/user_profile/models/body_profile.dart';
 import 'package:opfan/core/user_profile/repository/i_user_profile_repository.dart';
 
 /// Firestore implementation of [IUserProfileRepository].
@@ -23,39 +24,21 @@ class UserProfileRepository implements IUserProfileRepository {
   // ── Interface implementation ───────────────────────────────────────────────
 
   @override
-  Future<UserModel?> fetchProfile(String uid) async {
+  Future<BodyProfile?> fetchBodyProfile(String uid) async {
     try {
-      final snapshot = await _docRef(uid).get();
-
-      if (!snapshot.exists || snapshot.data() == null) return null;
-
-      final data = snapshot.data()!;
-
-      // Convert Firestore Timestamps back to ISO strings for DateTime fields.
-      _convertTimestamps(data);
-
-      return UserModel.fromJson(data);
+      final data = (await _docRef(uid).get()).data();
+      return data == null ? null : BodyProfile.fromFirestore(data);
     } catch (e) {
-      debugPrint('UserProfileRepository.fetchProfile: $e');
-      return null;
+      debugPrint('UserProfileRepository.fetchBodyProfile: $e');
+      rethrow;
     }
   }
 
   @override
   Future<void> saveProfile(UserModel profile) async {
     try {
-      final data = <String, dynamic>{
-        'gender': profile.gender,
-        'age': profile.age,
-        'height_cm': profile.heightCm,
-        'weight_kg': profile.weightKg,
-        'activity_level': profile.activityLevel,
-        'goal': profile.goal,
-        'waist_cm': profile.waistCm,
-        'chest_cm': profile.chestCm,
-        'arm_cm': profile.armCm,
-        'hip_cm': profile.hipCm,
-        'thigh_cm': profile.thighCm,
+      final data = {
+        ...BodyProfile.fromUser(profile).toFirestore(),
         'updated_at': FieldValue.serverTimestamp(),
       };
 
@@ -105,19 +88,6 @@ class UserProfileRepository implements IUserProfileRepository {
     } catch (e) {
       debugPrint('UserProfileRepository.deleteProfile: $e');
       rethrow;
-    }
-  }
-
-  // ── Private helpers ────────────────────────────────────────────────────────
-
-  /// Converts Firestore [Timestamp] values in [data] to ISO 8601 strings
-  /// so that [UserModel.fromJson] can parse them correctly.
-  void _convertTimestamps(Map<String, dynamic> data) {
-    for (final key in ['created_at', 'last_sign_in', 'updated_at']) {
-      final value = data[key];
-      if (value is Timestamp) {
-        data[key] = value.toDate().toIso8601String();
-      }
     }
   }
 }

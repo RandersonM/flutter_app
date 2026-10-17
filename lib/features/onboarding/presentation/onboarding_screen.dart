@@ -7,6 +7,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:opfan/core/auth/blocs/index.dart';
 import 'package:opfan/core/auth/models/user_model.dart';
 import 'package:opfan/shared/utils/app_routes.dart';
+import 'package:opfan/shared/utils/body_measure.dart';
+import 'package:opfan/shared/utils/body_measure_validator.dart';
 import 'package:opfan/shared/utils/constants.dart';
 import 'package:opfan/features/onboarding/presentation/widgets/onboarding_step_indicator.dart';
 import 'package:opfan/l10n/app_localizations.dart';
@@ -26,6 +28,8 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
 
   int _currentStep = 0;
   bool _isEditing = false;
+  bool _isSaving = false;
+  bool _prefilled = false;
   UserModel? _initialData;
 
   // Step 1 - Personal Data
@@ -47,6 +51,10 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
+    // Runs again whenever the route status changes; prefilling again would
+    // wipe what the user already typed or picked.
+    if (_prefilled) return;
+    _prefilled = true;
 
     // Suporte a modo de edição via RouteSettings
     final args = ModalRoute.of(context)?.settings.arguments;
@@ -145,6 +153,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
   };
 
   void _submitForm() {
+    if (_isSaving) return;
     if (_formKey2.currentState!.validate() &&
         _activityLevel != null &&
         _goal != null) {
@@ -156,16 +165,16 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
 
       final updatedUser = user.copyWith(
         gender: _gender,
-        age: int.tryParse(_ageController.text),
-        heightCm: double.tryParse(_heightController.text),
-        weightKg: double.tryParse(_weightController.text),
+        age: BodyMeasure.age.parse(_ageController.text)?.toInt(),
+        heightCm: BodyMeasure.heightCm.parse(_heightController.text),
+        weightKg: BodyMeasure.weightKg.parse(_weightController.text),
         activityLevel: _activityLevel,
         goal: _goal,
-        waistCm: double.tryParse(_waistController.text),
-        chestCm: double.tryParse(_chestController.text),
-        armCm: double.tryParse(_armController.text),
-        hipCm: double.tryParse(_hipController.text),
-        thighCm: double.tryParse(_thighController.text),
+        waistCm: BodyMeasure.waistCm.parse(_waistController.text),
+        chestCm: BodyMeasure.chestCm.parse(_chestController.text),
+        armCm: BodyMeasure.armCm.parse(_armController.text),
+        hipCm: BodyMeasure.hipCm.parse(_hipController.text),
+        thighCm: BodyMeasure.thighCm.parse(_thighController.text),
       );
 
       context.read<AuthBloc>().add(
@@ -174,6 +183,8 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
 
       if (_isEditing) {
         Navigator.of(context).pop();
+      } else {
+        setState(() => _isSaving = true);
       }
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
@@ -195,14 +206,19 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
           (state is AuthAuthenticated || state is AuthProfileUpdateFailed),
       listener: (context, state) {
         if (state is AuthProfileUpdateFailed) {
+          setState(() => _isSaving = false);
           ScaffoldMessenger.of(
             context,
           ).showSnackBar(SnackBar(content: Text(l10n.profileUpdateFailed)));
           return;
         }
-        Navigator.of(
-          context,
-        ).pushNamedAndRemoveUntil(AppRoutes.home, (route) => false);
+        // Under AppWrapper the root switches to Home itself, and replacing the
+        // stack would drop AppWrapper (sign-out would then land on guest Home).
+        if (ModalRoute.of(context)?.settings.name == AppRoutes.onboarding) {
+          Navigator.of(
+            context,
+          ).pushNamedAndRemoveUntil(AppRoutes.home, (route) => false);
+        }
       },
       child: Scaffold(
         appBar: AppBar(
@@ -247,6 +263,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                             : l10n.onboardingFinish),
                   variant: AppButtonVariant.primary,
                   isFullWidth: true,
+                  isLoading: _isSaving,
                   onPressed: _nextStep,
                 ),
               ),
@@ -313,6 +330,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
             ),
             const SizedBox(height: 24),
             _buildNumberField(
+              measure: BodyMeasure.age,
               controller: _ageController,
               label: AppLocalizations.of(context)!.ageLabel,
               suffix: AppLocalizations.of(context)!.onboardingAgeSuffix,
@@ -320,6 +338,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
             ),
             const SizedBox(height: 16),
             _buildNumberField(
+              measure: BodyMeasure.heightCm,
               controller: _heightController,
               label: AppLocalizations.of(context)!.heightLabel,
               suffix: 'cm',
@@ -327,6 +346,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
             ),
             const SizedBox(height: 16),
             _buildNumberField(
+              measure: BodyMeasure.weightKg,
               controller: _weightController,
               label: AppLocalizations.of(context)!.currentWeightLabel,
               suffix: 'kg',
@@ -464,6 +484,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
               children: [
                 Expanded(
                   child: _buildNumberField(
+                    measure: BodyMeasure.waistCm,
                     controller: _waistController,
                     label: AppLocalizations.of(context)!.waistLabel,
                     suffix: 'cm',
@@ -473,6 +494,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                 const SizedBox(width: 16),
                 Expanded(
                   child: _buildNumberField(
+                    measure: BodyMeasure.chestCm,
                     controller: _chestController,
                     label: AppLocalizations.of(context)!.chestLabel,
                     suffix: 'cm',
@@ -486,6 +508,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
               children: [
                 Expanded(
                   child: _buildNumberField(
+                    measure: BodyMeasure.armCm,
                     controller: _armController,
                     label: AppLocalizations.of(context)!.armLabel,
                     suffix: 'cm',
@@ -495,6 +518,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                 const SizedBox(width: 16),
                 Expanded(
                   child: _buildNumberField(
+                    measure: BodyMeasure.hipCm,
                     controller: _hipController,
                     label: AppLocalizations.of(context)!.hipLabel,
                     suffix: 'cm',
@@ -509,6 +533,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
               child: Padding(
                 padding: const EdgeInsets.only(right: 8.0),
                 child: _buildNumberField(
+                  measure: BodyMeasure.thighCm,
                   controller: _thighController,
                   label: AppLocalizations.of(context)!.thighLabel,
                   suffix: 'cm',
@@ -539,31 +564,39 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
   }
 
   Widget _buildNumberField({
+    required BodyMeasure measure,
     required TextEditingController controller,
     required String label,
     required String suffix,
     bool isOptional = false,
     String? validatorMsg,
   }) {
+    final l10n = AppLocalizations.of(context)!;
+    final validator = bodyMeasureValidator(
+      measure,
+      l10n: l10n,
+      missingMessage: validatorMsg ?? l10n.onboardingInvalidValue,
+      invalidMessage: l10n.onboardingInvalidValue,
+    );
     return TextFormField(
       controller: controller,
-      keyboardType: const TextInputType.numberWithOptions(decimal: true),
+      keyboardType: TextInputType.numberWithOptions(
+        decimal: !measure.wholeNumber,
+      ),
       inputFormatters: [
-        FilteringTextInputFormatter.allow(RegExp(r'^\d*\.?\d*')),
+        measure.wholeNumber
+            ? FilteringTextInputFormatter.digitsOnly
+            : FilteringTextInputFormatter.allow(RegExp(r'^\d*[.,]?\d*')),
       ],
       decoration: InputDecoration(
         labelText: label,
         suffixText: suffix,
         alignLabelWithHint: true,
       ),
-      validator: (value) {
-        if (isOptional) return null;
-        if (value == null || value.isEmpty) return validatorMsg;
-        if (double.tryParse(value) == null) {
-          return AppLocalizations.of(context)!.onboardingInvalidValue;
-        }
-        return null;
-      },
+      validator: (value) =>
+          isOptional && (value == null || value.trim().isEmpty)
+          ? null
+          : validator(value),
     );
   }
 }

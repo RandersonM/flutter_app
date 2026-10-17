@@ -16,6 +16,7 @@ class _MockAuthBloc extends MockBloc<AuthEvent, AuthState>
     implements AuthBloc {}
 
 const _loginPlaceholder = 'login screen';
+const _homePlaceholder = 'home screen';
 
 void main() {
   final user = UserModel(
@@ -34,40 +35,80 @@ void main() {
 
   setUp(() => authBloc = _MockAuthBloc());
 
-  Future<void> pumpOnboarding(WidgetTester tester) async {
+  /// [routeName] `/` stands for the AppWrapper child; login pushes
+  /// [AppRoutes.onboarding].
+  Future<void> pumpOnboarding(
+    WidgetTester tester, {
+    String routeName = '/',
+  }) async {
     await tester.binding.setSurfaceSize(const Size(800, 1600));
     addTearDown(() => tester.binding.setSurfaceSize(null));
+    Route<void> route(RouteSettings settings) => MaterialPageRoute<void>(
+      settings: settings,
+      builder: (_) => switch (settings.name) {
+        AppRoutes.login => const Text(_loginPlaceholder),
+        AppRoutes.home => const Text(_homePlaceholder),
+        _ => const OnboardingScreen(),
+      },
+    );
     await tester.pumpWidget(
       getTestableWidget(
         BlocProvider<AuthBloc>.value(
           value: authBloc,
           child: Navigator(
-            onGenerateRoute: (settings) => MaterialPageRoute<void>(
-              settings: settings,
-              builder: (_) => settings.name == AppRoutes.login
-                  ? const Text(_loginPlaceholder)
-                  : const OnboardingScreen(),
-            ),
+            initialRoute: routeName,
+            onGenerateInitialRoutes: (_, name) => [
+              route(RouteSettings(name: name)),
+            ],
+            onGenerateRoute: route,
           ),
         ),
       ),
     );
   }
 
-  Future<void> fillAndFinish(WidgetTester tester) async {
+  Future<void> fillStepOne(
+    WidgetTester tester, {
+    String age = '25',
+    String height = '180',
+    String weight = '75',
+  }) async {
     await tester.tap(find.text('Male'));
-    final fields = find.byType(TextFormField);
-    await tester.enterText(fields.at(0), '25');
-    await tester.enterText(fields.at(1), '180');
-    await tester.enterText(fields.at(2), '75');
+    await tester.enterText(find.widgetWithText(TextFormField, 'Age'), age);
+    await tester.enterText(
+      find.widgetWithText(TextFormField, 'Height'),
+      height,
+    );
+    await tester.enterText(
+      find.widgetWithText(TextFormField, 'Current Weight'),
+      weight,
+    );
     await tester.tap(find.text('Next'));
     await tester.pumpAndSettle();
+  }
+
+  Future<void> fillStepTwo(WidgetTester tester, {String waist = ''}) async {
     await tester.tap(find.text('Lose Weight'));
     await tester.tap(find.text('Sedentary'));
+    await tester.enterText(find.widgetWithText(TextFormField, 'Waist'), waist);
     await tester.pump();
-    await tester.tap(find.text('Finish Sign-up'));
-    await tester.pumpAndSettle();
   }
+
+  Future<void> tapFinish(WidgetTester tester) async {
+    await tester.tap(find.text('Finish Sign-up'));
+    await tester.pump();
+    await tester.pump(const Duration(seconds: 1));
+  }
+
+  Future<void> fillAndFinish(WidgetTester tester) async {
+    await fillStepOne(tester);
+    await fillStepTwo(tester);
+    await tapFinish(tester);
+  }
+
+  AuthProfileBodyUpdated savedEvent() =>
+      verify(() => authBloc.add(captureAny())).captured.single
+          as AuthProfileBodyUpdated;
 
   group('OnboardingScreen submit', () {
     testWidgets('sends a guest to login instead of saving a profile', (
@@ -91,9 +132,7 @@ void main() {
 
       await fillAndFinish(tester);
 
-      final event =
-          verify(() => authBloc.add(captureAny())).captured.single
-              as AuthProfileBodyUpdated;
+      final event = savedEvent();
       expect(event.updatedUser.uid, 'uid-1');
       expect(event.updatedUser.goal, 'weight_loss');
       expect(event.updatedUser.activityLevel, 'sedentary');
@@ -118,6 +157,107 @@ void main() {
         find.text("Couldn't save your profile. Please try again."),
         findsOneWidget,
       );
+    });
+
+    testWidgets('submits the profile once while it is being saved', (
+      tester,
+    ) async {
+      when(() => authBloc.state).thenReturn(AuthNeedsOnboarding(user: user));
+      await pumpOnboarding(tester);
+      await fillStepOne(tester);
+      await fillStepTwo(tester);
+
+      await tapFinish(tester);
+      await tapFinish(tester);
+
+      verify(() => authBloc.add(any())).called(1);
+    });
+
+    testWidgets('lets AppWrapper switch to home once the profile is saved', (
+      tester,
+    ) async {
+      final states = StreamController<AuthState>();
+      addTearDown(states.close);
+      whenListen(
+        authBloc,
+        states.stream,
+        initialState: AuthNeedsOnboarding(user: user),
+      );
+      await pumpOnboarding(tester);
+
+      states.add(AuthAuthenticated(user: user));
+      await tester.pumpAndSettle();
+
+      expect(find.text(_homePlaceholder), findsNothing);
+    });
+
+    testWidgets('replaces the stack with home when login pushed onboarding', (
+      tester,
+    ) async {
+      final states = StreamController<AuthState>();
+      addTearDown(states.close);
+      whenListen(
+        authBloc,
+        states.stream,
+        initialState: AuthNeedsOnboarding(user: user),
+      );
+      await pumpOnboarding(tester, routeName: AppRoutes.onboarding);
+
+      states.add(AuthAuthenticated(user: user));
+      await tester.pumpAndSettle();
+
+      expect(find.text(_homePlaceholder), findsOneWidget);
+      expect(find.byType(OnboardingScreen), findsNothing);
+    });
+  });
+
+  group('OnboardingScreen measurements', () {
+    setUp(
+      () => when(
+        () => authBloc.state,
+      ).thenReturn(AuthNeedsOnboarding(user: user)),
+    );
+
+    testWidgets('accepts a weight typed with a decimal comma', (tester) async {
+      await pumpOnboarding(tester);
+
+      await fillStepOne(tester, weight: '72,5');
+      await fillStepTwo(tester, waist: '80,5');
+      await tapFinish(tester);
+
+      final saved = savedEvent().updatedUser;
+      expect(saved.weightKg, 72.5);
+      expect(saved.waistCm, 80.5);
+    });
+
+    testWidgets('refuses a height outside a human range', (tester) async {
+      await pumpOnboarding(tester);
+
+      await fillStepOne(tester, height: '0.5');
+
+      expect(find.text('Enter a value between 50 and 260'), findsOneWidget);
+      expect(find.text('Finish Sign-up'), findsNothing);
+    });
+
+    testWidgets('refuses an age outside a human range', (tester) async {
+      await pumpOnboarding(tester);
+
+      await fillStepOne(tester, age: '200');
+
+      expect(find.text('Enter a value between 10 and 120'), findsOneWidget);
+    });
+
+    testWidgets('refuses an optional measurement outside its range', (
+      tester,
+    ) async {
+      await pumpOnboarding(tester);
+      await fillStepOne(tester);
+
+      await fillStepTwo(tester, waist: '5');
+      await tapFinish(tester);
+
+      expect(find.text('Enter a value between 30 and 250'), findsOneWidget);
+      verifyNever(() => authBloc.add(any()));
     });
   });
 }

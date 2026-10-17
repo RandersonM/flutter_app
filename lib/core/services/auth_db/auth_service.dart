@@ -96,40 +96,22 @@ class AuthService implements IAuthService {
   bool get isAuthenticated =>
       currentUser != null && _firebaseAuth.currentUser != null;
 
+  /// The Firebase user decides, not the local cache: [checkAuthStatus]
+  /// rebuilds a lost cache (reinstall, reset keychain) from the Firebase user.
   @override
   Future<bool> isSessionValid() async {
+    final firebaseUser = _firebaseAuth.currentUser;
+    if (firebaseUser == null) return false;
     try {
-      final firebaseUser = _firebaseAuth.currentUser;
-      if (firebaseUser == null) return false;
-
-      // Attempt a forced token refresh (requires network).
       await firebaseUser.getIdToken(true);
-
-      final cachedUser = currentUser;
-      if (cachedUser == null || cachedUser.uid != firebaseUser.uid) {
-        return false;
-      }
-      return true;
     } catch (e) {
       if (_isSessionRevoked(e)) {
         debugPrint('AuthService: Session revoked - $e');
         return false;
       }
-      debugPrint('AuthService: Token refresh failed, using local cache - $e');
-      return _isLocalSessionValid();
+      debugPrint('AuthService: Token refresh failed, keeping session - $e');
     }
-  }
-
-  /// Validates the session using only local state (no network call).
-  ///
-  /// Returns true if both the Firebase SDK has a current user AND the Hive
-  /// cache has a matching [UserModel]. This covers the offline startup case.
-  bool _isLocalSessionValid() {
-    final firebaseUser = _firebaseAuth.currentUser;
-    final cachedUser = currentUser; // reads from Hive
-    return firebaseUser != null &&
-        cachedUser != null &&
-        firebaseUser.uid == cachedUser.uid;
+    return true;
   }
 
   /// Only an answer from the auth server ends the session. Offline, timeouts
@@ -202,34 +184,12 @@ class AuthService implements IAuthService {
           lastSignIn: user.metadata.lastSignInTime ?? DateTime.now(),
         );
 
-        final firestoreProfile = await _userProfileRepository.fetchProfile(
-          user.uid,
-        );
-        final finalUser = firestoreProfile != null
-            ? userModel.copyWith(
-                gender: firestoreProfile.gender,
-                age: firestoreProfile.age,
-                heightCm: firestoreProfile.heightCm,
-                weightKg: firestoreProfile.weightKg,
-                activityLevel: firestoreProfile.activityLevel,
-                goal: firestoreProfile.goal,
-                waistCm: firestoreProfile.waistCm,
-                chestCm: firestoreProfile.chestCm,
-                armCm: firestoreProfile.armCm,
-                hipCm: firestoreProfile.hipCm,
-                thighCm: firestoreProfile.thighCm,
-              )
-            : userModel;
+        final finalUser = await _withStoredBodyProfile(userModel);
 
         await _saveUser(finalUser);
 
-        try {
-          final notificationService = _notificationService;
-          if (notificationService.isInitialized) {
-            await notificationService.saveTokenToFirestore(user.uid);
-          }
-        } catch (e) {
-          debugPrint('AuthService: Erro ao salvar token FCM: $e');
+        if (_notificationService.isInitialized) {
+          unawaited(_saveFcmToken(user.uid));
         }
 
         debugPrint('AuthService: User signed in successfully and cached');
@@ -311,24 +271,7 @@ class AuthService implements IAuthService {
           );
         }
 
-        final firestoreProfile = await _userProfileRepository.fetchProfile(
-          firebaseUser.uid,
-        );
-        final finalUser = firestoreProfile != null
-            ? baseUser.copyWith(
-                gender: firestoreProfile.gender,
-                age: firestoreProfile.age,
-                heightCm: firestoreProfile.heightCm,
-                weightKg: firestoreProfile.weightKg,
-                activityLevel: firestoreProfile.activityLevel,
-                goal: firestoreProfile.goal,
-                waistCm: firestoreProfile.waistCm,
-                chestCm: firestoreProfile.chestCm,
-                armCm: firestoreProfile.armCm,
-                hipCm: firestoreProfile.hipCm,
-                thighCm: firestoreProfile.thighCm,
-              )
-            : baseUser;
+        final finalUser = await _withStoredBodyProfile(baseUser);
 
         await _saveUser(finalUser);
         return finalUser;
@@ -339,6 +282,29 @@ class AuthService implements IAuthService {
     } catch (e) {
       debugPrint('AuthService: Error checking auth status - $e');
       return null;
+    }
+  }
+
+  /// [user] with the body profile stored in Firestore. When it cannot be read
+  /// (offline with nothing cached, App Check), [user] keeps the body it
+  /// already has, so a complete cached profile never falls back to onboarding.
+  Future<UserModel> _withStoredBodyProfile(UserModel user) async {
+    try {
+      final stored = await _userProfileRepository.fetchBodyProfile(user.uid);
+      return stored?.applyTo(user) ?? user;
+    } catch (e) {
+      debugPrint('AuthService: Body profile unavailable, keeping cache - $e');
+      return user;
+    }
+  }
+
+  /// Not awaited by sign-in: the write completes only on the server ack, and
+  /// the signed-in state must not wait for it.
+  Future<void> _saveFcmToken(String uid) async {
+    try {
+      await _notificationService.saveTokenToFirestore(uid);
+    } catch (e) {
+      debugPrint('AuthService: Could not save the FCM token - $e');
     }
   }
 
@@ -423,9 +389,19 @@ class AuthService implements IAuthService {
 
   @override
   Future<void> updateBodyProfile(UserModel updatedProfile) async {
-    await _userProfileRepository.saveProfile(updatedProfile);
     await _saveUser(updatedProfile);
     _profileChanges.add(updatedProfile);
+    unawaited(_syncBodyProfile(updatedProfile));
+  }
+
+  /// Firestore keeps the write while offline and syncs it later, but its
+  /// future completes only on the server ack: awaiting it hangs an offline save.
+  Future<void> _syncBodyProfile(UserModel profile) async {
+    try {
+      await _userProfileRepository.saveProfile(profile);
+    } catch (e) {
+      debugPrint('AuthService: Body profile not synced to Firestore - $e');
+    }
   }
 
   @override

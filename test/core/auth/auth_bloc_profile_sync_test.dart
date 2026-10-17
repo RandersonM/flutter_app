@@ -53,6 +53,20 @@ void main() {
     );
 
     blocTest<AuthBloc, AuthState>(
+      'shortens the display name of a profile saved by another feature',
+      build: () => AuthBloc(authService: auth),
+      seed: () => AuthAuthenticated(user: _user(weightKg: 70)),
+      act: (_) => profileChanges.add(
+        _user(weightKg: 68).copyWith(displayName: 'Monkey D. Luffy'),
+      ),
+      expect: () => [
+        AuthAuthenticated(
+          user: _user(weightKg: 68).copyWith(displayName: 'Monkey D.'),
+        ),
+      ],
+    );
+
+    blocTest<AuthBloc, AuthState>(
       'ignores profile changes while signed out',
       build: () => AuthBloc(authService: auth),
       seed: () => const AuthUnauthenticated(),

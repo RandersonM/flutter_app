@@ -15,6 +15,7 @@ import 'package:opfan/l10n/app_localizations.dart';
 import 'package:opfan/shared/utils/constants.dart';
 import 'package:opfan/shared/utils/app_routes.dart';
 import 'package:opfan/shared/widgets/molecules/clickable_avatar.dart';
+import 'package:opfan/shared/widgets/organisms/profile_update_failure_listener.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
@@ -53,13 +54,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
           ),
         ],
       ),
-      body: BlocListener<AuthBloc, AuthState>(
-        listenWhen: (_, state) => state is AuthProfileUpdateFailed,
-        listener: (context, _) => ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text(AppLocalizations.of(context)!.profileUpdateFailed),
-          ),
-        ),
+      body: ProfileUpdateFailureListener(
         child: BlocBuilder<AuthBloc, AuthState>(
           builder: (context, state) {
             if (state is AuthAuthenticated) {
