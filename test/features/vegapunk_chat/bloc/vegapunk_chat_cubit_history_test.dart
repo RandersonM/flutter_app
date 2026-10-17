@@ -11,6 +11,7 @@ import 'package:opfan/features/vegapunk_chat/bloc/vegapunk_chat_state.dart';
 import 'package:opfan/features/vegapunk_chat/data/models/chat_message.dart';
 import 'package:opfan/features/vegapunk_chat/data/repository/i_vegapunk_chat_history_repository.dart';
 import 'package:opfan/features/vegapunk_chat/data/repository/i_vegapunk_chat_repository.dart';
+import 'package:opfan/features/vegapunk_chat/data/repository/vegapunk_chat_repository.dart';
 
 /// Hand-written fakes — same style as
 /// `test/features/nami_finances/find_expenses_handler_test.dart` — no
@@ -40,9 +41,12 @@ class _FakeVegapunkChatRepository implements IVegapunkChatRepository {
   @override
   Future<void> downloadModel() async {}
 
+  /// Tokens the next [sendMessage] streams back, sentinels included.
+  List<String> reply = const [];
+
   @override
   Stream<String> sendMessage(String text, {String? styleInstruction}) =>
-      const Stream.empty();
+      Stream.fromIterable(reply);
 
   @override
   Future<void> stopGeneration() async {}
@@ -55,12 +59,14 @@ class _FakeVegapunkChatRepository implements IVegapunkChatRepository {
 }
 
 class _FakeRagService implements IRAGService {
+  final List<RagDocument> addedDocuments = [];
+
   @override
   int maxSessionDocuments = 20;
   @override
   Future<void> initialize() async {}
   @override
-  Future<void> addDocument(RagDocument doc) async {}
+  Future<void> addDocument(RagDocument doc) async => addedDocuments.add(doc);
   @override
   Future<void> addDocumentBatch(List<RagDocument> docs) async {}
   @override
@@ -181,6 +187,58 @@ void main() {
       expect(history.stored, hasLength(1));
       expect(history.stored.single.text, 'hello vegapunk');
       expect(history.stored.single.role, MessageRole.user);
+
+      await cubit.close();
+    });
+
+    test('a web-search answer is flagged and never becomes memory', () async {
+      final history = _FakeHistoryRepository();
+      final rag = _FakeRagService();
+      final fakeRepo = _FakeVegapunkChatRepository()
+        ..reply = [
+          VegapunkChatRepository.toolStartSentinel('searchInternet'),
+          VegapunkChatRepository.toolDoneSentinel,
+          'O capítulo novo saiu.',
+        ];
+      final cubit = VegapunkChatCubit(
+        repository: fakeRepo,
+        ragService: rag,
+        historyRepository: history,
+        localeService: _FakeLocaleService(),
+      );
+      await cubit.initialize();
+      await Future<void>.delayed(Duration.zero);
+      await fakeRepo.emitStatusAndSettle(const GemmaReady());
+
+      await cubit.sendMessage('pesquise o último capítulo');
+      // Past the 2 s delay before a turn becomes a session document.
+      await Future<void>.delayed(const Duration(milliseconds: 2300));
+
+      final answer = history.stored.last;
+      expect(answer.role, MessageRole.assistant);
+      expect(answer.usedWebContent, isTrue);
+      expect(rag.addedDocuments.where((d) => d.isSession), isEmpty);
+
+      await cubit.close();
+    });
+
+    test('a plain answer still becomes session memory', () async {
+      final rag = _FakeRagService();
+      final fakeRepo = _FakeVegapunkChatRepository()..reply = ['Olá!'];
+      final cubit = VegapunkChatCubit(
+        repository: fakeRepo,
+        ragService: rag,
+        historyRepository: _FakeHistoryRepository(),
+        localeService: _FakeLocaleService(),
+      );
+      await cubit.initialize();
+      await Future<void>.delayed(Duration.zero);
+      await fakeRepo.emitStatusAndSettle(const GemmaReady());
+
+      await cubit.sendMessage('oi');
+      await Future<void>.delayed(const Duration(milliseconds: 2300));
+
+      expect(rag.addedDocuments.where((d) => d.isSession), hasLength(1));
 
       await cubit.close();
     });

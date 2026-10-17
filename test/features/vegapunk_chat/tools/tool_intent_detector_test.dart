@@ -105,6 +105,25 @@ void main() {
       }
     });
 
+    test('does not log a workout from a negated or hypothetical message', () {
+      for (final message in [
+        'Não treinei hoje',
+        'nao fiz treino hoje',
+        'Será que eu treinei hoje?',
+        'Se eu treinei hoje, quantas calorias gastei',
+        "I didn't train today",
+        'I did not finish my workout',
+        'If I trained today, should I rest tomorrow',
+        'Did I log my workout?',
+      ]) {
+        expect(
+          detector.detect(message)?.toolName,
+          isNot('saveWorkout'),
+          reason: message,
+        );
+      }
+    });
+
     test('lets an explicit search win over other intents in the message', () {
       expectIntent(
         'search for my profile',

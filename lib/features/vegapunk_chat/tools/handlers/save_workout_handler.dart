@@ -20,6 +20,9 @@ class SaveWorkoutHandler extends ToolHandler {
   String get name => 'saveWorkout';
 
   @override
+  bool get writesUserData => true;
+
+  @override
   String get description =>
       'Save a workout session for the user for today. Use this when the user says they have completed a workout.';
 

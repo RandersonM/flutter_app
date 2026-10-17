@@ -30,7 +30,9 @@ rules: `ai-on-device.md`.
   The last 20 messages are loaded **for display only — not replayed into the model**.
 - Long-term memory is session RAG docs (`sess:` prefix, `"User asked…\nAnswer:…"`,
   ≤ 512 chars, max 20 per process). When the store is cleared,
-  `setOnStoreCleared` rebuilds them from history.
+  `setOnStoreCleared` rebuilds them from history. Answers built from web search
+  (`ChatMessage.usedWebContent`) never become session memory, live or on rebuild,
+  so injected web text can't come back in a later turn where tools are active.
 - Static lore: `lib/features/vegapunk_chat/data/knowledge/one_piece_knowledge_base.dart`
   (categories `vegapunk`, `character`, `devil_fruit`). Changing a document's text
   needs a new id to trigger re-indexing.

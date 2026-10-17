@@ -27,6 +27,11 @@ abstract class ToolHandler {
   /// Which parameters are required for this tool. Defaults to all.
   List<String> get requiredParameters => parameterDescriptions.keys.toList();
 
+  /// True for tools that write the user's data. They run only when the user's
+  /// own message asks for them; a call the model proposes is refused, because
+  /// web results or recalled memory may have put it there (prompt injection).
+  bool get writesUserData => false;
+
   /// Execute the tool with the parsed [args] from the model output.
   Future<ToolResult> execute(ToolCall call);
 

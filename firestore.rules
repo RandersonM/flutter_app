@@ -2,6 +2,12 @@ rules_version = '2';
 
 // Cloud Functions use the Admin SDK and bypass these rules.
 // Collections without a match block are denied to clients.
+//
+// Beyond ownership, every write is checked against the exact fields the app
+// sends (see tool/firestore_rules_test/rules.test.mjs): unknown keys, wrong
+// types, oversized strings/lists and back-dated timestamps are rejected.
+// Updates validate only the keys they change, because older documents can
+// still carry legacy fields.
 service cloud.firestore {
   match /databases/{database}/documents {
     function isSignedIn() {
@@ -25,40 +31,237 @@ service cloud.firestore {
       return data.get('userId', data.get('ownerId', null));
     }
 
+    // ── Field helpers ────────────────────────────────────────────────────
+    function newKeys() {
+      return request.resource.data.keys();
+    }
+
+    function changedKeys() {
+      return request.resource.data.diff(resource.data).affectedKeys();
+    }
+
+    function optString(d, key, max) {
+      return d.get(key, null) == null || (d[key] is string && d[key].size() <= max);
+    }
+
+    function reqString(d, key, max) {
+      return d.get(key, null) is string && d[key].size() > 0 && d[key].size() <= max;
+    }
+
+    // `number`, not `float`: on web a whole double is stored as an integer.
+    function optNumber(d, key) {
+      return d.get(key, null) == null || d[key] is number;
+    }
+
+    function optList(d, key, max) {
+      return d.get(key, null) == null || (d[key] is list && d[key].size() <= max);
+    }
+
+    function optMap(d, key) {
+      return d.get(key, null) == null || d[key] is map;
+    }
+
+    function optTimestamp(d, key) {
+      return d.get(key, null) == null || d[key] is timestamp;
+    }
+
+    // FieldValue.serverTimestamp() resolves to exactly request.time.
+    function isServerTime(d, key) {
+      return d.get(key, null) == request.time;
+    }
+
+    // Client clocks drift; a day of slack still blocks back-dated records.
+    function isNearNow(d, key) {
+      return d.get(key, null) is timestamp
+        && d[key] > request.time - duration.value(1, 'd')
+        && d[key] < request.time + duration.value(1, 'd');
+    }
+
+    // ── users/{uid}: body profile, written with set(merge) ───────────────
+    function profileKeys() {
+      return ['gender', 'age', 'height_cm', 'weight_kg', 'waist_cm', 'chest_cm',
+        'arm_cm', 'hip_cm', 'thigh_cm', 'activity_level', 'goal', 'updated_at'];
+    }
+
+    function validProfile(d) {
+      return optString(d, 'gender', 20)
+        && optNumber(d, 'age')
+        && optNumber(d, 'height_cm') && optNumber(d, 'weight_kg')
+        && optNumber(d, 'waist_cm') && optNumber(d, 'chest_cm')
+        && optNumber(d, 'arm_cm') && optNumber(d, 'hip_cm') && optNumber(d, 'thigh_cm')
+        && optString(d, 'activity_level', 50)
+        && optString(d, 'goal', 50)
+        && isServerTime(d, 'updated_at');
+    }
+
     match /users/{userId} {
-      allow read, write: if isOwner(userId);
+      allow read, delete: if isOwner(userId);
+      allow create: if isOwner(userId)
+        && newKeys().hasOnly(profileKeys())
+        && validProfile(request.resource.data);
+      allow update: if isOwner(userId)
+        && changedKeys().hasOnly(profileKeys())
+        && validProfile(request.resource.data);
+    }
+
+    // ── user_tokens/{uid}: FCM token, full set ───────────────────────────
+    function validToken(d) {
+      return d.keys().hasOnly(['fcmToken', 'platform', 'updatedAt'])
+        && reqString(d, 'fcmToken', 4096)
+        && d.get('platform', null) in ['ios', 'android']
+        && isServerTime(d, 'updatedAt');
     }
 
     match /user_tokens/{userId} {
-      allow read, write: if isOwner(userId);
+      allow read, delete: if isOwner(userId);
+      allow create, update: if isOwner(userId) && validToken(request.resource.data);
+    }
+
+    // ── custom_characters ────────────────────────────────────────────────
+    function characterKeys() {
+      return ['name', 'nickname', 'devilFruit', 'haki', 'affiliations', 'occupation',
+        'image', 'fightingStyle', 'bounty', 'signo', 'crew', 'status', 'race', 'age',
+        'birthDate', 'description', 'updatedAt'];
+    }
+
+    function validCharacter(d) {
+      return reqString(d, 'name', 100)
+        && optString(d, 'nickname', 100)
+        && optString(d, 'devilFruit', 100)
+        && optList(d, 'haki', 10)
+        && optList(d, 'affiliations', 30)
+        && optList(d, 'occupation', 30)
+        // Image URLs only: an inline data URI would blow up the document.
+        && optString(d, 'image', 4096)
+        && optMap(d, 'fightingStyle')
+        && optString(d, 'bounty', 40)
+        && optString(d, 'signo', 50)
+        && optString(d, 'crew', 100)
+        && optString(d, 'status', 50)
+        && optString(d, 'race', 50)
+        && optNumber(d, 'age')
+        && optTimestamp(d, 'birthDate')
+        && optString(d, 'description', 5000);
     }
 
     match /custom_characters/{characterId} {
       allow read, delete: if isOwner(resource.data.userId);
-      allow create: if createsOwn();
-      allow update: if isOwner(resource.data.userId) && keepsUserId();
+      allow create: if createsOwn()
+        && newKeys().hasOnly(characterKeys().concat(['userId', 'createdAt']))
+        && validCharacter(request.resource.data)
+        && isServerTime(request.resource.data, 'createdAt')
+        && isServerTime(request.resource.data, 'updatedAt');
+      allow update: if isOwner(resource.data.userId) && keepsUserId()
+        && changedKeys().hasOnly(characterKeys())
+        && validCharacter(request.resource.data)
+        && isServerTime(request.resource.data, 'updatedAt');
     }
 
-    // Crews are a public showcase for signed-in users; only the owner changes one.
+    // ── crews: public showcase for signed-in users ───────────────────────
+    function crewKeys() {
+      return ['name', 'captain', 'viceCaptain', 'rolesFilled', 'createdAt', 'updatedAt',
+        'jollyRogerUrl', 'boatImageUrl', 'boatName', 'description', 'members', 'tags'];
+    }
+
+    function validCrew(d) {
+      return reqString(d, 'name', 100)
+        && optString(d, 'captain', 100)
+        && optString(d, 'viceCaptain', 100)
+        && optList(d, 'rolesFilled', 30)
+        && optString(d, 'jollyRogerUrl', 4096)
+        && optString(d, 'boatImageUrl', 4096)
+        && optString(d, 'boatName', 100)
+        && optString(d, 'description', 5000)
+        && optList(d, 'members', 100)
+        && optList(d, 'tags', 30)
+        && optTimestamp(d, 'createdAt');
+    }
+
     match /crews/{crewId} {
       allow read: if isSignedIn();
-      allow create: if createsOwn();
+      allow create: if createsOwn()
+        && newKeys().hasOnly(crewKeys().concat(['userId']))
+        && validCrew(request.resource.data)
+        && isServerTime(request.resource.data, 'createdAt')
+        && isServerTime(request.resource.data, 'updatedAt');
       allow update: if isOwner(crewOwner(resource.data))
-        && crewOwner(request.resource.data) == crewOwner(resource.data);
+        && crewOwner(request.resource.data) == crewOwner(resource.data)
+        && changedKeys().hasOnly(crewKeys())
+        && validCrew(request.resource.data)
+        && isServerTime(request.resource.data, 'updatedAt');
       allow delete: if isOwner(crewOwner(resource.data));
+    }
+
+    // ── planner: Robin's goals ───────────────────────────────────────────
+    function goalKeys() {
+      return ['title', 'description', 'deadline', 'createdAt', 'category', 'status',
+        'progress', 'tags', 'notes', 'updatedAt'];
+    }
+
+    function validGoal(d) {
+      return reqString(d, 'title', 200)
+        && optString(d, 'description', 5000)
+        && d.get('deadline', null) is timestamp
+        && optTimestamp(d, 'createdAt')
+        && d.get('category', null) in ['study', 'work', 'personal', 'health', 'finance', 'other']
+        && d.get('status', null) in ['notStarted', 'inProgress', 'completed', 'overdue']
+        && d.get('progress', null) is number && d.progress >= 0 && d.progress <= 100
+        && optList(d, 'tags', 30)
+        // Progress notes append a line per update.
+        && optString(d, 'notes', 20000);
     }
 
     match /planner/{goalId} {
       allow read, delete: if isOwner(resource.data.userId);
-      allow create: if createsOwn();
-      allow update: if isOwner(resource.data.userId) && keepsUserId();
+      allow create: if createsOwn()
+        && newKeys().hasOnly(goalKeys().concat(['userId']))
+        && validGoal(request.resource.data)
+        && isServerTime(request.resource.data, 'createdAt')
+        && isServerTime(request.resource.data, 'updatedAt');
+      allow update: if isOwner(resource.data.userId) && keepsUserId()
+        && changedKeys().hasOnly(goalKeys())
+        && validGoal(request.resource.data)
+        && isServerTime(request.resource.data, 'updatedAt');
+    }
+
+    // ── workout_assessments: snake_case, client timestamps ───────────────
+    function assessmentKeys() {
+      return ['id', 'user_id', 'month_year', 'gender', 'age', 'height', 'weight', 'waist',
+        'bmi', 'waist_to_height_ratio', 'body_fat_percentage', 'health_score',
+        'workout_days_goal', 'activity_level', 'goal', 'workout_days', 'workout_plan',
+        'created_at', 'updated_at'];
+    }
+
+    function validAssessment(d, docId) {
+      // toJson writes the model's own id back: null on create, the doc id after.
+      return (d.get('id', null) == null || d.id == docId)
+        && d.get('month_year', null) is string
+        && d.month_year.matches('^[0-9]{4}-[0-9]{2}$')
+        && optString(d, 'gender', 20)
+        && optNumber(d, 'age')
+        && optNumber(d, 'height') && optNumber(d, 'weight') && optNumber(d, 'waist')
+        && optNumber(d, 'bmi') && optNumber(d, 'waist_to_height_ratio')
+        && optNumber(d, 'body_fat_percentage') && optNumber(d, 'health_score')
+        && optNumber(d, 'workout_days_goal')
+        && optString(d, 'activity_level', 50)
+        && optString(d, 'goal', 50)
+        && optList(d, 'workout_days', 31)
+        && optMap(d, 'workout_plan');
     }
 
     match /workout_assessments/{assessmentId} {
       allow read, delete: if isOwner(resource.data.user_id);
-      allow create: if isOwner(request.resource.data.get('user_id', null));
+      allow create: if isOwner(request.resource.data.get('user_id', null))
+        && newKeys().hasOnly(assessmentKeys())
+        && validAssessment(request.resource.data, assessmentId)
+        && isNearNow(request.resource.data, 'created_at')
+        && isNearNow(request.resource.data, 'updated_at');
       allow update: if isOwner(resource.data.user_id)
-        && request.resource.data.get('user_id', null) == resource.data.user_id;
+        && request.resource.data.get('user_id', null) == resource.data.user_id
+        && changedKeys().hasOnly(assessmentKeys())
+        && validAssessment(request.resource.data, assessmentId)
+        && (!('created_at' in changedKeys()) || isNearNow(request.resource.data, 'created_at'))
+        && isNearNow(request.resource.data, 'updated_at');
     }
 
     // Global catalog seeded with the Admin SDK.

@@ -11,6 +11,7 @@ class ChatMessage extends Equatable {
     required this.role,
     required this.timestamp,
     this.satelliteId,
+    this.usedWebContent = false,
   });
 
   final String id;
@@ -27,6 +28,11 @@ class ChatMessage extends Equatable {
   /// the history into separate threads.
   final String? satelliteId;
 
+  /// True when the answer was built from web search results. Such turns never
+  /// become session memory: recalled web text could carry injected
+  /// instructions into later turns, where tools are active.
+  final bool usedWebContent;
+
   bool get isUser => role == MessageRole.user;
   bool get isAssistant => role == MessageRole.assistant;
 
@@ -36,10 +42,18 @@ class ChatMessage extends Equatable {
     role: role,
     timestamp: timestamp,
     satelliteId: satelliteId,
+    usedWebContent: usedWebContent,
   );
 
   @override
-  List<Object?> get props => [id, text, role, timestamp, satelliteId];
+  List<Object?> get props => [
+    id,
+    text,
+    role,
+    timestamp,
+    satelliteId,
+    usedWebContent,
+  ];
 }
 
 class ChatMessageAdapter extends TypeAdapter<ChatMessage> {
@@ -58,13 +72,14 @@ class ChatMessageAdapter extends TypeAdapter<ChatMessage> {
       role: fields[2] as MessageRole,
       timestamp: fields[3] as DateTime,
       satelliteId: fields[4] as String?,
+      usedWebContent: fields[5] as bool? ?? false,
     );
   }
 
   @override
   void write(BinaryWriter writer, ChatMessage obj) {
     writer
-      ..writeByte(5)
+      ..writeByte(6)
       ..writeByte(0)
       ..write(obj.id)
       ..writeByte(1)
@@ -74,7 +89,9 @@ class ChatMessageAdapter extends TypeAdapter<ChatMessage> {
       ..writeByte(3)
       ..write(obj.timestamp)
       ..writeByte(4)
-      ..write(obj.satelliteId);
+      ..write(obj.satelliteId)
+      ..writeByte(5)
+      ..write(obj.usedWebContent);
   }
 
   @override

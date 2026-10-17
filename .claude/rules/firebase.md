@@ -49,6 +49,20 @@ crews"), while update/delete use `crewOwner` and an update cannot change the own
   Query with `where('userId', isEqualTo: uid)` (`getUserDocuments`).
 - Any new collection: add a `match` block with the same owner-scoped
   `read`/`create`/`update`/`delete` — never a blanket `allow read, write`.
+- **Field validation (SEC-9):** every write is also checked field by field — an
+  allowed-keys list per collection (`profileKeys()`, `crewKeys()`, ...), types
+  (`number`, never `float`: web stores whole doubles as integers), string/list
+  size caps (image fields are URLs ≤ 4096 chars, so inline data URIs are
+  refused), `serverTimestamp()` fields must equal `request.time`, and client
+  timestamps (`workout_assessments`) must be within a day of it. Creates check
+  `keys()`; updates check only `diff(resource.data).affectedKeys()`, because old
+  documents still carry legacy fields.
+- **Adding or renaming a field the app writes** means updating that collection's
+  key list in `firestore.rules` and the payload builder in
+  `tool/firestore_rules_test/rules.test.mjs` — otherwise the write is denied in
+  production. Run the suite locally with `npm test --prefix tool/firestore_rules_test`
+  (needs Java); CI runs it on every PR.
+- Rules deploy works on the free Spark plan (`firebase deploy --only firestore:rules`).
 - Do not loosen or tighten rules for existing collections without telling the user;
   rules changes need `firebase deploy --only firestore:rules` to take effect.
 

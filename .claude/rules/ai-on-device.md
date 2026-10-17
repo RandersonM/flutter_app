@@ -53,6 +53,12 @@ both predate parts of the current pipeline (sentinel names, entitlements, Qwen).
   `name`, `description` + `descriptionPt`, `parameterDescriptions` + `...Pt`,
   `requiredParameters`, `Future<ToolResult> execute(ToolCall call)`. Every parameter
   is a string in the schema — parse and validate inside `execute`.
+- A tool that writes the user's data overrides `writesUserData => true`
+  (`saveWorkout`). It runs only from the user's own message (the intent detector,
+  which ignores negated and hypothetical sentences); a call the model proposes is
+  refused, because web results or recalled memory may have injected it.
+- Tool output reaches the model through `VegapunkChatRepository.toolResultContext`
+  / `untrustedToolOutputNote`: it is framed as data, never instructions.
 - Return `ToolResult.success(jsonString)` / `ToolResult.error(...)`. Never throw out
   of `execute`.
 - **Do the work in Dart, let the model only phrase it.** Handlers return JSON with
