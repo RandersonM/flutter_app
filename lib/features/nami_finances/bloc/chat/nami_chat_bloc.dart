@@ -32,7 +32,7 @@ class NamiChatBloc extends Cubit<NamiChatState> {
   final _uuid = const Uuid();
   Timer? _emitTimer;
   final StringBuffer _tokenBuffer = StringBuffer();
-  Future<void>? _backfillFuture;
+  Future<void>? _backfillSettled;
   StreamSubscription<GemmaServiceStatus>? _modelStatusSub;
   StreamSubscription<ModelResponse>? _answerSub;
   Completer<void>? _answerDone;
@@ -41,6 +41,16 @@ class NamiChatBloc extends Cubit<NamiChatState> {
   /// lifecycle interruption and the stream then never emits again.
   static const _generationTimeout = Duration(seconds: 90);
   Timer? _watchdogTimer;
+
+  /// The tool step runs before the answer stream, so the watchdog can't see
+  /// it; a tool stuck on the embedder or the store gets the same budget.
+  static const _toolTimeout = _generationTimeout;
+
+  /// The chat works without the RAG backfill (`findExpenses` just finds
+  /// less), and its first run after a migration may wait on the embedder
+  /// download — so the chat waits this long at most and the backfill carries
+  /// on in the background.
+  static const _backfillWaitLimit = Duration(seconds: 5);
 
   /// Longest silence on the model status stream while waiting for the model.
   /// Re-armed on every status, so download progress keeps it alive.
@@ -75,10 +85,14 @@ class NamiChatBloc extends Cubit<NamiChatState> {
     emit(NamiChatLoading());
 
     // Backfill months saved before the RAG embedder-activation fix — kicked
-    // off eagerly so it runs alongside model loading below, but `sendMessage`
-    // also awaits this before its first search so an early question can't
-    // race an empty store.
-    _backfillFuture = _backfillRag();
+    // off eagerly so it runs alongside model loading below, and awaited
+    // (bounded) before the chat is ready so an early question doesn't race
+    // an empty store.
+    _backfillSettled = _backfillRag().timeout(
+      _backfillWaitLimit,
+      onTimeout: () =>
+          debugPrint('NamiChatBloc: rag backfill still running, not waiting'),
+    );
 
     NamiChatFailure? readyFailure;
     try {
@@ -94,7 +108,7 @@ class NamiChatBloc extends Cubit<NamiChatState> {
       debugPrint('NamiChatBloc: model load failed: $e');
       readyFailure = NamiChatFailure.modelLoadFailed;
     }
-    await _backfillFuture;
+    await _backfillSettled;
 
     if (isClosed) return;
     emit(NamiChatReady(failure: readyFailure));
@@ -174,10 +188,10 @@ class NamiChatBloc extends Cubit<NamiChatState> {
       ),
     );
 
-    // Ensure the vector store backfill has settled (keeps the RAG store warm
-    // for future features — see [_backfillRag]); the finances answer path
-    // itself now goes through the [GetFinancesHandler] tool, not RAG.
-    await _backfillFuture;
+    // Give the vector store backfill its bounded wait (keeps the RAG store
+    // warm for future features — see [_backfillRag]); the finances answer
+    // path itself now goes through the [GetFinancesHandler] tool, not RAG.
+    await _backfillSettled;
     if (isClosed) return;
 
     _tokenBuffer.clear();
@@ -253,7 +267,12 @@ class NamiChatBloc extends Cubit<NamiChatState> {
     final systemInstruction = NamiPrompt.system(isPortuguese: isPt);
 
     final toolCall = _router.resolve(text);
-    final result = await _registry.execute(toolCall);
+    final result = await _registry
+        .execute(toolCall)
+        .timeout(
+          _toolTimeout,
+          onTimeout: () => throw const _GenerationTimedOut(),
+        );
     // The session is opened lazily by the call below; opening it after close()
     // would leave its KV cache allocated with nobody to close it.
     if (isClosed) return;
@@ -357,11 +376,15 @@ class NamiChatBloc extends Cubit<NamiChatState> {
     // Started before any await so isClosed is already true for handlers
     // resuming in between — they must not emit or reopen the session.
     final closing = super.close();
+    // Free the session's KV cache — it doesn't need to live once the sheet
+    // that owns this chat is dismissed. Started before any await: the service
+    // forgets the session synchronously, so a sheet reopened while this close
+    // is still stopping the generation gets a fresh session instead of one
+    // this close would then kill.
+    final closingSession = _gemmaService.closeSession(_sessionId);
     await _modelStatusSub?.cancel();
     await _cancelAnswer();
-    // Free the session's KV cache — it doesn't need to live once the sheet
-    // that owns this chat is dismissed.
-    await _gemmaService.closeSession(_sessionId);
+    await closingSession;
     return closing;
   }
 }

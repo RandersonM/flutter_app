@@ -43,7 +43,11 @@ both predate parts of the current pipeline (sentinel names, entitlements, Qwen).
 - Tools must be set (`setTools`) **before** `loadModel`.
 - Two chat kinds: the singleton Vegapunk chat (`sendMessage` / `sendToolResult`)
   and named sessions (`sendSessionMessage(sessionId, ...)`, `closeSession`).
-  Close your session in the BLoC's `close()`.
+  Close your session in the BLoC's `close()`, **before its first await**:
+  `closeSession` forgets the session synchronously, then stops and closes it, so
+  a sheet reopened meanwhile gets a fresh session. A per-session epoch (bumped by
+  `closeSession` and by a model reload) makes an `openChat` still in flight close
+  the chat it opened instead of storing it.
 - No generation lock: one generation at a time is the caller's job (the cubits
   track `isGenerating`). Cancelling the stream calls `stopGeneration`.
 

@@ -59,8 +59,11 @@ RAG store. The chat is on-device — see `ai-on-device.md`.
 - Lifecycle: a model already in `GemmaError` fails at once (`modelLoadFailed`, or
   `modelNotInstalled` for an install error); 2 min without a status also fails. A
   **90 s watchdog** (same as Vegapunk) ends a stalled answer with
-  `generationTimedOut`. `close()` stops the generation and closes the `nami`
-  session; handlers check `isClosed` after every await so nothing reopens it.
+  `generationTimedOut`; the tool step before it has its own 90 s bound with the
+  same failure. The chat waits at most 5 s for the RAG backfill (it may be
+  downloading the embedder) and the backfill carries on in the background.
+  `close()` starts closing the `nami` session before any await, then stops the
+  generation; handlers check `isClosed` after every await so nothing reopens it.
 
 ## UI
 

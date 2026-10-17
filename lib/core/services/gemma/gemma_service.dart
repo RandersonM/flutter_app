@@ -20,6 +20,15 @@ class GemmaService implements IGemmaService {
   List<Tool> _tools = [];
   final Map<String, InferenceChat> _sessions = {};
 
+  /// Bumped by [closeSession] (per session) and [_recreateChat] (all of
+  /// them). An `openChat` still in flight when its session is closed finds a
+  /// newer stamp and discards the chat instead of storing it.
+  final Map<String, int> _sessionEpochs = {};
+  int _modelReloads = 0;
+
+  (int, int) _sessionStamp(String sessionId) =>
+      (_sessionEpochs[sessionId] ?? 0, _modelReloads);
+
   @override
   Stream<GemmaServiceStatus> get statusStream => _statusController.stream;
 
@@ -196,6 +205,7 @@ class GemmaService implements IGemmaService {
     // instance being replaced below — they can't survive a reload.
     final oldSessions = _sessions.values.toList();
     _sessions.clear();
+    _modelReloads++;
     for (final session in oldSessions) {
       await session.close();
     }
@@ -336,43 +346,39 @@ class GemmaService implements IGemmaService {
     }
 
     bool isCancelled = false;
+    InferenceChat? session;
     late final StreamController<ModelResponse> controller;
 
     controller = StreamController<ModelResponse>(
       onCancel: () async {
         isCancelled = true;
-        await _sessions[sessionId]?.stopGeneration();
+        await session?.stopGeneration();
       },
     );
 
     () async {
       try {
-        var session = _sessions[sessionId];
-        if (session == null) {
-          final hasTools = tools != null && tools.isNotEmpty;
-          session = await model.openChat(
-            systemInstruction: systemInstruction,
-            // Lower temperature for reliable function-call JSON emission when
-            // tools are attached (matches the main chat's tuning).
-            temperature: hasTools ? 0.2 : 0.3,
-            maxOutputTokens: maxOutputTokens,
-            tools: tools ?? const [],
-            supportsFunctionCalls: hasTools,
-            toolChoice: hasTools ? ToolChoice.auto : ToolChoice.none,
-            modelType: _determineModelType(_env.gemmaModelName),
-          );
-          _sessions[sessionId] = session;
-        }
+        final chat =
+            _sessions[sessionId] ??
+            await _openSession(
+              sessionId,
+              model,
+              systemInstruction: systemInstruction,
+              tools: tools,
+              maxOutputTokens: maxOutputTokens,
+            );
+        session = chat;
+        if (isCancelled) return;
 
         // Data is meant to be read and used directly — unlike sendMessage's
         // "reference, only if relevant" framing (built for Vegapunk's lore
         // immersion), a factual assistant like this must actually cite it.
         final contextBlock = RagContextFraming.factualData(ragContext);
 
-        await session.addQueryChunk(
+        await chat.addQueryChunk(
           Message(text: '$contextBlock$text', isUser: true),
         );
-        await for (final response in session.generateChatResponseAsync()) {
+        await for (final response in chat.generateChatResponseAsync()) {
           if (isCancelled) break;
           controller.add(response);
         }
@@ -384,6 +390,36 @@ class GemmaService implements IGemmaService {
     }();
 
     return controller.stream;
+  }
+
+  Future<InferenceChat> _openSession(
+    String sessionId,
+    InferenceModel model, {
+    required String systemInstruction,
+    required List<Tool>? tools,
+    required int maxOutputTokens,
+  }) async {
+    final stamp = _sessionStamp(sessionId);
+    final hasTools = tools != null && tools.isNotEmpty;
+    final session = await model.openChat(
+      systemInstruction: systemInstruction,
+      // Lower temperature for reliable function-call JSON emission when
+      // tools are attached (matches the main chat's tuning).
+      temperature: hasTools ? 0.2 : 0.3,
+      maxOutputTokens: maxOutputTokens,
+      tools: tools ?? const [],
+      supportsFunctionCalls: hasTools,
+      toolChoice: hasTools ? ToolChoice.auto : ToolChoice.none,
+      modelType: _determineModelType(_env.gemmaModelName),
+    );
+    if (_sessionStamp(sessionId) != stamp) {
+      await session.close();
+      throw StateError(
+        'GemmaService: session "$sessionId" closed while opening',
+      );
+    }
+    _sessions[sessionId] = session;
+    return session;
   }
 
   @override
@@ -430,8 +466,15 @@ class GemmaService implements IGemmaService {
 
   @override
   Future<void> closeSession(String sessionId) async {
+    _sessionEpochs.update(sessionId, (epoch) => epoch + 1, ifAbsent: () => 1);
     final session = _sessions.remove(sessionId);
-    await session?.close();
+    if (session == null) return;
+    try {
+      await session.stopGeneration();
+    } catch (e) {
+      debugPrint('GemmaService: stopping session "$sessionId" failed: $e');
+    }
+    await session.close();
   }
 
   @override
