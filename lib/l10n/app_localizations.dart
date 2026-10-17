@@ -2372,6 +2372,12 @@ abstract class AppLocalizations {
   /// **'Please enter a valid number'**
   String get workout_validation_waist_invalid;
 
+  /// Zoro and Sanji forms: validation when age, height, weight or waist is outside the human range
+  ///
+  /// In en, this message translates to:
+  /// **'Enter a value between {min} and {max}'**
+  String bodyMeasureOutOfRange(int min, int max);
+
   /// Male option in gender dropdown.
   ///
   /// In en, this message translates to:

@@ -2294,6 +2294,14 @@
     "type": "text",
     "placeholders": {}
   },
+  "bodyMeasureOutOfRange": "Informe um valor entre {min} e {max}",
+  "@bodyMeasureOutOfRange": {
+    "description": "Formulários do Zoro e do Sanji: validação quando idade, altura, peso ou cintura está fora da faixa humana",
+    "placeholders": {
+      "min": { "type": "int", "example": "50" },
+      "max": { "type": "int", "example": "260" }
+    }
+  },
   "workout_gender_male": "Masculino",
   "@workout_gender_male": {
     "description": "Opção masculino no dropdown de gênero.",

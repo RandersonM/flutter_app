@@ -2302,6 +2302,14 @@
     "type": "text",
     "placeholders": {}
   },
+  "bodyMeasureOutOfRange": "Enter a value between {min} and {max}",
+  "@bodyMeasureOutOfRange": {
+    "description": "Zoro and Sanji forms: validation when age, height, weight or waist is outside the human range",
+    "placeholders": {
+      "min": { "type": "int", "example": "50" },
+      "max": { "type": "int", "example": "260" }
+    }
+  },
   "workout_gender_male": "Male",
   "@workout_gender_male": {
     "description": "Male option in gender dropdown.",

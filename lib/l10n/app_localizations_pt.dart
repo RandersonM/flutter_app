@@ -1219,6 +1219,11 @@ class AppLocalizationsPt extends AppLocalizations {
   String get workout_validation_waist_invalid => 'Digite um número válido';
 
   @override
+  String bodyMeasureOutOfRange(int min, int max) {
+    return 'Informe um valor entre $min e $max';
+  }
+
+  @override
   String get workout_gender_male => 'Masculino';
 
   @override
