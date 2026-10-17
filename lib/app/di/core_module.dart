@@ -93,6 +93,7 @@ void registerCoreModule(GetIt getIt) {
       navigationService: getIt<INavigationService>(),
       firestoreService: getIt<IFirestoreService>(),
       firebaseMessaging: getIt<FirebaseMessaging>(),
+      firebaseAuth: getIt<FirebaseAuth>(),
     ),
   );
   getIt.registerLazySingleton<IDevilFruitService>(
