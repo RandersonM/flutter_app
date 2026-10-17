@@ -124,6 +124,61 @@ void main() {
       }
     });
 
+    test('does not log a workout from other negations or "sem" before it', () {
+      for (final message in [
+        'nem treinei hoje',
+        'Jamais completei meu treino',
+        'quase terminei meu treino',
+        'treinei hoje não',
+        'fiquei sem registrar treino',
+        'I never finished my workout',
+        'I didn’t log my workout',
+        "I couldn't log my workout",
+        'I almost finished my workout',
+      ]) {
+        expect(
+          detector.detect(message)?.toolName,
+          isNot('saveWorkout'),
+          reason: message,
+        );
+      }
+    });
+
+    test('does not log a workout from a question typed without "?"', () {
+      for (final message in [
+        'quanto tempo treinei hoje',
+        'me diz quando treinei hoje',
+        'o que eu treinei hoje',
+        'how long i trained today',
+        'did i log my workout',
+      ]) {
+        expect(
+          detector.detect(message)?.toolName,
+          isNot('saveWorkout'),
+          reason: message,
+        );
+      }
+    });
+
+    test(
+      'still logs a workout when "sem" or a question word sits elsewhere',
+      () {
+        for (final message in [
+          'treinei hoje sem parar',
+          'Estou sem tempo, mas treinei hoje',
+          'Adivinha o que, treinei hoje',
+          'Guess what, I trained today',
+          'I went to the gym and I trained today',
+        ]) {
+          expectIntent(
+            message,
+            tool: 'saveWorkout',
+            confidence: ToolIntentConfidence.high,
+          );
+        }
+      },
+    );
+
     test('lets an explicit search win over other intents in the message', () {
       expectIntent(
         'search for my profile',

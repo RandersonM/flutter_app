@@ -225,8 +225,24 @@ class ToolIntentDetector {
 
   // ── Save Workout Intent ────────────────────────────────────────────────
 
+  static const _saveWorkoutTriggers = [
+    // Portuguese
+    'treinei hoje', 'fiz treino hoje',
+    'completei meu treino', 'terminei meu treino',
+    'salvar treino', 'registrar treino',
+    'marcar treino de hoje', 'registrar que treinei',
+    // English
+    'i trained today', 'i worked out today',
+    'completed my workout', 'finished my workout',
+    'save workout', 'record workout',
+    'log my workout', 'mark today as trained',
+  ];
+
+  // Anywhere in the message: Portuguese also negates after the verb
+  // ("treinei hoje não"). `’` is the apostrophe iOS keyboards type.
   static final _negation = RegExp(
-    r"(?<!\p{L})(não|nao|nunca|didn'?t|did not|haven'?t|have not|not|never)(?!\p{L})",
+    r"(?<!\p{L})(não|nao|nem|nunca|jamais|quase|not|never|cannot|almost|"
+    r"didnt|dont|doesnt|havent|hasnt|cant|couldnt|wasnt|\p{L}+n['’]t)(?!\p{L})",
     unicode: true,
   );
 
@@ -235,26 +251,31 @@ class ToolIntentDetector {
     unicode: true,
   );
 
+  // Only right before the trigger: "treinei hoje sem parar" is a workout.
+  static final _withoutTrigger = RegExp(
+    '(?<!\\p{L})sem\\s+(${_saveWorkoutTriggers.map(RegExp.escape).join('|')})',
+    unicode: true,
+  );
+
+  // A question typed without "?" ("quanto tempo treinei hoje"): an
+  // interrogative earlier in the trigger's clause.
+  static final _questionBeforeTrigger = RegExp(
+    '(?<!\\p{L})(quanto|quanta|quantos|quantas|quando|qual|quais|onde|como|'
+    'o que|por que|how|what|when|which|where|why|(did|do|does|should) i)'
+    '(?!\\p{L})[^.,;:!\\n]*'
+    '(${_saveWorkoutTriggers.map(RegExp.escape).join('|')})',
+    unicode: true,
+  );
+
   bool _isNegatedOrQuestion(String lower) =>
       lower.contains('?') ||
       _negation.hasMatch(lower) ||
-      _hypothetical.hasMatch(lower);
+      _hypothetical.hasMatch(lower) ||
+      _withoutTrigger.hasMatch(lower) ||
+      _questionBeforeTrigger.hasMatch(lower);
 
-  bool _matchesSaveWorkoutIntent(String lower) {
-    const triggers = [
-      // Portuguese
-      'treinei hoje', 'fiz treino hoje',
-      'completei meu treino', 'terminei meu treino',
-      'salvar treino', 'registrar treino',
-      'marcar treino de hoje', 'registrar que treinei',
-      // English
-      'i trained today', 'i worked out today',
-      'completed my workout', 'finished my workout',
-      'save workout', 'record workout',
-      'log my workout', 'mark today as trained',
-    ];
-    return triggers.any((t) => lower.contains(t));
-  }
+  bool _matchesSaveWorkoutIntent(String lower) =>
+      _saveWorkoutTriggers.any(lower.contains);
 
   // ── Character Info Intent ──────────────────────────────────────────────
 
