@@ -34,7 +34,9 @@ paths:
   `firestore.indexes.json` yet). An `orderBy` + `where` on different fields needs
   one: create that file, reference it under `firestore` in `firebase.json`, and tell
   the user it must be deployed — otherwise keep sorting in memory.
-- Every new collection needs a rule in `firestore.rules` (see `firebase.md`).
+- Every new collection needs a rule in `firestore.rules` (see `firebase.md`), and
+  every new or renamed field must be added to that collection's allowed keys and
+  to the rules test payloads — the rules reject unknown keys.
 
 ## Models
 
