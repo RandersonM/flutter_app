@@ -15,7 +15,7 @@ class GeminiService implements IGeminiService {
   final IGeminiClient _client;
   final IImageHostService _imageHost;
 
-  static const String _textModel = 'gemini-2.5-flash-lite';
+  static const String _textModel = 'gemini-3.5-flash-lite';
   static const String _imageModel = 'gemini-2.5-flash-image';
   static const Duration _quotaCooldown = Duration(minutes: 2);
 

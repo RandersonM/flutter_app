@@ -29,7 +29,7 @@ Source of truth: `pubspec.yaml`, `.fvmrc`, `lib/main.dart`, `lib/app/di/`.
 
 ## Cloud AI (not used for chat)
 - firebase_ai ^2.3.0 — Firebase AI Logic (Gemini Developer API, free on Spark):
-  `gemini-2.5-flash-lite` for Sanji text, `gemini-2.5-flash-image` for character and
+  `gemini-3.5-flash-lite` for Sanji text, `gemini-2.5-flash-image` for character and
   crew images (`lib/core/services/gemini/`); no Gemini key in the app
 - Imgur anonymous upload via Dio for the generated images (`lib/core/services/image_host/`)
 - Tavily web search via Dio (`lib/core/services/web_search/`) behind Vegapunk's `searchInternet`

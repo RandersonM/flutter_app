@@ -124,8 +124,9 @@ The small model often *describes* a tool call instead of emitting it. So:
 
 - Gemini (`lib/core/services/gemini/`) goes through **Firebase AI Logic**
   (`firebase_ai`, Gemini Developer API, free on Spark) behind `IGeminiClient`:
-  `gemini-2.5-flash-lite` for Sanji text, `gemini-2.5-flash-image` for character /
-  crew images, uploaded by `IImageHostService` (Imgur, data URI fallback). No
+  `gemini-3.5-flash-lite` for Sanji text (`gemini-2.5-flash-lite` is closed to new
+  projects), `gemini-2.5-flash-image` for character / crew images — which has **no
+  free-tier quota** (429), so images are not generated without billing, uploaded by `IImageHostService` (Imgur, data URI fallback). No
   Gemini key in the app. Any failure returns `null`; a used-up free quota
   (`QuotaExceededException`) pauses calls for 2 min. Not used for chat.
 - Tavily web search (`TAVILY_API_KEY`, free plan) behind `searchInternet`; must
