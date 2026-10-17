@@ -43,7 +43,7 @@ offline by `OfflineBlockerOverlay`.
 
 - Nutrition calculator from the body profile, results saved into the month's
   `workout_assessments` via `updateNutritionData`.
-- Tips and personalized meals come from **Gemini** (`gemini-2.5-flash-lite`,
+- Tips and personalized meals come from **Gemini** (`gemini-3.5-flash-lite`,
   `cooking_repository.dart`, `sanji_prompt.dart`) — cloud, rate-limited, fallback
   in `dev_mode`.
 - Routes `/cooking`, `/cookingTips`, `/plateGuide`.

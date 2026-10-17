@@ -171,11 +171,15 @@ class UserStorageService implements IUserStorageService {
     }
   }
 
+  /// A failed move leaves the legacy box untouched (it is retried on the next
+  /// launch) and closes both boxes, so the typed open that follows still works.
   Future<void> _moveLegacyBox(String legacyName, String targetName) async {
     if (!await Hive.boxExists(legacyName)) return;
+    Box<dynamic>? legacy;
+    Box<dynamic>? target;
     try {
-      final legacy = await Hive.openBox<dynamic>(legacyName);
-      final target = await Hive.openBox<dynamic>(
+      legacy = await Hive.openBox<dynamic>(legacyName);
+      target = await Hive.openBox<dynamic>(
         targetName,
         encryptionCipher: _cipher,
       );
@@ -185,6 +189,8 @@ class UserStorageService implements IUserStorageService {
       debugPrint('UserStorageService: moved "$legacyName" to "$targetName"');
     } catch (e) {
       debugPrint('UserStorageService: could not move "$legacyName": $e');
+      if (target != null && target.isOpen) await target.close();
+      if (legacy != null && legacy.isOpen) await legacy.close();
     }
   }
 }

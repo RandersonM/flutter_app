@@ -16,7 +16,7 @@ API*), que funciona no Spark:
 
 | Uso | Modelo | Código |
 |---|---|---|
-| Texto do Sanji | `gemini-2.5-flash-lite` | `GeminiService.generateText` |
+| Texto do Sanji | `gemini-3.5-flash-lite` | `GeminiService.generateText` |
 | Imagem de personagem / tripulação | `gemini-2.5-flash-image` | `GeminiService.generateImage` |
 
 `GeminiService` (`lib/core/services/gemini/`) usa `IGeminiClient`, implementado por
@@ -44,10 +44,14 @@ Nada disso exige cartão.
 
 ## Free tier: o que conferir
 
-O *free tier* da Gemini Developer API tem limites por minuto e por dia por modelo. A
-geração de imagem (`gemini-2.5-flash-image`) pode ter cota baixa ou zero no free tier —
-se a geração de imagem falhar sempre com cota esgotada, é esse o motivo, e o resto do app
-continua funcionando.
+O *free tier* da Gemini Developer API tem limites por minuto e por dia por modelo.
+
+- `gemini-2.5-flash-lite` não está mais disponível para projetos novos (404); o app usa
+  `gemini-3.5-flash-lite`.
+- **Geração de imagem não tem cota no free tier**: `gemini-2.5-flash-image` responde 429
+  (*"You exceeded your current quota"*) mesmo na primeira chamada. Sem faturamento, as
+  imagens de personagem/tripulação não são geradas — o app trata como "sem imagem" e o
+  resto continua funcionando. (Verificado em 2026-10-16 pelo AI Logic do projeto.)
 
 ## Solução de problemas
 

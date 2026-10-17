@@ -50,7 +50,7 @@ void main() {
       expect(text, 'Use a hot pan.');
       verify(
         () => client.generateText(
-          model: 'gemini-2.5-flash-lite',
+          model: 'gemini-3.5-flash-lite',
           prompt: 'Context: Sanji\n\nCook rice',
           systemInstruction: null,
           temperature: 0.4,
