@@ -60,6 +60,10 @@ and the ARBs.
 - BLoCs: `CustomCharacterBloc` (factory) and `CharacterFormOptionsCubit` (devil
   fruits + user crews for the create/edit form). Bounties are compared as numbers
   (`bountyValue`).
+- Editing keeps the stored devil fruit and crew names as the source of truth and
+  only looks them up in the loaded options to display them
+  (`custom_character/data/character_form_choices.dart`): options that are missing
+  or still loading never change what is saved.
 
 ## Duels (no persistence)
 

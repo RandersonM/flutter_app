@@ -6,6 +6,8 @@ import 'package:opfan/core/services/index.dart';
 import 'package:opfan/l10n/app_localizations.dart';
 import 'package:opfan/shared/widgets/atoms/custom_dropdown.dart';
 import 'package:opfan/shared/widgets/atoms/custom_text_field.dart';
+import 'package:opfan/shared/utils/body_measure.dart';
+import 'package:opfan/shared/utils/body_measure_validator.dart';
 import 'package:opfan/shared/utils/gender_mapper.dart';
 import 'package:opfan/shared/widgets/atoms/app_button.dart';
 import '../../bloc/index.dart';
@@ -123,14 +125,14 @@ class _NutritionFormState extends State<NutritionForm> {
   void _calculateNutrition() async {
     if (_formKey.currentState!.validate()) {
       final data = {
-        'age': int.parse(_ageController.text),
+        'age': BodyMeasure.age.parse(_ageController.text)!.toInt(),
         'gender': GenderMapper.getInternalValue(
           _selectedGender!,
           AppLocalizations.of(context)!,
         ),
-        'weight': double.parse(_weightController.text),
-        'height': double.parse(_heightController.text),
-        'waist': double.parse(_waistController.text),
+        'weight': BodyMeasure.weightKg.parse(_weightController.text)!,
+        'height': BodyMeasure.heightCm.parse(_heightController.text)!,
+        'waist': BodyMeasure.waistCm.parse(_waistController.text)!,
         'activityLevel': _selectedActivityLevel!,
         'goal': _selectedGoal!,
       };
@@ -179,60 +181,48 @@ class _NutritionFormState extends State<NutritionForm> {
             controller: _ageController,
             label: AppLocalizations.of(context)!.age,
             keyboardType: TextInputType.number,
-            validator: (value) {
-              if (value == null || value.isEmpty) {
-                return AppLocalizations.of(context)!.enterAge;
-              }
-              if (int.tryParse(value) == null) {
-                return AppLocalizations.of(context)!.enterValidNumber;
-              }
-              return null;
-            },
+            validator: bodyMeasureValidator(
+              BodyMeasure.age,
+              l10n: AppLocalizations.of(context)!,
+              missingMessage: AppLocalizations.of(context)!.enterAge,
+              invalidMessage: AppLocalizations.of(context)!.enterValidNumber,
+            ),
           ),
           const SizedBox(height: 16),
           CustomTextField(
             controller: _weightController,
             label: AppLocalizations.of(context)!.weight,
-            keyboardType: TextInputType.number,
-            validator: (value) {
-              if (value == null || value.isEmpty) {
-                return AppLocalizations.of(context)!.enterWeight;
-              }
-              if (double.tryParse(value) == null) {
-                return AppLocalizations.of(context)!.enterValidNumber;
-              }
-              return null;
-            },
+            keyboardType: const TextInputType.numberWithOptions(decimal: true),
+            validator: bodyMeasureValidator(
+              BodyMeasure.weightKg,
+              l10n: AppLocalizations.of(context)!,
+              missingMessage: AppLocalizations.of(context)!.enterWeight,
+              invalidMessage: AppLocalizations.of(context)!.enterValidNumber,
+            ),
           ),
           const SizedBox(height: 16),
           CustomTextField(
             controller: _heightController,
             label: AppLocalizations.of(context)!.height,
-            keyboardType: TextInputType.number,
-            validator: (value) {
-              if (value == null || value.isEmpty) {
-                return AppLocalizations.of(context)!.enterHeight;
-              }
-              if (double.tryParse(value) == null) {
-                return AppLocalizations.of(context)!.enterValidNumber;
-              }
-              return null;
-            },
+            keyboardType: const TextInputType.numberWithOptions(decimal: true),
+            validator: bodyMeasureValidator(
+              BodyMeasure.heightCm,
+              l10n: AppLocalizations.of(context)!,
+              missingMessage: AppLocalizations.of(context)!.enterHeight,
+              invalidMessage: AppLocalizations.of(context)!.enterValidNumber,
+            ),
           ),
           const SizedBox(height: 16),
           CustomTextField(
             controller: _waistController,
             label: AppLocalizations.of(context)!.waistCircumference,
-            keyboardType: TextInputType.number,
-            validator: (value) {
-              if (value == null || value.isEmpty) {
-                return AppLocalizations.of(context)!.enterWaist;
-              }
-              if (double.tryParse(value) == null) {
-                return AppLocalizations.of(context)!.enterValidNumber;
-              }
-              return null;
-            },
+            keyboardType: const TextInputType.numberWithOptions(decimal: true),
+            validator: bodyMeasureValidator(
+              BodyMeasure.waistCm,
+              l10n: AppLocalizations.of(context)!,
+              missingMessage: AppLocalizations.of(context)!.enterWaist,
+              invalidMessage: AppLocalizations.of(context)!.enterValidNumber,
+            ),
           ),
           const SizedBox(height: 24),
           Text(

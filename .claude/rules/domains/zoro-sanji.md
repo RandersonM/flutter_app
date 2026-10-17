@@ -15,6 +15,11 @@ through `IAuthService.updateBodyProfile` (not awaited, so a failed sync never bl
 the flow). Both share Firestore `workout_assessments`. Both screens are blocked
 offline by `OfflineBlockerOverlay`.
 
+Both forms parse and bound age, height, weight and waist through `BodyMeasure`
+(`lib/shared/utils/body_measure.dart`): a comma decimal ("72,5") is accepted and
+values outside a human range (height 50–260 cm, weight 20–400 kg, age 10–120,
+waist 30–250 cm) are refused, so an infinite BMI never reaches Firestore.
+
 ## workout_assessments
 
 - **One document per user per month**: `user_id`, `month_year` (`"YYYY-MM"`),

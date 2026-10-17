@@ -5,6 +5,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:opfan/shared/widgets/atoms/custom_dropdown.dart';
 import 'package:opfan/shared/widgets/atoms/custom_text_field.dart';
 import 'package:opfan/l10n/app_localizations.dart';
+import 'package:opfan/shared/utils/body_measure.dart';
+import 'package:opfan/shared/utils/body_measure_validator.dart';
 import 'package:opfan/shared/utils/gender_mapper.dart';
 import 'package:opfan/shared/widgets/atoms/app_button.dart';
 import '../../bloc/index.dart';
@@ -117,10 +119,10 @@ class _WorkoutSetupState extends State<WorkoutSetup> {
 
   void _calculateHealthMetrics() async {
     if (_formKey.currentState!.validate()) {
-      final height = double.parse(_heightController.text);
-      final weight = double.parse(_weightController.text);
-      final waist = double.parse(_waistController.text);
-      final age = int.parse(_ageController.text);
+      final height = BodyMeasure.heightCm.parse(_heightController.text)!;
+      final weight = BodyMeasure.weightKg.parse(_weightController.text)!;
+      final waist = BodyMeasure.waistCm.parse(_waistController.text)!;
+      final age = BodyMeasure.age.parse(_ageController.text)!.toInt();
 
       final bmi = weight / ((height / 100) * (height / 100));
       final waistToHeightRatio = waist / height;
@@ -297,76 +299,64 @@ class _WorkoutSetupState extends State<WorkoutSetup> {
             controller: _ageController,
             label: AppLocalizations.of(context)!.workout_age,
             keyboardType: TextInputType.number,
-            validator: (value) {
-              if (value == null || value.isEmpty) {
-                return AppLocalizations.of(
-                  context,
-                )!.workout_validation_age_required;
-              }
-              if (int.tryParse(value) == null) {
-                return AppLocalizations.of(
-                  context,
-                )!.workout_validation_age_invalid;
-              }
-              return null;
-            },
+            validator: bodyMeasureValidator(
+              BodyMeasure.age,
+              l10n: AppLocalizations.of(context)!,
+              missingMessage: AppLocalizations.of(
+                context,
+              )!.workout_validation_age_required,
+              invalidMessage: AppLocalizations.of(
+                context,
+              )!.workout_validation_age_invalid,
+            ),
           ),
           const SizedBox(height: 16),
           CustomTextField(
             controller: _heightController,
             label: AppLocalizations.of(context)!.workout_height,
-            keyboardType: TextInputType.number,
-            validator: (value) {
-              if (value == null || value.isEmpty) {
-                return AppLocalizations.of(
-                  context,
-                )!.workout_validation_height_required;
-              }
-              if (double.tryParse(value) == null) {
-                return AppLocalizations.of(
-                  context,
-                )!.workout_validation_height_invalid;
-              }
-              return null;
-            },
+            keyboardType: const TextInputType.numberWithOptions(decimal: true),
+            validator: bodyMeasureValidator(
+              BodyMeasure.heightCm,
+              l10n: AppLocalizations.of(context)!,
+              missingMessage: AppLocalizations.of(
+                context,
+              )!.workout_validation_height_required,
+              invalidMessage: AppLocalizations.of(
+                context,
+              )!.workout_validation_height_invalid,
+            ),
           ),
           const SizedBox(height: 16),
           CustomTextField(
             controller: _weightController,
             label: AppLocalizations.of(context)!.workout_weight,
-            keyboardType: TextInputType.number,
-            validator: (value) {
-              if (value == null || value.isEmpty) {
-                return AppLocalizations.of(
-                  context,
-                )!.workout_validation_weight_required;
-              }
-              if (double.tryParse(value) == null) {
-                return AppLocalizations.of(
-                  context,
-                )!.workout_validation_weight_invalid;
-              }
-              return null;
-            },
+            keyboardType: const TextInputType.numberWithOptions(decimal: true),
+            validator: bodyMeasureValidator(
+              BodyMeasure.weightKg,
+              l10n: AppLocalizations.of(context)!,
+              missingMessage: AppLocalizations.of(
+                context,
+              )!.workout_validation_weight_required,
+              invalidMessage: AppLocalizations.of(
+                context,
+              )!.workout_validation_weight_invalid,
+            ),
           ),
           const SizedBox(height: 16),
           CustomTextField(
             controller: _waistController,
             label: AppLocalizations.of(context)!.workout_waist,
-            keyboardType: TextInputType.number,
-            validator: (value) {
-              if (value == null || value.isEmpty) {
-                return AppLocalizations.of(
-                  context,
-                )!.workout_validation_waist_required;
-              }
-              if (double.tryParse(value) == null) {
-                return AppLocalizations.of(
-                  context,
-                )!.workout_validation_waist_invalid;
-              }
-              return null;
-            },
+            keyboardType: const TextInputType.numberWithOptions(decimal: true),
+            validator: bodyMeasureValidator(
+              BodyMeasure.waistCm,
+              l10n: AppLocalizations.of(context)!,
+              missingMessage: AppLocalizations.of(
+                context,
+              )!.workout_validation_waist_required,
+              invalidMessage: AppLocalizations.of(
+                context,
+              )!.workout_validation_waist_invalid,
+            ),
           ),
           const SizedBox(height: 16),
           CustomDropdown<int>(
