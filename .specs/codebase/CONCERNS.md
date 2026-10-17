@@ -25,7 +25,7 @@ structure branch) are kept at the bottom so nobody re-reports them.
 - flutter_gemma has one active store per process; Vegapunk (`opfan_rag_<uid>.db`) and
   Nami (`nami_finances_store_<uid>.db`) use it only inside `RagStoreCoordinator.withStore`, which
   runs one operation at a time, the store switch included
-- Clearing wipes the whole store; no per-document delete
+- Clearing wipes the whole store; single documents go through `RagStoreCoordinator.removeDocument` inside `withStore`
 - A long operation (Nami indexing a month) makes the other feature's search wait
 - **Risk:** calling `initializeVectorStore` directly silently re-points the other feature's searches
 

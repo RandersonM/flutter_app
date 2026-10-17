@@ -107,8 +107,11 @@ The small model often *describes* a tool call instead of emitting it. So:
   `opfan_rag_<uid>.db`, Nami `nami_finances_store_<uid>.db` (`guest` when signed
   out). The file name is the coordinator owner, so signing in as someone else
   reopens the store.
-- Clearing wipes the whole store; there is no per-document delete. Readers must
-  tolerate stale ids (golden: `FindExpensesHandler` drops ids that no longer resolve).
+- Clearing wipes the whole store. Delete one document with
+  `RagStoreCoordinator.removeDocument(id)` inside your `withStore` operation
+  (flutter_gemma keeps it off `FlutterGemmaPlugin`; the sqlite store implements it).
+  Readers must still tolerate stale ids (golden: `FindExpensesHandler` drops ids
+  that no longer resolve).
 - Vegapunk re-indexes the static knowledge base only when its fingerprint (sorted
   ids) changes — **changing a document's content requires changing its id**.
 - Defer embedding work so it doesn't compete with inference (session docs are added
