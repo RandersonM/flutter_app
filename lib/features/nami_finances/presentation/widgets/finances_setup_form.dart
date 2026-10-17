@@ -23,11 +23,13 @@ class FinancesSetupForm extends StatefulWidget {
   )
   onSave;
   final NamiFinancesModel? existingFinances;
+  final bool isSaving;
 
   const FinancesSetupForm({
     super.key,
     required this.onSave,
     this.existingFinances,
+    this.isSaving = false,
   });
 
   @override
@@ -271,7 +273,7 @@ class _FinancesSetupFormState extends State<FinancesSetupForm> {
   }
 
   void _saveFinances() {
-    if (!_isFormValid) return;
+    if (!_isFormValid || widget.isSaving) return;
 
     final incomes = _incomeItems
         .where(
@@ -595,7 +597,8 @@ class _FinancesSetupFormState extends State<FinancesSetupForm> {
 
   Widget _buildSaveButton(AppLocalizations l10n) {
     return AppButton(
-      onPressed: _isFormValid ? _saveFinances : null,
+      onPressed: _isFormValid && !widget.isSaving ? _saveFinances : null,
+      isLoading: widget.isSaving,
       icon: const AppIcon(PhosphorIconsRegular.floppyDisk, size: 18),
       label: l10n.save,
       backgroundColor: Theme.of(context).colorScheme.primary,

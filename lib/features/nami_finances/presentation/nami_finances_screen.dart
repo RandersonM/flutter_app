@@ -94,6 +94,7 @@ class _NamiFinancesScreenState extends State<NamiFinancesScreen> {
                                       reserveGoal,
                                     ),
                             existingFinances: _editingFinances,
+                            isSaving: _isSaving,
                           ),
                         );
                       }
@@ -113,6 +114,7 @@ class _NamiFinancesScreenState extends State<NamiFinancesScreen> {
                                       reserveGoal,
                                     ),
                             existingFinances: null,
+                            isSaving: _isSaving,
                           ),
                         );
                       }
@@ -264,7 +266,8 @@ class _NamiFinancesScreenState extends State<NamiFinancesScreen> {
     List<ReserveModel> reserves,
     double? reserveGoal,
   ) {
-    _isSaving = true;
+    if (_isSaving) return;
+    setState(() => _isSaving = true);
     context.read<NamiFinancesBloc>().add(
       SaveFinances(
         incomes: incomes,
@@ -285,7 +288,7 @@ class _NamiFinancesScreenState extends State<NamiFinancesScreen> {
         _showSetupForm = false;
       });
     } else if (state is NamiFinancesError) {
-      _isSaving = false;
+      setState(() => _isSaving = false);
       final l10n = AppLocalizations.of(context)!;
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(

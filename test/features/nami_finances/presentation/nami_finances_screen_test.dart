@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter_test/flutter_test.dart';
 import 'package:get_it/get_it.dart';
 import 'package:mocktail/mocktail.dart';
@@ -7,6 +9,7 @@ import 'package:opfan/features/nami_finances/data/models/nami_finances_model.dar
 import 'package:opfan/features/nami_finances/data/services/i_nami_rag_service.dart';
 import 'package:opfan/features/nami_finances/presentation/nami_finances_screen.dart';
 import 'package:opfan/features/nami_finances/presentation/widgets/finances_setup_form.dart';
+import 'package:opfan/shared/widgets/atoms/app_button.dart';
 
 import '../../../testable_widget.dart';
 
@@ -73,6 +76,10 @@ void main() {
     await tester.pumpAndSettle();
   }
 
+  AppButton saveButton(WidgetTester tester) => tester.widget<AppButton>(
+    find.ancestor(of: find.text('Save'), matching: find.byType(AppButton)),
+  );
+
   group('NamiFinancesScreen save behaviour', () {
     testWidgets('keeps the form and reports the failure when saving fails', (
       tester,
@@ -87,6 +94,7 @@ void main() {
 
       expect(find.byType(FinancesSetupForm), findsOneWidget);
       expect(find.text("Couldn't save your finances."), findsOneWidget);
+      expect(saveButton(tester).onPressed, isNotNull);
     });
 
     testWidgets('leaves the form once the month is saved', (tester) async {
@@ -100,6 +108,33 @@ void main() {
 
       expect(find.byType(FinancesSetupForm), findsNothing);
       expect(find.text('Edit data'), findsOneWidget);
+    });
+  });
+
+  group('NamiFinancesScreen double save behaviour', () {
+    testWidgets('saves once and disables Save while the save is running', (
+      tester,
+    ) async {
+      final saving = Completer<void>();
+      when(() => service.getLastMonthsFinances(any())).thenAnswer((_) async {
+        return [_month];
+      });
+      when(() => service.saveFinances(any())).thenAnswer((_) => saving.future);
+      await openEditForm(tester);
+
+      await tester.ensureVisible(find.text('Save'));
+      await tester.tap(find.text('Save'));
+      await tester.tap(find.text('Save'), warnIfMissed: false);
+      await tester.pump();
+
+      expect(saveButton(tester).onPressed, isNull);
+      expect(find.byType(FinancesSetupForm), findsOneWidget);
+
+      saving.complete();
+      await tester.pumpAndSettle();
+
+      verify(() => service.saveFinances(any())).called(1);
+      expect(find.byType(FinancesSetupForm), findsNothing);
     });
   });
 

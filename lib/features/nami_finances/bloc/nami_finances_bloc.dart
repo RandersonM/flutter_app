@@ -13,6 +13,8 @@ class NamiFinancesBloc extends Bloc<NamiFinancesEvent, NamiFinancesState> {
   final INamiFinancesService _service;
   final INamiRagService _ragService;
 
+  bool _isSaving = false;
+
   NamiFinancesBloc(this._service, this._ragService)
     : super(NamiFinancesInitial()) {
     on<LoadFinances>(_onLoadFinances);
@@ -72,7 +74,10 @@ class NamiFinancesBloc extends Bloc<NamiFinancesEvent, NamiFinancesState> {
     Emitter<NamiFinancesState> emit,
   ) async {
     // No loading state: the form stays on screen, so a failed save keeps what
-    // the user typed.
+    // the user typed. A second tap while saving would write new rows twice,
+    // each time with fresh ids.
+    if (_isSaving) return;
+    _isSaving = true;
     try {
       final canEdit = await _service.canEditFinances(event.month);
       if (!canEdit) {
@@ -110,6 +115,8 @@ class NamiFinancesBloc extends Bloc<NamiFinancesEvent, NamiFinancesState> {
     } catch (e) {
       debugPrint('NamiFinancesBloc: save failed: $e');
       emit(NamiFinancesError(NamiFinancesFailure.saveFailed));
+    } finally {
+      _isSaving = false;
     }
   }
 
