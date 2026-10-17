@@ -2929,6 +2929,10 @@ class AppLocalizationsEn extends AppLocalizations {
       'Saved, but the character list couldn\'t be refreshed';
 
   @override
+  String get customCharacterCrewRoleTakenError =>
+      'That role is already taken in this crew. Pick another role.';
+
+  @override
   String get duelsLoadError => 'Couldn\'t load the characters for the duel';
 
   @override

@@ -174,6 +174,91 @@ void main() {
       expect(bloc.state, DuelsReady(availableCharacters: [luffy, zoro]));
     });
 
+    Future<DuelsBloc> startDuelBetweenLuffyAndZoro(WidgetTester tester) async {
+      when(
+        () => canon.getAllOnePieceCharacters(limit: 100),
+      ).thenAnswer((_) async => [luffy, zoro, mine]);
+      when(() => custom.getUserCustomCharacters()).thenAnswer((_) async => []);
+      final bloc = build()..add(const LoadDuelsScreen());
+      addTearDown(bloc.close);
+      await tester.pump();
+      bloc
+        ..add(SelectFirstCharacter(luffy))
+        ..add(SelectSecondCharacter(zoro))
+        ..add(const StartDuel());
+      await tester.pump(const Duration(seconds: 1));
+      expect((bloc.state as DuelsReady).isDuelInProgress, isTrue);
+      return bloc;
+    }
+
+    testWidgets(
+      'picking a fighter during the suspense delay cancels the duel',
+      (tester) async {
+        final bloc = await startDuelBetweenLuffyAndZoro(tester);
+
+        bloc.add(SelectSecondCharacter(mine));
+        await tester.pump(const Duration(seconds: 2));
+
+        expect(
+          bloc.state,
+          DuelsReady(
+            availableCharacters: [luffy, zoro, mine],
+            firstCharacter: luffy,
+            secondCharacter: mine,
+          ),
+        );
+      },
+    );
+
+    testWidgets(
+      'clearing a fighter during the suspense delay cancels the duel',
+      (tester) async {
+        final bloc = await startDuelBetweenLuffyAndZoro(tester);
+
+        bloc.add(const ClearCharacterSelection(1));
+        await tester.pump(const Duration(seconds: 2));
+
+        expect(
+          bloc.state,
+          DuelsReady(
+            availableCharacters: [luffy, zoro, mine],
+            secondCharacter: zoro,
+          ),
+        );
+      },
+    );
+
+    testWidgets('shuffling during the suspense delay cancels the duel', (
+      tester,
+    ) async {
+      final bloc = await startDuelBetweenLuffyAndZoro(tester);
+
+      bloc.add(const RandomizeCharacters());
+      await tester.pump();
+      final shuffled = bloc.state as DuelsReady;
+      await tester.pump(const Duration(seconds: 2));
+
+      expect(bloc.state, shuffled);
+      expect(shuffled.isDuelInProgress, isFalse);
+      expect(shuffled.winner, isNull);
+    });
+
+    testWidgets('a new duel after a cancelled one judges the new pair', (
+      tester,
+    ) async {
+      final bloc = await startDuelBetweenLuffyAndZoro(tester);
+
+      bloc
+        ..add(SelectSecondCharacter(mine))
+        ..add(const StartDuel());
+      await tester.pump(const Duration(seconds: 3));
+
+      final state = bloc.state as DuelsReady;
+      expect(state.secondCharacter, mine);
+      expect(state.isDuelInProgress, isFalse);
+      expect(state.winner, anyOf(luffy, mine));
+    });
+
     blocTest<DuelsBloc, DuelsState>(
       'does not start without two fighters',
       build: build,

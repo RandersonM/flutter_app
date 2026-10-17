@@ -32,6 +32,14 @@ and the ARBs.
 - 11 role keys: `captain`, `viceCaptain`, `helmsman`, `navigator`, `cook`, `doctor`,
   `musician`, `carpenter`, `sharpshooter`, `archaeologist`, `boatswain`.
 - **Each role can be filled once** (`rolesFilled`) → at most 11 members.
+  `CrewModel.isRoleFilled` checks it (legacy spellings included); the crew
+  details dialog and the create-character form only offer free roles,
+  `CustomCharacterBloc` refuses a taken role before creating anything
+  (`CustomCharacterFailure.crewRoleTaken`) and `CrewRepository.addMemberToCrew`
+  throws `CrewRoleTakenException`.
+- `captain`/`viceCaptain` are blanked (`''`) when their holder leaves, unless an
+  older crew still has another member with that role — the title passes to them.
+  UI shows them only when non-empty (`crew_header.dart`, `crew_card.dart`).
 - **A character belongs to at most one of the user's crews.** Adding a member also
   writes `character.crew = crew.name`.
 - Crew name ≥ 3 characters. `captain`/`viceCaptain` store names, not ids.
@@ -44,16 +52,22 @@ and the ARBs.
   by create/edit). Routes `/createCrew`, `/editCrew`, `/listCrews` are private;
   `/crewDetails` is public.
 - Debt — don't copy, flag if relevant:
-  - Role spelling disagrees: UI writes `viceCaptain`, the repository checks
-    `vice-captain`/`vicecaptain`, `updateCrewMember` checks `vice captain`. Use
-    `viceCaptain` and normalize at the boundary when you touch it.
+  - Stored role spelling varies: crew details writes `viceCaptain`, the
+    create-character form `vicecaptain`, older data `vice-captain`. Compare
+    through `CrewMember.isCaptain`/`isViceCaptain`/`holdsRole` and
+    `CrewModel.isRoleFilled`, never with `==` on the raw string.
+  - The edit-character form shows a crew role picker, but the role is not saved.
   - `DeleteCrew` reloads *all* crews, not the user's.
 
 ## Custom characters (Firestore `custom_characters`)
 
 - Owner-only (strict rule). At most **3 occupations**. Age and `signo` are derived
   from `birthDate`. Placeholder image when none is given.
-- Deleting a character **cascades**: removed from crews, captain/vice-captain cleared.
+- Deleting a character **cascades**: removed from crews through
+  `removeMemberFromCrew`, which also clears captain/vice-captain.
+- Renaming a character (`updateCustomCharacter`) updates its copy in the crew
+  (`members[].name/nickname/bounty`, and `captain`/`viceCaptain`); a failed crew
+  sync is logged and does not fail the character save.
 - Create can attach to a crew (`crewId`, `crewRole`) in the same flow.
 - Routes `/createCustomCharacter`, `/customCharacterList`, `/editCustomCharacter`
   — all private.
@@ -77,6 +91,9 @@ and the ARBs.
   - Matchups: Armament vs fruit user +20; Observation vs swordsman/martial_arts +10;
     King's vs no haki +20; fruit user vs Armament −20
   - Random 0–79; **tie goes to character 1**; 2 s suspense delay.
+- Shuffle and clear are disabled while a duel resolves, and any fighter change
+  or reset cancels the pending duel (`_duelGeneration`); the result is judged
+  from the state at the end of the delay.
 - Keep scoring in a pure, testable function if you change it.
 - `DuelsBloc` is a DI factory.
 - Loads only the signed-in user's custom characters (`getUserCustomCharacters()`);

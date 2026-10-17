@@ -17,8 +17,8 @@ class DuelsBloc extends Bloc<DuelsEvent, DuelsState> {
   final ICustomCharacterRepository _customCharacterRepository;
   final Random _random = Random();
 
-  /// Bumped by every start and reset, so a duel whose suspense delay outlives
-  /// a reset does not write its result over the reset state.
+  /// Bumped by every start, reset and fighter change, so a duel whose suspense
+  /// delay outlives one of them does not write its result over the new state.
   int _duelGeneration = 0;
 
   DuelsBloc({
@@ -69,7 +69,7 @@ class DuelsBloc extends Bloc<DuelsEvent, DuelsState> {
     Emitter<DuelsState> emit,
   ) {
     if (state is DuelsReady) {
-      final currentState = state as DuelsReady;
+      final currentState = _cancelPendingDuel(state as DuelsReady);
 
       // Verificar se o personagem já está selecionado como segundo
       if (currentState.secondCharacter?.id == event.character.id) {
@@ -90,7 +90,7 @@ class DuelsBloc extends Bloc<DuelsEvent, DuelsState> {
     Emitter<DuelsState> emit,
   ) {
     if (state is DuelsReady) {
-      final currentState = state as DuelsReady;
+      final currentState = _cancelPendingDuel(state as DuelsReady);
 
       // Verificar se o personagem já está selecionado como primeiro
       if (currentState.firstCharacter?.id == event.character.id) {
@@ -111,7 +111,7 @@ class DuelsBloc extends Bloc<DuelsEvent, DuelsState> {
     Emitter<DuelsState> emit,
   ) {
     if (state is DuelsReady) {
-      final currentState = state as DuelsReady;
+      final currentState = _cancelPendingDuel(state as DuelsReady);
 
       if (event.position == 1) {
         emit(currentState.copyWith(clearFirstCharacter: true));
@@ -134,16 +134,27 @@ class DuelsBloc extends Bloc<DuelsEvent, DuelsState> {
 
       await Future.delayed(const Duration(seconds: 2));
       if (isClosed || generation != _duelGeneration) return;
+      final pendingState = state;
+      if (pendingState is! DuelsReady) return;
+      final first = pendingState.firstCharacter;
+      final second = pendingState.secondCharacter;
+      if (first == null || second == null) return;
 
       final winner = DuelScoring.winner(
-        currentState.firstCharacter!,
-        currentState.secondCharacter!,
+        first,
+        second,
         roll1: _random.nextInt(DuelScoring.rollRange),
         roll2: _random.nextInt(DuelScoring.rollRange),
       );
 
-      emit(currentState.copyWith(isDuelInProgress: false, winner: winner));
+      emit(pendingState.copyWith(isDuelInProgress: false, winner: winner));
     }
+  }
+
+  DuelsReady _cancelPendingDuel(DuelsReady current) {
+    if (!current.isDuelInProgress) return current;
+    _duelGeneration++;
+    return current.copyWith(isDuelInProgress: false);
   }
 
   void _onResetDuel(ResetDuel event, Emitter<DuelsState> emit) {
@@ -167,7 +178,7 @@ class DuelsBloc extends Bloc<DuelsEvent, DuelsState> {
     Emitter<DuelsState> emit,
   ) {
     if (state is DuelsReady) {
-      final currentState = state as DuelsReady;
+      final currentState = _cancelPendingDuel(state as DuelsReady);
 
       if (currentState.availableCharacters.length >= 2) {
         final shuffledCharacters = List<CustomCharacterModel>.from(

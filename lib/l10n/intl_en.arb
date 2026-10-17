@@ -4680,6 +4680,10 @@
   "@customCharacterListRefreshError": {
     "description": "Custom character list error detail when a create/update/delete succeeded but reloading the list failed"
   },
+  "customCharacterCrewRoleTakenError": "That role is already taken in this crew. Pick another role.",
+  "@customCharacterCrewRoleTakenError": {
+    "description": "Create custom character error when the chosen crew role already has a member"
+  },
   "duelsLoadError": "Couldn't load the characters for the duel",
   "@duelsLoadError": {
     "description": "Duels screen error detail when loading characters fails"

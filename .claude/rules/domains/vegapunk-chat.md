@@ -23,6 +23,15 @@ rules: `ai-on-device.md`.
 - `activeToolName` is a raw tool key; the widget localizes it (golden pattern for
   "state carries a key, UI localizes").
 
+## Tools
+
+- `saveWorkout` runs only from `ToolIntentDetector`, which skips a sentence that
+  is negated anywhere (`não`, `nem`, `jamais`, `quase`, `never`, `*n't` with `'`
+  or `’`, ... — Portuguese also negates after the verb: "treinei hoje não"),
+  hypothetical (`se`, `if`, `será que`), a question (`?`, or an interrogative
+  such as `quanto`/`quando`/`how`/`did i` earlier in the trigger's clause) or
+  `sem` right before the trigger. "treinei hoje sem parar" still logs.
+
 ## Memory
 
 - History: encrypted per-user Hive **LazyBox** `vegapunk_chat_history_<uid>`

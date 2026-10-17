@@ -11,4 +11,6 @@ String customCharacterFailureMessage(
   CustomCharacterFailure.deleteFailed => l10n.customCharacterDeleteError,
   CustomCharacterFailure.listRefreshFailed =>
     l10n.customCharacterListRefreshError,
+  CustomCharacterFailure.crewRoleTaken =>
+    l10n.customCharacterCrewRoleTakenError,
 };

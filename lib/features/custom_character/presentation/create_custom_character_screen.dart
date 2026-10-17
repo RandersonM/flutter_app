@@ -152,10 +152,10 @@ class _CreateCustomCharacterScreenState
                             selectedCrewId: _selectedCrewId,
                             onCrewChanged: (crewId) {
                               setState(() {
-                                _selectedCrewId = crewId;
-                                if (crewId == null) {
+                                if (crewId != _selectedCrewId) {
                                   _selectedCrewRole = null;
                                 }
+                                _selectedCrewId = crewId;
                               });
                             },
                             selectedCrewRole: _selectedCrewRole,

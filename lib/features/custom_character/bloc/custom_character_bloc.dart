@@ -49,6 +49,12 @@ class CustomCharacterBloc
   ) async {
     emit(CustomCharacterCreating());
     try {
+      if (await _isCrewRoleTaken(event.crewId, event.crewRole)) {
+        if (isClosed) return;
+        emit(const CustomCharacterError(CustomCharacterFailure.crewRoleTaken));
+        return;
+      }
+
       final characterId = await _customCharacterRepository
           .createCustomCharacter(event.character);
 
@@ -86,6 +92,14 @@ class CustomCharacterBloc
       debugPrint('CustomCharacterBloc: create character failed: $e');
       emit(const CustomCharacterError(CustomCharacterFailure.createFailed));
     }
+  }
+
+  /// Checked before the character exists, so a taken role leaves nothing
+  /// half-created behind.
+  Future<bool> _isCrewRoleTaken(String? crewId, String? role) async {
+    if (crewId == null || role == null || role.isEmpty) return false;
+    final crew = await _crewRepository.getCrew(crewId);
+    return crew?.isRoleFilled(role) ?? false;
   }
 
   Future<void> _onUpdateCustomCharacter(

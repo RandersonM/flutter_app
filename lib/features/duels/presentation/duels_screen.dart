@@ -47,9 +47,11 @@ class _DuelsView extends StatelessWidget {
               if (state is DuelsReady) {
                 return IconButton(
                   icon: const Icon(PhosphorIconsRegular.shuffle),
-                  onPressed: () {
-                    context.read<DuelsBloc>().add(const RandomizeCharacters());
-                  },
+                  onPressed: state.isDuelInProgress
+                      ? null
+                      : () => context.read<DuelsBloc>().add(
+                          const RandomizeCharacters(),
+                        ),
                   tooltip: l10n.randomizeCharacters,
                 );
               }
@@ -161,9 +163,11 @@ class _DuelsView extends StatelessWidget {
               onCharacterSelected: (character) {
                 context.read<DuelsBloc>().add(SelectFirstCharacter(character));
               },
-              onClearSelection: () {
-                context.read<DuelsBloc>().add(const ClearCharacterSelection(1));
-              },
+              onClearSelection: state.isDuelInProgress
+                  ? null
+                  : () => context.read<DuelsBloc>().add(
+                      const ClearCharacterSelection(1),
+                    ),
               position: 1,
             ),
             const SizedBox(height: Constants.margin * 2),
@@ -188,9 +192,11 @@ class _DuelsView extends StatelessWidget {
               onCharacterSelected: (character) {
                 context.read<DuelsBloc>().add(SelectSecondCharacter(character));
               },
-              onClearSelection: () {
-                context.read<DuelsBloc>().add(const ClearCharacterSelection(2));
-              },
+              onClearSelection: state.isDuelInProgress
+                  ? null
+                  : () => context.read<DuelsBloc>().add(
+                      const ClearCharacterSelection(2),
+                    ),
               position: 2,
             ),
             if (state.winner != null) ...[

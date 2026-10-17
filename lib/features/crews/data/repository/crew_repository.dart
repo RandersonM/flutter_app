@@ -16,6 +16,13 @@ class CrewRepository implements ICrewRepository {
   static bool _isCaptain(String? role) => _roleKey(role) == 'captain';
   static bool _isViceCaptain(String? role) => _roleKey(role) == 'vicecaptain';
 
+  /// Legacy crews can hold a role twice, so a leaving holder hands the title to
+  /// the one left instead of blanking it.
+  static String _remainingHolder(
+    List<CrewMember> members,
+    bool Function(CrewMember) holdsRole,
+  ) => members.where(holdsRole).firstOrNull?.name ?? '';
+
   @override
   Future<String> createCrew(CrewModel crew) async {
     try {
@@ -352,6 +359,11 @@ class CrewRepository implements ICrewRepository {
         throw NotFoundException('crew $crewId');
       }
 
+      final role = member.role;
+      if (role != null && role.isNotEmpty && crew.isRoleFilled(role)) {
+        throw CrewRoleTakenException(role);
+      }
+
       final updatedMembers = List<CrewMember>.from(crew.members)..add(member);
 
       List<String> updatedRolesFilled = List<String>.from(crew.rolesFilled);
@@ -394,18 +406,25 @@ class CrewRepository implements ICrewRepository {
       final removed = crew.members
           .where((member) => member.characterId == characterId)
           .toList();
-      final freedRoles = removed.map((m) => m.role).whereType<String>().toSet();
+      final remaining = crew.members
+          .where((member) => member.characterId != characterId)
+          .toList();
+      final freedRoles = removed
+          .map((m) => m.role)
+          .whereType<String>()
+          .where((role) => !remaining.any((m) => m.holdsRole(role)))
+          .toSet();
 
       final updatedCrew = crew.copyWith(
-        members: crew.members
-            .where((member) => member.characterId != characterId)
-            .toList(),
+        members: remaining,
         rolesFilled: crew.rolesFilled
             .where((role) => !freedRoles.contains(role))
             .toList(),
-        captain: removed.any((m) => _isCaptain(m.role)) ? '' : crew.captain,
-        viceCaptain: removed.any((m) => _isViceCaptain(m.role))
-            ? ''
+        captain: removed.any((m) => m.isCaptain)
+            ? _remainingHolder(remaining, (m) => m.isCaptain)
+            : crew.captain,
+        viceCaptain: removed.any((m) => m.isViceCaptain)
+            ? _remainingHolder(remaining, (m) => m.isViceCaptain)
             : crew.viceCaptain,
       );
       await updateCrew(crewId, updatedCrew);
@@ -443,9 +462,18 @@ class CrewRepository implements ICrewRepository {
           .firstOrNull
           ?.role;
       if (previousRole != null && previousRole != updatedMember.role) {
-        updatedRolesFilled.remove(previousRole);
-        if (_isCaptain(previousRole)) updatedCaptain = '';
-        if (_isViceCaptain(previousRole)) updatedViceCaptain = '';
+        final others = updatedMembers
+            .where((member) => member.characterId != characterId)
+            .toList();
+        if (!others.any((member) => member.holdsRole(previousRole))) {
+          updatedRolesFilled.remove(previousRole);
+        }
+        if (_isCaptain(previousRole)) {
+          updatedCaptain = _remainingHolder(others, (m) => m.isCaptain);
+        }
+        if (_isViceCaptain(previousRole)) {
+          updatedViceCaptain = _remainingHolder(others, (m) => m.isViceCaptain);
+        }
       }
 
       if (updatedMember.role != null && updatedMember.role!.isNotEmpty) {

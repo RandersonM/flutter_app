@@ -41,3 +41,13 @@ final class QuotaExceededException extends AppException {
   @override
   String toString() => 'QuotaExceededException';
 }
+
+/// The crew role is already held by another member; each role is held once.
+final class CrewRoleTakenException extends AppException {
+  const CrewRoleTakenException(this.role);
+
+  final String role;
+
+  @override
+  String toString() => 'CrewRoleTakenException($role)';
+}
