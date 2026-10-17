@@ -82,6 +82,12 @@ class AuthProfileUpdated extends AuthState {
   List<Object?> get props => [user];
 }
 
+/// A profile save failed. The user stays signed in: the previous signed-in
+/// state follows right after, and the screen that saved shows the failure.
+class AuthProfileUpdateFailed extends AuthState {
+  const AuthProfileUpdateFailed();
+}
+
 class AuthDeletingAccount extends AuthState {
   const AuthDeletingAccount();
 }

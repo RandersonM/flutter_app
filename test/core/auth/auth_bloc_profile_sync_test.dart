@@ -20,9 +20,20 @@ UserModel _user({double? weightKg}) => UserModel(
   weightKg: weightKg,
 );
 
+UserModel _completeUser({required double weightKg}) =>
+    _user(weightKg: weightKg).copyWith(
+      gender: 'female',
+      age: 30,
+      heightCm: 165,
+      activityLevel: 'moderate',
+      goal: 'maintenance',
+    );
+
 void main() {
   late _MockAuthService auth;
   late StreamController<UserModel> profileChanges;
+
+  setUpAll(() => registerFallbackValue(_user()));
 
   setUp(() {
     auth = _MockAuthService();
@@ -47,6 +58,46 @@ void main() {
       seed: () => const AuthUnauthenticated(),
       act: (_) => profileChanges.add(_user(weightKg: 68)),
       expect: () => const <AuthState>[],
+    );
+
+    blocTest<AuthBloc, AuthState>(
+      'keeps the user signed in with the stored profile when a save fails',
+      setUp: () {
+        when(
+          () => auth.updateBodyProfile(any()),
+        ).thenThrow(Exception('offline'));
+        when(() => auth.currentUser).thenReturn(_completeUser(weightKg: 70));
+      },
+      build: () => AuthBloc(authService: auth),
+      seed: () => AuthAuthenticated(user: _completeUser(weightKg: 70)),
+      act: (bloc) => bloc.add(
+        AuthProfileBodyUpdated(updatedUser: _completeUser(weightKg: 68)),
+      ),
+      expect: () => [
+        AuthProfileUpdating(user: _completeUser(weightKg: 68)),
+        const AuthProfileUpdateFailed(),
+        AuthAuthenticated(user: _completeUser(weightKg: 70)),
+      ],
+    );
+
+    blocTest<AuthBloc, AuthState>(
+      'keeps a new user on onboarding when the first save fails',
+      setUp: () {
+        when(
+          () => auth.updateBodyProfile(any()),
+        ).thenThrow(Exception('offline'));
+        when(() => auth.currentUser).thenReturn(_user());
+      },
+      build: () => AuthBloc(authService: auth),
+      seed: () => AuthNeedsOnboarding(user: _user()),
+      act: (bloc) => bloc.add(
+        AuthProfileBodyUpdated(updatedUser: _completeUser(weightKg: 68)),
+      ),
+      expect: () => [
+        AuthProfileUpdating(user: _completeUser(weightKg: 68)),
+        const AuthProfileUpdateFailed(),
+        AuthNeedsOnboarding(user: _user()),
+      ],
     );
 
     test('stops listening when closed', () async {

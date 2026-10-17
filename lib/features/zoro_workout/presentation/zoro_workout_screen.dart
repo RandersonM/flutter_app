@@ -101,24 +101,6 @@ class _WorkoutViewState extends State<_WorkoutView> {
       _isLoading = true;
     });
 
-    // Auto-save global profile when calculating
-    final user = _currentUser;
-    if (user != null) {
-      final updatedUser = user.copyWith(
-        gender: results['gender'] as String?,
-        age: results['age'] as int?,
-        heightCm: results['height'] as double?,
-        weightKg: results['weight'] as double?,
-        waistCm: results['waist'] as double?,
-        activityLevel:
-            results['activity_level'] as String? ?? user.activityLevel,
-        goal: results['goal'] as String? ?? user.goal,
-      );
-      context.read<AuthBloc>().add(
-        AuthProfileBodyUpdated(updatedUser: updatedUser),
-      );
-    }
-
     Future.delayed(const Duration(milliseconds: 800), () {
       if (mounted) {
         setState(() {

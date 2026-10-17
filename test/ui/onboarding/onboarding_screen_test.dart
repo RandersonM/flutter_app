@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:bloc_test/bloc_test.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -95,6 +97,27 @@ void main() {
       expect(event.updatedUser.uid, 'uid-1');
       expect(event.updatedUser.goal, 'weight_loss');
       expect(event.updatedUser.activityLevel, 'sedentary');
+    });
+
+    testWidgets('tells a new user when the profile could not be saved', (
+      tester,
+    ) async {
+      final states = StreamController<AuthState>();
+      addTearDown(states.close);
+      whenListen(
+        authBloc,
+        states.stream,
+        initialState: AuthNeedsOnboarding(user: user),
+      );
+      await pumpOnboarding(tester);
+
+      states.add(const AuthProfileUpdateFailed());
+      await tester.pump();
+
+      expect(
+        find.text("Couldn't save your profile. Please try again."),
+        findsOneWidget,
+      );
     });
   });
 }

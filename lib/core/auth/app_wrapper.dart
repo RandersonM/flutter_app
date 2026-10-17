@@ -34,11 +34,8 @@ class _AppWrapperState extends State<AppWrapper> {
     return BlocProvider.value(
       value: _authBloc,
       child: BlocBuilder<AuthBloc, AuthState>(
+        buildWhen: (_, state) => !_keepsCurrentRoot(state),
         builder: (context, state) {
-          if (state is AuthInitial || state is AuthLoading) {
-            return const SplashScreen();
-          }
-
           if (state is AuthAuthenticated) {
             return const HomeScreen();
           }
@@ -106,3 +103,10 @@ class _AppWrapperState extends State<AppWrapper> {
     super.dispose();
   }
 }
+
+/// A profile save does not change who is signed in, so the root stays put
+/// instead of rebuilding Home (or falling to Splash) mid-save.
+bool _keepsCurrentRoot(AuthState state) =>
+    state is AuthProfileUpdating ||
+    state is AuthProfileUpdated ||
+    state is AuthProfileUpdateFailed;

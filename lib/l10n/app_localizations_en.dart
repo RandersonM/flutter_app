@@ -3158,4 +3158,8 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get openExternalLinkAction => 'Open';
+
+  @override
+  String get profileUpdateFailed =>
+      'Couldn\'t save your profile. Please try again.';
 }

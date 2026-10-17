@@ -187,11 +187,23 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
+    // Edit mode pops right after saving, so the profile screen reports its
+    // failure instead.
     return BlocListener<AuthBloc, AuthState>(
-      listenWhen: (_, state) => !_isEditing && state is AuthAuthenticated,
-      listener: (context, _) => Navigator.of(
-        context,
-      ).pushNamedAndRemoveUntil(AppRoutes.home, (route) => false),
+      listenWhen: (_, state) =>
+          !_isEditing &&
+          (state is AuthAuthenticated || state is AuthProfileUpdateFailed),
+      listener: (context, state) {
+        if (state is AuthProfileUpdateFailed) {
+          ScaffoldMessenger.of(
+            context,
+          ).showSnackBar(SnackBar(content: Text(l10n.profileUpdateFailed)));
+          return;
+        }
+        Navigator.of(
+          context,
+        ).pushNamedAndRemoveUntil(AppRoutes.home, (route) => false);
+      },
       child: Scaffold(
         appBar: AppBar(
           title: Text(

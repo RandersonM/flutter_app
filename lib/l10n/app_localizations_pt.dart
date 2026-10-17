@@ -3193,4 +3193,8 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get openExternalLinkAction => 'Abrir';
+
+  @override
+  String get profileUpdateFailed =>
+      'Não foi possível salvar seu perfil. Tente novamente.';
 }

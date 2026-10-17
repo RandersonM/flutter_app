@@ -57,18 +57,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         emit(const AuthUnauthenticated());
       }
 
-      _authStatusSubscription = _authService.authStatusStream.listen((
-        status,
-      ) async {
-        if (status == AuthStatus.authenticated) {
-          final currentUser = await _authService.checkAuthStatus();
-          if (currentUser != null) {
-            add(AuthStatusChanged(currentUser));
-          }
-        } else if (status == AuthStatus.unauthenticated) {
-          add(const AuthStatusChanged(null));
-        }
-      });
+      _followAuthStatus();
     } catch (e) {
       debugPrint('AuthBloc: Error initializing authentication - $e');
       emit(
@@ -148,9 +137,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       }
     } catch (e) {
       debugPrint('AuthBloc: Error updating profile - $e');
-      emit(
-        const AuthError(message: 'Profile update failed. Please try again.'),
-      );
+      _emitProfileUpdateFailed(emit, previous: currentState);
     }
   }
 
@@ -158,6 +145,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     AuthProfileBodyUpdated event,
     Emitter<AuthState> emit,
   ) async {
+    final previous = state;
     try {
       emit(AuthProfileUpdating(user: event.updatedUser));
 
@@ -167,10 +155,19 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       emit(AuthAuthenticated(user: event.updatedUser));
     } catch (e) {
       debugPrint('AuthBloc: Error updating body profile - $e');
-      emit(
-        const AuthError(message: 'Profile update failed. Please try again.'),
-      );
+      _emitProfileUpdateFailed(emit, previous: previous);
     }
+  }
+
+  /// A failed save keeps the user signed in with the last profile the service
+  /// stored, so the app root does not fall back to the auth error screen.
+  void _emitProfileUpdateFailed(
+    Emitter<AuthState> emit, {
+    required AuthState previous,
+  }) {
+    emit(const AuthProfileUpdateFailed());
+    final storedUser = _authService.currentUser;
+    emit(storedUser != null ? _signedInState(storedUser) : previous);
   }
 
   void _onAuthProfileChanged(
@@ -236,6 +233,23 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       debugPrint('AuthBloc: Error clearing cache - $e');
       emit(const AuthError(message: 'Session error. Please sign in again.'));
     }
+  }
+
+  void _followAuthStatus() {
+    final previous = _authStatusSubscription;
+    _authStatusSubscription = _authService.authStatusStream.listen((
+      status,
+    ) async {
+      if (status == AuthStatus.authenticated) {
+        final currentUser = await _authService.checkAuthStatus();
+        if (currentUser != null) {
+          add(AuthStatusChanged(currentUser));
+        }
+      } else if (status == AuthStatus.unauthenticated) {
+        add(const AuthStatusChanged(null));
+      }
+    });
+    unawaited(previous?.cancel());
   }
 
   AuthState _signedInState(UserModel user, {bool isFirstLogin = false}) {
