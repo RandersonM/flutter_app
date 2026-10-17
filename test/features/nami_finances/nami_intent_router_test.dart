@@ -158,5 +158,9 @@ void main() {
       expect(amounts, isNot(contains(100.0)));
       expect(amounts, isNot(contains(100000.0)));
     });
+
+    test('does not read "mil" inside another word as thousands', () {
+      expect(router.extractAmounts('algo similar por 500'), [500]);
+    });
   });
 }

@@ -42,6 +42,12 @@ RAG store. The chat is on-device — see `ai-on-device.md`.
 - `findExpenses` uses the RAG store (one doc per *described* expense, id
   `exp:<expenseId>`, metadata `month`), synced by `syncMonth` on save and a one-time
   24-month backfill. Stale ids are dropped at read time.
+- The form keeps each saved row's id on edit (only new rows get a UUID), and
+  `syncMonth` records per month which docs it indexed: it embeds only new or
+  reworded expenses and removes the docs of dropped ones.
+- Saving does not wait for `syncMonth` (its first run downloads the embedder): the
+  save result depends only on Hive, a sync failure is only logged, and a failed
+  save keeps the form on screen.
 - Chat history is in-memory only.
 
 ## UI

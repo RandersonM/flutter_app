@@ -45,7 +45,12 @@ void registerFeaturesModule(GetIt getIt) {
   getIt.registerLazySingleton<FunctionRegistry>(() {
     final registry = FunctionRegistry();
     final finances = getIt<INamiFinancesService>();
-    registry.register(GetFinancesHandler(financesService: finances));
+    registry.register(
+      GetFinancesHandler(
+        financesService: finances,
+        localeService: getIt<ILocaleService>(),
+      ),
+    );
     registry.register(AffordableInstallmentHandler(financesService: finances));
     registry.register(SimulateGoalPlanHandler(financesService: finances));
     registry.register(BudgetBreakdownHandler(financesService: finances));

@@ -146,11 +146,14 @@ class _AddExpenseDialogState extends State<AddExpenseDialog> {
 }
 
 class ExpenseItem {
+  /// The saved expense's id; null for a row added in this edit.
+  final String? id;
   final TextEditingController controller;
   ExpenseCategory category;
   String description;
 
   ExpenseItem({
+    this.id,
     required this.controller,
     required this.category,
     required this.description,

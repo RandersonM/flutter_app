@@ -41,7 +41,8 @@ class FinanceMath {
 
   /// Parses a loose amount string coming from LLM tool arguments or free text
   /// into a double. Handles pt-BR ("80.000,00"), plain ("80000"), currency
-  /// prefixes ("R$ 80.000") and thousand shorthands ("80mil", "80k", "1,5 mi").
+  /// prefixes ("R$ 80.000"), thousand shorthands ("80mil", "80k", "1,5 mi")
+  /// and a leading minus sign ("-500").
   /// Returns null when nothing numeric can be extracted.
   static double? parseAmount(String? raw) {
     if (raw == null) return null;
@@ -50,18 +51,9 @@ class FinanceMath {
 
     s = s.replaceAll('r\$', '').replaceAll('reais', '').trim();
 
-    // Multiplier suffixes — match whether glued to the number ("80mil", "80k")
-    // or spaced ("80 mil", "1,5 mi"). Check millions before thousands so
-    // "milhão" isn't caught by the "mil" pattern.
-    double multiplier = 1;
-    if (RegExp(r'(milh|\bmi\b|\bmm\b)').hasMatch(s)) {
-      multiplier = 1000000;
-    } else if (RegExp(r'(mil|\dk\b|\bk\b)').hasMatch(s)) {
-      multiplier = 1000;
-    }
+    final multiplier = amountScale(s);
 
-    // Keep only the first numeric token (digits, dot, comma).
-    final match = RegExp(r'[\d.,]+').firstMatch(s);
+    final match = RegExp(r'[\d.,]*\d[\d.,]*').firstMatch(s);
     if (match == null) return null;
     var numStr = match.group(0)!;
 
@@ -72,11 +64,10 @@ class FinanceMath {
       // Assume '.' = thousands, ',' = decimals (pt-BR): 1.234,56 → 1234.56
       numStr = numStr.replaceAll('.', '').replaceAll(',', '.');
     } else if (hasComma) {
-      // Only comma → decimal separator.
       numStr = numStr.replaceAll(',', '.');
     } else if (hasDot) {
-      // Only dot(s). Treat as thousands separators when they group 3 digits
-      // (e.g. 80.000) — otherwise a genuine decimal (e.g. 1.5).
+      // Dots that group 3 digits are thousands separators (80.000); anything
+      // else is a genuine decimal (1.5).
       final parts = numStr.split('.');
       final looksLikeThousands =
           parts.length > 1 && parts.sublist(1).every((p) => p.length == 3);
@@ -85,8 +76,30 @@ class FinanceMath {
 
     final parsed = double.tryParse(numStr);
     if (parsed == null) return null;
-    return parsed * multiplier;
+    final sign = _isNegated(s.substring(0, match.start)) ? -1 : 1;
+    return sign * parsed * multiplier;
   }
+
+  /// The scale a free-text amount is written in: 1 000 000 for "mi", "mm",
+  /// "milhão"/"milhões"; 1 000 for "mil", "k"; otherwise 1. The words must
+  /// stand on their own (glued to a number is fine), so "similar", "militar"
+  /// or "milho" scale nothing.
+  static double amountScale(String text) {
+    final lower = text.toLowerCase();
+    if (_millionsWord.hasMatch(lower)) return 1000000;
+    if (_thousandsWord.hasMatch(lower)) return 1000;
+    return 1;
+  }
+
+  static final _millionsWord = RegExp(
+    r'(?<![a-z])(milh(ão|ao|ões|oes)|mi|mm)(?![a-z])',
+  );
+  static final _thousandsWord = RegExp(r'(?<![a-z])(mil|k)(?![a-z])');
+
+  /// A minus right before the number, at the start or after a space — not the
+  /// hyphen of a word or range ("covid-19", "10-20").
+  static bool _isNegated(String textBeforeNumber) =>
+      RegExp(r'(^|\s)[-−]\s*$').hasMatch(textBeforeNumber);
 
   // ── Aggregates over a set of months ─────────────────────────────────────────
 
@@ -110,6 +123,31 @@ class FinanceMath {
       avgExpenses: expenses / n,
       avgReserves: reserves / n,
     );
+  }
+
+  /// Months covered from [firstMonth] through [now], both inclusive: records
+  /// for January to March are 3 months. Never less than 1.
+  static int monthsTracked(DateTime firstMonth, DateTime now) {
+    final months =
+        (now.year - firstMonth.year) * 12 + (now.month - firstMonth.month) + 1;
+    return months < 1 ? 1 : months;
+  }
+
+  /// Top of the history chart's value axis: the largest bar or income of any
+  /// month, so no bar overflows. Never 0, which the chart cannot scale.
+  static double historyChartMaxY(List<NamiFinancesModel> months) {
+    var maxY = 0.0;
+    for (final m in months) {
+      for (final value in [
+        m.totalIncome,
+        m.totalExpenses,
+        m.availableAmount,
+        m.totalReserves,
+      ]) {
+        if (value > maxY) maxY = value;
+      }
+    }
+    return maxY > 0 ? maxY : 1;
   }
 
   // ── Calculators ─────────────────────────────────────────────────────────────

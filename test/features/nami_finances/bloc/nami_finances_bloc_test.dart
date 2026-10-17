@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:bloc_test/bloc_test.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
@@ -91,10 +93,7 @@ void main() {
           }),
       build: build,
       act: (bloc) => bloc.add(save()),
-      expect: () => [
-        isA<NamiFinancesLoading>(),
-        _failure(NamiFinancesFailure.futureMonthNotEditable),
-      ],
+      expect: () => [_failure(NamiFinancesFailure.futureMonthNotEditable)],
       verify: (_) {
         verifyNever(() => service.saveFinances(any()));
         verifyNever(() => rag.syncMonth(any()));
@@ -116,10 +115,7 @@ void main() {
       },
       build: build,
       act: (bloc) => bloc.add(save()),
-      expect: () => [
-        isA<NamiFinancesLoading>(),
-        _failure(NamiFinancesFailure.saveFailed),
-      ],
+      expect: () => [_failure(NamiFinancesFailure.saveFailed)],
     );
 
     blocTest<NamiFinancesBloc, NamiFinancesState>(
@@ -132,6 +128,49 @@ void main() {
         isA<NamiFinancesLoading>(),
         _failure(NamiFinancesFailure.deleteFailed),
       ],
+    );
+  });
+
+  group('NamiFinancesBloc save', () {
+    void stubSavableMonth() {
+      when(() => service.canEditFinances(any())).thenAnswer((_) async => true);
+      when(
+        () => service.getFinancesForMonth(any()),
+      ).thenAnswer((_) async => null);
+      when(() => service.saveFinances(any())).thenAnswer((_) async {});
+    }
+
+    final saved = isA<NamiFinancesLoaded>().having(
+      (s) => s.hasData,
+      'hasData',
+      isTrue,
+    );
+
+    blocTest<NamiFinancesBloc, NamiFinancesState>(
+      'reports the save once Hive has it, while the search index never finishes',
+      setUp: () {
+        stubSavableMonth();
+        when(
+          () => rag.syncMonth(any()),
+        ).thenAnswer((_) => Completer<void>().future);
+      },
+      build: build,
+      act: (bloc) => bloc.add(save()),
+      expect: () => [saved],
+      verify: (_) => verify(() => rag.syncMonth(any())).called(1),
+    );
+
+    blocTest<NamiFinancesBloc, NamiFinancesState>(
+      'reports the save when the search index sync fails',
+      setUp: () {
+        stubSavableMonth();
+        when(
+          () => rag.syncMonth(any()),
+        ).thenAnswer((_) async => throw Exception('embedder download failed'));
+      },
+      build: build,
+      act: (bloc) => bloc.add(save()),
+      expect: () => [saved],
     );
   });
 }

@@ -208,5 +208,12 @@ void main() {
 
       expect(plugin.opened, ['$_documentsPath/s.db', '$_documentsPath/t.db']);
     });
+
+    test('refuses to remove a document outside an operation', () async {
+      await expectLater(
+        RagStoreCoordinator.removeDocument('exp:a'),
+        throwsStateError,
+      );
+    });
   });
 }

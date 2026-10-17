@@ -149,7 +149,7 @@ relevant one up front when planning work that spans several areas.
 |---|---|
 | Hive type ids | A collision corrupts local data silently on upgrade. Guarded by `test/core/storage/hive_type_ids_test.dart`. |
 | `GemmaService._recreateChat` | Any model reload closes **every** chat session, Nami's included. |
-| `RagStoreCoordinator` | One global vector store; clearing wipes everything; no per-doc delete. |
+| `RagStoreCoordinator` | One global vector store; clearing wipes everything; per-doc delete only through `RagStoreCoordinator.removeDocument` inside `withStore`. |
 | `UserStorageService` / `UserDataNames` | Per-user, encrypted local data. A box or database missing from `UserDataNames` leaks across accounts and survives account deletion; losing the keychain key resets the boxes. |
 | `AuthBloc` | Global singleton with stream subscriptions; `AuthStarted` is dispatched only from `AppWrapper`. |
 | `core_module.dart` | All service wiring in one place; watch registration order and cycles. |

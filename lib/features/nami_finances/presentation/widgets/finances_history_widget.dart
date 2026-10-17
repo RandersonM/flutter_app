@@ -57,6 +57,15 @@ class _FinancesHistoryWidgetState extends State<FinancesHistoryWidget> {
                   if (state is NamiFinancesHistoryLoaded) {
                     return _buildHistoryChart(state.financesHistory);
                   }
+                  if (state is NamiFinancesError) {
+                    return Center(
+                      child: Text(
+                        AppLocalizations.of(
+                          context,
+                        )!.namiFinancesHistoryLoadFailed,
+                      ),
+                    );
+                  }
 
                   return Center(
                     child: Text(AppLocalizations.of(context)!.loadingHistory),
@@ -81,6 +90,7 @@ class _FinancesHistoryWidgetState extends State<FinancesHistoryWidget> {
     final seriesColors = _HistorySeriesColors.of(context);
     final sortedHistory = List<NamiFinancesModel>.from(financesHistory)
       ..sort((a, b) => a.month.compareTo(b.month));
+    final maxY = FinanceMath.historyChartMaxY(sortedHistory);
 
     return Column(
       children: [
@@ -89,7 +99,7 @@ class _FinancesHistoryWidgetState extends State<FinancesHistoryWidget> {
           child: BarChart(
             BarChartData(
               alignment: BarChartAlignment.spaceAround,
-              maxY: _getMaxValue(sortedHistory),
+              maxY: maxY,
               barTouchData: BarTouchData(
                 enabled: true,
                 touchTooltipData: BarTouchTooltipData(
@@ -197,7 +207,7 @@ class _FinancesHistoryWidgetState extends State<FinancesHistoryWidget> {
               barGroups: _buildBarGroups(sortedHistory),
               gridData: FlGridData(
                 show: true,
-                horizontalInterval: _getMaxValue(sortedHistory) / 5,
+                horizontalInterval: maxY / 5,
                 getDrawingHorizontalLine: (value) {
                   return FlLine(
                     color: Theme.of(
@@ -306,16 +316,6 @@ class _FinancesHistoryWidgetState extends State<FinancesHistoryWidget> {
         ],
       );
     });
-  }
-
-  double _getMaxValue(List<NamiFinancesModel> financesHistory) {
-    double maxValue = 0;
-    for (final finance in financesHistory) {
-      maxValue = maxValue > finance.totalIncome
-          ? maxValue
-          : finance.totalIncome;
-    }
-    return maxValue;
   }
 
   String _getMonthName(int month) {

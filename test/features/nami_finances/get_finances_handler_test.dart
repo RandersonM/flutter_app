@@ -1,7 +1,10 @@
 import 'dart:convert';
 
+import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:opfan/core/services/config/i_locale_service.dart';
 import 'package:opfan/core/services/finances/i_nami_finances_service.dart';
+import 'package:opfan/core/services/finances/nami_finances_service.dart';
 import 'package:opfan/features/nami_finances/data/models/nami_finances_model.dart';
 import 'package:opfan/features/nami_finances/tools/get_finances_handler.dart';
 import 'package:opfan/features/vegapunk_chat/tools/models/tool_call.dart';
@@ -45,7 +48,28 @@ class _FakeFinancesService implements INamiFinancesService {
   @override
   Future<Map<String, dynamic>> getAccumulatedSavingsInfoLocalized(
     AppLocalizations l10n,
-  ) async => accumulated;
+  ) async {
+    periodLocale = l10n.localeName;
+    return accumulated;
+  }
+
+  String? periodLocale;
+}
+
+class _FakeLocaleService implements ILocaleService {
+  _FakeLocaleService(this.languageCode);
+
+  @override
+  final String languageCode;
+
+  @override
+  Locale? get locale => Locale(languageCode);
+
+  @override
+  Future<void> loadLocale() async {}
+
+  @override
+  Future<void> persistLocale(Locale locale) async {}
 }
 
 NamiFinancesModel _model(DateTime month) => NamiFinancesModel(
@@ -123,7 +147,10 @@ void main() {
           'periodText': '1 mês',
         },
       );
-      final handler = GetFinancesHandler(financesService: service);
+      final handler = GetFinancesHandler(
+        financesService: service,
+        localeService: _FakeLocaleService('pt'),
+      );
 
       final result = await handler.execute(
         const ToolCall(name: 'getFinances', arguments: {'month': '2026-07'}),
@@ -146,7 +173,10 @@ void main() {
 
     test('reports hasData:false for a month with no record', () async {
       final service = _FakeFinancesService(accumulated: {'totalSavings': 0.0});
-      final handler = GetFinancesHandler(financesService: service);
+      final handler = GetFinancesHandler(
+        financesService: service,
+        localeService: _FakeLocaleService('pt'),
+      );
 
       final result = await handler.execute(
         const ToolCall(name: 'getFinances', arguments: {'month': '2020-01'}),
@@ -156,6 +186,39 @@ void main() {
       final month = (json['months'] as List).first as Map<String, dynamic>;
       expect(month['hasData'], isFalse);
       expect(month['month'], '2020-01');
+    });
+  });
+
+  group('accumulated reserves period', () {
+    test('follows the prompt language, not Portuguese for everyone', () async {
+      final service = _FakeFinancesService();
+
+      await GetFinancesHandler(
+        financesService: service,
+        localeService: _FakeLocaleService('en'),
+      ).execute(const ToolCall(name: 'getFinances', arguments: {}));
+      expect(service.periodLocale, 'en');
+
+      await GetFinancesHandler(
+        financesService: service,
+        localeService: _FakeLocaleService('pt'),
+      ).execute(const ToolCall(name: 'getFinances', arguments: {}));
+      expect(service.periodLocale, 'pt');
+    });
+
+    test('is written in each language', () {
+      final en = lookupAppLocalizations(const Locale('en'));
+      final pt = lookupAppLocalizations(const Locale('pt'));
+
+      expect(NamiFinancesService.savingsPeriodText(en, 1), '1 month');
+      expect(NamiFinancesService.savingsPeriodText(en, 3), '3 months');
+      expect(NamiFinancesService.savingsPeriodText(en, 12), '1 year');
+      expect(
+        NamiFinancesService.savingsPeriodText(en, 26),
+        '2 years and 2 months',
+      );
+      expect(NamiFinancesService.savingsPeriodText(pt, 1), '1 mês');
+      expect(NamiFinancesService.savingsPeriodText(pt, 13), '1 ano e 1 mês');
     });
   });
 }
