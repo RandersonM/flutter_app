@@ -6,6 +6,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:opfan/core/auth/blocs/index.dart';
 import 'package:opfan/core/auth/models/user_model.dart';
+import 'package:opfan/shared/utils/app_routes.dart';
 import 'package:opfan/shared/utils/constants.dart';
 import 'package:opfan/features/onboarding/presentation/widgets/onboarding_step_indicator.dart';
 import 'package:opfan/l10n/app_localizations.dart';
@@ -178,53 +179,59 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(
-          _isEditing
-              ? l10n.onboardingUpdateProfileTitle
-              : l10n.onboardingCompleteProfileTitle,
+    return BlocListener<AuthBloc, AuthState>(
+      listenWhen: (_, state) => !_isEditing && state is AuthAuthenticated,
+      listener: (context, _) => Navigator.of(
+        context,
+      ).pushNamedAndRemoveUntil(AppRoutes.home, (route) => false),
+      child: Scaffold(
+        appBar: AppBar(
+          title: Text(
+            _isEditing
+                ? l10n.onboardingUpdateProfileTitle
+                : l10n.onboardingCompleteProfileTitle,
+          ),
+          backgroundColor: Colors.transparent,
+          elevation: 0,
+          leading: _isEditing ? const BackButton() : const SizedBox.shrink(),
         ),
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-        leading: _isEditing ? const BackButton() : const SizedBox.shrink(),
-      ),
-      body: SafeArea(
-        child: Column(
-          children: [
-            Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: OnboardingStepIndicator(
-                currentStep: _currentStep,
-                totalSteps: 2,
+        body: SafeArea(
+          child: Column(
+            children: [
+              Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: OnboardingStepIndicator(
+                  currentStep: _currentStep,
+                  totalSteps: 2,
+                ),
               ),
-            ),
-            Expanded(
-              child: PageView(
-                controller: _pageController,
-                physics: const NeverScrollableScrollPhysics(),
-                onPageChanged: (index) {
-                  setState(() {
-                    _currentStep = index;
-                  });
-                },
-                children: [_buildStep1(), _buildStep2()],
+              Expanded(
+                child: PageView(
+                  controller: _pageController,
+                  physics: const NeverScrollableScrollPhysics(),
+                  onPageChanged: (index) {
+                    setState(() {
+                      _currentStep = index;
+                    });
+                  },
+                  children: [_buildStep1(), _buildStep2()],
+                ),
               ),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(Constants.margin * 2),
-              child: AppButton(
-                label: _currentStep == 0
-                    ? l10n.onboardingNext
-                    : (_isEditing
-                          ? l10n.onboardingSaveChanges
-                          : l10n.onboardingFinish),
-                variant: AppButtonVariant.primary,
-                isFullWidth: true,
-                onPressed: _nextStep,
+              Padding(
+                padding: const EdgeInsets.all(Constants.margin * 2),
+                child: AppButton(
+                  label: _currentStep == 0
+                      ? l10n.onboardingNext
+                      : (_isEditing
+                            ? l10n.onboardingSaveChanges
+                            : l10n.onboardingFinish),
+                  variant: AppButtonVariant.primary,
+                  isFullWidth: true,
+                  onPressed: _nextStep,
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

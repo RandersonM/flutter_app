@@ -48,13 +48,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       if (isSessionValid) {
         final user = await _authService.checkAuthStatus();
         if (user != null) {
-          final processedUser = _processUserWithMiddleware(user);
-
-          if (processedUser.isProfileComplete) {
-            emit(AuthAuthenticated(user: processedUser));
-          } else {
-            emit(AuthNeedsOnboarding(user: processedUser));
-          }
+          emit(_signedInState(user));
         } else {
           emit(const AuthUnauthenticated());
         }
@@ -93,8 +87,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       final user = await _authService.signInWithGoogle();
 
       if (user != null) {
-        final processedUser = _processUserWithMiddleware(user);
-        emit(AuthAuthenticated(user: processedUser, isFirstLogin: true));
+        emit(_signedInState(user, isFirstLogin: true));
       } else {
         emit(const AuthUnauthenticated());
       }
@@ -124,11 +117,11 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     AuthStatusChanged event,
     Emitter<AuthState> emit,
   ) async {
-    if (event.user != null) {
-      final processedUser = _processUserWithMiddleware(event.user!);
-      emit(AuthAuthenticated(user: processedUser));
-    } else {
+    final user = event.user;
+    if (user == null) {
       emit(const AuthUnauthenticated());
+    } else if (user.uid != _signedInUid) {
+      emit(_signedInState(user));
     }
   }
 
@@ -216,13 +209,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       if (isSessionValid) {
         final user = await _authService.checkAuthStatus();
         if (user != null) {
-          final processedUser = _processUserWithMiddleware(user);
-
-          if (processedUser.isProfileComplete) {
-            emit(AuthAuthenticated(user: processedUser));
-          } else {
-            emit(AuthNeedsOnboarding(user: processedUser));
-          }
+          emit(_signedInState(user));
         } else {
           emit(const AuthUnauthenticated());
         }
@@ -250,6 +237,23 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       emit(const AuthError(message: 'Session error. Please sign in again.'));
     }
   }
+
+  AuthState _signedInState(UserModel user, {bool isFirstLogin = false}) {
+    final processedUser = _processUserWithMiddleware(user);
+    return processedUser.isProfileComplete
+        ? AuthAuthenticated(user: processedUser, isFirstLogin: isFirstLogin)
+        : AuthNeedsOnboarding(user: processedUser);
+  }
+
+  /// Firebase replays the current user on every subscription, so a status
+  /// change for the uid already in the state carries nothing new.
+  String? get _signedInUid => switch (state) {
+    AuthAuthenticated(:final user) ||
+    AuthNeedsOnboarding(:final user) ||
+    AuthProfileUpdating(:final user) ||
+    AuthProfileUpdated(:final user) => user.uid,
+    _ => null,
+  };
 
   UserModel _processUserWithMiddleware(UserModel user) {
     final processedDisplayName = UserNameMiddleware.processDisplayName(
