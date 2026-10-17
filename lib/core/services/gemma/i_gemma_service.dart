@@ -89,6 +89,10 @@ abstract class IGemmaService {
   /// Closes and forgets a session opened via [sendSessionMessage]. Callers
   /// should do this when the owning feature's UI is disposed, so an idle
   /// session doesn't keep holding its KV cache in memory indefinitely.
+  ///
+  /// The session is forgotten synchronously — the next [sendSessionMessage]
+  /// opens a fresh one even while this close is still stopping the old one —
+  /// and a session still being opened when this is called is discarded.
   Future<void> closeSession(String sessionId);
 
   void dispose();
