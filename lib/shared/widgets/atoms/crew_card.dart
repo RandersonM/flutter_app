@@ -82,12 +82,12 @@ class _CrewCardState extends State<CrewCard> {
                       overflow: TextOverflow.ellipsis,
                     ),
                     const SizedBox(height: Constants.margin),
-                    if (widget.crew.captain != null ||
-                        widget.crew.viceCaptain != null)
+                    if ((widget.crew.captain?.isNotEmpty ?? false) ||
+                        (widget.crew.viceCaptain?.isNotEmpty ?? false))
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          if (widget.crew.captain != null)
+                          if (widget.crew.captain?.isNotEmpty ?? false)
                             _buildInfoRow(
                               context,
                               PhosphorIconsRegular.user,
@@ -96,7 +96,7 @@ class _CrewCardState extends State<CrewCard> {
                                 widget.crew.captain!,
                               ),
                             ),
-                          if (widget.crew.viceCaptain != null)
+                          if (widget.crew.viceCaptain?.isNotEmpty ?? false)
                             _buildInfoRow(
                               context,
                               PhosphorIconsRegular.user,

@@ -1,5 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
+/// Role keys arrive as `viceCaptain`, `vice-captain` or `vice captain`.
+String _roleKey(String? role) =>
+    (role ?? '').toLowerCase().replaceAll(RegExp(r'[^a-z]'), '');
+
 class CrewMember {
   final String characterId;
   final String name;
@@ -15,11 +19,10 @@ class CrewMember {
     required this.bounty,
   });
 
-  /// Role keys arrive as `viceCaptain`, `vice-captain` or `vice captain`.
-  String get _normalizedRole =>
-      (role ?? '').toLowerCase().replaceAll(RegExp(r'[^a-z]'), '');
-  bool get isCaptain => _normalizedRole == 'captain';
-  bool get isViceCaptain => _normalizedRole == 'vicecaptain';
+  bool get isCaptain => _roleKey(role) == 'captain';
+  bool get isViceCaptain => _roleKey(role) == 'vicecaptain';
+  bool holdsRole(String role) =>
+      _roleKey(role).isNotEmpty && _roleKey(this.role) == _roleKey(role);
 
   Map<String, dynamic> toMap() {
     return {
@@ -90,6 +93,11 @@ class CrewModel {
     this.members = const [],
     this.tags = const [],
   });
+
+  /// Each role can be held once; legacy spellings count as the role they name.
+  bool isRoleFilled(String role) =>
+      rolesFilled.any((filled) => _roleKey(filled) == _roleKey(role)) ||
+      members.any((member) => member.holdsRole(role));
 
   Map<String, dynamic> toFirestore() {
     return {

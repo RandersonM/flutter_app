@@ -3,6 +3,7 @@ import 'package:opfan/core/errors/app_exceptions.dart';
 import 'package:opfan/features/custom_character/data/models/custom_character_model.dart';
 import 'package:opfan/core/services/index.dart';
 import 'package:opfan/features/custom_character/data/repository/i_custom_character_repository.dart';
+import 'package:opfan/features/crews/data/models/crew_model.dart';
 import 'package:opfan/features/crews/data/repository/i_crew_repository.dart';
 
 class CustomCharacterRepository implements ICustomCharacterRepository {
@@ -161,9 +162,47 @@ class CustomCharacterRepository implements ICustomCharacterRepository {
         documentId: documentId,
         data: data,
       );
+      await _syncCrewMembership(documentId, character);
     } catch (e) {
       debugPrint('CustomCharacterRepository: update failed: $e');
       rethrow;
+    }
+  }
+
+  /// Crews keep a copy of the member's name (and the captain/viceCaptain
+  /// names), so a rename must reach them too.
+  Future<void> _syncCrewMembership(
+    String characterId,
+    CustomCharacterModel character,
+  ) async {
+    try {
+      final crews = await _crewRepository.getCrewsByMember(characterId);
+      for (final crew in crews) {
+        final member = crew.members.firstWhere(
+          (member) => member.characterId == characterId,
+        );
+        final copyIsCurrent =
+            member.name == character.name &&
+            member.nickname == character.nickname &&
+            member.bounty == character.bounty;
+        if (crew.id == null || copyIsCurrent) continue;
+
+        await _crewRepository.updateCrewMember(
+          crew.id!,
+          characterId,
+          CrewMember(
+            characterId: characterId,
+            name: character.name,
+            nickname: character.nickname,
+            role: member.role,
+            bounty: character.bounty,
+          ),
+        );
+      }
+    } catch (e) {
+      debugPrint(
+        'CustomCharacterRepository: crew sync after update failed: $e',
+      );
     }
   }
 
@@ -182,23 +221,8 @@ class CustomCharacterRepository implements ICustomCharacterRepository {
       for (final crew in crewsWithCharacter) {
         if (crew.id != null) {
           try {
-            final member = crew.members.firstWhere(
-              (member) => member.characterId == documentId,
-              orElse: () => throw NotFoundException(
-                'member $documentId in crew ${crew.id}',
-              ),
-            );
-
+            // Also clears captain/viceCaptain, unless another member holds it.
             await _crewRepository.removeMemberFromCrew(crew.id!, documentId);
-
-            if (member.role?.toLowerCase() == 'captain' &&
-                crew.captain == member.name) {
-              await _crewRepository.setCaptain(crew.id!, '');
-            } else if ((member.role?.toLowerCase() == 'vice-captain' ||
-                    member.role?.toLowerCase() == 'vicecaptain') &&
-                crew.viceCaptain == member.name) {
-              await _crewRepository.setViceCaptain(crew.id!, '');
-            }
           } catch (e) {
             debugPrint(
               'CustomCharacterRepository: crew ${crew.id} cleanup failed: $e',

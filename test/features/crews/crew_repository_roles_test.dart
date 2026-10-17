@@ -1,5 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
+import 'package:opfan/core/errors/app_exceptions.dart';
 import 'package:opfan/core/services/index.dart';
 import 'package:opfan/features/crews/data/models/crew_model.dart';
 import 'package:opfan/features/crews/data/repository/crew_repository.dart';
@@ -83,7 +84,102 @@ void main() {
     });
   });
 
+  group('addMemberToCrew', () {
+    CrewMember newcomer(String role) => CrewMember(
+      characterId: 'buggy',
+      name: 'buggy',
+      role: role,
+      bounty: '0',
+    );
+
+    test('refuses a captain when the crew already has one', () async {
+      await expectLater(
+        repository.addMemberToCrew('c1', newcomer('captain')),
+        throwsA(isA<CrewRoleTakenException>()),
+      );
+
+      verifyNever(
+        () => firestore.updateDocument(
+          collection: any(named: 'collection'),
+          documentId: any(named: 'documentId'),
+          data: any(named: 'data'),
+        ),
+      );
+    });
+
+    test('refuses a taken role written in another spelling', () async {
+      await expectLater(
+        repository.addMemberToCrew('c1', newcomer('vicecaptain')),
+        throwsA(isA<CrewRoleTakenException>()),
+      );
+    });
+
+    test('adds a member to a free role', () async {
+      await repository.addMemberToCrew('c1', newcomer('doctor'));
+
+      final crew = await savedCrew();
+      expect(crew['rolesFilled'], contains('doctor'));
+      expect(crew['captain'], 'luffy');
+      expect((crew['members'] as List).length, 4);
+    });
+  });
+
+  group('removeMemberFromCrew with a role held twice', () {
+    setUp(() {
+      when(
+        () => firestore.getDocument(collection: 'crews', documentId: 'c1'),
+      ).thenAnswer(
+        (_) async => {
+          'name': 'Legacy',
+          'userId': 'alice',
+          'captain': 'buggy',
+          'viceCaptain': 'zoro',
+          'rolesFilled': ['captain', 'viceCaptain'],
+          'members': [
+            _member('luffy', 'captain'),
+            _member('buggy', 'captain'),
+            _member('zoro', 'viceCaptain'),
+          ],
+        },
+      );
+    });
+
+    test('hands the captain title to the captain who stays', () async {
+      await repository.removeMemberFromCrew('c1', 'buggy');
+
+      final crew = await savedCrew();
+      expect(crew['captain'], 'luffy');
+      expect(crew['rolesFilled'], contains('captain'));
+    });
+
+    test('keeps the stored captain when the other captain leaves', () async {
+      await repository.removeMemberFromCrew('c1', 'luffy');
+
+      final crew = await savedCrew();
+      expect(crew['captain'], 'buggy');
+      expect(crew['rolesFilled'], contains('captain'));
+    });
+  });
+
   group('updateCrewMember', () {
+    test('renames the captain along with the member', () async {
+      await repository.updateCrewMember(
+        'c1',
+        'luffy',
+        CrewMember(
+          characterId: 'luffy',
+          name: 'Joy Boy',
+          role: 'captain',
+          bounty: '0',
+        ),
+      );
+
+      final crew = await savedCrew();
+      expect(crew['captain'], 'Joy Boy');
+      expect((crew['members'] as List).first['name'], 'Joy Boy');
+      expect(crew['rolesFilled'], contains('captain'));
+    });
+
     test('frees the previous role when a member changes role', () async {
       await repository.updateCrewMember(
         'c1',

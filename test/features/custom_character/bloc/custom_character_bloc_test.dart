@@ -75,6 +75,9 @@ void main() {
   group('CustomCharacterBloc creation', () {
     setUp(() {
       when(
+        () => crews.getCrew('c1'),
+      ).thenAnswer((_) async => CrewModel(name: 'Straw Hats', userId: 'alice'));
+      when(
         () => characters.createCustomCharacter(any()),
       ).thenAnswer((_) async => 'new-id');
       when(
@@ -131,6 +134,38 @@ void main() {
         const CustomCharacterCreated('new-id'),
         CustomCharacterLoaded([luffy]),
       ],
+    );
+
+    blocTest<CustomCharacterBloc, CustomCharacterState>(
+      'creates nothing when the chosen crew role is already taken',
+      setUp: () => when(() => crews.getCrew('c1')).thenAnswer(
+        (_) async => CrewModel(
+          name: 'Straw Hats',
+          userId: 'alice',
+          captain: 'Monkey D. Luffy',
+          rolesFilled: const ['captain'],
+          members: [
+            CrewMember(
+              characterId: 'luffy',
+              name: 'Monkey D. Luffy',
+              role: 'captain',
+              bounty: '0',
+            ),
+          ],
+        ),
+      ),
+      build: build,
+      act: (bloc) => bloc.add(
+        CreateCustomCharacter(luffy, crewId: 'c1', crewRole: 'captain'),
+      ),
+      expect: () => [
+        CustomCharacterCreating(),
+        const CustomCharacterError(CustomCharacterFailure.crewRoleTaken),
+      ],
+      verify: (_) {
+        verifyNever(() => characters.createCustomCharacter(any()));
+        verifyNever(() => crews.addMemberToCrew(any(), any()));
+      },
     );
 
     blocTest<CustomCharacterBloc, CustomCharacterState>(

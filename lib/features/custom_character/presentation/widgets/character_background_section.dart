@@ -63,6 +63,28 @@ class CharacterBackgroundSection extends StatelessWidget {
         CharacterLocalizationMapper.getLocalizedAffiliationOptions(l10n);
     final occupationOptions =
         CharacterLocalizationMapper.getLocalizedOccupationOptions(l10n);
+    final selectedCrew = availableCrews
+        .where((crew) => crew.id == selectedCrewId)
+        .firstOrNull;
+    // Same rule as the crew details screen: a role already held is not offered.
+    final freeRoleOptions = occupationOptions
+        .where(
+          (option) =>
+              selectedCrew?.isRoleFilled(
+                CharacterLocalizationMapper.mapLocalizedToOccupation(
+                  option,
+                  l10n,
+                ),
+              ) !=
+              true,
+        )
+        .toList();
+    final selectedRoleLabel = selectedCrewRole == null
+        ? null
+        : CharacterLocalizationMapper.mapOccupationToLocalized(
+            selectedCrewRole!,
+            l10n,
+          );
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -99,14 +121,14 @@ class CharacterBackgroundSection extends StatelessWidget {
         if (selectedCrewId != null) ...[
           const SizedBox(height: 16),
           CustomDropdown<String>(
+            key: ValueKey(selectedCrewId),
             label: l10n.crewRole,
-            value: selectedCrewRole != null
-                ? CharacterLocalizationMapper.mapOccupationToLocalized(
-                    selectedCrewRole!,
-                    l10n,
-                  )
+            value:
+                selectedRoleLabel != null &&
+                    freeRoleOptions.contains(selectedRoleLabel)
+                ? selectedRoleLabel
                 : null,
-            items: occupationOptions,
+            items: freeRoleOptions,
             itemToString: (role) => role,
             onChanged: (translatedRole) {
               if (translatedRole == null) return;

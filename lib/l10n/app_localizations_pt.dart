@@ -2956,6 +2956,10 @@ class AppLocalizationsPt extends AppLocalizations {
       'Salvo, mas não foi possível atualizar a lista de personagens';
 
   @override
+  String get customCharacterCrewRoleTakenError =>
+      'Esse cargo já está ocupado nessa tripulação. Escolha outro cargo.';
+
+  @override
   String get duelsLoadError =>
       'Não foi possível carregar os personagens do duelo';
 

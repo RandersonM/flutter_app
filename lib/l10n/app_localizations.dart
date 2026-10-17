@@ -5450,6 +5450,12 @@ abstract class AppLocalizations {
   /// **'Saved, but the character list couldn\'t be refreshed'**
   String get customCharacterListRefreshError;
 
+  /// Create custom character error when the chosen crew role already has a member
+  ///
+  /// In en, this message translates to:
+  /// **'That role is already taken in this crew. Pick another role.'**
+  String get customCharacterCrewRoleTakenError;
+
   /// Duels screen error detail when loading characters fails
   ///
   /// In en, this message translates to:

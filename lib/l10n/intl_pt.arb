@@ -4022,6 +4022,7 @@
   "customCharacterUpdateError": "Não foi possível atualizar o personagem",
   "customCharacterDeleteError": "Não foi possível excluir o personagem",
   "customCharacterListRefreshError": "Salvo, mas não foi possível atualizar a lista de personagens",
+  "customCharacterCrewRoleTakenError": "Esse cargo já está ocupado nessa tripulação. Escolha outro cargo.",
   "duelsLoadError": "Não foi possível carregar os personagens do duelo",
   "crewInfoTitle": "Informações",
   "crewInfoCreatedAt": "Criada em",
