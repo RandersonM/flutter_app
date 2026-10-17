@@ -1,7 +1,12 @@
 import 'package:equatable/equatable.dart';
 import 'package:opfan/features/vegapunk_chat/data/models/chat_message.dart';
 
-enum NamiChatFailure { modelNotInstalled, modelLoadFailed, connectionFailed }
+enum NamiChatFailure {
+  modelNotInstalled,
+  modelLoadFailed,
+  connectionFailed,
+  generationTimedOut,
+}
 
 abstract class NamiChatState extends Equatable {
   const NamiChatState();

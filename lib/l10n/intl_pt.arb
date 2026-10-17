@@ -3972,6 +3972,7 @@
   "namiChatModelNotInstalled": "Modelo de IA ainda não foi baixado — abra o chat do Vegapunk para instalá-lo.",
   "namiChatModelLoadFailed": "Não foi possível carregar o modelo de IA.",
   "namiChatConnectionFailed": "Erro na conexão com a Nami. Tente novamente.",
+  "namiChatGenerationTimedOut": "A Nami demorou demais para responder. Tente novamente.",
   "namiAccumulatedSavingsPeriod": "Acumulado em {period}",
   "namiAmountPerDay": "{amount}/dia",
   "zoroWorkoutLoadError": "Não foi possível carregar seus dados de treino.",

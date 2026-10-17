@@ -5192,6 +5192,12 @@ abstract class AppLocalizations {
   /// **'Couldn\'t reach Nami. Please try again.'**
   String get namiChatConnectionFailed;
 
+  /// Nami chat sheet: error bubble when the on-device model stops producing an answer
+  ///
+  /// In en, this message translates to:
+  /// **'Nami took too long to answer. Please try again.'**
+  String get namiChatGenerationTimedOut;
+
   /// Nami results view: savings label; period is a localized duration like '2 years and 3 months'
   ///
   /// In en, this message translates to:

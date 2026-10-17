@@ -35,6 +35,13 @@ class _NamiChatSheetContentState extends State<_NamiChatSheetContent> {
   final _controller = TextEditingController();
   final _scrollController = ScrollController();
 
+  @override
+  void dispose() {
+    _controller.dispose();
+    _scrollController.dispose();
+    super.dispose();
+  }
+
   void _scrollToBottom() {
     if (!_scrollController.hasClients) return;
     WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -215,6 +222,7 @@ class _NamiChatSheetContentState extends State<_NamiChatSheetContent> {
         NamiChatFailure.modelNotInstalled => l10n.namiChatModelNotInstalled,
         NamiChatFailure.modelLoadFailed => l10n.namiChatModelLoadFailed,
         NamiChatFailure.connectionFailed => l10n.namiChatConnectionFailed,
+        NamiChatFailure.generationTimedOut => l10n.namiChatGenerationTimedOut,
       };
 
   Widget _buildErrorBubble(BuildContext context, NamiChatFailure failure) {
