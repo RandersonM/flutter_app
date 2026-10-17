@@ -1,11 +1,15 @@
-/// A body measurement typed into the Zoro and Sanji forms, with the bounds a
-/// real person falls within. A value outside them would save an infinite or
-/// absurd BMI into the month's assessment.
+/// A body measurement typed into the body profile, Zoro and Sanji forms, with
+/// the bounds a real person falls within. A value outside them would save an
+/// infinite or absurd BMI into the month's assessment.
 enum BodyMeasure {
   age(min: 10, max: 120, wholeNumber: true),
   heightCm(min: 50, max: 260),
   weightKg(min: 20, max: 400),
-  waistCm(min: 30, max: 250);
+  waistCm(min: 30, max: 250),
+  chestCm(min: 40, max: 250),
+  armCm(min: 10, max: 100),
+  hipCm(min: 40, max: 250),
+  thighCm(min: 20, max: 150);
 
   const BodyMeasure({
     required this.min,

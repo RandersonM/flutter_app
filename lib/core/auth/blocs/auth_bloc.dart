@@ -76,7 +76,11 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       final user = await _authService.signInWithGoogle();
 
       if (user != null) {
-        emit(_signedInState(user, isFirstLogin: true));
+        // Firebase reports the sign-in before this returns, so the user may
+        // already be on onboarding, or past it; re-emitting would undo that.
+        if (user.uid != _signedInUid) {
+          emit(_signedInState(user, isFirstLogin: true));
+        }
       } else {
         emit(const AuthUnauthenticated());
       }
@@ -174,7 +178,9 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     AuthProfileChanged event,
     Emitter<AuthState> emit,
   ) {
-    if (state is AuthAuthenticated) emit(AuthAuthenticated(user: event.user));
+    if (state is AuthAuthenticated) {
+      emit(AuthAuthenticated(user: _processUserWithMiddleware(event.user)));
+    }
   }
 
   Future<void> _onAuthDeleteAccount(

@@ -9,6 +9,7 @@ import 'package:opfan/core/services/auth_db/auth_service.dart';
 import 'package:opfan/core/services/auth_db/i_user_data_eraser.dart';
 import 'package:opfan/core/services/notification/i_notification_service.dart';
 import 'package:opfan/core/services/storage/i_user_storage_service.dart';
+import 'package:opfan/core/user_profile/models/body_profile.dart';
 import 'package:opfan/core/user_profile/repository/i_user_profile_repository.dart';
 
 class _MockFirebaseAuth extends Mock implements FirebaseAuth {}
@@ -27,6 +28,8 @@ class _MockStorage extends Mock implements IUserStorageService {}
 
 class _MockBox extends Mock implements Box<UserModel> {}
 
+class _MockUserMetadata extends Mock implements UserMetadata {}
+
 final _cachedUser = UserModel(
   uid: 'u1',
   email: 'u1@example.com',
@@ -43,6 +46,7 @@ void main() {
   late _MockGoogleSignIn googleSignIn;
   late _MockNotificationService notifications;
   late _MockBox box;
+  late _MockProfileRepository profiles;
   late AuthService service;
 
   setUpAll(() => registerFallbackValue(_cachedUser));
@@ -54,7 +58,7 @@ void main() {
     notifications = _MockNotificationService();
     box = _MockBox();
     final storage = _MockStorage();
-    final profiles = _MockProfileRepository();
+    profiles = _MockProfileRepository();
     final google = _MockUserInfo();
 
     when(() => firebaseAuth.currentUser).thenReturn(user);
@@ -66,7 +70,7 @@ void main() {
     when(() => googleSignIn.currentUser).thenReturn(null);
     when(() => googleSignIn.signOut()).thenAnswer((_) async => null);
     when(() => notifications.isInitialized).thenReturn(false);
-    when(() => profiles.fetchProfile('u1')).thenAnswer((_) async => null);
+    when(() => profiles.fetchBodyProfile('u1')).thenAnswer((_) async => null);
     when(
       () => storage.openDeviceBox<UserModel>(any()),
     ).thenAnswer((_) async => box);
@@ -127,6 +131,58 @@ void main() {
         verifyNever(() => firebaseAuth.signOut());
       },
     );
+
+    group('with the local cache lost', () {
+      const storedBody = BodyProfile(
+        gender: 'female',
+        age: 30,
+        heightCm: 165,
+        weightKg: 60,
+        activityLevel: 'moderate',
+        goal: 'maintenance',
+      );
+
+      setUp(() {
+        final metadata = _MockUserMetadata();
+        when(() => box.get(any())).thenReturn(null);
+        when(() => user.email).thenReturn('u1@example.com');
+        when(() => user.displayName).thenReturn('Alice');
+        when(() => user.photoURL).thenReturn(null);
+        when(() => user.emailVerified).thenReturn(true);
+        when(() => user.metadata).thenReturn(metadata);
+        when(() => metadata.creationTime).thenReturn(DateTime(2024));
+        when(() => metadata.lastSignInTime).thenReturn(DateTime(2024));
+        when(
+          () => profiles.fetchBodyProfile('u1'),
+        ).thenAnswer((_) async => storedBody);
+        tokenRefreshFails('network-request-failed');
+        googleSilentSignInFails(GoogleSignIn.kNetworkError);
+      });
+
+      test('keeps the Firebase session offline', () async {
+        await service.init();
+
+        expect(await service.isSessionValid(), isTrue);
+      });
+
+      test('rebuilds the user from Firebase and the stored profile', () async {
+        await service.init();
+
+        final restored = await service.checkAuthStatus();
+
+        expect(restored?.uid, 'u1');
+        expect(restored?.displayName, 'Alice');
+        expect(restored?.isProfileComplete, isTrue);
+        verify(() => box.put(any(), restored!)).called(1);
+      });
+
+      test('still ends a revoked session', () async {
+        tokenRefreshFails('user-disabled');
+        await service.init();
+
+        expect(await service.isSessionValid(), isFalse);
+      });
+    });
 
     test('signs out when Google no longer has a session', () async {
       await service.init();

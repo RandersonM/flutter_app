@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -46,6 +47,8 @@ class NotificationService implements INotificationService {
       await _setupFirebaseMessaging();
 
       await _getFCMToken();
+
+      _saveTokenForRestoredSession();
 
       _isInitialized = true;
       debugPrint('NotificationService: Inicializado com sucesso');
@@ -132,6 +135,17 @@ class NotificationService implements INotificationService {
       debugPrint('NotificationService: FCM token obtained');
     } catch (e) {
       debugPrint('NotificationService: Erro ao obter FCM token: $e');
+    }
+  }
+
+  /// Only a Google sign-in saves the token otherwise, so a user who stays
+  /// signed in across launches would keep whatever token was saved back then.
+  /// Not awaited: the write completes only on the server ack.
+  void _saveTokenForRestoredSession() {
+    final userId = _firebaseAuth.currentUser?.uid;
+    final token = _fcmToken;
+    if (userId != null && token != null) {
+      unawaited(_writeToken(userId, token));
     }
   }
 

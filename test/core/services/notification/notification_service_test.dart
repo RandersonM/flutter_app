@@ -95,11 +95,32 @@ void main() {
       expect(savedTokens(), [('alice', 'token-1'), ('bob', 'token-2')]);
     });
 
-    test('saves a refreshed token for the signed-in user', () async {
+    test('saves the token of a session restored at startup', () async {
       final user = _MockUser();
       when(() => user.uid).thenReturn('alice');
       when(() => firebaseAuth.currentUser).thenReturn(user);
+
       await service.initialize();
+      await pumpEventQueue();
+
+      final saved =
+          verify(
+                () => firestore.createDocumentWithId(
+                  collection: 'user_tokens',
+                  documentId: 'alice',
+                  data: captureAny(named: 'data'),
+                ),
+              ).captured.single
+              as Map;
+      expect(saved.keys, {'fcmToken', 'platform', 'updatedAt'});
+      expect(saved['fcmToken'], 'token-1');
+    });
+
+    test('saves a refreshed token for the signed-in user', () async {
+      await service.initialize();
+      final user = _MockUser();
+      when(() => user.uid).thenReturn('alice');
+      when(() => firebaseAuth.currentUser).thenReturn(user);
 
       tokenRefresh.add('token-3');
       await pumpEventQueue();

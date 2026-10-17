@@ -2,14 +2,16 @@
 // Copyright © 2025.
 
 import 'package:opfan/core/auth/models/user_model.dart';
+import 'package:opfan/core/user_profile/models/body_profile.dart';
 
 /// Contract for reading and writing user body profile data in Firestore.
 abstract class IUserProfileRepository {
-  /// Fetches the profile document for [uid] from `/users/{uid}`.
-  /// Returns [null] if the document does not exist.
-  Future<UserModel?> fetchProfile(String uid);
+  /// The body profile stored at `/users/{uid}`, or null when there is no
+  /// document. Throws when the document cannot be read (offline with nothing
+  /// cached, denied).
+  Future<BodyProfile?> fetchBodyProfile(String uid);
 
-  /// Creates or fully overwrites the profile document at `/users/{uid}`.
+  /// Merges the body fields of [profile] into `/users/{uid}`.
   Future<void> saveProfile(UserModel profile);
 
   /// Returns [true] if the document at `/users/{uid}` exists and all

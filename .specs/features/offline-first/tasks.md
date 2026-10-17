@@ -170,7 +170,7 @@ Dependências críticas:
 
 **Done when**:
 - [ ] `isSessionValid()` retorna `true` quando offline + usuário cacheado presente
-- [ ] `isSessionValid()` retorna `false` quando offline + sem usuário no cache
+- [ ] `isSessionValid()` retorna `true` quando offline + usuário Firebase presente, mesmo sem usuário no cache (o cache é reconstruído por `checkAuthStatus`)
 - [ ] Sem regressão no fluxo online
 - [ ] `flutter analyze` sem erros
 

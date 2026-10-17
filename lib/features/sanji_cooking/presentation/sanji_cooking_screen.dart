@@ -14,6 +14,7 @@ import 'package:opfan/shared/utils/constants.dart';
 import 'package:opfan/shared/widgets/molecules/default_app_bar.dart';
 import 'package:opfan/shared/widgets/organisms/bottom_navigation.dart';
 import 'package:opfan/shared/widgets/organisms/offline_blocker_overlay.dart';
+import 'package:opfan/shared/widgets/organisms/profile_update_failure_listener.dart';
 import 'package:opfan/shared/utils/app_routes.dart';
 import 'package:opfan/core/auth/blocs/index.dart';
 import 'package:opfan/shared/widgets/atoms/app_button.dart';
@@ -62,89 +63,97 @@ class _SanjiCookingView extends StatelessWidget {
           appBar: DefaultAppBar(
             title: Text(AppLocalizations.of(context)!.cookingWithSanji),
           ),
-          body: OfflineBlockerOverlay(
-            child: SingleChildScrollView(
-              child: Column(
-                children: [
-                  const CookingHeader(),
-                  Padding(
-                    padding: const EdgeInsets.all(Constants.margin),
-                    child: Column(
-                      children: [
-                        const SizedBox(height: 24),
-                        if (state is SanjiCookingLoading) ...[
-                          Center(
-                            child: Column(
-                              children: [
-                                const CircularProgressIndicator(),
-                                const SizedBox(height: 16),
-                                Text(
-                                  AppLocalizations.of(
-                                    context,
-                                  )!.calculatingNutrition,
-                                ),
-                              ],
+          body: ProfileUpdateFailureListener(
+            child: OfflineBlockerOverlay(
+              child: SingleChildScrollView(
+                child: Column(
+                  children: [
+                    const CookingHeader(),
+                    Padding(
+                      padding: const EdgeInsets.all(Constants.margin),
+                      child: Column(
+                        children: [
+                          const SizedBox(height: 24),
+                          if (state is SanjiCookingLoading) ...[
+                            Center(
+                              child: Column(
+                                children: [
+                                  const CircularProgressIndicator(),
+                                  const SizedBox(height: 16),
+                                  Text(
+                                    AppLocalizations.of(
+                                      context,
+                                    )!.calculatingNutrition,
+                                  ),
+                                ],
+                              ),
                             ),
-                          ),
-                        ] else if (state is SanjiCookingLoaded) ...[
-                          if (state.showForm) ...[
+                          ] else if (state is SanjiCookingLoaded) ...[
+                            if (state.showForm) ...[
+                              NutritionForm(
+                                onCalculate: (data) =>
+                                    _onCalculateNutrition(context, data),
+                              ),
+                            ] else if (state.nutritionResults != null) ...[
+                              NutritionResults(
+                                results: state.nutritionResults!,
+                              ),
+                              const SizedBox(height: 24),
+                              AppButton(
+                                onPressed: () => _onNewCalculation(context),
+                                variant: AppButtonVariant.outline,
+                                label: AppLocalizations.of(
+                                  context,
+                                )!.updateBodyCompositionLabel,
+                                isFullWidth: true,
+                              ),
+                            ],
+                          ] else if (state is SanjiCookingFormWithData) ...[
                             NutritionForm(
                               onCalculate: (data) =>
                                   _onCalculateNutrition(context, data),
+                              existingData: state.existingData,
                             ),
-                          ] else if (state.nutritionResults != null) ...[
-                            NutritionResults(results: state.nutritionResults!),
-                            const SizedBox(height: 24),
-                            AppButton(
-                              onPressed: () => _onNewCalculation(context),
-                              variant: AppButtonVariant.outline,
-                              label: AppLocalizations.of(
-                                context,
-                              )!.updateBodyCompositionLabel,
-                              isFullWidth: true,
-                            ),
-                          ],
-                        ] else if (state is SanjiCookingFormWithData) ...[
-                          NutritionForm(
-                            onCalculate: (data) =>
-                                _onCalculateNutrition(context, data),
-                            existingData: state.existingData,
-                          ),
-                        ] else if (state is SanjiCookingError) ...[
-                          Center(
-                            child: Column(
-                              children: [
-                                AppIcon(
-                                  PhosphorIconsRegular.warningCircle,
-                                  size: 48,
-                                  color: Theme.of(context).colorScheme.error,
-                                ),
-                                const SizedBox(height: 16),
-                                Text(
-                                  sanjiCookingFailureMessage(
-                                    AppLocalizations.of(context)!,
-                                    state.failure,
-                                  ),
-                                  textAlign: TextAlign.center,
-                                  style: TextStyle(
+                          ] else if (state is SanjiCookingError) ...[
+                            Center(
+                              child: Column(
+                                children: [
+                                  AppIcon(
+                                    PhosphorIconsRegular.warningCircle,
+                                    size: 48,
                                     color: Theme.of(context).colorScheme.error,
                                   ),
-                                ),
-                                const SizedBox(height: 16),
-                                AppButton(
-                                  onPressed: () => context
-                                      .read<SanjiCookingBloc>()
-                                      .add(const InitializeSanjiCooking()),
-                                  label: AppLocalizations.of(context)!.tryAgain,
-                                ),
-                              ],
+                                  const SizedBox(height: 16),
+                                  Text(
+                                    sanjiCookingFailureMessage(
+                                      AppLocalizations.of(context)!,
+                                      state.failure,
+                                    ),
+                                    textAlign: TextAlign.center,
+                                    style: TextStyle(
+                                      color: Theme.of(
+                                        context,
+                                      ).colorScheme.error,
+                                    ),
+                                  ),
+                                  const SizedBox(height: 16),
+                                  AppButton(
+                                    onPressed: () => context
+                                        .read<SanjiCookingBloc>()
+                                        .add(const InitializeSanjiCooking()),
+                                    label: AppLocalizations.of(
+                                      context,
+                                    )!.tryAgain,
+                                  ),
+                                ],
+                              ),
                             ),
-                          ),
+                          ],
                         ],
-                      ],
+                      ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
           ),
