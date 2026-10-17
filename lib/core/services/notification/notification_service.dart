@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter/material.dart';
@@ -15,11 +16,13 @@ class NotificationService implements INotificationService {
     required this._navigationService,
     required this._firestoreService,
     required this._firebaseMessaging,
+    required this._firebaseAuth,
   });
 
   final INavigationService _navigationService;
   final IFirestoreService _firestoreService;
   final FirebaseMessaging _firebaseMessaging;
+  final FirebaseAuth _firebaseAuth;
   final FlutterLocalNotificationsPlugin _localNotifications =
       FlutterLocalNotificationsPlugin();
 
@@ -116,24 +119,27 @@ class NotificationService implements INotificationService {
 
     FirebaseMessaging.onMessageOpenedApp.listen(_handleMessageOpenedApp);
 
-    final initialMessage = await FirebaseMessaging.instance.getInitialMessage();
+    final initialMessage = await _firebaseMessaging.getInitialMessage();
     if (initialMessage != null) {
       _handleMessageOpenedApp(initialMessage);
     }
   }
 
   Future<void> _getFCMToken() async {
+    _firebaseMessaging.onTokenRefresh.listen(_onTokenRefresh);
     try {
       _fcmToken = await _firebaseMessaging.getToken();
       debugPrint('NotificationService: FCM token obtained');
-
-      _firebaseMessaging.onTokenRefresh.listen((newToken) {
-        _fcmToken = newToken;
-        debugPrint('NotificationService: FCM token refreshed');
-      });
     } catch (e) {
       debugPrint('NotificationService: Erro ao obter FCM token: $e');
     }
+  }
+
+  Future<void> _onTokenRefresh(String token) async {
+    _fcmToken = token;
+    debugPrint('NotificationService: FCM token refreshed');
+    final userId = _firebaseAuth.currentUser?.uid;
+    if (userId != null) await _writeToken(userId, token);
   }
 
   void _handleForegroundMessage(RemoteMessage message) {
@@ -298,16 +304,27 @@ class NotificationService implements INotificationService {
     }
   }
 
+  /// Signing out deletes the device token, so the next sign-in fetches a new
+  /// one before saving.
   @override
   Future<void> saveTokenToFirestore(String userId) async {
-    if (_fcmToken == null) return;
+    try {
+      final token = _fcmToken ??= await _firebaseMessaging.getToken();
+      if (token == null) return;
+      await _writeToken(userId, token);
+    } catch (e) {
+      debugPrint('NotificationService: Erro ao obter FCM token: $e');
+    }
+  }
 
+  /// Keys and types must match `validToken` in `firestore.rules`.
+  Future<void> _writeToken(String userId, String token) async {
     try {
       await _firestoreService.createDocumentWithId(
         collection: 'user_tokens',
         documentId: userId,
         data: {
-          'fcmToken': _fcmToken,
+          'fcmToken': token,
           'platform': Platform.isIOS ? 'ios' : 'android',
           'updatedAt': FieldValue.serverTimestamp(),
         },

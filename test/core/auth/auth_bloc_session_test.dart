@@ -98,6 +98,29 @@ void main() {
       expect: () => [AuthNeedsOnboarding(user: _user(uid: 'bob'))],
     );
 
+    test(
+      'keeps a single auth status subscription when started again',
+      () async {
+        final statusStreams = <StreamController<AuthStatus>>[];
+        when(() => auth.authStatusStream).thenAnswer((_) {
+          final controller = StreamController<AuthStatus>();
+          statusStreams.add(controller);
+          return controller.stream;
+        });
+        when(() => auth.checkAuthStatus()).thenAnswer((_) async => _user());
+        final bloc = AuthBloc(authService: auth);
+
+        bloc.add(const AuthStarted());
+        await Future<void>.delayed(Duration.zero);
+        bloc.add(const AuthStarted());
+        await Future<void>.delayed(Duration.zero);
+
+        expect(statusStreams, hasLength(2));
+        expect(statusStreams.where((s) => s.hasListener), hasLength(1));
+        await bloc.close();
+      },
+    );
+
     blocTest<AuthBloc, AuthState>(
       'signs out when Firebase reports no user',
       build: () => AuthBloc(authService: auth),

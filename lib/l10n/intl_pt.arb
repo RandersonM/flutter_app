@@ -4079,5 +4079,6 @@
   "noResultsFoundFor": "Nenhum resultado encontrado para \"{query}\"",
   "openExternalLinkTitle": "Abrir link externo?",
   "openExternalLinkMessage": "Este link veio de uma resposta da IA e abre fora do app:\n{url}",
-  "openExternalLinkAction": "Abrir"
+  "openExternalLinkAction": "Abrir",
+  "profileUpdateFailed": "Não foi possível salvar seu perfil. Tente novamente."
 }

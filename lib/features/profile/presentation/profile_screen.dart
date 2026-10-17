@@ -53,14 +53,22 @@ class _ProfileScreenState extends State<ProfileScreen> {
           ),
         ],
       ),
-      body: BlocBuilder<AuthBloc, AuthState>(
-        builder: (context, state) {
-          if (state is AuthAuthenticated) {
-            return _buildProfileContent(context, state.user);
-          }
+      body: BlocListener<AuthBloc, AuthState>(
+        listenWhen: (_, state) => state is AuthProfileUpdateFailed,
+        listener: (context, _) => ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(AppLocalizations.of(context)!.profileUpdateFailed),
+          ),
+        ),
+        child: BlocBuilder<AuthBloc, AuthState>(
+          builder: (context, state) {
+            if (state is AuthAuthenticated) {
+              return _buildProfileContent(context, state.user);
+            }
 
-          return const Center(child: CircularProgressIndicator());
-        },
+            return const Center(child: CircularProgressIndicator());
+          },
+        ),
       ),
     );
   }

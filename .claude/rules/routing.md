@@ -32,6 +32,9 @@ Golden: `lib/features/crews/crews_routes.dart`.
 `AuthRouteMiddleware` (in `app_routes.dart`) checks every route against the
 modules' `privateRoutes`. When the user is not `AuthAuthenticated`, it redirects to
 `/login` with `{returnRoute, returnArguments}` so login can resume the navigation.
+`main.dart` hands it `AuthBloc.state` read at navigation time, not a value
+captured at the last rebuild — login's listener resumes the route before
+`MaterialApp` could rebuild with the new state.
 You do not edit the middleware to protect a route.
 
 Guest mode is a product feature (login has "skip for now"), so only data the user

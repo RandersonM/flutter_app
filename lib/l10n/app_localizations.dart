@@ -5797,6 +5797,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Open'**
   String get openExternalLinkAction;
+
+  /// Snackbar shown when saving the body profile (onboarding or profile edit) fails; the user stays signed in.
+  ///
+  /// In en, this message translates to:
+  /// **'Couldn\'t save your profile. Please try again.'**
+  String get profileUpdateFailed;
 }
 
 class _AppLocalizationsDelegate

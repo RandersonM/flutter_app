@@ -5019,5 +5019,9 @@
   "openExternalLinkAction": "Open",
   "@openExternalLinkAction": {
     "description": "Confirm button that opens a link from an AI answer in the browser."
+  },
+  "profileUpdateFailed": "Couldn't save your profile. Please try again.",
+  "@profileUpdateFailed": {
+    "description": "Snackbar shown when saving the body profile (onboarding or profile edit) fails; the user stays signed in."
   }
 }
