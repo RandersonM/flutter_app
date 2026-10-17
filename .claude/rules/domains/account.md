@@ -29,17 +29,28 @@ paths:
   Auth user is gone. No screen dispatches `AuthDeleteAccount` yet.
 - `AuthBloc` (`lib/core/auth/blocs/`) is a global lazy singleton. States: `Initial`,
   `Loading`, `Authenticated(user, isFirstLogin)`, `NeedsOnboarding`,
-  `Unauthenticated`, `Error`, `ProfileUpdating/Updated`, `DeletingAccount`,
-  `AccountDeleted`. Every path that signs a user in (start, sign-in, Firebase
+  `Unauthenticated`, `Error`, `ProfileUpdating/Updated/UpdateFailed`,
+  `DeletingAccount`, `AccountDeleted`. Every path that signs a user in (start, sign-in, Firebase
   status change) picks `Authenticated` or `NeedsOnboarding` from
   `isProfileComplete`; a status change for the uid already in the state is
   ignored, because Firebase replays the current user on subscribe. It listens to
   `IAuthService.profileChanges`, so a body profile saved by another feature
-  replaces the user in `Authenticated`.
+  replaces the user in `Authenticated`. `AuthStarted` (also the error screen's
+  "Try again") replaces the `authStatusStream` subscription, never adds one.
+- A failed profile save never reaches `AuthError`: the bloc emits
+  `ProfileUpdateFailed`, then the signed-in state rebuilt from
+  `IAuthService.currentUser` (the last stored profile). Onboarding in create mode
+  shows `profileUpdateFailed`; in edit mode it has already popped, so the profile
+  screen shows it.
 - `AppWrapper` (`lib/core/auth/app_wrapper.dart`) is the root switch on `AuthState`:
-  Splash → Home / Onboarding / Login / Error. Splash never navigates.
+  Splash → Home / Onboarding / Login / Error. Splash never navigates. Its
+  `buildWhen` skips `ProfileUpdating/Updated/UpdateFailed`, so a profile save
+  keeps the current root instead of falling to Splash.
 - **Guest mode exists:** login offers "skip for now"; public routes must work signed out.
 - Login honours `returnRoute` / `returnArguments` from the route guard (`routing.md`).
+- FCM token (`INotificationService`): saved to `user_tokens/{uid}` on Google
+  sign-in (fetching a new one, since sign-out deletes the device token) and on
+  every `onTokenRefresh` while a Firebase user is signed in.
 
 ## User profile
 
