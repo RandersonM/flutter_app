@@ -49,6 +49,11 @@ RAG store. The chat is on-device — see `ai-on-device.md`.
   save result depends only on Hive, a sync failure is only logged, and a failed
   save keeps the form on screen.
 - Chat history is in-memory only.
+- Lifecycle: a model already in `GemmaError` fails at once (`modelLoadFailed`, or
+  `modelNotInstalled` for an install error); 2 min without a status also fails. A
+  **90 s watchdog** (same as Vegapunk) ends a stalled answer with
+  `generationTimedOut`. `close()` stops the generation and closes the `nami`
+  session; handlers check `isClosed` after every await so nothing reopens it.
 
 ## UI
 

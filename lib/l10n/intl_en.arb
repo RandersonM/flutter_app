@@ -4460,6 +4460,10 @@
   "@namiChatConnectionFailed": {
     "description": "Nami chat sheet: error bubble when generating an answer fails"
   },
+  "namiChatGenerationTimedOut": "Nami took too long to answer. Please try again.",
+  "@namiChatGenerationTimedOut": {
+    "description": "Nami chat sheet: error bubble when the on-device model stops producing an answer"
+  },
   "namiAccumulatedSavingsPeriod": "Accumulated over {period}",
   "@namiAccumulatedSavingsPeriod": {
     "description": "Nami results view: savings label; period is a localized duration like '2 years and 3 months'",

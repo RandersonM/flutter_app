@@ -2778,6 +2778,10 @@ class AppLocalizationsPt extends AppLocalizations {
       'Erro na conexão com a Nami. Tente novamente.';
 
   @override
+  String get namiChatGenerationTimedOut =>
+      'A Nami demorou demais para responder. Tente novamente.';
+
+  @override
   String namiAccumulatedSavingsPeriod(String period) {
     return 'Acumulado em $period';
   }

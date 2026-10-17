@@ -33,6 +33,18 @@ class NamiChatBloc extends Cubit<NamiChatState> {
   Timer? _emitTimer;
   final StringBuffer _tokenBuffer = StringBuffer();
   Future<void>? _backfillFuture;
+  StreamSubscription<GemmaServiceStatus>? _modelStatusSub;
+  StreamSubscription<ModelResponse>? _answerSub;
+  Completer<void>? _answerDone;
+
+  /// Same watchdog as Vegapunk's: native inference can stall after an OS
+  /// lifecycle interruption and the stream then never emits again.
+  static const _generationTimeout = Duration(seconds: 90);
+  Timer? _watchdogTimer;
+
+  /// Longest silence on the model status stream while waiting for the model.
+  /// Re-armed on every status, so download progress keeps it alive.
+  static const _modelLoadTimeout = Duration(minutes: 2);
 
   /// Max characters of tool JSON injected back into the model per turn.
   static const _maxToolContentLength = 1800;
@@ -94,38 +106,43 @@ class NamiChatBloc extends Cubit<NamiChatState> {
   /// loading the model yet (status still [GemmaNotInstalled]) — calling it
   /// again while a load is already in flight or already done would recreate
   /// the chat/session state (see [GemmaService._recreateChat]) and could
-  /// wipe out an in-progress Vegapunk conversation.
-  Future<void> _ensureGemmaReady() async {
-    if (_gemmaService.currentStatus is GemmaReady) return;
+  /// wipe out an in-progress Vegapunk conversation. A model already in
+  /// [GemmaError] fails right away: no new status will come on its own.
+  Future<void> _ensureGemmaReady() {
+    final current = _gemmaService.currentStatus;
+    if (current is GemmaReady) return Future.value();
+    if (current is GemmaError) return Future.error(_loadError(current));
 
+    final initializeHere = current is GemmaNotInstalled;
     final completer = Completer<void>();
-    var initializeTriggered = false;
-    late final StreamSubscription<GemmaServiceStatus> sub;
-    sub = _gemmaService.statusStream.listen((status) {
-      if (status is GemmaReady) {
-        sub.cancel();
-        if (!completer.isCompleted) completer.complete();
-      } else if (status is GemmaError) {
-        sub.cancel();
-        if (!completer.isCompleted) completer.completeError(status.error);
-      } else if (status is GemmaNotInstalled && initializeTriggered) {
-        // initialize() re-confirmed there's no model on disk — surface it
-        // instead of leaving the sheet stuck in a loading state forever.
-        sub.cancel();
-        if (!completer.isCompleted) {
-          completer.completeError(const _GemmaModelNotInstalled());
-        }
-      }
-    });
-
-    if (_gemmaService.currentStatus is GemmaNotInstalled) {
-      initializeTriggered = true;
-      // ignore: unawaited_futures
-      _gemmaService.initialize();
+    void finish([Object? error]) {
+      _modelStatusSub?.cancel();
+      _modelStatusSub = null;
+      if (completer.isCompleted) return;
+      error == null ? completer.complete() : completer.completeError(error);
     }
 
+    _modelStatusSub = _gemmaService.statusStream
+        .timeout(_modelLoadTimeout)
+        .listen((status) {
+          switch (status) {
+            case GemmaReady():
+              finish();
+            case GemmaError():
+              finish(_loadError(status));
+            // initialize() re-confirmed there's no model on disk.
+            case GemmaNotInstalled() when initializeHere:
+              finish(const _GemmaModelNotInstalled());
+            default:
+          }
+        }, onError: finish);
+
+    if (initializeHere) unawaited(_gemmaService.initialize());
     return completer.future;
   }
+
+  Object _loadError(GemmaError status) =>
+      status.isInstallError ? const _GemmaModelNotInstalled() : status.error;
 
   Future<void> _backfillRag() async {
     try {
@@ -161,6 +178,7 @@ class NamiChatBloc extends Cubit<NamiChatState> {
     // for future features — see [_backfillRag]); the finances answer path
     // itself now goes through the [GetFinancesHandler] tool, not RAG.
     await _backfillFuture;
+    if (isClosed) return;
 
     _tokenBuffer.clear();
     _emitTimer?.cancel();
@@ -174,48 +192,51 @@ class NamiChatBloc extends Cubit<NamiChatState> {
       emit(current.copyWith(streamingToken: current.streamingToken + buffered));
     });
 
+    NamiChatFailure? failure;
     try {
       await _generateAnswer(text);
-
-      _emitTimer?.cancel();
-      if (state is NamiChatReady) {
-        final current = state as NamiChatReady;
-        final rawFinal = current.streamingToken + _tokenBuffer.toString();
-        _tokenBuffer.clear();
-
-        // Strip any residual tool-call JSON the model may have emitted as text
-        // so it never persists in the visible message.
-        final cleaned = _stripToolCallJson(rawFinal);
-        final finalToken = cleaned.isNotEmpty ? cleaned : rawFinal.trim();
-
-        emit(
-          current.copyWith(
-            messages: [
-              ...current.messages,
-              ChatMessage(
-                id: _uuid.v4(),
-                text: finalToken,
-                role: MessageRole.assistant,
-                timestamp: DateTime.now(),
-              ),
-            ],
-            streamingToken: '',
-            isGenerating: false,
-          ),
-        );
-      }
+    } on _GenerationTimedOut {
+      failure = NamiChatFailure.generationTimedOut;
     } catch (e) {
-      _emitTimer?.cancel();
       debugPrint('NamiChatBloc: answer generation failed: $e');
-      if (state is NamiChatReady) {
-        emit(
-          (state as NamiChatReady).copyWith(
-            isGenerating: false,
-            failure: NamiChatFailure.connectionFailed,
-          ),
-        );
-      }
+      failure = NamiChatFailure.connectionFailed;
     }
+    _emitTimer?.cancel();
+    if (isClosed) return;
+
+    final current = state;
+    if (current is! NamiChatReady) return;
+    if (failure == NamiChatFailure.connectionFailed) {
+      emit(current.copyWith(isGenerating: false, failure: failure));
+      return;
+    }
+    final answer = _finalAnswer(current.streamingToken);
+    emit(
+      current.copyWith(
+        messages: [
+          ...current.messages,
+          if (answer.isNotEmpty)
+            ChatMessage(
+              id: _uuid.v4(),
+              text: answer,
+              role: MessageRole.assistant,
+              timestamp: DateTime.now(),
+            ),
+        ],
+        streamingToken: '',
+        isGenerating: false,
+        failure: failure,
+      ),
+    );
+  }
+
+  /// Streamed text plus what the emit timer has not flushed yet, without any
+  /// tool-call JSON the model leaked as text.
+  String _finalAnswer(String streamed) {
+    final raw = streamed + _tokenBuffer.toString();
+    _tokenBuffer.clear();
+    final cleaned = _stripToolCallJson(raw);
+    return cleaned.isNotEmpty ? cleaned : raw.trim();
   }
 
   /// Produces Nami's answer.
@@ -233,6 +254,9 @@ class NamiChatBloc extends Cubit<NamiChatState> {
 
     final toolCall = _router.resolve(text);
     final result = await _registry.execute(toolCall);
+    // The session is opened lazily by the call below; opening it after close()
+    // would leave its KV cache allocated with nobody to close it.
+    if (isClosed) return;
     var content = result.content;
     if (content.length > _maxToolContentLength) {
       content =
@@ -281,22 +305,64 @@ class NamiChatBloc extends Cubit<NamiChatState> {
     return out;
   }
 
-  Future<void> _streamToBuffer(Stream<ModelResponse> stream) async {
-    await for (final response in stream) {
-      if (state is! NamiChatReady) break;
-      if (response is TextResponse) {
-        _tokenBuffer.write(response.token);
-      }
-    }
+  /// Completes when [stream] ends, or with [_GenerationTimedOut] when the
+  /// watchdog cancels it.
+  Future<void> _streamToBuffer(Stream<ModelResponse> stream) {
+    final done = Completer<void>();
+    _answerDone = done;
+    _armWatchdog();
+    _answerSub = stream.listen(
+      (response) {
+        _armWatchdog();
+        if (response is TextResponse) _tokenBuffer.write(response.token);
+      },
+      onError: (Object e) => _settleAnswer(e),
+      onDone: _settleAnswer,
+      cancelOnError: true,
+    );
+    return done.future;
+  }
+
+  void _armWatchdog() {
+    _watchdogTimer?.cancel();
+    _watchdogTimer = Timer(_generationTimeout, () {
+      debugPrint(
+        'NamiChatBloc: generation watchdog fired — '
+        'no token for ${_generationTimeout.inSeconds}s, cancelling',
+      );
+      unawaited(_cancelAnswer(const _GenerationTimedOut()));
+    });
+  }
+
+  /// Cancelling the subscription is what stops the session's generation.
+  Future<void> _cancelAnswer([Object? reason]) async {
+    final sub = _answerSub;
+    _settleAnswer(reason);
+    await sub?.cancel();
+  }
+
+  void _settleAnswer([Object? error]) {
+    _watchdogTimer?.cancel();
+    _watchdogTimer = null;
+    _answerSub = null;
+    final done = _answerDone;
+    _answerDone = null;
+    if (done == null || done.isCompleted) return;
+    error == null ? done.complete() : done.completeError(error);
   }
 
   @override
   Future<void> close() async {
     _emitTimer?.cancel();
+    // Started before any await so isClosed is already true for handlers
+    // resuming in between — they must not emit or reopen the session.
+    final closing = super.close();
+    await _modelStatusSub?.cancel();
+    await _cancelAnswer();
     // Free the session's KV cache — it doesn't need to live once the sheet
     // that owns this chat is dismissed.
     await _gemmaService.closeSession(_sessionId);
-    return super.close();
+    return closing;
   }
 }
 
@@ -305,4 +371,11 @@ class _GemmaModelNotInstalled implements Exception {
 
   @override
   String toString() => 'GemmaModelNotInstalled';
+}
+
+class _GenerationTimedOut implements Exception {
+  const _GenerationTimedOut();
+
+  @override
+  String toString() => 'GenerationTimedOut';
 }

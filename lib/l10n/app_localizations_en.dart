@@ -2762,6 +2762,10 @@ class AppLocalizationsEn extends AppLocalizations {
       'Couldn\'t reach Nami. Please try again.';
 
   @override
+  String get namiChatGenerationTimedOut =>
+      'Nami took too long to answer. Please try again.';
+
+  @override
   String namiAccumulatedSavingsPeriod(String period) {
     return 'Accumulated over $period';
   }
