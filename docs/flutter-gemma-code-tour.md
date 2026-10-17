@@ -48,7 +48,7 @@ Companheiro da apresentação. Aqui está **o que abrir, em que ordem, e o que d
 
 **A frase:** "Qual modelo rodar é configuração, não código."
 
-**O detalhe:** mostre em seguida [`gemma_service.dart:96-128`](../lib/core/services/gemma/gemma_service.dart#L96-L128) — `_determineModelType` e `_determineModelFileType` derivam tudo do **nome do arquivo**. Tecnicamente trocar o modelo é editar duas linhas do `.env`; na prática o produto fixa o Gemma 4 E2B. (E não mostre o `.env` real — tem token de verdade.)
+**O detalhe:** mostre em seguida [`gemma_service.dart:105-137`](../lib/core/services/gemma/gemma_service.dart#L105-L137) — `_determineModelType` e `_determineModelFileType` derivam tudo do **nome do arquivo**. Tecnicamente trocar o modelo é editar duas linhas do `.env`; na prática o produto fixa o Gemma 4 E2B. (E não mostre o `.env` real — tem token de verdade.)
 
 ### 4. [`ios/Runner/Runner.entitlements`](../ios/Runner/Runner.entitlements) + [`AndroidManifest.xml`](../android/app/src/main/AndroidManifest.xml#L52-L57)
 
@@ -80,14 +80,14 @@ Companheiro da apresentação. Aqui está **o que abrir, em que ordem, e o que d
 
 **O detalhe:** `GemmaError` carrega `isInstallError`. Essa flag existe porque "falhou o download" (repetir faz sentido) e "falhou o load" (geralmente é memória) pedem telas diferentes.
 
-### 7. [`gemma_service.dart:40-94`](../lib/core/services/gemma/gemma_service.dart#L40-L94) — `initialize` + `_refreshVegapunkChat` + `downloadModel`
+### 7. [`gemma_service.dart:49-103`](../lib/core/services/gemma/gemma_service.dart#L49-L103) — `initialize` + `_refreshVegapunkChat` + `downloadModel`
 
 **A frase:** "`initialize` pergunta se o arquivo já está no disco. Não está: `NotInstalled`. Está e o modelo não foi aberto: load. Já está aberto: só recria o chat do Vegapunk — reabrir a tela não recarrega o modelo nem derruba a sessão da Nami."
 
 **O detalhe:** o builder fluente do download é bonito de mostrar —
 `installModel(...).fromNetwork(url, token: ...).withProgress(cb).install()`. O `withProgress` alimenta a stream de status direto, então a barra de progresso da UI sai de graça.
 
-### 8. [`gemma_service.dart:143-184`](../lib/core/services/gemma/gemma_service.dart#L143-L184) — memória e backend
+### 8. [`gemma_service.dart:152-193`](../lib/core/services/gemma/gemma_service.dart#L152-L193) — memória e backend
 
 **Mostre:** `_maxTokens`, `_backendPreference`, `_openModelWithFallback`.
 
@@ -95,7 +95,7 @@ Companheiro da apresentação. Aqui está **o que abrir, em que ordem, e o que d
 
 **O detalhe:** leia o comentário de `_maxTokens` — o E2B suporta 128 K de contexto, e 4096 é escolha nossa, de memória em mobile. E aponte que `_openModelWithFallback` **rethrow** o último erro se os dois backends falharem: o chamador ainda emite `GemmaError`, ninguém continua silenciosamente sem modelo.
 
-### 9. [`gemma_service.dart:186-238`](../lib/core/services/gemma/gemma_service.dart#L186-L238) — `_recreateChat` + `_createVegapunkChat` ⭐
+### 9. [`gemma_service.dart:195-248`](../lib/core/services/gemma/gemma_service.dart#L195-L248) — `_recreateChat` + `_createVegapunkChat` ⭐
 
 **Este é o trecho mais importante do arquivo.** Se der para mostrar só um trecho do serviço, mostre este.
 
@@ -109,21 +109,21 @@ Companheiro da apresentação. Aqui está **o que abrir, em que ordem, e o que d
 
 Note também as sessões abertas sendo fechadas no topo de `_recreateChat`: elas estão amarradas à instância do modelo que vai ser substituída, então não sobrevivem a um reload — inclusive a da Nami. Por isso o refresh barato existe. Isso é o tipo de invariante que só aparece lendo o código.
 
-### 10. [`gemma_service.dart:240-283`](../lib/core/services/gemma/gemma_service.dart#L240-L283) — `sendMessage`
+### 10. [`gemma_service.dart:250-293`](../lib/core/services/gemma/gemma_service.dart#L250-L293) — `sendMessage`
 
 **A frase:** "Um `StreamController` com `onCancel` que chama `stopGeneration`. Quem fecha a stream cancela a inferência — o botão de parar da UI é só um `cancel()`."
 
 **O detalhe:** a montagem do prompt é `styleInstruction + ragContext + texto`. Guarde o `RagContextFraming` para o bloco 2 (item 25), onde ele rende mais.
 
-### 11. [`gemma_service.dart:285-322`](../lib/core/services/gemma/gemma_service.dart#L285-L322) — `sendToolResult`
+### 11. [`gemma_service.dart:295-332`](../lib/core/services/gemma/gemma_service.dart#L295-L332) — `sendToolResult`
 
 **A frase:** "A segunda passada. `Message.toolResponse` é API nativa do SDK — não é injeção de texto disfarçada."
 
-### 12. [`gemma_service.dart:324-387`](../lib/core/services/gemma/gemma_service.dart#L324-L387) — `sendSessionMessage` ⭐
+### 12. [`gemma_service.dart:334-423`](../lib/core/services/gemma/gemma_service.dart#L334-L423) — `sendSessionMessage` ⭐
 
 **A frase:** "É isso que permite a Nami existir sem um segundo modelo na memória: `model.openChat()` com system prompt próprio, guardado num mapa por `sessionId`, criado na primeira mensagem."
 
-**O detalhe:** a sessão é criada *lazy*, na primeira mensagem, com os parâmetros daquela chamada. E o `closeSession` ([431–435](../lib/core/services/gemma/gemma_service.dart#L431-L435)) libera o KV cache quando a sheet fecha — uma sessão idle segurando cache é memória parada num aparelho que já está no limite.
+**O detalhe:** a sessão é criada *lazy*, na primeira mensagem, com os parâmetros daquela chamada. E o `closeSession` ([467–478](../lib/core/services/gemma/gemma_service.dart#L467-L478)) libera o KV cache quando a sheet fecha — uma sessão idle segurando cache é memória parada num aparelho que já está no limite. Ele tira a sessão do mapa na hora (antes de parar a geração e fechar) e incrementa uma época por `sessionId`; um `openChat` ainda em voo quando a sessão foi fechada (ou o modelo recarregado) vê a época nova em `_openSession` e fecha o chat que acabou de abrir em vez de guardá-lo.
 
 ### 13. [`lib/app/di/core_module.dart:150-205`](../lib/app/di/core_module.dart#L150-L205)
 
