@@ -1,5 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:opfan/features/nami_finances/data/finance_math.dart';
+import 'package:opfan/features/nami_finances/data/models/nami_finances_model.dart';
 
 void main() {
   group('formatBrl', () {
@@ -43,6 +44,110 @@ void main() {
       expect(FinanceMath.parseAmount('abc'), isNull);
       expect(FinanceMath.parseAmount(null), isNull);
       expect(FinanceMath.parseAmount(''), isNull);
+    });
+
+    test('does not scale by "mil" or "mi" inside other words', () {
+      expect(FinanceMath.parseAmount('algo similar por 500'), 500);
+      expect(FinanceMath.parseAmount('gasto militar de 300'), 300);
+      expect(FinanceMath.parseAmount('comprei milho por 20'), 20);
+      expect(FinanceMath.parseAmount('minha conta de 150'), 150);
+    });
+
+    test('still scales the standalone words', () {
+      expect(FinanceMath.parseAmount('2 milhões'), 2000000);
+      expect(FinanceMath.parseAmount('1 milhao'), 1000000);
+      expect(FinanceMath.parseAmount('20 mil reais'), 20000);
+    });
+
+    test('keeps a leading minus sign', () {
+      expect(FinanceMath.parseAmount('-500'), -500);
+      expect(FinanceMath.parseAmount('R\$ -1.234,56'), -1234.56);
+      expect(FinanceMath.parseAmount('- 2 mil'), -2000);
+    });
+
+    test('ignores a hyphen that is not a sign', () {
+      expect(FinanceMath.parseAmount('covid-19'), 19);
+      expect(FinanceMath.parseAmount('10-20'), 10);
+    });
+
+    test('skips punctuation before the number', () {
+      expect(FinanceMath.parseAmount('ok... 500'), 500);
+    });
+  });
+
+  group('amountScale', () {
+    test('reads the scale word of a sentence', () {
+      expect(FinanceMath.amountScale('carro de 80 mil'), 1000);
+      expect(FinanceMath.amountScale('80k'), 1000);
+      expect(FinanceMath.amountScale('1,5 mi'), 1000000);
+      expect(FinanceMath.amountScale('algo similar por 500'), 1);
+    });
+  });
+
+  group('monthsTracked', () {
+    test('counts both the first and the current month', () {
+      expect(
+        FinanceMath.monthsTracked(DateTime(2026, 1), DateTime(2026, 3)),
+        3,
+      );
+      expect(
+        FinanceMath.monthsTracked(DateTime(2025, 3), DateTime(2026, 3, 15)),
+        13,
+      );
+    });
+
+    test('is one month when tracking started this month or later', () {
+      expect(
+        FinanceMath.monthsTracked(DateTime(2026, 3), DateTime(2026, 3, 31)),
+        1,
+      );
+      expect(
+        FinanceMath.monthsTracked(DateTime(2026, 5), DateTime(2026, 3)),
+        1,
+      );
+    });
+  });
+
+  group('historyChartMaxY', () {
+    NamiFinancesModel month({required double income, required double spent}) =>
+        NamiFinancesModel(
+          id: 'm',
+          month: DateTime(2026, 1),
+          monthlyIncomes: [
+            MonthlyIncomeModel(id: 'i', amount: income, description: ''),
+          ],
+          expenses: [
+            ExpenseModel(
+              id: 'e',
+              amount: spent,
+              category: ExpenseCategory.other,
+              description: '',
+            ),
+          ],
+          createdAt: DateTime(2026, 1),
+          updatedAt: DateTime(2026, 1),
+        );
+
+    test('fits expenses larger than any income', () {
+      expect(
+        FinanceMath.historyChartMaxY([
+          month(income: 3000, spent: 4500),
+          month(income: 4000, spent: 1000),
+        ]),
+        4500,
+      );
+    });
+
+    test('fits the largest income', () {
+      expect(
+        FinanceMath.historyChartMaxY([month(income: 5000, spent: 1000)]),
+        5000,
+      );
+    });
+
+    test('never returns 0, which the chart cannot divide into lines', () {
+      expect(FinanceMath.historyChartMaxY(const []), 1);
+      expect(FinanceMath.historyChartMaxY([month(income: 0, spent: 0)]), 1);
     });
   });
 

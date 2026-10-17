@@ -28,6 +28,8 @@ class _NamiFinancesScreenState extends State<NamiFinancesScreen> {
   /// True when the user explicitly wants to enter new data (no existing record).
   bool _showSetupForm = false;
 
+  bool _isSaving = false;
+
   /// Which month the screen is currently viewing / editing. Defaults to the
   /// current month; the navigator lets the user move to any past month, but not
   /// into the future.
@@ -66,7 +68,11 @@ class _NamiFinancesScreenState extends State<NamiFinancesScreen> {
                 create: (context) =>
                     getIt<NamiFinancesBloc>()
                       ..add(LoadFinances(_selectedMonth)),
-                child: BlocBuilder<NamiFinancesBloc, NamiFinancesState>(
+                child: BlocConsumer<NamiFinancesBloc, NamiFinancesState>(
+                  listener: _onStateChanged,
+                  // A failed save keeps the form, and what the user typed, on
+                  // screen; the listener reports the failure.
+                  buildWhen: (_, state) => !_isSaveFailure(state),
                   builder: (context, state) {
                     if (state is NamiFinancesLoading) {
                       return const Center(child: CircularProgressIndicator());
@@ -229,6 +235,7 @@ class _NamiFinancesScreenState extends State<NamiFinancesScreen> {
       _selectedMonth = DateTime(_selectedMonth.year, _selectedMonth.month - 1);
       _editingFinances = null;
       _showSetupForm = false;
+      _isSaving = false;
     });
   }
 
@@ -238,6 +245,7 @@ class _NamiFinancesScreenState extends State<NamiFinancesScreen> {
       _selectedMonth = DateTime(_selectedMonth.year, _selectedMonth.month + 1);
       _editingFinances = null;
       _showSetupForm = false;
+      _isSaving = false;
     });
   }
 
@@ -256,6 +264,7 @@ class _NamiFinancesScreenState extends State<NamiFinancesScreen> {
     List<ReserveModel> reserves,
     double? reserveGoal,
   ) {
+    _isSaving = true;
     context.read<NamiFinancesBloc>().add(
       SaveFinances(
         incomes: incomes,
@@ -265,11 +274,32 @@ class _NamiFinancesScreenState extends State<NamiFinancesScreen> {
         month: _selectedMonth,
       ),
     );
-    setState(() {
-      _editingFinances = null;
-      _showSetupForm = false;
-    });
   }
+
+  void _onStateChanged(BuildContext context, NamiFinancesState state) {
+    if (!_isSaving) return;
+    if (state is NamiFinancesLoaded) {
+      setState(() {
+        _isSaving = false;
+        _editingFinances = null;
+        _showSetupForm = false;
+      });
+    } else if (state is NamiFinancesError) {
+      _isSaving = false;
+      final l10n = AppLocalizations.of(context)!;
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(_failureMessage(l10n, state.failure)),
+          backgroundColor: Theme.of(context).colorScheme.error,
+        ),
+      );
+    }
+  }
+
+  static bool _isSaveFailure(NamiFinancesState state) =>
+      state is NamiFinancesError &&
+      (state.failure == NamiFinancesFailure.saveFailed ||
+          state.failure == NamiFinancesFailure.futureMonthNotEditable);
 
   void _onEditFinances(BuildContext context, NamiFinancesModel finances) {
     setState(() {

@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:uuid/uuid.dart';
@@ -69,8 +71,8 @@ class NamiFinancesBloc extends Bloc<NamiFinancesEvent, NamiFinancesState> {
     SaveFinances event,
     Emitter<NamiFinancesState> emit,
   ) async {
-    emit(NamiFinancesLoading());
-
+    // No loading state: the form stays on screen, so a failed save keeps what
+    // the user typed.
     try {
       final canEdit = await _service.canEditFinances(event.month);
       if (!canEdit) {
@@ -100,12 +102,22 @@ class NamiFinancesBloc extends Bloc<NamiFinancesEvent, NamiFinancesState> {
       );
 
       await _service.saveFinances(finances);
-      await _ragService.syncMonth(finances);
+      // The first sync downloads the ~110 MB embedder; the save is done once
+      // Hive has the month, so the index catches up in the background.
+      unawaited(_syncSearchIndex(finances));
 
       emit(NamiFinancesLoaded(finances: finances, hasData: true));
     } catch (e) {
       debugPrint('NamiFinancesBloc: save failed: $e');
       emit(NamiFinancesError(NamiFinancesFailure.saveFailed));
+    }
+  }
+
+  Future<void> _syncSearchIndex(NamiFinancesModel finances) async {
+    try {
+      await _ragService.syncMonth(finances);
+    } catch (e) {
+      debugPrint('NamiFinancesBloc: search index sync failed: $e');
     }
   }
 

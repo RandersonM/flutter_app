@@ -1,11 +1,15 @@
 import 'dart:convert';
+import 'dart:ui';
+
 import 'package:flutter/foundation.dart';
+import 'package:opfan/core/ai/prompts/prompt_locale.dart';
 import 'package:opfan/core/services/index.dart';
 import 'package:opfan/features/nami_finances/data/finance_math.dart';
 import 'package:opfan/features/nami_finances/data/models/nami_finances_model.dart';
 import 'package:opfan/features/vegapunk_chat/tools/models/tool_call.dart';
 import 'package:opfan/features/vegapunk_chat/tools/models/tool_result.dart';
 import 'package:opfan/features/vegapunk_chat/tools/tool_handler.dart';
+import 'package:opfan/l10n/app_localizations.dart';
 
 /// [ToolHandler] that exposes the user's saved Nami finances to the model.
 ///
@@ -19,10 +23,13 @@ import 'package:opfan/features/vegapunk_chat/tools/tool_handler.dart';
 /// {"name": "getFinances", "arguments": {}}
 /// ```
 class GetFinancesHandler extends ToolHandler {
-  GetFinancesHandler({required INamiFinancesService financesService})
-    : _service = financesService;
+  GetFinancesHandler({
+    required INamiFinancesService financesService,
+    required this._localeService,
+  }) : _service = financesService;
 
   final INamiFinancesService _service;
+  final ILocaleService _localeService;
 
   /// Stable tool name, exposed statically so callers (e.g. the proactive
   /// fallback in NamiChatBloc) can reference it without an instance.
@@ -98,7 +105,9 @@ class GetFinancesHandler extends ToolHandler {
         );
       }
 
-      final accumulated = await _service.getAccumulatedSavingsInfo();
+      final accumulated = await _service.getAccumulatedSavingsInfoLocalized(
+        _promptLocalizations(),
+      );
       final accumulatedTotal =
           (accumulated['totalSavings'] as num?)?.toDouble() ?? 0.0;
 
@@ -142,6 +151,12 @@ class GetFinancesHandler extends ToolHandler {
       return ToolResult.error(toolName: name, reason: e.toString());
     }
   }
+
+  /// The tool's text reaches the model inside its prompt, so it follows the
+  /// prompt's language rather than the UI's.
+  AppLocalizations _promptLocalizations() => lookupAppLocalizations(
+    Locale(PromptLocale.isPortuguese(_localeService) ? 'pt' : 'en'),
+  );
 
   /// Resolves the `month` argument to a concrete month DateTime.
   DateTime _resolveMonth(String? raw) {

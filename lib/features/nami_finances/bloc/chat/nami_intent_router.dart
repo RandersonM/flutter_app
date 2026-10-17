@@ -156,11 +156,7 @@ class NamiIntentRouter {
   /// scale to bare numbers (so "60 a 80 mil" → [60000, 80000]) and skipping the
   /// term count ("100 vezes") when [excludeTermMonths] is provided.
   List<double> extractAmounts(String text, {int? excludeTermMonths}) {
-    final lower = text.toLowerCase();
-    final hasMilhao = RegExp(r'milh|\bmi\b').hasMatch(lower);
-    final hasMil =
-        RegExp(r'mil').hasMatch(lower) ||
-        RegExp(r'\dk\b|\bk\b').hasMatch(lower);
+    final scale = FinanceMath.amountScale(text);
 
     // Drop the term phrase so its count isn't read as an amount.
     final scrubbed = text.replaceAll(
@@ -173,13 +169,7 @@ class NamiIntentRouter {
       final parsed = FinanceMath.parseAmount(match.group(0));
       if (parsed == null) continue;
       var value = parsed;
-      if (value < 1000) {
-        if (hasMilhao) {
-          value *= 1000000;
-        } else if (hasMil) {
-          value *= 1000;
-        }
-      }
+      if (value < 1000) value *= scale;
       if (excludeTermMonths != null && value == excludeTermMonths.toDouble()) {
         continue;
       }

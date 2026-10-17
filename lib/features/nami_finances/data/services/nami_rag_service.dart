@@ -20,11 +20,12 @@ class NamiRagService implements INamiRagService {
   /// v1 stored one document per *month*, containing a numeric summary
   /// ("Receita total: R$ 8.400,00 …"). That was the wrong unit twice over:
   /// numbers do not embed usefully, and the per-expense descriptions the user
-  /// actually typed were never indexed at all. v2 stores one document per
-  /// expense description. The old documents cannot be deleted individually —
-  /// flutter_gemma exposes no `removeDocument` on its public API — so a version
-  /// change clears the whole store and rebuilds it.
-  static const int _schemaVersion = 2;
+  /// actually typed were never indexed at all. v2 stored one document per
+  /// expense description, but every edit gave each expense a new id, so the
+  /// store piled up duplicates. v3 records which documents each month indexed
+  /// and removes the ones an edit dropped. A version change clears the whole
+  /// store and rebuilds it.
+  static const int _schemaVersion = 3;
 
   /// `id` prefix marking a document as an indexed expense, so a hit from any
   /// other document kind can be filtered out even if the store is shared later.
@@ -70,11 +71,6 @@ class NamiRagService implements INamiRagService {
   Future<Box<dynamic>> _meta() =>
       _storage.openUserBox<dynamic>(UserDataNames.namiRagIndexMetaBox);
 
-  /// Fingerprint of a month's indexed state. Changes whenever the month is
-  /// edited, so [syncMonth] can skip re-embedding an unchanged month.
-  static String _fingerprint(NamiFinancesModel model) =>
-      'v$_schemaVersion:${model.updatedAt.toIso8601String()}';
-
   /// Drops the whole store when the on-disk index predates [_schemaVersion].
   /// No-op once migrated.
   Future<void> _migrateIfNeeded() async {
@@ -102,36 +98,94 @@ class NamiRagService implements INamiRagService {
 
     final meta = await _meta();
     final monthKey = _monthKey(model);
-    if (meta.get(monthKey) == _fingerprint(model)) return;
+    final wanted = documentsFor(model);
+    final expensesByDocument = {
+      for (final expense in model.expenses) _documentId(expense.id): expense,
+    };
 
-    // Only descriptions carry meaning worth embedding. An expense the user
-    // never described has nothing to match on, so indexing it would only add
-    // noise to the nearest-neighbour set.
-    final described = model.expenses.where(
-      (e) => e.description.trim().isNotEmpty,
-    );
+    // The month's record is read and written inside the store operation, so
+    // two syncs of the same month cannot lose track of each other's documents.
+    await _inStore(() async {
+      final indexed = _indexedDocuments(meta.get(monthKey));
+      final plan = planSync(indexed: indexed, wanted: wanted);
+      if (plan.toIndex.isEmpty && plan.toRemove.isEmpty) return;
 
-    final indexed = await _inStore(() async {
-      var count = 0;
-      for (final expense in described) {
-        if (await _indexExpense(expense, monthKey)) count++;
+      for (final id in plan.toRemove) {
+        if (await _removeDocument(id)) indexed.remove(id);
       }
-      return count;
-    });
+      for (final id in plan.toIndex) {
+        if (await _indexExpense(expensesByDocument[id]!, monthKey)) {
+          indexed[id] = wanted[id]!;
+        }
+      }
 
-    await meta.put(monthKey, _fingerprint(model));
-    debugPrint('NamiRagService: indexed $indexed expense(s) for $monthKey');
+      await meta.put(monthKey, indexed);
+      debugPrint(
+        'NamiRagService: $monthKey indexed ${plan.toIndex.length}, '
+        'removed ${plan.toRemove.length} document(s)',
+      );
+    });
+  }
+
+  /// The documents [model] should have in the store, keyed by document id and
+  /// valued by their text.
+  ///
+  /// Only descriptions carry meaning worth embedding. An expense the user
+  /// never described has nothing to match on, so indexing it would only add
+  /// noise to the nearest-neighbour set.
+  static Map<String, String> documentsFor(NamiFinancesModel model) {
+    final monthKey = _monthKey(model);
+    return {
+      for (final expense in model.expenses)
+        if (expense.description.trim().isNotEmpty)
+          _documentId(expense.id): _documentContent(expense, monthKey),
+    };
+  }
+
+  /// What a month must change to go from the documents it [indexed] to the
+  /// ones it [wanted]: index the new or reworded ones, remove the dropped ones.
+  static ({List<String> toIndex, List<String> toRemove}) planSync({
+    required Map<String, String> indexed,
+    required Map<String, String> wanted,
+  }) => (
+    toIndex: [
+      for (final entry in wanted.entries)
+        if (indexed[entry.key] != entry.value) entry.key,
+    ],
+    toRemove: [
+      for (final id in indexed.keys)
+        if (!wanted.containsKey(id)) id,
+    ],
+  );
+
+  static Map<String, String> _indexedDocuments(Object? stored) => {
+    if (stored is Map)
+      for (final entry in stored.entries)
+        entry.key.toString(): entry.value.toString(),
+  };
+
+  static String _documentId(String expenseId) => '$_expenseIdPrefix$expenseId';
+
+  // Category and month go in the content as words, not numbers: they are
+  // part of how the user refers to a purchase ("comida de julho").
+  static String _documentContent(ExpenseModel expense, String monthKey) =>
+      '${expense.description.trim()} (${expense.category.name}, $monthKey)';
+
+  Future<bool> _removeDocument(String id) async {
+    try {
+      await RagStoreCoordinator.removeDocument(id);
+      return true;
+    } catch (e) {
+      debugPrint('NamiRagService: failed to remove $id: $e');
+      return false;
+    }
   }
 
   Future<bool> _indexExpense(ExpenseModel expense, String monthKey) async {
     try {
       await FlutterGemmaPlugin.instance.addDocument(
-        // Category and month go in the content as words, not numbers: they are
-        // part of how the user refers to a purchase ("comida de julho").
-        id: '$_expenseIdPrefix${expense.id}',
-        content:
-            '${expense.description.trim()} '
-            '(${expense.category.name}, $monthKey)',
+        id: _documentId(expense.id),
+        content: _documentContent(expense, monthKey),
         metadata: jsonEncode({
           'module': 'nami_finances',
           'kind': 'expense',

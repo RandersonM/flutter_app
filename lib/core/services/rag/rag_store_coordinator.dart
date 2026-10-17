@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/foundation.dart';
+import 'package:flutter_gemma/core/di/service_registry.dart';
 import 'package:flutter_gemma/flutter_gemma.dart';
 import 'package:path_provider/path_provider.dart';
 
@@ -92,6 +93,22 @@ class RagStoreCoordinator {
     );
     _queue = result.then<void>((_) {}, onError: (Object _) {});
     return result;
+  }
+
+  /// Deletes the document [id] from the active store. Call it only inside a
+  /// [withStore] operation, so the store is the caller's own.
+  ///
+  /// flutter_gemma keeps per-document delete off `FlutterGemmaPlugin`; the
+  /// registered vector store (sqlite) implements it.
+  static Future<void> removeDocument(String id) {
+    if (Zone.current[_heldOwnerKey] == null) {
+      return Future.error(
+        StateError('RagStoreCoordinator: removeDocument outside withStore'),
+      );
+    }
+    return ServiceRegistry.instance.vectorStoreRepository.removeDocument(
+      id: id,
+    );
   }
 
   static Future<void> _activate(String owner, String dbFileName) async {

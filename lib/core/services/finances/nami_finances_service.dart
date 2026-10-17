@@ -153,54 +153,10 @@ class NamiFinancesService implements INamiFinancesService {
   Future<Map<String, dynamic>> getAccumulatedSavingsInfo() async {
     try {
       final box = await _getBox;
-      final allFinances = box.values.toList();
-
-      if (allFinances.isEmpty) {
-        return {'totalSavings': 0.0, 'months': 0, 'years': 0, 'periodText': ''};
-      }
-
-      allFinances.sort((a, b) => a.month.compareTo(b.month));
-
-      double totalSavings = 0.0;
-      for (final finances in allFinances) {
-        totalSavings += finances.savings;
-      }
-
-      final firstMonth = allFinances.first.month;
-      final now = DateTime.now();
-
-      int months =
-          (now.year - firstMonth.year) * 12 + (now.month - firstMonth.month);
-      if (months < 0) months = 0;
-
-      int years = months ~/ 12;
-      int remainingMonths = months % 12;
-
-      String periodText = '';
-      if (years > 0) {
-        if (remainingMonths > 0) {
-          periodText =
-              '$years ano${years > 1 ? 's' : ''} e $remainingMonths mês${remainingMonths > 1 ? 'es' : ''}';
-        } else {
-          periodText = '$years ano${years > 1 ? 's' : ''}';
-        }
-      } else if (months > 0) {
-        periodText = '$months mês${months > 1 ? 'es' : ''}';
-      } else {
-        periodText = '1 mês';
-      }
-
-      return {
-        'totalSavings': totalSavings,
-        'months': months,
-        'years': years,
-        'periodText': periodText,
-        'formattedTotal':
-            '${FinanceMath.formatBrl(totalSavings)} em $periodText',
-      };
+      return _accumulatedSavings(box.values.toList());
     } catch (e) {
-      debugPrint('Erro ao calcular informações de savings acumulados: $e');
-      return {'totalSavings': 0.0, 'months': 0, 'years': 0, 'periodText': ''};
+      debugPrint('NamiFinancesService: accumulated savings failed: $e');
+      return _accumulatedSavings(const []);
     }
   }
 
@@ -208,74 +164,45 @@ class NamiFinancesService implements INamiFinancesService {
   Future<Map<String, dynamic>> getAccumulatedSavingsInfoLocalized(
     AppLocalizations l10n,
   ) async {
-    try {
-      final box = await _getBox;
-      final allFinances = box.values.toList();
+    final info = await getAccumulatedSavingsInfo();
+    final months = info['months'] as int;
+    if (months == 0) return {...info, 'periodText': '', 'formattedTotal': ''};
 
-      if (allFinances.isEmpty) {
-        return {
-          'totalSavings': 0.0,
-          'months': 0,
-          'years': 0,
-          'periodText': '',
-          'formattedTotal': '',
-        };
-      }
-
-      allFinances.sort((a, b) => a.month.compareTo(b.month));
-
-      double totalSavings = 0.0;
-      for (final finances in allFinances) {
-        totalSavings += finances.savings;
-      }
-
-      final firstMonth = allFinances.first.month;
-      final now = DateTime.now();
-
-      int months =
-          (now.year - firstMonth.year) * 12 + (now.month - firstMonth.month);
-      if (months < 0) months = 0;
-
-      int years = months ~/ 12;
-      int remainingMonths = months % 12;
-
-      String periodText = '';
-      if (years > 0) {
-        if (remainingMonths > 0) {
-          periodText = l10n.savings_period_years_and_months(
-            years,
-            remainingMonths,
-          );
-        } else {
-          periodText = l10n.savings_period_years_only(years);
-        }
-      } else if (months > 0) {
-        periodText = l10n.savings_period_months_only(months);
-      } else {
-        periodText = l10n.savings_period_one_month;
-      }
-
-      final formattedTotal = l10n.savings_formatted_total(
-        FinanceMath.formatBrl(totalSavings),
+    final periodText = savingsPeriodText(l10n, months);
+    return {
+      ...info,
+      'periodText': periodText,
+      'formattedTotal': l10n.savings_formatted_total(
+        FinanceMath.formatBrl(info['totalSavings'] as double),
         periodText,
-      );
+      ),
+    };
+  }
 
-      return {
-        'totalSavings': totalSavings,
-        'months': months,
-        'years': years,
-        'periodText': periodText,
-        'formattedTotal': formattedTotal,
-      };
-    } catch (e) {
-      debugPrint('Erro ao calcular informações de savings acumulados: $e');
-      return {
-        'totalSavings': 0.0,
-        'months': 0,
-        'years': 0,
-        'periodText': '',
-        'formattedTotal': '',
-      };
+  static Map<String, dynamic> _accumulatedSavings(
+    List<NamiFinancesModel> allFinances,
+  ) {
+    if (allFinances.isEmpty) {
+      return {'totalSavings': 0.0, 'months': 0, 'years': 0};
     }
+
+    final firstMonth = allFinances
+        .map((f) => f.month)
+        .reduce((a, b) => a.isBefore(b) ? a : b);
+    final months = FinanceMath.monthsTracked(firstMonth, DateTime.now());
+    return {
+      'totalSavings': allFinances.fold(0.0, (sum, f) => sum + f.savings),
+      'months': months,
+      'years': months ~/ 12,
+    };
+  }
+
+  /// "1 year and 2 months" / "1 ano e 2 meses" for a span of [months] (≥ 1).
+  static String savingsPeriodText(AppLocalizations l10n, int months) {
+    final years = months ~/ 12;
+    final remainingMonths = months % 12;
+    if (years == 0) return l10n.savings_period_months_only(months);
+    if (remainingMonths == 0) return l10n.savings_period_years_only(years);
+    return l10n.savings_period_years_and_months(years, remainingMonths);
   }
 }

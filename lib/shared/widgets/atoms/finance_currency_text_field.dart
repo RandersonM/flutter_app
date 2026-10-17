@@ -49,6 +49,10 @@ class _CurrencyInputFormatter extends TextInputFormatter {
 
   _CurrencyInputFormatter(this.currencySymbol);
 
+  /// Cents digits accepted: up to R$ 99.999.999.999,99, well inside the
+  /// range an `int` and a `double` hold exactly.
+  static const maxDigits = 13;
+
   @override
   TextEditingValue formatEditUpdate(
     TextEditingValue oldValue,
@@ -64,7 +68,8 @@ class _CurrencyInputFormatter extends TextInputFormatter {
       return newValue;
     }
 
-    final value = int.parse(text);
+    final value = text.length <= maxDigits ? int.tryParse(text) : null;
+    if (value == null) return oldValue;
     final formatted = _formatCurrency(value);
 
     return TextEditingValue(

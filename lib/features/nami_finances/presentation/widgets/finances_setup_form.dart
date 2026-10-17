@@ -64,7 +64,11 @@ class _FinancesSetupFormState extends State<FinancesSetupForm> {
       controller.addListener(_validateForm);
 
       _incomeItems.add(
-        IncomeItem(controller: controller, description: income.description),
+        IncomeItem(
+          id: income.id,
+          controller: controller,
+          description: income.description,
+        ),
       );
     }
 
@@ -76,6 +80,7 @@ class _FinancesSetupFormState extends State<FinancesSetupForm> {
 
       _expenseItems.add(
         dialog.ExpenseItem(
+          id: expense.id,
           controller: controller,
           category: _mapModelCategoryToDialog(expense.category),
           description: expense.description,
@@ -116,6 +121,7 @@ class _FinancesSetupFormState extends State<FinancesSetupForm> {
     );
     controller.addListener(_validateForm);
     return ReserveItem(
+      id: reserve.id,
       controller: controller,
       noteController: TextEditingController(text: reserve.note),
       purpose: reserve.purpose,
@@ -278,7 +284,7 @@ class _FinancesSetupFormState extends State<FinancesSetupForm> {
         )
         .map(
           (item) => MonthlyIncomeModel(
-            id: const Uuid().v4(),
+            id: item.id ?? const Uuid().v4(),
             amount:
                 double.parse(
                   item.controller.text.replaceAll(RegExp(r'[^\d]'), ''),
@@ -300,7 +306,7 @@ class _FinancesSetupFormState extends State<FinancesSetupForm> {
         )
         .map(
           (item) => ExpenseModel(
-            id: const Uuid().v4(),
+            id: item.id ?? const Uuid().v4(),
             amount:
                 double.parse(
                   item.controller.text.replaceAll(RegExp(r'[^\d]'), ''),
@@ -316,7 +322,7 @@ class _FinancesSetupFormState extends State<FinancesSetupForm> {
         .where((item) => _parseCurrency(item.controller.text) > 0)
         .map(
           (item) => ReserveModel(
-            id: const Uuid().v4(),
+            id: item.id ?? const Uuid().v4(),
             amount: _parseCurrency(item.controller.text),
             purpose: item.purpose,
             note: item.noteController.text.trim(),
@@ -645,18 +651,21 @@ class _FinancesSetupFormState extends State<FinancesSetupForm> {
 }
 
 class IncomeItem {
+  final String? id;
   final TextEditingController controller;
   String description;
 
-  IncomeItem({required this.controller, required this.description});
+  IncomeItem({this.id, required this.controller, required this.description});
 }
 
 class ReserveItem {
+  final String? id;
   final TextEditingController controller;
   final TextEditingController noteController;
   ReservePurpose purpose;
 
   ReserveItem({
+    this.id,
     required this.controller,
     required this.noteController,
     required this.purpose,
