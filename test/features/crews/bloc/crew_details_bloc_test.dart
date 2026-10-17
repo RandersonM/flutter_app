@@ -218,6 +218,84 @@ void main() {
       },
     );
 
+    void stubSaves() {
+      when(() => crews.updateCrew(any(), any())).thenAnswer((_) async {});
+      when(
+        () => characters.updateCustomCharacter(any(), any()),
+      ).thenAnswer((_) async {});
+    }
+
+    blocTest<CrewDetailsBloc, CrewDetailsState>(
+      'records a new captain in the crew header fields',
+      setUp: stubSaves,
+      build: () => build(
+        crew: CrewModel(id: 'c1', name: 'Straw Hats', userId: 'alice'),
+      ),
+      act: (bloc) =>
+          bloc.add(AddCrewMember(character: luffy, roleKey: 'captain')),
+      skip: 1,
+      expect: () => [
+        isA<CrewDetailsState>()
+            .having((s) => s.crew.captain, 'captain', 'Character luffy')
+            .having((s) => s.crew.viceCaptain, 'viceCaptain', isNull),
+      ],
+      verify: (_) {
+        final savedCrew =
+            verify(() => crews.updateCrew('c1', captureAny())).captured.single
+                as CrewModel;
+        expect(savedCrew.captain, 'Character luffy');
+      },
+    );
+
+    blocTest<CrewDetailsBloc, CrewDetailsState>(
+      'replaces a cleared vice-captain and keeps the captain',
+      setUp: stubSaves,
+      build: () => build(
+        crew: CrewModel(
+          id: 'c1',
+          name: 'Straw Hats',
+          userId: 'alice',
+          captain: 'Character luffy',
+          viceCaptain: '',
+          members: [_member('luffy', 'captain')],
+          rolesFilled: const ['captain'],
+        ),
+      ),
+      act: (bloc) => bloc.add(
+        AddCrewMember(character: _character('zoro'), roleKey: 'viceCaptain'),
+      ),
+      skip: 1,
+      expect: () => [
+        isA<CrewDetailsState>()
+            .having((s) => s.crew.captain, 'captain', 'Character luffy')
+            .having((s) => s.crew.viceCaptain, 'viceCaptain', 'Character zoro'),
+      ],
+    );
+
+    blocTest<CrewDetailsBloc, CrewDetailsState>(
+      'leaves captain and vice-captain alone for other roles',
+      setUp: stubSaves,
+      build: () => build(
+        crew: CrewModel(
+          id: 'c1',
+          name: 'Straw Hats',
+          userId: 'alice',
+          captain: 'Character luffy',
+          members: [_member('luffy', 'captain')],
+          rolesFilled: const ['captain'],
+        ),
+      ),
+      act: (bloc) => bloc.add(
+        AddCrewMember(character: _character('sanji'), roleKey: 'cook'),
+      ),
+      skip: 1,
+      expect: () => [
+        isA<CrewDetailsState>()
+            .having((s) => s.crew.captain, 'captain', 'Character luffy')
+            .having((s) => s.crew.viceCaptain, 'viceCaptain', isNull),
+      ],
+    );
+
     blocTest<CrewDetailsBloc, CrewDetailsState>(
       'keeps the crew unchanged and reports a failure when saving throws',
       setUp: () => when(
