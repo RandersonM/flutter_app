@@ -81,10 +81,39 @@ void main() {
       ).called(1);
     });
 
-    test('returns null when the call fails for another reason', () async {
-      textReturns(() async => throw Exception('App Check rejected'));
+    test('returns null without retrying when the call fails', () async {
+      textReturns(() async => throw Exception('offline'));
 
       expect(await build().generateText(prompt: 'a'), isNull);
+      verify(
+        () => client.generateText(
+          model: any(named: 'model'),
+          prompt: any(named: 'prompt'),
+          systemInstruction: any(named: 'systemInstruction'),
+          temperature: any(named: 'temperature'),
+          topK: any(named: 'topK'),
+          topP: any(named: 'topP'),
+          maxOutputTokens: any(named: 'maxOutputTokens'),
+        ),
+      ).called(1);
+    });
+
+    test('returns null without retrying when an image fails', () async {
+      when(
+        () => client.generateImage(
+          model: any(named: 'model'),
+          prompt: any(named: 'prompt'),
+        ),
+      ).thenThrow(Exception('offline'));
+
+      expect(await build().generateImage(prompt: 'Luffy'), isNull);
+      verify(
+        () => client.generateImage(
+          model: any(named: 'model'),
+          prompt: any(named: 'prompt'),
+        ),
+      ).called(1);
+      verifyNever(() => imageHost.upload(any()));
     });
 
     test('hosts a generated image and reuses it for the same prompt', () async {
