@@ -11,9 +11,10 @@ import 'package:opfan/features/nami_finances/data/models/nami_finances_model.dar
 import 'package:opfan/features/nami_finances/data/services/i_nami_rag_service.dart';
 
 class NamiRagService implements INamiRagService {
-  NamiRagService({required this._storage});
+  NamiRagService({required this._storage, required this._installEmbedder});
 
   final IUserStorageService _storage;
+  final Future<void> Function() _installEmbedder;
 
   /// Bump to force a full re-index on the next launch.
   ///
@@ -48,7 +49,7 @@ class NamiRagService implements INamiRagService {
     if (_isInitialized) return;
 
     try {
-      await RagStoreCoordinator.ensureEmbedderInstalled();
+      await _installEmbedder();
       _isInitialized = true;
       debugPrint('NamiRagService initialized (schema v$_schemaVersion).');
     } catch (e) {
@@ -59,44 +60,52 @@ class NamiRagService implements INamiRagService {
   /// Runs [operation] on this feature's own database — the Vegapunk chat RAG
   /// may have switched the shared store since the last call (see
   /// [RagStoreCoordinator]).
-  Future<T> _inStore<T>(Future<T> Function() operation) async {
-    final store = await _storeFile();
-    return RagStoreCoordinator.withStore(store, store, operation);
-  }
+  Future<T> _inStore<T>(String store, Future<T> Function() operation) =>
+      RagStoreCoordinator.withStore(store, store, operation);
 
   /// Each signed-in user indexes their own expenses in their own database.
   Future<String> _storeFile() =>
       _storage.userDatabaseFileName(UserDataNames.namiRagDatabase);
 
-  Future<Box<dynamic>> _meta() =>
-      _storage.openUserBox<dynamic>(UserDataNames.namiRagIndexMetaBox);
+  /// The index record of [store]'s user, or null when someone else signed in
+  /// (or out) since [store] was resolved.
+  Future<Box<dynamic>?> _metaOf(String store) async {
+    final meta = await _storage.openUserBox<dynamic>(
+      UserDataNames.namiRagIndexMetaBox,
+    );
+    return await _storeFile() == store ? meta : null;
+  }
+
+  Future<bool> _ensureInitialized() async {
+    if (!_isInitialized) await initialize();
+    return _isInitialized;
+  }
 
   /// Drops the whole store when the on-disk index predates [_schemaVersion].
-  /// No-op once migrated.
-  Future<void> _migrateIfNeeded() async {
-    final meta = await _meta();
+  /// No-op once migrated. Call it inside the store operation.
+  Future<void> _migrateIfNeeded(Box<dynamic> meta) async {
     if (meta.get(_schemaVersionKey) == _schemaVersion) return;
 
     debugPrint('NamiRagService: re-indexing for schema v$_schemaVersion…');
-    await _inStore(() async {
-      try {
-        await FlutterGemmaPlugin.instance.clearVectorStore();
-      } catch (e) {
-        debugPrint('NamiRagService: clearVectorStore failed: $e');
-      }
-    });
+    try {
+      await FlutterGemmaPlugin.instance.clearVectorStore();
+    } catch (e) {
+      debugPrint('NamiRagService: clearVectorStore failed: $e');
+    }
     await meta.clear();
     await meta.put(_schemaVersionKey, _schemaVersion);
   }
 
   @override
   Future<void> syncMonth(NamiFinancesModel model) async {
-    if (!_isInitialized) await initialize();
-    if (!_isInitialized) return;
+    // Resolved before the embedder download, which can outlast a sign-out:
+    // the month belongs to whoever was signed in when it was saved.
+    final store = await _storeFile();
+    if (!await _ensureInitialized()) return;
+    await _syncMonthInto(store, model);
+  }
 
-    await _migrateIfNeeded();
-
-    final meta = await _meta();
+  Future<void> _syncMonthInto(String store, NamiFinancesModel model) async {
     final monthKey = _monthKey(model);
     final wanted = documentsFor(model);
     final expensesByDocument = {
@@ -105,7 +114,14 @@ class NamiRagService implements INamiRagService {
 
     // The month's record is read and written inside the store operation, so
     // two syncs of the same month cannot lose track of each other's documents.
-    await _inStore(() async {
+    await _inStore(store, () async {
+      final meta = await _metaOf(store);
+      if (meta == null) {
+        debugPrint('NamiRagService: user changed, $monthKey not indexed');
+        return;
+      }
+      await _migrateIfNeeded(meta);
+
       final indexed = _indexedDocuments(meta.get(monthKey));
       final plan = planSync(indexed: indexed, wanted: wanted);
       if (plan.toIndex.isEmpty && plan.toRemove.isEmpty) return;
@@ -203,9 +219,12 @@ class NamiRagService implements INamiRagService {
 
   @override
   Future<void> backfillIfNeeded(List<NamiFinancesModel> months) async {
-    if (months.isEmpty || !_backfilledStores.add(await _storeFile())) return;
+    if (months.isEmpty) return;
+    final store = await _storeFile();
+    if (!_backfilledStores.add(store)) return;
+    if (!await _ensureInitialized()) return;
     for (final month in months) {
-      await syncMonth(month);
+      await _syncMonthInto(store, month);
     }
   }
 
@@ -216,11 +235,12 @@ class NamiRagService implements INamiRagService {
     double threshold = defaultThreshold,
   }) async {
     if (query.trim().isEmpty) return const [];
-    if (!_isInitialized) await initialize();
-    if (!_isInitialized) return const [];
+    if (!await _ensureInitialized()) return const [];
 
     try {
+      final store = await _storeFile();
       final results = await _inStore(
+        store,
         () => FlutterGemmaPlugin.instance.searchSimilar(
           query: query,
           topK: topK,

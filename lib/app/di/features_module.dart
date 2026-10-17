@@ -7,6 +7,7 @@ import 'package:opfan/features/custom_character/data/repository/i_custom_charact
 import 'package:opfan/features/robin_knowledge/data/repository/i_planner_repository.dart';
 import 'package:opfan/core/services/index.dart';
 import 'package:opfan/core/services/rag/i_rag_service.dart';
+import 'package:opfan/core/services/rag/rag_store_coordinator.dart';
 import 'package:opfan/features/sanji_cooking/data/repository/i_cooking_repository.dart';
 import 'package:opfan/features/vegapunk_chat/data/repository/i_vegapunk_chat_history_repository.dart';
 import 'package:opfan/features/vegapunk_chat/data/repository/i_vegapunk_chat_repository.dart';
@@ -36,7 +37,10 @@ const kNamiToolsRegistry = 'namiToolsRegistry';
 
 void registerFeaturesModule(GetIt getIt) {
   getIt.registerLazySingleton<INamiRagService>(
-    () => NamiRagService(storage: getIt<IUserStorageService>()),
+    () => NamiRagService(
+      storage: getIt<IUserStorageService>(),
+      installEmbedder: RagStoreCoordinator.ensureEmbedderInstalled,
+    ),
   );
 
   // Nami's function-calling tools: finances data + deterministic financial
