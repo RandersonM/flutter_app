@@ -154,7 +154,13 @@ class AuthRouteMiddleware {
       if (authState is! AuthAuthenticated) {
         return MaterialPageRoute<dynamic>(
           builder: (_) => const LoginScreen(),
-          settings: const RouteSettings(name: AppRoutes.login),
+          settings: RouteSettings(
+            name: AppRoutes.login,
+            arguments: <String, dynamic>{
+              'returnRoute': settings.name,
+              'returnArguments': settings.arguments,
+            },
+          ),
         );
       }
     }

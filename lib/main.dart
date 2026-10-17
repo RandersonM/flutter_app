@@ -120,22 +120,21 @@ class MyApp extends StatelessWidget {
     ],
     child: BlocBuilder<ThemeCubit, ThemeState>(
       builder: (context, themeState) => BlocBuilder<LocaleCubit, LocaleState>(
-        builder: (context, localeState) => BlocBuilder<AuthBloc, AuthState>(
-          builder: (context, authState) => MaterialApp(
-            title: getIt<IEnvironmentService>().appName,
-            locale: localeState.locale,
-            localizationsDelegates: AppLocalizations.localizationsDelegates,
-            supportedLocales: const <Locale>[
-              Locale('en', ''),
-              Locale('pt', ''),
-            ],
-            theme: getLightTheme(),
-            darkTheme: getDarkTheme(),
-            themeMode: themeState.isDarkMode ? ThemeMode.dark : ThemeMode.light,
-            navigatorKey: getIt<INavigationService>().navigatorKey,
-            home: const OfflineBannerWrapper(child: AppWrapper()),
-            onGenerateRoute: (settings) =>
-                AuthRouteMiddleware.onGenerateRoute(settings, authState),
+        builder: (context, localeState) => MaterialApp(
+          title: getIt<IEnvironmentService>().appName,
+          locale: localeState.locale,
+          localizationsDelegates: AppLocalizations.localizationsDelegates,
+          supportedLocales: const <Locale>[Locale('en', ''), Locale('pt', '')],
+          theme: getLightTheme(),
+          darkTheme: getDarkTheme(),
+          themeMode: themeState.isDarkMode ? ThemeMode.dark : ThemeMode.light,
+          navigatorKey: getIt<INavigationService>().navigatorKey,
+          home: const OfflineBannerWrapper(child: AppWrapper()),
+          // Read at navigation time: login resumes `returnRoute` from a
+          // listener that runs before a rebuild could hand over the new state.
+          onGenerateRoute: (settings) => AuthRouteMiddleware.onGenerateRoute(
+            settings,
+            context.read<AuthBloc>().state,
           ),
         ),
       ),
