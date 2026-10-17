@@ -254,6 +254,32 @@ void main() {
       await bloc.close();
     });
 
+    test('becomes ready without waiting for a stalled rag backfill', () {
+      fakeAsync((async) {
+        when(
+          () => rag.backfillIfNeeded(any()),
+        ).thenAnswer((_) => Completer<void>().future);
+        final gemma = _FakeGemmaService(const GemmaReady())
+          ..sessionAnswers.add(_answer(['Ok.']));
+        final bloc = build(gemma);
+
+        async.elapse(const Duration(seconds: 4));
+        expect(bloc.state, isA<NamiChatLoading>());
+
+        async.elapse(const Duration(seconds: 1));
+        expect((bloc.state as NamiChatReady).failure, isNull);
+
+        bloc.sendMessage('quanto sobrou?');
+        async.flushMicrotasks();
+        final state = bloc.state as NamiChatReady;
+        expect(state.isGenerating, isFalse);
+        expect(state.messages.last.text, 'Ok.');
+        verify(() => rag.backfillIfNeeded(any())).called(1);
+        bloc.close();
+        async.flushMicrotasks();
+      });
+    });
+
     test('loads the model itself when nobody has started it', () async {
       final gemma = _FakeGemmaService(const GemmaNotInstalled())
         ..statusesOnInitialize = const [GemmaLoading(), GemmaReady()];
@@ -552,6 +578,28 @@ void main() {
       expect(gemma.closedSessions, ['nami']);
     });
 
+    test('starts closing the nami session before waiting for the '
+        'generation to stop', () async {
+      final stopped = Completer<void>();
+      final answer = StreamController<ModelResponse>(
+        onCancel: () => stopped.future,
+      );
+      final gemma = _FakeGemmaService(const GemmaReady())
+        ..sessionAnswers.add(answer.stream);
+      final bloc = build(gemma);
+      await _ready(bloc);
+
+      final sending = bloc.sendMessage('quanto sobrou?');
+      await Future<void>.delayed(Duration.zero);
+      final closing = bloc.close();
+      await Future<void>.delayed(Duration.zero);
+
+      expect(gemma.closedSessions, ['nami']);
+      stopped.complete();
+      await closing;
+      await expectLater(sending, completes);
+    });
+
     test('does not open the nami session when closed while the tool '
         'is running', () async {
       final tool = _GatedToolHandler('getFinances');
@@ -597,6 +645,28 @@ void main() {
           (MessageRole.assistant, 'Sobrou'),
         ]);
         expect(answer.hasListener, isFalse);
+        bloc.close();
+        async.flushMicrotasks();
+      });
+    });
+
+    test('ends a hung tool step with generationTimedOut', () {
+      fakeAsync((async) {
+        registry.register(_GatedToolHandler('getFinances'));
+        final gemma = _FakeGemmaService(const GemmaReady());
+        final bloc = build(gemma);
+        async.flushMicrotasks();
+
+        bloc.sendMessage('quanto sobrou?');
+        async.elapse(const Duration(seconds: 89));
+        expect((bloc.state as NamiChatReady).isGenerating, isTrue);
+
+        async.elapse(const Duration(seconds: 1));
+        final state = bloc.state as NamiChatReady;
+        expect(state.isGenerating, isFalse);
+        expect(state.failure, NamiChatFailure.generationTimedOut);
+        expect(state.messages.single.role, MessageRole.user);
+        expect(gemma.sessionRequests, isEmpty);
         bloc.close();
         async.flushMicrotasks();
       });
