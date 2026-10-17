@@ -194,6 +194,35 @@ void main() {
       },
     );
 
+    test('skips turns answered from web search results', () async {
+      final history = _FakeHistoryRepository([
+        _msg('u1', MessageRole.user, 'pesquise o capítulo novo', 0),
+        ChatMessage(
+          id: 'a1',
+          text: 'o capítulo saiu',
+          role: MessageRole.assistant,
+          timestamp: DateTime(2026, 1, 1, 0, 1),
+          usedWebContent: true,
+        ),
+        _msg('u2', MessageRole.user, 'quem é a stella?', 2),
+        _msg('a2', MessageRole.assistant, 'meu corpo real', 3),
+      ]);
+      final rag = _FakeRagService();
+      final cubit = VegapunkChatCubit(
+        repository: _FakeVegapunkChatRepository(),
+        ragService: rag,
+        historyRepository: history,
+        localeService: _FakeLocaleService(),
+      );
+
+      await rag.simulateStoreCleared();
+
+      expect(rag.addedDocuments, hasLength(1));
+      expect(rag.addedDocuments.single.content, contains('stella'));
+
+      await cubit.close();
+    });
+
     test('reindexing an empty history is a no-op, not an error', () async {
       final rag = _FakeRagService();
       final cubit = VegapunkChatCubit(

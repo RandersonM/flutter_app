@@ -45,7 +45,9 @@ class ToolIntentDetector {
     }
 
     // ── saveWorkout ─────────────────────────────────────────────────────
-    if (_matchesSaveWorkoutIntent(lower)) {
+    // It writes data, so a negated or hypothetical sentence ("não treinei
+    // hoje", "if I trained today…") must not trigger it.
+    if (_matchesSaveWorkoutIntent(lower) && !_isNegatedOrQuestion(lower)) {
       return const ToolIntentResult(
         toolName: 'saveWorkout',
         confidence: ToolIntentConfidence.high,
@@ -222,6 +224,21 @@ class ToolIntentDetector {
   }
 
   // ── Save Workout Intent ────────────────────────────────────────────────
+
+  static final _negation = RegExp(
+    r"(?<!\p{L})(não|nao|nunca|didn'?t|did not|haven'?t|have not|not|never)(?!\p{L})",
+    unicode: true,
+  );
+
+  static final _hypothetical = RegExp(
+    r'(?<!\p{L})(se|if|whether|será que)(?!\p{L})',
+    unicode: true,
+  );
+
+  bool _isNegatedOrQuestion(String lower) =>
+      lower.contains('?') ||
+      _negation.hasMatch(lower) ||
+      _hypothetical.hasMatch(lower);
 
   bool _matchesSaveWorkoutIntent(String lower) {
     const triggers = [

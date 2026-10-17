@@ -31,6 +31,10 @@ class FunctionRegistry {
   /// Returns true if a handler for [name] is registered.
   bool has(String name) => _handlers.containsKey(name);
 
+  /// Whether the handler for [name] writes user data — see
+  /// [ToolHandler.writesUserData].
+  bool writesUserData(String name) => _handlers[name]?.writesUserData ?? false;
+
   /// Returns the list of registered handler names.
   List<String> get registeredNames => _handlers.keys.toList();
 

@@ -40,6 +40,8 @@ class VegapunkChatCubit extends Cubit<VegapunkChatState> {
   bool _ragInitialized = false;
   List<String>? _targetCategories;
   String _lastUserMessage = '';
+  bool _turnUsedWebContent = false;
+  static const _webSearchTool = 'searchInternet';
   // Buffer to accumulate tokens before emitting to the UI — reduces rebuild frequency.
   final StringBuffer _tokenBuffer = StringBuffer();
   Timer? _emitTimer;
@@ -176,6 +178,7 @@ class VegapunkChatCubit extends Cubit<VegapunkChatState> {
     _persistMessage(userMsg);
 
     _lastUserMessage = text.trim();
+    _turnUsedWebContent = false;
 
     final instruction = VegapunkSatellitePrompt.forMessage(
       ready.selectedSatellite.name,
@@ -215,6 +218,7 @@ class VegapunkChatCubit extends Cubit<VegapunkChatState> {
             // Handle sentinel tokens from the repository's function calling loop.
             final parsedTool = VegapunkChatRepository.parseToolName(token);
             if (parsedTool != null) {
+              if (parsedTool == _webSearchTool) _turnUsedWebContent = true;
               // A tool started executing — the widget layer resolves the
               // display label from this raw name.
               _emitTimer?.cancel();
@@ -351,6 +355,7 @@ class VegapunkChatCubit extends Cubit<VegapunkChatState> {
         role: MessageRole.assistant,
         timestamp: DateTime.now(),
         satelliteId: current.selectedSatellite.name,
+        usedWebContent: _turnUsedWebContent,
       );
       updated = [...current.messages, assistantMsg];
       _persistMessage(assistantMsg);
@@ -367,9 +372,10 @@ class VegapunkChatCubit extends Cubit<VegapunkChatState> {
 
     // Schedule the RAG document addition after a 2-second delay so it does
     // NOT compete with any in-flight LiteRT inference on the next user message.
-    if (token.isNotEmpty) {
+    if (token.isNotEmpty && !_turnUsedWebContent) {
       _scheduleSessionDocument(_lastUserMessage, token);
     }
+    _turnUsedWebContent = false;
   }
 
   void _scheduleSessionDocument(String userText, String responseText) {
@@ -443,7 +449,8 @@ class VegapunkChatCubit extends Cubit<VegapunkChatState> {
       final current = messages[i];
       final next = messages[i + 1];
       if (current.role == MessageRole.user &&
-          next.role == MessageRole.assistant) {
+          next.role == MessageRole.assistant &&
+          !next.usedWebContent) {
         turns.add((user: current, assistant: next));
       }
     }
