@@ -1,3 +1,4 @@
+import 'package:opfan/shared/widgets/molecules/untrusted_markdown_configs.dart';
 import 'package:opfan/shared/widgets/atoms/app_icon.dart';
 import 'package:phosphoricons_flutter/phosphoricons_flutter.dart';
 import 'package:flutter/material.dart';
@@ -489,6 +490,9 @@ class _CookingTipsScreenState extends State<CookingTipsScreen> {
                               ),
                               child: MarkdownBlock(
                                 data: state.personalizedMeal!,
+                                config: MarkdownConfig.defaultConfig.copy(
+                                  configs: untrustedMarkdownConfigs(context),
+                                ),
                               ),
                             ),
                           ],

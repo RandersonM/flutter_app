@@ -5,17 +5,19 @@ import 'package:hive/hive.dart';
 import 'package:opfan/core/models/rag/rag_document.dart';
 import 'package:opfan/core/services/rag/i_rag_service.dart';
 import 'package:opfan/core/services/rag/rag_store_coordinator.dart';
+import 'package:opfan/core/services/storage/i_user_storage_service.dart';
+import 'package:opfan/core/storage/user_data_names.dart';
 
 class RAGService implements IRAGService {
+  RAGService({required this._storage});
+
+  final IUserStorageService _storage;
   bool _initialized = false;
   bool _vectorStoreReady = false;
   EmbeddingModel? _embeddingModel;
   List<RagDocument> _knowledgeBaseDocs = [];
-  int _sessionDocCount = 0;
+  final Map<String, int> _sessionDocCounts = {};
   Future<void> Function()? _onStoreCleared;
-
-  static const _owner = 'vegapunk';
-  static const _dbFileName = 'opfan_rag.db';
 
   // Session documents accumulate for the lifetime of the process (only
   // cleared on an explicit reset or a knowledge-base change — see
@@ -42,11 +44,10 @@ class RAGService implements IRAGService {
   static const int _overFetchFactor = 4;
 
   @visibleForTesting
-  static const String metaBoxNameForTesting = 'vegapunk_rag_index_meta';
+  static const String metaBoxNameForTesting =
+      UserDataNames.vegapunkRagIndexMetaBox;
   @visibleForTesting
   static const String kbFingerprintKeyForTesting = 'kb_fingerprint';
-
-  Box<dynamic>? _metaBox;
 
   /// Incremented exactly when [setKnowledgeBase] takes the "unchanged
   /// fingerprint" branch. Test-only instrumentation: on an uninitialized
@@ -83,11 +84,20 @@ class RAGService implements IRAGService {
   /// [initialize] ran. Returns [unavailable] when the store never came up.
   Future<T> _inStore<T>(Future<T> Function() operation, T unavailable) async {
     if (!_vectorStoreReady) return unavailable;
-    return RagStoreCoordinator.withStore(_owner, _dbFileName, operation);
+    final store = await _storeFile();
+    return RagStoreCoordinator.withStore(store, store, operation);
   }
 
-  Future<Box<dynamic>> _meta() async =>
-      _metaBox ??= await Hive.openBox<dynamic>(metaBoxNameForTesting);
+  /// Each signed-in user has their own database, so session memory never
+  /// crosses accounts.
+  Future<String> _storeFile() =>
+      _storage.userDatabaseFileName(UserDataNames.vegapunkRagDatabase);
+
+  Future<void> _resetSessionCount() async =>
+      _sessionDocCounts[await _storeFile()] = 0;
+
+  Future<Box<dynamic>> _meta() =>
+      _storage.openUserBox<dynamic>(metaBoxNameForTesting);
 
   /// Deterministic fingerprint of a requested doc set — a sorted join of
   /// ids. Two calls with the same set of documents (regardless of order)
@@ -109,8 +119,10 @@ class RAGService implements IRAGService {
   Future<void> addDocument(RagDocument doc) async {
     if (!_vectorStoreReady) return;
     if (doc.isSession) {
-      if (_sessionDocCount >= _maxSessionDocs) return;
-      _sessionDocCount++;
+      final store = await _storeFile();
+      final count = _sessionDocCounts[store] ?? 0;
+      if (count >= _maxSessionDocs) return;
+      _sessionDocCounts[store] = count + 1;
     }
     final model = _embeddingModel;
     if (model == null) return;
@@ -254,7 +266,7 @@ class RAGService implements IRAGService {
   Future<void> clearSession() => _inStore(() async {
     try {
       await FlutterGemmaPlugin.instance.clearVectorStore();
-      _sessionDocCount = 0;
+      await _resetSessionCount();
       debugPrint('RAGService: store cleared');
 
       // Rebuild with KB docs so the knowledge base survives the session reset
@@ -298,7 +310,7 @@ class RAGService implements IRAGService {
         debugPrint('RAGService: KB fingerprint changed, reloading…');
         await FlutterGemmaPlugin.instance.clearVectorStore();
         _knowledgeBaseDocs = [];
-        _sessionDocCount = 0;
+        await _resetSessionCount();
         if (docs.isNotEmpty) {
           await addDocumentBatch(docs);
         }

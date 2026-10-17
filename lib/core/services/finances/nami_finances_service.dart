@@ -2,20 +2,19 @@ import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:opfan/features/nami_finances/data/finance_math.dart';
 import 'package:opfan/features/nami_finances/data/models/nami_finances_model.dart';
+import 'package:opfan/core/services/storage/i_user_storage_service.dart';
+import 'package:opfan/core/storage/user_data_names.dart';
 import 'package:opfan/l10n/app_localizations.dart';
 
 import 'i_nami_finances_service.dart';
 
 class NamiFinancesService implements INamiFinancesService {
-  static const String _boxName = 'nami_finances';
-  Box<NamiFinancesModel>? _box;
+  NamiFinancesService({required this._storage});
 
-  Future<Box<NamiFinancesModel>> get _getBox async {
-    if (_box == null || !_box!.isOpen) {
-      _box = await Hive.openBox<NamiFinancesModel>(_boxName);
-    }
-    return _box!;
-  }
+  final IUserStorageService _storage;
+
+  Future<Box<NamiFinancesModel>> get _getBox =>
+      _storage.openUserBox<NamiFinancesModel>(UserDataNames.namiFinancesBox);
 
   @override
   Future<NamiFinancesModel?> getFinancesForMonth(DateTime month) async {

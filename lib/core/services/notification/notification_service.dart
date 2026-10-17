@@ -125,11 +125,11 @@ class NotificationService implements INotificationService {
   Future<void> _getFCMToken() async {
     try {
       _fcmToken = await _firebaseMessaging.getToken();
-      debugPrint('NotificationService: FCM Token: $_fcmToken');
+      debugPrint('NotificationService: FCM token obtained');
 
       _firebaseMessaging.onTokenRefresh.listen((newToken) {
         _fcmToken = newToken;
-        debugPrint('NotificationService: Novo FCM Token: $newToken');
+        debugPrint('NotificationService: FCM token refreshed');
       });
     } catch (e) {
       debugPrint('NotificationService: Erro ao obter FCM token: $e');
@@ -137,17 +137,17 @@ class NotificationService implements INotificationService {
   }
 
   void _handleForegroundMessage(RemoteMessage message) {
-    debugPrint('NotificationService: Mensagem recebida em primeiro plano');
-    debugPrint('NotificationService: Título: ${message.notification?.title}');
-    debugPrint('NotificationService: Corpo: ${message.notification?.body}');
-    debugPrint('NotificationService: Dados: ${message.data}');
+    debugPrint(
+      'NotificationService: foreground message, data keys ${message.data.keys}',
+    );
 
     _showLocalNotification(message);
   }
 
   void _handleMessageOpenedApp(RemoteMessage message) {
-    debugPrint('NotificationService: App aberto através da notificação');
-    debugPrint('NotificationService: Dados: ${message.data}');
+    debugPrint(
+      'NotificationService: opened from notification, data keys ${message.data.keys}',
+    );
 
     _handleNotificationNavigation(message.data);
   }

@@ -63,15 +63,34 @@ paths:
 - Never reuse a shipped id; move dropped ids to `HiveTypeIds.retired`.
 - Adding a field to an adapter: read it defensively (`fields[n] as T? ?? default`)
   so old boxes still decode.
-- Open boxes with `Hive.isBoxOpen(name) ? Hive.box(name) : await Hive.openBox(name)`.
+- **Data that belongs to a user** (finances, chat history, RAG metadata) goes
+  through `IUserStorageService` (`lib/core/services/storage/`):
+  `openUserBox` / `openUserLazyBox` give an encrypted box named `<name>_<uid>`
+  (`guest` when signed out), and `userDatabaseFileName` the user's SQLite file.
+  Add every new per-user box or database to `UserDataNames`
+  (`lib/core/storage/user_data_names.dart`) — that list drives the legacy
+  migration and account deletion. Resolve the box on every call; don't cache it,
+  the scope changes on sign-in/out.
+- Sensitive data shared by the device (the auth cache) uses `openDeviceBox`.
+- Non-sensitive device data (theme, locale, featured-character cache) keeps
+  `Hive.isBoxOpen(name) ? Hive.box(name) : await Hive.openBox(name)`.
   Box names are `snake_case` constants next to the code that owns them.
+- The AES key lives in the keychain/keystore (`flutter_secure_storage`, via
+  `IEncryptionKeyStore`). A box that can't be decrypted is reset, not crashed on.
 
 ## Configuration & secrets
 
 - Read config only through `IEnvironmentService`
-  (`lib/core/services/config/i_environment_service.dart`). Add a key: getter on the
-  interface + impl, the key in `.env.example`, and a default when the app can run
-  without it — a missing key without a default **throws at startup**.
+  (`lib/core/services/config/i_environment_service.dart`). Values are build-time
+  `--dart-define-from-file=.env`, never a bundled file. Add a key: a
+  `String.fromEnvironment` entry in `EnvironmentService._compiledValues`, a getter
+  on the interface + impl, the key in `.env.example`, and a default when the app
+  can run without it.
+- Everything in `.env` ends up in the binary. The project has no billing account
+  (Spark), so there is no server to hide keys: only free-plan keys (Tavily,
+  Imgur — a leak only uses up the free quota), app-restricted keys (YouTube) or
+  read-only tokens (HuggingFace) go there. Gemini never does: it goes through
+  Firebase AI Logic, which keeps its key in the Firebase project.
 - Never read or print `.env`. Never hardcode API keys or client ids in code.
 
 ## External APIs

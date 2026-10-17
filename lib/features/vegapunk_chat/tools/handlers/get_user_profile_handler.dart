@@ -55,7 +55,6 @@ class GetUserProfileHandler extends ToolHandler {
             'that say "not set" have not been filled in yet; say so, do not '
             'make one up.',
         'name': user.displayName,
-        'email': user.email,
         'gender': user.gender ?? 'not set',
         'age': user.age?.toString() ?? 'not set',
         'height_formatted': user.heightCm != null

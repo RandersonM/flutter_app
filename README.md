@@ -278,6 +278,8 @@ cp .env.example .env
 ```
 
 Then fill in the keys you need — see [Environment variables](#-environment-variables).
+The file is passed at build time (`--dart-define-from-file=.env`); it is never bundled
+into the app.
 
 ### 5. Generate code and run
 
@@ -285,7 +287,7 @@ Then fill in the keys you need — see [Environment variables](#-environment-var
 fvm flutter gen-l10n                    # localization classes
 fvm dart run build_runner build -d      # @JsonSerializable models
 fvm flutter devices
-fvm flutter run -d <device-id>
+fvm flutter run -d <device-id> --dart-define-from-file=.env
 ```
 
 The first time you open **Vegapunk**, the app downloads the Gemma model to the device
@@ -294,31 +296,36 @@ chatting with Nami. After that both run offline.
 
 ## 🔑 Environment variables
 
-`.env` is bundled as an asset, so **the build fails if the file is missing**. At runtime
-every key is optional: a missing key falls back to its default, and a missing API key
-turns that one feature off gracefully instead of crashing the app.
+`.env` holds build-time values passed with `--dart-define-from-file=.env`. Every key
+is optional: a missing key falls back to its default, and a missing API key turns
+that one feature off gracefully. Everything here is compiled into the binary, so it
+only holds free-plan keys (a leak can only use up the free quota) or keys restricted
+by app. The Firebase project has no billing account: nothing here can incur a charge.
 
 | Variable | Used by | Required? | Default / where to get it |
 |---|---|---|---|
-| `YOUTUBE_API_KEY` | Home AMV videos | Recommended | [Google Cloud console](docs/youtube-api-setup.md) — without it, mock videos are shown |
+| `YOUTUBE_API_KEY` | Home AMV videos | Recommended | [Google Cloud console](docs/youtube-api-setup.md) — restrict it to the app's bundle id / package + SHA-1 and to YouTube Data API v3. Without it, mock videos are shown |
 | `YOUTUBE_BASE_URL` | YouTube service | No | `https://www.googleapis.com/youtube/v3` |
-| `ONEPIECE_API_URL` | Character catalog | No | `https://api.api-onepiece.com/v2/` |
 | `DEVIL_FRUIT_API_URL` | Devil Fruit encyclopedia | No | `https://api.api-onepiece.com/v2/fruits/en` |
-| `GEMINI_API_KEY` | Sanji recipes & tips, crew images | Recommended | [Google AI Studio](docs/gemini-cloud-ai-setup.md) — without it, Sanji uses fallback content |
-| `HUGGING_FACE_API_KEY` | Gemma model download | Yes, for the AI chats | [huggingface.co/settings/tokens](https://huggingface.co/settings/tokens) — accept the Gemma license on the model page first |
+| `HUGGING_FACE_API_KEY` | Gemma model download | Yes, for the AI chats | Fine-grained, read-only token limited to the Gemma repo at [huggingface.co/settings/tokens](https://huggingface.co/settings/tokens) — accept the Gemma license on the model page first |
 | `GEMMA_MODEL_URL` | Gemma model download | Yes, for the AI chats | Gemma 4 E2B `.litertlm` URL (see `.env.example`) |
 | `GEMMA_MODEL_NAME` | Gemma model type detection | Yes, for the AI chats | `gemma-4-E2B-it.litertlm` |
-| `TAVILY_API_KEY` | Vegapunk web search | Optional | [tavily.com](https://tavily.com) (1,000 free searches/month) |
 | `APP_NAME` | App config | No | `One Piece Simple App` |
-| `APP_VERSION` | App config | No | `1.0.1` |
-| `DEBUG_MODE` | App config | No | `true` |
 | `NETWORK_TIMEOUT` | Dio timeout (ms) | No | `30000` |
-| `RETRY_COUNT` | Network retries | No | `3` |
-| `CACHE_EXPIRY_TIME` | Cache TTL (ms) | No | `3600000` |
+| `TAVILY_API_KEY` | Vegapunk web search | Optional | [tavily.com](https://tavily.com) free plan (1,000 searches/month, no card) |
+| `IMGUR_CLIENT_ID` | Hosting generated images | Optional | [Imgur](https://api.imgur.com/oauth2/addclient) anonymous client — without it, images stay inline |
+
+### Gemini (Sanji, character and crew images)
+
+Gemini has **no key in `.env`**: it runs through **Firebase AI Logic**, which keeps the
+key inside the Firebase project and works on the free Spark plan. Enable it once in the
+Firebase console → **AI Logic** → **Get started** → **Gemini Developer API**. Then
+register both apps in **App Check** (Play Integrity / DeviceCheck, plus the debug token
+the app prints in debug builds) and enforce it for AI Logic.
 
 **Minimum to explore the app:** Firebase configured + an empty `.env` copied from the
-example. Add `HUGGING_FACE_API_KEY` for Nami's chat and Vegapunk, `GEMINI_API_KEY` for
-Sanji, and `YOUTUBE_API_KEY` for real AMVs.
+example. Add `HUGGING_FACE_API_KEY` for Nami's chat and Vegapunk, enable Firebase AI
+Logic for Sanji and images, and `YOUTUBE_API_KEY` for real AMVs.
 
 ## 🧪 Development
 

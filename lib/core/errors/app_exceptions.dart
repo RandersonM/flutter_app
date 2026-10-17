@@ -24,3 +24,20 @@ final class NotFoundException extends AppException {
   @override
   String toString() => 'NotFoundException($resource)';
 }
+
+/// The user backed out of a confirmation the operation needs (for example,
+/// signing in again before deleting the account).
+final class CancelledByUserException extends AppException {
+  const CancelledByUserException();
+
+  @override
+  String toString() => 'CancelledByUserException';
+}
+
+/// A free-tier quota (Gemini, Tavily, ...) is used up for now.
+final class QuotaExceededException extends AppException {
+  const QuotaExceededException();
+
+  @override
+  String toString() => 'QuotaExceededException';
+}

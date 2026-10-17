@@ -55,7 +55,7 @@ class YouTubeService implements IYouTubeService {
 
     try {
       final query = '$characterName AMV One Piece';
-      debugPrint('YouTube Service: Searching for "$query"');
+      debugPrint('YouTube Service: Searching');
 
       _recordRequest();
 

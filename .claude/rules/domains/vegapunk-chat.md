@@ -25,7 +25,8 @@ rules: `ai-on-device.md`.
 
 ## Memory
 
-- History: Hive **LazyBox** `vegapunk_chat_history`, `ChatMessage` typeIds 50/51.
+- History: encrypted per-user Hive **LazyBox** `vegapunk_chat_history_<uid>`
+  (`IUserStorageService`), `ChatMessage` typeIds 50/51.
   The last 20 messages are loaded **for display only — not replayed into the model**.
 - Long-term memory is session RAG docs (`sess:` prefix, `"User asked…\nAnswer:…"`,
   ≤ 512 chars, max 20 per process). When the store is cleared,

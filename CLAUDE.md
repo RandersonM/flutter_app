@@ -27,8 +27,8 @@ by lowering the constraint.
 | Format | `fvm dart format lib test` (CI fails on any diff) |
 | l10n | `fvm flutter gen-l10n` (output is committed in `lib/l10n/`) |
 | Codegen | `fvm dart run build_runner build -d` (only `@JsonSerializable` models) |
-| Run | `fvm flutter devices` then `fvm flutter run -d <id>` |
-| Build check | `fvm flutter build apk --debug` · `fvm flutter build ios --debug --no-codesign` |
+| Run | `fvm flutter devices` then `fvm flutter run -d <id> --dart-define-from-file=.env` |
+| Build check | `fvm flutter build apk --debug --dart-define-from-file=.env` · `fvm flutter build ios --debug --no-codesign --dart-define-from-file=.env` |
 | Functions | `cd functions && npm run deploy` |
 
 CI (`.github/workflows/code_quality.yml`) runs: gen-l10n → build_runner →
@@ -65,7 +65,11 @@ changes run the app on a simulator when one is available.
 5. **Hive type ids come from `HiveTypeIds`** (`lib/core/storage/hive_type_ids.dart`).
    Never write a literal, never reuse a shipped id.
 6. **Config comes from `IEnvironmentService`.** Never read `.env` (it holds real
-   keys and is denied to you) — use `.env.example` to learn the key names.
+   keys and is denied to you) — use `.env.example` to learn the key names. It is
+   passed with `--dart-define-from-file=.env`, never bundled as an asset. The
+   project has **no billing account**: every solution must work on the free
+   Spark plan (no Cloud Functions deploys, no Secret Manager). Gemini goes
+   through Firebase AI Logic (`IGeminiClient`), so no Gemini key in the app.
 7. **On-device AI limits are product decisions:** keep `maxTokens: 4096` and the
    Gemma E2B model; do math and routing in Dart, not in the model; touch the vector
    store only through `RagStoreCoordinator`. Details: `.claude/rules/ai-on-device.md`.
@@ -132,8 +136,8 @@ relevant one up front when planning work that spans several areas.
 |---|---|---|---|
 | Catalog | `one_piece`, `devil_fruit`, `home`, `youtube`, `fav_character_selection` | Firestore `featuredCharacters`, One Piece API, YouTube API, Hive cache | `domains/catalog.md` |
 | User creations | `crews`, `custom_character`, `duels` | Firestore `crews`, `custom_characters` | `domains/crews-characters-duels.md` |
-| Account | `auth`, `onboarding`, `profile`, `splash`, `core/auth`, `core/user_profile` | Firebase Auth, `users/{uid}`, Hive `auth_cache` | `domains/account.md` |
-| Nami | `nami_finances` | Hive only (`nami_finances` box) + Nami RAG store | `domains/nami-finances.md` |
+| Account | `auth`, `onboarding`, `profile`, `splash`, `core/auth`, `core/user_profile` | Firebase Auth, `users/{uid}`, encrypted Hive `auth_cache_encrypted` | `domains/account.md` |
+| Nami | `nami_finances` | Hive only (encrypted per-user `nami_finances_<uid>`) + Nami RAG store | `domains/nami-finances.md` |
 | Zoro / Sanji | `zoro_workout`, `sanji_cooking` | Firestore `workout_assessments`; Gemini | `domains/zoro-sanji.md` |
 | Robin | `robin_knowledge` | Firestore `planner` | `domains/robin-knowledge.md` |
 | Vegapunk | `vegapunk_chat` | Gemma + RAG + Hive chat history | `domains/vegapunk-chat.md` |
@@ -146,6 +150,7 @@ relevant one up front when planning work that spans several areas.
 | Hive type ids | A collision corrupts local data silently on upgrade. Guarded by `test/core/storage/hive_type_ids_test.dart`. |
 | `GemmaService._recreateChat` | Any model reload closes **every** chat session, Nami's included. |
 | `RagStoreCoordinator` | One global vector store; clearing wipes everything; no per-doc delete. |
+| `UserStorageService` / `UserDataNames` | Per-user, encrypted local data. A box or database missing from `UserDataNames` leaks across accounts and survives account deletion; losing the keychain key resets the boxes. |
 | `AuthBloc` | Global singleton with stream subscriptions; `AuthStarted` is dispatched only from `AppWrapper`. |
 | `core_module.dart` | All service wiring in one place; watch registration order and cycles. |
 | `NavigationService` | Owns the only `navigatorKey`; always `getIt<INavigationService>()`. |

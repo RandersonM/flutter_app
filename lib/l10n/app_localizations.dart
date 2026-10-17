@@ -5767,6 +5767,24 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'No results found for \"{query}\"'**
   String noResultsFoundFor(String query);
+
+  /// Title of the confirmation dialog shown before opening a link that came from an AI answer.
+  ///
+  /// In en, this message translates to:
+  /// **'Open external link?'**
+  String get openExternalLinkTitle;
+
+  /// Body of the confirmation dialog before opening a link from an AI answer.
+  ///
+  /// In en, this message translates to:
+  /// **'This link came from an AI answer and opens outside the app:\n{url}'**
+  String openExternalLinkMessage(String url);
+
+  /// Confirm button that opens a link from an AI answer in the browser.
+  ///
+  /// In en, this message translates to:
+  /// **'Open'**
+  String get openExternalLinkAction;
 }
 
 class _AppLocalizationsDelegate

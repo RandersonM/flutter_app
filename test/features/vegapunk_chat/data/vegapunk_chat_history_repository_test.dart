@@ -5,6 +5,8 @@ import 'package:hive/hive.dart';
 import 'package:opfan/features/vegapunk_chat/data/models/chat_message.dart';
 import 'package:opfan/features/vegapunk_chat/data/repository/vegapunk_chat_history_repository.dart';
 
+import '../../../fakes/fake_user_storage_service.dart';
+
 /// First test in this project to open a real Hive box (see
 /// `.specs/features/vegapunk-chat-memory/tasks.md`, T6 — no prior precedent).
 ///
@@ -50,12 +52,16 @@ void main() {
 
   group('recentMessages', () {
     test('returns an empty list for a fresh box', () async {
-      final repo = VegapunkChatHistoryRepository();
+      final repo = VegapunkChatHistoryRepository(
+        storage: FakeUserStorageService(),
+      );
       expect(await repo.recentMessages(), isEmpty);
     });
 
     test('returns messages in insertion order when under the limit', () async {
-      final repo = VegapunkChatHistoryRepository();
+      final repo = VegapunkChatHistoryRepository(
+        storage: FakeUserStorageService(),
+      );
       await repo.appendMessage(message('a'));
       await repo.appendMessage(message('b'));
       await repo.appendMessage(message('c'));
@@ -66,7 +72,9 @@ void main() {
     });
 
     test('returns only the last `limit` messages, still in order', () async {
-      final repo = VegapunkChatHistoryRepository();
+      final repo = VegapunkChatHistoryRepository(
+        storage: FakeUserStorageService(),
+      );
       for (var i = 0; i < 30; i++) {
         await repo.appendMessage(message('m$i'));
       }
@@ -85,7 +93,9 @@ void main() {
 
   group('appendMessage', () {
     test('persists across reopening the box (disk round-trip)', () async {
-      final writer = VegapunkChatHistoryRepository();
+      final writer = VegapunkChatHistoryRepository(
+        storage: FakeUserStorageService(),
+      );
       await writer.appendMessage(message('a'));
       await writer.appendMessage(message('b'));
 
@@ -95,7 +105,9 @@ void main() {
       // anything was actually written to disk.
       await Hive.lazyBox<ChatMessage>(boxName).close();
 
-      final reader = VegapunkChatHistoryRepository();
+      final reader = VegapunkChatHistoryRepository(
+        storage: FakeUserStorageService(),
+      );
       final result = await reader.recentMessages();
 
       expect(result.map((m) => m.id).toList(), ['a', 'b']);
@@ -104,7 +116,9 @@ void main() {
 
   group('clear', () {
     test('empties the box; recentMessages returns [] afterwards', () async {
-      final repo = VegapunkChatHistoryRepository();
+      final repo = VegapunkChatHistoryRepository(
+        storage: FakeUserStorageService(),
+      );
       await repo.appendMessage(message('a'));
       await repo.appendMessage(message('b'));
 

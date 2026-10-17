@@ -107,3 +107,8 @@ pairs in both themes.
 
 All visible text comes from `AppLocalizations` — see `i18n.md`. That includes
 `Semantics` labels, tooltips, snackbars, dialogs and validator messages.
+
+Markdown the app did not write (AI answers, Gemini text) is rendered with
+`untrustedMarkdownConfigs(context)`
+(`lib/shared/widgets/molecules/untrusted_markdown_configs.dart`): no remote
+images, and only `https` links, after a confirmation dialog.

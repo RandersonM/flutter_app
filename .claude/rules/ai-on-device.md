@@ -97,8 +97,10 @@ The small model often *describes* a tool call instead of emitting it. So:
   store switch included, so no other feature re-points the store mid-operation
   (`rag_store_coordinator_test.dart`). Keep embedding generation outside `op` when it
   doesn't need the store, await everything inside it, and never nest another owner.
-- Stores: Vegapunk `opfan_rag.db` (owner `vegapunk`), Nami `nami_finances_store.db`
-  (owner `nami_finances`).
+- Stores are per user (`IUserStorageService.userDatabaseFileName`): Vegapunk
+  `opfan_rag_<uid>.db`, Nami `nami_finances_store_<uid>.db` (`guest` when signed
+  out). The file name is the coordinator owner, so signing in as someone else
+  reopens the store.
 - Clearing wipes the whole store; there is no per-document delete. Readers must
   tolerate stale ids (golden: `FindExpensesHandler` drops ids that no longer resolve).
 - Vegapunk re-indexes the static knowledge base only when its fingerprint (sorted
@@ -120,10 +122,15 @@ The small model often *describes* a tool call instead of emitting it. So:
 
 ## Cloud AI and other APIs
 
-- Gemini (`lib/core/services/gemini/gemini_service.dart`, `GEMINI_API_KEY`):
+- Gemini (`lib/core/services/gemini/`) goes through **Firebase AI Logic**
+  (`firebase_ai`, Gemini Developer API, free on Spark) behind `IGeminiClient`:
   `gemini-2.5-flash-lite` for Sanji text, `gemini-2.5-flash-image` for character /
-  crew images. Rate-limited (15/h, 2-min cooldown); `dev_mode` key returns fallbacks.
-  Not used for chat.
-- Tavily web search (`TAVILY_API_KEY`) behind `searchInternet`; must return an
-  error result offline, not throw.
+  crew images, uploaded by `IImageHostService` (Imgur, data URI fallback). No
+  Gemini key in the app. Any failure returns `null`; a used-up free quota
+  (`QuotaExceededException`) pauses calls for 2 min. Not used for chat.
+- Tavily web search (`TAVILY_API_KEY`, free plan) behind `searchInternet`; must
+  return an error result offline or unconfigured, not throw.
+- App Check is activated in `main.dart` (debug provider in debug builds) and its
+  token goes with every AI Logic call; enforce it for AI Logic in the Firebase
+  console once both apps (and the debug tokens) are registered.
 - Env keys without defaults throw at startup — see `data-layer.md` › Configuration.

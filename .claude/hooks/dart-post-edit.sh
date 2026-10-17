@@ -142,8 +142,10 @@ case "$rel" in
       'No ChangeNotifier, Provider or Riverpod. State lives in a BLoC/Cubit.'
     case "$rel" in
       lib/core/services/config/environment_service.dart) ;;
-      *) flag 'dotenv\.' 'Read configuration through IEnvironmentService, never dotenv directly.' ;;
+      *) flag 'dotenv\.|String\.fromEnvironment' 'Read configuration through IEnvironmentService, never dotenv or String.fromEnvironment directly.' ;;
     esac
+    flag 'generativelanguage\.googleapis\.com|google_generative_ai' \
+      'Gemini is called only through Firebase AI Logic (IGeminiClient / firebase_ai) — the app must never hold a Gemini API key.'
     case "$rel" in
       lib/app/di/*) ;;
       *) flag '(^|[^A-Za-z0-9_])NavigationService\(' \

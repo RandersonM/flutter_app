@@ -4,13 +4,16 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter_gemma/flutter_gemma.dart';
 import 'package:hive/hive.dart';
 import 'package:opfan/core/services/rag/rag_store_coordinator.dart';
+import 'package:opfan/core/services/storage/i_user_storage_service.dart';
+import 'package:opfan/core/storage/user_data_names.dart';
 import 'package:opfan/features/nami_finances/data/models/expense_match.dart';
 import 'package:opfan/features/nami_finances/data/models/nami_finances_model.dart';
 import 'package:opfan/features/nami_finances/data/services/i_nami_rag_service.dart';
 
 class NamiRagService implements INamiRagService {
-  static const _owner = 'nami_finances';
-  static const _dbFileName = 'nami_finances_store.db';
+  NamiRagService({required this._storage});
+
+  final IUserStorageService _storage;
 
   /// Bump to force a full re-index on the next launch.
   ///
@@ -27,7 +30,6 @@ class NamiRagService implements INamiRagService {
   /// other document kind can be filtered out even if the store is shared later.
   static const String _expenseIdPrefix = 'exp:';
 
-  static const String _metaBoxName = 'nami_rag_index_meta';
   static const String _schemaVersionKey = '__schema_version';
 
   /// Similarity floor for [findExpenses].
@@ -38,8 +40,7 @@ class NamiRagService implements INamiRagService {
   static const double defaultThreshold = 0.55;
 
   bool _isInitialized = false;
-  bool _backfilled = false;
-  Box<dynamic>? _metaBox;
+  final Set<String> _backfilledStores = {};
 
   @override
   Future<void> initialize() async {
@@ -57,11 +58,17 @@ class NamiRagService implements INamiRagService {
   /// Runs [operation] on this feature's own database — the Vegapunk chat RAG
   /// may have switched the shared store since the last call (see
   /// [RagStoreCoordinator]).
-  Future<T> _inStore<T>(Future<T> Function() operation) =>
-      RagStoreCoordinator.withStore(_owner, _dbFileName, operation);
+  Future<T> _inStore<T>(Future<T> Function() operation) async {
+    final store = await _storeFile();
+    return RagStoreCoordinator.withStore(store, store, operation);
+  }
 
-  Future<Box<dynamic>> _meta() async =>
-      _metaBox ??= await Hive.openBox<dynamic>(_metaBoxName);
+  /// Each signed-in user indexes their own expenses in their own database.
+  Future<String> _storeFile() =>
+      _storage.userDatabaseFileName(UserDataNames.namiRagDatabase);
+
+  Future<Box<dynamic>> _meta() =>
+      _storage.openUserBox<dynamic>(UserDataNames.namiRagIndexMetaBox);
 
   /// Fingerprint of a month's indexed state. Changes whenever the month is
   /// edited, so [syncMonth] can skip re-embedding an unchanged month.
@@ -142,8 +149,7 @@ class NamiRagService implements INamiRagService {
 
   @override
   Future<void> backfillIfNeeded(List<NamiFinancesModel> months) async {
-    if (_backfilled || months.isEmpty) return;
-    _backfilled = true;
+    if (months.isEmpty || !_backfilledStores.add(await _storeFile())) return;
     for (final month in months) {
       await syncMonth(month);
     }

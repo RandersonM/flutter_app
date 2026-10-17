@@ -35,7 +35,9 @@ import 'package:opfan/features/nami_finances/tools/finance_calculator_handlers.d
 const kNamiToolsRegistry = 'namiToolsRegistry';
 
 void registerFeaturesModule(GetIt getIt) {
-  getIt.registerLazySingleton<INamiRagService>(() => NamiRagService());
+  getIt.registerLazySingleton<INamiRagService>(
+    () => NamiRagService(storage: getIt<IUserStorageService>()),
+  );
 
   // Nami's function-calling tools: finances data + deterministic financial
   // calculators. The handlers are reusable (they could also be registered in

@@ -9,19 +9,22 @@ import 'package:flutter/foundation.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:hive/hive.dart';
 import 'package:opfan/core/auth/models/user_model.dart';
+import 'package:opfan/core/errors/app_exceptions.dart';
 import 'package:opfan/core/services/index.dart';
+import 'package:opfan/core/storage/user_data_names.dart';
 import 'package:opfan/core/user_profile/repository/i_user_profile_repository.dart';
 
 enum AuthStatus { unknown, authenticated, unauthenticated }
 
 class AuthService implements IAuthService {
-  static const String _boxName = 'auth_cache';
   static const String _userKey = 'current_user';
 
   final FirebaseAuth _firebaseAuth;
   final GoogleSignIn _googleSignIn;
   final IUserProfileRepository _userProfileRepository;
   final INotificationService _notificationService;
+  final IUserStorageService _storage;
+  final IUserDataEraser _userDataEraser;
   late Box<UserModel> _box;
   final _profileChanges = StreamController<UserModel>.broadcast();
 
@@ -30,12 +33,16 @@ class AuthService implements IAuthService {
     required this._googleSignIn,
     required this._userProfileRepository,
     required this._notificationService,
+    required this._storage,
+    required this._userDataEraser,
   });
 
   @override
   Future<void> init() async {
     try {
-      _box = await Hive.openBox<UserModel>(_boxName);
+      _box = await _storage.openDeviceBox<UserModel>(
+        UserDataNames.authCacheBox,
+      );
 
       final cachedUser = currentUser;
       if (cachedUser != null) {
@@ -340,20 +347,38 @@ class AuthService implements IAuthService {
     }
   }
 
+  /// Firestore data goes first: once the Auth user is gone the rules deny
+  /// every delete. Signing in again first keeps `user.delete()` from failing
+  /// with `requires-recent-login` after the data is already erased.
   @override
   Future<void> deleteAccount() async {
     try {
       final User? user = _firebaseAuth.currentUser;
-      if (user != null) {
-        await user.delete();
-        await _userProfileRepository.deleteProfile(user.uid);
-        await _googleSignIn.signOut();
-        await _clearUser();
-      }
+      if (user == null) return;
+      final uid = user.uid;
+
+      await _reauthenticateWithGoogle(user);
+      await _userDataEraser.eraseRemoteData(uid);
+      await user.delete();
+      await _storage.deleteUserData(uid);
+      await _googleSignIn.signOut();
+      await _clearUser();
     } catch (e) {
       debugPrint('AuthService: Error deleting account - $e');
       rethrow;
     }
+  }
+
+  Future<void> _reauthenticateWithGoogle(User user) async {
+    final googleUser = await _googleSignIn.signIn();
+    if (googleUser == null) throw const CancelledByUserException();
+    final googleAuth = await googleUser.authentication;
+    await user.reauthenticateWithCredential(
+      GoogleAuthProvider.credential(
+        accessToken: googleAuth.accessToken,
+        idToken: googleAuth.idToken,
+      ),
+    );
   }
 
   @override

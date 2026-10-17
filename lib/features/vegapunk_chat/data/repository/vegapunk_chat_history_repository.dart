@@ -1,5 +1,7 @@
-import 'package:flutter/foundation.dart';
 import 'package:hive/hive.dart';
+
+import 'package:opfan/core/services/storage/i_user_storage_service.dart';
+import 'package:opfan/core/storage/user_data_names.dart';
 
 import '../models/chat_message.dart';
 import 'i_vegapunk_chat_history_repository.dart';
@@ -14,28 +16,12 @@ import 'i_vegapunk_chat_history_repository.dart';
 /// requested limit" once the history grows past it — a deliberate, documented
 /// deviation from the rest of the codebase's Hive convention.
 class VegapunkChatHistoryRepository implements IVegapunkChatHistoryRepository {
-  static const String _boxName = 'vegapunk_chat_history';
+  VegapunkChatHistoryRepository({required this._storage});
 
-  LazyBox<ChatMessage>? _box;
+  final IUserStorageService _storage;
 
-  /// Same recovery strategy as `FeaturedCharacterRepository._initHive`: a
-  /// corrupted box falls back to an empty history instead of throwing and
-  /// breaking the chat screen from opening at all.
-  Future<LazyBox<ChatMessage>> _openBox() async {
-    final existing = _box;
-    if (existing != null) return existing;
-
-    try {
-      _box = Hive.isBoxOpen(_boxName)
-          ? Hive.lazyBox<ChatMessage>(_boxName)
-          : await Hive.openLazyBox<ChatMessage>(_boxName);
-    } catch (e) {
-      debugPrint('VegapunkChatHistoryRepository: box corrupted, resetting: $e');
-      await Hive.deleteBoxFromDisk(_boxName);
-      _box = await Hive.openLazyBox<ChatMessage>(_boxName);
-    }
-    return _box!;
-  }
+  Future<LazyBox<ChatMessage>> _openBox() => _storage
+      .openUserLazyBox<ChatMessage>(UserDataNames.vegapunkChatHistoryBox);
 
   @override
   Future<List<ChatMessage>> recentMessages({int limit = 20}) async {

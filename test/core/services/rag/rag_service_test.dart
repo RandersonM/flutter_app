@@ -6,6 +6,8 @@ import 'package:hive/hive.dart';
 import 'package:opfan/core/models/rag/rag_document.dart';
 import 'package:opfan/core/services/rag/rag_service.dart';
 
+import '../../../fakes/fake_user_storage_service.dart';
+
 /// Covers what's hermetically testable in `RAGService` without a real
 /// `flutter_gemma` plugin — every other RAG-touching test in this project
 /// (Nami's, Vegapunk's) fakes at the `I*RagService` interface layer for the
@@ -174,7 +176,7 @@ void main() {
           RAGService.fingerprintForTesting(docs),
         );
 
-        final service = RAGService();
+        final service = RAGService(storage: FakeUserStorageService());
         await service.setKnowledgeBase(docs);
 
         // The service is never initialized, so on its own that would ALSO
@@ -195,7 +197,7 @@ void main() {
         );
         await box.put(RAGService.kbFingerprintKeyForTesting, 'stale-value');
 
-        final service = RAGService();
+        final service = RAGService(storage: FakeUserStorageService());
         await service.setKnowledgeBase(docs);
 
         expect(service.attemptedReloadCountForTesting, 1);
@@ -207,7 +209,7 @@ void main() {
       'attempts a reload on the very first call (no fingerprint yet)',
       () async {
         final docs = [_doc('vgp-001')];
-        final service = RAGService();
+        final service = RAGService(storage: FakeUserStorageService());
 
         await service.setKnowledgeBase(docs);
 

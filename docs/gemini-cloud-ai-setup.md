@@ -1,106 +1,57 @@
 # Gemini AI na Nuvem (Google) — Configuração
 
-> **Este documento cobre o `google_generative_ai` (Gemini na nuvem)** — usado para geração de texto e imagem via API do Google. Para o LLM que roda **no dispositivo** (`flutter_gemma`, chat do Vegapunk), veja [`flutter-gemma-on-device.md`](./flutter-gemma-on-device.md). Os dois são tecnologias diferentes que coexistem no projeto.
+> **Este documento cobre o Gemini na nuvem** — texto do Sanji e imagens de personagens e
+> tripulações. Para o LLM que roda **no dispositivo** (`flutter_gemma`, chats do Vegapunk e
+> da Nami), veja [`flutter-gemma-on-device.md`](./flutter-gemma-on-device.md).
 
-## Como configurar a API key do Gemini AI
+## Arquitetura: sem chave do Gemini no app, sem custo
 
-### 1. Obter a API Key
+O projeto Firebase está no plano gratuito **Spark** (sem conta de faturamento). Por isso o
+Gemini passa pelo **Firebase AI Logic** (pacote `firebase_ai`, backend *Gemini Developer
+API*), que funciona no Spark:
 
-1. Acesse [Google AI Studio](https://makersuite.google.com/app/apikey)
-2. Faça login com sua conta Google
-3. Clique em **Create API Key**
-4. Copie a API key gerada
+- a chave do Gemini fica **dentro do projeto Firebase** — o app não tem nenhuma;
+- cada chamada leva um token do **App Check** (também gratuito);
+- o limite é o *free tier* do Gemini; sem cartão cadastrado, não existe cobrança.
 
-### 2. Configurar no App
-
-1. Crie um arquivo `.env` na raiz do projeto
-2. Adicione a seguinte linha:
-
-```env
-GEMINI_API_KEY=sua_api_key_aqui
-```
-
-### 3. Exemplo completo do arquivo .env
-
-Veja o `.env.example` na raiz do projeto para a lista completa e atualizada de variáveis (inclui também as chaves do `flutter_gemma`, YouTube, Tavily etc). O bloco relevante para o Gemini na nuvem é:
-
-```env
-GEMINI_API_KEY=sua_api_key_aqui
-```
-
-### 4. Modelos usados atualmente
-
-| Uso | Modelo | Via |
+| Uso | Modelo | Código |
 |---|---|---|
-| Geração de texto | `gemini-2.5-flash-lite` | SDK `google_generative_ai` (`GenerativeModel`) |
-| Geração de imagem | `gemini-2.5-flash-image` | REST direto (`Dio` + header `x-goog-api-key`) |
+| Texto do Sanji | `gemini-2.5-flash-lite` | `GeminiService.generateText` |
+| Imagem de personagem / tripulação | `gemini-2.5-flash-image` | `GeminiService.generateImage` |
 
-O texto usa o SDK oficial (`GenerativeModel.generateContent`). A imagem usa a API REST diretamente porque o SDK `google_generative_ai: ^0.3.0` não expõe geração de imagem — a resposta vem em `candidates[0].content.parts[].inlineData` (base64 PNG), que é decodificada e enviada para o Imgur para obter uma URL pública.
+`GeminiService` (`lib/core/services/gemini/`) usa `IGeminiClient`, implementado por
+`FirebaseAiGeminiClient` — a única classe que conhece o `firebase_ai`. A imagem gerada vem
+em bytes e é hospedada por `IImageHostService` (`ImgurImageHostService`, com
+`IMGUR_CLIENT_ID` do `.env`; sem ele, a imagem fica como data URI).
 
-### 5. Limitações e comportamento de fallback
+Toda falha vira `null` (o Sanji mostra o erro de dica/refeição; a imagem não aparece). Cota
+gratuita esgotada (`QuotaExceededException`) pausa novas chamadas por 2 minutos.
 
-- **Rate limit**: 15 requisições/hora (`_maxRequestsPerHour` em `gemini_service.dart`)
-- **Cooldown de quota**: ao detectar `RESOURCE_EXHAUSTED`/429, o serviço entra em cooldown de **2 minutos** (não 1 hora) antes de tentar novamente
-- **Modo dev**: se `GEMINI_API_KEY=dev_mode` ou vazio, `generateText` retorna uma resposta de fallback genérica (texto fixo) sem chamar a API; `generateImage` retorna `null`
-- **Upload de imagem**: a imagem gerada é enviada ao Imgur com o Client-ID de `IMGUR_CLIENT_ID` (`.env`, lido via `IEnvironmentService.imgurClientId`). Sem a chave, o upload é pulado e a imagem fica como data URI base64
-- **Cache**: imagens geradas são cacheadas em memória por hash do prompt (`_imageCache`), não persistido entre sessões do app
+## Configurar (uma vez)
 
-### 6. Como funciona
+1. No [console do Firebase](https://console.firebase.google.com/project/opfan-db177), abra
+   **AI Logic** → **Get started** → escolha **Gemini Developer API**. O console cria e
+   guarda a chave do Gemini no projeto.
+2. **App Check** → registre os dois apps:
+   - Android: **Play Integrity**;
+   - iOS: **DeviceCheck**;
+   - em builds de debug o app imprime um *debug token* no log — adicione-o em
+     App Check → Apps → ⋮ → *Manage debug tokens*.
+3. Ainda em App Check → **APIs** → *Firebase AI Logic* → **Enforce**, depois que os apps e
+   os debug tokens estiverem registrados (antes disso, todas as chamadas seriam recusadas).
 
-1. O caller (repository/service de uma feature) monta o prompt
-2. `GeminiService.generateText`/`generateImage` verifica quota e rate limit
-3. Se disponível, chama a API do Gemini
-4. Para imagem: decodifica o base64 retornado e faz upload ao Imgur, devolvendo uma URL
-5. Se a quota/API falhar, texto usa fallback genérico; imagem retorna `null` e a UI decide o que exibir
+Nada disso exige cartão.
 
-### 9. Configuração de Desenvolvimento
+## Free tier: o que conferir
 
-Para desenvolvimento, você pode usar:
+O *free tier* da Gemini Developer API tem limites por minuto e por dia por modelo. A
+geração de imagem (`gemini-2.5-flash-image`) pode ter cota baixa ou zero no free tier —
+se a geração de imagem falhar sempre com cota esgotada, é esse o motivo, e o resto do app
+continua funcionando.
 
-```env
-# Desenvolvimento - sem API
-GEMINI_API_KEY=dev_mode
+## Solução de problemas
 
-# Produção - com API real
-GEMINI_API_KEY=sua_api_key_aqui
-
-# Opcional - upload das imagens geradas ao Imgur (sem ela, ficam como data URI)
-IMGUR_CLIENT_ID=seu_client_id_aqui
-```
-
-### 10. Próximos Passos
-
-1. Configure o arquivo `.env` com sua chave da API
-2. Execute `flutter pub get` para instalar as dependências
-3. Reinicie o aplicativo
-4. Teste a geração de imagens
-
-### 11. Solução de Problemas
-
-#### "API Key not found"
-- Verifique se o arquivo `.env` existe
-- Confirme se a chave está corretamente formatada
-- Reinicie o app após adicionar a chave
-
-#### "Quota exceeded"
-- O serviço entra em cooldown automático de 2 minutos e depois volta a tentar
-- Durante o cooldown, `generateText`/`generateImage` retornam sem chamar a API
-
-#### "Network timeout"
-- Verifique sua conexão com a internet
-- A API pode estar temporariamente indisponível
-- O `Dio` interceptor já faz 1 retry automático em erros de conexão/timeout
-
-### 12. Estrutura dos arquivos (atual)
-
-- `lib/core/services/gemini/gemini_service.dart` — Serviço principal (implementa `IGeminiService`)
-- `lib/core/services/gemini/i_gemini_service.dart` — Interface
-- `lib/core/services/environment_service.dart` — Leitura de variáveis de ambiente
-- `lib/app/di/core_module.dart` — Registro no GetIt
-
-### 13. ⚠️ Importante
-
-- Mantenha sua API key segura
-- Não commite a API key para o repositório
-- Configure quotas apropriadas no Google AI Studio
-- A API do Gemini tem limites de uso gratuito generosos 
+- *"Firebase AI Logic API has not been used / is disabled"*: faça o passo 1.
+- Chamadas recusadas depois de ativar o *Enforce*: o app (ou o debug token do
+  simulador/emulador) não está registrado no App Check.
+- `QuotaExceededException` nos logs: cota gratuita do Gemini esgotada; espere o reset.

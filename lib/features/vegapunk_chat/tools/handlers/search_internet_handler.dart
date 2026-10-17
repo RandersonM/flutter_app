@@ -64,9 +64,7 @@ class SearchInternetHandler extends ToolHandler {
       orElse: () => SearchTopic.general,
     );
 
-    debugPrint(
-      'SearchInternetHandler: searching for "$query" (topic: ${searchTopic.name})',
-    );
+    debugPrint('SearchInternetHandler: searching (topic: ${searchTopic.name})');
 
     if (!await connectivityService.isOnline()) {
       return ToolResult.error(
@@ -79,7 +77,7 @@ class SearchInternetHandler extends ToolHandler {
     if (!webSearch.isConfigured) {
       return ToolResult.error(
         toolName: name,
-        reason: 'Tavily API key is not configured.',
+        reason: 'Web search is not configured.',
       );
     }
 
