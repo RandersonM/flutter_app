@@ -1,6 +1,7 @@
 import 'package:bloc_test/bloc_test.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
+import 'package:opfan/core/errors/app_exceptions.dart';
 import 'package:opfan/features/custom_character/data/models/custom_character_model.dart';
 import 'package:opfan/features/custom_character/data/repository/i_custom_character_repository.dart';
 import 'package:opfan/features/duels/bloc/index.dart';
@@ -47,7 +48,7 @@ void main() {
           () => canon.getAllOnePieceCharacters(limit: 100),
         ).thenAnswer((_) async => [luffy, zoro]);
         when(
-          () => custom.getAllCustomCharacters(),
+          () => custom.getUserCustomCharacters(),
         ).thenAnswer((_) async => [mine]);
       },
       build: build,
@@ -56,6 +57,25 @@ void main() {
         const DuelsLoading(),
         DuelsReady(availableCharacters: [mine, luffy, zoro]),
       ],
+    );
+
+    blocTest<DuelsBloc, DuelsState>(
+      'offers only canon characters to a signed-out guest',
+      setUp: () {
+        when(
+          () => canon.getAllOnePieceCharacters(limit: 100),
+        ).thenAnswer((_) async => [luffy, zoro]);
+        when(
+          () => custom.getUserCustomCharacters(),
+        ).thenThrow(const NotSignedInException());
+      },
+      build: build,
+      act: (bloc) => bloc.add(const LoadDuelsScreen()),
+      expect: () => [
+        const DuelsLoading(),
+        DuelsReady(availableCharacters: [luffy, zoro]),
+      ],
+      verify: (_) => verifyNever(() => custom.getAllCustomCharacters()),
     );
 
     blocTest<DuelsBloc, DuelsState>(

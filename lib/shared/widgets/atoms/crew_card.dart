@@ -91,13 +91,19 @@ class _CrewCardState extends State<CrewCard> {
                             _buildInfoRow(
                               context,
                               PhosphorIconsRegular.user,
-                              '${l10n.captain}: ${widget.crew.captain}',
+                              l10n.labelValue(
+                                l10n.captain,
+                                widget.crew.captain!,
+                              ),
                             ),
                           if (widget.crew.viceCaptain != null)
                             _buildInfoRow(
                               context,
                               PhosphorIconsRegular.user,
-                              '${l10n.viceCaptain}: ${widget.crew.viceCaptain}',
+                              l10n.labelValue(
+                                l10n.viceCaptain,
+                                widget.crew.viceCaptain!,
+                              ),
                             ),
                         ],
                       ),
@@ -113,7 +119,7 @@ class _CrewCardState extends State<CrewCard> {
                     _buildInfoRow(
                       context,
                       PhosphorIconsRegular.users,
-                      '${widget.crew.members.length} ${l10n.members(widget.crew.members.length)}',
+                      l10n.membersCount(widget.crew.members.length),
                     ),
                     if (widget.crew.tags.isNotEmpty)
                       Wrap(

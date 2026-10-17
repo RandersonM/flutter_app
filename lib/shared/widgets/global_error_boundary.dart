@@ -2,13 +2,16 @@ import 'package:opfan/shared/widgets/atoms/app_icon.dart';
 import 'package:phosphoricons_flutter/phosphoricons_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:opfan/l10n/app_localizations.dart';
-import 'package:opfan/shared/utils/app_routes.dart';
 import 'package:opfan/shared/utils/theme.dart';
 
 class GlobalErrorBoundary extends StatefulWidget {
   final Widget child;
 
-  const GlobalErrorBoundary({super.key, required this.child});
+  /// Returns the app's navigator to its first route. The boundary sits above
+  /// that navigator, so it cannot reach it through its own context.
+  final VoidCallback? onGoHome;
+
+  const GlobalErrorBoundary({super.key, required this.child, this.onGoHome});
 
   @override
   State<GlobalErrorBoundary> createState() => _GlobalErrorBoundaryState();
@@ -172,10 +175,8 @@ class _GlobalErrorBoundaryState extends State<GlobalErrorBoundary> {
                         _hasError = false;
                         _errorDetails = null;
                       });
-                      Navigator.pushNamedAndRemoveUntil(
-                        context,
-                        AppRoutes.home,
-                        (route) => false,
+                      WidgetsBinding.instance.addPostFrameCallback(
+                        (_) => widget.onGoHome?.call(),
                       );
                     },
                     icon: const AppIcon(PhosphorIconsRegular.house),

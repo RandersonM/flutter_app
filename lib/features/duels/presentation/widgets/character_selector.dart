@@ -128,7 +128,10 @@ class CharacterSelector extends StatelessWidget {
               borderRadius: BorderRadius.circular(Constants.margin),
             ),
             child: Text(
-              '${l10n.bounty}: ${Constants.formatBounty(selectedCharacter!.bounty)}',
+              l10n.labelValue(
+                l10n.bounty,
+                Constants.formatBounty(selectedCharacter!.bounty),
+              ),
               style: theme.textTheme.bodySmall?.copyWith(
                 fontWeight: FontWeight.w500,
               ),

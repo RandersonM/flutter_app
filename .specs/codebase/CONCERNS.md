@@ -23,8 +23,10 @@ structure branch) are kept at the bottom so nobody re-reports them.
 
 ### 3. Global RAG vector store (`lib/core/services/rag/rag_store_coordinator.dart`)
 - flutter_gemma has one active store per process; Vegapunk (`opfan_rag.db`) and Nami
-  (`nami_finances_store.db`) switch it through `RagStoreCoordinator.ensureActive`
-- Clearing wipes the whole store; no per-document delete; no unit test for the coordinator
+  (`nami_finances_store.db`) use it only inside `RagStoreCoordinator.withStore`, which
+  runs one operation at a time, the store switch included
+- Clearing wipes the whole store; no per-document delete
+- A long operation (Nami indexing a month) makes the other feature's search wait
 - **Risk:** calling `initializeVectorStore` directly silently re-points the other feature's searches
 
 ### 4. `core_module.dart` (~240 lines)
@@ -44,26 +46,18 @@ structure branch) are kept at the bottom so nobody re-reports them.
 - **Risk:** a second key or ad-hoc instance navigates the wrong tree
 
 ### 7. Firestore queries vs rules
-- Rules are owner-scoped (#25); `getAllCustomCharacters()` (Duels) is unfiltered, which
-  the `custom_characters` rule denies for other users' docs
+- Rules are owner-scoped (#25); any query over an owner-only collection must filter
+  by `userId`, or the whole query is denied
 - No `firestore.indexes.json`: repositories sort in memory
-
-### 8. Dio `LogInterceptor` logs full URLs incl. API keys (debug builds)
-- `youtube_service.dart`, `devil_fruit_service.dart`, `gemini_service.dart`
 
 ## LOW RISK
 
-### 9. String-based routes
+### 8. String-based routes
 - Per-feature `FeatureRouteModule`s aggregated in `AppRoutes._modules`; no compile-time safety
-
-### 10. Dead code
-- `NotificationManagerService` (only client use of `cloud_functions`) is never registered;
-  `palette_generator`, `image`, `stylish_bottom_bar` are declared but unused
-
-### 11. `GlobalErrorBoundary` "Go home" calls the Navigator on a context without one
 
 ## Fixed (no longer concerns)
 
+- Unused `palette_generator`, `image`, `stylish_bottom_bar` dependencies → removed
 - `service_locator.dart` with 40+ getters → split into `lib/app/di/` modules
 - `ThemeService`/`LocaleService` `ChangeNotifier` listeners in `MyApp` → `ThemeCubit`/`LocaleCubit`
 - `CalculatorProvider` (Provider/`ChangeNotifier`) → `CalculatorCubit`
@@ -74,3 +68,7 @@ structure branch) are kept at the bottom so nobody re-reports them.
 - `getIt` in widgets, BLoC-to-BLoC dependencies, `cubit/` folders,
   `*_repository_interface.dart` names and Robin's `part` BLoC files → removed (#27–#33, P3 structure branch)
 - Firestore blanket `allow read, write` and missing `user_tokens` rule → fixed (#25)
+- Duels querying every user's characters (denied by the rules), Dio logging API keys,
+  the error boundary's "Go home" without a Navigator, the unused
+  `NotificationManagerService` / `cloud_functions`, concurrent RAG store switches,
+  the stuck devil fruit type filter and Zoro's zero progress stubs → fixed

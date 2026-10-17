@@ -64,12 +64,6 @@
     "type": "text",
     "placeholders": {}
   },
-  "noResultsFound": "Nenhum resultado encontrado para",
-  "@noResultsFound": {
-    "description": "Text shown at search screen when there were no results found at search bar after one or more filters have been applied",
-    "type": "text",
-    "placeholders": {}
-  },
   "occupation": "{count, plural, =0 {Ocupação} =1 {Ocupação} other {Ocupações}}",
   "@occupation": {
     "description": "Text show at occupation section on character detail screen with pluralization",
@@ -1764,17 +1758,6 @@
     "type": "text",
     "placeholders": {}
   },
-  "hakiType": "{count, plural, =0 {tipos} =1 {tipo} other {tipos}}",
-  "@hakiType": {
-    "description": "Haki type pluralization",
-    "type": "text",
-    "placeholders": {
-      "count": {
-        "type": "num",
-        "example": "1"
-      }
-    }
-  },
   "newDuel": "Novo Duelo",
   "@newDuel": {
     "description": "Button text to start a new duel",
@@ -2618,7 +2601,7 @@
     "type": "text",
     "placeholders": {}
   },
-  "savings_formatted_total": "R$ {amount} em {period}",
+  "savings_formatted_total": "{amount} em {period}",
   "@savings_formatted_total": {
     "description": "Total formatado de economia com período.",
     "type": "text",
@@ -3270,12 +3253,6 @@
   "recentObjectives": "Objetivos Recentes",
   "@recentObjectives": {
     "description": "Title for recent objectives section",
-    "type": "text",
-    "placeholders": {}
-  },
-  "total": "total",
-  "@total": {
-    "description": "Label for total count",
     "type": "text",
     "placeholders": {}
   },
@@ -4085,5 +4062,10 @@
   "profileBodyDataSummary": "{weight} kg • {height} cm • IMC: {bmi}",
   "vegapunkResetChat": "Reiniciar conversa",
   "errorBoundaryTitle": "Ops! Algo deu errado.",
-  "errorBoundaryMessage": "Ocorreu um erro inesperado na interface. Não se preocupe, os Chapéus de Palha já estão cuidando disso!"
+  "errorBoundaryMessage": "Ocorreu um erro inesperado na interface. Não se preocupe, os Chapéus de Palha já estão cuidando disso!",
+  "labelValue": "{label}: {value}",
+  "membersCount": "{count, plural, =0{Nenhum membro} =1{1 membro} other{{count} membros}}",
+  "hakiTypesCount": "{count, plural, =1{1 tipo} other{{count} tipos}}",
+  "goalsTotal": "{count} no total",
+  "noResultsFoundFor": "Nenhum resultado encontrado para \"{query}\""
 }

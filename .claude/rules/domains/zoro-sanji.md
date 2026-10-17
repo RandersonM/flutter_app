@@ -36,7 +36,8 @@ offline by `OfflineBlockerOverlay`.
 - `ZoroWorkoutBloc` state `Loaded{currentAssessment, history, ...}`. Route `/workout`.
 - Failures are `ZoroWorkoutFailure` / `SanjiCookingFailure`, mapped to ARB keys in
   `zoro_workout_failure_message.dart` / `sanji_cooking_failure_message.dart`.
-- Debt: `_calculateProgress` / `_calculateRemainingDays` are stubs returning 0.
+- `currentMonthProgress` = workout days done ÷ goal (0–1); `remainingDaysToGoal` =
+  goal − done, never negative.
 
 ## Sanji
 

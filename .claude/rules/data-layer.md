@@ -72,8 +72,7 @@ paths:
   (`lib/core/services/config/i_environment_service.dart`). Add a key: getter on the
   interface + impl, the key in `.env.example`, and a default when the app can run
   without it — a missing key without a default **throws at startup**.
-- Never read or print `.env`. Never hardcode API keys or client ids in code
-  (the Imgur client id in the Gemini image path is debt).
+- Never read or print `.env`. Never hardcode API keys or client ids in code.
 
 ## External APIs
 

@@ -345,8 +345,8 @@ class DuelArena extends StatelessWidget {
           _buildStatRow(
             context,
             l10n.haki,
-            '${firstCharacter.haki?.length ?? 0} ${l10n.hakiType(firstCharacter.haki?.length ?? 0)}',
-            '${secondCharacter.haki?.length ?? 0} ${l10n.hakiType(secondCharacter.haki?.length ?? 0)}',
+            l10n.hakiTypesCount(firstCharacter.haki?.length ?? 0),
+            l10n.hakiTypesCount(secondCharacter.haki?.length ?? 0),
           ),
           _buildStatRow(
             context,

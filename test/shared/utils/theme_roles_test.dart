@@ -40,6 +40,14 @@ void main() {
         );
       });
 
+      test('text on tertiary fills is readable', () {
+        expect(_contrast(scheme.onTertiary, scheme.tertiary), greaterThan(4.5));
+        expect(
+          _contrast(scheme.onTertiaryContainer, scheme.tertiaryContainer),
+          greaterThan(4.5),
+        );
+      });
+
       test('outlines are visible against surfaces', () {
         for (final surface in [scheme.surface, scheme.surfaceContainer]) {
           expect(scheme.outlineVariant, isNot(surface));

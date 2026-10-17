@@ -76,12 +76,6 @@
     "type": "text",
     "placeholders": {}
   },
-  "noResultsFound": "No results found for",
-  "@noResultsFound": {
-    "description": "Text shown at search screen when there were no results found at search bar after one or more filters have been applied",
-    "type": "text",
-    "placeholders": {}
-  },
   "occupation": "{count, plural, =0 {Occupation} =1 {Occupation} other {Occupations}}",
   "@occupation": {
     "description": "Text show at occupation section on character detail screen with pluralization",
@@ -903,7 +897,7 @@
     "type": "text",
     "placeholders": {}
   },
-  "crewBoatName": " Boat name",
+  "crewBoatName": "Boat name",
   "@crewBoatName": {
     "description": "Label for crew boat name field",
     "type": "text",
@@ -1771,17 +1765,6 @@
     "type": "text",
     "placeholders": {}
   },
-  "hakiType": "{count, plural, =0 {types} =1 {type} other {types}}",
-  "@hakiType": {
-    "description": "Haki type pluralization",
-    "type": "text",
-    "placeholders": {
-      "count": {
-        "type": "num",
-        "example": "1"
-      }
-    }
-  },
   "newDuel": "New Duel",
   "@newDuel": {
     "description": "Button text to start a new duel",
@@ -2626,14 +2609,14 @@
     "type": "text",
     "placeholders": {}
   },
-  "savings_formatted_total": "R$ {amount} in {period}",
+  "savings_formatted_total": "{amount} in {period}",
   "@savings_formatted_total": {
     "description": "Formatted total savings with period.",
     "type": "text",
     "placeholders": {
       "amount": {
         "type": "String",
-        "example": "1,234.56"
+        "example": "R$ 1.234,56"
       },
       "period": {
         "type": "String",
@@ -3278,12 +3261,6 @@
   "recentObjectives": "Recent Objectives",
   "@recentObjectives": {
     "description": "Title for recent objectives section",
-    "type": "text",
-    "placeholders": {}
-  },
-  "total": "total",
-  "@total": {
-    "description": "Label for total count",
     "type": "text",
     "placeholders": {}
   },
@@ -4958,5 +4935,59 @@
   "errorBoundaryMessage": "An unexpected error occurred in the user interface. Don't worry, the Straw Hats are on it!",
   "@errorBoundaryMessage": {
     "description": "Global error screen shown when a widget crashes: explanation under the title"
+  },
+  "labelValue": "{label}: {value}",
+  "@labelValue": {
+    "description": "A field label followed by its value, e.g. 'Captain: Luffy'.",
+    "placeholders": {
+      "label": {
+        "type": "String",
+        "example": "Captain"
+      },
+      "value": {
+        "type": "String",
+        "example": "Monkey D. Luffy"
+      }
+    }
+  },
+  "membersCount": "{count, plural, =0{No members} =1{1 member} other{{count} members}}",
+  "@membersCount": {
+    "description": "Member counter on a crew card and the crew members list.",
+    "placeholders": {
+      "count": {
+        "type": "num",
+        "example": "3"
+      }
+    }
+  },
+  "hakiTypesCount": "{count, plural, =1{1 type} other{{count} types}}",
+  "@hakiTypesCount": {
+    "description": "How many haki types a character has, in the duel stat table.",
+    "placeholders": {
+      "count": {
+        "type": "num",
+        "example": "2"
+      }
+    }
+  },
+  "goalsTotal": "{count} total",
+  "@goalsTotal": {
+    "description": "Total number of goals next to the Robin goals section title.",
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "5"
+      }
+    }
+  },
+  "noResultsFoundFor": "No results found for \"{query}\"",
+  "@noResultsFoundFor": {
+    "description": "Empty search result message quoting what the user typed.",
+    "placeholders": {
+      "query": {
+        "type": "String",
+        "example": "Luffy"
+      }
+    }
   }
 }

@@ -38,9 +38,8 @@ Source of truth: `pubspec.yaml`, `.fvmrc`, `lib/main.dart`, `lib/app/di/`.
 - cloud_firestore ^5.4.0 — `users`, `crews`, `custom_characters`, `planner`,
   `workout_assessments`, `featuredCharacters`, `user_tokens` (rules: `firestore.rules`)
 - firebase_messaging ^15.1.3 + flutter_local_notifications ^22.0.0 — FCM push
-- Cloud Functions (`functions/`, TypeScript, v2, Node 22) — scheduled push notifications.
-  The client `cloud_functions ^5.4.0` is only imported by the unregistered
-  `NotificationManagerService`
+- Cloud Functions (`functions/`, TypeScript, v2, Node 22) — scheduled push notifications;
+  the app has no client-side `cloud_functions` calls
 
 ## Local Storage
 - hive ^2.2.3 + hive_flutter ^1.1.0 — hand-written adapters, type ids in
@@ -65,7 +64,6 @@ Source of truth: `pubspec.yaml`, `.fvmrc`, `lib/main.dart`, `lib/app/di/`.
   flutter_svg ^2.0.10, url_launcher ^6.2.5, uuid ^4.5.1
 - math_expressions ^2.4.0 (calculator)
 - flutter_dotenv ^5.1.0 — read only inside `EnvironmentService`
-- Declared but not imported in `lib/`: palette_generator, image, stylish_bottom_bar
 
 ## Testing
 - flutter_test, test ^1.24.6, mocktail ^1.0.5, bloc_test ^10.0.0, flutter_lints ^5.0.0

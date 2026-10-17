@@ -5,7 +5,6 @@ import 'package:opfan/features/robin_knowledge/data/models/goal_model.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:opfan/features/robin_knowledge/bloc/index.dart';
 import 'package:opfan/features/robin_knowledge/presentation/goal_details_screen.dart';
-import 'package:opfan/shared/utils/theme.dart';
 import 'package:opfan/l10n/app_localizations.dart';
 import 'package:opfan/shared/utils/app_semantic_colors.dart';
 import 'package:opfan/features/robin_knowledge/presentation/goal_colors.dart';
@@ -131,7 +130,7 @@ class GoalCard extends StatelessWidget {
               '${goal.progress.toInt()}%',
               style: Theme.of(context).textTheme.bodySmall?.copyWith(
                 fontWeight: FontWeight.bold,
-                color: AppColors.purple[350],
+                color: Theme.of(context).colorScheme.primary,
               ),
             ),
           ],

@@ -1,7 +1,6 @@
 import 'package:phosphoricons_flutter/phosphoricons_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:opfan/features/robin_knowledge/data/models/goal_model.dart';
-import 'package:opfan/shared/utils/theme.dart';
 import 'package:opfan/l10n/app_localizations.dart';
 import 'package:opfan/shared/utils/app_semantic_colors.dart';
 
@@ -69,7 +68,7 @@ class _UpdateProgressDialogState extends State<UpdateProgressDialog> {
                   '${widget.goal.progress.toStringAsFixed(1)}%',
                   style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                     fontWeight: FontWeight.bold,
-                    color: AppColors.purple[350],
+                    color: Theme.of(context).colorScheme.primary,
                   ),
                 ),
               ],
@@ -122,7 +121,9 @@ class _UpdateProgressDialogState extends State<UpdateProgressDialog> {
                 ),
                 focusedBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(12),
-                  borderSide: BorderSide(color: AppColors.purple[350]!),
+                  borderSide: BorderSide(
+                    color: Theme.of(context).colorScheme.primary,
+                  ),
                 ),
               ),
               validator: (value) {

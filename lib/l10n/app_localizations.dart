@@ -170,12 +170,6 @@ abstract class AppLocalizations {
   /// **'No research done yet.'**
   String get noResearchYet;
 
-  /// Text shown at search screen when there were no results found at search bar after one or more filters have been applied
-  ///
-  /// In en, this message translates to:
-  /// **'No results found for'**
-  String get noResultsFound;
-
   /// Text show at occupation section on character detail screen with pluralization
   ///
   /// In en, this message translates to:
@@ -995,7 +989,7 @@ abstract class AppLocalizations {
   /// Label for crew boat name field
   ///
   /// In en, this message translates to:
-  /// **' Boat name'**
+  /// **'Boat name'**
   String get crewBoatName;
 
   /// Label for crew role field
@@ -1819,12 +1813,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Reset'**
   String get resetDuel;
-
-  /// Haki type pluralization
-  ///
-  /// In en, this message translates to:
-  /// **'{count, plural, =0 {types} =1 {type} other {types}}'**
-  String hakiType(num count);
 
   /// Button text to start a new duel
   ///
@@ -2675,7 +2663,7 @@ abstract class AppLocalizations {
   /// Formatted total savings with period.
   ///
   /// In en, this message translates to:
-  /// **'R\$ {amount} in {period}'**
+  /// **'{amount} in {period}'**
   String savings_formatted_total(String amount, String period);
 
   /// Workout calendar title.
@@ -3307,12 +3295,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Recent Objectives'**
   String get recentObjectives;
-
-  /// Label for total count
-  ///
-  /// In en, this message translates to:
-  /// **'total'**
-  String get total;
 
   /// Error message when loading objectives fails
   ///
@@ -5755,6 +5737,36 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'An unexpected error occurred in the user interface. Don\'t worry, the Straw Hats are on it!'**
   String get errorBoundaryMessage;
+
+  /// A field label followed by its value, e.g. 'Captain: Luffy'.
+  ///
+  /// In en, this message translates to:
+  /// **'{label}: {value}'**
+  String labelValue(String label, String value);
+
+  /// Member counter on a crew card and the crew members list.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =0{No members} =1{1 member} other{{count} members}}'**
+  String membersCount(num count);
+
+  /// How many haki types a character has, in the duel stat table.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{1 type} other{{count} types}}'**
+  String hakiTypesCount(num count);
+
+  /// Total number of goals next to the Robin goals section title.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} total'**
+  String goalsTotal(int count);
+
+  /// Empty search result message quoting what the user typed.
+  ///
+  /// In en, this message translates to:
+  /// **'No results found for \"{query}\"'**
+  String noResultsFoundFor(String query);
 }
 
 class _AppLocalizationsDelegate

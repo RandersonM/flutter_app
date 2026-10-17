@@ -96,19 +96,25 @@ class CrewHeader extends StatelessWidget {
                             _buildInfoRow(
                               context,
                               PhosphorIconsRegular.boat,
-                              '${l10n.crewBoatName}: ${crew.boatName}',
+                              l10n.labelValue(
+                                l10n.crewBoatName,
+                                crew.boatName!,
+                              ),
                             ),
                           if (crew.captain != null)
                             _buildInfoRow(
                               context,
                               PhosphorIconsRegular.user,
-                              '${l10n.captain}: ${crew.captain}',
+                              l10n.labelValue(l10n.captain, crew.captain!),
                             ),
                           if (crew.viceCaptain != null)
                             _buildInfoRow(
                               context,
                               PhosphorIconsRegular.user,
-                              '${l10n.viceCaptain}: ${crew.viceCaptain}',
+                              l10n.labelValue(
+                                l10n.viceCaptain,
+                                crew.viceCaptain!,
+                              ),
                             ),
                         ],
                       ),

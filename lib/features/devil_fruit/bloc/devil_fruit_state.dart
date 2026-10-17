@@ -55,6 +55,7 @@ class DevilFruitLoaded extends DevilFruitState {
     List<String>? availableTypes,
     String? searchQuery,
     String? selectedType,
+    bool clearSelectedType = false,
     bool? isSearching,
     DevilFruitFailure? failure,
   }) {
@@ -63,7 +64,9 @@ class DevilFruitLoaded extends DevilFruitState {
       filteredFruits: filteredFruits ?? this.filteredFruits,
       availableTypes: availableTypes ?? this.availableTypes,
       searchQuery: searchQuery ?? this.searchQuery,
-      selectedType: selectedType ?? this.selectedType,
+      selectedType: clearSelectedType
+          ? null
+          : selectedType ?? this.selectedType,
       isSearching: isSearching ?? this.isSearching,
       failure: failure ?? this.failure,
     );

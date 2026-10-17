@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
+import 'package:opfan/features/nami_finances/data/finance_math.dart';
 import 'package:opfan/features/nami_finances/data/models/nami_finances_model.dart';
 import 'package:opfan/l10n/app_localizations.dart';
 
@@ -196,7 +197,7 @@ class NamiFinancesService implements INamiFinancesService {
         'years': years,
         'periodText': periodText,
         'formattedTotal':
-            'R\$ ${totalSavings.toStringAsFixed(2)} em $periodText',
+            '${FinanceMath.formatBrl(totalSavings)} em $periodText',
       };
     } catch (e) {
       debugPrint('Erro ao calcular informações de savings acumulados: $e');
@@ -256,7 +257,7 @@ class NamiFinancesService implements INamiFinancesService {
       }
 
       final formattedTotal = l10n.savings_formatted_total(
-        totalSavings.toStringAsFixed(2),
+        FinanceMath.formatBrl(totalSavings),
         periodText,
       );
 

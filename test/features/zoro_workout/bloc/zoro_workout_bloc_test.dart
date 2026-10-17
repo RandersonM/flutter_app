@@ -153,4 +153,56 @@ void main() {
       expect: () => [const ZoroWorkoutError(ZoroWorkoutFailure.savePlanFailed)],
     );
   });
+
+  group('ZoroWorkoutBloc monthly progress', () {
+    WorkoutAssessmentModel assessment({int? goal, List<int>? days}) =>
+        WorkoutAssessmentModel(
+          userId: 'alice',
+          monthYear: '2026-10',
+          gender: 'female',
+          age: 30,
+          height: 165,
+          weight: 60,
+          waist: 70,
+          workoutDaysGoal: goal,
+          workoutDays: days,
+          createdAt: DateTime(2026, 10),
+          updatedAt: DateTime(2026, 10),
+        );
+
+    Future<ZoroWorkoutLoaded> loadWith(WorkoutAssessmentModel? current) async {
+      when(
+        () => workouts.getCurrentUserAssessment(),
+      ).thenAnswer((_) async => current);
+      final bloc = build()..add(const InitializeWorkoutAssessment());
+      final loaded = await bloc.stream.firstWhere(
+        (state) => state is ZoroWorkoutLoaded,
+      );
+      await bloc.close();
+      return loaded as ZoroWorkoutLoaded;
+    }
+
+    test('reports the share of the goal done and the days left', () async {
+      final state = await loadWith(assessment(goal: 12, days: [1, 3, 5]));
+
+      expect(state.currentMonthProgress, 0.25);
+      expect(state.remainingDaysToGoal, 9);
+    });
+
+    test('caps progress at the goal once it is exceeded', () async {
+      final state = await loadWith(assessment(goal: 2, days: [1, 2, 3]));
+
+      expect(state.currentMonthProgress, 1.0);
+      expect(state.remainingDaysToGoal, 0);
+    });
+
+    test('reports no progress without a goal or an assessment', () async {
+      final noGoal = await loadWith(assessment(days: [1]));
+      final none = await loadWith(null);
+
+      expect(noGoal.currentMonthProgress, 0.0);
+      expect(noGoal.remainingDaysToGoal, 0);
+      expect(none.currentMonthProgress, 0.0);
+    });
+  });
 }

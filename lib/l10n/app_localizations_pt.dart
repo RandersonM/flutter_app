@@ -54,9 +54,6 @@ class AppLocalizationsPt extends AppLocalizations {
   String get noResearchYet => 'Nenhuma pesquisa feita ainda.';
 
   @override
-  String get noResultsFound => 'Nenhum resultado encontrado para';
-
-  @override
   String occupation(num count) {
     String _temp0 = intl.Intl.pluralLogic(
       count,
@@ -937,18 +934,6 @@ class AppLocalizationsPt extends AppLocalizations {
   String get resetDuel => 'Resetar';
 
   @override
-  String hakiType(num count) {
-    String _temp0 = intl.Intl.pluralLogic(
-      count,
-      locale: localeName,
-      other: 'tipos',
-      one: 'tipo',
-      zero: 'tipos',
-    );
-    return '$_temp0';
-  }
-
-  @override
   String get newDuel => 'Novo Duelo';
 
   @override
@@ -1415,7 +1400,7 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String savings_formatted_total(String amount, String period) {
-    return 'R\$ $amount em $period';
+    return '$amount em $period';
   }
 
   @override
@@ -1756,9 +1741,6 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get recentObjectives => 'Objetivos Recentes';
-
-  @override
-  String get total => 'total';
 
   @override
   String get errorLoadingObjectives => 'Erro ao carregar objetivos';
@@ -3153,4 +3135,42 @@ class AppLocalizationsPt extends AppLocalizations {
   @override
   String get errorBoundaryMessage =>
       'Ocorreu um erro inesperado na interface. Não se preocupe, os Chapéus de Palha já estão cuidando disso!';
+
+  @override
+  String labelValue(String label, String value) {
+    return '$label: $value';
+  }
+
+  @override
+  String membersCount(num count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count membros',
+      one: '1 membro',
+      zero: 'Nenhum membro',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String hakiTypesCount(num count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count tipos',
+      one: '1 tipo',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String goalsTotal(int count) {
+    return '$count no total';
+  }
+
+  @override
+  String noResultsFoundFor(String query) {
+    return 'Nenhum resultado encontrado para \"$query\"';
+  }
 }

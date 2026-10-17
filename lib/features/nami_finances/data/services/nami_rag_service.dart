@@ -54,11 +54,11 @@ class NamiRagService implements INamiRagService {
     }
   }
 
-  /// Re-asserts that the shared vector store points at this feature's own
-  /// database — the Vegapunk chat RAG may have switched it since the last
-  /// call (see [RagStoreCoordinator]).
-  Future<void> _ensureActiveStore() =>
-      RagStoreCoordinator.ensureActive(_owner, _dbFileName);
+  /// Runs [operation] on this feature's own database — the Vegapunk chat RAG
+  /// may have switched the shared store since the last call (see
+  /// [RagStoreCoordinator]).
+  Future<T> _inStore<T>(Future<T> Function() operation) =>
+      RagStoreCoordinator.withStore(_owner, _dbFileName, operation);
 
   Future<Box<dynamic>> _meta() async =>
       _metaBox ??= await Hive.openBox<dynamic>(_metaBoxName);
@@ -75,12 +75,13 @@ class NamiRagService implements INamiRagService {
     if (meta.get(_schemaVersionKey) == _schemaVersion) return;
 
     debugPrint('NamiRagService: re-indexing for schema v$_schemaVersion…');
-    await _ensureActiveStore();
-    try {
-      await FlutterGemmaPlugin.instance.clearVectorStore();
-    } catch (e) {
-      debugPrint('NamiRagService: clearVectorStore failed: $e');
-    }
+    await _inStore(() async {
+      try {
+        await FlutterGemmaPlugin.instance.clearVectorStore();
+      } catch (e) {
+        debugPrint('NamiRagService: clearVectorStore failed: $e');
+      }
+    });
     await meta.clear();
     await meta.put(_schemaVersionKey, _schemaVersion);
   }
@@ -96,8 +97,6 @@ class NamiRagService implements INamiRagService {
     final monthKey = _monthKey(model);
     if (meta.get(monthKey) == _fingerprint(model)) return;
 
-    await _ensureActiveStore();
-
     // Only descriptions carry meaning worth embedding. An expense the user
     // never described has nothing to match on, so indexing it would only add
     // noise to the nearest-neighbour set.
@@ -105,11 +104,13 @@ class NamiRagService implements INamiRagService {
       (e) => e.description.trim().isNotEmpty,
     );
 
-    var indexed = 0;
-    for (final expense in described) {
-      final ok = await _indexExpense(expense, monthKey);
-      if (ok) indexed++;
-    }
+    final indexed = await _inStore(() async {
+      var count = 0;
+      for (final expense in described) {
+        if (await _indexExpense(expense, monthKey)) count++;
+      }
+      return count;
+    });
 
     await meta.put(monthKey, _fingerprint(model));
     debugPrint('NamiRagService: indexed $indexed expense(s) for $monthKey');
@@ -158,13 +159,13 @@ class NamiRagService implements INamiRagService {
     if (!_isInitialized) await initialize();
     if (!_isInitialized) return const [];
 
-    await _ensureActiveStore();
-
     try {
-      final results = await FlutterGemmaPlugin.instance.searchSimilar(
-        query: query,
-        topK: topK,
-        threshold: threshold,
+      final results = await _inStore(
+        () => FlutterGemmaPlugin.instance.searchSimilar(
+          query: query,
+          topK: topK,
+          threshold: threshold,
+        ),
       );
 
       final matches = <ExpenseMatch>[];

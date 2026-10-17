@@ -16,7 +16,7 @@ class UnexistentSearch extends StatelessWidget {
       child: Text(
         query.isEmpty
             ? AppLocalizations.of(context)!.noResearchYet
-            : '${AppLocalizations.of(context)!.noResultsFound} "$query".',
+            : AppLocalizations.of(context)!.noResultsFoundFor(query),
         textAlign: TextAlign.center,
         style: Theme.of(context).textTheme.bodyMedium!,
       ),

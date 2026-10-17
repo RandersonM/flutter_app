@@ -4,6 +4,7 @@ import 'dart:math' as math;
 
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
+import 'package:opfan/features/nami_finances/data/finance_math.dart';
 import 'package:opfan/features/nami_finances/data/models/nami_finances_model.dart';
 import 'package:opfan/features/nami_finances/presentation/expense_category_palette.dart';
 import 'package:opfan/features/nami_finances/presentation/widgets/finances_history_widget.dart';
@@ -101,7 +102,7 @@ class _HeroBalanceCard extends StatelessWidget {
           ),
           const SizedBox(height: Constants.margin),
           Text(
-            'R\$ ${balance.abs().toStringAsFixed(2)}',
+            FinanceMath.formatBrl(balance.abs()),
             style: Theme.of(context).textTheme.displaySmall?.copyWith(
               color: isPositive ? semanticColors.success : colorScheme.error,
               fontWeight: FontWeight.bold,
@@ -170,7 +171,7 @@ class _BalancePill extends StatelessWidget {
               ),
             ),
             Text(
-              'R\$ ${value.toStringAsFixed(2)}',
+              FinanceMath.formatBrl(value),
               style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                 color: color,
                 fontWeight: FontWeight.w600,
@@ -279,19 +280,19 @@ class _MonthlyBalanceDonutState extends State<_MonthlyBalanceDonut> {
                     _DonutLegend(
                       color: semanticColors.success,
                       label: AppLocalizations.of(context)!.incomesLabel,
-                      value: 'R\$ ${income.toStringAsFixed(0)}',
+                      value: FinanceMath.formatBrl(income, withCents: false),
                     ),
                     const SizedBox(height: 12),
                     _DonutLegend(
                       color: colorScheme.error,
                       label: AppLocalizations.of(context)!.expensesLabel,
-                      value: 'R\$ ${expenses.toStringAsFixed(0)}',
+                      value: FinanceMath.formatBrl(expenses, withCents: false),
                     ),
                     const SizedBox(height: 12),
                     _DonutLegend(
                       color: semanticColors.info,
                       label: AppLocalizations.of(context)!.reservesLabel,
-                      value: 'R\$ ${savings.toStringAsFixed(0)}',
+                      value: FinanceMath.formatBrl(savings, withCents: false),
                     ),
                   ],
                 ),
@@ -521,7 +522,7 @@ class _SavingsGoalCard extends StatelessWidget {
           ),
           const SizedBox(height: Constants.margin),
           Text(
-            'R\$ ${total.toStringAsFixed(2)}',
+            FinanceMath.formatBrl(total),
             style: Theme.of(context).textTheme.headlineSmall?.copyWith(
               color: reservesColor,
               fontWeight: FontWeight.bold,
@@ -530,7 +531,9 @@ class _SavingsGoalCard extends StatelessWidget {
           if (goal != null && goal > 0) ...[
             const SizedBox(height: 4),
             Text(
-              l10n.reserveGoalLabel('R\$ ${goal.toStringAsFixed(0)}'),
+              l10n.reserveGoalLabel(
+                FinanceMath.formatBrl(goal, withCents: false),
+              ),
               style: Theme.of(context).textTheme.bodySmall?.copyWith(
                 color: colorScheme.onSurfaceVariant,
               ),
@@ -560,7 +563,10 @@ class _SavingsGoalCard extends StatelessWidget {
                 ),
                 Text(
                   l10n.reserveGoalRemaining(
-                    'R\$ ${math.max(goal - total, 0).toStringAsFixed(0)}',
+                    FinanceMath.formatBrl(
+                      math.max(goal - total, 0),
+                      withCents: false,
+                    ),
                   ),
                   style: Theme.of(context).textTheme.bodySmall?.copyWith(
                     color: colorScheme.onSurfaceVariant,
@@ -696,7 +702,7 @@ class _CategoryBar extends StatelessWidget {
               ),
             ),
             Text(
-              'R\$ ${amount.toStringAsFixed(0)}',
+              FinanceMath.formatBrl(amount, withCents: false),
               style: Theme.of(context).textTheme.bodySmall?.copyWith(
                 color: Theme.of(context).colorScheme.onSurface,
                 fontWeight: FontWeight.w600,
@@ -844,7 +850,7 @@ class _FinanceLineItem extends StatelessWidget {
             ),
           ),
           Text(
-            'R\$ ${value.toStringAsFixed(2)}',
+            FinanceMath.formatBrl(value),
             style: Theme.of(context).textTheme.bodyMedium?.copyWith(
               color: valueColor,
               fontWeight: FontWeight.w600,
@@ -889,7 +895,7 @@ class _TotalRow extends StatelessWidget {
             ),
           ),
           Text(
-            'R\$ ${value.toStringAsFixed(2)}',
+            FinanceMath.formatBrl(value),
             style: Theme.of(context).textTheme.bodyMedium?.copyWith(
               color: color,
               fontWeight: FontWeight.bold,

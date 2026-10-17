@@ -75,9 +75,7 @@ class GeminiService implements IGeminiService {
     );
 
     if (kDebugMode) {
-      _dio.interceptors.add(
-        LogInterceptor(requestBody: true, responseBody: true),
-      );
+      _dio.interceptors.add(RedactingLogInterceptor());
     }
   }
 
@@ -322,6 +320,9 @@ class GeminiService implements IGeminiService {
   }
 
   Future<String> _uploadImageToServer(Uint8List imageData) async {
+    final clientId = _env.imgurClientId;
+    if (clientId.isEmpty) return _inlineImage(imageData);
+
     try {
       final uploadDio = Dio();
       final formData = FormData.fromMap({
@@ -332,9 +333,7 @@ class GeminiService implements IGeminiService {
       final response = await uploadDio.post(
         'https://api.imgur.com/3/image',
         data: formData,
-        options: Options(
-          headers: {'Authorization': 'Client-ID 546c25a59c58ad7'},
-        ),
+        options: Options(headers: {'Authorization': 'Client-ID $clientId'}),
       );
 
       if (response.statusCode == 200 && response.data['data'] != null) {
@@ -344,8 +343,11 @@ class GeminiService implements IGeminiService {
       debugPrint('Gemini Service: Failed to upload image - $e');
     }
 
-    return 'data:image/png;base64,${base64Encode(imageData)}';
+    return _inlineImage(imageData);
   }
+
+  String _inlineImage(Uint8List imageData) =>
+      'data:image/png;base64,${base64Encode(imageData)}';
 
   // Utility Methods
   bool _isQuotaExceeded() {

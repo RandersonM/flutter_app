@@ -21,9 +21,7 @@ class DevilFruitService implements IDevilFruitService {
     );
 
     if (kDebugMode) {
-      _dio.interceptors.add(
-        LogInterceptor(requestBody: true, responseBody: true),
-      );
+      _dio.interceptors.add(RedactingLogInterceptor());
     }
   }
 

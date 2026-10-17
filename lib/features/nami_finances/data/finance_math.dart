@@ -10,11 +10,14 @@ class FinanceMath {
 
   // ── Formatting ─────────────────────────────────────────────────────────────
 
-  /// Formats [value] as Brazilian currency, e.g. `60000` → `R$ 60.000,00`.
+  /// Formats [value] as Brazilian currency, e.g. `60000` → `R$ 60.000,00`,
+  /// or `R$ 60.000` when [withCents] is false (rounded to whole reais).
   /// Built manually (no locale-data init) so it is fully deterministic.
-  static String formatBrl(num value) {
+  static String formatBrl(num value, {bool withCents = true}) {
     final negative = value < 0;
-    final totalCents = (value.abs() * 100).round();
+    final totalCents = withCents
+        ? (value.abs() * 100).round()
+        : value.abs().round() * 100;
     final reais = totalCents ~/ 100;
     final cents = totalCents % 100;
 
@@ -25,7 +28,9 @@ class FinanceMath {
       buffer.write(reaisStr[i]);
     }
 
-    return '${negative ? '-' : ''}R\$ $buffer,${cents.toString().padLeft(2, '0')}';
+    final sign = negative ? '-' : '';
+    if (!withCents) return '${sign}R\$ $buffer';
+    return '${sign}R\$ $buffer,${cents.toString().padLeft(2, '0')}';
   }
 
   /// Formats a 0..1 ratio as a percentage string, e.g. `0.8333` → `83%`.

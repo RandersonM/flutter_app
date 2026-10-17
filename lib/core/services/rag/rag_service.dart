@@ -57,7 +57,7 @@ class RAGService implements IRAGService {
   int skippedReloadCountForTesting = 0;
 
   /// Incremented exactly when [setKnowledgeBase] takes the "fingerprint
-  /// changed" branch, before it even attempts `_ensureActiveStore()` — see
+  /// changed" branch, before it even reaches the vector store — see
   /// [skippedReloadCountForTesting].
   @visibleForTesting
   int attemptedReloadCountForTesting = 0;
@@ -78,13 +78,12 @@ class RAGService implements IRAGService {
     }
   }
 
-  /// Re-asserts that the shared vector store points at this service's own
-  /// database before every operation — another RAG feature (e.g. Nami
-  /// finances) may have switched it since [initialize] ran.
-  Future<bool> _ensureActiveStore() async {
-    if (!_vectorStoreReady) return false;
-    await RagStoreCoordinator.ensureActive(_owner, _dbFileName);
-    return true;
+  /// Runs [operation] on this service's own database — another RAG feature
+  /// (e.g. Nami finances) may have switched the shared store since
+  /// [initialize] ran. Returns [unavailable] when the store never came up.
+  Future<T> _inStore<T>(Future<T> Function() operation, T unavailable) async {
+    if (!_vectorStoreReady) return unavailable;
+    return RagStoreCoordinator.withStore(_owner, _dbFileName, operation);
   }
 
   Future<Box<dynamic>> _meta() async =>
@@ -108,7 +107,7 @@ class RAGService implements IRAGService {
 
   @override
   Future<void> addDocument(RagDocument doc) async {
-    if (!await _ensureActiveStore()) return;
+    if (!_vectorStoreReady) return;
     if (doc.isSession) {
       if (_sessionDocCount >= _maxSessionDocs) return;
       _sessionDocCount++;
@@ -121,11 +120,14 @@ class RAGService implements IRAGService {
         doc.content,
         taskType: TaskType.retrievalDocument,
       );
-      await FlutterGemmaPlugin.instance.addDocumentWithEmbedding(
-        id: doc.id,
-        content: doc.content,
-        embedding: embedding,
-        metadata: doc.metadataJson,
+      await _inStore(
+        () => FlutterGemmaPlugin.instance.addDocumentWithEmbedding(
+          id: doc.id,
+          content: doc.content,
+          embedding: embedding,
+          metadata: doc.metadataJson,
+        ),
+        null,
       );
     } catch (e) {
       debugPrint('RAGService: addDocument error: $e');
@@ -134,7 +136,7 @@ class RAGService implements IRAGService {
 
   @override
   Future<void> addDocumentBatch(List<RagDocument> docs) async {
-    if (docs.isEmpty || !await _ensureActiveStore()) return;
+    if (docs.isEmpty || !_vectorStoreReady) return;
     final model = _embeddingModel;
     if (model == null) return;
 
@@ -148,14 +150,16 @@ class RAGService implements IRAGService {
         taskType: TaskType.retrievalDocument,
       );
 
-      for (var i = 0; i < docs.length; i++) {
-        await FlutterGemmaPlugin.instance.addDocumentWithEmbedding(
-          id: docs[i].id,
-          content: docs[i].content,
-          embedding: embeddings[i],
-          metadata: docs[i].metadataJson,
-        );
-      }
+      await _inStore(() async {
+        for (var i = 0; i < docs.length; i++) {
+          await FlutterGemmaPlugin.instance.addDocumentWithEmbedding(
+            id: docs[i].id,
+            content: docs[i].content,
+            embedding: embeddings[i],
+            metadata: docs[i].metadataJson,
+          );
+        }
+      }, null);
       debugPrint('RAGService: ${docs.length} docs added');
     } catch (e) {
       debugPrint('RAGService: addDocumentBatch error: $e');
@@ -188,13 +192,16 @@ class RAGService implements IRAGService {
     required double threshold,
     required bool sessionOnly,
   }) async {
-    if (query.trim().isEmpty || !await _ensureActiveStore()) return const [];
+    if (query.trim().isEmpty || !_vectorStoreReady) return const [];
 
     try {
-      final raw = await FlutterGemmaPlugin.instance.searchSimilar(
-        query: query,
-        topK: topK * _overFetchFactor,
-        threshold: threshold,
+      final raw = await _inStore(
+        () => FlutterGemmaPlugin.instance.searchSimilar(
+          query: query,
+          topK: topK * _overFetchFactor,
+          threshold: threshold,
+        ),
+        const <RetrievalResult>[],
       );
       final scoped = filterScopedResults(
         raw,
@@ -244,9 +251,7 @@ class RAGService implements IRAGService {
   }
 
   @override
-  Future<void> clearSession() async {
-    if (!await _ensureActiveStore()) return;
-
+  Future<void> clearSession() => _inStore(() async {
     try {
       await FlutterGemmaPlugin.instance.clearVectorStore();
       _sessionDocCount = 0;
@@ -262,7 +267,7 @@ class RAGService implements IRAGService {
     } catch (e) {
       debugPrint('RAGService: clearSession error: $e');
     }
-  }
+  }, null);
 
   @override
   Future<void> setKnowledgeBase(List<RagDocument> docs) async {
@@ -288,22 +293,24 @@ class RAGService implements IRAGService {
     }
 
     attemptedReloadCountForTesting++;
-    if (!await _ensureActiveStore()) return;
-
-    try {
-      debugPrint('RAGService: KB fingerprint changed, reloading…');
-      await FlutterGemmaPlugin.instance.clearVectorStore();
-      _knowledgeBaseDocs = [];
-      _sessionDocCount = 0;
-      if (docs.isNotEmpty) {
-        await addDocumentBatch(docs);
+    final reloaded = await _inStore(() async {
+      try {
+        debugPrint('RAGService: KB fingerprint changed, reloading…');
+        await FlutterGemmaPlugin.instance.clearVectorStore();
+        _knowledgeBaseDocs = [];
+        _sessionDocCount = 0;
+        if (docs.isNotEmpty) {
+          await addDocumentBatch(docs);
+        }
+        await meta.put(kbFingerprintKeyForTesting, fingerprint);
+        debugPrint('RAGService: setKnowledgeBase loaded ${docs.length} docs');
+        return true;
+      } catch (e) {
+        debugPrint('RAGService: setKnowledgeBase error: $e');
+        return false;
       }
-      await meta.put(kbFingerprintKeyForTesting, fingerprint);
-      debugPrint('RAGService: setKnowledgeBase loaded ${docs.length} docs');
-    } catch (e) {
-      debugPrint('RAGService: setKnowledgeBase error: $e');
-      return;
-    }
+    }, false);
+    if (!reloaded) return;
 
     // clearVectorStore() has no scope — it just wiped session memory too.
     // Give the feature layer a chance to restore it from its own persisted
