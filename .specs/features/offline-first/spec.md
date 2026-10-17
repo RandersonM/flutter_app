@@ -61,8 +61,8 @@ O OpFan depende de internet para quase tudo. Quando o usuário está offline, o 
 
 1. WHEN o usuário está autenticado e perde conexão THEN o `AuthBloc` SHALL continuar em estado `AuthAuthenticated` sem emitir `AuthUnauthenticated`
 2. WHEN o app é iniciado offline e há um `UserModel` válido no Hive + `FirebaseAuth.currentUser != null` THEN o sistema SHALL considerar a sessão válida e emitir `AuthAuthenticated`
-3. WHEN o app é iniciado offline e não há usuário cacheado no Hive THEN o sistema SHALL emitir `AuthUnauthenticated` e exibir a tela de login (com banner offline)
-4. WHEN o `isSessionValid()` falha por `SocketException` ou erro de rede THEN o sistema SHALL tratar como "sessão válida local" se houver `UserModel` em cache e `FirebaseAuth.currentUser != null`
+3. WHEN o app é iniciado offline e `FirebaseAuth.currentUser == null` THEN o sistema SHALL emitir `AuthUnauthenticated` e exibir a tela de login (com banner offline). Se o Firebase ainda tem o usuário mas o cache Hive se perdeu (reinstalação, chave do keychain resetada), a sessão continua válida e o `UserModel` é reconstruído do usuário Firebase (perfil corporal do cache do Firestore, se houver)
+4. WHEN o `isSessionValid()` falha por `SocketException` ou erro de rede THEN o sistema SHALL tratar a sessão como válida se `FirebaseAuth.currentUser != null`; só uma revogação (`user-token-expired`, `user-disabled`, `user-not-found`, `invalid-user-token`) a invalida
 5. WHEN o usuário está em sessão offline e a conexão é restaurada THEN o sistema SHALL tentar silenciosamente renovar o token sem interromper a experiência do usuário
 
 **Independent Test**: Logar → modo avião → fechar o app → reabrir → verificar que vai direto para Home sem tela de login.
@@ -148,7 +148,7 @@ O OpFan depende de internet para quase tudo. Quando o usuário está offline, o 
 
 ## Edge Cases
 
-- WHEN `getIdToken(true)` falha por `SocketException` THEN `isSessionValid()` SHALL retornar `true` se houver UserModel no Hive E FirebaseAuth.currentUser não for null
+- WHEN `getIdToken(true)` falha por `SocketException` THEN `isSessionValid()` SHALL retornar `true` se FirebaseAuth.currentUser não for null, com ou sem UserModel no Hive
 - WHEN o app abre offline pela primeira vez (sem sessão cacheada) THEN a tela de login SHALL ser exibida com o banner offline e o botão de login desabilitado ou com aviso
 - WHEN o evento de conectividade oscila rapidamente THEN o debounce de 1500ms SHALL evitar múltiplos re-renders
 - WHEN o Hive lança `HiveError` em Nami Finances THEN o BLoC SHALL capturar e emitir estado de erro localizado sem crash
