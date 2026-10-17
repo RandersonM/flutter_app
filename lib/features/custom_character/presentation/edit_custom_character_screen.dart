@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import 'package:opfan/features/custom_character/data/character_form_choices.dart';
 import 'package:opfan/features/custom_character/data/models/custom_character_model.dart';
 import 'package:opfan/features/devil_fruit/data/models/devil_fruit.dart';
 import 'package:opfan/features/crews/data/models/crew_model.dart';
@@ -40,10 +41,10 @@ class _EditCustomCharacterScreenState extends State<EditCustomCharacterScreen> {
   List<String> _selectedOccupations = [];
   final List<String> _selectedHaki = [];
   List<String> _selectedAffiliations = [];
-  DevilFruit? _selectedDevilFruit;
+  String? _devilFruitName;
   List<DevilFruit> _devilFruits = [];
   List<CrewModel> _availableCrews = [];
-  String? _selectedCrewId;
+  String? _crewName;
   String? _selectedCrewRole;
   String? _selectedRace = 'human';
   FightingStyleModel? _fightingStyle;
@@ -66,6 +67,8 @@ class _EditCustomCharacterScreenState extends State<EditCustomCharacterScreen> {
     _selectedStatus = character.status;
     _selectedRace = character.race ?? 'human';
     _fightingStyle = character.fightingStyle;
+    _devilFruitName = character.devilFruit;
+    _crewName = character.crew;
 
     _selectedAffiliations = [];
     _selectedOccupations = [];
@@ -107,27 +110,9 @@ class _EditCustomCharacterScreenState extends State<EditCustomCharacterScreen> {
   }
 
   void _applyFormOptions(CharacterFormOptionsState options) {
-    final character = widget.character;
-    final fruits = options.devilFruits;
-    final crews = options.crews;
-
     setState(() {
-      _devilFruits = fruits;
-      _availableCrews = crews;
-      if (character.devilFruit != null && fruits.isNotEmpty) {
-        _selectedDevilFruit = fruits.firstWhere(
-          (fruit) => fruit.romanName == character.devilFruit,
-          orElse: () => fruits.first,
-        );
-      }
-      if (character.crew != null && crews.isNotEmpty) {
-        _selectedCrewId = crews
-            .firstWhere(
-              (crew) => crew.name == character.crew,
-              orElse: () => crews.first,
-            )
-            .id;
-      }
+      _devilFruits = options.devilFruits;
+      _availableCrews = options.crews;
     });
   }
 
@@ -214,17 +199,26 @@ class _EditCustomCharacterScreenState extends State<EditCustomCharacterScreen> {
                             nicknameController: _nicknameController,
                             birthDateController: _birthDateController,
                             devilFruits: _devilFruits,
-                            selectedDevilFruit: _selectedDevilFruit,
+                            selectedDevilFruit: devilFruitNamed(
+                              _devilFruits,
+                              _devilFruitName,
+                            ),
                             onDevilFruitChanged: (fruit) {
                               setState(() {
-                                _selectedDevilFruit = fruit;
+                                _devilFruitName = fruit?.romanName;
                               });
                             },
                             availableCrews: _availableCrews,
-                            selectedCrewId: _selectedCrewId,
+                            selectedCrewId: crewIdNamed(
+                              _availableCrews,
+                              _crewName,
+                            ),
                             onCrewChanged: (crewId) {
                               setState(() {
-                                _selectedCrewId = crewId;
+                                _crewName = crewNameWithId(
+                                  _availableCrews,
+                                  crewId,
+                                );
                                 if (crewId == null) {
                                   _selectedCrewRole = null;
                                 }
@@ -346,7 +340,7 @@ class _EditCustomCharacterScreenState extends State<EditCustomCharacterScreen> {
         nickname: _nicknameController.text.trim().isNotEmpty
             ? _nicknameController.text.trim()
             : null,
-        devilFruit: _selectedDevilFruit?.romanName,
+        devilFruit: _devilFruitName,
         haki: mappedHaki.isNotEmpty ? mappedHaki : null,
         affiliations: _selectedAffiliations,
         image: _imageUrlController.text.trim().isNotEmpty
@@ -358,11 +352,7 @@ class _EditCustomCharacterScreenState extends State<EditCustomCharacterScreen> {
         signo: birthDate != null
             ? ZodiacIcons.getZodiacSignFromDate(birthDate)
             : null,
-        crew: _selectedCrewId != null
-            ? _availableCrews
-                  .firstWhere((crew) => crew.id == _selectedCrewId)
-                  .name
-            : null,
+        crew: _crewName,
         status: _selectedStatus,
         race: _selectedRace,
         age: birthDate != null ? ZodiacIcons.calculateAge(birthDate) : null,
