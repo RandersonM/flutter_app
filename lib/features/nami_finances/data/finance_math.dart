@@ -82,19 +82,30 @@ class FinanceMath {
 
   /// The scale a free-text amount is written in: 1 000 000 for "mi", "mm",
   /// "milhão"/"milhões"; 1 000 for "mil", "k"; otherwise 1. The words must
-  /// stand on their own (glued to a number is fine), so "similar", "militar"
-  /// or "milho" scale nothing.
-  static double amountScale(String text) {
+  /// stand on their own (glued to a number is fine), so "similar", "militar",
+  /// "milho" or "milímetros" scale nothing.
+  ///
+  /// Pass `mmMeansMillions: false` for chat text, where "8 mm" is far more
+  /// often millimetres than the finance shorthand for millions.
+  static double amountScale(String text, {bool mmMeansMillions = true}) {
     final lower = text.toLowerCase();
-    if (_millionsWord.hasMatch(lower)) return 1000000;
+    if (_millionsWord.hasMatch(lower) ||
+        (mmMeansMillions && _mmWord.hasMatch(lower))) {
+      return 1000000;
+    }
     if (_thousandsWord.hasMatch(lower)) return 1000;
     return 1;
   }
 
   static final _millionsWord = RegExp(
-    r'(?<![a-z])(milh(ão|ao|ões|oes)|mi|mm)(?![a-z])',
+    r'(?<!\p{L})(milh(ão|ao|ões|oes)|mi)(?!\p{L})',
+    unicode: true,
   );
-  static final _thousandsWord = RegExp(r'(?<![a-z])(mil|k)(?![a-z])');
+  static final _mmWord = RegExp(r'(?<!\p{L})mm(?!\p{L})', unicode: true);
+  static final _thousandsWord = RegExp(
+    r'(?<!\p{L})(mil|k)(?!\p{L})',
+    unicode: true,
+  );
 
   /// A minus right before the number, at the start or after a space — not the
   /// hyphen of a word or range ("covid-19", "10-20").

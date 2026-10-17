@@ -53,16 +53,28 @@ void main() {
       expect(FinanceMath.parseAmount('minha conta de 150'), 150);
     });
 
+    test('does not scale by words that start with an accented "mil"', () {
+      expect(FinanceMath.parseAmount('3 milímetros'), 3);
+      expect(FinanceMath.parseAmount('milésimo pedido de 50'), 50);
+      expect(FinanceMath.parseAmount('um milênio e 20'), 20);
+    });
+
     test('still scales the standalone words', () {
       expect(FinanceMath.parseAmount('2 milhões'), 2000000);
       expect(FinanceMath.parseAmount('1 milhao'), 1000000);
       expect(FinanceMath.parseAmount('20 mil reais'), 20000);
+      expect(FinanceMath.parseAmount('1,5 mil'), 1500);
+      expect(FinanceMath.parseAmount('2k'), 2000);
+      expect(FinanceMath.parseAmount('1 mi'), 1000000);
+      expect(FinanceMath.parseAmount('2 mm'), 2000000);
+      expect(FinanceMath.parseAmount('500 milhas'), 500);
     });
 
     test('keeps a leading minus sign', () {
       expect(FinanceMath.parseAmount('-500'), -500);
       expect(FinanceMath.parseAmount('R\$ -1.234,56'), -1234.56);
       expect(FinanceMath.parseAmount('- 2 mil'), -2000);
+      expect(FinanceMath.parseAmount('-R\$ 50'), -50);
     });
 
     test('ignores a hyphen that is not a sign', () {
@@ -81,6 +93,19 @@ void main() {
       expect(FinanceMath.amountScale('80k'), 1000);
       expect(FinanceMath.amountScale('1,5 mi'), 1000000);
       expect(FinanceMath.amountScale('algo similar por 500'), 1);
+    });
+
+    test('ignores words with accented letters next to the scale word', () {
+      expect(FinanceMath.amountScale('3 milímetros'), 1);
+      expect(FinanceMath.amountScale('o milésimo pedido'), 1);
+      expect(FinanceMath.amountScale('um milênio'), 1);
+      expect(FinanceMath.amountScale('àk'), 1);
+    });
+
+    test('reads "mm" as millions only when asked to', () {
+      expect(FinanceMath.amountScale('2 mm'), 1000000);
+      expect(FinanceMath.amountScale('8 mm', mmMeansMillions: false), 1);
+      expect(FinanceMath.amountScale('1 mi', mmMeansMillions: false), 1000000);
     });
   });
 
