@@ -10,6 +10,8 @@ class EnvironmentService implements IEnvironmentService {
     'YOUTUBE_BASE_URL': String.fromEnvironment('YOUTUBE_BASE_URL'),
     'DEVIL_FRUIT_API_URL': String.fromEnvironment('DEVIL_FRUIT_API_URL'),
     'HUGGING_FACE_API_KEY': String.fromEnvironment('HUGGING_FACE_API_KEY'),
+    'TAVILY_API_KEY': String.fromEnvironment('TAVILY_API_KEY'),
+    'IMGUR_CLIENT_ID': String.fromEnvironment('IMGUR_CLIENT_ID'),
     'GEMMA_MODEL_URL': String.fromEnvironment('GEMMA_MODEL_URL'),
     'GEMMA_MODEL_NAME': String.fromEnvironment('GEMMA_MODEL_NAME'),
     'APP_NAME': String.fromEnvironment('APP_NAME'),
@@ -33,6 +35,12 @@ class EnvironmentService implements IEnvironmentService {
 
   @override
   String get huggingFaceApiKey => _string('HUGGING_FACE_API_KEY');
+
+  @override
+  String get tavilyApiKey => _string('TAVILY_API_KEY');
+
+  @override
+  String get imgurClientId => _string('IMGUR_CLIENT_ID');
 
   @override
   String get gemmaModelUrl => _string('GEMMA_MODEL_URL');

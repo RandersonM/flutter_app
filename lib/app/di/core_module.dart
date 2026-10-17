@@ -1,5 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:cloud_functions/cloud_functions.dart';
+import 'package:dio/dio.dart';
+import 'package:firebase_ai/firebase_ai.dart';
+import 'package:firebase_app_check/firebase_app_check.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
@@ -47,8 +49,8 @@ void registerCoreModule(GetIt getIt) {
     () => FirebaseMessaging.instance,
   );
   getIt.registerLazySingleton<GoogleSignIn>(() => GoogleSignIn());
-  getIt.registerLazySingleton<FirebaseFunctions>(
-    () => FirebaseFunctions.instance,
+  getIt.registerLazySingleton<FirebaseAI>(
+    () => FirebaseAI.googleAI(appCheck: FirebaseAppCheck.instance),
   );
   getIt.registerLazySingleton<FlutterSecureStorage>(
     () => const FlutterSecureStorage(
@@ -99,8 +101,20 @@ void registerCoreModule(GetIt getIt) {
   getIt.registerLazySingleton<IYouTubeService>(
     () => YouTubeService(env: getIt<IEnvironmentService>()),
   );
+  getIt.registerLazySingleton<IGeminiClient>(
+    () => FirebaseAiGeminiClient(ai: getIt<FirebaseAI>()),
+  );
+  getIt.registerLazySingleton<IImageHostService>(
+    () => ImgurImageHostService(
+      env: getIt<IEnvironmentService>(),
+      dio: Dio(BaseOptions(receiveTimeout: const Duration(seconds: 60))),
+    ),
+  );
   getIt.registerLazySingleton<IGeminiService>(
-    () => GeminiService(functions: getIt<FirebaseFunctions>()),
+    () => GeminiService(
+      client: getIt<IGeminiClient>(),
+      imageHost: getIt<IImageHostService>(),
+    ),
   );
   getIt.registerLazySingleton<ICharacterImageService>(
     () => CharacterImageService(geminiService: getIt<IGeminiService>()),
@@ -177,7 +191,15 @@ void registerCoreModule(GetIt getIt) {
     () => RAGService(storage: getIt<IUserStorageService>()),
   );
   getIt.registerLazySingleton<IWebSearchService>(
-    () => WebSearchService(functions: getIt<FirebaseFunctions>()),
+    () => WebSearchService(
+      env: getIt<IEnvironmentService>(),
+      dio: Dio(
+        BaseOptions(
+          connectTimeout: const Duration(seconds: 5),
+          receiveTimeout: const Duration(seconds: 10),
+        ),
+      ),
+    ),
   );
 
   // ── Function Calling (Gemma tool registry) ─────────────────────────────────

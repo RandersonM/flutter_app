@@ -74,6 +74,13 @@ class SearchInternetHandler extends ToolHandler {
       );
     }
 
+    if (!webSearch.isConfigured) {
+      return ToolResult.error(
+        toolName: name,
+        reason: 'Web search is not configured.',
+      );
+    }
+
     try {
       final results = await webSearch.search(
         query,

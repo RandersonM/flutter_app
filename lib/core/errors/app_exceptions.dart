@@ -33,3 +33,11 @@ final class CancelledByUserException extends AppException {
   @override
   String toString() => 'CancelledByUserException';
 }
+
+/// A free-tier quota (Gemini, Tavily, ...) is used up for now.
+final class QuotaExceededException extends AppException {
+  const QuotaExceededException();
+
+  @override
+  String toString() => 'QuotaExceededException';
+}

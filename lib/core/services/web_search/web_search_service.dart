@@ -1,15 +1,22 @@
-import 'package:cloud_functions/cloud_functions.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
+import 'package:opfan/core/services/config/i_environment_service.dart';
 
 import 'i_web_search_service.dart';
 import 'web_search_result.dart';
 
-/// Tavily through the `webSearch` Cloud Function, which holds the API key,
-/// requires a signed-in user and enforces the daily quota.
+/// Tavily search. The key is a build-time value on Tavily's free plan (no card
+/// on file), so a leaked key can only use up that free quota.
 class WebSearchService implements IWebSearchService {
-  WebSearchService({required this._functions});
+  WebSearchService({required this._env, required this._dio});
 
-  final FirebaseFunctions _functions;
+  final IEnvironmentService _env;
+  final Dio _dio;
+
+  static const _url = 'https://api.tavily.com/search';
+
+  @override
+  bool get isConfigured => _env.tavilyApiKey.isNotEmpty;
 
   @override
   Future<List<WebSearchResult>> search(
@@ -19,25 +26,26 @@ class WebSearchService implements IWebSearchService {
     String includeAnswer = 'advanced',
     SearchTopic searchTopic = SearchTopic.general,
   }) async {
+    if (!isConfigured) return [];
+
     try {
-      final response = await _functions
-          .httpsCallable(
-            'webSearch',
-            options: HttpsCallableOptions(timeout: const Duration(seconds: 20)),
-          )
-          .call<Object?>({
-            'query': query,
-            'maxResults': maxResults,
-            'searchDepth': searchDepth,
-            'includeAnswer': includeAnswer,
-            'topic': searchTopic.value,
-          });
+      final response = await _dio.post<Map<String, dynamic>>(
+        _url,
+        data: {
+          'query': query,
+          'search_depth': searchDepth,
+          'max_results': maxResults,
+          'topic': searchTopic.value,
+          'include_answer': includeAnswer,
+          'include_raw_content': false,
+        },
+        options: Options(
+          headers: {'Authorization': 'Bearer ${_env.tavilyApiKey}'},
+        ),
+      );
       final data = response.data;
-      if (data is! Map) return [];
-      return resultsFromResponse(Map<String, dynamic>.from(data));
-    } on FirebaseFunctionsException catch (e) {
-      debugPrint('WebSearchService: webSearch failed (${e.code})');
-      return [];
+      if (response.statusCode != 200 || data == null) return [];
+      return resultsFromResponse(data);
     } catch (e) {
       debugPrint('WebSearchService: error: $e');
       return [];

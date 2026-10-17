@@ -1,15 +1,12 @@
-import 'package:cloud_functions/cloud_functions.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
+import 'package:opfan/core/services/config/environment_service.dart';
 import 'package:opfan/core/services/web_search/web_search_service.dart';
 
-class _MockFunctions extends Mock implements FirebaseFunctions {}
-
-class _MockCallable extends Mock implements HttpsCallable {}
+class _MockDio extends Mock implements Dio {}
 
 void main() {
-  setUpAll(() => registerFallbackValue(HttpsCallableOptions()));
-
   group('WebSearchService behaviour', () {
     test('maps results and attaches the answer to the first one', () {
       final results = WebSearchService.resultsFromResponse({
@@ -26,24 +23,16 @@ void main() {
       expect(results.last.answer, isNull);
     });
 
-    test('returns no results when the function refuses the call', () async {
-      final functions = _MockFunctions();
-      final callable = _MockCallable();
-      when(
-        () => functions.httpsCallable(
-          'webSearch',
-          options: any(named: 'options'),
-        ),
-      ).thenReturn(callable);
-      when(() => callable.call<Object?>(any())).thenThrow(
-        FirebaseFunctionsException(code: 'unauthenticated', message: 'no'),
+    test('does not call Tavily without a key', () async {
+      final dio = _MockDio();
+      final service = WebSearchService(
+        env: EnvironmentService(values: const {}),
+        dio: dio,
       );
 
-      final results = await WebSearchService(
-        functions: functions,
-      ).search('One Piece');
-
-      expect(results, isEmpty);
+      expect(service.isConfigured, isFalse);
+      expect(await service.search('One Piece'), isEmpty);
+      verifyZeroInteractions(dio);
     });
   });
 }
