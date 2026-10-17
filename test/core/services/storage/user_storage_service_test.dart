@@ -5,9 +5,12 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:hive/hive.dart';
 import 'package:mocktail/mocktail.dart';
+import 'package:opfan/core/models/theme/theme_model.dart';
+import 'package:opfan/core/services/config/storage_service.dart';
 import 'package:opfan/core/services/storage/i_encryption_key_store.dart';
 import 'package:opfan/core/services/storage/user_storage_service.dart';
 import 'package:opfan/core/storage/user_data_names.dart';
+import 'package:opfan/features/nami_finances/data/models/nami_finances_model.dart';
 
 class _MockFirebaseAuth extends Mock implements FirebaseAuth {}
 
@@ -32,6 +35,14 @@ void main() {
   late Directory documentsDir;
   late _MockFirebaseAuth auth;
   late StreamController<User?> authChanges;
+
+  setUpAll(() {
+    for (final registration in HiveStorageService.adapters) {
+      if (!Hive.isAdapterRegistered(registration.typeId)) {
+        registration.register();
+      }
+    }
+  });
 
   setUp(() async {
     hiveDir = await Directory.systemTemp.createTemp('user_storage_hive');
@@ -137,6 +148,45 @@ void main() {
         isTrue,
       );
     });
+
+    test('moves legacy finance records into the typed user box', () async {
+      final legacy = await Hive.openBox<NamiFinancesModel>('nami_finances');
+      await legacy.put(
+        '2026-09',
+        NamiFinancesModel(
+          id: 'f1',
+          month: DateTime(2026, 9),
+          monthlyIncomes: const [],
+          expenses: const [],
+          createdAt: DateTime(2026, 9, 1),
+          updatedAt: DateTime(2026, 9, 2),
+        ),
+      );
+      await legacy.close();
+      startSignedIn('u1');
+
+      final box = await build().openUserBox<NamiFinancesModel>('nami_finances');
+
+      expect(box.get('2026-09')?.id, 'f1');
+      expect(await Hive.boxExists('nami_finances'), isFalse);
+    });
+
+    test(
+      'keeps the legacy box and leaves nothing open when a move fails',
+      () async {
+        // A HiveObject stays bound to the box it was read from, so copying it
+        // into another box throws — the failure path the migration must survive.
+        final legacy = await Hive.openBox<ThemeSettings>('nami_finances');
+        await legacy.put('settings', ThemeSettings(isDarkMode: true));
+        await legacy.close();
+        startSignedIn('u1');
+
+        final box = await build().openUserBox<ThemeSettings>('nami_finances');
+
+        expect(box.isOpen, isTrue);
+        expect(await Hive.boxExists('nami_finances'), isTrue);
+      },
+    );
 
     test('moves the legacy auth cache into an encrypted device box', () async {
       final legacy = await Hive.openBox<String>('auth_cache');

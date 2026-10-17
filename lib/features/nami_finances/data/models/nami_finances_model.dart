@@ -1,7 +1,9 @@
 import 'package:hive/hive.dart';
 import 'package:opfan/core/storage/hive_type_ids.dart';
 
-class NamiFinancesModel extends HiveObject {
+// Deliberately not a HiveObject: a HiveObject is bound to the box it was read
+// from, which breaks moving records between boxes (per-user storage migration).
+class NamiFinancesModel {
   final String id;
 
   final DateTime month;
