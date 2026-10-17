@@ -188,6 +188,31 @@ void main() {
       },
     );
 
+    test(
+      'keeps legacy months when the user saved one after a failed move',
+      () async {
+        final saved = await Hive.openBox<String>(
+          'nami_finances_u1',
+          encryptionCipher: HiveAesCipher(_FixedKeyStore(0).key),
+        );
+        await saved.putAll({'2026-09': 'new Sept', '2026-10': 'new Oct'});
+        await saved.close();
+        final legacy = await Hive.openBox<String>('nami_finances');
+        await legacy.putAll({'2026-08': 'old August', '2026-09': 'old Sept'});
+        await legacy.close();
+        startSignedIn('u1');
+
+        final box = await build().openUserBox<String>('nami_finances');
+
+        expect(box.toMap(), {
+          '2026-08': 'old August',
+          '2026-09': 'new Sept',
+          '2026-10': 'new Oct',
+        });
+        expect(await Hive.boxExists('nami_finances'), isFalse);
+      },
+    );
+
     test('moves the legacy auth cache into an encrypted device box', () async {
       final legacy = await Hive.openBox<String>('auth_cache');
       await legacy.put('current_user', 'cached');

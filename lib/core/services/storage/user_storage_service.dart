@@ -173,6 +173,8 @@ class UserStorageService implements IUserStorageService {
 
   /// A failed move leaves the legacy box untouched (it is retried on the next
   /// launch) and closes both boxes, so the typed open that follows still works.
+  /// The user may have saved into the new box between a failed move and the
+  /// retry, so only legacy keys it lacks are copied: its own entries win.
   Future<void> _moveLegacyBox(String legacyName, String targetName) async {
     if (!await Hive.boxExists(legacyName)) return;
     Box<dynamic>? legacy;
@@ -183,7 +185,10 @@ class UserStorageService implements IUserStorageService {
         targetName,
         encryptionCipher: _cipher,
       );
-      if (target.isEmpty) await target.putAll(legacy.toMap());
+      await target.putAll({
+        for (final MapEntry(:key, :value) in legacy.toMap().entries)
+          if (!target.containsKey(key)) key: value,
+      });
       await target.close();
       await legacy.deleteFromDisk();
       debugPrint('UserStorageService: moved "$legacyName" to "$targetName"');
