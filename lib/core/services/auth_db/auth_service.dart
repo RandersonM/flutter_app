@@ -2,10 +2,10 @@
 // Copyright © 2025.
 
 import 'dart:async';
-import 'dart:io';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter/services.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:hive/hive.dart';
 import 'package:opfan/core/auth/models/user_model.dart';
@@ -18,6 +18,12 @@ enum AuthStatus { unknown, authenticated, unauthenticated }
 
 class AuthService implements IAuthService {
   static const String _userKey = 'current_user';
+  static const _revokedSessionCodes = {
+    'user-token-expired',
+    'user-disabled',
+    'user-not-found',
+    'invalid-user-token',
+  };
 
   final FirebaseAuth _firebaseAuth;
   final GoogleSignIn _googleSignIn;
@@ -52,10 +58,14 @@ class AuthService implements IAuthService {
             await firebaseUser.getIdToken(true);
             debugPrint('AuthService: Valid cached session found');
           } catch (e) {
-            debugPrint(
-              'AuthService: Cached session expired, clearing cache - $e',
-            );
-            await _clearUser();
+            if (_isSessionRevoked(e)) {
+              debugPrint('AuthService: Session revoked, clearing cache - $e');
+              await _clearUser();
+            } else {
+              debugPrint(
+                'AuthService: Token refresh failed, keeping cache - $e',
+              );
+            }
           }
         } else {
           debugPrint('AuthService: Cached user mismatch, clearing cache');
@@ -100,19 +110,13 @@ class AuthService implements IAuthService {
         return false;
       }
       return true;
-    } on SocketException catch (_) {
-      // Device is offline — fall back to the cached session.
-      debugPrint('AuthService: Offline — validating session from local cache');
-      return _isLocalSessionValid();
     } catch (e) {
-      if (_isNetworkError(e)) {
-        debugPrint(
-          'AuthService: Network error — validating session from local cache',
-        );
-        return _isLocalSessionValid();
+      if (_isSessionRevoked(e)) {
+        debugPrint('AuthService: Session revoked - $e');
+        return false;
       }
-      debugPrint('AuthService: Session validation error - $e');
-      return false;
+      debugPrint('AuthService: Token refresh failed, using local cache - $e');
+      return _isLocalSessionValid();
     }
   }
 
@@ -128,15 +132,11 @@ class AuthService implements IAuthService {
         firebaseUser.uid == cachedUser.uid;
   }
 
-  /// Heuristic to detect network-related exceptions from Firebase.
-  bool _isNetworkError(Object e) {
-    final msg = e.toString().toLowerCase();
-    return msg.contains('network') ||
-        msg.contains('socket') ||
-        msg.contains('failed host lookup') ||
-        msg.contains('connection') ||
-        msg.contains('unavailable');
-  }
+  /// Only an answer from the auth server ends the session. Offline, timeouts
+  /// and unknown failures keep the cached user, so opening the app without
+  /// network never signs anyone out.
+  bool _isSessionRevoked(Object e) =>
+      e is FirebaseAuthException && _revokedSessionCodes.contains(e.code);
 
   @override
   Future<bool> refreshToken() async {
@@ -273,29 +273,24 @@ class AuthService implements IAuthService {
         try {
           await firebaseUser.getIdToken(true);
         } catch (e) {
-          debugPrint('AuthService: Firebase token expired, signing out - $e');
-          await signOut();
-          return null;
+          if (_isSessionRevoked(e)) {
+            debugPrint('AuthService: Session revoked, signing out - $e');
+            await signOut();
+            return null;
+          }
+          debugPrint('AuthService: Token refresh failed, keeping session - $e');
         }
 
         final isGoogleProvider = firebaseUser.providerData.any(
           (provider) => provider.providerId == 'google.com',
         );
 
-        if (isGoogleProvider) {
-          try {
-            final googleUser = _googleSignIn.currentUser;
-            if (googleUser == null) {
-              final restored = await restoreGoogleSession();
-              if (!restored) {
-                debugPrint('AuthService: Google session expired, signing out');
-                await signOut();
-                return null;
-              }
-            }
-          } catch (e) {
-            debugPrint('AuthService: Error checking Google session - $e');
-          }
+        if (isGoogleProvider &&
+            _googleSignIn.currentUser == null &&
+            await _isGoogleSessionGone()) {
+          debugPrint('AuthService: Google session expired, signing out');
+          await signOut();
+          return null;
         }
 
         final cachedUser = currentUser;
@@ -344,6 +339,17 @@ class AuthService implements IAuthService {
     } catch (e) {
       debugPrint('AuthService: Error checking auth status - $e');
       return null;
+    }
+  }
+
+  Future<bool> _isGoogleSessionGone() async {
+    try {
+      return await _googleSignIn.signInSilently(suppressErrors: false) == null;
+    } on PlatformException catch (e) {
+      return e.code == GoogleSignIn.kSignInRequiredError;
+    } catch (e) {
+      debugPrint('AuthService: Google session not restored - $e');
+      return false;
     }
   }
 

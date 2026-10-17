@@ -86,6 +86,10 @@ class _LoginScreenState extends State<LoginScreen> {
         listener: (context, state) {
           if (state is AuthAuthenticated) {
             _handleSuccessfulAuth(context);
+          } else if (state is AuthNeedsOnboarding) {
+            Navigator.of(
+              context,
+            ).pushNamedAndRemoveUntil(AppRoutes.onboarding, (route) => false);
           } else if (state is AuthError) {
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
