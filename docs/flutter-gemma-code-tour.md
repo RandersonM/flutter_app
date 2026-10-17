@@ -264,13 +264,13 @@ O `switch` sobre `ModelResponse` é o trecho mais didático do arquivo: `TextRes
 
 > **Mensagem do bloco:** a mesma infraestrutura, uma escolha de arquitetura invertida. E para números, a invertida é a certa.
 
-### 28. [`bloc/chat/nami_chat_bloc.dart:90-127`](../lib/features/nami_finances/bloc/chat/nami_chat_bloc.dart#L90-L127) — `_ensureGemmaReady`
+### 28. [`bloc/chat/nami_chat_bloc.dart:103-145`](../lib/features/nami_finances/bloc/chat/nami_chat_bloc.dart#L103-L145) — `_ensureGemmaReady`
 
 **Comece por aqui**, é a parte que ninguém adivinha lendo de fora.
 
 **A frase:** "A Nami é passageira do modelo. Ela espera o `GemmaReady` — e só dispara o `initialize()` se **ninguém** começou a carregar ainda."
 
-**O detalhe:** leia o comentário: chamar `initialize()` com um load em curso recriaria o chat e **apagaria uma conversa do Vegapunk em andamento**. E o caminho triste vira `NamiChatFailure.modelNotInstalled`, que a sheet traduz para uma mensagem de produto (`namiChatModelNotInstalled`): *"Modelo de IA ainda não foi baixado — abra o chat do Vegapunk para instalá-lo."* Ou seja: o chat do Vegapunk é a superfície de instalação do modelo no app.
+**O detalhe:** leia o comentário: chamar `initialize()` com um load em curso recriaria o chat e **apagaria uma conversa do Vegapunk em andamento**. E o caminho triste vira `NamiChatFailure.modelNotInstalled`, que a sheet traduz para uma mensagem de produto (`namiChatModelNotInstalled`): *"Modelo de IA ainda não foi baixado — abra o chat do Vegapunk para instalá-lo."* Ou seja: o chat do Vegapunk é a superfície de instalação do modelo no app. Se o modelo já estiver em `GemmaError`, ela falha na hora (nenhum status novo viria sozinho), e 2 min sem status também viram `modelLoadFailed` — a sheet nunca fica presa no "Preparando Nami...".
 
 ### 29. [`bloc/chat/nami_intent_router.dart`](../lib/features/nami_finances/bloc/chat/nami_intent_router.dart) ⭐
 
@@ -280,7 +280,7 @@ O `switch` sobre `ModelResponse` é o trecho mais didático do arquivo: `TextRes
 
 **O detalhe:** o docstring explica *por que* — o modelo pequeno tende a "descrever" o uso de uma ferramenta sem emitir a chamada, e a deturpar números. Mostre a extração de valores: `"60 a 80 mil"` → usa o maior como preço (pior caso). Esse tipo de regra de negócio em Dart é testável de um jeito que prompt não é.
 
-### 30. [`bloc/chat/nami_chat_bloc.dart:230-282`](../lib/features/nami_finances/bloc/chat/nami_chat_bloc.dart#L230-L282)
+### 30. [`bloc/chat/nami_chat_bloc.dart:242-306`](../lib/features/nami_finances/bloc/chat/nami_chat_bloc.dart#L242-L306)
 
 **Mostre:** `_generateAnswer` e depois `_stripToolCallJson`.
 

@@ -43,6 +43,11 @@ RAG store. The chat is on-device — see `ai-on-device.md`.
   `exp:<expenseId>`, metadata `month`), synced by `syncMonth` on save and a one-time
   24-month backfill. Stale ids are dropped at read time.
 - Chat history is in-memory only.
+- Lifecycle: a model already in `GemmaError` fails at once (`modelLoadFailed`, or
+  `modelNotInstalled` for an install error); 2 min without a status also fails. A
+  **90 s watchdog** (same as Vegapunk) ends a stalled answer with
+  `generationTimedOut`. `close()` stops the generation and closes the `nami`
+  session; handlers check `isClosed` after every await so nothing reopens it.
 
 ## UI
 
