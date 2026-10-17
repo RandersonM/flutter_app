@@ -17,6 +17,10 @@ class DuelsBloc extends Bloc<DuelsEvent, DuelsState> {
   final ICustomCharacterRepository _customCharacterRepository;
   final Random _random = Random();
 
+  /// Bumped by every start and reset, so a duel whose suspense delay outlives
+  /// a reset does not write its result over the reset state.
+  int _duelGeneration = 0;
+
   DuelsBloc({
     required this._featuredCharacterRepository,
     required this._customCharacterRepository,
@@ -125,9 +129,11 @@ class DuelsBloc extends Bloc<DuelsEvent, DuelsState> {
         return;
       }
 
+      final generation = ++_duelGeneration;
       emit(currentState.copyWith(isDuelInProgress: true, clearWinner: true));
 
       await Future.delayed(const Duration(seconds: 2));
+      if (isClosed || generation != _duelGeneration) return;
 
       final winner = DuelScoring.winner(
         currentState.firstCharacter!,
@@ -141,6 +147,7 @@ class DuelsBloc extends Bloc<DuelsEvent, DuelsState> {
   }
 
   void _onResetDuel(ResetDuel event, Emitter<DuelsState> emit) {
+    _duelGeneration++;
     if (state is DuelsReady) {
       final currentState = state as DuelsReady;
 
