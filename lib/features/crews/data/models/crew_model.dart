@@ -15,6 +15,12 @@ class CrewMember {
     required this.bounty,
   });
 
+  /// Role keys arrive as `viceCaptain`, `vice-captain` or `vice captain`.
+  String get _normalizedRole =>
+      (role ?? '').toLowerCase().replaceAll(RegExp(r'[^a-z]'), '');
+  bool get isCaptain => _normalizedRole == 'captain';
+  bool get isViceCaptain => _normalizedRole == 'vicecaptain';
+
   Map<String, dynamic> toMap() {
     return {
       'characterId': characterId,

@@ -99,18 +99,18 @@ class CrewDetailsBloc extends Bloc<CrewDetailsEvent, CrewDetailsState> {
     emit(state.copyWith(isBusy: true));
 
     try {
+      final member = CrewMember(
+        characterId: character.id!,
+        name: character.name,
+        nickname: character.nickname,
+        role: event.roleKey,
+        bounty: character.bounty,
+      );
       final updatedCrew = crew.copyWith(
-        members: [
-          ...crew.members,
-          CrewMember(
-            characterId: character.id!,
-            name: character.name,
-            nickname: character.nickname,
-            role: event.roleKey,
-            bounty: character.bounty,
-          ),
-        ],
+        members: [...crew.members, member],
         rolesFilled: [...crew.rolesFilled, event.roleKey],
+        captain: member.isCaptain ? member.name : null,
+        viceCaptain: member.isViceCaptain ? member.name : null,
       );
 
       await _crewRepository.updateCrew(crew.id!, updatedCrew);

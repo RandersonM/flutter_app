@@ -23,6 +23,12 @@ class _SearchInputState extends State<SearchInput> {
   final TextEditingController _controller = TextEditingController();
   InputState state = InputState.empty;
 
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
   String _clearInput(String input) {
     return input.trim().replaceAll(RegExp(' +'), ' ');
   }

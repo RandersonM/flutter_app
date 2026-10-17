@@ -138,13 +138,21 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
     }
   }
 
+  UserModel? _signedInUser() => switch (context.read<AuthBloc>().state) {
+    AuthNeedsOnboarding(:final user) => user,
+    AuthAuthenticated(:final user) => user,
+    _ => null,
+  };
+
   void _submitForm() {
     if (_formKey2.currentState!.validate() &&
         _activityLevel != null &&
         _goal != null) {
-      final user =
-          _initialData ??
-          context.read<AuthBloc>().state.props.first as UserModel;
+      final user = _initialData ?? _signedInUser();
+      if (user == null) {
+        Navigator.of(context).pushReplacementNamed(AppRoutes.login);
+        return;
+      }
 
       final updatedUser = user.copyWith(
         gender: _gender,

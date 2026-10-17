@@ -150,6 +150,30 @@ void main() {
       ],
     );
 
+    // testWidgets runs in a fake-async zone, so the 2 s delay is driven by pump.
+    testWidgets('a reset during the suspense delay wins over the result', (
+      tester,
+    ) async {
+      when(
+        () => canon.getAllOnePieceCharacters(limit: 100),
+      ).thenAnswer((_) async => [luffy, zoro]);
+      when(() => custom.getUserCustomCharacters()).thenAnswer((_) async => []);
+      final bloc = build()..add(const LoadDuelsScreen());
+      addTearDown(bloc.close);
+      await tester.pump();
+      bloc
+        ..add(SelectFirstCharacter(luffy))
+        ..add(SelectSecondCharacter(zoro))
+        ..add(const StartDuel());
+      await tester.pump(const Duration(seconds: 1));
+      expect((bloc.state as DuelsReady).isDuelInProgress, isTrue);
+
+      bloc.add(const ResetDuel());
+      await tester.pump(const Duration(seconds: 2));
+
+      expect(bloc.state, DuelsReady(availableCharacters: [luffy, zoro]));
+    });
+
     blocTest<DuelsBloc, DuelsState>(
       'does not start without two fighters',
       build: build,

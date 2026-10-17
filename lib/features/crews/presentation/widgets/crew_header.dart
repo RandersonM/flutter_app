@@ -101,13 +101,13 @@ class CrewHeader extends StatelessWidget {
                                 crew.boatName!,
                               ),
                             ),
-                          if (crew.captain != null)
+                          if (crew.captain?.isNotEmpty ?? false)
                             _buildInfoRow(
                               context,
                               PhosphorIconsRegular.user,
                               l10n.labelValue(l10n.captain, crew.captain!),
                             ),
-                          if (crew.viceCaptain != null)
+                          if (crew.viceCaptain?.isNotEmpty ?? false)
                             _buildInfoRow(
                               context,
                               PhosphorIconsRegular.user,
