@@ -4,65 +4,54 @@
 > tripulações. Para o LLM que roda **no dispositivo** (`flutter_gemma`, chats do Vegapunk e
 > da Nami), veja [`flutter-gemma-on-device.md`](./flutter-gemma-on-device.md).
 
-## Arquitetura: o app não tem a chave
+## Arquitetura: sem chave do Gemini no app, sem custo
 
-Desde o SEC-1, o app nunca recebe a chave do Gemini, do Tavily nem do Imgur. Ele chama três
-Cloud Functions callable (`functions/src/ai_proxy.ts`), que guardam as chaves como
-**secrets** do Firebase:
+O projeto Firebase está no plano gratuito **Spark** (sem conta de faturamento). Por isso o
+Gemini passa pelo **Firebase AI Logic** (pacote `firebase_ai`, backend *Gemini Developer
+API*), que funciona no Spark:
 
-| Function | Faz | Secrets |
+- a chave do Gemini fica **dentro do projeto Firebase** — o app não tem nenhuma;
+- cada chamada leva um token do **App Check** (também gratuito);
+- o limite é o *free tier* do Gemini; sem cartão cadastrado, não existe cobrança.
+
+| Uso | Modelo | Código |
 |---|---|---|
-| `geminiGenerateText` | `gemini-2.5-flash-lite` (texto do Sanji) | `GEMINI_API_KEY` |
-| `geminiGenerateImage` | `gemini-2.5-flash-image` + upload no Imgur, devolve a URL | `GEMINI_API_KEY`, `IMGUR_CLIENT_ID` |
-| `webSearch` | busca Tavily do Vegapunk (`searchInternet`) | `TAVILY_API_KEY` |
+| Texto do Sanji | `gemini-2.5-flash-lite` | `GeminiService.generateText` |
+| Imagem de personagem / tripulação | `gemini-2.5-flash-image` | `GeminiService.generateImage` |
 
-Toda chamada:
+`GeminiService` (`lib/core/services/gemini/`) usa `IGeminiClient`, implementado por
+`FirebaseAiGeminiClient` — a única classe que conhece o `firebase_ai`. A imagem gerada vem
+em bytes e é hospedada por `IImageHostService` (`ImgurImageHostService`, com
+`IMGUR_CLIENT_ID` do `.env`; sem ele, a imagem fica como data URI).
 
-- exige **usuário logado** (`unauthenticated` caso contrário);
-- consome uma **cota diária por usuário** em `ai_usage/{uid}` (texto 50, imagem 10, busca 30);
-  passou do limite → `resource-exhausted`;
-- valida tamanho do prompt (12 000 caracteres) e da busca (400);
-- pode exigir **App Check** (`REQUIRE_APP_CHECK=true`).
+Toda falha vira `null` (o Sanji mostra o erro de dica/refeição; a imagem não aparece). Cota
+gratuita esgotada (`QuotaExceededException`) pausa novas chamadas por 2 minutos.
 
-No app, `GeminiService` e `WebSearchService` (`lib/core/services/`) só fazem a chamada:
-qualquer falha vira `null` / lista vazia, e `resource-exhausted` pausa novas chamadas por 2
-minutos.
+## Configurar (uma vez)
 
-## Configurar
+1. No [console do Firebase](https://console.firebase.google.com/project/opfan-db177), abra
+   **AI Logic** → **Get started** → escolha **Gemini Developer API**. O console cria e
+   guarda a chave do Gemini no projeto.
+2. **App Check** → registre os dois apps:
+   - Android: **Play Integrity**;
+   - iOS: **DeviceCheck**;
+   - em builds de debug o app imprime um *debug token* no log — adicione-o em
+     App Check → Apps → ⋮ → *Manage debug tokens*.
+3. Ainda em App Check → **APIs** → *Firebase AI Logic* → **Enforce**, depois que os apps e
+   os debug tokens estiverem registrados (antes disso, todas as chamadas seriam recusadas).
 
-1. Gere as chaves:
-   - Gemini: [Google AI Studio](https://aistudio.google.com/app/apikey)
-   - Tavily: [tavily.com](https://tavily.com)
-   - Imgur: [api.imgur.com/oauth2/addclient](https://api.imgur.com/oauth2/addclient) (anonymous usage)
-2. Grave como secrets e faça o deploy:
+Nada disso exige cartão.
 
-```bash
-firebase functions:secrets:set GEMINI_API_KEY
-firebase functions:secrets:set TAVILY_API_KEY
-firebase functions:secrets:set IMGUR_CLIENT_ID
-cd functions && npm run deploy
-```
+## Free tier: o que conferir
 
-3. (Recomendado) **App Check**: registre os apps no console do Firebase (Play Integrity no
-   Android, DeviceCheck no iOS) e os *debug tokens* que o app imprime em builds de debug.
-   Depois crie `functions/.env.opfan-db177` com `REQUIRE_APP_CHECK=true` e faça o deploy de
-   novo. Antes disso, o parâmetro fica `false` — ligar sem registrar os apps bloqueia todas
-   as chamadas.
-
-O projeto precisa estar no plano **Blaze** (já está: as Functions agendadas exigem). Nesse
-volume as chamadas cabem na cota grátis de Functions; o consumo do Gemini e do Tavily é
-cobrado pela própria chave, com ou sem proxy.
-
-## Comportamento de falha
-
-- **Sem login, sem cota ou sem rede**: o Sanji mostra o erro de dica/refeição; a geração de
-  imagem não devolve imagem; a busca do Vegapunk responde que não encontrou resultados.
-- **Cache**: URLs de imagem geradas ficam em memória por prompt durante a sessão.
+O *free tier* da Gemini Developer API tem limites por minuto e por dia por modelo. A
+geração de imagem (`gemini-2.5-flash-image`) pode ter cota baixa ou zero no free tier —
+se a geração de imagem falhar sempre com cota esgotada, é esse o motivo, e o resto do app
+continua funcionando.
 
 ## Solução de problemas
 
-- `unauthenticated`: o usuário não está logado (Sanji e imagens ficam em rotas privadas).
-- `failed-precondition`: `REQUIRE_APP_CHECK` ligado e o app sem token válido — registre o app
-  ou o debug token no console.
-- `resource-exhausted`: cota diária do usuário (ou do Gemini/Tavily) estourada.
-- `unavailable`: a chamada ao Gemini, Tavily ou Imgur falhou; veja `firebase functions:log`.
+- *"Firebase AI Logic API has not been used / is disabled"*: faça o passo 1.
+- Chamadas recusadas depois de ativar o *Enforce*: o app (ou o debug token do
+  simulador/emulador) não está registrado no App Check.
+- `QuotaExceededException` nos logs: cota gratuita do Gemini esgotada; espere o reset.

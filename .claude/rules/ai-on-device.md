@@ -122,16 +122,15 @@ The small model often *describes* a tool call instead of emitting it. So:
 
 ## Cloud AI and other APIs
 
-- Gemini (`lib/core/services/gemini/gemini_service.dart`) calls the
-  `geminiGenerateText` / `geminiGenerateImage` Cloud Functions
-  (`functions/src/ai_proxy.ts`): `gemini-2.5-flash-lite` for Sanji text,
-  `gemini-2.5-flash-image` + Imgur upload for character / crew images. The server
-  requires a signed-in user and a daily quota per uid (text 50, image 10, search
-  30, in `ai_usage/{uid}`); any failure returns `null`, and `resource-exhausted`
-  pauses calls for 2 min. Not used for chat.
-- Tavily web search goes through the `webSearch` Cloud Function behind
-  `searchInternet`; must return an error result offline, not throw.
-- App Check is activated in `main.dart` (debug provider in debug builds). The
-  functions only reject calls without a token once the `REQUIRE_APP_CHECK` param
-  is set to true at deploy.
+- Gemini (`lib/core/services/gemini/`) goes through **Firebase AI Logic**
+  (`firebase_ai`, Gemini Developer API, free on Spark) behind `IGeminiClient`:
+  `gemini-2.5-flash-lite` for Sanji text, `gemini-2.5-flash-image` for character /
+  crew images, uploaded by `IImageHostService` (Imgur, data URI fallback). No
+  Gemini key in the app. Any failure returns `null`; a used-up free quota
+  (`QuotaExceededException`) pauses calls for 2 min. Not used for chat.
+- Tavily web search (`TAVILY_API_KEY`, free plan) behind `searchInternet`; must
+  return an error result offline or unconfigured, not throw.
+- App Check is activated in `main.dart` (debug provider in debug builds) and its
+  token goes with every AI Logic call; enforce it for AI Logic in the Firebase
+  console once both apps (and the debug tokens) are registered.
 - Env keys without defaults throw at startup — see `data-layer.md` › Configuration.

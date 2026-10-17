@@ -66,9 +66,10 @@ changes run the app on a simulator when one is available.
    Never write a literal, never reuse a shipped id.
 6. **Config comes from `IEnvironmentService`.** Never read `.env` (it holds real
    keys and is denied to you) — use `.env.example` to learn the key names. It is
-   passed with `--dart-define-from-file=.env`, never bundled as an asset. Keys
-   the server can hold (Gemini, Tavily, Imgur) are Cloud Functions secrets,
-   called through the AI proxy — never add them back to the app.
+   passed with `--dart-define-from-file=.env`, never bundled as an asset. The
+   project has **no billing account**: every solution must work on the free
+   Spark plan (no Cloud Functions deploys, no Secret Manager). Gemini goes
+   through Firebase AI Logic (`IGeminiClient`), so no Gemini key in the app.
 7. **On-device AI limits are product decisions:** keep `maxTokens: 4096` and the
    Gemma E2B model; do math and routing in Dart, not in the model; touch the vector
    store only through `RagStoreCoordinator`. Details: `.claude/rules/ai-on-device.md`.

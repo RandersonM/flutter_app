@@ -22,7 +22,6 @@ paths:
 | `planner` | `userId` | robin_knowledge | owner only |
 | `workout_assessments` | `user_id` | zoro_workout, sanji_cooking | owner only; one doc per user per month (`month_year`) |
 | `featuredCharacters` | — | home, one_piece | public read, no client writes (seeded with the Admin SDK) |
-| `ai_usage/{uid}` | doc id | AI proxy functions | no rule → clients denied; written only by the functions (daily quota) |
 
 Any other collection has no `match` block and is denied to clients. Nami finances
 are Hive-only — never add a Firestore collection for them without a spec.
@@ -65,14 +64,16 @@ function reads FCM tokens from `user_tokens`, sends multicast, prunes invalid to
 | `sendSanjiCookingNotification` | 12:00 daily |
 | `sendCustomNotification` | callable |
 | `testNotification` | HTTP |
-| `geminiGenerateText` / `geminiGenerateImage` / `webSearch` | callable, signed-in only, daily quota, secrets `GEMINI_API_KEY` / `IMGUR_CLIENT_ID` / `TAVILY_API_KEY`, param `REQUIRE_APP_CHECK` (`functions/src/ai_proxy.ts`) |
 
 Sends prune a token only for `registration-token-not-registered` /
 `invalid-registration-token`, and log it masked. `testNotification` (admin only)
 sends to the caller's own token, never to other users.
 
 Deploy with `cd functions && npm run deploy` — only when the user asks; it hits the
-real project.
+real project. **The project has no billing account (Spark):** Functions cannot be
+deployed (or redeployed) until billing is enabled, and the functions above were
+deployed before that — check in the console whether they still run. Do not
+propose Functions, Secret Manager or Cloud Scheduler for new work.
 
 ## Config
 

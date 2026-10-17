@@ -86,10 +86,11 @@ paths:
   `String.fromEnvironment` entry in `EnvironmentService._compiledValues`, a getter
   on the interface + impl, the key in `.env.example`, and a default when the app
   can run without it.
-- Everything in `.env` ends up in the binary. A key that bills or can be abused
-  (Gemini, Tavily, Imgur) belongs in a Cloud Functions secret behind a callable
-  (`functions/src/ai_proxy.ts`); only app-restricted keys (YouTube) or read-only
-  tokens (HuggingFace) stay client-side.
+- Everything in `.env` ends up in the binary. The project has no billing account
+  (Spark), so there is no server to hide keys: only free-plan keys (Tavily,
+  Imgur — a leak only uses up the free quota), app-restricted keys (YouTube) or
+  read-only tokens (HuggingFace) go there. Gemini never does: it goes through
+  Firebase AI Logic, which keeps its key in the Firebase project.
 - Never read or print `.env`. Never hardcode API keys or client ids in code.
 
 ## External APIs

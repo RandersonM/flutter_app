@@ -299,7 +299,8 @@ chatting with Nami. After that both run offline.
 `.env` holds build-time values passed with `--dart-define-from-file=.env`. Every key
 is optional: a missing key falls back to its default, and a missing API key turns
 that one feature off gracefully. Everything here is compiled into the binary, so it
-only holds keys that are safe to restrict by app.
+only holds free-plan keys (a leak can only use up the free quota) or keys restricted
+by app. The Firebase project has no billing account: nothing here can incur a charge.
 
 | Variable | Used by | Required? | Default / where to get it |
 |---|---|---|---|
@@ -311,28 +312,20 @@ only holds keys that are safe to restrict by app.
 | `GEMMA_MODEL_NAME` | Gemma model type detection | Yes, for the AI chats | `gemma-4-E2B-it.litertlm` |
 | `APP_NAME` | App config | No | `One Piece Simple App` |
 | `NETWORK_TIMEOUT` | Dio timeout (ms) | No | `30000` |
+| `TAVILY_API_KEY` | Vegapunk web search | Optional | [tavily.com](https://tavily.com) free plan (1,000 searches/month, no card) |
+| `IMGUR_CLIENT_ID` | Hosting generated images | Optional | [Imgur](https://api.imgur.com/oauth2/addclient) anonymous client — without it, images stay inline |
 
-### Server-side secrets (Cloud Functions)
+### Gemini (Sanji, character and crew images)
 
-Gemini (Sanji, character and crew images), Tavily (Vegapunk web search) and Imgur
-(image hosting) run behind signed-in callables in `functions/src/ai_proxy.ts`, with a
-daily quota per user. Their keys are Functions secrets, never app config:
-
-```bash
-firebase functions:secrets:set GEMINI_API_KEY    # Google AI Studio
-firebase functions:secrets:set TAVILY_API_KEY    # tavily.com
-firebase functions:secrets:set IMGUR_CLIENT_ID   # api.imgur.com/oauth2/addclient
-cd functions && npm run deploy
-```
-
-After registering both apps in **Firebase App Check** (Play Integrity / DeviceCheck,
-plus the debug tokens the app prints in debug builds), deploy with
-`REQUIRE_APP_CHECK=true` (in `functions/.env.opfan-db177`) to reject calls without a
-token.
+Gemini has **no key in `.env`**: it runs through **Firebase AI Logic**, which keeps the
+key inside the Firebase project and works on the free Spark plan. Enable it once in the
+Firebase console → **AI Logic** → **Get started** → **Gemini Developer API**. Then
+register both apps in **App Check** (Play Integrity / DeviceCheck, plus the debug token
+the app prints in debug builds) and enforce it for AI Logic.
 
 **Minimum to explore the app:** Firebase configured + an empty `.env` copied from the
-example. Add `HUGGING_FACE_API_KEY` for Nami's chat and Vegapunk, the Functions
-secrets for Sanji and images, and `YOUTUBE_API_KEY` for real AMVs.
+example. Add `HUGGING_FACE_API_KEY` for Nami's chat and Vegapunk, enable Firebase AI
+Logic for Sanji and images, and `YOUTUBE_API_KEY` for real AMVs.
 
 ## 🧪 Development
 
