@@ -213,6 +213,59 @@ void main() {
       },
     );
 
+    test(
+      'puts the legacy chat history before messages saved after a failed move',
+      () async {
+        final saved = await Hive.openBox<String>(
+          'vegapunk_chat_history_u1',
+          encryptionCipher: HiveAesCipher(_FixedKeyStore(0).key),
+        );
+        await saved.add('new');
+        await saved.close();
+        final legacy = await Hive.openBox<String>('vegapunk_chat_history');
+        await legacy.addAll(['old 1', 'old 2']);
+        await legacy.close();
+        startSignedIn('u1');
+
+        final history = await build().openUserLazyBox<String>(
+          'vegapunk_chat_history',
+        );
+
+        expect(
+          [for (var i = 0; i < history.length; i++) await history.getAt(i)],
+          ['old 1', 'old 2', 'new'],
+        );
+      },
+    );
+
+    test(
+      'retries a failed move into the first owner, not the account now signed in',
+      () async {
+        final failing = await Hive.openBox<ThemeSettings>('nami_finances');
+        await failing.put('settings', ThemeSettings(isDarkMode: true));
+        await failing.close();
+        startSignedIn('u1');
+        await build().openUserBox<ThemeSettings>('nami_finances');
+        await Hive.close();
+        final legacy = await Hive.openBox<dynamic>('nami_finances');
+        await legacy.clear();
+        await legacy.put('2026-09', 'u1 data');
+        await legacy.close();
+
+        startSignedIn('u2');
+        final storage = build();
+        final box = await storage.openUserBox<String>('nami_finances');
+
+        expect(box.get('2026-09'), isNull);
+        await signIn('u1');
+        expect(
+          (await storage.openUserBox<String>('nami_finances')).get('2026-09'),
+          'u1 data',
+        );
+        expect(await Hive.boxExists('legacy_data_owner_encrypted'), isFalse);
+      },
+    );
+
     test('moves the legacy auth cache into an encrypted device box', () async {
       final legacy = await Hive.openBox<String>('auth_cache');
       await legacy.put('current_user', 'cached');
