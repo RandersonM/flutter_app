@@ -35,10 +35,14 @@ class UserProfileRepository implements IUserProfileRepository {
   }
 
   @override
-  Future<void> saveProfile(UserModel profile) async {
+  Future<void> saveProfile(UserModel profile, {UserModel? previous}) async {
     try {
+      final changes = BodyProfile.fromUser(profile).toFirestoreChanges(
+        previous: previous == null ? null : BodyProfile.fromUser(previous),
+      );
       final data = {
-        ...BodyProfile.fromUser(profile).toFirestore(),
+        for (final MapEntry(:key, :value) in changes.entries)
+          key: value ?? FieldValue.delete(),
         'updated_at': FieldValue.serverTimestamp(),
       };
 

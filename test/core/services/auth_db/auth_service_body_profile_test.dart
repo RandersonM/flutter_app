@@ -14,6 +14,8 @@ import 'package:opfan/core/services/storage/i_user_storage_service.dart';
 import 'package:opfan/core/user_profile/models/body_profile.dart';
 import 'package:opfan/core/user_profile/repository/i_user_profile_repository.dart';
 
+import '../../../fakes/fake_connectivity_service.dart';
+
 class _MockFirebaseAuth extends Mock implements FirebaseAuth {}
 
 class _MockUser extends Mock implements User {}
@@ -152,7 +154,10 @@ void main() {
       storage: storage,
       userDataEraser: _MockEraser(),
     );
-    bloc = AuthBloc(authService: service);
+    bloc = AuthBloc(
+      authService: service,
+      connectivityService: FakeConnectivityService(),
+    );
   });
 
   tearDown(() => bloc.close());
@@ -237,7 +242,9 @@ void main() {
     );
 
     test('keeps the body saved by onboarding during a slow sign-in', () async {
-      when(() => profiles.saveProfile(any())).thenAnswer((_) async {});
+      when(
+        () => profiles.saveProfile(any(), previous: any(named: 'previous')),
+      ).thenAnswer((_) async {});
       final read = Completer<BodyProfile?>();
       when(
         () => profiles.fetchBodyProfile('u1'),
@@ -253,9 +260,40 @@ void main() {
       expect(bloc.state, isA<AuthAuthenticated>());
     });
 
+    test(
+      'puts back the stored profile when the server refuses a save',
+      () async {
+        when(
+          () => profiles.saveProfile(any(), previous: any(named: 'previous')),
+        ).thenThrow(
+          FirebaseException(
+            plugin: 'cloud_firestore',
+            code: 'permission-denied',
+          ),
+        );
+        await service.init();
+        final stored = _storedBody.applyTo(_signedInUser);
+        cache['current_user'] = stored;
+        final failures = <void>[];
+        service.profileSyncFailures.listen(failures.add);
+
+        await service.updateBodyProfile(stored.copyWith(weightKg: 61));
+        await pumpEventQueue();
+
+        expect(cache['current_user'], stored);
+        expect(failures, hasLength(1));
+        verify(
+          () => profiles.saveProfile(
+            stored.copyWith(weightKg: 61),
+            previous: stored,
+          ),
+        ).called(1);
+      },
+    );
+
     test('saves a body profile without waiting for the server', () async {
       when(
-        () => profiles.saveProfile(any()),
+        () => profiles.saveProfile(any(), previous: any(named: 'previous')),
       ).thenAnswer((_) => Completer<void>().future);
       final completeUser = _storedBody.applyTo(_signedInUser);
       await service.init();
@@ -267,7 +305,12 @@ void main() {
 
       expect(cache['current_user'], completeUser);
       expect(changes, [completeUser]);
-      verify(() => profiles.saveProfile(completeUser)).called(1);
+      verify(
+        () => profiles.saveProfile(
+          completeUser,
+          previous: any(named: 'previous'),
+        ),
+      ).called(1);
     });
   });
 }

@@ -11,8 +11,10 @@ abstract class IUserProfileRepository {
   /// cached, denied).
   Future<BodyProfile?> fetchBodyProfile(String uid);
 
-  /// Merges the body fields of [profile] into `/users/{uid}`.
-  Future<void> saveProfile(UserModel profile);
+  /// Merges the body fields of [profile] into `/users/{uid}`. A field
+  /// [profile] lacks is deleted only when [previous] had it (the user cleared
+  /// it); otherwise the stored value is kept.
+  Future<void> saveProfile(UserModel profile, {UserModel? previous});
 
   /// Returns [true] if the document at `/users/{uid}` exists and all
   /// mandatory body-profile fields are non-null.

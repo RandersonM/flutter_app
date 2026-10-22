@@ -8,6 +8,8 @@ import 'package:opfan/core/auth/models/user_model.dart';
 import 'package:opfan/core/services/auth_db/auth_service.dart';
 import 'package:opfan/core/services/auth_db/i_auth_service.dart';
 
+import '../../fakes/fake_connectivity_service.dart';
+
 class _MockAuthService extends Mock implements IAuthService {}
 
 UserModel _user({String uid = 'alice', bool withBodyProfile = false}) =>
@@ -37,6 +39,9 @@ void main() {
     when(
       () => auth.profileChanges,
     ).thenAnswer((_) => const Stream<UserModel>.empty());
+    when(
+      () => auth.profileSyncFailures,
+    ).thenAnswer((_) => const Stream<void>.empty());
     when(() => auth.authStatusStream).thenAnswer((_) => authStatus.stream);
     when(() => auth.init()).thenAnswer((_) async {});
     when(() => auth.isSessionValid()).thenAnswer((_) async => true);
@@ -49,7 +54,10 @@ void main() {
       'sends a new user without a body profile to onboarding after sign-in',
       setUp: () =>
           when(() => auth.signInWithGoogle()).thenAnswer((_) async => _user()),
-      build: () => AuthBloc(authService: auth),
+      build: () => AuthBloc(
+        authService: auth,
+        connectivityService: FakeConnectivityService(),
+      ),
       act: (bloc) => bloc.add(const AuthSignInRequested()),
       expect: () => [
         const AuthLoading(message: 'Signing in...'),
@@ -62,7 +70,10 @@ void main() {
       setUp: () => when(
         () => auth.signInWithGoogle(),
       ).thenAnswer((_) async => _user(withBodyProfile: true)),
-      build: () => AuthBloc(authService: auth),
+      build: () => AuthBloc(
+        authService: auth,
+        connectivityService: FakeConnectivityService(),
+      ),
       act: (bloc) => bloc.add(const AuthSignInRequested()),
       expect: () => [
         const AuthLoading(message: 'Signing in...'),
@@ -77,7 +88,10 @@ void main() {
       'keeps onboarding when Firebase replays the same signed-in user',
       setUp: () =>
           when(() => auth.checkAuthStatus()).thenAnswer((_) async => _user()),
-      build: () => AuthBloc(authService: auth),
+      build: () => AuthBloc(
+        authService: auth,
+        connectivityService: FakeConnectivityService(),
+      ),
       act: (bloc) async {
         bloc.add(const AuthStarted());
         await Future<void>.delayed(Duration.zero);
@@ -92,7 +106,10 @@ void main() {
 
     blocTest<AuthBloc, AuthState>(
       'sends a different account without a body profile to onboarding',
-      build: () => AuthBloc(authService: auth),
+      build: () => AuthBloc(
+        authService: auth,
+        connectivityService: FakeConnectivityService(),
+      ),
       seed: () => AuthAuthenticated(user: _user(withBodyProfile: true)),
       act: (bloc) => bloc.add(AuthStatusChanged(_user(uid: 'bob'))),
       expect: () => [AuthNeedsOnboarding(user: _user(uid: 'bob'))],
@@ -108,7 +125,10 @@ void main() {
           return controller.stream;
         });
         when(() => auth.checkAuthStatus()).thenAnswer((_) async => _user());
-        final bloc = AuthBloc(authService: auth);
+        final bloc = AuthBloc(
+          authService: auth,
+          connectivityService: FakeConnectivityService(),
+        );
 
         bloc.add(const AuthStarted());
         await Future<void>.delayed(Duration.zero);
@@ -123,7 +143,10 @@ void main() {
 
     blocTest<AuthBloc, AuthState>(
       'signs out when Firebase reports no user',
-      build: () => AuthBloc(authService: auth),
+      build: () => AuthBloc(
+        authService: auth,
+        connectivityService: FakeConnectivityService(),
+      ),
       seed: () => AuthNeedsOnboarding(user: _user()),
       act: (bloc) => bloc.add(const AuthStatusChanged(null)),
       expect: () => [const AuthUnauthenticated()],

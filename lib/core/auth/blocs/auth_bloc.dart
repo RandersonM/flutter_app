@@ -12,10 +12,14 @@ import 'auth_state.dart';
 
 class AuthBloc extends Bloc<AuthEvent, AuthState> {
   final IAuthService _authService;
+  final IConnectivityService _connectivityService;
   StreamSubscription<AuthStatus>? _authStatusSubscription;
   late final StreamSubscription<UserModel> _profileSubscription;
+  late final StreamSubscription<void> _profileSyncFailureSubscription;
+  late final StreamSubscription<bool> _connectivitySubscription;
 
-  AuthBloc({required this._authService}) : super(const AuthInitial()) {
+  AuthBloc({required this._authService, required this._connectivityService})
+    : super(const AuthInitial()) {
     //
 
     on<AuthStarted>(_onAuthStarted);
@@ -25,6 +29,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     on<AuthUpdateProfile>(_onAuthUpdateProfile);
     on<AuthProfileBodyUpdated>(_onAuthProfileBodyUpdated);
     on<AuthProfileChanged>(_onAuthProfileChanged);
+    on<AuthProfileSyncFailed>(_onAuthProfileSyncFailed);
     on<AuthDeleteAccount>(_onAuthDeleteAccount);
     on<AuthCheckStatus>(_onAuthCheckStatus);
     on<AuthClearCache>(_onAuthClearCache);
@@ -32,6 +37,18 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     _profileSubscription = _authService.profileChanges.listen(
       (user) => add(AuthProfileChanged(user)),
     );
+    _profileSyncFailureSubscription = _authService.profileSyncFailures.listen(
+      (_) => add(const AuthProfileSyncFailed()),
+    );
+    _connectivitySubscription = _connectivityService.onStatusChanged.listen(
+      _onConnectivityChanged,
+    );
+  }
+
+  /// A profile read offline (reinstall: Firebase kept the session, the local
+  /// cache did not) sends a complete user to onboarding; read it again online.
+  void _onConnectivityChanged(bool isOnline) {
+    if (isOnline && state is AuthNeedsOnboarding) add(const AuthCheckStatus());
   }
 
   Future<void> _onAuthStarted(
@@ -78,7 +95,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       if (user != null) {
         // Firebase reports the sign-in before this returns, so the user may
         // already be on onboarding, or past it; re-emitting would undo that.
-        if (user.uid != _signedInUid) {
+        if (_isNewSignIn(user)) {
           emit(_signedInState(user, isFirstLogin: true));
         }
       } else {
@@ -113,7 +130,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     final user = event.user;
     if (user == null) {
       emit(const AuthUnauthenticated());
-    } else if (user.uid != _signedInUid) {
+    } else if (_isNewSignIn(user)) {
       emit(_signedInState(user));
     }
   }
@@ -181,6 +198,13 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     if (state is AuthAuthenticated) {
       emit(AuthAuthenticated(user: _processUserWithMiddleware(event.user)));
     }
+  }
+
+  void _onAuthProfileSyncFailed(
+    AuthProfileSyncFailed event,
+    Emitter<AuthState> emit,
+  ) {
+    if (_signedInUid != null) _emitProfileUpdateFailed(emit, previous: state);
   }
 
   Future<void> _onAuthDeleteAccount(
@@ -266,7 +290,12 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   }
 
   /// Firebase replays the current user on every subscription, so a status
-  /// change for the uid already in the state carries nothing new.
+  /// change for the uid already in the state carries nothing new, unless it
+  /// brings the complete profile that state is still waiting for.
+  bool _isNewSignIn(UserModel user) =>
+      user.uid != _signedInUid ||
+      (state is AuthNeedsOnboarding && user.isProfileComplete);
+
   String? get _signedInUid => switch (state) {
     AuthAuthenticated(:final user) ||
     AuthNeedsOnboarding(:final user) ||
@@ -295,6 +324,8 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   Future<void> close() {
     _authStatusSubscription?.cancel();
     _profileSubscription.cancel();
+    _profileSyncFailureSubscription.cancel();
+    _connectivitySubscription.cancel();
     return super.close();
   }
 }
