@@ -4,6 +4,9 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 String _roleKey(String? role) =>
     (role ?? '').toLowerCase().replaceAll(RegExp(r'[^a-z]'), '');
 
+bool isSameCrewRole(String? a, String? b) =>
+    _roleKey(a).isNotEmpty && _roleKey(a) == _roleKey(b);
+
 class CrewMember {
   final String characterId;
   final String name;

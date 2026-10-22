@@ -55,6 +55,20 @@ abstract class ICrewRepository {
 
   Future<void> removeMemberFromCrew(String crewId, String characterId);
 
+  /// Takes [member] out of every crew that has it and, when [toCrewId] is
+  /// given, into that crew with [member]'s role, in one write. Throws
+  /// [CrewRoleTakenException] when another member holds that role.
+  Future<void> moveMember(CrewMember member, {String? toCrewId});
+
+  /// Rewrites the character's copy (and the captain/vice-captain names it
+  /// holds) in every crew that has it, in one write.
+  Future<void> syncMemberCopies(
+    String characterId, {
+    required String name,
+    String? nickname,
+    required String bounty,
+  });
+
   Future<void> updateCrewMember(
     String crewId,
     String characterId,

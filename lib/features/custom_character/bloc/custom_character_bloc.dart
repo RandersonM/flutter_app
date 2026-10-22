@@ -1,5 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:opfan/core/errors/app_exceptions.dart';
+import 'package:opfan/features/custom_character/data/models/custom_character_model.dart';
 import 'package:opfan/features/custom_character/data/repository/i_custom_character_repository.dart';
 import 'package:opfan/features/crews/data/repository/i_crew_repository.dart';
 import 'package:opfan/features/crews/data/models/crew_model.dart';
@@ -58,19 +60,16 @@ class CustomCharacterBloc
       final characterId = await _customCharacterRepository
           .createCustomCharacter(event.character);
 
-      if (event.crewId != null && event.crewRole != null) {
-        try {
-          final crewMember = CrewMember(
-            characterId: characterId,
-            name: event.character.name,
-            nickname: event.character.nickname,
-            role: event.crewRole,
-            bounty: event.character.bounty,
-          );
-
-          await _crewRepository.addMemberToCrew(event.crewId!, crewMember);
-        } catch (e) {
-          debugPrint('CustomCharacterBloc: add to crew failed: $e');
+      final crewId = event.crewId;
+      if (crewId != null && event.crewRole != null) {
+        final joinFailure = await _joinCrew(
+          crewId,
+          _memberOf(characterId, event.character, role: event.crewRole),
+        );
+        if (joinFailure != null) {
+          if (isClosed) return;
+          emit(CustomCharacterError(joinFailure));
+          return;
         }
       }
 
@@ -102,12 +101,58 @@ class CustomCharacterBloc
     return crew?.isRoleFilled(role) ?? false;
   }
 
+  /// The role can be taken between the check and the write; the character
+  /// just created is then deleted, so the form reports a failure instead of a
+  /// success that left it outside the crew it was created for.
+  Future<CustomCharacterFailure?> _joinCrew(
+    String crewId,
+    CrewMember member,
+  ) async {
+    try {
+      await _crewRepository.addMemberToCrew(crewId, member);
+      return null;
+    } catch (e) {
+      debugPrint('CustomCharacterBloc: add to crew failed: $e');
+      await _discardCreated(member.characterId);
+      return e is CrewRoleTakenException
+          ? CustomCharacterFailure.crewRoleTaken
+          : CustomCharacterFailure.createFailed;
+    }
+  }
+
+  Future<void> _discardCreated(String characterId) async {
+    try {
+      await _customCharacterRepository.deleteCustomCharacter(characterId);
+    } catch (e) {
+      debugPrint('CustomCharacterBloc: discarding $characterId failed: $e');
+    }
+  }
+
+  static CrewMember _memberOf(
+    String characterId,
+    CustomCharacterModel character, {
+    String? role,
+  }) => CrewMember(
+    characterId: characterId,
+    name: character.name,
+    nickname: character.nickname,
+    role: role,
+    bounty: character.bounty,
+  );
+
   Future<void> _onUpdateCustomCharacter(
     UpdateCustomCharacter event,
     Emitter<CustomCharacterState> emit,
   ) async {
     emit(CustomCharacterUpdating());
     try {
+      final assignment = event.crewAssignment;
+      if (assignment != null) {
+        await _crewRepository.moveMember(
+          _memberOf(event.characterId, event.character, role: assignment.role),
+          toCrewId: assignment.crewId,
+        );
+      }
       await _customCharacterRepository.updateCustomCharacter(
         event.characterId,
         event.character,
@@ -126,6 +171,9 @@ class CustomCharacterBloc
           const CustomCharacterError(CustomCharacterFailure.listRefreshFailed),
         );
       }
+    } on CrewRoleTakenException catch (e) {
+      debugPrint('CustomCharacterBloc: update refused, $e');
+      emit(const CustomCharacterError(CustomCharacterFailure.crewRoleTaken));
     } catch (e) {
       debugPrint('CustomCharacterBloc: update character failed: $e');
       emit(const CustomCharacterError(CustomCharacterFailure.updateFailed));

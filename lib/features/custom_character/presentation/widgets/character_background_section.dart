@@ -24,6 +24,10 @@ class CharacterBackgroundSection extends StatelessWidget {
   final void Function(String?) onCrewChanged;
   final String? selectedCrewRole;
   final void Function(String?) onCrewRoleChanged;
+
+  /// The role this character already holds in the selected crew: offered
+  /// although the crew counts it as filled.
+  final String? heldCrewRole;
   final String? characterName;
   final String? race;
   final List<String>? haki;
@@ -46,6 +50,7 @@ class CharacterBackgroundSection extends StatelessWidget {
     required this.onCrewChanged,
     required this.selectedCrewRole,
     required this.onCrewRoleChanged,
+    this.heldCrewRole,
     this.characterName,
     this.race,
     this.haki,
@@ -67,18 +72,16 @@ class CharacterBackgroundSection extends StatelessWidget {
         .where((crew) => crew.id == selectedCrewId)
         .firstOrNull;
     // Same rule as the crew details screen: a role already held is not offered.
-    final freeRoleOptions = occupationOptions
-        .where(
-          (option) =>
-              selectedCrew?.isRoleFilled(
-                CharacterLocalizationMapper.mapLocalizedToOccupation(
-                  option,
-                  l10n,
-                ),
-              ) !=
-              true,
-        )
-        .toList();
+    bool isOffered(String option) {
+      final role = CharacterLocalizationMapper.mapLocalizedToOccupation(
+        option,
+        l10n,
+      );
+      return selectedCrew?.isRoleFilled(role) != true ||
+          isSameCrewRole(role, heldCrewRole);
+    }
+
+    final freeRoleOptions = occupationOptions.where(isOffered).toList();
     final selectedRoleLabel = selectedCrewRole == null
         ? null
         : CharacterLocalizationMapper.mapOccupationToLocalized(

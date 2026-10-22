@@ -59,7 +59,6 @@ and the ARBs.
     create-character form `vicecaptain`, older data `vice-captain`. Compare
     through `CrewMember.isCaptain`/`isViceCaptain`/`holdsRole` and
     `CrewModel.isRoleFilled`, never with `==` on the raw string.
-  - The edit-character form shows a crew role picker, but the role is not saved.
   - `DeleteCrew` reloads *all* crews, not the user's.
 
 ## Custom characters (Firestore `custom_characters`)
@@ -69,9 +68,17 @@ and the ARBs.
 - Deleting a character **cascades**: removed from crews through
   `removeMemberFromCrew`, which also clears captain/vice-captain.
 - Renaming a character (`updateCustomCharacter`) updates its copy in the crew
-  (`members[].name/nickname/bounty`, and `captain`/`viceCaptain`); a failed crew
+  (`members[].name/nickname/bounty`, and `captain`/`viceCaptain`) through
+  `ICrewRepository.syncMemberCopies`, one batch for every crew; a failed crew
   sync is logged and does not fail the character save.
-- Create can attach to a crew (`crewId`, `crewRole`) in the same flow.
+- Create can attach to a crew (`crewId`, `crewRole`) in the same flow. If
+  joining fails after the role check (taken meanwhile, crew gone), the new
+  character is deleted and the form gets `crewRoleTaken` / `createFailed`.
+- Editing reads the character's membership (crew and role) from the crews'
+  `members`; the role picker also offers the role it already holds. Only a
+  changed crew or role sends a `CrewAssignment`: `ICrewRepository.moveMember`
+  takes it out of its crew and into the chosen one in one batch before the
+  character is saved, and a role taken there saves nothing (`crewRoleTaken`).
 - Routes `/createCustomCharacter`, `/customCharacterList`, `/editCustomCharacter`
   — all private.
 - BLoCs: `CustomCharacterBloc` (factory) and `CharacterFormOptionsCubit` (devil
@@ -95,8 +102,8 @@ and the ARBs.
     King's vs no haki +20; fruit user vs Armament −20
   - Random 0–79; **tie goes to character 1**; 2 s suspense delay.
 - Shuffle and clear are disabled while a duel resolves, and any fighter change
-  or reset cancels the pending duel (`_duelGeneration`); the result is judged
-  from the state at the end of the delay.
+  or reset cancels the pending duel (`_duelGeneration`) and clears the last
+  winner; the result is judged from the state at the end of the delay.
 - Keep scoring in a pure, testable function if you change it.
 - `DuelsBloc` is a DI factory.
 - Loads only the signed-in user's custom characters (`getUserCustomCharacters()`);

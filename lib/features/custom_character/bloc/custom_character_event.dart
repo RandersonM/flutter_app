@@ -23,14 +23,33 @@ class CreateCustomCharacter extends CustomCharacterEvent {
   List<Object?> get props => [character, crewId, crewRole];
 }
 
+/// [crewAssignment] is null when the crew and role were left untouched: the
+/// membership stays as it is.
 class UpdateCustomCharacter extends CustomCharacterEvent {
   final String characterId;
   final CustomCharacterModel character;
+  final CrewAssignment? crewAssignment;
 
-  const UpdateCustomCharacter(this.characterId, this.character);
+  const UpdateCustomCharacter(
+    this.characterId,
+    this.character, {
+    this.crewAssignment,
+  });
 
   @override
-  List<Object?> get props => [characterId, character];
+  List<Object?> get props => [characterId, character, crewAssignment];
+}
+
+/// The crew an edited character should belong to; a null [crewId] takes it
+/// out of its crew.
+class CrewAssignment extends Equatable {
+  final String? crewId;
+  final String? role;
+
+  const CrewAssignment({this.crewId, this.role});
+
+  @override
+  List<Object?> get props => [crewId, role];
 }
 
 class DeleteCustomCharacter extends CustomCharacterEvent {
