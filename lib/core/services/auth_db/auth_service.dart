@@ -185,15 +185,14 @@ class AuthService implements IAuthService {
         );
 
         final finalUser = await _withStoredBodyProfile(userModel);
+        if (!_isStillSignedIn(user.uid)) return null;
 
-        await _saveUser(finalUser);
+        final cachedUser = await _cacheSignedInUser(finalUser);
 
-        if (_notificationService.isInitialized) {
-          unawaited(_saveFcmToken(user.uid));
-        }
+        unawaited(_saveFcmToken(user.uid));
 
         debugPrint('AuthService: User signed in successfully and cached');
-        return finalUser;
+        return cachedUser;
       }
 
       return null;
@@ -272,9 +271,9 @@ class AuthService implements IAuthService {
         }
 
         final finalUser = await _withStoredBodyProfile(baseUser);
+        if (!_isStillSignedIn(firebaseUser.uid)) return null;
 
-        await _saveUser(finalUser);
-        return finalUser;
+        return _cacheSignedInUser(finalUser);
       }
 
       await _clearUser();
@@ -283,6 +282,25 @@ class AuthService implements IAuthService {
       debugPrint('AuthService: Error checking auth status - $e');
       return null;
     }
+  }
+
+  /// A sign-out during the token refresh or the profile read must win:
+  /// caching the user afterwards would sign them back in.
+  bool _isStillSignedIn(String uid) => _firebaseAuth.currentUser?.uid == uid;
+
+  /// Onboarding may save the body profile while a slow sign-in or status
+  /// check is still reading the server (offline, the save is only local), so
+  /// a complete cache of the same user is kept over an incomplete read.
+  Future<UserModel> _cacheSignedInUser(UserModel user) async {
+    final cached = currentUser;
+    if (cached != null &&
+        cached.uid == user.uid &&
+        cached.isProfileComplete &&
+        !user.isProfileComplete) {
+      return cached;
+    }
+    await _saveUser(user);
+    return user;
   }
 
   /// [user] with the body profile stored in Firestore. When it cannot be read
@@ -302,6 +320,7 @@ class AuthService implements IAuthService {
   /// the signed-in state must not wait for it.
   Future<void> _saveFcmToken(String uid) async {
     try {
+      await _notificationService.initialize();
       await _notificationService.saveTokenToFirestore(uid);
     } catch (e) {
       debugPrint('AuthService: Could not save the FCM token - $e');

@@ -22,7 +22,11 @@ paths:
   cached in the encrypted device box `auth_cache_encrypted` (key `current_user`,
   `IUserStorageService.openDeviceBox`); when that cache is lost (reinstall,
   reset keychain) but Firebase still has the user, `checkAuthStatus` rebuilds
-  it from the Firebase user and the stored body profile.
+  it from the Firebase user and the stored body profile. Sign-in and
+  `checkAuthStatus` return `null` (and cache nothing) when Firebase no longer
+  has that uid after their slow reads, so a sign-out mid-check stays signed
+  out; and they keep a complete cached profile of the same uid over an
+  incomplete read, so onboarding saved meanwhile is not overwritten.
 - Local data is per user (`IUserStorageService`): signing out keeps it on the
   device under the uid, and the next account sees only its own.
 - `deleteAccount` signs in with Google again, erases the user's Firestore
@@ -57,7 +61,10 @@ paths:
   sign-in (fetching a new one, since sign-out deletes the device token; not
   awaited, so a slow write never holds the signed-in state), once per launch
   when `initialize` finds a restored Firebase session, and on every
-  `onTokenRefresh` while a Firebase user is signed in.
+  `onTokenRefresh` while a Firebase user is signed in. A save is dropped when
+  that uid is no longer signed in or `clearToken` ran while the token was
+  fetched, so a fast sign-out never leaves this device under the old account.
+  Sign-in retries an `initialize` that failed at launch.
 
 ## User profile
 

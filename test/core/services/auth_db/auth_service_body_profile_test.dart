@@ -113,9 +113,10 @@ void main() {
       () => firebaseAuth.authStateChanges(),
     ).thenAnswer((_) => const Stream<User?>.empty());
     when(() => firebaseAuth.currentUser).thenReturn(null);
-    when(
-      () => firebaseAuth.signInWithCredential(any()),
-    ).thenAnswer((_) async => credential);
+    when(() => firebaseAuth.signInWithCredential(any())).thenAnswer((_) async {
+      when(() => firebaseAuth.currentUser).thenReturn(user);
+      return credential;
+    });
     when(() => credential.user).thenReturn(user);
     when(() => user.uid).thenReturn('u1');
     when(() => user.email).thenReturn('u1@example.com');
@@ -138,7 +139,7 @@ void main() {
     when(
       () => profiles.fetchBodyProfile('u1'),
     ).thenAnswer((_) async => _storedBody);
-    when(() => notifications.isInitialized).thenReturn(true);
+    when(() => notifications.initialize()).thenAnswer((_) async {});
     when(
       () => notifications.saveTokenToFirestore(any()),
     ).thenAnswer((_) async {});
@@ -204,6 +205,52 @@ void main() {
 
       expect(bloc.state, isA<AuthAuthenticated>());
       verify(() => notifications.saveTokenToFirestore('u1')).called(1);
+    });
+
+    test('retries the notification setup before saving the token', () async {
+      await signIn();
+
+      verifyInOrder([
+        () => notifications.initialize(),
+        () => notifications.saveTokenToFirestore('u1'),
+      ]);
+    });
+
+    test(
+      'does not sign back in a user who signed out during a status check',
+      () async {
+        when(() => firebaseAuth.currentUser).thenReturn(user);
+        final read = Completer<BodyProfile?>();
+        when(
+          () => profiles.fetchBodyProfile('u1'),
+        ).thenAnswer((_) => read.future);
+        await service.init();
+
+        final check = service.checkAuthStatus();
+        await pumpEventQueue();
+        when(() => firebaseAuth.currentUser).thenReturn(null);
+        read.complete(_storedBody);
+
+        expect(await check, isNull);
+        expect(cache, isEmpty);
+      },
+    );
+
+    test('keeps the body saved by onboarding during a slow sign-in', () async {
+      when(() => profiles.saveProfile(any())).thenAnswer((_) async {});
+      final read = Completer<BodyProfile?>();
+      when(
+        () => profiles.fetchBodyProfile('u1'),
+      ).thenAnswer((_) => read.future);
+      final onboarded = _storedBody.applyTo(_signedInUser);
+
+      await signIn();
+      await service.updateBodyProfile(onboarded);
+      read.complete(null);
+      await pumpEventQueue();
+
+      expect(cache['current_user'], onboarded);
+      expect(bloc.state, isA<AuthAuthenticated>());
     });
 
     test('saves a body profile without waiting for the server', () async {

@@ -18,6 +18,8 @@ class UserStorageService implements IUserStorageService {
 
   static const guestScope = 'guest';
   static const _sqliteSidecarSuffixes = ['', '-wal', '-shm', '-journal'];
+  static const _legacyOwnerBox = 'legacy_data_owner';
+  static const _legacyOwnerKey = 'scope';
 
   final FirebaseAuth _auth;
   final IEncryptionKeyStore _keyStore;
@@ -151,30 +153,65 @@ class UserStorageService implements IUserStorageService {
   /// unencrypted name. They move once to whoever is signed in at the first
   /// launch of this version (or to the guest).
   Future<void> _migrateLegacyData() async {
-    for (final name in UserDataNames.userBoxes) {
-      await _moveLegacyBox(name, _userBoxName(name, _scope));
-    }
     for (final name in UserDataNames.deviceBoxes) {
       await _moveLegacyBox(name, _deviceBoxName(name));
+    }
+    if (!await _hasLegacyUserData()) return;
+    final owner = await _legacyDataOwner();
+    for (final name in UserDataNames.userBoxes) {
+      await _moveLegacyBox(name, _userBoxName(name, owner));
     }
     final directory = await _documentsDirectory();
     for (final name in UserDataNames.userDatabases) {
       for (final suffix in _sqliteSidecarSuffixes) {
         final legacy = File('${directory.path}/$name.db$suffix');
         final target = File(
-          '${directory.path}/${_databaseFileName(name, _scope)}$suffix',
+          '${directory.path}/${_databaseFileName(name, owner)}$suffix',
         );
         if (await legacy.exists() && !await target.exists()) {
           await legacy.rename(target.path);
         }
       }
     }
+    if (!await _hasLegacyUserData()) {
+      await Hive.deleteBoxFromDisk(_deviceBoxName(_legacyOwnerBox));
+    }
+  }
+
+  Future<bool> _hasLegacyUserData() async {
+    for (final name in UserDataNames.userBoxes) {
+      if (await Hive.boxExists(name)) return true;
+    }
+    final directory = await _documentsDirectory();
+    for (final name in UserDataNames.userDatabases) {
+      if (await File('${directory.path}/$name.db').exists()) return true;
+    }
+    return false;
+  }
+
+  /// The legacy data belongs to whoever was signed in when it was first
+  /// found. A move that fails is retried on a later launch, possibly with
+  /// another account signed in, so that owner is stored rather than re-read.
+  Future<String> _legacyDataOwner() async {
+    final box = await _openRecovering(
+      _deviceBoxName(_legacyOwnerBox),
+      () => Hive.openBox<String>(
+        _deviceBoxName(_legacyOwnerBox),
+        encryptionCipher: _cipher,
+      ),
+    );
+    final owner = box.get(_legacyOwnerKey);
+    if (owner == null) await box.put(_legacyOwnerKey, _scope);
+    await box.close();
+    return owner ?? _scope;
   }
 
   /// A failed move leaves the legacy box untouched (it is retried on the next
   /// launch) and closes both boxes, so the typed open that follows still works.
   /// The user may have saved into the new box between a failed move and the
   /// retry, so only legacy keys it lacks are copied: its own entries win.
+  /// A box filled with `add` (the chat history) is a list ordered by its int
+  /// keys; the legacy entries are older, so they go before the new ones.
   Future<void> _moveLegacyBox(String legacyName, String targetName) async {
     if (!await Hive.boxExists(legacyName)) return;
     Box<dynamic>? legacy;
@@ -185,10 +222,16 @@ class UserStorageService implements IUserStorageService {
         targetName,
         encryptionCipher: _cipher,
       );
-      await target.putAll({
-        for (final MapEntry(:key, :value) in legacy.toMap().entries)
-          if (!target.containsKey(key)) key: value,
-      });
+      if (_isList(legacy) && _isList(target)) {
+        final newer = target.values.toList();
+        await target.clear();
+        await target.addAll([...legacy.values, ...newer]);
+      } else {
+        await target.putAll({
+          for (final MapEntry(:key, :value) in legacy.toMap().entries)
+            if (!target.containsKey(key)) key: value,
+        });
+      }
       await target.close();
       await legacy.deleteFromDisk();
       debugPrint('UserStorageService: moved "$legacyName" to "$targetName"');
@@ -198,4 +241,6 @@ class UserStorageService implements IUserStorageService {
       if (legacy != null && legacy.isOpen) await legacy.close();
     }
   }
+
+  static bool _isList(Box<dynamic> box) => box.keys.every((key) => key is int);
 }

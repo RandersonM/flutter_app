@@ -86,8 +86,14 @@ void main() {
   group('NotificationService token behaviour', () {
     test('saves a fresh token when another account signs in', () async {
       await service.initialize();
+      final alice = _MockUser();
+      when(() => alice.uid).thenReturn('alice');
+      when(() => firebaseAuth.currentUser).thenReturn(alice);
       await service.saveTokenToFirestore('alice');
       await service.clearToken();
+      final bob = _MockUser();
+      when(() => bob.uid).thenReturn('bob');
+      when(() => firebaseAuth.currentUser).thenReturn(bob);
       when(() => messaging.getToken()).thenAnswer((_) async => 'token-2');
 
       await service.saveTokenToFirestore('bob');
@@ -127,6 +133,60 @@ void main() {
 
       expect(savedTokens(), [('alice', 'token-3')]);
       expect(service.fcmToken, 'token-3');
+    });
+
+    test('drops a token save when the user signs out during it', () async {
+      await service.initialize();
+      await service.clearToken();
+      final alice = _MockUser();
+      when(() => alice.uid).thenReturn('alice');
+      when(() => firebaseAuth.currentUser).thenReturn(alice);
+      final pendingToken = Completer<String?>();
+      when(() => messaging.getToken()).thenAnswer((_) => pendingToken.future);
+
+      final save = service.saveTokenToFirestore('alice');
+      await service.clearToken();
+      pendingToken.complete('token-2');
+      await save;
+      final bob = _MockUser();
+      when(() => bob.uid).thenReturn('bob');
+      when(() => firebaseAuth.currentUser).thenReturn(bob);
+      when(() => messaging.getToken()).thenAnswer((_) async => 'token-3');
+      await service.saveTokenToFirestore('bob');
+
+      expect(savedTokens(), [('bob', 'token-3')]);
+    });
+
+    test('does not save a token for an account no longer signed in', () async {
+      await service.initialize();
+      final bob = _MockUser();
+      when(() => bob.uid).thenReturn('bob');
+      when(() => firebaseAuth.currentUser).thenReturn(bob);
+
+      await service.saveTokenToFirestore('alice');
+
+      verifyNever(
+        () => firestore.createDocumentWithId(
+          collection: any(named: 'collection'),
+          documentId: any(named: 'documentId'),
+          data: any(named: 'data'),
+        ),
+      );
+    });
+
+    test('retries a setup that failed on the next call', () async {
+      var calls = 0;
+      when(() => messaging.getInitialMessage()).thenAnswer((_) async {
+        if (calls++ == 0) throw Exception('not ready');
+        return null;
+      });
+
+      await expectLater(service.initialize(), throwsException);
+      expect(service.isInitialized, isFalse);
+      await service.initialize();
+
+      expect(service.isInitialized, isTrue);
+      verify(() => messaging.onTokenRefresh).called(1);
     });
 
     test('keeps a refreshed token local while signed out', () async {
