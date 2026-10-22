@@ -41,13 +41,25 @@ class NamiRagService implements INamiRagService {
   /// paraphrases stop matching.
   static const double defaultThreshold = 0.55;
 
+  /// How long a search waits for the embedder. Loading one already on disk
+  /// takes seconds; the first download (~110 MB) takes minutes and carries on
+  /// in the background.
+  static const embedderWaitLimit = Duration(seconds: 10);
+
   bool _isInitialized = false;
+  Future<void>? _initializing;
   final Set<String> _backfilledStores = {};
+  final Map<String, Future<void>> _backfills = {};
 
   @override
-  Future<void> initialize() async {
-    if (_isInitialized) return;
+  Future<void> initialize() {
+    if (_isInitialized) return Future.value();
+    return _initializing ??= _initialize().whenComplete(() {
+      _initializing = null;
+    });
+  }
 
+  Future<void> _initialize() async {
     try {
       await _installEmbedder();
       _isInitialized = true;
@@ -105,7 +117,8 @@ class NamiRagService implements INamiRagService {
     await _syncMonthInto(store, model);
   }
 
-  Future<void> _syncMonthInto(String store, NamiFinancesModel model) async {
+  /// Whether every document of [model] made it into [store]'s index.
+  Future<bool> _syncMonthInto(String store, NamiFinancesModel model) async {
     final monthKey = _monthKey(model);
     final wanted = documentsFor(model);
     final expensesByDocument = {
@@ -114,17 +127,17 @@ class NamiRagService implements INamiRagService {
 
     // The month's record is read and written inside the store operation, so
     // two syncs of the same month cannot lose track of each other's documents.
-    await _inStore(store, () async {
+    return _inStore(store, () async {
       final meta = await _metaOf(store);
       if (meta == null) {
         debugPrint('NamiRagService: user changed, $monthKey not indexed');
-        return;
+        return false;
       }
       await _migrateIfNeeded(meta);
 
       final indexed = _indexedDocuments(meta.get(monthKey));
       final plan = planSync(indexed: indexed, wanted: wanted);
-      if (plan.toIndex.isEmpty && plan.toRemove.isEmpty) return;
+      if (plan.toIndex.isEmpty && plan.toRemove.isEmpty) return true;
 
       for (final id in plan.toRemove) {
         if (await _removeDocument(id)) indexed.remove(id);
@@ -140,6 +153,8 @@ class NamiRagService implements INamiRagService {
         'NamiRagService: $monthKey indexed ${plan.toIndex.length}, '
         'removed ${plan.toRemove.length} document(s)',
       );
+      final left = planSync(indexed: indexed, wanted: wanted);
+      return left.toIndex.isEmpty && left.toRemove.isEmpty;
     });
   }
 
@@ -219,13 +234,34 @@ class NamiRagService implements INamiRagService {
 
   @override
   Future<void> backfillIfNeeded(List<NamiFinancesModel> months) async {
-    if (months.isEmpty) return;
     final store = await _storeFile();
-    if (!_backfilledStores.add(store)) return;
-    if (!await _ensureInitialized()) return;
+    if (_backfilledStores.contains(store)) return;
+    await (_backfills[store] ??= _backfill(store, months).whenComplete(() {
+      _backfills.remove(store);
+    }));
+  }
+
+  /// The store counts as backfilled only once every month is in: an embedder
+  /// that could not load yet (offline) or a user switch mid-run leaves it to
+  /// the next call instead of skipping it for the rest of the session.
+  Future<void> _backfill(String store, List<NamiFinancesModel> months) async {
+    if (months.isNotEmpty && !await _ensureInitialized()) return;
+    var complete = true;
     for (final month in months) {
-      await _syncMonthInto(store, month);
+      complete = await _syncMonthInto(store, month) && complete;
     }
+    if (complete) _backfilledStores.add(store);
+  }
+
+  @override
+  Future<bool> isIndexComplete() async =>
+      _backfilledStores.contains(await _storeFile());
+
+  @override
+  Future<bool> isSearchReady() async {
+    if (_isInitialized) return true;
+    await initialize().timeout(embedderWaitLimit, onTimeout: () {});
+    return _isInitialized;
   }
 
   @override
@@ -235,7 +271,7 @@ class NamiRagService implements INamiRagService {
     double threshold = defaultThreshold,
   }) async {
     if (query.trim().isEmpty) return const [];
-    if (!await _ensureInitialized()) return const [];
+    if (!await isSearchReady()) throw const ExpenseSearchNotReady();
 
     try {
       final store = await _storeFile();

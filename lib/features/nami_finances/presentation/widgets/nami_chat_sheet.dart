@@ -224,6 +224,8 @@ class _NamiChatSheetContentState extends State<_NamiChatSheetContent> {
         NamiChatFailure.modelLoadFailed => l10n.namiChatModelLoadFailed,
         NamiChatFailure.connectionFailed => l10n.namiChatConnectionFailed,
         NamiChatFailure.generationTimedOut => l10n.namiChatGenerationTimedOut,
+        NamiChatFailure.expenseSearchNotReady =>
+          l10n.namiChatExpenseSearchNotReady,
       };
 
   Widget _buildErrorBubble(BuildContext context, NamiChatFailure failure) {

@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:io';
 
+import 'package:fake_async/fake_async.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_gemma/flutter_gemma_interface.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -8,6 +9,7 @@ import 'package:hive/hive.dart';
 import 'package:opfan/core/services/storage/i_user_storage_service.dart';
 import 'package:opfan/core/storage/user_data_names.dart';
 import 'package:opfan/features/nami_finances/data/models/nami_finances_model.dart';
+import 'package:opfan/features/nami_finances/data/services/i_nami_rag_service.dart';
 import 'package:opfan/features/nami_finances/data/services/nami_rag_service.dart';
 
 ExpenseModel _expense(String id, String description) => ExpenseModel(
@@ -60,6 +62,7 @@ class _SwitchableUserStorage implements IUserStorageService {
 class _FakeGemmaPlugin extends FlutterGemmaPlugin {
   final writes = <String>[];
   void Function()? onDocumentAdded;
+  bool failWrites = false;
   String? _openDatabase;
 
   @override
@@ -75,6 +78,7 @@ class _FakeGemmaPlugin extends FlutterGemmaPlugin {
     required String content,
     String? metadata,
   }) async {
+    if (failWrites) throw Exception('embedding failed');
     writes.add('$_openDatabase $id');
     onDocumentAdded?.call();
   }
@@ -236,5 +240,91 @@ void main() {
         expect(await _indexRecord('bob-3'), isEmpty);
       },
     );
+
+    test('retries a backfill whose embedder could not load', () async {
+      var attempts = 0;
+      final service = NamiRagService(
+        storage: _SwitchableUserStorage('alice-4'),
+        installEmbedder: () async {
+          if (attempts++ == 0) throw Exception('offline');
+        },
+      );
+      final months = [
+        _month([_expense('a', 'praia')]),
+      ];
+
+      await service.backfillIfNeeded(months);
+      expect(plugin.writes, isEmpty);
+      expect(await service.isIndexComplete(), isFalse);
+
+      await service.backfillIfNeeded(months);
+      expect(plugin.writes, [
+        '${_storePath('alice-4')} clear',
+        '${_storePath('alice-4')} exp:a',
+      ]);
+      expect(await service.isIndexComplete(), isTrue);
+    });
+
+    test('keeps the index incomplete until every expense is in', () async {
+      final service = NamiRagService(
+        storage: _SwitchableUserStorage('alice-5'),
+        installEmbedder: () async {},
+      );
+      final months = [
+        _month([_expense('a', 'praia')]),
+      ];
+      plugin.failWrites = true;
+
+      await service.backfillIfNeeded(months);
+      expect(await service.isIndexComplete(), isFalse);
+
+      plugin.failWrites = false;
+      await service.backfillIfNeeded(months);
+      expect(plugin.writes, contains('${_storePath('alice-5')} exp:a'));
+      expect(await service.isIndexComplete(), isTrue);
+    });
+
+    test('counts a user with no months as fully indexed', () async {
+      final service = NamiRagService(
+        storage: _SwitchableUserStorage('alice-6'),
+        installEmbedder: () => Completer<void>().future,
+      );
+
+      await service.backfillIfNeeded(const []);
+
+      expect(await service.isIndexComplete(), isTrue);
+    });
+
+    test('reports the search as not ready while the embedder downloads', () {
+      fakeAsync((async) {
+        final service = NamiRagService(
+          storage: _SwitchableUserStorage('alice-7'),
+          installEmbedder: () => Completer<void>().future,
+        );
+        Object? error;
+        service
+            .findExpenses('praia')
+            .then<void>((_) {}, onError: (Object e) => error = e);
+
+        async.elapse(
+          NamiRagService.embedderWaitLimit + const Duration(seconds: 1),
+        );
+
+        expect(error, isA<ExpenseSearchNotReady>());
+      });
+    });
+
+    test('reports the search as not ready when the embedder fails', () async {
+      final service = NamiRagService(
+        storage: _SwitchableUserStorage('alice-8'),
+        installEmbedder: () async => throw Exception('offline'),
+      );
+
+      expect(await service.isSearchReady(), isFalse);
+      await expectLater(
+        service.findExpenses('praia'),
+        throwsA(isA<ExpenseSearchNotReady>()),
+      );
+    });
   });
 }
