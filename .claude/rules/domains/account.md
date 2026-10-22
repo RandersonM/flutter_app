@@ -56,6 +56,10 @@ paths:
   `buildWhen` skips `ProfileUpdating/Updated/UpdateFailed`, so a profile save
   keeps the current root instead of falling to Splash.
 - **Guest mode exists:** login offers "skip for now"; public routes must work signed out.
+- Leaving a session (sign-out, account deletion, revoked session) always lands
+  on Login with an empty stack: `SignedOutRedirect` (in `MaterialApp.builder`)
+  does it, because login and onboarding replace the whole stack and remove
+  `AppWrapper`. A cancelled sign-in by a guest does not move them.
 - Login honours `returnRoute` / `returnArguments` from the route guard (`routing.md`).
 - FCM token (`INotificationService`): saved to `user_tokens/{uid}` on Google
   sign-in (fetching a new one, since sign-out deletes the device token; not
