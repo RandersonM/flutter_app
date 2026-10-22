@@ -103,6 +103,17 @@ class CrewModel {
   bool isRoleFilled(String role) =>
       members.any((member) => member.holdsRole(role));
 
+  /// The roles members hold, once each whatever the spelling; what the crew
+  /// shows, since [rolesFilled] may list roles of members who left.
+  List<String> get heldRoles {
+    final roles = <String>[];
+    for (final role in members.map((member) => member.role).nonNulls) {
+      if (_roleKey(role).isEmpty) continue;
+      if (!roles.any((held) => isSameCrewRole(held, role))) roles.add(role);
+    }
+    return roles;
+  }
+
   Map<String, dynamic> toFirestore() {
     return {
       'name': name,

@@ -34,7 +34,8 @@ and the ARBs.
 - **Each role can be filled once** → at most 11 members. A role is taken only
   while a member holds it: `CrewModel.isRoleFilled` reads `members` (legacy
   spellings included), never `rolesFilled`, which older crews still list for
-  members who left. The crew details dialog and the create-character form
+  members who left; the crew info and statistics show `CrewModel.heldRoles`
+  for the same reason. The crew details dialog and the create-character form
   only offer free roles; `CustomCharacterBloc` refuses a taken role before
   creating anything (`CustomCharacterFailure.crewRoleTaken`), `CrewDetailsBloc`
   emits `CrewDetailsFailure.roleTaken` without saving, and

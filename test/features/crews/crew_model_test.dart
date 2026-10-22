@@ -27,5 +27,21 @@ void main() {
 
       expect(crew.isRoleFilled('viceCaptain'), isTrue);
     });
+
+    test('shows the roles members hold, not the stored list', () {
+      final crew = CrewModel(
+        name: 'Straw Hats',
+        userId: 'alice',
+        rolesFilled: const ['captain', 'doctor'],
+        members: [
+          _member('luffy', 'captain'),
+          _member('zoro', 'vice-captain'),
+          _member('sanji', 'viceCaptain'),
+          _member('usopp', ''),
+        ],
+      );
+
+      expect(crew.heldRoles, ['captain', 'vice-captain']);
+    });
   });
 }
