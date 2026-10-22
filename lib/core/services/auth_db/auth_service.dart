@@ -12,6 +12,7 @@ import 'package:opfan/core/auth/models/user_model.dart';
 import 'package:opfan/core/errors/app_exceptions.dart';
 import 'package:opfan/core/services/index.dart';
 import 'package:opfan/core/storage/user_data_names.dart';
+import 'package:opfan/core/user_profile/models/body_profile.dart';
 import 'package:opfan/core/user_profile/repository/i_user_profile_repository.dart';
 
 enum AuthStatus { unknown, authenticated, unauthenticated }
@@ -437,12 +438,15 @@ class AuthService implements IAuthService {
     }
   }
 
+  /// With no stored document the refused save was the first one: the cache
+  /// drops it too, so the user is sent back to onboarding instead of keeping
+  /// a profile only this device has.
   Future<void> _restoreStoredBodyProfile(String uid) async {
     try {
       final stored = await _userProfileRepository.fetchBodyProfile(uid);
       final cached = currentUser;
-      if (stored == null || cached == null || cached.uid != uid) return;
-      final restored = stored.replaceIn(cached);
+      if (cached == null || cached.uid != uid) return;
+      final restored = (stored ?? const BodyProfile()).replaceIn(cached);
       await _saveUser(restored);
       _profileChanges.add(restored);
     } catch (e) {

@@ -291,6 +291,26 @@ void main() {
       },
     );
 
+    test('drops a refused first profile, so onboarding asks again', () async {
+      when(
+        () => profiles.saveProfile(any(), previous: any(named: 'previous')),
+      ).thenThrow(
+        FirebaseException(plugin: 'cloud_firestore', code: 'permission-denied'),
+      );
+      when(() => profiles.fetchBodyProfile('u1')).thenAnswer((_) async => null);
+      await service.init();
+      cache['current_user'] = _signedInUser;
+      final failures = <void>[];
+      service.profileSyncFailures.listen(failures.add);
+
+      await service.updateBodyProfile(_storedBody.applyTo(_signedInUser));
+      await pumpEventQueue();
+
+      expect(cache['current_user'], _signedInUser);
+      expect(cache['current_user']!.isProfileComplete, isFalse);
+      expect(failures, hasLength(1));
+    });
+
     test('saves a body profile without waiting for the server', () async {
       when(
         () => profiles.saveProfile(any(), previous: any(named: 'previous')),

@@ -94,7 +94,8 @@ paths:
 - `IAuthService.updateBodyProfile` stores the profile in the Hive cache, emits
   it on `profileChanges` and returns; the Firestore write is not awaited (it
   completes only on the server ack, so awaiting it hung offline saves). If the
-  server refuses it, the cache is put back to the stored profile, emitted on
+  server refuses it, the cache is put back to the stored profile (no stored
+document: the body is cleared, so onboarding asks again), emitted on
   `profileChanges`, and `profileSyncFailures` makes `AuthBloc` emit
   `ProfileUpdateFailed` (shown by `ProfileUpdateFailureListener`).
 - `UserNameMiddleware` (`lib/core/middleware/user_name_middleware.dart`) trims the
