@@ -226,11 +226,12 @@ void main() {
   });
 
   group('CustomCharacterBloc update and delete', () {
-    setUp(
-      () => when(
+    setUp(() {
+      when(
         () => characters.getUserCustomCharacters(),
-      ).thenAnswer((_) async => [luffy]),
-    );
+      ).thenAnswer((_) async => [luffy]);
+      when(() => crews.getCrewsByMember(any())).thenAnswer((_) async => []);
+    });
 
     blocTest<CustomCharacterBloc, CustomCharacterState>(
       'updates the character and refreshes the list',
@@ -315,6 +316,55 @@ void main() {
       ],
       verify: (_) =>
           verifyNever(() => characters.updateCustomCharacter(any(), any())),
+    );
+
+    blocTest<CustomCharacterBloc, CustomCharacterState>(
+      'puts the character back in its crew when saving it fails',
+      setUp: () {
+        final captain = CrewMember(
+          characterId: 'luffy',
+          name: luffy.name,
+          role: 'captain',
+          bounty: luffy.bounty,
+        );
+        when(() => crews.getCrewsByMember('luffy')).thenAnswer(
+          (_) async => [
+            CrewModel(
+              id: 'c1',
+              name: 'Straw Hats',
+              userId: 'alice',
+              members: [captain],
+            ),
+          ],
+        );
+        when(
+          () => crews.moveMember(any(), toCrewId: any(named: 'toCrewId')),
+        ).thenAnswer((_) async {});
+        when(
+          () => characters.updateCustomCharacter('luffy', any()),
+        ).thenThrow(Exception('offline'));
+      },
+      build: build,
+      act: (bloc) => bloc.add(
+        UpdateCustomCharacter(
+          'luffy',
+          luffy,
+          crewAssignment: const CrewAssignment(crewId: 'c2', role: 'cook'),
+        ),
+      ),
+      expect: () => [
+        CustomCharacterUpdating(),
+        const CustomCharacterError(CustomCharacterFailure.updateFailed),
+      ],
+      verify: (_) {
+        verify(() => crews.moveMember(any(), toCrewId: 'c2')).called(1);
+        final restored =
+            verify(
+                  () => crews.moveMember(captureAny(), toCrewId: 'c1'),
+                ).captured.single
+                as CrewMember;
+        expect(restored.role, 'captain');
+      },
     );
 
     blocTest<CustomCharacterBloc, CustomCharacterState>(

@@ -80,6 +80,8 @@ and the ARBs.
   changed crew or role sends a `CrewAssignment`: `ICrewRepository.moveMember`
   takes it out of its crew and into the chosen one in one batch before the
   character is saved, and a role taken there saves nothing (`crewRoleTaken`).
+  If saving the character then fails, the membership is moved back (best
+  effort, logged when it cannot be).
 - Routes `/createCustomCharacter`, `/customCharacterList`, `/editCustomCharacter`
   — all private.
 - BLoCs: `CustomCharacterBloc` (factory) and `CharacterFormOptionsCubit` (devil

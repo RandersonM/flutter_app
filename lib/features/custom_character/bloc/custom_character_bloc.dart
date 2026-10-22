@@ -140,6 +140,38 @@ class CustomCharacterBloc
     bounty: character.bounty,
   );
 
+  /// Moves the character's membership and returns how to put it back: the
+  /// character is saved next, in another collection, and if that fails it
+  /// must not stay in a crew its record does not name.
+  Future<Future<void> Function()> _moveMember(
+    String characterId,
+    CustomCharacterModel character,
+    CrewAssignment assignment,
+  ) async {
+    final previousCrew = (await _crewRepository.getCrewsByMember(
+      characterId,
+    )).firstOrNull;
+    final previousMember = previousCrew?.members
+        .where((member) => member.characterId == characterId)
+        .firstOrNull;
+    await _crewRepository.moveMember(
+      _memberOf(characterId, character, role: assignment.role),
+      toCrewId: assignment.crewId,
+    );
+    return () async {
+      try {
+        await _crewRepository.moveMember(
+          previousMember ?? _memberOf(characterId, character),
+          toCrewId: previousCrew?.id,
+        );
+      } catch (e) {
+        debugPrint(
+          'CustomCharacterBloc: crew of $characterId not restored: $e',
+        );
+      }
+    };
+  }
+
   Future<void> _onUpdateCustomCharacter(
     UpdateCustomCharacter event,
     Emitter<CustomCharacterState> emit,
@@ -147,16 +179,18 @@ class CustomCharacterBloc
     emit(CustomCharacterUpdating());
     try {
       final assignment = event.crewAssignment;
-      if (assignment != null) {
-        await _crewRepository.moveMember(
-          _memberOf(event.characterId, event.character, role: assignment.role),
-          toCrewId: assignment.crewId,
+      final undoMove = assignment == null
+          ? null
+          : await _moveMember(event.characterId, event.character, assignment);
+      try {
+        await _customCharacterRepository.updateCustomCharacter(
+          event.characterId,
+          event.character,
         );
+      } catch (_) {
+        await undoMove?.call();
+        rethrow;
       }
-      await _customCharacterRepository.updateCustomCharacter(
-        event.characterId,
-        event.character,
-      );
       emit(CustomCharacterUpdated(event.characterId));
 
       await Future.delayed(const Duration(milliseconds: 500));
