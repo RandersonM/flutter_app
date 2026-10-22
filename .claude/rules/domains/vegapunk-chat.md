@@ -25,12 +25,18 @@ rules: `ai-on-device.md`.
 
 ## Tools
 
-- `saveWorkout` runs only from `ToolIntentDetector`, which skips a sentence that
-  is negated anywhere (`não`, `nem`, `jamais`, `quase`, `never`, `*n't` with `'`
-  or `’`, ... — Portuguese also negates after the verb: "treinei hoje não"),
-  hypothetical (`se`, `if`, `será que`), a question (`?`, or an interrogative
-  such as `quanto`/`quando`/`how`/`did i` earlier in the trigger's clause) or
-  `sem` right before the trigger. "treinei hoje sem parar" still logs.
+- `saveWorkout` runs only from `ToolIntentDetector`, and only when every trigger
+  in the message is affirmed. It looks at the trigger's own clause (up to the
+  previous `.,;:!?`) and skips it when that clause has, before the trigger, a
+  negation (`não`/`nao`/`naum`/`n`/`ñ`, `nem`, `jamais`, `quase`, `never`,
+  `*n't` with `'` or `’`, ...), a hypothetical (`se`, `if`, `será que`), an
+  interrogative (`quanto`, `how`, `did i`, `have i`, ...), `quando`/`when` right
+  before it, or `sem` right before it; when `não` follows it ("treinei hoje
+  não"); or when its sentence ends in `?`. Words after the trigger or in another
+  clause don't count: "treinei hoje e nem cansei", "Quando acordei treinei
+  hoje" and "treinei hoje sem parar" log. A `saveWorkout` the model proposes is
+  still refused (`writesUserData`), so a sentence the detector skips is never
+  saved.
 
 ## Memory
 

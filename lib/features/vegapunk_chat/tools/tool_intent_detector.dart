@@ -47,7 +47,7 @@ class ToolIntentDetector {
     // ── saveWorkout ─────────────────────────────────────────────────────
     // It writes data, so a negated or hypothetical sentence ("não treinei
     // hoje", "if I trained today…") must not trigger it.
-    if (_matchesSaveWorkoutIntent(lower) && !_isNegatedOrQuestion(lower)) {
+    if (_matchesSaveWorkoutIntent(lower)) {
       return const ToolIntentResult(
         toolName: 'saveWorkout',
         confidence: ToolIntentConfidence.high,
@@ -238,11 +238,30 @@ class ToolIntentDetector {
     'log my workout', 'mark today as trained',
   ];
 
-  // Anywhere in the message: Portuguese also negates after the verb
-  // ("treinei hoje não"). `’` is the apostrophe iOS keyboards type.
+  static final _saveWorkoutTrigger = RegExp(
+    _saveWorkoutTriggers.map(RegExp.escape).join('|'),
+  );
+
+  // Looked for only in the trigger's clause, before the trigger: a negation
+  // after it ("treinei hoje e nem cansei", "can't feel my legs") or in an
+  // earlier clause ("não sei, mas treinei hoje") is about something else.
+  // `n`, `ñ` and `naum` are typed for "não"; `’` is the iOS apostrophe.
   static final _negation = RegExp(
-    r"(?<!\p{L})(não|nao|nem|nunca|jamais|quase|not|never|cannot|almost|"
-    r"didnt|dont|doesnt|havent|hasnt|cant|couldnt|wasnt|\p{L}+n['’]t)(?!\p{L})",
+    r"(?<!\p{L})(não|nao|naum|ñ|n|nem|nunca|jamais|quase|not|never|cannot|"
+    r"almost|didnt|dont|doesnt|havent|hasnt|cant|couldnt|wasnt|"
+    r"\p{L}+n['’]t)(?!\p{L})",
+    unicode: true,
+  );
+
+  // Portuguese also negates right after the verb: "treinei hoje não".
+  static final _negationRightAfter = RegExp(
+    r'^\s*(não|nao|naum|ñ|n)(?!\p{L})',
+    unicode: true,
+  );
+
+  // "treinei hoje sem parar" is a workout; "fiquei sem registrar treino" isn't.
+  static final _withoutRightBefore = RegExp(
+    r'(?<!\p{L})sem\s+$',
     unicode: true,
   );
 
@@ -251,31 +270,52 @@ class ToolIntentDetector {
     unicode: true,
   );
 
-  // Only right before the trigger: "treinei hoje sem parar" is a workout.
-  static final _withoutTrigger = RegExp(
-    '(?<!\\p{L})sem\\s+(${_saveWorkoutTriggers.map(RegExp.escape).join('|')})',
+  // A question typed without "?" ("quanto tempo treinei hoje", "have i
+  // trained today"). Matched up to the end of the trigger, so an auxiliary
+  // before a trigger that starts with "i" still counts.
+  static final _interrogative = RegExp(
+    r'(?<!\p{L})(quanto|quanta|quantos|quantas|qual|quais|onde|como|o que|'
+    r'por que|how|what|which|where|why|'
+    r'(did|do|does|should|have|has|had) i)(?!\p{L})',
     unicode: true,
   );
 
-  // A question typed without "?" ("quanto tempo treinei hoje"): an
-  // interrogative earlier in the trigger's clause.
-  static final _questionBeforeTrigger = RegExp(
-    '(?<!\\p{L})(quanto|quanta|quantos|quantas|quando|qual|quais|onde|como|'
-    'o que|por que|how|what|when|which|where|why|(did|do|does|should) i)'
-    '(?!\\p{L})[^.,;:!\\n]*'
-    '(${_saveWorkoutTriggers.map(RegExp.escape).join('|')})',
+  // "quando"/"when" asks about the workout only right before it ("me diz
+  // quando treinei hoje"); in "quando acordei treinei hoje" it marks a time.
+  static final _whenRightBefore = RegExp(
+    r'(?<!\p{L})(quando|when)\s+((eu|i)\s+)?$',
     unicode: true,
   );
 
-  bool _isNegatedOrQuestion(String lower) =>
-      lower.contains('?') ||
-      _negation.hasMatch(lower) ||
-      _hypothetical.hasMatch(lower) ||
-      _withoutTrigger.hasMatch(lower) ||
-      _questionBeforeTrigger.hasMatch(lower);
+  static final _clauseBoundary = RegExp(r'[.,;:!?\n]');
+  static final _sentenceEnd = RegExp(r'[.!?\n]');
 
-  bool _matchesSaveWorkoutIntent(String lower) =>
-      _saveWorkoutTriggers.any(lower.contains);
+  /// Every trigger in the message must be affirmed: a write is not worth a
+  /// guess when one mention is negated.
+  bool _matchesSaveWorkoutIntent(String lower) {
+    final triggers = _saveWorkoutTrigger.allMatches(lower).toList();
+    return triggers.isNotEmpty &&
+        triggers.every((trigger) => _isAffirmed(lower, trigger));
+  }
+
+  bool _isAffirmed(String lower, Match trigger) {
+    final before = lower.substring(0, trigger.start);
+    final after = lower.substring(trigger.end);
+    final clauseBefore = before.substring(
+      before.lastIndexOf(_clauseBoundary) + 1,
+    );
+
+    final isQuestion =
+        _sentenceEnd.firstMatch(after)?[0] == '?' ||
+        _interrogative.hasMatch('$clauseBefore${trigger[0]}') ||
+        _whenRightBefore.hasMatch(clauseBefore);
+    final isNegated =
+        _negation.hasMatch(clauseBefore) ||
+        _negationRightAfter.hasMatch(after) ||
+        _withoutRightBefore.hasMatch(clauseBefore);
+
+    return !isQuestion && !isNegated && !_hypothetical.hasMatch(clauseBefore);
+  }
 
   // ── Character Info Intent ──────────────────────────────────────────────
 
