@@ -163,6 +163,7 @@ class _CrewDetailsView extends StatelessWidget {
         CrewDetailsFailure.deleteFailed => l10n.crewDeletionError,
         CrewDetailsFailure.addMemberFailed => l10n.memberAdditionError,
         CrewDetailsFailure.memberLoadFailed => l10n.characterLoadError,
+        CrewDetailsFailure.roleTaken => l10n.customCharacterCrewRoleTakenError,
       };
 
   void _onEditCrew(BuildContext context, CrewDetailsState state) {
@@ -210,20 +211,8 @@ class _CrewDetailsView extends StatelessWidget {
   Future<void> _onAddMember(BuildContext context, CrewModel crew) async {
     final l10n = AppLocalizations.of(context)!;
 
-    // Compare localized labels so legacy spellings in rolesFilled
-    // ('vice-captain') still count as the role they name.
-    final filledRoles = crew.rolesFilled
-        .map(
-          (role) =>
-              CharacterLocalizationMapper.mapOccupationToLocalized(role, l10n),
-        )
-        .toSet();
     final availableRoles = CharacterLocalizationMapper.getOccupations()
-        .where(
-          (role) => !filledRoles.contains(
-            CharacterLocalizationMapper.mapOccupationToLocalized(role, l10n),
-          ),
-        )
+        .where((role) => !crew.isRoleFilled(role))
         .toList();
 
     if (availableRoles.isEmpty) {

@@ -6,6 +6,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:opfan/core/auth/blocs/index.dart';
 import 'package:opfan/core/auth/models/user_model.dart';
+import 'package:opfan/core/user_profile/models/body_profile.dart';
 import 'package:opfan/shared/utils/app_routes.dart';
 import 'package:opfan/shared/utils/body_measure.dart';
 import 'package:opfan/shared/utils/body_measure_validator.dart';
@@ -163,7 +164,8 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
         return;
       }
 
-      final updatedUser = user.copyWith(
+      // Replaced, not copied: an optional measure the user emptied is cleared.
+      final updatedUser = BodyProfile(
         gender: _gender,
         age: BodyMeasure.age.parse(_ageController.text)?.toInt(),
         heightCm: BodyMeasure.heightCm.parse(_heightController.text),
@@ -175,7 +177,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
         armCm: BodyMeasure.armCm.parse(_armController.text),
         hipCm: BodyMeasure.hipCm.parse(_hipController.text),
         thighCm: BodyMeasure.thighCm.parse(_thighController.text),
-      );
+      ).replaceIn(user);
 
       context.read<AuthBloc>().add(
         AuthProfileBodyUpdated(updatedUser: updatedUser),
@@ -212,8 +214,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
           ).showSnackBar(SnackBar(content: Text(l10n.profileUpdateFailed)));
           return;
         }
-        // Under AppWrapper the root switches to Home itself, and replacing the
-        // stack would drop AppWrapper (sign-out would then land on guest Home).
+        // Under AppWrapper the root switches to Home itself.
         if (ModalRoute.of(context)?.settings.name == AppRoutes.onboarding) {
           Navigator.of(
             context,

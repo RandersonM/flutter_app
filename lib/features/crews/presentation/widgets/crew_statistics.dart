@@ -40,7 +40,7 @@ class CrewStatistics extends StatelessWidget {
       ),
       StatisticData(
         label: AppLocalizations.of(context)!.rolesLabel,
-        value: crew.rolesFilled.length.toString(),
+        value: crew.heldRoles.length.toString(),
         icon: PhosphorIconsRegular.briefcase,
       ),
     ];

@@ -47,7 +47,10 @@ both predate parts of the current pipeline (sentinel names, entitlements, Qwen).
   `closeSession` forgets the session synchronously, then stops and closes it, so
   a sheet reopened meanwhile gets a fresh session. A per-session epoch (bumped by
   `closeSession` and by a model reload) makes an `openChat` still in flight close
-  the chat it opened instead of storing it.
+  the chat it opened instead of storing it; after a reload (not a close) the open
+  waits for the reload and retries once on the new model. There is one open per
+  session id: a message sent while the session is still opening waits for that
+  open, so a watchdog-cancelled first message never leads to a second chat.
 - No generation lock: one generation at a time is the caller's job (the cubits
   track `isGenerating`). Cancelling the stream calls `stopGeneration`.
 

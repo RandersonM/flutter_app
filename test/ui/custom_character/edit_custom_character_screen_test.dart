@@ -1,10 +1,12 @@
 import 'dart:async';
 
+import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:get_it/get_it.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:opfan/core/services/one_piece/i_character_image_service.dart';
 import 'package:opfan/core/services/one_piece/i_devil_fruit_service.dart';
+import 'package:opfan/core/utils/character_localization_mapper.dart';
 import 'package:opfan/features/crews/data/models/crew_model.dart';
 import 'package:opfan/features/crews/data/repository/i_crew_repository.dart';
 import 'package:opfan/features/custom_character/bloc/index.dart';
@@ -13,6 +15,7 @@ import 'package:opfan/features/custom_character/data/repository/i_custom_charact
 import 'package:opfan/features/custom_character/presentation/edit_custom_character_screen.dart';
 import 'package:opfan/features/devil_fruit/data/models/devil_fruit.dart';
 import 'package:opfan/features/duels/data/models/fighting_style_model.dart';
+import 'package:opfan/l10n/app_localizations.dart';
 
 import '../../testable_widget.dart';
 
@@ -53,7 +56,10 @@ void main() {
     fightingStyle: FightingStyleModel(type: 'fighter'),
   );
 
-  setUpAll(() => registerFallbackValue(luffy));
+  setUpAll(() {
+    registerFallbackValue(luffy);
+    registerFallbackValue(CrewMember(characterId: 'x', name: 'x', bounty: '0'));
+  });
 
   setUp(() {
     characters = _MockCharacterRepository();
@@ -165,6 +171,64 @@ void main() {
 
       expect(saved.devilFruit, 'Gomu Gomu no Mi');
       expect(saved.crew, 'Straw Hats');
+    });
+
+    testWidgets('offers the crew role the character already holds', (
+      tester,
+    ) async {
+      when(() => devilFruits.fetchAll()).thenAnswer((_) async => []);
+      when(() => crews.getUserCrews()).thenAnswer(
+        (_) async => [
+          CrewModel(
+            id: 'c2',
+            name: 'Straw Hats',
+            userId: 'u',
+            captain: 'Monkey D. Luffy',
+            rolesFilled: const ['captain'],
+            members: [
+              CrewMember(
+                characterId: 'luffy',
+                name: 'Monkey D. Luffy',
+                role: 'captain',
+                bounty: '3,000,000,000',
+              ),
+            ],
+          ),
+        ],
+      );
+
+      await tester.pumpWidget(
+        getTestableWidget(EditCustomCharacterScreen(character: luffy)),
+      );
+      await tester.pump();
+
+      final l10n = AppLocalizations.of(
+        tester.element(find.byType(EditCustomCharacterScreen)),
+      )!;
+      final captain = CharacterLocalizationMapper.mapOccupationToLocalized(
+        'captain',
+        l10n,
+      );
+      final dropdowns = tester.widgetList<DropdownButtonFormField<String>>(
+        find.byType(DropdownButtonFormField<String>),
+      );
+      expect(
+        dropdowns.map((dropdown) => dropdown.initialValue),
+        contains(captain),
+      );
+    });
+
+    testWidgets('leaves the crew membership alone when it was not edited', (
+      tester,
+    ) async {
+      when(() => devilFruits.fetchAll()).thenAnswer((_) async => []);
+      when(() => crews.getUserCrews()).thenAnswer((_) async => []);
+
+      await saveUnchanged(tester);
+
+      verifyNever(
+        () => crews.moveMember(any(), toCrewId: any(named: 'toCrewId')),
+      );
     });
   });
 }

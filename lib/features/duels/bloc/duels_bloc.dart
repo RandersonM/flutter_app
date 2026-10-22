@@ -69,7 +69,7 @@ class DuelsBloc extends Bloc<DuelsEvent, DuelsState> {
     Emitter<DuelsState> emit,
   ) {
     if (state is DuelsReady) {
-      final currentState = _cancelPendingDuel(state as DuelsReady);
+      final currentState = _beforeFighterChange(state as DuelsReady);
 
       // Verificar se o personagem já está selecionado como segundo
       if (currentState.secondCharacter?.id == event.character.id) {
@@ -90,7 +90,7 @@ class DuelsBloc extends Bloc<DuelsEvent, DuelsState> {
     Emitter<DuelsState> emit,
   ) {
     if (state is DuelsReady) {
-      final currentState = _cancelPendingDuel(state as DuelsReady);
+      final currentState = _beforeFighterChange(state as DuelsReady);
 
       // Verificar se o personagem já está selecionado como primeiro
       if (currentState.firstCharacter?.id == event.character.id) {
@@ -111,7 +111,7 @@ class DuelsBloc extends Bloc<DuelsEvent, DuelsState> {
     Emitter<DuelsState> emit,
   ) {
     if (state is DuelsReady) {
-      final currentState = _cancelPendingDuel(state as DuelsReady);
+      final currentState = _beforeFighterChange(state as DuelsReady);
 
       if (event.position == 1) {
         emit(currentState.copyWith(clearFirstCharacter: true));
@@ -151,10 +151,11 @@ class DuelsBloc extends Bloc<DuelsEvent, DuelsState> {
     }
   }
 
-  DuelsReady _cancelPendingDuel(DuelsReady current) {
-    if (!current.isDuelInProgress) return current;
-    _duelGeneration++;
-    return current.copyWith(isDuelInProgress: false);
+  /// A result belongs to the pair that fought, so any fighter change drops it
+  /// along with a duel still waiting on its suspense delay.
+  DuelsReady _beforeFighterChange(DuelsReady current) {
+    if (current.isDuelInProgress) _duelGeneration++;
+    return current.copyWith(isDuelInProgress: false, clearWinner: true);
   }
 
   void _onResetDuel(ResetDuel event, Emitter<DuelsState> emit) {
@@ -178,7 +179,7 @@ class DuelsBloc extends Bloc<DuelsEvent, DuelsState> {
     Emitter<DuelsState> emit,
   ) {
     if (state is DuelsReady) {
-      final currentState = _cancelPendingDuel(state as DuelsReady);
+      final currentState = _beforeFighterChange(state as DuelsReady);
 
       if (currentState.availableCharacters.length >= 2) {
         final shuffledCharacters = List<CustomCharacterModel>.from(

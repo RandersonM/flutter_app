@@ -114,6 +114,24 @@ void main() {
       );
     });
 
+    test('accepts a role a legacy crew lists without a holder', () async {
+      when(
+        () => firestore.getDocument(collection: 'crews', documentId: 'c1'),
+      ).thenAnswer(
+        (_) async => {
+          'name': 'Straw Hats',
+          'userId': 'alice',
+          'rolesFilled': ['captain', 'doctor'],
+          'members': [_member('luffy', 'captain')],
+        },
+      );
+
+      await repository.addMemberToCrew('c1', newcomer('doctor'));
+
+      final crew = await savedCrew();
+      expect((crew['members'] as List).length, 2);
+    });
+
     test('adds a member to a free role', () async {
       await repository.addMemberToCrew('c1', newcomer('doctor'));
 
@@ -200,17 +218,57 @@ void main() {
     test('recognises the viceCaptain key the UI writes', () async {
       await repository.updateCrewMember(
         'c1',
-        'sanji',
+        'zoro',
         CrewMember(
-          characterId: 'sanji',
-          name: 'sanji',
+          characterId: 'zoro',
+          name: 'Roronoa',
           role: 'viceCaptain',
           bounty: '0',
         ),
       );
 
       final crew = await savedCrew();
-      expect(crew['viceCaptain'], 'sanji');
+      expect(crew['viceCaptain'], 'Roronoa');
+    });
+
+    test('refuses a role another member already holds', () async {
+      await expectLater(
+        repository.updateCrewMember(
+          'c1',
+          'sanji',
+          CrewMember(
+            characterId: 'sanji',
+            name: 'sanji',
+            role: 'vice-captain',
+            bounty: '0',
+          ),
+        ),
+        throwsA(isA<CrewRoleTakenException>()),
+      );
+
+      verifyNever(
+        () => firestore.updateDocument(
+          collection: any(named: 'collection'),
+          documentId: any(named: 'documentId'),
+          data: any(named: 'data'),
+        ),
+      );
+    });
+
+    test('lets a member keep the role they hold', () async {
+      await repository.updateCrewMember(
+        'c1',
+        'sanji',
+        CrewMember(
+          characterId: 'sanji',
+          name: 'Sanji',
+          role: 'cook',
+          bounty: '0',
+        ),
+      );
+
+      final crew = await savedCrew();
+      expect((crew['members'] as List).last['name'], 'Sanji');
     });
   });
 }

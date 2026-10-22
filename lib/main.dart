@@ -16,6 +16,7 @@ import 'firebase_options.dart';
 
 import 'package:opfan/features/one_piece/bloc/characters_cubit.dart';
 import 'package:opfan/core/auth/app_wrapper.dart';
+import 'package:opfan/core/auth/signed_out_redirect.dart';
 import 'package:opfan/core/auth/blocs/index.dart';
 import 'package:opfan/shared/widgets/organisms/offline_banner.dart';
 
@@ -130,6 +131,10 @@ class MyApp extends StatelessWidget {
           themeMode: themeState.isDarkMode ? ThemeMode.dark : ThemeMode.light,
           navigatorKey: getIt<INavigationService>().navigatorKey,
           home: const OfflineBannerWrapper(child: AppWrapper()),
+          builder: (context, child) => SignedOutRedirect(
+            navigationService: getIt<INavigationService>(),
+            child: child!,
+          ),
           // Read at navigation time: login resumes `returnRoute` from a
           // listener that runs before a rebuild could hand over the new state.
           onGenerateRoute: (settings) => AuthRouteMiddleware.onGenerateRoute(

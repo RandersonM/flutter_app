@@ -32,6 +32,14 @@ class NavigationService implements INavigationService {
   }
 
   @override
+  Future<dynamic> navigateAndClear(String routeName) async {
+    if (navigator != null) {
+      return navigator!.pushNamedAndRemoveUntil(routeName, (_) => false);
+    }
+    debugPrint('NavigationService: Navigator não disponível');
+  }
+
+  @override
   void pop([dynamic result]) {
     if (navigator != null) {
       navigator!.pop(result);

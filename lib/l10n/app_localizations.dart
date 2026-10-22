@@ -5204,6 +5204,12 @@ abstract class AppLocalizations {
   /// **'Nami took too long to answer. Please try again.'**
   String get namiChatGenerationTimedOut;
 
+  /// Nami chat sheet: error bubble when an expense search is asked while the search model is still downloading or could not load
+  ///
+  /// In en, this message translates to:
+  /// **'Nami is still preparing the expense search on this device (a one-time download). Try again in a few minutes with an internet connection.'**
+  String get namiChatExpenseSearchNotReady;
+
   /// Nami results view: savings label; period is a localized duration like '2 years and 3 months'
   ///
   /// In en, this message translates to:

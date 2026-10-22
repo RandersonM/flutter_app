@@ -91,5 +91,42 @@ void main() {
       expect(user.heightCm, 165);
       expect(BodyProfile.fromUser(cachedUser), _profile);
     });
+
+    test('clears on the user the measures it replaces with nothing', () {
+      final measured = _profile.applyTo(_signedInUser);
+
+      final cleared = const BodyProfile(
+        gender: 'female',
+        age: 30,
+        heightCm: 165,
+        weightKg: 60.5,
+        activityLevel: 'moderate',
+        goal: 'maintenance',
+      ).replaceIn(measured);
+
+      expect(cleared.waistCm, isNull);
+      expect(cleared.uid, 'alice');
+      expect(cleared.isProfileComplete, isTrue);
+    });
+
+    test('saves only the fields it has and the ones the user cleared', () {
+      const cleared = BodyProfile(
+        gender: 'female',
+        age: 30,
+        heightCm: 165,
+        weightKg: 60.5,
+        activityLevel: 'moderate',
+        goal: 'maintenance',
+        chestCm: 90,
+      );
+
+      final changes = cleared.toFirestoreChanges(previous: _profile);
+
+      expect(changes['chest_cm'], 90);
+      expect(changes.containsKey('waist_cm'), isTrue);
+      expect(changes['waist_cm'], isNull);
+      expect(changes.containsKey('hip_cm'), isFalse);
+      expect(cleared.toFirestoreChanges().containsKey('waist_cm'), isFalse);
+    });
   });
 }

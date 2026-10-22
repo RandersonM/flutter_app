@@ -261,7 +261,10 @@ void registerCoreModule(GetIt getIt) {
   );
 
   getIt.registerLazySingleton<AuthBloc>(
-    () => AuthBloc(authService: getIt<IAuthService>()),
+    () => AuthBloc(
+      authService: getIt<IAuthService>(),
+      connectivityService: getIt<IConnectivityService>(),
+    ),
   );
 }
 

@@ -2,7 +2,12 @@ import 'package:equatable/equatable.dart';
 import 'package:opfan/features/crews/data/models/crew_model.dart';
 import 'package:opfan/features/custom_character/data/models/custom_character_model.dart';
 
-enum CrewDetailsFailure { deleteFailed, addMemberFailed, memberLoadFailed }
+enum CrewDetailsFailure {
+  deleteFailed,
+  addMemberFailed,
+  memberLoadFailed,
+  roleTaken,
+}
 
 final class CrewDetailsState extends Equatable {
   const CrewDetailsState({

@@ -3,7 +3,6 @@ import 'package:opfan/core/errors/app_exceptions.dart';
 import 'package:opfan/features/custom_character/data/models/custom_character_model.dart';
 import 'package:opfan/core/services/index.dart';
 import 'package:opfan/features/custom_character/data/repository/i_custom_character_repository.dart';
-import 'package:opfan/features/crews/data/models/crew_model.dart';
 import 'package:opfan/features/crews/data/repository/i_crew_repository.dart';
 
 class CustomCharacterRepository implements ICustomCharacterRepository {
@@ -176,29 +175,12 @@ class CustomCharacterRepository implements ICustomCharacterRepository {
     CustomCharacterModel character,
   ) async {
     try {
-      final crews = await _crewRepository.getCrewsByMember(characterId);
-      for (final crew in crews) {
-        final member = crew.members.firstWhere(
-          (member) => member.characterId == characterId,
-        );
-        final copyIsCurrent =
-            member.name == character.name &&
-            member.nickname == character.nickname &&
-            member.bounty == character.bounty;
-        if (crew.id == null || copyIsCurrent) continue;
-
-        await _crewRepository.updateCrewMember(
-          crew.id!,
-          characterId,
-          CrewMember(
-            characterId: characterId,
-            name: character.name,
-            nickname: character.nickname,
-            role: member.role,
-            bounty: character.bounty,
-          ),
-        );
-      }
+      await _crewRepository.syncMemberCopies(
+        characterId,
+        name: character.name,
+        nickname: character.nickname,
+        bounty: character.bounty,
+      );
     } catch (e) {
       debugPrint(
         'CustomCharacterRepository: crew sync after update failed: $e',

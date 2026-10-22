@@ -39,6 +39,7 @@ class CharacterForm extends StatelessWidget {
   final void Function(String?) onCrewChanged;
   final String? selectedCrewRole;
   final void Function(String?) onCrewRoleChanged;
+  final String? heldCrewRole;
   final String? selectedRace;
   final void Function(String?) onRaceChanged;
   final bool showAiGenerator;
@@ -73,6 +74,7 @@ class CharacterForm extends StatelessWidget {
     required this.onCrewChanged,
     required this.selectedCrewRole,
     required this.onCrewRoleChanged,
+    this.heldCrewRole,
     this.selectedRace,
     required this.onRaceChanged,
     this.showAiGenerator = true,
@@ -118,6 +120,7 @@ class CharacterForm extends StatelessWidget {
             onCrewChanged: onCrewChanged,
             selectedCrewRole: selectedCrewRole,
             onCrewRoleChanged: onCrewRoleChanged,
+            heldCrewRole: heldCrewRole,
             characterName: nameController.text.trim(),
             race: selectedRace,
             haki: selectedHaki,

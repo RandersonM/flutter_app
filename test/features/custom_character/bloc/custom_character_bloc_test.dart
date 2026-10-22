@@ -1,6 +1,7 @@
 import 'package:bloc_test/bloc_test.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
+import 'package:opfan/core/errors/app_exceptions.dart';
 import 'package:opfan/features/crews/data/models/crew_model.dart';
 import 'package:opfan/features/crews/data/repository/i_crew_repository.dart';
 import 'package:opfan/features/custom_character/bloc/index.dart';
@@ -120,20 +121,47 @@ void main() {
     );
 
     blocTest<CustomCharacterBloc, CustomCharacterState>(
-      'still reports the character as created when joining the crew fails',
-      setUp: () => when(
-        () => crews.addMemberToCrew(any(), any()),
-      ).thenThrow(Exception('crew gone')),
+      'deletes the new character when joining the crew fails',
+      setUp: () {
+        when(
+          () => crews.addMemberToCrew(any(), any()),
+        ).thenThrow(Exception('crew gone'));
+        when(
+          () => characters.deleteCustomCharacter('new-id'),
+        ).thenAnswer((_) async {});
+      },
       build: build,
       act: (bloc) => bloc.add(
         CreateCustomCharacter(luffy, crewId: 'c1', crewRole: 'captain'),
       ),
-      wait: listRefreshDelay,
       expect: () => [
         CustomCharacterCreating(),
-        const CustomCharacterCreated('new-id'),
-        CustomCharacterLoaded([luffy]),
+        const CustomCharacterError(CustomCharacterFailure.createFailed),
       ],
+      verify: (_) =>
+          verify(() => characters.deleteCustomCharacter('new-id')).called(1),
+    );
+
+    blocTest<CustomCharacterBloc, CustomCharacterState>(
+      'reports the role as taken when it was filled after the check',
+      setUp: () {
+        when(
+          () => crews.addMemberToCrew(any(), any()),
+        ).thenThrow(const CrewRoleTakenException('captain'));
+        when(
+          () => characters.deleteCustomCharacter('new-id'),
+        ).thenAnswer((_) async {});
+      },
+      build: build,
+      act: (bloc) => bloc.add(
+        CreateCustomCharacter(luffy, crewId: 'c1', crewRole: 'captain'),
+      ),
+      expect: () => [
+        CustomCharacterCreating(),
+        const CustomCharacterError(CustomCharacterFailure.crewRoleTaken),
+      ],
+      verify: (_) =>
+          verify(() => characters.deleteCustomCharacter('new-id')).called(1),
     );
 
     blocTest<CustomCharacterBloc, CustomCharacterState>(
@@ -198,11 +226,12 @@ void main() {
   });
 
   group('CustomCharacterBloc update and delete', () {
-    setUp(
-      () => when(
+    setUp(() {
+      when(
         () => characters.getUserCustomCharacters(),
-      ).thenAnswer((_) async => [luffy]),
-    );
+      ).thenAnswer((_) async => [luffy]);
+      when(() => crews.getCrewsByMember(any())).thenAnswer((_) async => []);
+    });
 
     blocTest<CustomCharacterBloc, CustomCharacterState>(
       'updates the character and refreshes the list',
@@ -217,6 +246,125 @@ void main() {
         const CustomCharacterUpdated('luffy'),
         CustomCharacterLoaded([luffy]),
       ],
+    );
+
+    blocTest<CustomCharacterBloc, CustomCharacterState>(
+      'leaves the crew membership alone when the crew was not changed',
+      setUp: () => when(
+        () => characters.updateCustomCharacter('luffy', any()),
+      ).thenAnswer((_) async {}),
+      build: build,
+      act: (bloc) => bloc.add(UpdateCustomCharacter('luffy', luffy)),
+      wait: listRefreshDelay,
+      verify: (_) => verifyNever(
+        () => crews.moveMember(any(), toCrewId: any(named: 'toCrewId')),
+      ),
+    );
+
+    blocTest<CustomCharacterBloc, CustomCharacterState>(
+      'moves the character to the chosen crew and role before saving it',
+      setUp: () {
+        when(
+          () => crews.moveMember(any(), toCrewId: any(named: 'toCrewId')),
+        ).thenAnswer((_) async {});
+        when(
+          () => characters.updateCustomCharacter('luffy', any()),
+        ).thenAnswer((_) async {});
+      },
+      build: build,
+      act: (bloc) => bloc.add(
+        UpdateCustomCharacter(
+          'luffy',
+          luffy,
+          crewAssignment: const CrewAssignment(crewId: 'c2', role: 'cook'),
+        ),
+      ),
+      wait: listRefreshDelay,
+      expect: () => [
+        CustomCharacterUpdating(),
+        const CustomCharacterUpdated('luffy'),
+        CustomCharacterLoaded([luffy]),
+      ],
+      verify: (_) {
+        final member =
+            verify(
+                  () => crews.moveMember(captureAny(), toCrewId: 'c2'),
+                ).captured.single
+                as CrewMember;
+        expect(member.characterId, 'luffy');
+        expect(member.role, 'cook');
+        expect(member.name, luffy.name);
+      },
+    );
+
+    blocTest<CustomCharacterBloc, CustomCharacterState>(
+      'saves nothing when the new crew role is taken',
+      setUp: () => when(
+        () => crews.moveMember(any(), toCrewId: any(named: 'toCrewId')),
+      ).thenThrow(const CrewRoleTakenException('cook')),
+      build: build,
+      act: (bloc) => bloc.add(
+        UpdateCustomCharacter(
+          'luffy',
+          luffy,
+          crewAssignment: const CrewAssignment(crewId: 'c2', role: 'cook'),
+        ),
+      ),
+      expect: () => [
+        CustomCharacterUpdating(),
+        const CustomCharacterError(CustomCharacterFailure.crewRoleTaken),
+      ],
+      verify: (_) =>
+          verifyNever(() => characters.updateCustomCharacter(any(), any())),
+    );
+
+    blocTest<CustomCharacterBloc, CustomCharacterState>(
+      'puts the character back in its crew when saving it fails',
+      setUp: () {
+        final captain = CrewMember(
+          characterId: 'luffy',
+          name: luffy.name,
+          role: 'captain',
+          bounty: luffy.bounty,
+        );
+        when(() => crews.getCrewsByMember('luffy')).thenAnswer(
+          (_) async => [
+            CrewModel(
+              id: 'c1',
+              name: 'Straw Hats',
+              userId: 'alice',
+              members: [captain],
+            ),
+          ],
+        );
+        when(
+          () => crews.moveMember(any(), toCrewId: any(named: 'toCrewId')),
+        ).thenAnswer((_) async {});
+        when(
+          () => characters.updateCustomCharacter('luffy', any()),
+        ).thenThrow(Exception('offline'));
+      },
+      build: build,
+      act: (bloc) => bloc.add(
+        UpdateCustomCharacter(
+          'luffy',
+          luffy,
+          crewAssignment: const CrewAssignment(crewId: 'c2', role: 'cook'),
+        ),
+      ),
+      expect: () => [
+        CustomCharacterUpdating(),
+        const CustomCharacterError(CustomCharacterFailure.updateFailed),
+      ],
+      verify: (_) {
+        verify(() => crews.moveMember(any(), toCrewId: 'c2')).called(1);
+        final restored =
+            verify(
+                  () => crews.moveMember(captureAny(), toCrewId: 'c1'),
+                ).captured.single
+                as CrewMember;
+        expect(restored.role, 'captain');
+      },
     );
 
     blocTest<CustomCharacterBloc, CustomCharacterState>(

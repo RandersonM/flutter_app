@@ -12,6 +12,9 @@ abstract class INavigationService {
 
   Future<dynamic> navigateToReplacement(String routeName, {Object? arguments});
 
+  /// Pushes [routeName] as the only route left on the stack.
+  Future<dynamic> navigateAndClear(String routeName);
+
   void pop([dynamic result]);
 
   void popUntil(String routeName);

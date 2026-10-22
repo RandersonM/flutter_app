@@ -40,8 +40,16 @@ RAG store. The chat is on-device — see `ai-on-device.md`.
   the model only phrases the answer. Tools: `getFinances`, `affordableInstallment`,
   `simulateGoalPlan`, `budgetBreakdown`, `findExpenses`.
 - `findExpenses` uses the RAG store (one doc per *described* expense, id
-  `exp:<expenseId>`, metadata `month`), synced by `syncMonth` on save and a one-time
-  24-month backfill. Stale ids are dropped at read time.
+  `exp:<expenseId>`, metadata `month`), synced by `syncMonth` on save and a
+  24-month backfill. Stale ids are dropped at read time. The backfill counts as
+  done for the session only once every month is indexed; an embedder that could
+  not load or a failed document leaves it to the next chat open. Until then
+  (`INamiRagService.isIndexComplete`) the tool result carries
+  `indexComplete: false` and a note, so the model does not state "nothing spent"
+  as a fact.
+- A `findExpenses` question first checks `isSearchReady` (waits up to 10 s for the
+  embedder); while it is still downloading or failed to load, the chat shows
+  `expenseSearchNotReady` instead of waiting out the tool timeout.
 - The form keeps each saved row's id on edit (only new rows get a UUID), and
   `syncMonth` records per month which docs it indexed: it embeds only new or
   reworded expenses and removes the docs of dropped ones.

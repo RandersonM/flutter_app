@@ -12,6 +12,7 @@ import 'package:opfan/core/auth/models/user_model.dart';
 import 'package:opfan/core/errors/app_exceptions.dart';
 import 'package:opfan/core/services/index.dart';
 import 'package:opfan/core/storage/user_data_names.dart';
+import 'package:opfan/core/user_profile/models/body_profile.dart';
 import 'package:opfan/core/user_profile/repository/i_user_profile_repository.dart';
 
 enum AuthStatus { unknown, authenticated, unauthenticated }
@@ -33,6 +34,7 @@ class AuthService implements IAuthService {
   final IUserDataEraser _userDataEraser;
   late Box<UserModel> _box;
   final _profileChanges = StreamController<UserModel>.broadcast();
+  final _profileSyncFailures = StreamController<void>.broadcast();
 
   AuthService({
     required this._firebaseAuth,
@@ -408,23 +410,55 @@ class AuthService implements IAuthService {
 
   @override
   Future<void> updateBodyProfile(UserModel updatedProfile) async {
+    final cached = currentUser;
     await _saveUser(updatedProfile);
     _profileChanges.add(updatedProfile);
-    unawaited(_syncBodyProfile(updatedProfile));
+    unawaited(
+      _syncBodyProfile(
+        updatedProfile,
+        previous: cached?.uid == updatedProfile.uid ? cached : null,
+      ),
+    );
   }
 
   /// Firestore keeps the write while offline and syncs it later, but its
   /// future completes only on the server ack: awaiting it hangs an offline save.
-  Future<void> _syncBodyProfile(UserModel profile) async {
+  /// A write the server refuses is rolled back in Firestore's cache, so the
+  /// local profile follows it back instead of diverging until the next start.
+  Future<void> _syncBodyProfile(
+    UserModel profile, {
+    UserModel? previous,
+  }) async {
     try {
-      await _userProfileRepository.saveProfile(profile);
+      await _userProfileRepository.saveProfile(profile, previous: previous);
     } catch (e) {
       debugPrint('AuthService: Body profile not synced to Firestore - $e');
+      await _restoreStoredBodyProfile(profile.uid);
+      _profileSyncFailures.add(null);
+    }
+  }
+
+  /// With no stored document the refused save was the first one: the cache
+  /// drops it too, so the user is sent back to onboarding instead of keeping
+  /// a profile only this device has.
+  Future<void> _restoreStoredBodyProfile(String uid) async {
+    try {
+      final stored = await _userProfileRepository.fetchBodyProfile(uid);
+      final cached = currentUser;
+      if (cached == null || cached.uid != uid) return;
+      final restored = (stored ?? const BodyProfile()).replaceIn(cached);
+      await _saveUser(restored);
+      _profileChanges.add(restored);
+    } catch (e) {
+      debugPrint('AuthService: Stored body profile not restored - $e');
     }
   }
 
   @override
   Stream<UserModel> get profileChanges => _profileChanges.stream;
+
+  @override
+  Stream<void> get profileSyncFailures => _profileSyncFailures.stream;
 
   Future<void> _saveUser(UserModel user) async {
     await _box.put(_userKey, user);

@@ -96,6 +96,14 @@ class CrewDetailsBloc extends Bloc<CrewDetailsEvent, CrewDetailsState> {
     if (!state.isOwner || state.isBusy) return;
     final character = event.character;
     final crew = state.crew;
+    if (crew.isRoleFilled(event.roleKey)) {
+      emit(
+        state.copyWith(
+          effect: const CrewDetailsFailed(CrewDetailsFailure.roleTaken),
+        ),
+      );
+      return;
+    }
     emit(state.copyWith(isBusy: true));
 
     try {
