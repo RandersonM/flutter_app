@@ -188,9 +188,7 @@ class AuthService implements IAuthService {
 
         await _saveUser(finalUser);
 
-        if (_notificationService.isInitialized) {
-          unawaited(_saveFcmToken(user.uid));
-        }
+        unawaited(_saveFcmToken(user.uid));
 
         debugPrint('AuthService: User signed in successfully and cached');
         return finalUser;
@@ -302,6 +300,7 @@ class AuthService implements IAuthService {
   /// the signed-in state must not wait for it.
   Future<void> _saveFcmToken(String uid) async {
     try {
+      await _notificationService.initialize();
       await _notificationService.saveTokenToFirestore(uid);
     } catch (e) {
       debugPrint('AuthService: Could not save the FCM token - $e');

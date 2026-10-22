@@ -138,7 +138,7 @@ void main() {
     when(
       () => profiles.fetchBodyProfile('u1'),
     ).thenAnswer((_) async => _storedBody);
-    when(() => notifications.isInitialized).thenReturn(true);
+    when(() => notifications.initialize()).thenAnswer((_) async {});
     when(
       () => notifications.saveTokenToFirestore(any()),
     ).thenAnswer((_) async {});
@@ -204,6 +204,15 @@ void main() {
 
       expect(bloc.state, isA<AuthAuthenticated>());
       verify(() => notifications.saveTokenToFirestore('u1')).called(1);
+    });
+
+    test('retries the notification setup before saving the token', () async {
+      await signIn();
+
+      verifyInOrder([
+        () => notifications.initialize(),
+        () => notifications.saveTokenToFirestore('u1'),
+      ]);
     });
 
     test('saves a body profile without waiting for the server', () async {

@@ -29,16 +29,29 @@ class NotificationService implements INotificationService {
 
   String? _fcmToken;
   bool _isInitialized = false;
+  Future<void>? _initialization;
+  StreamSubscription<RemoteMessage>? _foregroundSubscription;
+  StreamSubscription<RemoteMessage>? _openedAppSubscription;
+  StreamSubscription<String>? _tokenRefreshSubscription;
+
+  /// Bumped by [clearToken]: a token fetched before it is already deleted.
+  int _tokenGeneration = 0;
 
   @override
   String? get fcmToken => _fcmToken;
   @override
   bool get isInitialized => _isInitialized;
 
+  /// Retried by the next call after a failure: sign-in calls it again, or a
+  /// launch that failed here would never save a token for that account.
   @override
-  Future<void> initialize() async {
-    if (_isInitialized) return;
+  Future<void> initialize() =>
+      _initialization ??= _initialize().catchError((Object e, StackTrace st) {
+        _initialization = null;
+        Error.throwWithStackTrace(e, st);
+      });
 
+  Future<void> _initialize() async {
     try {
       await _requestPermissions();
 
@@ -118,9 +131,13 @@ class NotificationService implements INotificationService {
   }
 
   Future<void> _setupFirebaseMessaging() async {
-    FirebaseMessaging.onMessage.listen(_handleForegroundMessage);
+    _foregroundSubscription ??= FirebaseMessaging.onMessage.listen(
+      _handleForegroundMessage,
+    );
 
-    FirebaseMessaging.onMessageOpenedApp.listen(_handleMessageOpenedApp);
+    _openedAppSubscription ??= FirebaseMessaging.onMessageOpenedApp.listen(
+      _handleMessageOpenedApp,
+    );
 
     final initialMessage = await _firebaseMessaging.getInitialMessage();
     if (initialMessage != null) {
@@ -129,7 +146,9 @@ class NotificationService implements INotificationService {
   }
 
   Future<void> _getFCMToken() async {
-    _firebaseMessaging.onTokenRefresh.listen(_onTokenRefresh);
+    _tokenRefreshSubscription ??= _firebaseMessaging.onTokenRefresh.listen(
+      _onTokenRefresh,
+    );
     try {
       _fcmToken = await _firebaseMessaging.getToken();
       debugPrint('NotificationService: FCM token obtained');
@@ -319,12 +338,17 @@ class NotificationService implements INotificationService {
   }
 
   /// Signing out deletes the device token, so the next sign-in fetches a new
-  /// one before saving.
+  /// one before saving. A sign-out while the token is being fetched drops the
+  /// save: written afterwards, the next account's pushes would reach this
+  /// device under [userId].
   @override
   Future<void> saveTokenToFirestore(String userId) async {
     try {
-      final token = _fcmToken ??= await _firebaseMessaging.getToken();
-      if (token == null) return;
+      final generation = _tokenGeneration;
+      final token = _fcmToken ?? await _firebaseMessaging.getToken();
+      if (token == null || generation != _tokenGeneration) return;
+      _fcmToken = token;
+      if (_firebaseAuth.currentUser?.uid != userId) return;
       await _writeToken(userId, token);
     } catch (e) {
       debugPrint('NotificationService: Erro ao obter FCM token: $e');
@@ -353,6 +377,7 @@ class NotificationService implements INotificationService {
 
   @override
   Future<void> clearToken() async {
+    _tokenGeneration++;
     try {
       await _firebaseMessaging.deleteToken();
       _fcmToken = null;

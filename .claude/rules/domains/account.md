@@ -57,7 +57,10 @@ paths:
   sign-in (fetching a new one, since sign-out deletes the device token; not
   awaited, so a slow write never holds the signed-in state), once per launch
   when `initialize` finds a restored Firebase session, and on every
-  `onTokenRefresh` while a Firebase user is signed in.
+  `onTokenRefresh` while a Firebase user is signed in. A save is dropped when
+  that uid is no longer signed in or `clearToken` ran while the token was
+  fetched, so a fast sign-out never leaves this device under the old account.
+  Sign-in retries an `initialize` that failed at launch.
 
 ## User profile
 
