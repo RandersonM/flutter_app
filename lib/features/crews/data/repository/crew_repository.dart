@@ -446,6 +446,15 @@ class CrewRepository implements ICrewRepository {
         throw NotFoundException('crew $crewId');
       }
 
+      final role = updatedMember.role;
+      final heldByAnother = crew.members.any(
+        (member) =>
+            member.characterId != characterId &&
+            role != null &&
+            member.holdsRole(role),
+      );
+      if (heldByAnother) throw CrewRoleTakenException(role!);
+
       final updatedMembers = crew.members.map((member) {
         if (member.characterId == characterId) {
           return updatedMember;

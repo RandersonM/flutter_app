@@ -95,8 +95,9 @@ class CrewModel {
   });
 
   /// Each role can be held once; legacy spellings count as the role they name.
+  /// Only a member holds a role: older crews keep roles in [rolesFilled] whose
+  /// holder already left, and trusting it would lock that role for good.
   bool isRoleFilled(String role) =>
-      rolesFilled.any((filled) => _roleKey(filled) == _roleKey(role)) ||
       members.any((member) => member.holdsRole(role));
 
   Map<String, dynamic> toFirestore() {

@@ -31,12 +31,15 @@ and the ARBs.
 
 - 11 role keys: `captain`, `viceCaptain`, `helmsman`, `navigator`, `cook`, `doctor`,
   `musician`, `carpenter`, `sharpshooter`, `archaeologist`, `boatswain`.
-- **Each role can be filled once** (`rolesFilled`) → at most 11 members.
-  `CrewModel.isRoleFilled` checks it (legacy spellings included); the crew
-  details dialog and the create-character form only offer free roles,
-  `CustomCharacterBloc` refuses a taken role before creating anything
-  (`CustomCharacterFailure.crewRoleTaken`) and `CrewRepository.addMemberToCrew`
-  throws `CrewRoleTakenException`.
+- **Each role can be filled once** → at most 11 members. A role is taken only
+  while a member holds it: `CrewModel.isRoleFilled` reads `members` (legacy
+  spellings included), never `rolesFilled`, which older crews still list for
+  members who left. The crew details dialog and the create-character form
+  only offer free roles; `CustomCharacterBloc` refuses a taken role before
+  creating anything (`CustomCharacterFailure.crewRoleTaken`), `CrewDetailsBloc`
+  emits `CrewDetailsFailure.roleTaken` without saving, and
+  `CrewRepository.addMemberToCrew` / `updateCrewMember` throw
+  `CrewRoleTakenException` when another member holds it.
 - `captain`/`viceCaptain` are blanked (`''`) when their holder leaves, unless an
   older crew still has another member with that role — the title passes to them.
   UI shows them only when non-empty (`crew_header.dart`, `crew_card.dart`).

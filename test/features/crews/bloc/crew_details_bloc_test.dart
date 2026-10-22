@@ -297,6 +297,52 @@ void main() {
     );
 
     blocTest<CrewDetailsBloc, CrewDetailsState>(
+      'refuses a role another member holds without saving',
+      setUp: stubSaves,
+      build: () => build(crew: _crew(members: [_member('luffy', 'captain')])),
+      act: (bloc) => bloc.add(
+        AddCrewMember(character: _character('buggy'), roleKey: 'captain'),
+      ),
+      expect: () => [
+        isA<CrewDetailsState>()
+            .having((s) => s.crew.members.length, 'members', 1)
+            .having(
+              (s) => s.effect,
+              'effect',
+              const CrewDetailsFailed(CrewDetailsFailure.roleTaken),
+            ),
+      ],
+      verify: (_) => verifyNever(() => crews.updateCrew(any(), any())),
+    );
+
+    blocTest<CrewDetailsBloc, CrewDetailsState>(
+      'fills a role a legacy crew lists without a holder',
+      setUp: stubSaves,
+      build: () => build(
+        crew: CrewModel(
+          id: 'c1',
+          name: 'Straw Hats',
+          userId: 'alice',
+          rolesFilled: const ['doctor'],
+        ),
+      ),
+      act: (bloc) => bloc.add(
+        AddCrewMember(character: _character('chopper'), roleKey: 'doctor'),
+      ),
+      skip: 1,
+      expect: () => [
+        isA<CrewDetailsState>().having(
+          (s) => s.effect,
+          'effect',
+          const CrewMemberAdded(
+            characterName: 'Character chopper',
+            roleKey: 'doctor',
+          ),
+        ),
+      ],
+    );
+
+    blocTest<CrewDetailsBloc, CrewDetailsState>(
       'keeps the crew unchanged and reports a failure when saving throws',
       setUp: () => when(
         () => crews.updateCrew(any(), any()),
