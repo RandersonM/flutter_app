@@ -20,6 +20,10 @@ abstract class IAuthService {
   /// Emits each profile saved through [updateBodyProfile], so the global auth
   /// state can follow updates made by any feature.
   Stream<UserModel> get profileChanges;
+
+  /// Emits when the server refuses a profile [updateBodyProfile] already
+  /// stored locally; the local profile has been put back to the stored one.
+  Stream<void> get profileSyncFailures;
   Future<void> clearCache();
   Map<String, dynamic> getServiceStatus();
 }

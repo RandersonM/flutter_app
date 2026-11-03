@@ -76,9 +76,45 @@ class BodyProfile extends Equatable {
     'thigh_cm': thighCm,
   };
 
+  /// The fields a save sets: every field this profile has, plus `null` for
+  /// one [previous] had and this one lacks (the user cleared it). A field
+  /// neither has is left out: written as null with `merge` it would erase a
+  /// measure this device never loaded (a reinstall, offline).
+  Map<String, dynamic> toFirestoreChanges({BodyProfile? previous}) {
+    final before = previous?.toFirestore() ?? const <String, dynamic>{};
+    return {
+      for (final MapEntry(:key, :value) in toFirestore().entries)
+        if (value != null || before[key] != null) key: value,
+    };
+  }
+
   /// [user] with every field this profile has; fields it lacks keep the
   /// user's value.
   UserModel applyTo(UserModel user) => user.copyWith(
+    gender: gender,
+    age: age,
+    heightCm: heightCm,
+    weightKg: weightKg,
+    activityLevel: activityLevel,
+    goal: goal,
+    waistCm: waistCm,
+    chestCm: chestCm,
+    armCm: armCm,
+    hipCm: hipCm,
+    thighCm: thighCm,
+  );
+
+  /// [user] with exactly these body fields: unlike [applyTo], a field this
+  /// profile lacks is cleared on the user.
+  UserModel replaceIn(UserModel user) => UserModel(
+    uid: user.uid,
+    email: user.email,
+    displayName: user.displayName,
+    photoUrl: user.photoUrl,
+    emailVerified: user.emailVerified,
+    providerId: user.providerId,
+    createdAt: user.createdAt,
+    lastSignIn: user.lastSignIn,
     gender: gender,
     age: age,
     heightCm: heightCm,

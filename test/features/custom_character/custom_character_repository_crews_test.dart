@@ -59,33 +59,37 @@ void main() {
       () => crews.getCrewsByMember('luffy'),
     ).thenAnswer((_) async => [strawHats]);
     when(
-      () => crews.updateCrewMember(any(), any(), any()),
+      () => crews.syncMemberCopies(
+        any(),
+        name: any(named: 'name'),
+        nickname: any(named: 'nickname'),
+        bounty: any(named: 'bounty'),
+      ),
     ).thenAnswer((_) async {});
   });
 
   group('CustomCharacterRepository crew sync behaviour', () {
-    test('renames the crew member when the character is renamed', () async {
+    test('passes the new name to the crews that list the character', () async {
       await repository.updateCustomCharacter('luffy', luffyNamed('Joy Boy'));
 
-      final member =
-          verify(
-                () => crews.updateCrewMember('c1', 'luffy', captureAny()),
-              ).captured.single
-              as CrewMember;
-      expect(member.name, 'Joy Boy');
-      expect(member.role, 'captain');
-      expect(member.nickname, 'Straw Hat');
-    });
-
-    test('leaves the crew alone when the member copy is current', () async {
-      await repository.updateCustomCharacter('luffy', luffyNamed('Luffy'));
-
-      verifyNever(() => crews.updateCrewMember(any(), any(), any()));
+      verify(
+        () => crews.syncMemberCopies(
+          'luffy',
+          name: 'Joy Boy',
+          nickname: 'Straw Hat',
+          bounty: '3,000,000,000',
+        ),
+      ).called(1);
     });
 
     test('keeps the character saved when the crew sync fails', () async {
       when(
-        () => crews.getCrewsByMember('luffy'),
+        () => crews.syncMemberCopies(
+          any(),
+          name: any(named: 'name'),
+          nickname: any(named: 'nickname'),
+          bounty: any(named: 'bounty'),
+        ),
       ).thenThrow(Exception('offline'));
 
       await repository.updateCustomCharacter('luffy', luffyNamed('Joy Boy'));

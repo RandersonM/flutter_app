@@ -46,6 +46,13 @@ class FindExpensesHandler extends ToolHandler {
   /// the itemised list, never the sum.
   static const int _maxItemsDescribed = 10;
 
+  /// Until the backfill finishes (first run after an update, embedder still
+  /// loading) older months may be missing from the index.
+  static const String _partialIndexNote =
+      'Some months are still being indexed, so this search may have missed '
+      'expenses. Do not say the user spent nothing on this; say the total may '
+      'be incomplete and to ask again later.';
+
   @override
   String get name => toolName;
 
@@ -94,6 +101,9 @@ class FindExpensesHandler extends ToolHandler {
 
     try {
       final matches = await _rag.findExpenses(query);
+      final partial = await _rag.isIndexComplete()
+          ? const <String, Object>{}
+          : const {'indexComplete': false, 'indexNote': _partialIndexNote};
       if (matches.isEmpty) {
         return ToolResult.success(
           toolName: name,
@@ -101,6 +111,7 @@ class FindExpensesHandler extends ToolHandler {
             'query': query,
             'hasMatches': false,
             'matchCount': 0,
+            ...partial,
           }),
         );
       }
@@ -135,6 +146,7 @@ class FindExpensesHandler extends ToolHandler {
             'hasMatches': false,
             'matchCount': 0,
             'note': 'Matched index entries no longer exist in saved finances.',
+            ...partial,
           }),
         );
       }
@@ -165,6 +177,7 @@ class FindExpensesHandler extends ToolHandler {
               .toList(),
           if (resolved.length > _maxItemsDescribed)
             'truncatedItems': resolved.length - _maxItemsDescribed,
+          ...partial,
         }),
       );
     } catch (e) {

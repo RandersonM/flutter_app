@@ -409,6 +409,26 @@ void main() {
       await bloc.close();
     });
 
+    test('reports expenseSearchNotReady instead of waiting out the tool '
+        'while the search model loads', () async {
+      final searchTool = _RecordingToolHandler('findExpenses');
+      registry.register(searchTool);
+      when(() => rag.isSearchReady()).thenAnswer((_) async => false);
+      final gemma = _FakeGemmaService(const GemmaReady());
+      final bloc = build(gemma);
+      await _ready(bloc);
+
+      await bloc.sendMessage('quanto gastei com a viagem pra praia?');
+      final state = bloc.state as NamiChatReady;
+
+      expect(state.failure, NamiChatFailure.expenseSearchNotReady);
+      expect(state.isGenerating, isFalse);
+      expect(state.messages.single.role, MessageRole.user);
+      expect(searchTool.calls, isEmpty);
+      expect(gemma.sessionRequests, isEmpty);
+      await bloc.close();
+    });
+
     test('uses the english persona for an english locale', () async {
       final gemma = _FakeGemmaService(const GemmaReady())
         ..sessionAnswers.add(_answer(['Fine.']));

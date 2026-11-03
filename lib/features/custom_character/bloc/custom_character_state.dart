@@ -23,7 +23,8 @@ class CustomCharacterLoaded extends CustomCharacterState {
 
 /// [listRefreshFailed]: the create/update/delete succeeded but reloading the
 /// list afterwards did not, so screens that already reported success skip it.
-/// [crewRoleTaken]: nothing was created; the chosen crew role has a holder.
+/// [crewRoleTaken]: nothing was created or saved; the chosen crew role has a
+/// holder.
 enum CustomCharacterFailure {
   loadFailed,
   createFailed,

@@ -125,6 +125,25 @@ class FirestoreService implements IFirestoreService {
   }
 
   @override
+  Future<void> updateDocumentsInBatch({
+    required String collection,
+    required Map<String, Map<String, dynamic>> updates,
+  }) async {
+    try {
+      final batch = _firestore.batch();
+      for (final MapEntry(key: documentId, value: data) in updates.entries) {
+        batch.update(_firestore.collection(collection).doc(documentId), data);
+      }
+      await batch.commit();
+    } catch (e) {
+      debugPrint(
+        'FirestoreService: batch update of ${updates.length} documents in $collection failed: $e',
+      );
+      rethrow;
+    }
+  }
+
+  @override
   Future<void> deleteDocument({
     required String collection,
     required String documentId,

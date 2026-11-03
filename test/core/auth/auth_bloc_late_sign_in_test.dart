@@ -7,6 +7,8 @@ import 'package:opfan/core/auth/models/user_model.dart';
 import 'package:opfan/core/services/auth_db/auth_service.dart';
 import 'package:opfan/core/services/auth_db/i_auth_service.dart';
 
+import '../../fakes/fake_connectivity_service.dart';
+
 class _MockAuthService extends Mock implements IAuthService {}
 
 UserModel _user({bool withBodyProfile = false}) => UserModel(
@@ -39,6 +41,9 @@ void main() {
     when(
       () => auth.profileChanges,
     ).thenAnswer((_) => const Stream<UserModel>.empty());
+    when(
+      () => auth.profileSyncFailures,
+    ).thenAnswer((_) => const Stream<void>.empty());
     when(() => auth.authStatusStream).thenAnswer((_) => authStatus.stream);
     when(() => auth.init()).thenAnswer((_) async {});
     when(() => auth.isSessionValid()).thenAnswer((_) async => false);
@@ -54,7 +59,10 @@ void main() {
     test(
       'keeps a profile completed while the sign-in call was still running',
       () async {
-        final bloc = AuthBloc(authService: auth);
+        final bloc = AuthBloc(
+          authService: auth,
+          connectivityService: FakeConnectivityService(),
+        );
         bloc.add(const AuthStarted());
         await pumpEventQueue();
 

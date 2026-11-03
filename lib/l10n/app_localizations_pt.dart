@@ -2787,6 +2787,10 @@ class AppLocalizationsPt extends AppLocalizations {
       'A Nami demorou demais para responder. Tente novamente.';
 
   @override
+  String get namiChatExpenseSearchNotReady =>
+      'A Nami ainda está preparando a busca de despesas neste aparelho (um download único). Tente de novo em alguns minutos, com internet.';
+
+  @override
   String namiAccumulatedSavingsPeriod(String period) {
     return 'Acumulado em $period';
   }

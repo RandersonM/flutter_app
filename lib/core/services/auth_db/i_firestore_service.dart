@@ -32,6 +32,12 @@ abstract class IFirestoreService {
     required Map<String, dynamic> data,
   });
 
+  /// Writes every update in one batch: all of them land or none does.
+  Future<void> updateDocumentsInBatch({
+    required String collection,
+    required Map<String, Map<String, dynamic>> updates,
+  });
+
   Future<void> deleteDocument({
     required String collection,
     required String documentId,

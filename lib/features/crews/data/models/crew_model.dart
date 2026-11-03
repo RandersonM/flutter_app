@@ -4,6 +4,9 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 String _roleKey(String? role) =>
     (role ?? '').toLowerCase().replaceAll(RegExp(r'[^a-z]'), '');
 
+bool isSameCrewRole(String? a, String? b) =>
+    _roleKey(a).isNotEmpty && _roleKey(a) == _roleKey(b);
+
 class CrewMember {
   final String characterId;
   final String name;
@@ -95,9 +98,21 @@ class CrewModel {
   });
 
   /// Each role can be held once; legacy spellings count as the role they name.
+  /// Only a member holds a role: older crews keep roles in [rolesFilled] whose
+  /// holder already left, and trusting it would lock that role for good.
   bool isRoleFilled(String role) =>
-      rolesFilled.any((filled) => _roleKey(filled) == _roleKey(role)) ||
       members.any((member) => member.holdsRole(role));
+
+  /// The roles members hold, once each whatever the spelling; what the crew
+  /// shows, since [rolesFilled] may list roles of members who left.
+  List<String> get heldRoles {
+    final roles = <String>[];
+    for (final role in members.map((member) => member.role).nonNulls) {
+      if (_roleKey(role).isEmpty) continue;
+      if (!roles.any((held) => isSameCrewRole(held, role))) roles.add(role);
+    }
+    return roles;
+  }
 
   Map<String, dynamic> toFirestore() {
     return {

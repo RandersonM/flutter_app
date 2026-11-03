@@ -6,6 +6,7 @@ enum NamiChatFailure {
   modelLoadFailed,
   connectionFailed,
   generationTimedOut,
+  expenseSearchNotReady,
 }
 
 abstract class NamiChatState extends Equatable {

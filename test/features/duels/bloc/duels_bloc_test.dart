@@ -259,6 +259,25 @@ void main() {
       expect(state.winner, anyOf(luffy, mine));
     });
 
+    for (final (description, event) in [
+      ('picking a new first fighter', SelectFirstCharacter(mine)),
+      ('picking a new second fighter', SelectSecondCharacter(mine)),
+      ('clearing a fighter', const ClearCharacterSelection(1)),
+    ]) {
+      blocTest<DuelsBloc, DuelsState>(
+        '$description drops the previous winner',
+        build: build,
+        seed: () => DuelsReady(
+          availableCharacters: [luffy, zoro, mine],
+          firstCharacter: luffy,
+          secondCharacter: zoro,
+          winner: luffy,
+        ),
+        act: (bloc) => bloc.add(event),
+        verify: (bloc) => expect((bloc.state as DuelsReady).winner, isNull),
+      );
+    }
+
     blocTest<DuelsBloc, DuelsState>(
       'does not start without two fighters',
       build: build,

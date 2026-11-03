@@ -63,13 +63,13 @@ class CrewInfoSection extends StatelessWidget {
                 dateFormat.format(crew.updatedAt!),
               ),
             ],
-            if (crew.rolesFilled.isNotEmpty) ...[
+            if (crew.heldRoles.isNotEmpty) ...[
               const SizedBox(height: Constants.margin),
               _buildInfoRow(
                 context,
                 PhosphorIconsRegular.briefcase,
                 l10n.crewInfoRolesFilled,
-                crew.rolesFilled
+                crew.heldRoles
                     .map(
                       (role) =>
                           CharacterLocalizationMapper.mapOccupationToLocalized(

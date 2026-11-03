@@ -115,6 +115,9 @@ class _FakeModelManager implements ModelFileManager {
 class _FakeGemmaPlugin extends FlutterGemmaPlugin {
   final models = <_FakeModel>[];
 
+  /// While set, `createModel` waits for it — a reload still in progress.
+  Completer<void>? createGate;
+
   @override
   ModelFileManager get modelManager => _FakeModelManager();
 
@@ -131,6 +134,7 @@ class _FakeGemmaPlugin extends FlutterGemmaPlugin {
     bool? enableSpeculativeDecoding,
     int? maxConcurrentSessions,
   }) async {
+    await createGate?.future;
     final model = _FakeModel();
     models.add(model);
     return model;
@@ -214,8 +218,8 @@ void main() {
       expect(model.openedChats.last.queries, hasLength(1));
     });
 
-    test('discards a session whose model was reloaded while it was '
-        'opening', () async {
+    test('reopens on the reloaded model a session whose open the reload '
+        'interrupted', () async {
       final oldModel = plugin.models.single..holdOpens = true;
       final answer = send('quanto sobrou?');
       await _settle();
@@ -225,12 +229,56 @@ void main() {
       await _settle();
 
       expect(lateChat.closed, isTrue);
-      expect(answer.error, isA<StateError>());
+      expect(lateChat.queries, isEmpty);
+      expect(answer.error, isNull);
+      final reopened = plugin.models.last.openedChats.single;
+      expect(reopened.queries.single.text, contains('quanto sobrou?'));
+    });
 
-      send('de novo');
+    test('waits for a reload in progress before reopening', () async {
+      final oldModel = plugin.models.single..holdOpens = true;
+      final answer = send('quanto sobrou?');
       await _settle();
+      plugin.createGate = Completer<void>();
+
+      final reloading = service.loadModel();
+      oldModel.resolveOpen();
+      await _settle();
+
+      expect(plugin.models, hasLength(1));
+      expect(answer.error, isNull);
+
+      plugin.createGate!.complete();
+      await reloading;
+      await _settle();
+
+      expect(answer.error, isNull);
       expect(plugin.models.last.openedChats.single.queries, hasLength(1));
     });
+
+    test(
+      'opens one session for a message sent while it is still opening',
+      () async {
+        final model = plugin.models.single..holdOpens = true;
+        final timedOut = send('first');
+        await _settle();
+        await timedOut.subscription.cancel();
+
+        final retry = send('second');
+        await _settle();
+        expect(model.pendingOpens, hasLength(1));
+
+        final chat = model.resolveOpen();
+        await _settle();
+
+        expect(retry.error, isNull);
+        expect(model.openedChats, hasLength(1));
+        expect(chat.queries.single.text, contains('second'));
+
+        await service.closeSession('nami');
+        expect(model.openedChats.every((opened) => opened.closed), isTrue);
+      },
+    );
 
     test('a session reopened while the previous one is still stopping is '
         'neither stopped nor closed by that close', () async {

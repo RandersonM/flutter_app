@@ -46,6 +46,9 @@ class _EditCustomCharacterScreenState extends State<EditCustomCharacterScreen> {
   List<CrewModel> _availableCrews = [];
   String? _crewName;
   String? _selectedCrewRole;
+  String? _memberCrewId;
+  String? _heldCrewRole;
+  bool _crewChanged = false;
   String? _selectedRace = 'human';
   FightingStyleModel? _fightingStyle;
   bool _hasMappedHaki = false;
@@ -113,7 +116,24 @@ class _EditCustomCharacterScreenState extends State<EditCustomCharacterScreen> {
     setState(() {
       _devilFruits = options.devilFruits;
       _availableCrews = options.crews;
+      if (!_crewChanged) _readMembership(options.crews);
     });
+  }
+
+  /// The crew lists the character as a member with its role; the character
+  /// itself only stores the crew name.
+  void _readMembership(List<CrewModel> crews) {
+    for (final crew in crews) {
+      final member = crew.members
+          .where((member) => member.characterId == widget.character.id)
+          .firstOrNull;
+      if (member != null) {
+        _memberCrewId = crew.id;
+        _heldCrewRole = member.role;
+        _selectedCrewRole = member.role;
+        return;
+      }
+    }
   }
 
   @override
@@ -215,21 +235,29 @@ class _EditCustomCharacterScreenState extends State<EditCustomCharacterScreen> {
                             ),
                             onCrewChanged: (crewId) {
                               setState(() {
+                                _crewChanged = true;
                                 _crewName = crewNameWithId(
                                   _availableCrews,
                                   crewId,
                                 );
-                                if (crewId == null) {
-                                  _selectedCrewRole = null;
-                                }
+                                _selectedCrewRole =
+                                    crewId != null && crewId == _memberCrewId
+                                    ? _heldCrewRole
+                                    : null;
                               });
                             },
                             selectedCrewRole: _selectedCrewRole,
                             onCrewRoleChanged: (role) {
                               setState(() {
+                                _crewChanged = true;
                                 _selectedCrewRole = role;
                               });
                             },
+                            heldCrewRole:
+                                crewIdNamed(_availableCrews, _crewName) ==
+                                    _memberCrewId
+                                ? _heldCrewRole
+                                : null,
                             bountyController: _bountyController,
                             imageUrlController: _imageUrlController,
                             descriptionController: _descriptionController,
@@ -363,7 +391,16 @@ class _EditCustomCharacterScreenState extends State<EditCustomCharacterScreen> {
       );
 
       context.read<CustomCharacterBloc>().add(
-        UpdateCustomCharacter(widget.character.id!, updatedCharacter),
+        UpdateCustomCharacter(
+          widget.character.id!,
+          updatedCharacter,
+          crewAssignment: _crewChanged
+              ? CrewAssignment(
+                  crewId: crewIdNamed(_availableCrews, _crewName),
+                  role: _selectedCrewRole,
+                )
+              : null,
+        ),
       );
     }
   }

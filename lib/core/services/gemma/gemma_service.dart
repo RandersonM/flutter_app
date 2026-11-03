@@ -20,6 +20,15 @@ class GemmaService implements IGemmaService {
   List<Tool> _tools = [];
   final Map<String, InferenceChat> _sessions = {};
 
+  /// One `openChat` per session id: a message sent while the session is still
+  /// opening (the first one was cancelled by a watchdog, say) waits for that
+  /// open instead of starting a second chat that would replace, and leak, it.
+  final Map<String, Future<InferenceChat>> _openingSessions = {};
+
+  /// Set while [_recreateChat] replaces the model; a session open waits for it
+  /// rather than opening on the model being replaced.
+  Future<void>? _reloading;
+
   /// Bumped by [closeSession] (per session) and [_recreateChat] (all of
   /// them). An `openChat` still in flight when its session is closed finds a
   /// newer stamp and discards the chat instead of storing it.
@@ -197,6 +206,17 @@ class GemmaService implements IGemmaService {
   /// needed when no model is open yet or a refresh failed — routine resets use
   /// [_refreshVegapunkChat], which keeps the model and other sessions alive.
   Future<void> _recreateChat({required bool isThinkingMode}) async {
+    final reloaded = Completer<void>();
+    _reloading = reloaded.future;
+    try {
+      await _reloadModel(isThinkingMode: isThinkingMode);
+    } finally {
+      reloaded.complete();
+      if (identical(_reloading, reloaded.future)) _reloading = null;
+    }
+  }
+
+  Future<void> _reloadModel({required bool isThinkingMode}) async {
     final oldChat = _chat;
     _chat = null;
     await oldChat?.close();
@@ -340,8 +360,7 @@ class GemmaService implements IGemmaService {
     List<Tool>? tools,
     int maxOutputTokens = 512,
   }) {
-    final model = _model;
-    if (model == null) {
+    if (_model == null) {
       return Stream.error(StateError('GemmaService: model not ready'));
     }
 
@@ -360,9 +379,8 @@ class GemmaService implements IGemmaService {
       try {
         final chat =
             _sessions[sessionId] ??
-            await _openSession(
+            await _openingSession(
               sessionId,
-              model,
               systemInstruction: systemInstruction,
               tools: tools,
               maxOutputTokens: maxOutputTokens,
@@ -392,34 +410,73 @@ class GemmaService implements IGemmaService {
     return controller.stream;
   }
 
+  /// The open already in flight for [sessionId], or a new one; its options
+  /// come from the message that started it.
+  Future<InferenceChat> _openingSession(
+    String sessionId, {
+    required String systemInstruction,
+    required List<Tool>? tools,
+    required int maxOutputTokens,
+  }) {
+    final inFlight = _openingSessions[sessionId];
+    if (inFlight != null) return inFlight;
+    final opening = _openSession(
+      sessionId,
+      systemInstruction: systemInstruction,
+      tools: tools,
+      maxOutputTokens: maxOutputTokens,
+    );
+    _openingSessions[sessionId] = opening;
+    void forget() {
+      if (identical(_openingSessions[sessionId], opening)) {
+        _openingSessions.remove(sessionId);
+      }
+    }
+
+    opening.then((_) => forget(), onError: (_) => forget());
+    return opening;
+  }
+
+  /// A model reload during `openChat` leaves that chat on the replaced model;
+  /// the open is retried once on the reloaded one so the message still gets
+  /// an answer. A [closeSession] during it ends the open for good.
   Future<InferenceChat> _openSession(
-    String sessionId,
-    InferenceModel model, {
+    String sessionId, {
     required String systemInstruction,
     required List<Tool>? tools,
     required int maxOutputTokens,
   }) async {
-    final stamp = _sessionStamp(sessionId);
-    final hasTools = tools != null && tools.isNotEmpty;
-    final session = await model.openChat(
-      systemInstruction: systemInstruction,
-      // Lower temperature for reliable function-call JSON emission when
-      // tools are attached (matches the main chat's tuning).
-      temperature: hasTools ? 0.2 : 0.3,
-      maxOutputTokens: maxOutputTokens,
-      tools: tools ?? const [],
-      supportsFunctionCalls: hasTools,
-      toolChoice: hasTools ? ToolChoice.auto : ToolChoice.none,
-      modelType: _determineModelType(_env.gemmaModelName),
-    );
-    if (_sessionStamp(sessionId) != stamp) {
-      await session.close();
-      throw StateError(
-        'GemmaService: session "$sessionId" closed while opening',
+    const maxAttempts = 2;
+    for (var attempt = 1; ; attempt++) {
+      await _reloading;
+      final model = _model;
+      if (model == null) throw StateError('GemmaService: model not ready');
+      final stamp = _sessionStamp(sessionId);
+      final hasTools = tools != null && tools.isNotEmpty;
+      final session = await model.openChat(
+        systemInstruction: systemInstruction,
+        // Lower temperature for reliable function-call JSON emission when
+        // tools are attached (matches the main chat's tuning).
+        temperature: hasTools ? 0.2 : 0.3,
+        maxOutputTokens: maxOutputTokens,
+        tools: tools ?? const [],
+        supportsFunctionCalls: hasTools,
+        toolChoice: hasTools ? ToolChoice.auto : ToolChoice.none,
+        modelType: _determineModelType(_env.gemmaModelName),
       );
+      final current = _sessionStamp(sessionId);
+      if (current == stamp) {
+        _sessions[sessionId] = session;
+        return session;
+      }
+      await session.close();
+      final wasClosed = current.$1 != stamp.$1;
+      if (wasClosed || attempt == maxAttempts) {
+        throw StateError(
+          'GemmaService: session "$sessionId" closed while opening',
+        );
+      }
     }
-    _sessions[sessionId] = session;
-    return session;
   }
 
   @override
@@ -467,6 +524,7 @@ class GemmaService implements IGemmaService {
   @override
   Future<void> closeSession(String sessionId) async {
     _sessionEpochs.update(sessionId, (epoch) => epoch + 1, ifAbsent: () => 1);
+    _openingSessions.remove(sessionId);
     final session = _sessions.remove(sessionId);
     if (session == null) return;
     try {

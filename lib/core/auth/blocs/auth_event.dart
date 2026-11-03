@@ -62,6 +62,11 @@ class AuthProfileChanged extends AuthEvent {
   List<Object?> get props => [user];
 }
 
+/// The server refused a body profile already stored locally.
+class AuthProfileSyncFailed extends AuthEvent {
+  const AuthProfileSyncFailed();
+}
+
 class AuthDeleteAccount extends AuthEvent {
   const AuthDeleteAccount();
 }

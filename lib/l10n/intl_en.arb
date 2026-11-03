@@ -4472,6 +4472,10 @@
   "@namiChatGenerationTimedOut": {
     "description": "Nami chat sheet: error bubble when the on-device model stops producing an answer"
   },
+  "namiChatExpenseSearchNotReady": "Nami is still preparing the expense search on this device (a one-time download). Try again in a few minutes with an internet connection.",
+  "@namiChatExpenseSearchNotReady": {
+    "description": "Nami chat sheet: error bubble when an expense search is asked while the search model is still downloading or could not load"
+  },
   "namiAccumulatedSavingsPeriod": "Accumulated over {period}",
   "@namiAccumulatedSavingsPeriod": {
     "description": "Nami results view: savings label; period is a localized duration like '2 years and 3 months'",

@@ -6,6 +6,7 @@ import 'package:opfan/core/ai/prompts/index.dart';
 import 'package:opfan/core/services/index.dart';
 import 'package:flutter_gemma/core/model_response.dart';
 import 'package:opfan/features/nami_finances/data/services/i_nami_rag_service.dart';
+import 'package:opfan/features/nami_finances/tools/find_expenses_handler.dart';
 import 'package:opfan/features/vegapunk_chat/data/models/chat_message.dart';
 import 'package:opfan/features/vegapunk_chat/tools/function_executor.dart';
 import 'package:opfan/features/vegapunk_chat/tools/function_registry.dart';
@@ -211,6 +212,8 @@ class NamiChatBloc extends Cubit<NamiChatState> {
       await _generateAnswer(text);
     } on _GenerationTimedOut {
       failure = NamiChatFailure.generationTimedOut;
+    } on ExpenseSearchNotReady {
+      failure = NamiChatFailure.expenseSearchNotReady;
     } catch (e) {
       debugPrint('NamiChatBloc: answer generation failed: $e');
       failure = NamiChatFailure.connectionFailed;
@@ -220,7 +223,8 @@ class NamiChatBloc extends Cubit<NamiChatState> {
 
     final current = state;
     if (current is! NamiChatReady) return;
-    if (failure == NamiChatFailure.connectionFailed) {
+    if (failure == NamiChatFailure.connectionFailed ||
+        failure == NamiChatFailure.expenseSearchNotReady) {
       emit(current.copyWith(isGenerating: false, failure: failure));
       return;
     }
@@ -267,6 +271,13 @@ class NamiChatBloc extends Cubit<NamiChatState> {
     final systemInstruction = NamiPrompt.system(isPortuguese: isPt);
 
     final toolCall = _router.resolve(text);
+    // A search while the embedder downloads would wait out the tool timeout
+    // and then read as a generic failure.
+    if (toolCall.name == FindExpensesHandler.toolName &&
+        !await _ragService.isSearchReady()) {
+      throw const ExpenseSearchNotReady();
+    }
+    if (isClosed) return;
     final result = await _registry
         .execute(toolCall)
         .timeout(

@@ -3981,6 +3981,7 @@
   "namiChatModelLoadFailed": "Não foi possível carregar o modelo de IA.",
   "namiChatConnectionFailed": "Erro na conexão com a Nami. Tente novamente.",
   "namiChatGenerationTimedOut": "A Nami demorou demais para responder. Tente novamente.",
+  "namiChatExpenseSearchNotReady": "A Nami ainda está preparando a busca de despesas neste aparelho (um download único). Tente de novo em alguns minutos, com internet.",
   "namiAccumulatedSavingsPeriod": "Acumulado em {period}",
   "namiAmountPerDay": "{amount}/dia",
   "zoroWorkoutLoadError": "Não foi possível carregar seus dados de treino.",

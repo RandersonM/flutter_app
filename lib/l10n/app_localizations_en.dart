@@ -2771,6 +2771,10 @@ class AppLocalizationsEn extends AppLocalizations {
       'Nami took too long to answer. Please try again.';
 
   @override
+  String get namiChatExpenseSearchNotReady =>
+      'Nami is still preparing the expense search on this device (a one-time download). Try again in a few minutes with an internet connection.';
+
+  @override
   String namiAccumulatedSavingsPeriod(String period) {
     return 'Accumulated over $period';
   }

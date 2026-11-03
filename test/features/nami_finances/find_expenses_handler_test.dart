@@ -12,10 +12,17 @@ import 'package:opfan/l10n/app_localizations.dart';
 /// Hand-written fakes so the tests need neither mockito codegen nor the
 /// flutter_gemma plugin (which requires a device).
 class _FakeRag implements INamiRagService {
-  _FakeRag(this.matches);
+  _FakeRag(this.matches, {this.indexComplete = true});
 
   final List<ExpenseMatch> matches;
+  final bool indexComplete;
   String? lastQuery;
+
+  @override
+  Future<bool> isIndexComplete() async => indexComplete;
+
+  @override
+  Future<bool> isSearchReady() async => true;
 
   @override
   Future<List<ExpenseMatch>> findExpenses(
@@ -109,6 +116,32 @@ Future<Map<String, dynamic>> _run(
 
 void main() {
   group('FindExpensesHandler', () {
+    test('warns the model when months are still being indexed', () async {
+      final payload = await _run(
+        FindExpensesHandler(
+          ragService: _FakeRag(const [], indexComplete: false),
+          financesService: _FakeFinancesService({}),
+        ),
+        'viagem pra praia',
+      );
+
+      expect(payload['hasMatches'], isFalse);
+      expect(payload['indexComplete'], isFalse);
+      expect(payload['indexNote'], contains('may have missed'));
+    });
+
+    test('adds no index warning once every month is indexed', () async {
+      final payload = await _run(
+        FindExpensesHandler(
+          ragService: _FakeRag(const []),
+          financesService: _FakeFinancesService({}),
+        ),
+        'viagem pra praia',
+      );
+
+      expect(payload.containsKey('indexComplete'), isFalse);
+    });
+
     test('sums matched expenses across months exactly', () async {
       final rag = _FakeRag(const [
         ExpenseMatch(expenseId: 'e1', monthKey: '2026-06', similarity: 0.91),

@@ -179,6 +179,43 @@ void main() {
       },
     );
 
+    test('logs a workout only when the trigger itself is affirmed', () {
+      const table = {
+        // Negation or "quase" after the trigger is about something else.
+        'Treinei hoje quase 2 horas': true,
+        'treinei hoje e nem cansei': true,
+        "I trained today, can't feel my legs": true,
+        'Treinei hoje, não aguento mais de dor': true,
+        // A time clause, not a question.
+        'Quando acordei treinei hoje': true,
+        'When I woke up I trained today': true,
+        // A negation or question in an earlier clause or sentence.
+        'Não sei, mas treinei hoje': true,
+        'Treinei hoje. Devo descansar amanhã?': true,
+        // Abbreviated "não".
+        'n treinei hoje': false,
+        'ñ treinei hoje': false,
+        'naum treinei hoje': false,
+        'Nao fiz treino hoje': false,
+        'treinei hoje n': false,
+        // Questions typed without "?".
+        'have i trained today': false,
+        'has i trained today': false,
+        'me diz quando treinei hoje': false,
+        'Treinei hoje?': false,
+        // Every mention must be affirmed.
+        'Treinei hoje, ou melhor, não treinei hoje': false,
+      };
+
+      for (final MapEntry(key: message, value: logs) in table.entries) {
+        expect(
+          detector.detect(message)?.toolName == 'saveWorkout',
+          logs,
+          reason: message,
+        );
+      }
+    });
+
     test('lets an explicit search win over other intents in the message', () {
       expectIntent(
         'search for my profile',
